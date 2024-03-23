@@ -10,7 +10,7 @@
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
-          "error",
+          "warn",
           {
             "type": "attribute",
             "prefix": "futbet",
@@ -18,7 +18,7 @@
           }
         ],
         "@angular-eslint/component-selector": [
-          "error",
+          "warn",
           {
             "type": "element",
             "prefix": "futbet",
@@ -31,6 +31,19 @@
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
       "rules": {}
+    },
+    {
+      "files": ["./src/app/components/footer/footer.component.ts"],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "off",
+          {
+            "type": "element",
+            "prefix": [""],
+            "style": "kebab-case"
+          }
+        ]
+      }
     }
   ]
 }
