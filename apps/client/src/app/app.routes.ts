@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { LeagueComponent, StartComponent } from './modules';
 
 export const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
+    component: StartComponent,
   },
-  //   {
-  //     path: 'league',
-  //     component: LeagueComponent,
-  //   },
+  {
+    path: 'league',
+    component: LeagueComponent,
+  },
 ];
