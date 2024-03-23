@@ -33,7 +33,10 @@
       "rules": {}
     },
     {
-      "files": ["./src/app/components/footer/footer.component.ts"],
+      "files": [
+        "./src/app/components/footer/footer.component.ts",
+        "./src/app/components/header/header.component.ts"
+      ],
       "rules": {
         "@angular-eslint/component-selector": [
           "off",
