@@ -1,0 +1,143 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$futbet-primary: mat.define-palette(mat.$indigo-palette);
+$futbet-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$futbet-warn: mat.define-palette(mat.$red-palette);
+
+$my-typography: mat.define-typography-config();
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$futbet-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $futbet-primary,
+      accent: $futbet-accent,
+      warn: $futbet-warn,
+    ),
+    typography: $my-typography,
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($futbet-theme);
+
+mat-card.mat-mdc-card {
+  mat-card-title {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  mat-card-content:not(.no-top-margin) {
+    margin-top: 16px;
+  }
+}
+
+mat-paginator {
+  margin-top: 20px;
+}
+
+mat-progress-bar.mat-mdc-progress-bar {
+  .mdc-linear-progress__buffer-bar {
+    background-color: transparent;
+  }
+
+  .mdc-linear-progress__bar-inner {
+    border-color: var(--blackscore-color-white);
+  }
+}
+
+button.mat-mdc-button:not(:disabled),
+button.mat-mdc-button[disabled],
+button.mat-mdc-button.mat-mdc-button-disabled {
+  color: var(--fb-color-white);
+}
+
+button.mat-mdc-button[disabled],
+button.mat-mdc-button.mat-mdc-button-disabled {
+  filter: grayscale(1);
+}
+
+/* mat-button-toggle */
+mat-button-toggle-group {
+  &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
+    color: red;
+  }
+
+  $border-style: solid var(--fb-size-goal-button-border-width)
+    var(--fb-color-green-1);
+  &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+  &.mat-button-toggle-group-appearance-standard {
+    border-radius: 0;
+    border-left: $border-style;
+    border-top: $border-style;
+    border-top-color: transparent;
+    border-right: $border-style;
+    border-bottom: none;
+  }
+
+  &.mat-button-toggle-group-appearance-standard {
+    .mat-button-toggle-appearance-standard {
+      border-top: $border-style;
+
+      &:first-of-type {
+        border-right: solid var(--fb-size-goal-button-border-width)
+          var(--fb-color-green-1);
+      }
+    }
+
+    .mat-button-toggle-appearance-standard
+      + .mat-button-toggle-appearance-standard {
+      border-left: solid var(--fb-size-goal-button-border-width)
+        var(--fb-color-green-1);
+    }
+  }
+}
+
+mat-button-toggle.mat-button-toggle-appearance-standard {
+  color: var(--fb-color-white);
+  background-color: transparent;
+}
+
+mat-button-toggle.mat-button-toggle:not(.logo-toggle) {
+  &:not(.mat-button-toggle-checked):not(futbet-logo) button {
+    opacity: 0.4;
+  }
+}
+
+mat-button-toggle.mat-button-toggle {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: transparent;
+
+  &.mat-button-toggle-checked {
+    background-color: transparent;
+    color: var(--fb-color-white);
+    border-bottom-color: var(--fb-color-white);
+  }
+}
+
+futbet-league-selector {
+  .mat-button-toggle-standalone.mat-button-toggle-appearance-standard
+    .mat-pseudo-checkbox,
+  .mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+    --mat-minimal-pseudo-checkbox-selected-checkmark-color: var(
+      --fb-color-green-2
+    );
+  }
+}
