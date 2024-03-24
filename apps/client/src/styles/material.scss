@@ -75,17 +75,15 @@ button.mat-mdc-button.mat-mdc-button-disabled {
 
 /* mat-button-toggle */
 mat-button-toggle-group {
-  &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
-    color: red;
-  }
+  $border-color: var(--fb-color-green-2);
+  $border-style: solid var(--fb-size-button-border-width) $border-color;
 
-  $border-style: solid var(--fb-size-goal-button-border-width)
-    var(--fb-color-green-1);
   &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
   &.mat-button-toggle-group-appearance-standard {
     border-radius: 0;
-    border-left: $border-style;
-    border-top: $border-style;
+    // border-left: $border-style;
+    border-left: none;
+    border-top: none;
     border-top-color: transparent;
     border-right: $border-style;
     border-bottom: none;
@@ -96,15 +94,14 @@ mat-button-toggle-group {
       border-top: $border-style;
 
       &:first-of-type {
-        border-right: solid var(--fb-size-goal-button-border-width)
-          var(--fb-color-green-1);
+        border-left: $border-style;
+        border-right: $border-style;
       }
     }
 
     .mat-button-toggle-appearance-standard
       + .mat-button-toggle-appearance-standard {
-      border-left: solid var(--fb-size-goal-button-border-width)
-        var(--fb-color-green-1);
+      border-left: $border-style;
     }
   }
 }
@@ -121,7 +118,7 @@ mat-button-toggle.mat-button-toggle:not(.logo-toggle) {
 }
 
 mat-button-toggle.mat-button-toggle {
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: transparent;
 
