@@ -5,10 +5,6 @@ import { LeagueSelectData } from '../../models';
 
 export const mockLeague: LeagueSelectData = LEAGUES_METADATA[2];
 
-export class MockLeagueService {
-  selectedLeague = signal<LeagueSelectData | undefined>(undefined);
-}
-
 @Injectable({
   providedIn: 'root',
 })
