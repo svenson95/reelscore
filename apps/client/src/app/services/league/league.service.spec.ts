@@ -12,22 +12,18 @@ describe('LeagueService', () => {
     service = TestBed.inject(LeagueService);
   });
 
-  it('should navigate to league view by id', fakeAsync(() => {
-    // Arrange
+  it('should set selectedLeague properly', fakeAsync(() => {
+    // given
+    expect(service.selectedLeague()).toEqual(undefined);
     const mockLeague = LEAGUES_METADATA[2];
-    // console.log('location', location);
-    // const path = location.path();
 
-    // Act
-    spyOn(service, 'navigateToLeague');
-    service.selectedLeague.set(mockLeague);
+    // when
+    jest.spyOn(service, 'setSelectedLeague');
+    service.setSelectedLeague(mockLeague);
     tick();
 
-    // Assert
-    // TODO: check why effect in service don't run, which would've called navigateToLeague
-    // expect(service.navigateToLeague).toHaveBeenCalledWith(mockLeague.id);
+    // then
+    expect(service.setSelectedLeague).toHaveBeenCalledWith(mockLeague);
     expect(service.selectedLeague()).toEqual(mockLeague);
-    // TODO: check why routing is not working in this test
-    // expect(path).toBe('/league?=39');
   }));
 });
