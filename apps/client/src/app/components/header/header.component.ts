@@ -9,12 +9,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router';
 
 import { LEAGUES_METADATA } from '../../constants';
-import { LeagueSelectData } from '../../models';
 import { LeagueService } from '../../services';
 
 import { LogoComponent } from '../logo/logo.component';
 
-const SELECTED_LEAGUE_DEFAULT = 'start';
+export const SELECTED_LEAGUE_DEFAULT = 'start';
 
 @Component({
   selector: 'header',
@@ -36,12 +35,16 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
       <mat-button-toggle
         [value]="'start'"
         class="logo-toggle mr-auto"
-        [routerLink]="['/']"
+        [routerLink]="['']"
       >
         <futbet-logo />
       </mat-button-toggle>
       @for (l of leagues; track l.label) {
-      <mat-button-toggle [value]="l.url" [routerLink]="['leagues', l.url]">
+      <mat-button-toggle
+        [value]="l.url"
+        [routerLink]="['leagues', l.url]"
+        [class]="l.url"
+      >
         <span class="league-label">{{ l.flag }} {{ l.label }}</span>
       </mat-button-toggle>
       }
@@ -50,13 +53,14 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
 })
 export class HeaderComponent {
   private readonly service = inject(LeagueService);
-  readonly leagues: LeagueSelectData[] = LEAGUES_METADATA;
+  readonly leagues = LEAGUES_METADATA;
   readonly selectedLeague = this.service.selectedLeague;
+
   readonly leagueControl = new FormControl<string>(
     this.selectedLeague()?.url ?? SELECTED_LEAGUE_DEFAULT
   );
 
-  effectTest = effect(() => {
+  updateFormOnChange = effect(() => {
     this.leagueControl.setValue(
       this.selectedLeague()?.url ?? SELECTED_LEAGUE_DEFAULT
     );
