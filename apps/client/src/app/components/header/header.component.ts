@@ -1,43 +1,64 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  effect,
   inject,
-  signal,
 } from '@angular/core';
-import {
-  MatProgressBarModule,
-  ProgressBarMode,
-} from '@angular/material/progress-bar';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { RouterModule } from '@angular/router';
 
+import { LEAGUES_METADATA } from '../../constants';
+import { LeagueSelectData } from '../../models';
 import { LeagueService } from '../../services';
+
 import { LogoComponent } from '../logo/logo.component';
 
-import { LeagueSelectorComponent } from './league-selector/league-selector.component';
+const SELECTED_LEAGUE_DEFAULT = 'start';
 
 @Component({
   selector: 'header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LogoComponent, LeagueSelectorComponent, MatProgressBarModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    LogoComponent,
+    MatButtonToggleModule,
+  ],
   template: `
-    <futbet-logo (click)="setSelectedLeague()" />
-    <futbet-league-selector />
-    <div class="absolute inset-x-0 top-0">
-      <mat-progress-bar [mode]="progressMode()"></mat-progress-bar>
-    </div>
+    <mat-button-toggle-group
+      class="w-full"
+      hideSingleSelectionIndicator
+      name="fontStyle"
+      [formControl]="leagueControl"
+    >
+      <mat-button-toggle
+        [value]="'start'"
+        class="logo-toggle mr-auto"
+        [routerLink]="['/']"
+      >
+        <futbet-logo />
+      </mat-button-toggle>
+      @for (l of leagues; track l.label) {
+      <mat-button-toggle [value]="l.url" [routerLink]="['leagues', l.url]">
+        <span class="league-label">{{ l.flag }} {{ l.label }}</span>
+      </mat-button-toggle>
+      }
+    </mat-button-toggle-group>
   `,
 })
 export class HeaderComponent {
   private readonly service = inject(LeagueService);
-
-  readonly isLoading = signal<boolean>(false);
-
-  readonly progressMode = computed<ProgressBarMode>(() =>
-    this.isLoading() ? 'indeterminate' : 'determinate'
+  readonly leagues: LeagueSelectData[] = LEAGUES_METADATA;
+  readonly selectedLeague = this.service.selectedLeague;
+  readonly leagueControl = new FormControl<string>(
+    this.selectedLeague()?.url ?? SELECTED_LEAGUE_DEFAULT
   );
 
-  setSelectedLeague(): void {
-    this.service.selectedLeague.set(undefined);
-  }
+  effectTest = effect(() => {
+    this.leagueControl.setValue(
+      this.selectedLeague()?.url ?? SELECTED_LEAGUE_DEFAULT
+    );
+  });
 }

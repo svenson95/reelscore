@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FooterComponent, HeaderComponent } from './components';
 
 @Component({
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, HeaderComponent, FooterComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'futbet-root',
   template: `
     <header
-      class="bg-fb-color-green-2 flex items-center font-semibold px-fb-padding-1 py-3 relative justify-between"
+      class="bg-fb-color-green-1 flex items-center font-semibold p-fb-padding-3 pb-0 relative justify-between"
     ></header>
 
-    <main class="bg-fb-color-green-2 flex p-fb-padding-3">
+    <main class="bg-white flex p-fb-padding-3">
       <router-outlet />
     </main>
 
     <footer
-      class="flex justify-between px-fb-padding-1 py-10 bg-gray-700"
+      class="flex justify-center px-fb-padding-3 py-10 bg-gray-200"
     ></footer>
   `,
   styles: `
@@ -24,7 +26,7 @@ import { RouterModule } from '@angular/router';
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
 
-      @apply text-fb-color-white;
+      @apply text-fb-color-text-1;
     }
   `,
 })

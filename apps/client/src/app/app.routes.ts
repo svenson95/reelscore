@@ -8,7 +8,7 @@ export const routes: Routes = [
     component: StartComponent,
   },
   {
-    path: 'league',
+    path: 'leagues/:url',
     component: LeagueComponent,
   },
 ];
