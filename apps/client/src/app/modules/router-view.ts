@@ -13,13 +13,13 @@ export class RouterView {
   protected readonly routeEvent = effect(
     () => {
       const route = this.routeService.activeRoute() as LeagueUrl;
-      const league = this.getLeagueByName(route);
+      const league = this.getLeagueByUrl(route);
       this.service.setSelectedLeague(league);
     },
     { allowSignalWrites: true }
   );
 
-  private getLeagueByName(url: LeagueUrl): LeagueSelectData | undefined {
+  getLeagueByUrl(url: LeagueUrl): LeagueSelectData | undefined {
     return LEAGUES_METADATA.find((l) => l.url === url);
   }
 }
