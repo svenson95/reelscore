@@ -5,8 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 @Injectable()
 export class RouteService {
   private readonly route = inject(ActivatedRoute);
-
-  readonly url = toSignal(this.route.url);
+  private readonly url = toSignal(this.route.url);
 
   readonly activeRoute = computed<string>(() => {
     const url = this.url();

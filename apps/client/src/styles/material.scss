@@ -37,31 +37,6 @@ $futbet-theme: mat.define-light-theme(
 // that you are using.
 @include mat.all-component-themes($futbet-theme);
 
-mat-card.mat-mdc-card {
-  mat-card-title {
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  mat-card-content:not(.no-top-margin) {
-    margin-top: 16px;
-  }
-}
-
-mat-paginator {
-  margin-top: 20px;
-}
-
-mat-progress-bar.mat-mdc-progress-bar {
-  .mdc-linear-progress__buffer-bar {
-    background-color: transparent;
-  }
-
-  .mdc-linear-progress__bar-inner {
-    border-color: var(--blackscore-color-white);
-  }
-}
-
 button.mat-mdc-button:not(:disabled),
 button.mat-mdc-button[disabled],
 button.mat-mdc-button.mat-mdc-button-disabled {
@@ -73,62 +48,6 @@ button.mat-mdc-button.mat-mdc-button-disabled {
   filter: grayscale(1);
 }
 
-/* mat-button-toggle */
-mat-button-toggle-group {
-  $border-color: var(--fb-color-green-2);
-  $border-style: solid var(--fb-size-button-border-width) $border-color;
-
-  &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
-  &.mat-button-toggle-group-appearance-standard {
-    border-radius: 0;
-    // border-left: $border-style;
-    border-left: none;
-    border-top: none;
-    border-top-color: transparent;
-    border-right: $border-style;
-    border-bottom: none;
-  }
-
-  &.mat-button-toggle-group-appearance-standard {
-    .mat-button-toggle-appearance-standard {
-      border-top: $border-style;
-
-      &:first-of-type {
-        border-left: $border-style;
-        border-right: $border-style;
-      }
-    }
-
-    .mat-button-toggle-appearance-standard
-      + .mat-button-toggle-appearance-standard {
-      border-left: $border-style;
-    }
-  }
-}
-
-mat-button-toggle.mat-button-toggle-appearance-standard {
-  color: var(--fb-color-white);
-  background-color: transparent;
-}
-
-mat-button-toggle.mat-button-toggle:not(.logo-toggle) {
-  &:not(.mat-button-toggle-checked):not(futbet-logo) button {
-    opacity: 0.4;
-  }
-}
-
-mat-button-toggle.mat-button-toggle {
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-  border-bottom-color: transparent;
-
-  &.mat-button-toggle-checked {
-    background-color: transparent;
-    color: var(--fb-color-white);
-    border-bottom-color: var(--fb-color-white);
-  }
-}
-
 futbet-league-selector {
   .mat-button-toggle-standalone.mat-button-toggle-appearance-standard
     .mat-pseudo-checkbox,
@@ -137,4 +56,55 @@ futbet-league-selector {
       --fb-color-green-2
     );
   }
+}
+
+header {
+  mat-button-toggle.mat-button-toggle {
+    &:not(.logo-toggle) .mat-button-toggle-label-content {
+      font-size: var(--fb-font-size-small);
+      // material class height change (1)
+      line-height: calc(var(--fb-size-league-select-height) - 10px);
+    }
+  }
+
+  .mat-mdc-form-field-type-mat-select {
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      @apply bg-transparent;
+    }
+
+    .mat-mdc-select-value-text {
+      @apply text-fb-color-white;
+    }
+
+    .mat-mdc-floating-label mat-label {
+      @apply text-fb-color-white opacity-50;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-select-arrow {
+      @apply text-fb-color-white opacity-50;
+    }
+
+    &.mat-focused .mat-mdc-select-arrow {
+      @apply text-fb-color-white opacity-50;
+    }
+
+    .mdc-text-field--filled .mdc-line-ripple::before {
+      border-bottom-width: 0;
+    }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled)
+      .mdc-line-ripple::after {
+      border-bottom-color: var(--fb-color-white);
+    }
+  }
+}
+
+/* Header League Select */
+mat-option.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
+  .mdc-list-item__primary-text {
+  color: var(--fb-color-green-1);
 }
