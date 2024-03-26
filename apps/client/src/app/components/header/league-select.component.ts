@@ -26,26 +26,8 @@ import { LogoComponent } from '../logo/logo.component';
 		mat-button-toggle-group {
 			@apply w-full border-none rounded-none self-end;
 
-			&.mat-button-toggle-group-appearance-standard {
-				$border-color: var(--fb-color-green-2);
-				$border-style: solid var(--fb-size-button-border-width) $border-color;
-
-				.mat-button-toggle-appearance-standard {
-					border-top: $border-style;
-
-					&:first-of-type {
-						border-left: $border-style;
-					}
-
-					&:first-of-type, &:last-of-type {
-						border-right: $border-style;
-					}
-				}
-
-				.mat-button-toggle-appearance-standard
-					+ .mat-button-toggle-appearance-standard {
-					border-left: $border-style;
-				}
+			&.mat-button-toggle-group-appearance-standard .mat-button-toggle-appearance-standard+.mat-button-toggle-appearance-standard {
+    			border-left: none;
 			}
 		}
 
@@ -53,15 +35,9 @@ import { LogoComponent } from '../logo/logo.component';
 			@apply bg-transparent text-fb-color-white;
 
 			&:not(.logo-toggle) {
-				&:not(.mat-button-toggle-checked) .league-label {
-					@apply opacity-50;
+				&:not(.mat-button-toggle-checked) span {
+					@apply opacity-70;
 				}
-			}
-		}
-
-		mat-button-toggle.mat-button-toggle:not(.logo-toggle) {
-			&:not(.mat-button-toggle-checked):not(futbet-logo) button {
-				@apply opacity-50;
 			}
 		}
 
