@@ -9,6 +9,12 @@ import { DateService } from '../../services';
   selector: 'futbet-start-date-bar-week-toogle-group',
   standalone: true,
   imports: [CommonModule, MatButtonToggleModule],
+  styles: `
+    :host { 
+      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
+      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
+    }
+  `,
   template: `
     <mat-button-toggle-group
       hideSingleSelectionIndicator
