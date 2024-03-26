@@ -53,10 +53,6 @@ import { LogoComponent } from '../logo/logo.component';
 			@apply bg-transparent text-fb-color-white;
 
 			&:not(.logo-toggle) {
-				&.mat-button-toggle-checked {
-					@apply text-fb-color-white;
-				}
-
 				&:not(.mat-button-toggle-checked) .league-label {
 					@apply opacity-50;
 				}
