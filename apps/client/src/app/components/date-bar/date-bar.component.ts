@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DateService } from '../../services';
 
@@ -20,6 +21,7 @@ export type DayTime = number;
     CommonModule,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     DateBarDatePickerComponent,
     DateBarWeekToggleGroupComponent,
   ],
@@ -32,6 +34,7 @@ export type DayTime = number;
         mat-icon-button
         color="primary"
         (click)="selectedDayTime.set(getDay(-1))"
+        matTooltip="Vorherige Woche"
       >
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
@@ -39,6 +42,7 @@ export type DayTime = number;
         mat-icon-button
         color="primary"
         (click)="selectedDayTime.set(getDay(+1))"
+        matTooltip="Nächste Woche"
       >
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>

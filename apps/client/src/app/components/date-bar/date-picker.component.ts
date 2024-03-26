@@ -4,8 +4,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DateService } from '../../services';
+
 import { DayTime, TODAY } from './date-bar.component';
 
 // TODO: refactor to lib?
@@ -18,10 +20,15 @@ import { DayTime, TODAY } from './date-bar.component';
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    MatTooltipModule,
   ],
   providers: [provideNativeDateAdapter()],
   template: `
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="picker"
+      matTooltip="Datum auswählen"
+    ></mat-datepicker-toggle>
     <mat-form-field class="opacity-0 w-0">
       <input
         matInput
