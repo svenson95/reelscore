@@ -23,6 +23,12 @@ import { DayTime, TODAY } from './date-bar.component';
     MatTooltipModule,
   ],
   providers: [provideNativeDateAdapter()],
+  styles: `
+    :host {
+      --mdc-icon-button-icon-color: var(--fb-color-green-1);
+      --mat-icon-button-state-layer-color: var(--fb-color-green-1);
+    }
+  `,
   template: `
     <mat-datepicker-toggle
       matIconSuffix
