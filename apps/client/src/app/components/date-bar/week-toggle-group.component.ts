@@ -11,8 +11,7 @@ import { DateService } from '../../services';
   imports: [CommonModule, MatButtonToggleModule],
   styles: `
     :host { 
-      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
-      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
+      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1-light); 
     }
   `,
   template: `
