@@ -25,11 +25,11 @@ export type DayTime = number;
     DateBarDatePickerComponent,
     DateBarWeekToggleGroupComponent,
   ],
-  styles: `:host { @apply flex flex-wrap }`,
+  styles: `:host { @apply flex flex-wrap mb-5 justify-center gap-3 sm:gap-5; }`,
   template: `
-    <futbet-start-date-bar-date-picker class="flex items-center" />
+    <section class="flex items-center">
+      <futbet-start-date-bar-date-picker class="flex items-center" />
 
-    <section class="flex items-center sm:mr-5">
       <button
         mat-icon-button
         color="primary"
@@ -46,15 +46,19 @@ export type DayTime = number;
       >
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
+
+      <span class="min-w-[100px] ml-5 text-fb-font-size-small">
+        {{ selectedDayTime() | date : 'EEEE' }}
+      </span>
+
+      <span class="text-fb-font-size-small">
+        {{ selectedDayTime() | date : 'dd.MM.YYYY' }}
+      </span>
     </section>
 
     <futbet-start-date-bar-week-toogle-group
       class="flex items-center min-[600px]:mr-5"
     />
-
-    <section class="flex items-center mt-5 min-[600px]:mt-0">
-      {{ selectedDayTime() | date : 'ccc, MMM YYYY' }}
-    </section>
   `,
 })
 export class DateBarComponent {
