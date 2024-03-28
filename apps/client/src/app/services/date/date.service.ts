@@ -1,5 +1,6 @@
 import { Injectable, effect, signal } from '@angular/core';
-import { DayTime, TODAY } from '../../components';
+
+import { DayTime, TODAY } from '../../models';
 
 @Injectable({
   providedIn: 'root',

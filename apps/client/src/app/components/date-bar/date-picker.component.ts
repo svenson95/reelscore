@@ -6,9 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { DayTime, TODAY } from '../../models';
 import { DateService } from '../../services';
-
-import { DayTime, TODAY } from './date-bar.component';
 
 // TODO: refactor to lib?
 @Component({
