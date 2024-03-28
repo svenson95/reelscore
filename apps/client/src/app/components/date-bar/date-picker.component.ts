@@ -35,7 +35,7 @@ import { DayTime, TODAY } from './date-bar.component';
       [for]="picker"
       matTooltip="Datum auswählen"
     ></mat-datepicker-toggle>
-    <mat-form-field class="opacity-0 w-0">
+    <mat-form-field class="opacity-0 w-0 h-0">
       <input
         matInput
         [value]="selectedDateFromTime(selectedDayTime())"
