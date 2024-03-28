@@ -16,8 +16,8 @@ import { FooterComponent, HeaderComponent } from './components';
       @apply text-fb-color-text-1;
     }
     header { @apply flex bg-fb-color-green-1 p-fb-padding-3 pb-0; }
-    main { @apply flex bg-white p-fb-padding-3; }
-    footer { @apply flex bg-gray-200 justify-center px-fb-padding-3 py-10; }
+    main { @apply flex bg-fb-color-green-1-light p-fb-padding-3; }
+    footer { @apply flex justify-center px-fb-padding-3 py-10; }
   `,
   template: `
     <header></header>
