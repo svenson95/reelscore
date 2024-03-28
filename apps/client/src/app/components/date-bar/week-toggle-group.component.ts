@@ -4,11 +4,13 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { DateService } from '../../services';
 
+import { IsTodayPipe } from './pipes/is-today.pipe';
+
 // TODO: refactor to lib?
 @Component({
   selector: 'futbet-start-date-bar-week-toogle-group',
   standalone: true,
-  imports: [CommonModule, MatButtonToggleModule],
+  imports: [CommonModule, MatButtonToggleModule, IsTodayPipe],
   styles: `
     :host { 
       --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1-light); 
@@ -21,14 +23,18 @@ import { DateService } from '../../services';
     >
       @for(day of weekdays(); track day) {
       <mat-button-toggle [value]="day" (click)="selectedDayTime.set(day)">
-        <span>{{ day | date : 'dd.' }}</span>
+        <span class="text-sm">
+          @if (day | isToday) { Heute } @else {
+          {{ day | date : 'ccc' }}
+          }
+        </span>
       </mat-button-toggle>
       }
     </mat-button-toggle-group>
   `,
 })
 export class DateBarWeekToggleGroupComponent {
-  readonly service = inject(DateService);
+  private readonly service = inject(DateService);
   readonly selectedDayTime = this.service.selectedDayTime;
   readonly weekdays = this.service.weekdays;
 }
