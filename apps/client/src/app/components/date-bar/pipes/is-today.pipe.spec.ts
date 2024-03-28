@@ -1,8 +1,10 @@
+import { TODAY } from '../../../models';
+
 import { IsTodayPipe } from './is-today.pipe';
 
 describe('IsTodayPipe', () => {
   const pipe = new IsTodayPipe();
-  const mock = new Date().getTime();
+  const mock = TODAY.getTime();
 
   it('should return true if date is today', () => {
     expect(pipe.transform(mock)).toBe(true);

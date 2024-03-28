@@ -4,13 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { DayTime } from '../../models';
 import { DateService } from '../../services';
 
 import { DateBarDatePickerComponent } from './date-picker.component';
 import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
-
-export const TODAY = new Date();
-export type DayTime = number;
 
 // TODO: refactor to lib?
 @Component({
