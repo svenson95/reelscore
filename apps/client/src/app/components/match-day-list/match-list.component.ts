@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'futbet-start-match-day-list',
+  selector: 'futbet-start-match-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
-  template: `<p>match-day-list works!</p> `,
+  template: `<p>match-list works!</p> `,
 })
-export class MatchDayListComponent {}
+export class MatchListComponent {}
