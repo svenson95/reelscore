@@ -45,11 +45,11 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
 
-      <span class="min-w-[100px] ml-5 text-fb-font-size-small">
+      <span class="min-w-[100px] ml-5 text-fb-font-size-body-2">
         {{ selectedDayTime() | date : 'EEEE' }}
       </span>
 
-      <span class="text-fb-font-size-small">
+      <span class="text-fb-font-size-body-2">
         {{ selectedDayTime() | date : 'dd.MM.YYYY' }}
       </span>
     </section>

@@ -23,7 +23,7 @@ import { IsTodayPipe } from './pipes/is-today.pipe';
     >
       @for(day of weekdays(); track day) {
       <mat-button-toggle [value]="day" (click)="selectedDayTime.set(day)">
-        <span class="text-sm">
+        <span class="text-fb-font-size-body-2">
           @if (day | isToday) { Heute } @else {
           {{ day | date : 'ccc' }}
           }
