@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { LeagueComponent, StartComponent } from './modules';
+import { LeagueComponent, MatchComponent, StartComponent } from './modules';
 
 export const routes: Routes = [
   {
@@ -9,6 +9,15 @@ export const routes: Routes = [
   },
   {
     path: 'leagues/:url',
-    component: LeagueComponent,
+    children: [
+      {
+        path: '',
+        component: LeagueComponent,
+      },
+      {
+        path: 'match/:id',
+        component: MatchComponent,
+      },
+    ],
   },
 ];
