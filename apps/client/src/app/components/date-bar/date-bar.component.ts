@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DayTime } from '../../models';
 import { DateService } from '../../services';
 
 import { DateBarDatePickerComponent } from './date-picker.component';
@@ -23,49 +22,56 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
     DateBarDatePickerComponent,
     DateBarWeekToggleGroupComponent,
   ],
-  styles: `:host { @apply flex flex-wrap mb-5 justify-center gap-3 sm:gap-5; }`,
+  styles: `
+    :host { 
+      @apply flex flex-wrap mb-5 justify-center gap-3 sm:gap-5; 
+      --mdc-text-button-label-text-color: var(--fb-color-green-1);
+    }
+    mat-icon { @apply translate-y-[-2px]; }
+  `,
   template: `
     <section class="flex items-center">
-      <futbet-start-date-bar-date-picker class="flex items-center" />
+      <futbet-date-picker />
 
       <button
         mat-icon-button
         color="primary"
-        (click)="selectedDayTime.set(getDay(-1))"
+        (click)="selectedDayTime.set(get('previous-week'))"
         matTooltip="Vorherige Woche"
       >
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
+      <span class="min-w-[40px] text-center text-fb-font-size-body-2">
+        KW {{ selectedDayTime() | date : 'w' }}
+      </span>
       <button
         mat-icon-button
         color="primary"
-        (click)="selectedDayTime.set(getDay(+1))"
+        (click)="selectedDayTime.set(get('next-week'))"
         matTooltip="Nächste Woche"
       >
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
 
-      <span class="min-w-[100px] ml-5 text-fb-font-size-body-2">
-        {{ selectedDayTime() | date : 'EEEE' }}
-      </span>
+      <button
+        mat-button
+        class="mx-3 text-fb-font-size-body-2"
+        (click)="selectedDayTime.set(get('today'))"
+      >
+        Heute
+      </button>
 
       <span class="text-fb-font-size-body-2">
-        {{ selectedDayTime() | date : 'dd.MM.YYYY' }}
+        {{ selectedDayTime() | date : 'dd.MM.YY' }}
       </span>
     </section>
 
-    <futbet-start-date-bar-week-toogle-group
-      class="flex items-center min-[600px]:mr-5"
-    />
+    <futbet-week-toogle-group />
   `,
 })
 export class DateBarComponent {
   readonly service = inject(DateService);
   readonly selectedDayTime = this.service.selectedDayTime;
 
-  getDay(index: number): DayTime {
-    const date = new Date(this.selectedDayTime());
-    date.setDate(date.getDate() + index);
-    return date.getTime();
-  }
+  readonly get = this.service.getDate;
 }
