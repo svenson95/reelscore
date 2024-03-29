@@ -1,22 +1,27 @@
 import { Routes } from '@angular/router';
 
-import { LeagueComponent, MatchComponent, StartComponent } from './modules';
-
 export const routes: Routes = [
   {
     path: '',
-    component: StartComponent,
+    loadComponent: () =>
+      import('./modules/start/start.component').then((m) => m.StartComponent),
   },
   {
     path: 'leagues/:url',
     children: [
       {
         path: '',
-        component: LeagueComponent,
+        loadComponent: () =>
+          import('./modules/league/league.component').then(
+            (m) => m.LeagueComponent
+          ),
       },
       {
         path: 'match/:id',
-        component: MatchComponent,
+        loadComponent: () =>
+          import('./modules/match/match.component').then(
+            (m) => m.MatchComponent
+          ),
       },
     ],
   },
