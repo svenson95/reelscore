@@ -83,7 +83,7 @@ export class LeagueSelectComponent {
   private readonly leagueService = inject(LeagueService);
   private readonly breakpoint = inject(BreakpointObserverService);
 
-  readonly SELECTED_LEAGUE_DEFAULT = 'start';
+  readonly SELECTED_LEAGUE_DEFAULT = this.leagueService.SELECTED_LEAGUE_DEFAULT;
   readonly leagues = LEAGUES_METADATA;
   readonly selectedLeague = this.leagueService.selectedLeague;
 
