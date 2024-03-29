@@ -11,7 +11,7 @@ import { DateService } from '../../services';
 
 // TODO: refactor to lib?
 @Component({
-  selector: 'futbet-start-date-bar-date-picker',
+  selector: 'futbet-date-picker',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
