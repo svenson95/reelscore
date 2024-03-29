@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,22 +16,21 @@ import { DateService } from '../../services';
     MatIconModule,
     MatTooltipModule,
   ],
+  encapsulation: ViewEncapsulation.None,
   styles: `
-    :host {
-      ::ng-deep mat-button-toggle {
-        &.mat-button-toggle-checked {
-          @apply bg-fb-color-green-1-light;
-        }
+    futbet-week-toogle-group mat-button-toggle.mat-button-toggle {
+      &.mat-button-toggle-checked {
+        @apply bg-fb-color-green-1-light;
+      }
 
+      &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+        min-width: 36px;
+        padding: 0 8px;
+      }
+
+      &:first-of-type, &:last-of-type {
         &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-          min-width: 36px;
-          padding: 0 8px;
-        }
-
-        &:first-of-type, &:last-of-type {
-          &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-            padding: 0 2px;
-          }
+          padding: 0 2px;
         }
       }
     }
