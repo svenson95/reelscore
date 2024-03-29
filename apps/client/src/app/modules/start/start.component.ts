@@ -8,6 +8,7 @@ import { RouterView } from '../router-view';
   selector: 'futbet-start',
   standalone: true,
   imports: [DateBarComponent, MatchListComponent],
+  styles: `:host { @apply w-full; }`,
   template: `
     <futbet-start-date-bar />
     <futbet-start-match-list />
