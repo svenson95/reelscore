@@ -1,14 +1,17 @@
+import { Location } from '@angular/common';
 import { Injectable, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+
+import { LeagueUrl } from '../constants';
 
 @Injectable()
 export class RouteService {
-  private readonly route = inject(ActivatedRoute);
-  private readonly url = toSignal(this.route.url);
+  private readonly location = inject(Location);
 
-  readonly activeRoute = computed<string>(() => {
-    const url = this.url();
-    return url !== undefined ? url[1]?.path : '/';
+  readonly activeRoute = computed<LeagueUrl>(() => {
+    const url = this.location.path();
+    const leagueUrlIndex = url.indexOf('/', 2) + 1;
+    const path = url.substring(leagueUrlIndex, url.length);
+    const result = url !== undefined ? path : '/';
+    return result as LeagueUrl;
   });
 }
