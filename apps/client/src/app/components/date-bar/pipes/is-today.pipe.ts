@@ -8,6 +8,9 @@ import { DayTime, TODAY } from '../../../models';
 })
 export class IsTodayPipe implements PipeTransform {
   transform(value: DayTime): boolean {
-    return new Date(value).getDate() === TODAY.getDate();
+    const date = new Date(value);
+    const sameDate = date.getDate() === TODAY.getDate();
+    const sameMonth = date.getMonth() === TODAY.getMonth();
+    return sameDate && sameMonth;
   }
 }
