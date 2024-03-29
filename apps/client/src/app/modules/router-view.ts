@@ -7,19 +7,25 @@ import { LeagueService, RouteService } from '../services';
 @Injectable()
 export class RouterView {
   protected readonly routeService = inject(RouteService);
-  protected readonly service = inject(LeagueService);
-  protected readonly selectedLeague = this.service.selectedLeague;
+  readonly service = inject(LeagueService);
+  readonly selectedLeague = this.service.selectedLeague;
 
   protected readonly routeEvent = effect(
-    () => {
-      const route = this.routeService.activeRoute() as LeagueUrl;
-      const league = this.getLeagueByUrl(route);
-      this.service.setSelectedLeague(league);
-    },
+    () => this.updateLeague(this.routeService.activeRoute()),
     { allowSignalWrites: true }
   );
 
   getLeagueByUrl(url: LeagueUrl): LeagueSelectData | undefined {
     return LEAGUES_METADATA.find((l) => l.url === url);
+  }
+
+  updateLeague(url: LeagueUrl): void {
+    if (url === undefined) throw new Error('route is undefined');
+    const league = this.getLeagueByUrl(url);
+    this.service.setSelectedLeague(league);
+  }
+
+  isInvalid(routeArr: unknown | undefined): boolean {
+    return routeArr === undefined;
   }
 }

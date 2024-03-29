@@ -9,6 +9,7 @@ export const mockLeague: LeagueSelectData = LEAGUES_METADATA[2];
   providedIn: 'root',
 })
 export class LeagueService {
+  readonly SELECTED_LEAGUE_DEFAULT = 'start';
   readonly selectedLeague = signal<LeagueSelectData | undefined>(undefined);
 
   setSelectedLeague(data: LeagueSelectData | undefined): void {

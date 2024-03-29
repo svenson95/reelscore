@@ -1,37 +1,30 @@
-import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { LEAGUES_METADATA, LeagueUrl } from '../constants';
+import {
+  CompetitionName,
+  LEAGUES_METADATA,
+  LEAGUES_URLS,
+  LeagueUrl,
+  STANDING_LEAGUES_IDS,
+} from '../constants';
 
+import { routes } from '../app.routes';
 import { LeagueComponent } from './league/league.component';
 
 describe('RouterView', () => {
   let fixture: ComponentFixture<LeagueComponent>;
   let component: LeagueComponent;
-  let router: Router;
-  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, LeagueComponent],
+      imports: [LeagueComponent, RouterTestingModule.withRoutes(routes)],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LeagueComponent);
     component = fixture.componentInstance;
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
 
     fixture.detectChanges();
-    router.initialNavigation();
-  });
-
-  describe('selectedLeague', () => {
-    // TODO:
-    // it('should init selected league properly', () => {});
-    // - if query params presented selectedLeague should be defined
-    // - if query params not presented selectedLeague should be undefined
   });
 
   describe('getLeagueByUrl', () => {
@@ -43,7 +36,7 @@ describe('RouterView', () => {
       const league = component.getLeagueByUrl(validData.url as LeagueUrl);
 
       // then
-      expect(league).toBeDefined();
+      expect(league).not.toBeUndefined();
       if (league) expect(league.image).toBe(validData.image);
       if (league) expect(league.label).toBe(validData.label);
       if (league) expect(league.id).toBe(validData.id);
@@ -60,6 +53,26 @@ describe('RouterView', () => {
 
       // then
       expect(league).toBeUndefined();
+    });
+  });
+
+  describe('updateLeagueOnRouting', () => {
+    it('should update selected league after routing', () => {
+      // given
+      const mock = CompetitionName.ENGLAND_PREMIER_LEAGUE;
+      const validRoute = LEAGUES_URLS[mock] as LeagueUrl;
+      const validMetaData = LEAGUES_METADATA.find(
+        (m) => m.id === STANDING_LEAGUES_IDS[mock]
+      );
+      expect(component.selectedLeague()).toBe(undefined);
+      jest.spyOn(component, 'updateLeague');
+
+      // when
+      component.updateLeague(validRoute);
+
+      // then
+      expect(component.updateLeague).toHaveBeenCalledWith(validRoute);
+      expect(component.selectedLeague()).toBe(validMetaData);
     });
   });
 });
