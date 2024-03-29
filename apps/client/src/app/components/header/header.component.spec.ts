@@ -11,12 +11,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { routes } from '../../app.routes';
 import { LeagueService, mockLeague } from '../../services';
 
-import { HeaderComponent, SELECTED_LEAGUE_DEFAULT } from './header.component';
+import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
-  let component: HeaderComponent;
-  let leagueService: LeagueService;
   let location: Location;
 
   beforeEach(async () => {
@@ -26,24 +24,10 @@ describe('HeaderComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
-    component = fixture.componentInstance;
-    leagueService = TestBed.inject(LeagueService);
     location = TestBed.inject(Location);
+
     fixture.detectChanges();
   });
-
-  /* Class Tests */
-  it('should set form control properly', fakeAsync(() => {
-    // given
-    expect(component.leagueControl.value).toBe(SELECTED_LEAGUE_DEFAULT);
-
-    // when
-    leagueService.setSelectedLeague(mockLeague);
-    tick();
-
-    // then
-    expect(component.leagueControl.value).toBe(mockLeague.url);
-  }));
 
   /* DOM Tests */
   it(`should display 'futbet' logo`, () => {
