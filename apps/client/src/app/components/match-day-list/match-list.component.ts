@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { MATCH_EXAMPLES, Match } from '../../models';
+import { COMPETITION_EXAMPLES, Competition } from '../../models';
 
 @Component({
   selector: 'futbet-start-match-list',
@@ -10,7 +10,7 @@ import { MATCH_EXAMPLES, Match } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule],
   styles: `
-    :host { @apply flex w-full; }
+    .list-header { @apply flex p-3 gap-3 bg-white border-b-[1px]; }
     ul { @apply w-full; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer border-b-[1px]; }
     .wrapper { @apply flex text-fb-font-size-body-2; }
@@ -19,28 +19,34 @@ import { MATCH_EXAMPLES, Match } from '../../models';
     .state, .result { @apply flex self-center bg-gray-50 px-4 py-5; }
     .teams { @apply self-center px-4 py-2; }
   `,
-  template: `<ul>
-    @for(item of list(); track item.id){
-    <li [routerLink]="['leagues', 'bundesliga', 'match', item.id]">
-      <div class="wrapper">
-        <div class="state">
-          @switch (item.state) { @case ("upcoming") { 15:30 } @case ("finished")
-          { FT } }
+  template: `
+    <div class="list-header">
+      <span>{{ competition().flag }}</span>
+      <h5>{{ competition().name }}</h5>
+    </div>
+    <ul>
+      @for(item of competition().list; track item.id){
+      <li [routerLink]="['leagues', 'bundesliga', 'match', item.id]">
+        <div class="wrapper">
+          <div class="state">
+            @switch (item.state) { @case ("upcoming") { 15:30 } @case
+            ("finished") { FT } }
+          </div>
+          <div class="result">
+            {{ item.result?.full_time ?? '-' }}
+          </div>
+          <div class="teams">
+            <div class="home-team">{{ item.homeTeam }}</div>
+            <div class="away-team">{{ item.awayTeam }}</div>
+          </div>
         </div>
-        <div class="result">
-          {{ item.result?.full_time ?? '-' }}
-        </div>
-        <div class="teams">
-          <div class="home-team">{{ item.homeTeam }}</div>
-          <div class="away-team">{{ item.awayTeam }}</div>
-        </div>
-      </div>
-    </li>
-    } @empty {
-    <div class="is-empty">Es finden keine Spiele statt.</div>
-    }
-  </ul>`,
+      </li>
+      } @empty {
+      <div class="is-empty">Es finden keine Spiele statt.</div>
+      }
+    </ul>
+  `,
 })
 export class MatchListComponent {
-  readonly list = signal<Match[] | undefined>(MATCH_EXAMPLES);
+  readonly competition = signal<Competition>(COMPETITION_EXAMPLES[0]);
 }
