@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Injectable,
+  inject,
+} from '@angular/core';
+import {
+  DateAdapter,
+  NativeDateAdapter,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +17,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DayTime, TODAY } from '../../models';
 import { DateService } from '../../services';
+
+@Injectable()
+export class CustomDateAdapter extends NativeDateAdapter {
+  override getFirstDayOfWeek(): number {
+    return 1;
+  }
+}
 
 // TODO: refactor to lib?
 @Component({
@@ -21,7 +37,10 @@ import { DateService } from '../../services';
     MatDatepickerModule,
     MatTooltipModule,
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+  ],
   styles: `
     :host {
       --mdc-icon-button-icon-color: var(--fb-color-green-1);
