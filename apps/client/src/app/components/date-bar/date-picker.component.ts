@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injectable,
+  computed,
   inject,
 } from '@angular/core';
 import {
@@ -15,7 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DayTime, TODAY } from '../../models';
+import { TODAY } from '../../models';
 import { DateService } from '../../services';
 
 @Injectable()
@@ -56,7 +57,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
     <mat-form-field class="opacity-0 w-0 h-0">
       <input
         matInput
-        [value]="selectedDateFromTime(selectedDayTime())"
+        [value]="selectedDateFromTime()"
         (dateChange)="selectedDayTime.set($event.value.getTime())"
         [min]="minDate"
         [max]="maxDate"
@@ -67,11 +68,13 @@ export class CustomDateAdapter extends NativeDateAdapter {
   `,
 })
 export class DateBarDatePickerComponent {
-  readonly service = inject(DateService);
+  private readonly service = inject(DateService);
   readonly selectedDayTime = this.service.selectedDayTime;
 
   readonly minDate = new Date(TODAY.getFullYear() - 1, 0, 1);
   readonly maxDate = new Date(TODAY.getFullYear() + 1, 11, 31);
 
-  selectedDateFromTime = (date: DayTime): Date => new Date(date);
+  readonly selectedDateFromTime = computed<Date>(
+    () => new Date(this.selectedDayTime())
+  );
 }
