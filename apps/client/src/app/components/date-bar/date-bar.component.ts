@@ -1,10 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateService } from '../../services';
+import { DateValue, DayTime } from '../../models';
+import { BreakpointObserverService, DateService } from '../../services';
 
 import { DateBarDatePickerComponent } from './date-picker.component';
 import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
@@ -14,9 +19,9 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
   selector: 'futbet-start-date-bar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BreakpointObserverService],
   imports: [
     CommonModule,
-    MatIconModule,
     MatButtonModule,
     MatTooltipModule,
     DateBarDatePickerComponent,
@@ -24,54 +29,61 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
   ],
   styles: `
     :host { 
-      @apply flex flex-wrap mb-5 justify-center gap-3 sm:gap-5; 
+      @apply flex flex-wrap items-center justify-center mb-5 gap-3 sm:gap-5; 
       --mdc-text-button-label-text-color: var(--fb-color-green-1);
+
+      section { @apply flex items-center w-full sm:w-fit; 
+        button { @apply text-fb-font-size-body-2; } 
+      }
+      .date-label { 
+        @apply flex ml-auto gap-3 text-fb-font-size-body-2; 
+
+        .week { @apply text-fb-color-text-2; }
+      }
     }
-    mat-icon { @apply translate-y-[-2px]; }
   `,
   template: `
-    <section class="flex items-center">
+    <section>
       <futbet-date-picker />
 
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="selectedDayTime.set(get('previous-week'))"
-        matTooltip="Vorherige Woche"
-      >
-        <mat-icon>keyboard_arrow_left</mat-icon>
-      </button>
-      <span class="min-w-[40px] text-center text-fb-font-size-body-2">
-        KW {{ selectedDayTime() | date : 'w' }}
-      </span>
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="selectedDayTime.set(get('next-week'))"
-        matTooltip="Nächste Woche"
-      >
-        <mat-icon>keyboard_arrow_right</mat-icon>
-      </button>
-
-      <button
-        mat-button
-        class="mx-3 text-fb-font-size-body-2"
-        (click)="selectedDayTime.set(get('today'))"
-      >
+      <button mat-button (click)="setDate('today')" [disabled]="isToday()">
         Heute
       </button>
 
-      <span class="text-fb-font-size-body-2">
-        {{ selectedDayTime() | date : 'dd.MM.YY' }}
-      </span>
+      @if (isMobile()) {
+      <div class="date-label">
+        <span class="week">Woche {{ selectedDayTime() | date : 'w' }}</span>
+        <span>{{ selectedDayTime() | date : 'dd.MM.YY' }}</span>
+      </div>
+      }
     </section>
 
     <futbet-week-toogle-group />
+
+    @if (!isMobile()) {
+    <div class="date-label">
+      <span class="week">Woche {{ selectedDayTime() | date : 'w' }}</span>
+      <span>{{ selectedDayTime() | date : 'dd.MM.YY' }}</span>
+    </div>
+    }
   `,
 })
 export class DateBarComponent {
+  private readonly breakpoint = inject(BreakpointObserverService);
   readonly service = inject(DateService);
   readonly selectedDayTime = this.service.selectedDayTime;
 
-  readonly get = this.service.getDate;
+  readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
+  readonly isToday = computed<boolean>(() =>
+    this.isSameDate(this.selectedDayTime(), this.service.getDate('today'))
+  );
+
+  setDate(date: DateValue): void {
+    const selected = this.service.getDate(date);
+    this.selectedDayTime.set(selected);
+  }
+
+  private isSameDate(a: DayTime, b: DayTime): boolean {
+    return a === b;
+  }
 }
