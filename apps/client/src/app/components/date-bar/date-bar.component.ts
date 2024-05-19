@@ -1,18 +1,13 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { TODAY } from '../../models';
 import { BreakpointObserverService, DateService } from '../../services';
 
 import {
+  CalenderWeekLabelComponent,
   DateBarDatePickerComponent,
   DateBarWeekToggleGroupComponent,
+  TodayButtonComponent,
 } from './components';
 
 // TODO: refactor to lib?
@@ -20,25 +15,28 @@ import {
   selector: 'futbet-start-date-bar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [BreakpointObserverService],
   imports: [
     CommonModule,
-    MatButtonModule,
     DateBarDatePickerComponent,
     DateBarWeekToggleGroupComponent,
+    CalenderWeekLabelComponent,
+    TodayButtonComponent,
   ],
   styles: `
     :host { 
-      @apply flex flex-wrap items-center justify-center mb-5 gap-3 sm:gap-5; 
+      @apply flex flex-wrap items-center justify-between mb-5 gap-3 sm:gap-5; 
       --mdc-text-button-label-text-color: var(--fb-color-green-1);
 
-      section { @apply flex items-center w-full sm:w-fit; 
-        button { @apply text-fb-font-size-body-2; } 
-      }
-      .date-label { 
-        @apply flex ml-auto gap-3 text-fb-font-size-body-2; 
+      section { 
+        @apply inline-flex flex-wrap items-center justify-between w-full sm:w-fit gap-5; 
 
-        .week { @apply text-fb-color-text-2; }
+        .date-labels {
+          @apply flex gap-5;
+        }
+      }
+
+      span, futbet-calender-week-label { 
+        @apply flex items-center ml-auto gap-3 text-fb-font-size-body-2; 
       }
     }
   `,
@@ -46,25 +44,24 @@ import {
     <section>
       <futbet-date-picker />
 
-      <button mat-button (click)="setToday()" [disabled]="isToday()">
-        Heute
-      </button>
+      <div class="date-labels">
+        @if (isMobile()) {
+        <futbet-today-button />
 
-      @if (isMobile()) {
-      <div class="date-label">
-        <span class="week">Woche {{ selectedCalenderWeek() }}</span>
+        <futbet-calender-week-label />
+        }
         <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
       </div>
+
+      <futbet-week-toogle-group />
+
+      @if (!isMobile()) {
+      <futbet-calender-week-label />
       }
     </section>
 
-    <futbet-week-toogle-group />
-
     @if (!isMobile()) {
-    <div class="date-label">
-      <span class="week">Woche {{ selectedCalenderWeek() }}</span>
-      <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
-    </div>
+    <futbet-today-button />
     }
   `,
 })
@@ -73,14 +70,5 @@ export class DateBarComponent {
   private readonly dateService = inject(DateService);
 
   readonly selectedDay = this.dateService.selectedDay;
-  readonly selectedCalenderWeek = this.dateService.calenderWeek;
-
-  readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
-  readonly isToday = computed<boolean>(
-    () => this.selectedDay() === TODAY.toISOString()
-  );
-
-  setToday(): void {
-    this.selectedDay.set(TODAY.toISOString());
-  }
+  readonly isMobile = this.breakpoint.isMobile;
 }
