@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString, TODAY } from '../../models';
+import { TODAY } from '../../models';
 import { BreakpointObserverService, DateService } from '../../services';
 
 import {
@@ -76,18 +76,11 @@ export class DateBarComponent {
   readonly selectedCalenderWeek = this.dateService.calenderWeek;
 
   readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
-  readonly isToday = computed<boolean>(() =>
-    this.isSameDate(this.selectedDay(), TODAY)
+  readonly isToday = computed<boolean>(
+    () => this.selectedDay() === TODAY.toISOString()
   );
 
   setToday(): void {
     this.selectedDay.set(TODAY.toISOString());
-  }
-
-  private isSameDate(a: DateString, b: Date): boolean {
-    const ad = new Date(a);
-    const first = `${ad.getFullYear()}-${ad.getMonth()}-${ad.getDate()}`;
-    const second = `${b.getFullYear()}-${b.getMonth()}-${b.getDate()}`;
-    return first === second;
   }
 }
