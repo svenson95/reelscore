@@ -28,29 +28,23 @@ import {
       --mdc-text-button-label-text-color: var(--fb-color-green-1);
 
       section { 
-        @apply inline-flex flex-wrap items-center justify-between w-full sm:w-fit gap-5; 
+        @apply inline-flex flex-wrap items-center justify-center sm:w-fit gap-5; 
 
-        .date-labels {
+        div {
           @apply flex gap-5;
         }
-      }
-
-      span, futbet-calender-week-label { 
-        @apply flex items-center ml-auto gap-3 text-fb-font-size-body-2; 
       }
     }
   `,
   template: `
     <section>
-      <futbet-date-picker />
+      <div>
+        <futbet-date-picker />
 
-      <div class="date-labels">
         @if (isMobile()) {
-        <futbet-today-button />
-
         <futbet-calender-week-label />
+        <futbet-today-button />
         }
-        <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
       </div>
 
       <futbet-week-toogle-group />

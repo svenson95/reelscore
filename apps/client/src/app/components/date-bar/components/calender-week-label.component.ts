@@ -5,7 +5,7 @@ import { DateService } from '../../../services';
   selector: 'futbet-calender-week-label',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `:host { @apply text-fb-color-text-2; }`,
+  styles: `:host { @apply flex items-center ml-auto gap-3 text-fb-font-size-body-2 text-fb-color-text-2;  }`,
   template: `KW {{ selectedCalenderWeek() }}`,
 })
 export class CalenderWeekLabelComponent {
