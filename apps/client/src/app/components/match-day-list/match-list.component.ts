@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { COMPETITION_EXAMPLES, Competition } from '../../models';
+import { Competition } from '../../models';
 
 @Component({
   selector: 'futbet-start-match-list',
@@ -29,8 +29,9 @@ import { COMPETITION_EXAMPLES, Competition } from '../../models';
       <li [routerLink]="['leagues', 'bundesliga', 'match', item.id]">
         <div class="wrapper">
           <div class="state">
-            @switch (item.state) { @case ("upcoming") { 15:30 } @case
-            ("finished") { FT } }
+            @switch (item.state) { @case ("upcoming") {
+            {{ item.date | date : 'HH:mm' }}
+            } @case ("finished") { FT } }
           </div>
           <div class="result">
             {{ item.result?.full_time ?? '-' }}
@@ -48,5 +49,5 @@ import { COMPETITION_EXAMPLES, Competition } from '../../models';
   `,
 })
 export class MatchListComponent {
-  readonly competition = signal<Competition>(COMPETITION_EXAMPLES[0]);
+  readonly competition = input.required<Competition>();
 }
