@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 
-import { DateBarComponent, MatchListComponent } from '../../components';
-import { RouteService } from '../../services/route.service';
+import { MatchListComponent } from '../../components';
+import { COMPETITION_EXAMPLES } from '../../models';
+import { RouteService } from '../../services';
 import { RouterView } from '../router-view';
 
 @Component({
   selector: 'futbet-start',
   standalone: true,
-  imports: [DateBarComponent, MatchListComponent],
+  imports: [MatchListComponent],
   styles: `:host { @apply w-full; }`,
-  template: `
-    <futbet-start-date-bar />
-    <futbet-start-match-list />
-  `,
+  template: ` <futbet-start-match-list [competition]="competition" /> `,
   providers: [RouteService],
 })
-export class StartComponent extends RouterView {}
+export class StartComponent extends RouterView {
+  readonly competition = COMPETITION_EXAMPLES[0];
+}
