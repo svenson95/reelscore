@@ -4,7 +4,9 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./modules/start/start.component').then((m) => m.StartComponent),
+      import('./modules/league/league.component').then(
+        (m) => m.LeagueComponent
+      ),
   },
   {
     path: 'leagues/:url',
