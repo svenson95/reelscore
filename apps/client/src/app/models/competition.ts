@@ -8,7 +8,7 @@ export interface Competition {
   list: Match[];
 }
 
-export const COMPETITION_EXAMPLES = [
+export const COMPETITION_EXAMPLES: Competition[] = [
   {
     name: LEAGUES_LABELS.GERMANY_BUNDESLIGA,
     flag: LEAGUES_FLAGS.GERMANY_BUNDESLIGA,
