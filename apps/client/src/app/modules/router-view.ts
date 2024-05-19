@@ -1,10 +1,9 @@
-import { Injectable, effect, inject } from '@angular/core';
-import { LEAGUES_METADATA } from '../constants';
-import { LeagueUrl } from '../constants/leagues-urls';
+import { effect, inject } from '@angular/core';
+
+import { LEAGUES_METADATA, LeagueUrl } from '../constants';
 import { LeagueSelectData } from '../models';
 import { LeagueService, RouteService } from '../services';
 
-@Injectable()
 export class RouterView {
   protected readonly routeService = inject(RouteService);
   readonly service = inject(LeagueService);
@@ -20,7 +19,6 @@ export class RouterView {
   }
 
   updateLeague(url: LeagueUrl): void {
-    if (url === undefined) throw new Error('route is undefined');
     const league = this.getLeagueByUrl(url);
     this.service.setSelectedLeague(league);
   }
