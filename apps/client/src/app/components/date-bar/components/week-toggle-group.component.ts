@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateService } from '../../services';
+import { DateService } from '../../../services';
 
 const dateValue = ['previous-day', 'next-day'] as const;
 type DateValue = (typeof dateValue)[number];
