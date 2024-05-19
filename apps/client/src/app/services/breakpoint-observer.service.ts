@@ -19,7 +19,7 @@ export class BreakpointObserverService {
   ]);
 
   constructor(breakpointObserver: BreakpointObserver) {
-    const breakpoints = Array.from(this.breakpointsMap.values());
+    const breakpoints = Array.from(this.breakpointsMap.keys());
     breakpointObserver
       .observe(breakpoints)
       .pipe(takeUntilDestroyed())
