@@ -16,7 +16,6 @@ import { LeagueSelectComponent } from './league-select.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LeagueSelectComponent, LeagueSelectMobileComponent],
-  providers: [BreakpointObserverService],
   encapsulation: ViewEncapsulation.None,
   styles: `
     header {

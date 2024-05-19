@@ -16,7 +16,6 @@ import { LogoComponent } from '../logo/logo.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, MatButtonToggleModule, LogoComponent],
-  providers: [BreakpointObserverService],
   styles: `
 		:host {
 			width: 100%;
