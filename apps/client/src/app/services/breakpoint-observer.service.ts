@@ -1,12 +1,14 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const SIZE_DEFAULT = 'Unknown';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BreakpointObserverService {
   readonly currentSize = signal<string>(SIZE_DEFAULT);
+
+  readonly isMobile = computed(() => this.currentSize() === 'XSmall');
 
   readonly breakpointsMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
@@ -17,14 +19,9 @@ export class BreakpointObserverService {
   ]);
 
   constructor(breakpointObserver: BreakpointObserver) {
+    const breakpoints = Array.from(this.breakpointsMap.values());
     breakpointObserver
-      .observe([
-        Breakpoints.XSmall,
-        Breakpoints.Small,
-        Breakpoints.Medium,
-        Breakpoints.Large,
-        Breakpoints.XLarge,
-      ])
+      .observe(breakpoints)
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         for (const query of Object.keys(result.breakpoints)) {
@@ -35,9 +32,5 @@ export class BreakpointObserverService {
           }
         }
       });
-  }
-
-  isMobile(): boolean {
-    return this.currentSize() === 'XSmall';
   }
 }
