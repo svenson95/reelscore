@@ -10,8 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { DateString, TODAY } from '../../models';
 import { BreakpointObserverService, DateService } from '../../services';
 
-import { DateBarDatePickerComponent } from './date-picker.component';
-import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
+import {
+  DateBarDatePickerComponent,
+  DateBarWeekToggleGroupComponent,
+} from './components';
 
 // TODO: refactor to lib?
 @Component({
