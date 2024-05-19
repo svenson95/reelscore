@@ -5,6 +5,7 @@ import {
   Injectable,
   inject,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   DateAdapter,
   NativeDateAdapter,
@@ -35,6 +36,7 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
+    MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -48,14 +50,17 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
     :host {
       --mdc-icon-button-icon-color: var(--fb-color-green-1);
       --mat-icon-button-state-layer-color: var(--fb-color-green-1);
+      --mdc-outlined-button-label-text-color: var(--fb-color-text-2);
     }
   `,
   template: `
-    <mat-datepicker-toggle
-      matIconSuffix
-      [for]="picker"
+    <button
+      mat-stroked-button
       matTooltip="Datum auswählen"
-    ></mat-datepicker-toggle>
+      (click)="picker.open()"
+    >
+      {{ selectedDay() | date : 'dd.MM.YY' }}
+    </button>
     <mat-form-field class="opacity-0 w-0 h-0">
       <input
         matInput
