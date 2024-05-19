@@ -1,62 +1,66 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 
-import { DayTime, TODAY } from '../../models';
+import { DatePipe } from '@angular/common';
+import { CalenderWeek, DateString, TODAY, moveItem } from '../../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DateService {
-  readonly selectedDayTime = signal<DayTime>(TODAY.getTime());
+  readonly selectedDay = signal<DateString>(TODAY.toISOString());
 
-  readonly currentCalenderWeek = computed<number>(() => {
-    const d = new Date(TODAY);
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-  });
-
-  readonly selectedCalenderWeek = signal<number>(this.currentCalenderWeek());
-
-  readonly weekdays = signal<DayTime[]>(
-    this.getWeekdaysFromDate(this.selectedDayTime())
-  );
-
-  readonly selectedDayEffect = effect(
+  selectedDayEffect = effect(
     () => {
-      if (!this.weekdays()?.includes(this.selectedDayTime())) {
-        this.weekdays.set(this.getWeekdaysFromDate(this.selectedDayTime()));
+      const day = this.selectedDay();
+      const dayWeek = this.calenderWeekFrom(day);
+      const isAnotherWeek = this.calenderWeek() !== dayWeek;
+      if (isAnotherWeek) {
+        this.calenderWeek.set(dayWeek);
       }
     },
     { allowSignalWrites: true }
   );
 
-  getDate(
-    week: 'today' | 'previous-day' | 'next-day' | 'previous-week' | 'next-week'
-  ): DayTime {
-    const date = new Date(this.selectedDayTime()).getTime();
-    const oneDay = 24 * 60 * 60 * 1000;
-    const oneWeek = 7 * oneDay;
-    switch (week) {
-      case 'today':
-        return new Date().getTime();
-      case 'previous-day':
-        return new Date(date - oneDay).getTime();
-      case 'next-day':
-        return new Date(date + oneDay).getTime();
-      case 'previous-week':
-        return new Date(date - oneWeek).getTime();
-      case 'next-week':
-        return new Date(date + oneWeek).getTime();
-    }
+  readonly calenderWeek = signal<CalenderWeek>(
+    this.calenderWeekFrom(this.selectedDay())
+  );
+
+  readonly weekdays = computed<DateString[]>(() =>
+    this.getWeekDays(this.calenderWeek())
+  );
+
+  private calenderWeekFrom(day: DateString): CalenderWeek {
+    const datepipe = new DatePipe('de-DE');
+    return Number(datepipe.transform(day, 'w'));
   }
 
-  private getWeekdaysFromDate(date: DayTime): DayTime[] {
-    const array = Array(7)
-      .fill(new Date(date))
-      .map((d, i) =>
-        new Date(d.setDate(d.getDate() - d.getDay() + i)).getTime()
-      );
-    array.push(array.shift()!);
-    return array;
+  private getWeekDays(calenderWeek: CalenderWeek): DateString[] {
+    const monday = this.getMondayFromWeek(calenderWeek);
+    const weekdays = this.createWeekDaysArray(monday);
+    return moveItem(weekdays, 0, 6);
+  }
+
+  private createWeekDaysArray(date: Date): DateString[] {
+    return Array(7)
+      .fill(date)
+      .map((d, i) => {
+        const day = new Date(d.setDate(d.getDate() - d.getDay() + i));
+        const isSunday = d.getDay() === 0;
+        if (isSunday) day.setDate(day.getDate() + 7);
+
+        day.setHours(0, 0, 0, 0);
+        return day.toISOString();
+      });
+  }
+
+  private getMondayFromWeek(calenderWeek: CalenderWeek): Date {
+    const d = 1 + (calenderWeek - 1) * 7;
+    const date = new Date(2024, 0, d);
+    const dayOfWeek = date.getDay();
+
+    const isSunday = dayOfWeek === 0;
+    const difference = isSunday ? 6 : dayOfWeek - 1;
+
+    return new Date(date.setDate(date.getDate() - difference));
   }
 }

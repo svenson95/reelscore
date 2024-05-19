@@ -6,9 +6,8 @@ import {
   inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateValue, DayTime } from '../../models';
+import { DateString, TODAY } from '../../models';
 import { BreakpointObserverService, DateService } from '../../services';
 
 import { DateBarDatePickerComponent } from './date-picker.component';
@@ -23,7 +22,6 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatTooltipModule,
     DateBarDatePickerComponent,
     DateBarWeekToggleGroupComponent,
   ],
@@ -46,14 +44,14 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
     <section>
       <futbet-date-picker />
 
-      <button mat-button (click)="setDate('today')" [disabled]="isToday()">
+      <button mat-button (click)="setToday()" [disabled]="isToday()">
         Heute
       </button>
 
       @if (isMobile()) {
       <div class="date-label">
-        <span class="week">Woche {{ selectedDayTime() | date : 'w' }}</span>
-        <span>{{ selectedDayTime() | date : 'dd.MM.YY' }}</span>
+        <span class="week">Woche {{ selectedCalenderWeek() }}</span>
+        <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
       </div>
       }
     </section>
@@ -62,28 +60,32 @@ import { DateBarWeekToggleGroupComponent } from './week-toggle-group.component';
 
     @if (!isMobile()) {
     <div class="date-label">
-      <span class="week">Woche {{ selectedDayTime() | date : 'w' }}</span>
-      <span>{{ selectedDayTime() | date : 'dd.MM.YY' }}</span>
+      <span class="week">Woche {{ selectedCalenderWeek() }}</span>
+      <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
     </div>
     }
   `,
 })
 export class DateBarComponent {
   private readonly breakpoint = inject(BreakpointObserverService);
-  readonly service = inject(DateService);
-  readonly selectedDayTime = this.service.selectedDayTime;
+  private readonly dateService = inject(DateService);
+
+  readonly selectedDay = this.dateService.selectedDay;
+  readonly selectedCalenderWeek = this.dateService.calenderWeek;
 
   readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
   readonly isToday = computed<boolean>(() =>
-    this.isSameDate(this.selectedDayTime(), this.service.getDate('today'))
+    this.isSameDate(this.selectedDay(), TODAY)
   );
 
-  setDate(date: DateValue): void {
-    const selected = this.service.getDate(date);
-    this.selectedDayTime.set(selected);
+  setToday(): void {
+    this.selectedDay.set(TODAY.toISOString());
   }
 
-  private isSameDate(a: DayTime, b: DayTime): boolean {
-    return a === b;
+  private isSameDate(a: DateString, b: Date): boolean {
+    const ad = new Date(a);
+    const first = `${ad.getFullYear()}-${ad.getMonth()}-${ad.getDate()}`;
+    const second = `${b.getFullYear()}-${b.getMonth()}-${b.getDate()}`;
+    return first === second;
   }
 }
