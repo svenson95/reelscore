@@ -1,5 +1,6 @@
+export * from './array.helper';
 export * from './competition';
-export * from './day-time';
+export * from './date.model';
 export * from './fixture';
 export * from './fixture-statistics';
 export * from './fixtureDTO';

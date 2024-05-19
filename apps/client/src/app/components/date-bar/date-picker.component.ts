@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injectable,
-  computed,
   inject,
 } from '@angular/core';
 import {
@@ -25,6 +24,9 @@ export class CustomDateAdapter extends NativeDateAdapter {
     return 1;
   }
 }
+
+const LAST_YEAR = new Date(TODAY.getFullYear() - 1, 0, 1);
+const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
 
 // TODO: refactor to lib?
 @Component({
@@ -57,8 +59,8 @@ export class CustomDateAdapter extends NativeDateAdapter {
     <mat-form-field class="opacity-0 w-0 h-0">
       <input
         matInput
-        [value]="selectedDateFromTime()"
-        (dateChange)="selectedDayTime.set($event.value.getTime())"
+        [value]="selectedDay()"
+        (dateChange)="selectedDay.set($event.value.toISOString())"
         [min]="minDate"
         [max]="maxDate"
         [matDatepicker]="picker"
@@ -69,12 +71,9 @@ export class CustomDateAdapter extends NativeDateAdapter {
 })
 export class DateBarDatePickerComponent {
   private readonly service = inject(DateService);
-  readonly selectedDayTime = this.service.selectedDayTime;
 
-  readonly minDate = new Date(TODAY.getFullYear() - 1, 0, 1);
-  readonly maxDate = new Date(TODAY.getFullYear() + 1, 11, 31);
+  readonly selectedDay = this.service.selectedDay;
 
-  readonly selectedDateFromTime = computed<Date>(
-    () => new Date(this.selectedDayTime())
-  );
+  readonly minDate = LAST_YEAR;
+  readonly maxDate = NEXT_YEAR;
 }
