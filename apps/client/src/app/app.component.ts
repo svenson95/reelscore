@@ -14,15 +14,15 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent } from './components';
 
 @Component({
+  selector: 'futbet-root',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,
     MatProgressSpinnerModule,
     HeaderComponent,
     FooterComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'futbet-root',
   styles: `
     :host {
       box-sizing: border-box;
@@ -51,8 +51,9 @@ export class AppComponent implements AfterViewInit {
   @ViewChild(RouterOutlet)
   private outlet!: RouterOutlet;
 
-  readonly isLoading = signal<boolean>(true);
-  readonly destroyRef = inject(DestroyRef);
+  isLoading = signal<boolean>(true);
+
+  destroyRef = inject(DestroyRef);
 
   public ngAfterViewInit(): void {
     this.outlet.activateEvents
