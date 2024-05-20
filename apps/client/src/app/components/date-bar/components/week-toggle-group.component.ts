@@ -29,7 +29,8 @@ type DateValue = (typeof dateValue)[number];
   encapsulation: ViewEncapsulation.None,
   styles: `
     futbet-week-toogle-group mat-button-toggle-group {
-      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white); 
+      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
+      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
 
       mat-button-toggle.mat-button-toggle {
         @apply text-fb-font-size-body-1;

@@ -37,12 +37,7 @@ $futbet-theme: mat.define-light-theme(
 // that you are using.
 @include mat.all-component-themes($futbet-theme);
 
-body {
-  --mat-standard-button-toggle-state-layer-color: var(--fb-color-green-1);
-  --mat-standard-button-toggle-selected-state-background-color: var(
-    --fb-color-green-1
-  );
-
+button.mdc-button {
   --mdc-protected-button-label-text-color: var(--fb-color-white);
   --mdc-protected-button-container-color: var(--fb-color-green-1);
 }
