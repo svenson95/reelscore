@@ -20,18 +20,22 @@ import { LogoComponent } from '../logo/logo.component';
 		:host {
 			width: 100%;
 			@apply w-full self-end;
+
+      mat-button-toggle.mat-button-toggle {
+        &:not(.logo-toggle) ::ng-deep .mat-button-toggle-label-content {
+          font-size: var(--fb-font-size-body-2);
+          // material class height change (1)
+          line-height: calc(var(--fb-size-league-select-height) - 10px);
+        }
+      }
 		}
 
 		mat-button-toggle-group {
 			@apply w-full border-none rounded-none self-end;
 
-			&.mat-button-toggle-group-appearance-standard .mat-button-toggle-appearance-standard+.mat-button-toggle-appearance-standard {
+			.mat-button-toggle-appearance-standard + .mat-button-toggle-appearance-standard {
     			border-left: none;
 			}
-		}
-
-		mat-button-toggle.mat-button-toggle-appearance-standard {
-			@apply bg-transparent;
 		}
 
 		mat-button-toggle.mat-button-toggle {
@@ -41,10 +45,19 @@ import { LogoComponent } from '../logo/logo.component';
 				border-bottom-color: var(--fb-color-green-1);
 			}
 
+      &.logo-toggle {
+        @apply mr-2 min-[600px]:mr-auto;
+      }
+
 			&:not(.logo-toggle) {
+        @apply bg-transparent self-end;
+
 				// material class height change (2)
 				height: var(--fb-size-league-select-height);
-				align-self: end;
+
+        &:not(.mat-button-toggle-checked) {
+          --mat-standard-button-toggle-text-color: var(--fb-color-text-2);
+        }
 			}
 		}
 	`,
@@ -55,7 +68,7 @@ import { LogoComponent } from '../logo/logo.component';
     >
       <mat-button-toggle
         [value]="SELECTED_LEAGUE_DEFAULT"
-        class="logo-toggle mr-2 min-[600px]:mr-auto"
+        class="logo-toggle"
         [routerLink]="['/']"
       >
         <futbet-logo />
