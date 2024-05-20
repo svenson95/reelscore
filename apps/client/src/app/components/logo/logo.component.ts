@@ -14,6 +14,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     span {
       user-select: none;
     }
+
+    span:last-child {
+      color: var(--fb-color-green-1);
+    }
   `,
 })
 export class LogoComponent {}
