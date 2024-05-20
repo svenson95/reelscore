@@ -28,24 +28,26 @@ type DateValue = (typeof dateValue)[number];
   ],
   encapsulation: ViewEncapsulation.None,
   styles: `
-    :host { @apply m-auto; }
+    futbet-week-toogle-group mat-button-toggle-group {
+      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white); 
 
-    futbet-week-toogle-group mat-button-toggle.mat-button-toggle {
-      @apply text-fb-font-size-body-2;
+      mat-button-toggle.mat-button-toggle {
+        @apply text-fb-font-size-body-1;
 
-      &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-        min-width: 36px;
-        padding: 0 8px;
-      }
-
-      &:first-of-type, &:last-of-type {
         &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-          padding: 0 2px;
+          min-width: 36px;
+          padding: 0 8px;
         }
-      }
 
-      &.is-today {
-        font-weight: 700;
+        &:first-of-type, &:last-of-type {
+          &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+            padding: 0 2px;
+          }
+        }
+
+        &.is-today {
+          font-weight: 700;
+        }
       }
     }
   `,

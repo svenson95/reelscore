@@ -32,12 +32,8 @@ import { LeagueSelectComponent } from './league-select.component';
           @apply bg-transparent;
         }
 
-        .mat-mdc-select-value-text {
-          @apply text-fb-color-white;
-        }
-
         .mat-mdc-floating-label mat-label {
-          @apply text-fb-color-white opacity-50;
+          @apply opacity-50;
         }
 
         .mat-mdc-form-field-subscript-wrapper {
@@ -45,11 +41,11 @@ import { LeagueSelectComponent } from './league-select.component';
         }
 
         .mat-mdc-select-arrow {
-          @apply text-fb-color-white opacity-50;
+          @apply opacity-50;
         }
 
         &.mat-focused .mat-mdc-select-arrow {
-          @apply text-fb-color-white opacity-50;
+          @apply opacity-50;
         }
 
         .mdc-text-field--filled .mdc-line-ripple::before {
@@ -58,7 +54,7 @@ import { LeagueSelectComponent } from './league-select.component';
 
         .mdc-text-field--filled:not(.mdc-text-field--disabled)
           .mdc-line-ripple::after {
-          border-bottom-color: var(--fb-color-white);
+          border-bottom-color: var(--fb-color-green-1);
         }
       }
     }

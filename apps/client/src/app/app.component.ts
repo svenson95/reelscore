@@ -31,7 +31,7 @@ import { FooterComponent, HeaderComponent } from './components';
 
       @apply text-fb-color-text-1;
     }
-    header { @apply flex bg-fb-color-green-1 p-fb-padding-3 pb-0; }
+    header { @apply flex p-fb-padding-3 pb-0; }
     main { @apply flex bg-fb-color-green-1-light p-fb-padding-3; }
     footer { @apply flex justify-center px-fb-padding-3 py-10; }
     mat-spinner { @apply mx-auto my-10; }

@@ -31,20 +31,14 @@ import { LogoComponent } from '../logo/logo.component';
 		}
 
 		mat-button-toggle.mat-button-toggle-appearance-standard {
-			@apply bg-transparent text-fb-color-white;
-
-			&:not(.logo-toggle) {
-				&:not(.mat-button-toggle-checked) span {
-					@apply opacity-70;
-				}
-			}
+			@apply bg-transparent;
 		}
 
 		mat-button-toggle.mat-button-toggle {
 			border-bottom: 2px solid transparent;
 
 			&.mat-button-toggle-checked {
-				border-bottom-color: var(--fb-color-white);
+				border-bottom-color: var(--fb-color-green-1);
 			}
 
 			&:not(.logo-toggle) {
