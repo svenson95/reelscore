@@ -1,18 +1,38 @@
 import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
-import { COMPETITION_EXAMPLES, FilteredCompetitions } from '../../models';
+import {
+  COMPETITION_EXAMPLES,
+  Competition,
+  FilteredCompetitions,
+  LEAGUE_STANDING_EXAMPLE,
+  LeagueStanding,
+} from '../../models';
 import { DateService, ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
+
+import { TableComponent } from './components';
 
 @Component({
   selector: 'futbet-league',
   standalone: true,
-  imports: [DateBarComponent, MatchListComponent],
+  imports: [DateBarComponent, MatchListComponent, TableComponent],
   providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
       @apply w-full; 
+
+      section {
+        @apply inline-flex flex-wrap w-full gap-5;
+
+        > * {
+          @apply flex-1;
+        }
+      }
+      
+      .match-list-container {
+        @apply min-w-[300px];
+      }
 
       futbet-start-match-list:not(:last-child) {
         @apply flex flex-col mb-5;
@@ -26,17 +46,37 @@ import { RouterView } from '../router-view';
   template: `
     <futbet-start-date-bar />
 
-    @for (competition of competitions(); track competition.name) {
-    <futbet-start-match-list [competition]="competition" />
-    } @empty {
-    <p>Es finden keine Spiele statt.</p>
-    }
+    <section>
+      @if (league() !== undefined) {
+      <futbet-league-table [league]="leagueData" />
+      }
+
+      <div class="match-list-container">
+        @for (competition of competitions(); track competition.name) {
+        <futbet-start-match-list [competition]="competition" />
+        } @empty {
+        <p>Es finden keine Spiele statt.</p>
+        }
+      </div>
+    </section>
   `,
 })
 export class LeagueComponent extends RouterView {
   readonly dateService = inject(DateService);
 
-  readonly competitions = computed(() => {
+  league = computed<LeagueStanding | undefined>(() => {
+    return LEAGUE_STANDING_EXAMPLE.find(
+      (s) => s.competition === this.selectedLeague()?.label
+    );
+  });
+
+  get leagueData(): LeagueStanding {
+    const leagueData = this.league();
+    if (!leagueData) throw new Error('League is unexpectedly undefined');
+    return leagueData;
+  }
+
+  readonly competitions = computed<Competition[]>(() => {
     const filtered = new FilteredCompetitions(COMPETITION_EXAMPLES)
       .byDay(this.dateService.selectedDay())
       .byLeague(this.selectedLeague()?.label);
