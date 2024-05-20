@@ -1,5 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { Injectable, computed, effect, signal } from '@angular/core';
+import {
+  EffectRef,
+  Injectable,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
+} from '@angular/core';
 
 import {
   CalenderWeek,
@@ -10,43 +18,53 @@ import {
   moveItem,
 } from '../../models';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class DateService {
-  readonly selectedDay = signal<DateString>(TODAY.toISOString());
+export abstract class DateService {
+  abstract selectedDay: WritableSignal<DateString>;
+  abstract selectedDayEffect: EffectRef;
+  abstract isToday: Signal<boolean>;
+  abstract calenderWeek: WritableSignal<CalenderWeek>;
+  abstract weekdays: Signal<DateString[]>;
+  abstract getCalenderWeekFrom(day: DateString): CalenderWeek;
+  abstract getWeekDays(calenderWeek: CalenderWeek): DateString[];
+}
+
+@Injectable()
+export class AbstractedDateService extends DateService {
+  selectedDay = signal<DateString>(TODAY.toISOString());
 
   selectedDayEffect = effect(
     () => {
-      const dayWeek = this.getCalenderWeekFrom(this.selectedDay());
-      const isAnotherWeek = this.calenderWeek() !== dayWeek;
-      if (isAnotherWeek) {
-        this.calenderWeek.set(dayWeek);
+      const weekOfDay = this.getCalenderWeekFrom(this.selectedDay());
+      if (this.calenderWeek() !== weekOfDay) {
+        this.calenderWeek.set(weekOfDay);
       }
     },
     { allowSignalWrites: true }
   );
 
-  readonly isToday = computed<boolean>(
-    () => this.selectedDay() === TODAY.toISOString()
-  );
+  isToday = computed<boolean>(() => this.selectedDay() === TODAY.toISOString());
 
-  readonly calenderWeek = signal<CalenderWeek>(
+  calenderWeek = signal<CalenderWeek>(
     this.getCalenderWeekFrom(this.selectedDay())
   );
 
-  readonly weekdays = computed<DateString[]>(() =>
+  weekdays = computed<DateString[]>(() =>
     this.getWeekDays(this.calenderWeek())
   );
 
-  private getCalenderWeekFrom(day: DateString): CalenderWeek {
+  getCalenderWeekFrom(day: DateString): CalenderWeek {
     const datepipe = new DatePipe('de-DE');
     return Number(datepipe.transform(day, 'w'));
   }
 
-  private getWeekDays(calenderWeek: CalenderWeek): DateString[] {
+  getWeekDays(calenderWeek: CalenderWeek): DateString[] {
     const monday = getMondayFromWeek(calenderWeek);
     const weekdays = createWeekDaysArray(monday);
     return moveItem(weekdays, 0, 6);
   }
 }
+
+export const DATE_SERVICE_PROVIDER = {
+  provide: DateService,
+  useClass: AbstractedDateService,
+};

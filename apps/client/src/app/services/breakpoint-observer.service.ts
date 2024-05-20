@@ -1,36 +1,51 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Injectable, computed, signal } from '@angular/core';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  computed,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const SIZE_DEFAULT = 'Unknown';
+const IS_MOBILE_SIZE = Breakpoints.XSmall;
 
-@Injectable({ providedIn: 'root' })
-export class BreakpointObserverService {
-  readonly currentSize = signal<string>(SIZE_DEFAULT);
+export abstract class BreakpointObserverService {
+  abstract currentSize: WritableSignal<string>;
+  abstract isMobile: Signal<boolean>;
+}
 
-  readonly isMobile = computed(() => this.currentSize() === 'XSmall');
+@Injectable()
+export class AbstractedBreakpointObserverService extends BreakpointObserverService {
+  currentSize = signal<string>(SIZE_DEFAULT);
 
-  readonly breakpointsMap = new Map([
-    [Breakpoints.XSmall, 'XSmall'],
-    [Breakpoints.Small, 'Small'],
-    [Breakpoints.Medium, 'Medium'],
-    [Breakpoints.Large, 'Large'],
-    [Breakpoints.XLarge, 'XLarge'],
-  ]);
+  isMobile = computed(() => this.currentSize() === IS_MOBILE_SIZE);
 
   constructor(breakpointObserver: BreakpointObserver) {
-    const breakpoints = Array.from(this.breakpointsMap.keys());
+    super();
+
+    const breakpoints = new Map([
+      [Breakpoints.XSmall, 'XSmall'],
+      [Breakpoints.Small, 'Small'],
+      [Breakpoints.Medium, 'Medium'],
+      [Breakpoints.Large, 'Large'],
+      [Breakpoints.XLarge, 'XLarge'],
+    ]);
     breakpointObserver
-      .observe(breakpoints)
+      .observe(Array.from(breakpoints.keys()))
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         for (const query of Object.keys(result.breakpoints)) {
           if (result.breakpoints[query]) {
-            this.currentSize.set(
-              this.breakpointsMap.get(query) ?? SIZE_DEFAULT
-            );
+            this.currentSize.set(breakpoints.get(query) ?? SIZE_DEFAULT);
           }
         }
       });
   }
 }
+
+export const BREAKPOINT_OBSERVER_SERVICE_PROVIDER = {
+  provide: BreakpointObserverService,
+  useClass: AbstractedBreakpointObserverService,
+};

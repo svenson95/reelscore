@@ -1,14 +1,20 @@
-import { Injectable, computed, inject } from '@angular/core';
+import { Injectable, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { LeagueUrl } from '../constants';
 
-@Injectable()
-export class RouteService {
-  private readonly router = inject(Router);
+export abstract class RouteService {
+  abstract router: Router;
+  abstract url: Signal<string | undefined>;
+  abstract activeRoute: Signal<LeagueUrl>;
+}
 
-  private readonly url = toSignal<string>(
+@Injectable()
+export class AbstractedRouteService extends RouteService {
+  router = inject(Router);
+
+  url = toSignal<string>(
     this.router.events.pipe(
       takeUntilDestroyed(),
       filter((event) => event instanceof NavigationEnd),
@@ -16,7 +22,7 @@ export class RouteService {
     )
   );
 
-  readonly activeRoute = computed<LeagueUrl>(() => {
+  activeRoute = computed<LeagueUrl>(() => {
     const url = this.url();
     if (url === undefined) throw new Error('route is undefined');
     const leagueUrlIndex = url.indexOf('/', 2) + 1;
@@ -24,3 +30,8 @@ export class RouteService {
     return leagueUrl as LeagueUrl;
   });
 }
+
+export const ROUTE_SERVICE_PROVIDER = {
+  provide: RouteService,
+  useClass: AbstractedRouteService,
+};

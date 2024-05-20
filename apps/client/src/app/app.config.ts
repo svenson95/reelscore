@@ -5,12 +5,22 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import {
+  BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
+  DATE_SERVICE_PROVIDER,
+  LEAGUE_SERVICE_PROVIDER,
+} from './services';
+
+const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    { provide: LOCALE_ID, useValue: 'de-DE' },
+    LOCALE_PROVIDER,
+    DATE_SERVICE_PROVIDER,
+    LEAGUE_SERVICE_PROVIDER,
+    BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   ],
 };
 
