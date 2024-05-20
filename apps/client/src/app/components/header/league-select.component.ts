@@ -79,7 +79,7 @@ import { LogoComponent } from '../logo/logo.component';
         [routerLink]="['leagues', l.url]"
         [class]="l.url"
       >
-        <span class="league-label">{{ l.flag }} {{ l.label }}</span>
+        <span class="league-label">{{ l.label }}</span>
       </mat-button-toggle>
       } }
     </mat-button-toggle-group>
