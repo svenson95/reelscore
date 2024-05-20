@@ -28,3 +28,11 @@ export const createWeekDaysArray = (date: Date): DateString[] => {
       return day.toISOString();
     });
 };
+
+export const isSameDay = (a: Date, b: Date): boolean => {
+  return (
+    a.getDate() === b.getDate() &&
+    a.getMonth() === b.getMonth() &&
+    a.getFullYear() === b.getFullYear()
+  );
+};
