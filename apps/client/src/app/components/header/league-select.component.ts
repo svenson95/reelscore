@@ -47,6 +47,8 @@ import { LogoComponent } from '../logo/logo.component';
 
       &.logo-toggle {
         @apply mr-2 min-[600px]:mr-auto;
+
+        --mat-standard-button-toggle-selected-state-background-color: transparent;
       }
 
 			&:not(.logo-toggle) {
