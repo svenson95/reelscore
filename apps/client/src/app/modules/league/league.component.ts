@@ -2,14 +2,14 @@ import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
 import { COMPETITION_EXAMPLES, FilteredCompetitions } from '../../models';
-import { DateService, RouteService } from '../../services';
+import { DateService, ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 
 @Component({
   selector: 'futbet-league',
   standalone: true,
   imports: [DateBarComponent, MatchListComponent],
-  providers: [RouteService],
+  providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
       @apply w-full; 
