@@ -12,7 +12,7 @@ import { LeagueStanding } from '../../../../models';
     table {
       --mat-table-header-headline-size: 11px;
       --mat-table-row-item-label-text-size: 11px;
-      --mat-table-header-container-height: 36px;
+      --mat-table-header-container-height: 48px;
       --mat-table-row-item-container-height: 32px;
     }
 
