@@ -1,5 +1,5 @@
 export * from './array.helper';
-export * from './competition';
+export * from './competition.model';
 export * from './date.model';
 export * from './fixture';
 export * from './fixture-statistics';

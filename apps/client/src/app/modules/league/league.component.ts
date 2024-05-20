@@ -1,8 +1,8 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
-import { COMPETITION_EXAMPLES } from '../../models';
-import { RouteService } from '../../services';
+import { COMPETITION_EXAMPLES, FilteredCompetitions } from '../../models';
+import { DateService, RouteService } from '../../services';
 import { RouterView } from '../router-view';
 
 @Component({
@@ -17,6 +17,10 @@ import { RouterView } from '../router-view';
       futbet-start-match-list:not(:last-child) {
         @apply flex flex-col mb-5;
       }
+
+      p {
+        @apply text-fb-font-size-body-1 text-fb-color-text-2 text-center py-5;
+      }
     }
   `,
   template: `
@@ -24,13 +28,18 @@ import { RouterView } from '../router-view';
 
     @for (competition of competitions(); track competition.name) {
     <futbet-start-match-list [competition]="competition" />
+    } @empty {
+    <p>Es finden keine Spiele statt.</p>
     }
   `,
 })
 export class LeagueComponent extends RouterView {
+  readonly dateService = inject(DateService);
+
   readonly competitions = computed(() => {
-    const url = this.selectedLeague()?.label;
-    const filtered = COMPETITION_EXAMPLES.filter((c) => c.name === url);
-    return url ? filtered : COMPETITION_EXAMPLES;
+    const filtered = new FilteredCompetitions(COMPETITION_EXAMPLES)
+      .byDay(this.dateService.selectedDay())
+      .byLeague(this.selectedLeague()?.label);
+    return filtered.competitions;
   });
 }
