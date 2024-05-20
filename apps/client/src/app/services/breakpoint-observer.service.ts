@@ -9,7 +9,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const SIZE_DEFAULT = 'Unknown';
-const IS_MOBILE_SIZE = Breakpoints.XSmall;
 
 export abstract class BreakpointObserverService {
   abstract currentSize: WritableSignal<string>;
@@ -20,7 +19,7 @@ export abstract class BreakpointObserverService {
 export class AbstractedBreakpointObserverService extends BreakpointObserverService {
   currentSize = signal<string>(SIZE_DEFAULT);
 
-  isMobile = computed(() => this.currentSize() === IS_MOBILE_SIZE);
+  isMobile = computed(() => this.currentSize() === 'XSmall');
 
   constructor(breakpointObserver: BreakpointObserver) {
     super();
