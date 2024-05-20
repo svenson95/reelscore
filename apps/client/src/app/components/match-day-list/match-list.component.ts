@@ -42,8 +42,6 @@ import { Competition } from '../../models';
           </div>
         </div>
       </li>
-      } @empty {
-      <div class="is-empty">Es finden keine Spiele statt.</div>
       }
     </ul>
   `,
