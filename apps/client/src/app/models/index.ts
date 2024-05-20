@@ -5,6 +5,7 @@ export * from './fixture';
 export * from './fixture-statistics';
 export * from './fixtureDTO';
 export * from './league-select-data';
+export * from './league-standing.model';
 export * from './match';
 export * from './select-button';
 export * from './standings';
