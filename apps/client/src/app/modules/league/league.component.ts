@@ -29,10 +29,6 @@ import { TableComponent } from './components';
           @apply flex-1;
         }
       }
-      
-      .match-list-container {
-        @apply min-w-[300px];
-      }
 
       futbet-start-match-list:not(:last-child) {
         @apply flex flex-col mb-5;
@@ -47,17 +43,13 @@ import { TableComponent } from './components';
     <futbet-start-date-bar />
 
     <section>
-      @if (league() !== undefined) {
+      @for (competition of competitions(); track competition.name) {
+      <futbet-start-match-list [competition]="competition" />
+      } @empty {
+      <p>Es finden keine Spiele statt.</p>
+      } @if (league() !== undefined) {
       <futbet-league-table [league]="leagueData" />
       }
-
-      <div class="match-list-container">
-        @for (competition of competitions(); track competition.name) {
-        <futbet-start-match-list [competition]="competition" />
-        } @empty {
-        <p>Es finden keine Spiele statt.</p>
-        }
-      </div>
     </section>
   `,
 })
