@@ -26,7 +26,7 @@ import { Competition } from '../../models';
     </div>
     <ul>
       @for(item of competition().list; track item.id){
-      <li [routerLink]="['leagues', 'bundesliga', 'match', item.id]">
+      <li [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.id]">
         <div class="wrapper">
           <div class="time">
             {{ item.date | date : 'HH:mm' }}
