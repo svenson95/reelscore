@@ -11,7 +11,10 @@ import {
   NativeDateAdapter,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatDatepickerInputEvent,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -51,6 +54,10 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
       --mdc-icon-button-icon-color: var(--fb-color-green-1);
       --mat-icon-button-state-layer-color: var(--fb-color-green-1);
       --mdc-outlined-button-label-text-color: var(--fb-color-text-2);
+
+      mat-form-field {
+        @apply opacity-0 w-0 h-0;
+      }
     }
   `,
   template: `
@@ -61,11 +68,12 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
     >
       {{ selectedDay() | date : 'dd.MM.YY' }}
     </button>
-    <mat-form-field class="opacity-0 w-0 h-0">
+    <mat-form-field>
       <input
         matInput
+        tabindex="-1"
         [value]="selectedDay()"
-        (dateChange)="selectedDay.set($event.value.toISOString())"
+        (dateChange)="dateChange($event)"
         [min]="minDate"
         [max]="maxDate"
         [matDatepicker]="picker"
@@ -81,4 +89,8 @@ export class DateBarDatePickerComponent {
 
   readonly minDate = LAST_YEAR;
   readonly maxDate = NEXT_YEAR;
+
+  dateChange(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value) this.selectedDay.set(event.value.toISOString());
+  }
 }
