@@ -1,4 +1,4 @@
-import { Match } from './match';
+import { Match } from './match.model';
 
 export interface Competition {
   name: string;
