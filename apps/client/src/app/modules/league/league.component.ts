@@ -1,14 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
-import {
-  Competition,
-  LEAGUE_STANDING_EXAMPLE,
-  LeagueStanding,
-} from '../../models';
+import { Competition, LeagueStanding } from '../../models';
 import { DateService, ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 
+import { LEAGUE_STANDING_EXAMPLES } from '../../constants/examples/standing.constant';
 import { TableComponent } from './components';
 import { COMPETITION_EXAMPLES } from './constants';
 import { FilteredCompetitions } from './models';
@@ -57,7 +54,7 @@ export class LeagueComponent extends RouterView {
   readonly dateService = inject(DateService);
 
   league = computed<LeagueStanding | undefined>(() => {
-    return LEAGUE_STANDING_EXAMPLE.find(
+    return LEAGUE_STANDING_EXAMPLES.find(
       (s) => s.competition === this.selectedLeague()?.label
     );
   });

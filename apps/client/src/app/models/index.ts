@@ -6,5 +6,6 @@ export * from './db-models/fixture-statistics';
 export * from './db-models/fixtureDTO';
 export * from './db-models/standings';
 export * from './league-standing.model';
+export * from './league-url.model';
 export * from './match.model';
 export * from './select-league.model';

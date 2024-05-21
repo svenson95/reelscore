@@ -9,9 +9,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router';
 
 import { LogoComponent } from '../../../components';
-import { LEAGUES_METADATA } from '../../../constants';
-import { BreakpointObserverService } from '../../../services';
+import { SELECT_LEAGUE } from '../../../constants';
 import { SelectLeagueState } from '../../../models';
+import { BreakpointObserverService } from '../../../services';
 
 @Component({
   selector: 'futbet-header-league-select',
@@ -90,7 +90,7 @@ import { SelectLeagueState } from '../../../models';
   `,
 })
 export class LeagueSelectComponent {
-  readonly leagues = LEAGUES_METADATA;
+  readonly leagues = SELECT_LEAGUE;
 
   private breakpoint = inject(BreakpointObserverService);
 

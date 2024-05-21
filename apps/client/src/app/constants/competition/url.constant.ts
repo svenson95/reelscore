@@ -1,12 +1,12 @@
-import { CompetitionName } from './competitions';
+import { Competition } from './competition.constant';
 
-export const LEAGUES_URLS = {
-  [CompetitionName.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
-  [CompetitionName.GERMANY_BUNDESLIGA]: 'bundesliga',
-  [CompetitionName.GERMANY_BUNDESLIGA_2]: 'bundesliga-2',
-  [CompetitionName.ITALY_SERIE_A]: 'seria-a',
-  [CompetitionName.SPAIN_LA_LIGA]: 'la-liga',
-  [CompetitionName.FRANCE_LIGUE_1]: 'ligue-1',
+export const COMPETITION_URL = {
+  [Competition.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
+  [Competition.GERMANY_BUNDESLIGA]: 'bundesliga',
+  [Competition.GERMANY_BUNDESLIGA_2]: 'bundesliga-2',
+  [Competition.ITALY_SERIE_A]: 'seria-a',
+  [Competition.SPAIN_LA_LIGA]: 'la-liga',
+  [Competition.FRANCE_LIGUE_1]: 'ligue-1',
 
   // [CompetitionName.ENGLAND_LEAGUE_CUP]: '48',
   // [CompetitionName.ENGLAND_EFL_TROPHY]: '46',
@@ -28,5 +28,3 @@ export const LEAGUES_URLS = {
   // [CompetitionName.INTERNATIONAL_UEFA_EURO_LEAGUE]: '3',
   // [CompetitionName.INTERNATIONAL_UEFA_SUPER_CUP]: '531',
 };
-
-export type LeagueUrl = keyof typeof LEAGUES_URLS;

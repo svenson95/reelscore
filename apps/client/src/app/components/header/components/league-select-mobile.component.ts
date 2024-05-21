@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { LEAGUES_METADATA } from '../../../constants';
+import { SELECT_LEAGUE } from '../../../constants';
 import { SelectLeagueState } from '../../../models';
 
 @Component({
@@ -64,7 +64,7 @@ import { SelectLeagueState } from '../../../models';
   `,
 })
 export class LeagueSelectMobileComponent {
-  readonly leagues = LEAGUES_METADATA;
+  readonly leagues = SELECT_LEAGUE;
 
   selectedLeague = input.required<SelectLeagueState>();
 }

@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import {
-  CompetitionName,
-  LEAGUES_METADATA,
-  LEAGUES_URLS,
+  Competition,
+  LEAGUES_URL_DATA,
   LeagueUrl,
+  SELECT_LEAGUE,
   STANDING_LEAGUES_IDS,
 } from '../constants';
 
@@ -30,7 +30,7 @@ describe('RouterView', () => {
   describe('getLeagueByUrl', () => {
     it('should return league if input is valid', () => {
       // given
-      const validData = LEAGUES_METADATA[2];
+      const validData = SELECT_LEAGUE[2];
 
       // when
       const league = component.getLeagueByUrl(validData.url as LeagueUrl);
@@ -59,9 +59,9 @@ describe('RouterView', () => {
   describe('updateLeagueOnRouting', () => {
     it('should update selected league after routing', () => {
       // given
-      const mock = CompetitionName.ENGLAND_PREMIER_LEAGUE;
-      const validRoute = LEAGUES_URLS[mock] as LeagueUrl;
-      const validMetaData = LEAGUES_METADATA.find(
+      const mock = Competition.ENGLAND_PREMIER_LEAGUE;
+      const validRoute = LEAGUES_URL_DATA[mock] as LeagueUrl;
+      const validMetaData = SELECT_LEAGUE.find(
         (m) => m.id === STANDING_LEAGUES_IDS[mock]
       );
       expect(component.selectedLeague()).toBe(undefined);
