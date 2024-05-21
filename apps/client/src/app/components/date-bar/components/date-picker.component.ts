@@ -23,7 +23,7 @@ import { TODAY } from '../../../models';
 import { DateService } from '../../../services';
 
 @Injectable()
-export class CustomDateAdapter extends NativeDateAdapter {
+class CustomDateAdapter extends NativeDateAdapter {
   override getFirstDayOfWeek(): number {
     return 1;
   }
@@ -82,10 +82,10 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
     </mat-form-field>
   `,
 })
-export class DateBarDatePickerComponent {
-  private readonly service = inject(DateService);
+export class DatePickerComponent {
+  private service = inject(DateService);
 
-  readonly selectedDay = this.service.selectedDay;
+  selectedDay = this.service.selectedDay;
 
   readonly minDate = LAST_YEAR;
   readonly maxDate = NEXT_YEAR;

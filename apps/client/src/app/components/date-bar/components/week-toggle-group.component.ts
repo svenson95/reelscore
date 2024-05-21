@@ -78,7 +78,7 @@ type DateValue = (typeof dateValue)[number];
     </mat-button-toggle-group>
   `,
 })
-export class DateBarWeekToggleGroupComponent {
+export class WeekToggleGroupComponent {
   private readonly service = inject(DateService);
 
   readonly selectedDay = this.service.selectedDay;
