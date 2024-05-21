@@ -3,13 +3,15 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router';
 
-import { LEAGUES_METADATA } from '../../constants';
-import { BreakpointObserverService, LeagueService } from '../../services';
-import { LogoComponent } from '../logo/logo.component';
+import { LogoComponent } from '../../../components';
+import { LEAGUES_METADATA } from '../../../constants';
+import { LeagueSelectData } from '../../../models';
+import { BreakpointObserverService } from '../../../services';
 
 @Component({
   selector: 'futbet-header-league-select',
@@ -66,10 +68,10 @@ import { LogoComponent } from '../logo/logo.component';
   template: `
     <mat-button-toggle-group
       hideSingleSelectionIndicator
-      [value]="selectedLeague()?.url ?? SELECTED_LEAGUE_DEFAULT"
+      [value]="selectedLeague()?.url ?? default"
     >
       <mat-button-toggle
-        [value]="SELECTED_LEAGUE_DEFAULT"
+        [value]="default"
         class="logo-toggle"
         [routerLink]="['/']"
       >
@@ -88,12 +90,12 @@ import { LogoComponent } from '../logo/logo.component';
   `,
 })
 export class LeagueSelectComponent {
-  private readonly leagueService = inject(LeagueService);
-  private readonly breakpoint = inject(BreakpointObserverService);
-
-  readonly SELECTED_LEAGUE_DEFAULT = this.leagueService.SELECTED_LEAGUE_DEFAULT;
   readonly leagues = LEAGUES_METADATA;
-  readonly selectedLeague = this.leagueService.selectedLeague;
 
-  readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
+  private breakpoint = inject(BreakpointObserverService);
+
+  selectedLeague = input.required<LeagueSelectData | undefined>();
+  default = input.required<string>();
+
+  isMobile = computed<boolean>(() => this.breakpoint.isMobile());
 }

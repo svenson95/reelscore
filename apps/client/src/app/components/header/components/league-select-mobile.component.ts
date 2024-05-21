@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { LEAGUES_METADATA } from '../../constants';
-import { LeagueService } from '../../services';
+import { LEAGUES_METADATA } from '../../../constants';
+import { LeagueSelectData } from '../../../models';
 
 @Component({
   selector: 'futbet-league-select-mobile',
@@ -64,8 +64,7 @@ import { LeagueService } from '../../services';
   `,
 })
 export class LeagueSelectMobileComponent {
-  private readonly leagueService = inject(LeagueService);
-
   readonly leagues = LEAGUES_METADATA;
-  readonly selectedLeague = this.leagueService.selectedLeague;
+
+  selectedLeague = input.required<LeagueSelectData | undefined>();
 }

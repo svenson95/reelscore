@@ -1,14 +1,11 @@
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { BreakpointObserverService, LeagueService } from '../../services';
+
 import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
-
-import { BreakpointObserverService } from '../../services';
-
-import { LeagueSelectMobileComponent } from './league-select-mobile.component';
-import { LeagueSelectComponent } from './league-select.component';
+  LeagueSelectComponent,
+  LeagueSelectMobileComponent,
+} from './components';
 
 @Component({
   selector: 'header',
@@ -16,13 +13,20 @@ import { LeagueSelectComponent } from './league-select.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LeagueSelectComponent, LeagueSelectMobileComponent],
   template: `
-    <futbet-header-league-select />
+    <futbet-header-league-select
+      [selectedLeague]="selectedLeague()"
+      [default]="default"
+    />
     @if (isMobile()) {
-    <futbet-league-select-mobile />
+    <futbet-league-select-mobile [selectedLeague]="selectedLeague()" />
     }
   `,
 })
 export class HeaderComponent {
-  private readonly breakpoint = inject(BreakpointObserverService);
-  readonly isMobile = computed<boolean>(() => this.breakpoint.isMobile());
+  leagueService = inject(LeagueService);
+  breakpoint = inject(BreakpointObserverService);
+  isMobile = this.breakpoint.isMobile;
+
+  selectedLeague = this.leagueService.selectedLeague;
+  default = this.leagueService.SELECTED_LEAGUE_DEFAULT;
 }
