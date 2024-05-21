@@ -25,7 +25,6 @@ import {
   styles: `
     :host { 
       @apply flex flex-wrap items-center justify-between mb-5 gap-3 sm:gap-5; 
-      --mdc-text-button-label-text-color: var(--fb-color-green-1);
 
       section { 
         @apply inline-flex flex-wrap items-center justify-center sm:w-fit gap-5; 
