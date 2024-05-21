@@ -1,7 +1,7 @@
 import { effect, inject } from '@angular/core';
 
 import { SELECT_LEAGUE } from '../constants';
-import { LeagueUrl, SelectLeagueState } from '../models';
+import { CompetitionUrl, SelectLeagueState } from '../models';
 import { LeagueService, RouteService } from '../services';
 
 export class RouterView {
@@ -14,11 +14,11 @@ export class RouterView {
     { allowSignalWrites: true }
   );
 
-  getLeagueByUrl(url: LeagueUrl): SelectLeagueState {
+  getLeagueByUrl(url: CompetitionUrl): SelectLeagueState {
     return SELECT_LEAGUE.find((l) => l.url === url);
   }
 
-  updateLeague(url: LeagueUrl): void {
+  updateLeague(url: CompetitionUrl): void {
     const league = this.getLeagueByUrl(url);
     this.service.setSelectedLeague(league);
   }

@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import {
-  Competition,
-  LEAGUES_URL_DATA,
-  LeagueUrl,
-  SELECT_LEAGUE,
-  STANDING_LEAGUES_IDS,
-} from '../constants';
-
 import { routes } from '../app.routes';
+import {
+  COMPETITION_ID,
+  COMPETITION_URL,
+  Competition,
+  SELECT_LEAGUE,
+} from '../constants';
+import { CompetitionUrl } from '../models';
+
 import { LeagueComponent } from './league/league.component';
 
 describe('RouterView', () => {
@@ -33,20 +33,19 @@ describe('RouterView', () => {
       const validData = SELECT_LEAGUE[2];
 
       // when
-      const league = component.getLeagueByUrl(validData.url as LeagueUrl);
+      const league = component.getLeagueByUrl(validData.url as CompetitionUrl);
 
       // then
       expect(league).not.toBeUndefined();
       if (league) expect(league.image).toBe(validData.image);
       if (league) expect(league.label).toBe(validData.label);
       if (league) expect(league.id).toBe(validData.id);
-      if (league) expect(league.flag).toBe(validData.flag);
       if (league) expect(league.url).toBe(validData.url);
     });
 
     it('should return undefined if input is invalid', () => {
       // given
-      const invalidUrl = 'url-with-typo' as LeagueUrl;
+      const invalidUrl = 'url-with-typo' as CompetitionUrl;
 
       // when
       const league = component.getLeagueByUrl(invalidUrl);
@@ -60,9 +59,9 @@ describe('RouterView', () => {
     it('should update selected league after routing', () => {
       // given
       const mock = Competition.ENGLAND_PREMIER_LEAGUE;
-      const validRoute = LEAGUES_URL_DATA[mock] as LeagueUrl;
+      const validRoute = COMPETITION_URL[mock] as CompetitionUrl;
       const validMetaData = SELECT_LEAGUE.find(
-        (m) => m.id === STANDING_LEAGUES_IDS[mock]
+        (m) => m.id === COMPETITION_ID[mock]
       );
       expect(component.selectedLeague()).toBe(undefined);
       jest.spyOn(component, 'updateLeague');

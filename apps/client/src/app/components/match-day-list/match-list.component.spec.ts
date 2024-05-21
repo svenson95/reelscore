@@ -9,8 +9,9 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { routes } from '../../app.routes';
-import { MATCH_EXAMPLES, MATCH_EXAMPLES_2, Match } from '../../models';
+import { Match } from '../../models';
 
+import { MATCH_EXAMPLES, MATCH_EXAMPLES_2 } from '../../constants';
 import { MatchListComponent } from './match-list.component';
 
 describe('MatchListComponent', () => {
@@ -34,7 +35,7 @@ describe('MatchListComponent', () => {
   it('should display li elements for a competition', () => {
     // given
     const mock = MATCH_EXAMPLES;
-    component.list.set(mock);
+    component.competition().fixtures = mock;
 
     // when
     fixture.detectChanges();
@@ -62,7 +63,7 @@ describe('MatchListComponent', () => {
   it('should display no games label if list is empty', () => {
     // given
     const mock = [] as Match[];
-    component.list.set(mock);
+    component.competition().fixtures = mock;
 
     // when
     fixture.detectChanges();
@@ -92,7 +93,7 @@ describe('MatchListComponent', () => {
   it('should navigate to match on click', fakeAsync(() => {
     // given
     const mock = MATCH_EXAMPLES_2;
-    component.list.set(mock);
+    component.competition().fixtures = mock;
     const listItems = fixture.debugElement.queryAll(By.css('li'));
     expect(location.path()).toBe('');
 

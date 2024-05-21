@@ -1,9 +1,14 @@
-import { Competition, DateString, Match, isSameDay } from '../../../models';
+import {
+  CompetitionFixtures,
+  DateString,
+  Match,
+  isSameDay,
+} from '../../../models';
 
-export class FilteredCompetitions extends Array<Competition> {
-  competitions: Competition[];
+export class FilteredCompetitions extends Array<CompetitionFixtures> {
+  competitions: CompetitionFixtures[];
 
-  constructor(competitions: Competition[]) {
+  constructor(competitions: CompetitionFixtures[]) {
     super();
     this.competitions = competitions;
   }
@@ -11,10 +16,10 @@ export class FilteredCompetitions extends Array<Competition> {
   byDay(day: DateString): FilteredCompetitions {
     const isSameDate = (m: Match) => isSameDay(m.date, new Date(day));
     const filtered = this.competitions
-      .filter((c: Competition) => c.list.some(isSameDate))
-      .map((c: Competition) => ({
+      .filter((c: CompetitionFixtures) => c.fixtures.some(isSameDate))
+      .map((c: CompetitionFixtures) => ({
         ...c,
-        list: c.list.filter(isSameDate),
+        list: c.fixtures.filter(isSameDate),
       }));
 
     return new FilteredCompetitions(filtered);
