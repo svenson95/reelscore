@@ -12,7 +12,7 @@ import {
 import {
   CalenderWeek,
   DateString,
-  TODAY,
+  TODAY_ISO_STRING,
   createWeekDaysArray,
   getMondayFromWeek,
   moveItem,
@@ -30,7 +30,7 @@ export abstract class DateService {
 
 @Injectable()
 export class AbstractedDateService extends DateService {
-  selectedDay = signal<DateString>(TODAY.toISOString());
+  selectedDay = signal<DateString>(TODAY_ISO_STRING);
 
   selectedDayEffect = effect(
     () => {
@@ -42,7 +42,7 @@ export class AbstractedDateService extends DateService {
     { allowSignalWrites: true }
   );
 
-  isToday = computed<boolean>(() => this.selectedDay() === TODAY.toISOString());
+  isToday = computed<boolean>(() => this.selectedDay() === TODAY_ISO_STRING);
 
   calenderWeek = signal<CalenderWeek>(
     this.getCalenderWeekFrom(this.selectedDay())

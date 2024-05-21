@@ -1,8 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { TODAY } from '../../../models';
-import { DateService } from '../../../services';
+import { DateString, TODAY_ISO_STRING } from '../../../models';
 
 @Component({
   selector: 'futbet-today-button',
@@ -10,10 +14,10 @@ import { DateService } from '../../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `
-      button {
-        @apply text-fb-font-size-body-2;
-      }
-    `,
+    button {
+      @apply text-fb-font-size-body-2;
+    }
+  `,
   template: `
     <button mat-raised-button (click)="setToday()" [disabled]="isToday()">
       Heute
@@ -21,10 +25,11 @@ import { DateService } from '../../../services';
   `,
 })
 export class TodayButtonComponent {
-  private readonly dateService = inject(DateService);
-  readonly isToday = this.dateService.isToday;
+  isToday = input.required<boolean>();
+
+  onClick = output<DateString>();
 
   setToday(): void {
-    this.dateService.selectedDay.set(TODAY.toISOString());
+    this.onClick.emit(TODAY_ISO_STRING);
   }
 }
