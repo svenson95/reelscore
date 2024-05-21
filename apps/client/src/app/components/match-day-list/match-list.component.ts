@@ -14,9 +14,9 @@ import { Competition } from '../../models';
     ul { @apply w-full; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer border-b-[1px]; }
     .wrapper { @apply flex text-fb-font-size-body-2; }
-    .state { @apply min-w-[75px] justify-center; }
+    .time, .result { @apply flex self-center bg-gray-50 px-4 py-5; }
+    .time { @apply min-w-[75px] justify-center; }
     .result { @apply min-w-[50px] justify-center; }
-    .state, .result { @apply flex self-center bg-gray-50 px-4 py-5; }
     .teams { @apply self-center px-4 py-2; }
   `,
   template: `
@@ -28,10 +28,8 @@ import { Competition } from '../../models';
       @for(item of competition().list; track item.id){
       <li [routerLink]="['leagues', 'bundesliga', 'match', item.id]">
         <div class="wrapper">
-          <div class="state">
-            @switch (item.state) { @case ("upcoming") {
+          <div class="time">
             {{ item.date | date : 'HH:mm' }}
-            } @case ("finished") { FT } }
           </div>
           <div class="result">
             {{ item.result?.full_time ?? '-' }}
