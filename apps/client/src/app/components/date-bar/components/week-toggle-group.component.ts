@@ -1,53 +1,45 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewEncapsulation,
-  inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY } from '../../../models';
-import { DateService } from '../../../services';
-
-const dateValue = ['previous-day', 'next-day'] as const;
-type DateValue = (typeof dateValue)[number];
+import { DateString, TODAY_ISO_STRING } from '../../../models';
 
 // TODO: refactor to lib?
 @Component({
   selector: 'futbet-week-toogle-group',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    MatButtonToggleModule,
-    MatIconModule,
-    MatTooltipModule,
-  ],
-  encapsulation: ViewEncapsulation.None,
+  imports: [DatePipe, MatButtonToggleModule, MatIconModule, MatTooltipModule],
   styles: `
-    futbet-week-toogle-group mat-button-toggle-group {
+    :host mat-button-toggle-group {
       --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
       --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
 
       mat-button-toggle.mat-button-toggle {
         @apply text-fb-font-size-body-1;
 
-        &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-          min-width: 36px;
-          padding: 0 8px;
-        }
-
-        &:first-of-type, &:last-of-type {
-          &.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-            padding: 0 2px;
-          }
-        }
-
         &.is-today {
           --mat-standard-button-toggle-background-color: var(--fb-color-white);
+        }
+
+        &.mat-button-toggle-appearance-standard ::ng-deep {
+          .mat-button-toggle-label-content {
+            min-width: 36px;
+            padding: 0 8px;
+          }
+
+          &:first-of-type, &:last-of-type {
+            .mat-button-toggle-label-content {
+              padding: 0 2px;
+            }
+          }
         }
       }
     }
@@ -57,42 +49,37 @@ type DateValue = (typeof dateValue)[number];
       hideSingleSelectionIndicator
       [value]="selectedDay()"
     >
-      <mat-button-toggle
-        (click)="setDateTo('previous-day')"
-        matTooltip="Zurück"
-      >
+      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Zurück">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
       @for(day of weekdays(); track day) {
       <mat-button-toggle
         [value]="day"
-        (click)="selectedDay.set(day)"
+        (click)="dateSelected.emit(day)"
         [class.is-today]="isToday(day)"
       >
         {{ day | date : 'ccc' }}
       </mat-button-toggle>
       }
-      <mat-button-toggle (click)="setDateTo('next-day')" matTooltip="Weiter">
+      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Weiter">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
   `,
 })
 export class WeekToggleGroupComponent {
-  private readonly service = inject(DateService);
+  selectedDay = input.required<DateString>();
+  weekdays = input.required<DateString[]>();
 
-  readonly selectedDay = this.service.selectedDay;
-  readonly weekdays = this.service.weekdays;
+  dateSelected = output<DateString>();
 
   isToday(day: DateString): boolean {
-    return day === TODAY.toISOString();
+    return day === TODAY_ISO_STRING;
   }
 
-  setDateTo(value: DateValue): void {
-    const d = new Date(this.selectedDay());
-    const getDay = (v: number) => new Date(d.setDate(d.getDate() + v));
-    const isPreviousDay = value === 'previous-day';
-    const date = getDay(isPreviousDay ? -1 : +1).toISOString();
-    this.selectedDay.set(date);
+  setDateTo(value: number): void {
+    const date = new Date(this.selectedDay());
+    date.setDate(date.getDate() + value);
+    this.dateSelected.emit(date.toISOString());
   }
 }

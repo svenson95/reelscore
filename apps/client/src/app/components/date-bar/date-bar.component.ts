@@ -36,23 +36,36 @@ import {
   template: `
     <section>
       <div>
-        <futbet-date-picker />
+        <futbet-date-picker
+          [selectedDay]="selectedDay()"
+          (dateSelected)="selectedDay.set($event)"
+        />
 
         @if (isMobile()) {
-        <futbet-calender-week-label />
-        <futbet-today-button />
+        <futbet-calender-week-label [week]="calenderWeek()" />
+        <futbet-today-button
+          [isToday]="isToday()"
+          (onClick)="selectedDay.set($event)"
+        />
         }
       </div>
 
-      <futbet-week-toogle-group />
+      <futbet-week-toogle-group
+        [weekdays]="weekdays()"
+        [selectedDay]="selectedDay()"
+        (dateSelected)="selectedDay.set($event)"
+      />
 
       @if (!isMobile()) {
-      <futbet-calender-week-label />
+      <futbet-calender-week-label [week]="calenderWeek()" />
       }
     </section>
 
     @if (!isMobile()) {
-    <futbet-today-button />
+    <futbet-today-button
+      [isToday]="isToday()"
+      (onClick)="selectedDay.set($event)"
+    />
     }
   `,
 })
@@ -61,5 +74,9 @@ export class DateBarComponent {
   private dateService = inject(DateService);
 
   selectedDay = this.dateService.selectedDay;
+  weekdays = this.dateService.weekdays;
+  calenderWeek = this.dateService.calenderWeek;
+  isToday = this.dateService.isToday;
+
   isMobile = this.breakpoint.isMobile;
 }

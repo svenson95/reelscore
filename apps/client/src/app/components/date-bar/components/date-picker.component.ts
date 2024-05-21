@@ -3,7 +3,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injectable,
-  inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -11,16 +12,12 @@ import {
   NativeDateAdapter,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import {
-  MatDatepickerInputEvent,
-  MatDatepickerModule,
-} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { TODAY } from '../../../models';
-import { DateService } from '../../../services';
+import { DateString, TODAY } from '../../../models';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -71,9 +68,9 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
         matInput
         tabindex="-1"
         [value]="selectedDay()"
-        (dateChange)="dateChange($event)"
-        [min]="minDate"
-        [max]="maxDate"
+        (dateChange)="dateSelected.emit($event.value.toISOString())"
+        [min]="MIN_DATE"
+        [max]="MAX_DATE"
         [matDatepicker]="picker"
       />
       <mat-datepicker #picker></mat-datepicker>
@@ -81,14 +78,10 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
   `,
 })
 export class DatePickerComponent {
-  readonly minDate = LAST_YEAR;
-  readonly maxDate = NEXT_YEAR;
+  readonly MIN_DATE = LAST_YEAR;
+  readonly MAX_DATE = NEXT_YEAR;
 
-  private service = inject(DateService);
+  selectedDay = input.required<DateString>();
 
-  selectedDay = this.service.selectedDay;
-
-  dateChange(event: MatDatepickerInputEvent<Date>): void {
-    if (event.value) this.selectedDay.set(event.value.toISOString());
-  }
+  dateSelected = output<DateString>();
 }

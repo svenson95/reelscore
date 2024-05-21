@@ -1,5 +1,6 @@
 export const TODAY = new Date();
 TODAY.setHours(0, 0, 0, 0);
+export const TODAY_ISO_STRING = TODAY.toISOString();
 
 export type DateString = string;
 
