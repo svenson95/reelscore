@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 
 import { LogoComponent } from '../../../components';
 import { LEAGUES_METADATA } from '../../../constants';
-import { LeagueSelectData } from '../../../models';
+import { SelectLeagueData } from '../../../models';
 import { BreakpointObserverService } from '../../../services';
 
 @Component({
@@ -94,7 +94,7 @@ export class LeagueSelectComponent {
 
   private breakpoint = inject(BreakpointObserverService);
 
-  selectedLeague = input.required<LeagueSelectData | undefined>();
+  selectedLeague = input.required<SelectLeagueData | undefined>();
   default = input.required<string>();
 
   isMobile = computed<boolean>(() => this.breakpoint.isMobile());

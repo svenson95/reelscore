@@ -1,6 +1,6 @@
 import { LeagueId } from '../constants';
 
-export interface LeagueSelectData {
+export interface SelectLeagueData {
   image: string;
   label: string;
   id: LeagueId;

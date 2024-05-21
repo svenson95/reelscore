@@ -1,8 +1,8 @@
 import { LEAGUES_LABELS, STANDING_LEAGUES_IDS } from '../constants';
-import { LeagueSelectData } from '../models';
+import { SelectLeagueData } from '../models';
 import { LEAGUES_URLS } from './leagues-urls';
 
-export const LEAGUES_METADATA: LeagueSelectData[] = [
+export const LEAGUES_METADATA: SelectLeagueData[] = [
   {
     image: 'https://media-3.api-sports.io/flags/de.svg',
     label: LEAGUES_LABELS.GERMANY_BUNDESLIGA,
