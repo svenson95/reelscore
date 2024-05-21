@@ -47,7 +47,7 @@ type DateValue = (typeof dateValue)[number];
         }
 
         &.is-today {
-          font-weight: 700;
+          --mat-standard-button-toggle-background-color: var(--fb-color-white);
         }
       }
     }
