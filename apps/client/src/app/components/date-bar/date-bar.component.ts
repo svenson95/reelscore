@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { BreakpointObserverService, DateService } from '../../services';
 
 import {
   CalenderWeekLabelComponent,
-  DateBarDatePickerComponent,
-  DateBarWeekToggleGroupComponent,
+  DatePickerComponent,
   TodayButtonComponent,
+  WeekToggleGroupComponent,
 } from './components';
 
 // TODO: refactor to lib?
@@ -16,11 +15,10 @@ import {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    DateBarDatePickerComponent,
-    DateBarWeekToggleGroupComponent,
+    DatePickerComponent,
     CalenderWeekLabelComponent,
     TodayButtonComponent,
+    WeekToggleGroupComponent,
   ],
   styles: `
     :host { 
@@ -59,9 +57,9 @@ import {
   `,
 })
 export class DateBarComponent {
-  private readonly breakpoint = inject(BreakpointObserverService);
-  private readonly dateService = inject(DateService);
+  private breakpoint = inject(BreakpointObserverService);
+  private dateService = inject(DateService);
 
-  readonly selectedDay = this.dateService.selectedDay;
-  readonly isMobile = this.breakpoint.isMobile;
+  selectedDay = this.dateService.selectedDay;
+  isMobile = this.breakpoint.isMobile;
 }
