@@ -1,6 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { LEAGUES_METADATA } from '../../constants';
+import { SELECT_LEAGUE } from '../../constants';
 
 import { LeagueService } from './league.service';
 
@@ -15,7 +15,7 @@ describe('LeagueService', () => {
   it('should set selectedLeague properly', fakeAsync(() => {
     // given
     expect(service.selectedLeague()).toEqual(undefined);
-    const mockLeague = LEAGUES_METADATA[2];
+    const mockLeague = SELECT_LEAGUE[2];
 
     // when
     jest.spyOn(service, 'setSelectedLeague');

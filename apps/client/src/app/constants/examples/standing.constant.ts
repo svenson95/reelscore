@@ -1,9 +1,9 @@
 import { LeagueStanding } from '../../models';
-import { LEAGUES_LABELS } from '../leagues-labels';
+import { COMPETITION_LABEL } from '../competition/label.constant';
 
 export const LEAGUE_STANDING_EXAMPLES: LeagueStanding[] = [
   {
-    competition: LEAGUES_LABELS.GERMANY_BUNDESLIGA,
+    competition: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
     list: [
       {
         rank: 1,
@@ -224,7 +224,7 @@ export const LEAGUE_STANDING_EXAMPLES: LeagueStanding[] = [
     ],
   },
   {
-    competition: LEAGUES_LABELS.FRANCE_LIGUE_1,
+    competition: COMPETITION_LABEL.FRANCE_LIGUE_1,
     list: [
       {
         rank: 1,

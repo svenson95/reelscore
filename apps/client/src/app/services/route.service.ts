@@ -2,7 +2,8 @@ import { Injectable, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { LeagueUrl } from '../constants';
+
+import { LeagueUrl } from '../models';
 
 export abstract class RouteService {
   abstract router: Router;

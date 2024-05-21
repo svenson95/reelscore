@@ -1,9 +1,9 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 
-import { LEAGUES_METADATA } from '../../constants';
+import { SELECT_LEAGUE } from '../../constants';
 import { SelectLeagueData, SelectLeagueState } from '../../models';
 
-export const mockLeague: SelectLeagueData = LEAGUES_METADATA[2];
+export const mockLeague: SelectLeagueData = SELECT_LEAGUE[2];
 
 export abstract class LeagueService {
   abstract readonly SELECTED_LEAGUE_DEFAULT: string;
