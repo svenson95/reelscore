@@ -1,4 +1,4 @@
-import { Competition } from './competition.constant';
+import { CompetitionCode as Competition } from './code.constant';
 
 export const COMPETITION_ID = {
   [Competition.ENGLAND_PREMIER_LEAGUE]: '39',

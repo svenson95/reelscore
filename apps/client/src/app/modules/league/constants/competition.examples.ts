@@ -3,15 +3,15 @@ import {
   MATCH_EXAMPLES,
   MATCH_EXAMPLES_2,
 } from '../../../constants';
-import { Competition } from '../../../models';
+import { CompetitionFixtures } from '../../../models';
 
-export const COMPETITION_EXAMPLES: Competition[] = [
+export const COMPETITION_EXAMPLES: CompetitionFixtures[] = [
   {
     name: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
-    list: MATCH_EXAMPLES,
+    fixtures: MATCH_EXAMPLES,
   },
   {
     name: COMPETITION_LABEL.SPAIN_LA_LIGA,
-    list: MATCH_EXAMPLES_2,
+    fixtures: MATCH_EXAMPLES_2,
   },
 ];

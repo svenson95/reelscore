@@ -1,10 +1,10 @@
-import { LeagueStanding } from '../../models';
-import { COMPETITION_LABEL } from '../competition/label.constant';
+import { COMPETITION_LABEL } from '../../constants';
+import { CompetitionStandings } from '../../models';
 
-export const LEAGUE_STANDING_EXAMPLES: LeagueStanding[] = [
+export const LEAGUE_STANDING_EXAMPLES: CompetitionStandings[] = [
   {
-    competition: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
-    list: [
+    name: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
+    standings: [
       {
         rank: 1,
         team: 'FC Bayern München',
@@ -224,8 +224,8 @@ export const LEAGUE_STANDING_EXAMPLES: LeagueStanding[] = [
     ],
   },
   {
-    competition: COMPETITION_LABEL.FRANCE_LIGUE_1,
-    list: [
+    name: COMPETITION_LABEL.FRANCE_LIGUE_1,
+    standings: [
       {
         rank: 1,
         team: 'Paris Saint-Germain',

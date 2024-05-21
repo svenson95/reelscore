@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { Competition } from '../../models';
+import { CompetitionFixtures } from '../../models';
 
 @Component({
-  selector: 'futbet-start-match-list',
+  selector: 'futbet-match-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule],
@@ -21,11 +21,10 @@ import { Competition } from '../../models';
   `,
   template: `
     <div class="list-header">
-      <span>{{ competition().flag }}</span>
       <h5>{{ competition().name }}</h5>
     </div>
     <ul>
-      @for(item of competition().list; track item.id){
+      @for(item of competition().fixtures; track item.id){
       <li [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.id]">
         <div class="wrapper">
           <div class="time">
@@ -45,5 +44,5 @@ import { Competition } from '../../models';
   `,
 })
 export class MatchListComponent {
-  readonly competition = input.required<Competition>();
+  readonly competition = input.required<CompetitionFixtures>();
 }

@@ -1,6 +1,7 @@
-import { Match } from './match.model';
+import { COMPETITION_URL } from '../constants';
 
 export interface Competition {
   name: string;
-  list: Match[];
 }
+
+export type CompetitionUrl = keyof typeof COMPETITION_URL;

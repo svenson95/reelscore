@@ -1,6 +1,7 @@
-export interface LeagueStanding {
-  competition: string;
-  list: Standing[];
+import { Competition } from './competition.model';
+
+export interface CompetitionStandings extends Competition {
+  standings: Standing[];
 }
 
 export interface Standing {

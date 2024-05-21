@@ -1,11 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
-import { Competition, LeagueStanding } from '../../models';
+import { LEAGUE_STANDING_EXAMPLES } from '../../constants';
+import { CompetitionFixtures, CompetitionStandings } from '../../models';
 import { DateService, ROUTE_SERVICE_PROVIDER } from '../../services';
+
 import { RouterView } from '../router-view';
 
-import { LEAGUE_STANDING_EXAMPLES } from '../../constants/examples/standing.constant';
 import { TableComponent } from './components';
 import { COMPETITION_EXAMPLES } from './constants';
 import { FilteredCompetitions } from './models';
@@ -41,7 +42,7 @@ import { FilteredCompetitions } from './models';
 
     <section>
       @for (competition of competitions(); track competition.name) {
-      <futbet-start-match-list [competition]="competition" />
+      <futbet-match-list [competition]="competition" />
       } @empty {
       <p>Es finden keine Spiele statt.</p>
       } @if (league() !== undefined) {
@@ -53,19 +54,19 @@ import { FilteredCompetitions } from './models';
 export class LeagueComponent extends RouterView {
   readonly dateService = inject(DateService);
 
-  league = computed<LeagueStanding | undefined>(() => {
+  league = computed<CompetitionStandings | undefined>(() => {
     return LEAGUE_STANDING_EXAMPLES.find(
-      (s) => s.competition === this.selectedLeague()?.label
+      (s) => s.name === this.selectedLeague()?.label
     );
   });
 
-  get leagueData(): LeagueStanding {
+  get leagueData(): CompetitionStandings {
     const leagueData = this.league();
     if (!leagueData) throw new Error('League is unexpectedly undefined');
     return leagueData;
   }
 
-  readonly competitions = computed<Competition[]>(() => {
+  competitions = computed<CompetitionFixtures[]>(() => {
     const filtered = new FilteredCompetitions(COMPETITION_EXAMPLES)
       .byDay(this.dateService.selectedDay())
       .byLeague(this.selectedLeague()?.label);

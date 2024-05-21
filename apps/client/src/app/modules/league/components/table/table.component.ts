@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
-import { LeagueStanding } from '../../../../models';
+import { CompetitionStandings } from '../../../../models';
 
 @Component({
   selector: 'futbet-league-table',
@@ -28,7 +28,7 @@ import { LeagueStanding } from '../../../../models';
     }
   `,
   template: `
-    <table mat-table [dataSource]="league().list">
+    <table mat-table [dataSource]="league().standings">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
@@ -117,5 +117,5 @@ export class TableComponent {
     'goalsAgainst',
     'points',
   ];
-  league = input.required<LeagueStanding>();
+  league = input.required<CompetitionStandings>();
 }
