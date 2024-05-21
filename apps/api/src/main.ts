@@ -4,11 +4,15 @@
  */
 
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
-import { DBHelper } from './helper/db.helper';
+dotenv.config();
+
+import { DBHelper } from './middleware';
+import { standings } from './routes';
 
 const app = express();
-// app.use(express.json());
+app.use(express.json());
 app.use(cors());
 app.use(
   cors({
@@ -18,15 +22,14 @@ app.use(
 
 // app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to api!' });
-});
+app.use('/standings', standings);
+// app.use('/fixtures', fixtures);
+// app.use('/fixtures-statistics', fixturesStatistics);
 
 const port = process.env.PORT;
-const server = app.listen(port, () => {
+const server = app.listen(port, async () => {
+  DBHelper.init();
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
 server.on('error', console.error);
-
-DBHelper.init();
