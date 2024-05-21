@@ -14,6 +14,10 @@ Enhance your Nx experience by installing [Nx Console](https://nx.dev/nx-console)
 provides an interactive UI to view your projects, run tasks, generate code, and more! Available for VSCode, IntelliJ and
 comes with a LSP for Vim users.
 
+## Start the `client` and `api` the same time
+
+Run `nx run-many --parallel --target=serve --projects=api,client` or simply `npm run dev`.
+
 ## Start the `client` application
 
 Run `npx nx serve client` to start the development server. Happy coding!
