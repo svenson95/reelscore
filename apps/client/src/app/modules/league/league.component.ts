@@ -2,9 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 
 import { DateBarComponent, MatchListComponent } from '../../components';
 import {
-  COMPETITION_EXAMPLES,
   Competition,
-  FilteredCompetitions,
   LEAGUE_STANDING_EXAMPLE,
   LeagueStanding,
 } from '../../models';
@@ -12,6 +10,8 @@ import { DateService, ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 
 import { TableComponent } from './components';
+import { COMPETITION_EXAMPLES } from './constants';
+import { FilteredCompetitions } from './models';
 
 @Component({
   selector: 'futbet-league',
