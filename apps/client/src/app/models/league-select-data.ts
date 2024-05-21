@@ -6,3 +6,5 @@ export interface SelectLeagueData {
   id: LeagueId;
   url: string;
 }
+
+export type SelectLeagueState = SelectLeagueData | undefined;
