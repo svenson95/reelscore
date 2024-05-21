@@ -1,7 +1,7 @@
 import { effect, inject } from '@angular/core';
 
 import { LEAGUES_METADATA, LeagueUrl } from '../constants';
-import { SelectLeagueData } from '../models';
+import { SelectLeagueState } from '../models';
 import { LeagueService, RouteService } from '../services';
 
 export class RouterView {
@@ -14,7 +14,7 @@ export class RouterView {
     { allowSignalWrites: true }
   );
 
-  getLeagueByUrl(url: LeagueUrl): SelectLeagueData | undefined {
+  getLeagueByUrl(url: LeagueUrl): SelectLeagueState {
     return LEAGUES_METADATA.find((l) => l.url === url);
   }
 
