@@ -2,4 +2,4 @@ export * from './date-bar/date-bar.component';
 export * from './footer/footer.component';
 export * from './header/header.component';
 export * from './logo/logo.component';
-export * from './match-day-list/match-list.component';
+export * from './match-list/match-list.component';

@@ -28,6 +28,6 @@ export interface StandingsRanks {
   update: string;
 }
 
-export interface Standings {
+export interface StandingsDTO {
   league: League;
 }

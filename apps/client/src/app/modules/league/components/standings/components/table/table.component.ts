@@ -1,14 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
-import { CompetitionStandings } from '../../../../models';
+import { StandingsDTO } from '../../../../../../models';
 
 @Component({
-  selector: 'futbet-league-table',
+  selector: 'futbet-league-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatTableModule],
+  imports: [CommonModule, MatTableModule],
   styles: `
+    :host {
+      @apply w-full;
+    }
+
     table {
       --mat-table-header-headline-size: 11px;
       --mat-table-row-item-label-text-size: 11px;
@@ -28,7 +33,7 @@ import { CompetitionStandings } from '../../../../models';
     }
   `,
   template: `
-    <table mat-table [dataSource]="league().standings">
+    <table mat-table [dataSource]="data().league.standings![0]">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
@@ -39,56 +44,56 @@ import { CompetitionStandings } from '../../../../models';
           Mannschaft
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
-          {{ element.team }}
+          {{ element.team.name }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="played">
         <th mat-header-cell *matHeaderCellDef class="number-column">SP</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.played }}
+          {{ element.all.played }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="win">
         <th mat-header-cell *matHeaderCellDef class="number-column">S</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.played }}
+          {{ element.all.win }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="draw">
         <th mat-header-cell *matHeaderCellDef class="number-column">U</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.draw }}
+          {{ element.all.draw }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="lost">
         <th mat-header-cell *matHeaderCellDef class="number-column">V</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.lost }}
+          {{ element.all.lose }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="goalDifference">
         <th mat-header-cell *matHeaderCellDef class="number-column">TD</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.goalDifference }}
+          {{ element.goalsDiff }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="goalsFor">
         <th mat-header-cell *matHeaderCellDef class="number-column">+</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.goalsFor }}
+          {{ element.all.goals.for }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="goalsAgainst">
         <th mat-header-cell *matHeaderCellDef class="number-column">-</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.goalsAgainst }}
+          {{ element.all.goals.against }}
         </td>
       </ng-container>
 
@@ -105,7 +110,7 @@ import { CompetitionStandings } from '../../../../models';
   `,
 })
 export class TableComponent {
-  displayedColumns: string[] = [
+  readonly displayedColumns: string[] = [
     'rank',
     'team',
     'played',
@@ -117,5 +122,6 @@ export class TableComponent {
     'goalsAgainst',
     'points',
   ];
-  league = input.required<CompetitionStandings>();
+
+  data = input.required<StandingsDTO>();
 }

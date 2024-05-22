@@ -7,6 +7,8 @@ import {
   LeagueSelectMobileComponent,
 } from './components';
 
+const SELECTED_LEAGUE_DEFAULT = 'start';
+
 @Component({
   selector: 'header',
   standalone: true,
@@ -28,5 +30,5 @@ export class HeaderComponent {
   isMobile = this.breakpoint.isMobile;
 
   selectedLeague = this.leagueService.selectedLeague;
-  default = this.leagueService.SELECTED_LEAGUE_DEFAULT;
+  default = SELECTED_LEAGUE_DEFAULT;
 }

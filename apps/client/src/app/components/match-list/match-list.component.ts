@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CompetitionFixtures } from '../../models';
 
 @Component({
-  selector: 'futbet-match-list',
+  selector: 'futbet-league-match-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule],

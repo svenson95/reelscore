@@ -1,29 +1,20 @@
 import { effect, inject } from '@angular/core';
 
 import { SELECT_LEAGUE } from '../constants';
-import { CompetitionUrl, SelectLeagueState } from '../models';
+import { CompetitionUrl } from '../models';
 import { LeagueService, RouteService } from '../services';
 
 export class RouterView {
-  protected readonly routeService = inject(RouteService);
-  readonly service = inject(LeagueService);
-  readonly selectedLeague = this.service.selectedLeague;
+  routeService = inject(RouteService);
+  leagueService = inject(LeagueService);
 
-  protected readonly routeEvent = effect(
+  routeEvent = effect(
     () => this.updateLeague(this.routeService.activeRoute()),
     { allowSignalWrites: true }
   );
 
-  getLeagueByUrl(url: CompetitionUrl): SelectLeagueState {
-    return SELECT_LEAGUE.find((l) => l.url === url);
-  }
-
   updateLeague(url: CompetitionUrl): void {
-    const league = this.getLeagueByUrl(url);
-    this.service.setSelectedLeague(league);
-  }
-
-  isInvalid(routeArr: unknown | undefined): boolean {
-    return routeArr === undefined;
+    const league = SELECT_LEAGUE.find((l) => l.url === url);
+    this.leagueService.setSelectedLeague(league);
   }
 }
