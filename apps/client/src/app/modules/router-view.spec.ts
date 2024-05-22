@@ -5,7 +5,7 @@ import { routes } from '../app.routes';
 import {
   COMPETITION_ID,
   COMPETITION_URL,
-  Competition,
+  CompetitionCode,
   SELECT_LEAGUE,
 } from '../constants';
 import { CompetitionUrl } from '../models';
@@ -58,7 +58,7 @@ describe('RouterView', () => {
   describe('updateLeagueOnRouting', () => {
     it('should update selected league after routing', () => {
       // given
-      const mock = Competition.ENGLAND_PREMIER_LEAGUE;
+      const mock = CompetitionCode.ENGLAND_PREMIER_LEAGUE;
       const validRoute = COMPETITION_URL[mock] as CompetitionUrl;
       const validMetaData = SELECT_LEAGUE.find(
         (m) => m.id === COMPETITION_ID[mock]
