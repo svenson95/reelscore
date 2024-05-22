@@ -1,10 +1,14 @@
-import { LeagueId } from '../constants';
+import {
+  CompetitionId,
+  CompetitionLabel,
+  CompetitionUrl,
+} from './competition.model';
 
 export interface SelectLeagueData {
   image: string;
-  label: string;
-  id: LeagueId;
-  url: string;
+  label: CompetitionLabel;
+  id: CompetitionId;
+  url: CompetitionUrl;
 }
 
 export type SelectLeagueState = SelectLeagueData | undefined;
