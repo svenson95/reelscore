@@ -1,7 +1,9 @@
+import {
+  COMPETITION_ID,
+  COMPETITION_LABEL,
+  COMPETITION_URL,
+} from '../constants';
 import { SelectLeagueData } from '../models';
-import { COMPETITION_ID } from './competition/id.constant';
-import { COMPETITION_LABEL } from './competition/label.constant';
-import { COMPETITION_URL } from './competition/url.constant';
 
 export const SELECT_LEAGUE: SelectLeagueData[] = [
   {
