@@ -16,7 +16,7 @@ import { CompetitionFixtures } from '../../../../../../models';
     ul { @apply text-fb-font-size-small; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer border-b-[1px]; }
     li > div { @apply inline-flex flex-col; }
-    .time, .result { @apply min-w-[56px] flex text-center bg-gray-50 py-[16.5px] leading-[16px]; }
+    .time, .result { @apply min-w-[56px] flex text-center py-[16.5px] leading-[16px]; }
     .result { @apply tracking-[0.2em]; }
     .teams { @apply align-middle px-3; }
   `,
