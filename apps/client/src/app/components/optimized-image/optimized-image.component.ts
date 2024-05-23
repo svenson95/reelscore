@@ -11,11 +11,14 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     [ngSrc]="source()"
     [alt]="alternate"
     priority
-    width="16"
-    height="12"
+    [width]="width()"
+    [height]="height()"
   />`,
 })
 export class OptimizedImageComponent {
   source = input.required<string>();
   alternate = input.required<string>();
+
+  width = input.required<string>();
+  height = input.required<string>();
 }
