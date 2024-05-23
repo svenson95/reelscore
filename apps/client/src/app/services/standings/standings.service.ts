@@ -25,7 +25,7 @@ export class AbstractedStandingsService extends StandingsService {
 
   standings = signal<StandingsState>(undefined);
 
-  onSelectedLeagueChange = effect(() => this.setStandings, {
+  onSelectedLeagueChange = effect(() => this.setStandings(), {
     allowSignalWrites: true,
   });
 
