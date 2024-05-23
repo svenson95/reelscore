@@ -10,10 +10,6 @@ import { StandingsDTO } from '../../../../../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, MatTableModule],
   styles: `
-    :host {
-      @apply w-full;
-    }
-
     table {
       --mat-table-header-headline-size: var(--fb-font-size-small);
       --mat-table-row-item-label-text-size: var(--fb-font-size-small);
@@ -24,9 +20,7 @@ import { StandingsDTO } from '../../../../../../models';
     td { @apply py-[4px] leading-[16px]; }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.name-column {
-        min-width: 150px;
-      }
+      &.name-column { min-width: 150px; }
 
       &.number-column {
         padding: 0 4px 0 4px;
