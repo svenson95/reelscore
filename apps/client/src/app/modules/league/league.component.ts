@@ -4,12 +4,12 @@ import { DateBarComponent } from '../../components';
 import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 
-import { MatchListsComponent, StandingsComponent } from './components';
+import { MatchDayComponent, StandingsComponent } from './components';
 
 @Component({
   selector: 'futbet-league',
   standalone: true,
-  imports: [DateBarComponent, MatchListsComponent, StandingsComponent],
+  imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
   providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
@@ -28,7 +28,7 @@ import { MatchListsComponent, StandingsComponent } from './components';
     <futbet-start-date-bar />
 
     <section>
-      <futbet-league-match-lists />
+      <futbet-league-match-day />
 
       <futbet-league-standings />
     </section>

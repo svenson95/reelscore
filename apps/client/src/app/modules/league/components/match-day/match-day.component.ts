@@ -5,20 +5,20 @@ import {
   inject,
 } from '@angular/core';
 
-import { MatchListComponent } from '../../../../components';
-import { CompetitionFixtures } from '../../../../models';
 import { DateService, LeagueService } from '../../../../services';
 
 import { COMPETITION_EXAMPLES } from '../../constants';
 import { FilteredCompetitions } from '../../models';
 
+import { MatchDayListComponent } from './components';
+
 @Component({
-  selector: 'futbet-league-match-lists',
+  selector: 'futbet-league-match-day',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchListComponent],
+  imports: [MatchDayListComponent],
   styles: `
-    futbet-league-match-list:not(:last-child) {
+    futbet-league-match-day-list:not(:last-child) {
         @apply flex flex-col mb-5;
     }
 
@@ -28,20 +28,23 @@ import { FilteredCompetitions } from '../../models';
   `,
   template: `
     @for (competition of fixtures(); track competition.name) {
-    <futbet-league-match-list [competition]="competition" />
+    <futbet-league-match-day-list [competition]="competition" />
     } @empty {
     <p>Es finden keine Spiele statt.</p>
     }
   `,
 })
-export class MatchListsComponent {
+export class MatchDayComponent {
   dateService = inject(DateService);
   leagueService = inject(LeagueService);
 
-  fixtures = computed<CompetitionFixtures[]>(() => {
+  fixtureData = COMPETITION_EXAMPLES;
+
+  fixtures = computed(() => {
+    const selectedDay = this.dateService.selectedDay();
     const selectedLeague = this.leagueService.selectedLeague;
-    const filtered = new FilteredCompetitions(COMPETITION_EXAMPLES)
-      .byDay(this.dateService.selectedDay())
+    const filtered = new FilteredCompetitions(this.fixtureData)
+      .byDay(selectedDay)
       .byLeague(selectedLeague()?.label);
     return filtered.competitions;
   });
