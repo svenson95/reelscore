@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { CompetitionFixtures } from '../../../../../../models';
   selector: 'futbet-league-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, OptimizedImageComponent],
+  imports: [DatePipe, RouterModule, OptimizedImageComponent],
   styles: `
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
     .header span { @apply text-fb-font-size-body-1; }
