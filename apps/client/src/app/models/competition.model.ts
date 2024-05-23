@@ -1,5 +1,6 @@
 export interface Competition {
   name: string;
+  image: string;
 }
 
 export type CompetitionUrl = string;
