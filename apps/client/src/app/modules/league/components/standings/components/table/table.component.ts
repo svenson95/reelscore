@@ -15,10 +15,10 @@ import { StandingsDTO } from '../../../../../../models';
     }
 
     table {
-      --mat-table-header-headline-size: 11px;
-      --mat-table-row-item-label-text-size: 11px;
-      --mat-table-header-container-height: 48px;
-      --mat-table-row-item-container-height: 32px;
+      --mat-table-header-headline-size: var(--fb-font-size-small);
+      --mat-table-row-item-label-text-size: var(--fb-font-size-small);
+      --mat-table-header-container-height: 47px;
+      --mat-table-row-item-container-height: 25px;
     }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {

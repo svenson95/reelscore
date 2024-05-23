@@ -11,34 +11,32 @@ import { CompetitionFixtures } from '../../../../../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, OptimizedImageComponent],
   styles: `
-    .list-header { @apply flex p-3 gap-3 bg-white border-b-[1px]; }
-    ul { @apply w-full; }
+    .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
+    .header span { @apply text-fb-font-size-body-1; }
+    ul { @apply text-fb-font-size-small; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer border-b-[1px]; }
-    .wrapper { @apply flex text-fb-font-size-body-2; }
-    .time, .result { @apply flex self-center bg-gray-50 px-4 py-5; }
-    .time { @apply min-w-[75px] justify-center; }
-    .result { @apply min-w-[50px] justify-center; }
-    .teams { @apply self-center px-4 py-2; }
+    li > div { @apply inline-flex flex-col; }
+    .time, .result { @apply min-w-[56px] flex text-center bg-gray-50 py-[16.5px] leading-[16px]; }
+    .result { @apply tracking-[0.2em]; }
+    .teams { @apply align-middle px-3; }
   `,
   template: `
-    <div class="list-header">
+    <div class="header">
       <futbet-optimized-image [source]="competition().image" />
-      <h5>{{ competition().name }}</h5>
+      <span>{{ competition().name }}</span>
     </div>
     <ul>
       @for(item of competition().fixtures; track item.id){
       <li [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.id]">
-        <div class="wrapper">
-          <div class="time">
-            {{ item.date | date : 'HH:mm' }}
-          </div>
-          <div class="result">
-            {{ item.result?.full_time ?? '-' }}
-          </div>
-          <div class="teams">
-            <div class="home-team">{{ item.homeTeam }}</div>
-            <div class="away-team">{{ item.awayTeam }}</div>
-          </div>
+        <div class="time">
+          <span>{{ item.date | date : 'HH:mm' }}</span>
+        </div>
+        <div class="result">
+          <span>{{ item.result?.full_time ?? '-' }}</span>
+        </div>
+        <div class="teams">
+          <span>{{ item.homeTeam }}</span>
+          <span>{{ item.awayTeam }}</span>
         </div>
       </li>
       }
