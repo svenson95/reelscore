@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { OptimizedImageComponent } from '../../../../../../components';
 import { CompetitionFixtures } from '../../../../../../models';
 
 @Component({
   selector: 'futbet-league-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, OptimizedImageComponent],
   styles: `
     .list-header { @apply flex p-3 gap-3 bg-white border-b-[1px]; }
     ul { @apply w-full; }
@@ -21,7 +22,7 @@ import { CompetitionFixtures } from '../../../../../../models';
   `,
   template: `
     <div class="list-header">
-      <img [src]="competition().image" alt="Logo" class="w-4 h-4 self-center" />
+      <futbet-optimized-image [source]="competition().image" />
       <h5>{{ competition().name }}</h5>
     </div>
     <ul>
