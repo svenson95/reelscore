@@ -4,6 +4,7 @@ import { CompetitionStandings } from '../../models';
 export const LEAGUE_STANDING_EXAMPLES: CompetitionStandings[] = [
   {
     name: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
+    image: 'https://media-3.api-sports.io/flags/de.svg',
     standings: [
       {
         rank: 1,
@@ -225,6 +226,7 @@ export const LEAGUE_STANDING_EXAMPLES: CompetitionStandings[] = [
   },
   {
     name: COMPETITION_LABEL.FRANCE_LIGUE_1,
+    image: 'https://media-3.api-sports.io/flags/fr.svg',
     standings: [
       {
         rank: 1,

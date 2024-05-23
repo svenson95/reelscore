@@ -21,6 +21,7 @@ import { CompetitionFixtures } from '../../../../../../models';
   `,
   template: `
     <div class="list-header">
+      <img [src]="competition().image" alt="Logo" class="w-4 h-4 self-center" />
       <h5>{{ competition().name }}</h5>
     </div>
     <ul>
