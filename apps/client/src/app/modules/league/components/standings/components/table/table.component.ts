@@ -21,6 +21,8 @@ import { StandingsDTO } from '../../../../../../models';
       --mat-table-row-item-container-height: 25px;
     }
 
+    td { @apply py-[4px] leading-[16px]; }
+
     .mdc-data-table__cell, .mdc-data-table__header-cell {
       &.name-column {
         min-width: 150px;

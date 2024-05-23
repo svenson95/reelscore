@@ -16,10 +16,10 @@ import { MatchDayComponent, StandingsComponent } from './components';
       @apply w-full; 
 
       section {
-        @apply inline-flex flex-wrap w-full gap-5;
+        @apply inline-flex flex-wrap md:flex-nowrap w-full gap-5;
 
         > * {
-          @apply flex-1;
+          @apply w-full min-w-[200px];
         }
       }
     }
