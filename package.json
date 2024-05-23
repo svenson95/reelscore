@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nx run-many --parallel --target=serve --projects=api,client",
-    "build": "nx build --output public"
+    "build": "nx build --output dist"
   },
   "private": true,
   "dependencies": {
