@@ -25,6 +25,8 @@ import { CompetitionFixtures } from '../../../../../../models';
       <futbet-optimized-image
         [source]="competition().image"
         alternate="country flag"
+        width="16"
+        height="12"
       />
       <span>{{ competition().name }}</span>
     </div>
