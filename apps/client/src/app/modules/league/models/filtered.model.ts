@@ -15,12 +15,9 @@ export class FilteredCompetitions extends Array<CompetitionFixtures> {
 
   byDay(day: DateString): FilteredCompetitions {
     const isSameDate = (m: Match) => isSameDay(m.date, new Date(day));
-    const filtered = this.competitions
+    const filtered: CompetitionFixtures[] = this.competitions
       .filter((c: CompetitionFixtures) => c.fixtures.some(isSameDate))
-      .map((c: CompetitionFixtures) => ({
-        ...c,
-        list: c.fixtures.filter(isSameDate),
-      }));
+      .map((c: CompetitionFixtures) => filteredFixtures(c, isSameDate));
 
     return new FilteredCompetitions(filtered);
   }
@@ -30,3 +27,11 @@ export class FilteredCompetitions extends Array<CompetitionFixtures> {
     return new FilteredCompetitions(query ? filtered : this.competitions);
   }
 }
+
+const filteredFixtures = (
+  c: CompetitionFixtures,
+  isSameDate: (m: Match) => boolean
+): CompetitionFixtures => ({
+  ...c,
+  fixtures: c.fixtures.filter(isSameDate),
+});

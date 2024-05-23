@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CompetitionFixtures } from '../../models';
+import { CompetitionFixtures } from '../../../../../../models';
 
 @Component({
-  selector: 'futbet-league-match-list',
+  selector: 'futbet-league-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule],
@@ -43,6 +43,6 @@ import { CompetitionFixtures } from '../../models';
     </ul>
   `,
 })
-export class MatchListComponent {
+export class MatchDayListComponent {
   readonly competition = input.required<CompetitionFixtures>();
 }

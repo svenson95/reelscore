@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 
 import { CompetitionId, StandingsDTO } from '../../models';
 
-export abstract class DatabaseStandingsService {
+export abstract class HttpStandingsService {
   abstract getStandings(id: CompetitionId): Observable<StandingsDTO>;
 }
 
 @Injectable()
-export class AbstractedDatabaseStandingsService {
+export class AbstractedHttpStandingsService extends HttpStandingsService {
   BASE_URL = 'http://localhost:3333';
 
   http = inject(HttpClient);
@@ -23,6 +23,6 @@ export class AbstractedDatabaseStandingsService {
 }
 
 export const DATABASE_STANDINGS_SERVICE_PROVIDER = {
-  provide: DatabaseStandingsService,
-  useClass: AbstractedDatabaseStandingsService,
+  provide: HttpStandingsService,
+  useClass: AbstractedHttpStandingsService,
 };

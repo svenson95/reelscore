@@ -8,23 +8,23 @@ import {
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { routes } from '../../app.routes';
-import { Match } from '../../models';
+import { routes } from '../../../../../../app.routes';
+import { Match } from '../../../../../../models';
 
-import { MATCH_EXAMPLES, MATCH_EXAMPLES_2 } from '../../constants';
-import { MatchListComponent } from './match-list.component';
+import { MATCH_EXAMPLES, MATCH_EXAMPLES_2 } from '../../../../../../constants';
+import { MatchDayListComponent } from './list.component';
 
-describe('MatchListComponent', () => {
-  let fixture: ComponentFixture<MatchListComponent>;
-  let component: MatchListComponent;
+describe('MatchDayListComponent', () => {
+  let fixture: ComponentFixture<MatchDayListComponent>;
+  let component: MatchDayListComponent;
   let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes(routes), MatchListComponent],
+      imports: [RouterTestingModule.withRoutes(routes), MatchDayListComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MatchListComponent);
+    fixture = TestBed.createComponent(MatchDayListComponent);
     component = fixture.componentInstance;
     location = TestBed.inject(Location);
 

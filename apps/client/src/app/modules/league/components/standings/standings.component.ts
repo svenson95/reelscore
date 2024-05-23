@@ -7,7 +7,7 @@ import {
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { StandingsDTO } from '../../../../models';
-import { LeagueService } from '../../../../services';
+import { StandingsService } from '../../../../services';
 
 import { TableComponent } from './components';
 
@@ -25,8 +25,8 @@ import { TableComponent } from './components';
   `,
 })
 export class StandingsComponent {
-  leagueService = inject(LeagueService);
-  standings = this.leagueService.standings;
+  service = inject(StandingsService);
+  standings = this.service.standings;
 
   isLoaded = computed(
     () => !!this.standings() && this.standings() !== 'loading'
