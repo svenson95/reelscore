@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   styles: `:host { @apply self-center; }`,
   template: ` <img
     [ngSrc]="source()"
-    alt="Logo"
+    [alt]="alternate"
     priority
     width="16"
     height="12"
@@ -17,4 +17,5 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class OptimizedImageComponent {
   source = input.required<string>();
+  alternate = input.required<string>();
 }

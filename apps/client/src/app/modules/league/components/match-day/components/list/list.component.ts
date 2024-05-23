@@ -22,7 +22,10 @@ import { CompetitionFixtures } from '../../../../../../models';
   `,
   template: `
     <div class="header">
-      <futbet-optimized-image [source]="competition().image" />
+      <futbet-optimized-image
+        [source]="competition().image"
+        alternate="country flag"
+      />
       <span>{{ competition().name }}</span>
     </div>
     <ul>
