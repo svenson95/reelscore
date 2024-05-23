@@ -14,11 +14,11 @@ import { standings } from './routes';
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(
-  cors({
-    origin: 'https://futbet.vercel.app/',
-  })
-);
+// app.use(
+//   cors({
+//     origin: 'https://futbet.vercel.app/',
+//   })
+// );
 
 // app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
