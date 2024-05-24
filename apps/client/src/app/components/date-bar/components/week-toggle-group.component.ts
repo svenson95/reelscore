@@ -23,7 +23,7 @@ import { DateString, TODAY_ISO_STRING } from '../../../models';
       --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
 
       mat-button-toggle.mat-button-toggle {
-        @apply text-fb-font-size-body-1;
+        @apply text-fb-font-size-body-2;
 
         &.is-today {
           --mat-standard-button-toggle-background-color: var(--fb-color-white);
