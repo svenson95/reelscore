@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['https://futbet.vercel.app', 'http://localhost:4200'],
+    origin: 'https://futbet.vercel.app',
   })
 );
 app.use(helmet());
