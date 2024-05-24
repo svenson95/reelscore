@@ -13,13 +13,8 @@ import { DateString, TODAY_ISO_STRING } from '../../../models';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
-  styles: `
-    button {
-      @apply text-fb-font-size-body-2;
-    }
-  `,
   template: `
-    <button mat-raised-button (click)="setToday()" [disabled]="isToday()">
+    <button mat-stroked-button (click)="setToday()" [disabled]="isToday()">
       Heute
     </button>
   `,
