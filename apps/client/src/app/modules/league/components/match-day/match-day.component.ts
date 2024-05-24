@@ -3,11 +3,12 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from '@angular/core';
 
+import { CompetitionFixtures, MatchDTO } from '../../../../models';
 import { DateService, LeagueService } from '../../../../services';
 
-import { COMPETITION_EXAMPLES } from '../../constants';
 import { FilteredCompetitions } from '../../models';
 
 import { MatchDayListComponent } from './components';
@@ -27,7 +28,7 @@ import { MatchDayListComponent } from './components';
     }
   `,
   template: `
-    @for (competition of fixtures(); track competition.name) {
+    @for (competition of competitions(); track competition.name) {
     <futbet-league-match-day-list [competition]="competition" />
     } @empty {
     <p>Es finden keine Spiele statt.</p>
@@ -38,14 +39,22 @@ export class MatchDayComponent {
   dateService = inject(DateService);
   leagueService = inject(LeagueService);
 
-  fixtureData = COMPETITION_EXAMPLES;
+  fixtureData = input.required<MatchDTO[]>();
 
-  fixtures = computed(() => {
-    const selectedDay = this.dateService.selectedDay();
+  competitions = computed<CompetitionFixtures[]>(() => {
     const selectedLeague = this.leagueService.selectedLeague;
-    const filtered = new FilteredCompetitions(this.fixtureData)
-      .byDay(selectedDay)
-      .byLeague(selectedLeague()?.label);
+    const competitions = [
+      ...new Set(this.fixtureData().map((f) => f.league.name)),
+    ];
+    const fixtures = competitions.map((c) => ({
+      name: c,
+      image:
+        this.fixtureData().find((f) => f.league.name === c)?.league.flag || '',
+      fixtures: this.fixtureData().filter((f) => f.league.name === c),
+    }));
+    const filtered = new FilteredCompetitions(fixtures).byLeague(
+      selectedLeague()?.label
+    );
     return filtered.competitions;
   });
 }

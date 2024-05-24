@@ -1,4 +1,5 @@
 import { Competition } from './competition.model';
+import { MatchDTO } from './db-models/fixtureDTO';
 
 export type MatchState = 'upcoming' | 'finished';
 export type MatchPriority = 'low' | 'mid' | 'high';
@@ -14,5 +15,5 @@ export interface Match {
 }
 
 export interface CompetitionFixtures extends Competition {
-  fixtures: Match[];
+  fixtures: MatchDTO[];
 }
