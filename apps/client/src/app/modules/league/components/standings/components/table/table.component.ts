@@ -17,6 +17,12 @@ import { BreakpointObserverService } from '../../../../../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, MatTableModule],
   styles: `
+    :host {
+      @apply flex overflow-hidden border;
+      border-color: var(--mat-standard-button-toggle-divider-color);
+      border-radius: var(--mat-standard-button-toggle-shape);
+    }
+
     table {
       --mat-table-header-headline-size: var(--fb-font-size-small);
       --mat-table-row-item-label-text-size: var(--fb-font-size-small);
