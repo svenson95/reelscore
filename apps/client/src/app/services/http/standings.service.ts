@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 import { CompetitionId, StandingsDTO } from '../../models';
 
 export abstract class HttpStandingsService {
@@ -10,13 +12,13 @@ export abstract class HttpStandingsService {
 
 @Injectable()
 export class AbstractedHttpStandingsService extends HttpStandingsService {
-  BASE_URL = 'http://localhost:3333';
+  BASE_URL = environment.api;
 
   http = inject(HttpClient);
 
   getStandings(id: CompetitionId): Observable<StandingsDTO> {
     const params = new HttpParams().set('league', id).set('season', '2023');
-    return this.http.get<StandingsDTO>(this.BASE_URL + '/standings/get', {
+    return this.http.get<StandingsDTO>(this.BASE_URL + 'standings/get', {
       params,
     });
   }
