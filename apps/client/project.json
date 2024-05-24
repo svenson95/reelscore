@@ -19,7 +19,7 @@
         "assets": [
           "apps/client/src/favicon.ico",
           "apps/client/src/assets",
-          "apps/my-app/src/_redirects"
+          "apps/client/src/_redirects"
         ],
         "styles": ["apps/client/src/styles/styles.scss"],
         "scripts": []
