@@ -15,7 +15,6 @@ import { standings } from './routes';
 const app = express();
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
 app.use(
   cors({
     origin: 'https://futbet.vercel.app/',
