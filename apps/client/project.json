@@ -19,11 +19,7 @@
         "assets": [
           "apps/client/src/favicon.ico",
           "apps/client/src/assets",
-          {
-            "glob": "_redirects",
-            "input": "src",
-            "output": "/"
-          }
+          "apps/my-app/src/_redirects"
         ],
         "styles": ["apps/client/src/styles/styles.scss"],
         "scripts": []
