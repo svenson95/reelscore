@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { CompetitionFixtures } from '../../../../../..//models';
 import { OptimizedImageComponent } from '../../../../../../components';
-import { CompetitionFixtures } from '../../../../../../models';
 
 @Component({
   selector: 'futbet-league-match-day-list',
@@ -37,17 +37,24 @@ import { CompetitionFixtures } from '../../../../../../models';
       <span>{{ competition().name }}</span>
     </div>
     <ul>
-      @for(item of competition().fixtures; track item.id){
-      <li [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.id]">
+      @for(item of competition().fixtures; track item.league.id) {
+      <li
+        [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.league.id]"
+      >
         <div class="time">
-          <span>{{ item.date | date : 'HH:mm' }}</span>
+          <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
         </div>
         <div class="result">
-          <span>{{ item.result?.full_time ?? '-' }}</span>
+          @if (item.score.fulltime.home === null) { "-" } @else {
+          <span
+            >{{ item.score.fulltime.home }} -
+            {{ item.score.fulltime.away }}</span
+          >
+          }
         </div>
         <div class="teams">
-          <span>{{ item.homeTeam }}</span>
-          <span>{{ item.awayTeam }}</span>
+          <span>{{ item.teams.home.name }}</span>
+          <span>{{ item.teams.away.name }}</span>
         </div>
       </li>
       }
