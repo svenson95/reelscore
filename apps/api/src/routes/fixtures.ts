@@ -6,10 +6,11 @@ import { Fixtures } from '../models';
 export const fixtures = express.Router();
 
 fixtures.get('/get', (req, res) => {
-  const leagueId = req.query.league;
-  const round = `Regular Season - ${req.query.round}`;
   const fixtureId = req.query.fixtureId;
   const teamId = req.query.teamId;
+  const round = req.query.round ? `Regular Season - ${req.query.round}` : null;
+  const leagueId = req.query.league;
+  const date = req.query.date;
 
   if (fixtureId) {
     return Fixtures.find({ 'fixture.id': fixtureId })
@@ -40,18 +41,42 @@ fixtures.get('/get', (req, res) => {
       );
   }
 
-  Fixtures.find({
-    'league.id': leagueId,
-    'league.round': round,
-    'league.season': 2023,
-  })
-    .then((docs) => res.json(docs))
-    .catch((error) =>
-      res.json({
-        status: 'error happened',
-        error: error,
-      })
-    );
+  if (round) {
+    return Fixtures.find({
+      'league.id': leagueId,
+      'league.round': round,
+      'league.season': 2023,
+    })
+      .then((docs) => res.json(docs))
+      .catch((error) =>
+        res.json({
+          status: 'error happened',
+          error: error,
+        })
+      );
+  }
+
+  if (date && typeof date === 'string') {
+    const day = new Date(date);
+    day.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(day);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    return Fixtures.find({
+      'fixture.date': {
+        $gte: day,
+        $lt: tomorrow,
+      },
+    })
+      .then((docs) => res.json(docs))
+      .catch((error) =>
+        res.json({
+          status: 'error happened',
+          error: error,
+        })
+      );
+  }
 });
 
 fixtures.delete('/delete', async (req, res) => {
