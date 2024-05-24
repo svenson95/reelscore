@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 app.use(
   cors({
-    origin: 'https://futbet.vercel.app/',
+    origin: 'https://futbet.vercel.app',
   })
 );
 
