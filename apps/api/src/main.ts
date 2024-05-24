@@ -23,6 +23,11 @@ app.use(
 
 // app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+app.get('/', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  return res.send(Buffer.from('<h1>Futbet API working...</h1>'));
+});
+
 app.use('/standings', standings);
 // app.use('/fixtures', fixtures);
 // app.use('/fixtures-statistics', fixturesStatistics);
