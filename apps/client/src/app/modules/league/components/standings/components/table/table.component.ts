@@ -1,8 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
 import { StandingsDTO } from '../../../../../../models';
+import { BreakpointObserverService } from '../../../../../../services';
 
 @Component({
   selector: 'futbet-league-standings-table',
@@ -18,6 +25,10 @@ import { StandingsDTO } from '../../../../../../models';
     }
 
     td { @apply py-[4px] leading-[16px]; }
+
+    td, th { &:first-of-type {
+      @apply pr-0 text-right;
+    } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
       &.name-column { min-width: 150px; }
@@ -72,6 +83,7 @@ import { StandingsDTO } from '../../../../../../models';
         </td>
       </ng-container>
 
+      @if (!isMobile()) {
       <ng-container matColumnDef="goalDifference">
         <th mat-header-cell *matHeaderCellDef class="number-column">TD</th>
         <td mat-cell *matCellDef="let element" class="number-column">
@@ -92,6 +104,7 @@ import { StandingsDTO } from '../../../../../../models';
           {{ element.all.goals.against }}
         </td>
       </ng-container>
+      }
 
       <ng-container matColumnDef="points">
         <th mat-header-cell *matHeaderCellDef>Pkt</th>
@@ -100,8 +113,8 @@ import { StandingsDTO } from '../../../../../../models';
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns()"></tr>
     </table>
   `,
 })
@@ -119,5 +132,19 @@ export class TableComponent {
     'points',
   ];
 
+  breakpoint = inject(BreakpointObserverService);
+
+  isMobile = this.breakpoint.isMobile;
+
   data = input.required<StandingsDTO>();
+
+  columns = computed(() => {
+    const filtered = this.displayedColumns.filter(
+      (column) =>
+        column !== 'goalDifference' &&
+        column !== 'goalsFor' &&
+        column !== 'goalsAgainst'
+    );
+    return this.isMobile() ? filtered : this.displayedColumns;
+  });
 }
