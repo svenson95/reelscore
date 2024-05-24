@@ -9,7 +9,7 @@ standings.get('/get', (req, res) => {
   const leagueId = req.query.league;
   const season = 2023;
 
-  Standings.find({ 'league.id': leagueId, 'league.season': season })
+  return Standings.find({ 'league.id': leagueId, 'league.season': season })
     .then((docs) => res.json(docs[docs.length - 1]))
     .catch((error) =>
       res.json({
@@ -20,7 +20,7 @@ standings.get('/get', (req, res) => {
 });
 
 standings.get('/get-all', (req, res) => {
-  Standings.find()
+  return Standings.find()
     .then((docs) => res.json(docs))
     .catch((error) =>
       res.json({
@@ -39,7 +39,7 @@ standings.get('/fetch', async (req, res) => {
   const data = body.response[0];
 
   const standing = new Standings(data);
-  await standing
+  return await standing
     .save()
     .then((document) => {
       res.json({
