@@ -32,9 +32,10 @@ app.use('/standings', standings);
 // app.use('/fixtures', fixtures);
 // app.use('/fixtures-statistics', fixturesStatistics);
 
+DBHelper.init();
+
 const port = process.env.PORT;
 const server = app.listen(port, async () => {
-  DBHelper.init();
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
