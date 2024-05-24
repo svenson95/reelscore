@@ -6,6 +6,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import helmet from 'helmet';
 dotenv.config();
 
 import { DBHelper } from './middleware';
@@ -13,6 +14,7 @@ import { standings } from './routes';
 
 const app = express();
 app.use(express.json());
+app.use(helmet());
 app.use(cors());
 app.use(
   cors({
