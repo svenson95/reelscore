@@ -11,9 +11,14 @@ import { CompetitionFixtures } from '../../../../../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, RouterModule, OptimizedImageComponent],
   styles: `
+    :host {
+      @apply flex flex-col overflow-hidden border;
+      border-color: var(--mat-standard-button-toggle-divider-color);
+      border-radius: var(--mat-standard-button-toggle-shape);
+    }
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
     .header span { @apply text-fb-font-size-body-1; }
-    ul { @apply text-fb-font-size-small; }
+    ul { @apply w-full text-fb-font-size-small; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer border-b-[1px]; }
     li > div { @apply inline-flex flex-col; }
     .time, .result { @apply min-w-[56px] flex text-center py-[16.5px] leading-[16px]; }
