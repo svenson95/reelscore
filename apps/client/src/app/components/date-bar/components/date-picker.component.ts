@@ -48,6 +48,7 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
   ],
   styles: `
     :host {
+      @apply flex;
       --mdc-outlined-button-label-text-color: var(--fb-color-text-1);
 
       mat-form-field {

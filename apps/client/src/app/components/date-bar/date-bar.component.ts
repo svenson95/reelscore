@@ -28,7 +28,7 @@ import {
         @apply inline-flex flex-wrap items-center justify-center sm:w-fit gap-5; 
 
         div {
-          @apply flex gap-5;
+          @apply flex gap-5 items-center;
         }
       }
     }
