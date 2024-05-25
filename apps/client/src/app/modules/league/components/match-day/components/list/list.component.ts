@@ -21,10 +21,16 @@ import { OptimizedImageComponent } from '../../../../../../components';
     ul { @apply w-full text-fb-font-size-small; }
     li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
-    li > div { @apply inline-flex flex-col; }
-    .time, .result { @apply min-w-[56px] flex text-center py-[16.5px] leading-[16px]; }
-    .result { @apply tracking-[0.2em]; }
+    li > section { @apply inline-flex flex-col; }
+    .time { @apply min-w-[50px] py-[16.5px]; }
+    .time, .result { @apply flex text-center leading-[16px]; }
+    .result { 
+      @apply align-middle px-2; 
+      border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
+      border-right: 1px solid var(--mat-standard-button-toggle-divider-color);
+    }
     .teams { @apply align-middle px-3; }
+    .teams > div { @apply flex gap-2; }
   `,
   template: `
     <div class="header">
@@ -41,21 +47,35 @@ import { OptimizedImageComponent } from '../../../../../../components';
       <li
         [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.league.id]"
       >
-        <div class="time">
+        <section class="time">
+          @if (item.score.fulltime.home === null) {
           <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
-        </div>
-        <div class="result">
-          @if (item.score.fulltime.home === null) { "-" } @else {
-          <span
-            >{{ item.score.fulltime.home }} -
-            {{ item.score.fulltime.away }}</span
-          >
-          }
-        </div>
-        <div class="teams">
-          <span>{{ item.teams.home.name }}</span>
-          <span>{{ item.teams.away.name }}</span>
-        </div>
+          } @else { FT }
+        </section>
+        <section class="result">
+          <span>{{ item.score.fulltime.home }}</span>
+          <span>{{ item.score.fulltime.away }}</span>
+        </section>
+        <section class="teams">
+          <div>
+            <futbet-optimized-image
+              [source]="item.teams.home.logo"
+              alternate="home logo"
+              width="12"
+              height="12"
+            />
+            <span>{{ item.teams.home.name }}</span>
+          </div>
+          <div>
+            <futbet-optimized-image
+              [source]="item.teams.away.logo"
+              alternate="away logo"
+              width="12"
+              height="12"
+            />
+            <span>{{ item.teams.away.name }}</span>
+          </div>
+        </section>
       </li>
       }
     </ul>
