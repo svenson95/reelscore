@@ -24,7 +24,7 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   }
 }
 
-export const DATABASE_STANDINGS_SERVICE_PROVIDER = {
+export const HTTP_STANDINGS_SERVICE_PROVIDER = {
   provide: HttpStandingsService,
   useClass: AbstractedHttpStandingsService,
 };
