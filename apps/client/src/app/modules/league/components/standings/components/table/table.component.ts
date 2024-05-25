@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,6 +7,7 @@ import {
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
+import { OptimizedImageComponent } from '../../../../../../components';
 import { StandingsDTO } from '../../../../../../models';
 import { BreakpointObserverService } from '../../../../../../services';
 
@@ -15,7 +15,7 @@ import { BreakpointObserverService } from '../../../../../../services';
   selector: 'futbet-league-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MatTableModule],
+  imports: [MatTableModule, OptimizedImageComponent],
   styles: `
     :host {
       @apply flex overflow-hidden border;
@@ -44,12 +44,16 @@ import { BreakpointObserverService } from '../../../../../../services';
         text-align: center;
       }
     }
+
+    .mdc-data-table__cell.name-column {
+      @apply flex items-center gap-2;
+    }
   `,
   template: `
     <table mat-table [dataSource]="data().league.standings![0]">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.rank }}.</td>
       </ng-container>
 
       <ng-container matColumnDef="team">
@@ -57,7 +61,13 @@ import { BreakpointObserverService } from '../../../../../../services';
           Mannschaft
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
-          {{ element.team.name }}
+          <futbet-optimized-image
+            [source]="element.team.logo"
+            alternate="team logo"
+            width="12"
+            height="12"
+          />
+          <span>{{ element.team.name }}</span>
         </td>
       </ng-container>
 
