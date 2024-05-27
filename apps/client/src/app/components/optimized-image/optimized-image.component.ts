@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   styles: `:host { @apply self-center; }`,
   template: ` <img
     [ngSrc]="source()"
-    [alt]="alternate"
+    [alt]="alternate()"
     priority
     [width]="width()"
     [height]="height()"
