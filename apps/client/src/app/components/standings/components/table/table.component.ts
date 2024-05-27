@@ -7,12 +7,12 @@ import {
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
-import { OptimizedImageComponent } from '../../../../../../components';
-import { StandingsDTO } from '../../../../../../models';
-import { BreakpointObserverService } from '../../../../../../services';
+import { OptimizedImageComponent } from '../../../../components';
+import { StandingsDTO } from '../../../../models';
+import { BreakpointObserverService } from '../../../../services';
 
 @Component({
-  selector: 'futbet-league-standings-table',
+  selector: 'futbet-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatTableModule, OptimizedImageComponent],
