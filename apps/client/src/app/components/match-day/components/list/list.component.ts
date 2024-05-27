@@ -2,11 +2,11 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CompetitionFixtures } from '../../../../../..//models';
-import { OptimizedImageComponent } from '../../../../../../components';
+import { OptimizedImageComponent } from '../../../../components';
+import { CompetitionFixtures } from '../../../../models';
 
 @Component({
-  selector: 'futbet-league-match-day-list',
+  selector: 'futbet-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, RouterModule, OptimizedImageComponent],

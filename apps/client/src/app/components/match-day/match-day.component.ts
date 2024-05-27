@@ -6,20 +6,22 @@ import {
   input,
 } from '@angular/core';
 
-import { CompetitionFixtures, MatchDTO } from '../../../../models';
-import { DateService, LeagueService } from '../../../../services';
-
-import { FilteredCompetitions } from '../../models';
+import {
+  CompetitionFixtures,
+  FilteredCompetitions,
+  MatchDTO,
+} from '../../models';
+import { DateService, LeagueService } from '../../services';
 
 import { MatchDayListComponent } from './components';
 
 @Component({
-  selector: 'futbet-league-match-day',
+  selector: 'futbet-match-day',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent],
   styles: `
-    futbet-league-match-day-list:not(:last-child) {
+    futbet-match-day-list:not(:last-child) {
         @apply flex flex-col mb-5;
     }
 
@@ -29,7 +31,7 @@ import { MatchDayListComponent } from './components';
   `,
   template: `
     @for (competition of competitions(); track competition.name) {
-    <futbet-league-match-day-list [competition]="competition" />
+    <futbet-match-day-list [competition]="competition" />
     } @empty {
     <p>Es finden keine Spiele statt.</p>
     }
