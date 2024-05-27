@@ -2,15 +2,17 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DateBarComponent, MatchDayComponent } from '../../components';
+import {
+  DateBarComponent,
+  MatchDayComponent,
+  StandingsComponent,
+} from '../../components';
 import {
   DateService,
   HttpFixturesService,
   ROUTE_SERVICE_PROVIDER,
 } from '../../services';
 import { RouterView } from '../router-view';
-
-import { StandingsComponent } from './components';
 
 @Component({
   selector: 'futbet-league',
@@ -31,7 +33,7 @@ import { StandingsComponent } from './components';
       section {
         @apply inline-flex flex-wrap md:flex-nowrap w-full gap-5;
 
-        futbet-match-day, futbet-league-standings {
+        futbet-match-day, futbet-standings {
           @apply w-full min-w-[200px];
         }
       }
@@ -52,7 +54,7 @@ import { StandingsComponent } from './components';
         </div>
       </ng-template>
 
-      <futbet-league-standings />
+      <futbet-standings />
     </section>
   `,
 })

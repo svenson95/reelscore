@@ -5,3 +5,5 @@ export * from './logo/logo.component';
 export * from './match-day/components/list/list.component';
 export * from './match-day/match-day.component';
 export * from './optimized-image/optimized-image.component';
+export * from './standings/components/table/table.component';
+export * from './standings/standings.component';
