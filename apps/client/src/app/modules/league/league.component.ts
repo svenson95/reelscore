@@ -1,7 +1,8 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DateBarComponent } from '../../components';
+import { DateBarComponent, MatchDayComponent } from '../../components';
 import {
   DateService,
   HttpFixturesService,
@@ -9,8 +10,7 @@ import {
 } from '../../services';
 import { RouterView } from '../router-view';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatchDayComponent, StandingsComponent } from './components';
+import { StandingsComponent } from './components';
 
 @Component({
   selector: 'futbet-league',
@@ -31,7 +31,7 @@ import { MatchDayComponent, StandingsComponent } from './components';
       section {
         @apply inline-flex flex-wrap md:flex-nowrap w-full gap-5;
 
-        futbet-league-match-day, futbet-league-standings {
+        futbet-match-day, futbet-league-standings {
           @apply w-full min-w-[200px];
         }
       }
@@ -41,7 +41,7 @@ import { MatchDayComponent, StandingsComponent } from './components';
     <futbet-start-date-bar />
 
     <section>
-      <futbet-league-match-day
+      <futbet-match-day
         *ngIf="fixtures$() | async as fixtures; else loading"
         [fixtureData]="fixtures"
       />
