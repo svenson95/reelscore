@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const FixturesSchema = new mongoose.Schema({
+import { PredictedMatchDTO } from '@lib/models';
+
+const fixturesSchema = new mongoose.Schema<PredictedMatchDTO>({
   fixture: {
     id: Number,
     referee: String,
@@ -75,4 +77,4 @@ const FixturesSchema = new mongoose.Schema({
   },
 });
 
-export const Fixtures = mongoose.model('fixtures', FixturesSchema);
+export const Fixtures = mongoose.model('fixtures', fixturesSchema);

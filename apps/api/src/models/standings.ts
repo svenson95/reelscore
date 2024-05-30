@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const StandingsSchema = new mongoose.Schema({
+import { StandingsDTO } from '@lib/models';
+
+const StandingsSchema = new mongoose.Schema<StandingsDTO>({
   league: {
     id: Number,
     name: String,
