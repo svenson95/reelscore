@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { StandingsDTO } from '../../models';
+import { StandingsDTO } from '@lib/models';
+
 import { HttpStandingsService, LeagueService } from '../../services';
 
 type StandingsState = StandingsDTO | 'loading' | undefined;

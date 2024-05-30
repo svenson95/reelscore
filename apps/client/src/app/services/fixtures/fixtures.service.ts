@@ -1,7 +1,8 @@
 import { Injectable, Signal, computed, inject } from '@angular/core';
-
 import { Observable } from 'rxjs';
-import { MatchDTO } from '../../models';
+
+import { MatchDTO } from '@lib/models';
+
 import { DateService, HttpFixturesService } from '../../services';
 
 type FixturesState = MatchDTO[] | 'loading' | undefined;

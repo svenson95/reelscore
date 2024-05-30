@@ -6,11 +6,9 @@ import {
   input,
 } from '@angular/core';
 
-import {
-  CompetitionFixtures,
-  FilteredCompetitions,
-  MatchDTO,
-} from '../../models';
+import { MatchDTO } from '@lib/models';
+
+import { CompetitionFixtures, FilteredCompetitions } from '../../models';
 import { DateService, LeagueService } from '../../services';
 
 import { MatchDayListComponent } from './components';

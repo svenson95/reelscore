@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { StandingsDTO } from '../../models';
+import { StandingsDTO } from '@lib/models';
+
 import { StandingsService } from '../../services';
 
 import { TableComponent } from './components';
