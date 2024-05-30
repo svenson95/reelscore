@@ -1,4 +1,4 @@
-export interface FixtureStatistics {
+export interface FixtureStatisticsDTO {
   parameters: {
     fixture: string;
   };
