@@ -2,9 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { StandingsDTO } from '@lib/models';
+
 import { environment } from '../../../environments/environment';
 
-import { CompetitionId, StandingsDTO } from '../../models';
+import { CompetitionId } from '../../models';
 
 export abstract class HttpStandingsService {
   abstract getStandings(id: CompetitionId): Observable<StandingsDTO>;

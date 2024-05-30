@@ -7,8 +7,9 @@ import {
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
+import { StandingsDTO } from '@lib/models';
+
 import { OptimizedImageComponent } from '../../../../components';
-import { StandingsDTO } from '../../../../models';
 import { BreakpointObserverService } from '../../../../services';
 
 @Component({
