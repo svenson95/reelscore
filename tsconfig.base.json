@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@lib/models": ["libs/models/index.ts"],
+      "@lib/components": ["libs/components/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

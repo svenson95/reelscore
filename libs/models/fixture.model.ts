@@ -1,6 +1,26 @@
-import { MatchDTO } from './fixtureDTO';
+import { MongoDbId } from './mongo-db.model';
+import { StandingsRanks, Team } from './standings.model';
 
-import { StandingsRanks, Team } from './standings';
+export interface MatchDTO {
+  _id: MongoDbId;
+  fixture: Fixture;
+  league: League;
+  teams: {
+    home: FixtureTeam;
+    away: FixtureTeam;
+  };
+  goals: Goals;
+  score: Score;
+}
+
+export interface PredictedMatchDTO extends MatchDTO {
+  prediction?: {
+    bet: string;
+    qoute: number;
+    presumption: number;
+    correct: boolean;
+  };
+}
 
 export interface Fixture {
   id: number;
@@ -54,20 +74,4 @@ export interface Score {
   fulltime: Goals;
   extratime: Goals;
   penalty: Goals;
-}
-
-export class FixtureDetails {
-  constructor(
-    public fixture: Fixture,
-    public league: League,
-    public teams: FixtureTeams,
-    public goals: Goals,
-    public score: Score
-  ) {}
-
-  static getRound(fixture: MatchDTO): number {
-    const round = fixture.league.round;
-    const roundAsString = round.substring(round.length - 2, round.length);
-    return Number(roundAsString);
-  }
 }

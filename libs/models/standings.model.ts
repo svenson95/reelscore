@@ -1,6 +1,6 @@
-import { League } from './fixture';
+import { League } from './fixture.model';
 
-interface StandingsPlayed {
+export interface StandingsPlayed {
   played: number;
   win: number;
   draw: number;
