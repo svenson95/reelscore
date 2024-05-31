@@ -8,8 +8,12 @@ import {
 
 import { MatchDTO } from '@lib/models';
 
-import { CompetitionFixtures, FilteredCompetitions } from '../../models';
-import { DateService, LeagueService } from '../../services';
+import {
+  CompetitionFixtures,
+  FilteredCompetitions,
+  SelectLeagueData,
+} from '../../models';
+import { LeagueService } from '../../services';
 
 import { MatchDayListComponent } from './components';
 
@@ -36,13 +40,12 @@ import { MatchDayListComponent } from './components';
   `,
 })
 export class MatchDayComponent {
-  dateService = inject(DateService);
-  leagueService = inject(LeagueService);
+  ls = inject(LeagueService);
 
   fixtureData = input.required<MatchDTO[]>();
 
   competitions = computed<CompetitionFixtures[]>(() => {
-    const selectedLeague = this.leagueService.selectedLeague;
+    const selectedLeague = this.ls.selectedLeague() as SelectLeagueData;
     const competitions = [
       ...new Set(this.fixtureData().map((f) => f.league.name)),
     ];
@@ -53,7 +56,7 @@ export class MatchDayComponent {
       fixtures: this.fixtureData().filter((f) => f.league.name === c),
     }));
     const filtered = new FilteredCompetitions(fixtures).byLeague(
-      selectedLeague()?.label
+      selectedLeague?.label
     );
     return filtered.competitions;
   });
