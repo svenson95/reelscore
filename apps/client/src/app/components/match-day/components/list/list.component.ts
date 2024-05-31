@@ -63,6 +63,7 @@ import { CompetitionFixtures } from '../../../../models';
               alternate="home logo"
               width="12"
               height="12"
+              [fill]="true"
             />
             <span>{{ item.teams.home.name }}</span>
           </div>
@@ -72,6 +73,7 @@ import { CompetitionFixtures } from '../../../../models';
               alternate="away logo"
               width="12"
               height="12"
+              [fill]="true"
             />
             <span>{{ item.teams.away.name }}</span>
           </div>

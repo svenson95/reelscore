@@ -47,7 +47,8 @@ import { BreakpointObserverService } from '../../../../services';
     }
 
     .mdc-data-table__cell.name-column {
-      @apply flex items-center gap-2;
+      futbet-optimized-image { @apply inline-flex align-middle mr-2; }
+      > span { @apply inline-flex align-middle; }
     }
   `,
   template: `
@@ -67,6 +68,7 @@ import { BreakpointObserverService } from '../../../../services';
             alternate="team logo"
             width="12"
             height="12"
+            [fill]="true"
           />
           <span>{{ element.team.name }}</span>
         </td>
