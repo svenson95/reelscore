@@ -46,9 +46,8 @@ import { BreakpointObserverService } from '../../../../services';
       }
     }
 
-    .mdc-data-table__cell.name-column {
-      futbet-optimized-image { @apply inline-flex align-middle mr-2; }
-      > span { @apply inline-flex align-middle; }
+    .name-wrapper {
+      @apply flex gap-2;
     }
   `,
   template: `
@@ -63,14 +62,16 @@ import { BreakpointObserverService } from '../../../../services';
           Mannschaft
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
-          <futbet-optimized-image
-            [source]="element.team.logo"
-            alternate="team logo"
-            width="12"
-            height="12"
-            [fill]="true"
-          />
-          <span>{{ element.team.name }}</span>
+          <div class="name-wrapper">
+            <futbet-optimized-image
+              [source]="element.team.logo"
+              alternate="team logo"
+              width="12"
+              height="12"
+              [fill]="true"
+            />
+            <span>{{ element.team.name }}</span>
+          </div>
         </td>
       </ng-container>
 
