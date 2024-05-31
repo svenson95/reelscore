@@ -4,7 +4,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { SELECT_LEAGUE } from '../../../constants';
-import { SelectLeagueState } from '../../../models';
+import { SelectLeagueData } from '../../../models';
 
 @Component({
   selector: 'futbet-league-select-mobile',
@@ -66,5 +66,5 @@ import { SelectLeagueState } from '../../../models';
 export class LeagueSelectMobileComponent {
   readonly leagues = SELECT_LEAGUE;
 
-  selectedLeague = input.required<SelectLeagueState>();
+  selectedLeague = input.required<SelectLeagueData | undefined>();
 }
