@@ -25,7 +25,7 @@ export abstract class DateService {
   abstract calenderWeek: WritableSignal<CalenderWeek>;
   abstract weekdays: Signal<DateString[]>;
   abstract getCalenderWeekFrom(day: DateString): CalenderWeek;
-  abstract weekDaysForDate(date: Date): DateString[];
+  abstract weekdaysFrom(date: Date): DateString[];
 }
 
 @Injectable()
