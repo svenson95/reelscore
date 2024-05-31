@@ -14,7 +14,7 @@ import {
   DateString,
   TODAY_ISO_STRING,
   createWeekDaysArray,
-  getMondayFromWeek,
+  getMondayFromDate,
   moveItem,
 } from '../../models';
 
@@ -25,7 +25,7 @@ export abstract class DateService {
   abstract calenderWeek: WritableSignal<CalenderWeek>;
   abstract weekdays: Signal<DateString[]>;
   abstract getCalenderWeekFrom(day: DateString): CalenderWeek;
-  abstract getWeekDays(calenderWeek: CalenderWeek): DateString[];
+  abstract weekDaysForDate(date: Date): DateString[];
 }
 
 @Injectable()
@@ -48,17 +48,18 @@ export class AbstractedDateService extends DateService {
     this.getCalenderWeekFrom(this.selectedDay())
   );
 
-  weekdays = computed<DateString[]>(() =>
-    this.getWeekDays(this.calenderWeek())
-  );
+  weekdays = computed<DateString[]>(() => {
+    const selectedDay = new Date(this.selectedDay());
+    return this.weekdaysFrom(selectedDay);
+  });
 
   getCalenderWeekFrom(day: DateString): CalenderWeek {
     const datepipe = new DatePipe('de-DE');
     return Number(datepipe.transform(day, 'w'));
   }
 
-  getWeekDays(calenderWeek: CalenderWeek): DateString[] {
-    const monday = getMondayFromWeek(calenderWeek);
+  weekdaysFrom(date: Date): DateString[] {
+    const monday = getMondayFromDate(date);
     const weekdays = createWeekDaysArray(monday);
     return moveItem(weekdays, 0, 6);
   }

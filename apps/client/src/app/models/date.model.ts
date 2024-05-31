@@ -6,14 +6,9 @@ export type DateString = string;
 
 export type CalenderWeek = number;
 
-export const getMondayFromWeek = (calenderWeek: CalenderWeek): Date => {
-  const d = 1 + (calenderWeek - 1) * 7;
-  const date = new Date(2024, 0, d);
-  const dayOfWeek = date.getDay();
-
-  const isSunday = dayOfWeek === 0;
-  const difference = isSunday ? 6 : dayOfWeek - 1;
-
+export const getMondayFromDate = (date: Date): Date => {
+  const day = date.getDay();
+  const difference = day === 0 ? 6 : day - 1;
   return new Date(date.setDate(date.getDate() - difference));
 };
 
