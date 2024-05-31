@@ -35,7 +35,6 @@ export class AbstractedStandingsService extends StandingsService {
 
   setStandings(): void {
     const league = this.leagueService.selectedLeague();
-    if (league === 'init') return;
 
     this.isLoading.set(true);
     this.standingsService
