@@ -19,7 +19,7 @@ import { CompetitionFixtures } from '../../../../models';
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
     .header span { @apply text-fb-font-size-body-1; }
     ul { @apply w-full text-fb-font-size-small; }
-    li { @apply bg-white hover:bg-fb-color-green-1-light cursor-pointer; }
+    li { @apply bg-white sm:hover:bg-fb-color-green-1-light cursor-pointer; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
     .time { @apply min-w-[50px] py-[16.5px]; }
