@@ -9,7 +9,7 @@ export abstract class LeagueService {
 
 @Injectable()
 export class AbstractedLeagueService extends LeagueService {
-  selectedLeague = signal<SelectLeagueState>(undefined);
+  selectedLeague = signal<SelectLeagueState>('init');
 
   setSelectedLeague(data: SelectLeagueState): void {
     this.selectedLeague.set(data);

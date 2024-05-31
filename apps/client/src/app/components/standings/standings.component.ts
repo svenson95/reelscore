@@ -17,23 +17,32 @@ import { TableComponent } from './components';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressSpinnerModule, TableComponent],
-  styles: ``,
+  styles: `
+    :host { @apply flex flex-col gap-5; }
+  `,
   template: `
-    @if (isLoaded()) {
-    <futbet-standings-table [data]="data" />
-    } @else if (standings() === 'loading') {
-    <mat-spinner class="my-10 mx-auto" diameter="20" /> }
+    @if (isLoading()) {
+    <mat-spinner class="my-10 mx-auto" diameter="20" />
+    } @else if(showAllTables()) {@for (singleTable of multiple; track
+    singleTable.league.id) {
+    <futbet-standings-table [data]="singleTable" />
+    } } @else {
+    <futbet-standings-table [data]="single" />
+    }
   `,
 })
 export class StandingsComponent {
   service = inject(StandingsService);
   standings = this.service.standings;
+  isLoading = this.service.isLoading;
 
-  isLoaded = computed(
-    () => !!this.standings() && this.standings() !== 'loading'
-  );
+  showAllTables = computed(() => this.standings() instanceof Array);
 
-  get data() {
+  get single(): StandingsDTO {
     return this.standings() as StandingsDTO;
+  }
+
+  get multiple(): StandingsDTO[] {
+    return this.standings() as StandingsDTO[];
   }
 }

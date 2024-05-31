@@ -11,4 +11,4 @@ export interface SelectLeagueData {
   url: CompetitionUrl;
 }
 
-export type SelectLeagueState = SelectLeagueData | undefined;
+export type SelectLeagueState = 'init' | SelectLeagueData | undefined;

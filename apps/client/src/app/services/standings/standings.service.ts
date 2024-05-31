@@ -12,10 +12,11 @@ import { StandingsDTO } from '@lib/models';
 
 import { HttpStandingsService, LeagueService } from '../../services';
 
-type StandingsState = StandingsDTO | 'loading' | undefined;
+type StandingsState = 'init' | StandingsDTO | StandingsDTO[] | undefined;
 
 export abstract class StandingsService {
   abstract standings: WritableSignal<StandingsState>;
+  abstract isLoading: WritableSignal<boolean>;
 }
 
 @Injectable()
@@ -24,23 +25,26 @@ export class AbstractedStandingsService extends StandingsService {
   standingsService = inject(HttpStandingsService);
   destroyRef = inject(DestroyRef);
 
-  standings = signal<StandingsState>(undefined);
+  standings = signal<StandingsState>('init');
+
+  isLoading = signal<boolean>(true);
 
   onSelectedLeagueChange = effect(() => this.setStandings(), {
     allowSignalWrites: true,
   });
 
   setStandings(): void {
-    this.standings.set(undefined);
-
     const league = this.leagueService.selectedLeague();
-    if (!league?.id) return;
+    if (league === 'init') return;
 
-    this.standings.set('loading');
+    this.isLoading.set(true);
     this.standingsService
-      .getStandings(league.id)
+      .getStandings(league?.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((data) => this.standings.set(data));
+      .subscribe((data) => {
+        this.isLoading.set(false);
+        this.standings.set(data);
+      });
   }
 }
 

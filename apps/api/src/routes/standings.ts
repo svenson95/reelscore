@@ -1,23 +1,16 @@
 import express from 'express';
 
+import { getStandings } from '../controllers';
 import { fetchFromRapidApi } from '../middleware';
 import { Standings } from '../models';
 
 export const standings = express.Router();
 
-standings.get('/get', (req, res) => {
-  const leagueId = req.query.league;
-  const season = 2023;
-
-  Standings.find({ 'league.id': leagueId, 'league.season': season })
-    .then((docs) => res.json(docs[docs.length - 1]))
-    .catch((error) =>
-      res.json({
-        status: 'error happened',
-        error: error,
-      })
-    );
-});
+standings.get('/get', (req, res) =>
+  getStandings(req, res, (data) => {
+    res.json(data);
+  })
+);
 
 standings.get('/get-all', (req, res) => {
   Standings.find()

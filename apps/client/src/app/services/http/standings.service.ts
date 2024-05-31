@@ -8,8 +8,10 @@ import { environment } from '../../../environments/environment';
 
 import { CompetitionId } from '../../models';
 
+type StandingsParams = undefined | CompetitionId;
+
 export abstract class HttpStandingsService {
-  abstract getStandings(id: CompetitionId): Observable<StandingsDTO>;
+  abstract getStandings(id: StandingsParams): Observable<StandingsDTO>;
 }
 
 @Injectable()
@@ -18,8 +20,9 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
 
   http = inject(HttpClient);
 
-  getStandings(id: CompetitionId): Observable<StandingsDTO> {
-    const params = new HttpParams().set('league', id).set('season', '2023');
+  getStandings(id: StandingsParams): Observable<StandingsDTO> {
+    let params = new HttpParams();
+    if (id) params = params.append('league', id);
     return this.http.get<StandingsDTO>(this.BASE_URL + 'standings/get', {
       params,
     });
