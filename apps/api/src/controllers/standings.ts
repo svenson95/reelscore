@@ -17,7 +17,7 @@ export const getStandings = (req, res, next) => {
       );
   } else {
     const query = {
-      'league.id': ['39', '78', '79', '135', '140', '61'],
+      'league.id': ['39', '78', '135', '140', '61'],
       $and: [{ 'league.season': season }],
     };
     Standings.find(query)
