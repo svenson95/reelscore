@@ -1,16 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import { MatchDTO } from '@lib/models';
+
 import { BackButtonComponent } from '../../../../components';
 
-import { MatchDTO } from '@lib/models';
-import { MatchResultComponent } from '../../components';
+import { MatchHeaderComponent } from '../../components';
 
 @Component({
   selector: 'futbet-match-content',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BackButtonComponent, DatePipe, MatchResultComponent],
+  imports: [BackButtonComponent, DatePipe, MatchHeaderComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
     .header { @apply flex items-center justify-between;}
@@ -26,7 +27,7 @@ import { MatchResultComponent } from '../../components';
     </section>
 
     <section>
-      <futbet-match-result [data]="data()" />
+      <futbet-match-header [data]="data()" />
 
       <!-- @switch(isUpcoming()) { @case(true) {
         <futbet-match-before-details />

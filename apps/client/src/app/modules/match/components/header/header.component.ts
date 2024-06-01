@@ -11,7 +11,7 @@ import { MatchDTO } from '@lib/models';
 import { OptimizedImageComponent } from '../../../../components';
 
 @Component({
-  selector: 'futbet-match-result',
+  selector: 'futbet-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, DatePipe],
@@ -52,7 +52,7 @@ import { OptimizedImageComponent } from '../../../../components';
     </div>
   `,
 })
-export class MatchResultComponent {
+export class MatchHeaderComponent {
   data = input.required<MatchDTO>();
   isUpcoming = signal<boolean>(true); // TODO derive value from fixture date
 }
