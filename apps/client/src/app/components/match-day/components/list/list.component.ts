@@ -45,7 +45,7 @@ import { CompetitionFixtures } from '../../../../models';
     <ul>
       @for(item of competition().fixtures; track item.league.id) {
       <li
-        [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.league.id]"
+        [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.fixture.id]"
       >
         <section class="time">
           @if (item.score.fulltime.home === null) {
