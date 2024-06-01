@@ -48,9 +48,7 @@ import { CompetitionFixtures } from '../../../../models';
         [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.fixture.id]"
       >
         <section class="time">
-          @if (item.score.fulltime.home === null) {
           <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
-          } @else { FT }
         </section>
         <section class="result">
           <span>{{ item.score.fulltime.home }}</span>
