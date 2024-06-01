@@ -66,7 +66,7 @@ import { BreakpointObserverService } from '../../../../services';
             [fill]="true"
           />
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.rank }}.</td>
+        <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
       </ng-container>
 
       <ng-container matColumnDef="team">
