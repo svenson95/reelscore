@@ -69,6 +69,7 @@ fixtures.get('/get', (req, res) => {
         $lt: tomorrow,
       },
     })
+      .sort({ 'fixture.date': 1 })
       .then((docs) => res.json(docs))
       .catch((error) =>
         res.json({
