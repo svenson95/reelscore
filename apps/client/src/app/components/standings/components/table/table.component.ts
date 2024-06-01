@@ -34,7 +34,7 @@ import { BreakpointObserverService } from '../../../../services';
     td { @apply py-[4px] leading-[16px]; }
 
     td, th { &:first-of-type {
-      @apply pr-0 text-right;
+      @apply pr-0 text-center;
     } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
@@ -53,7 +53,15 @@ import { BreakpointObserverService } from '../../../../services';
   template: `
     <table mat-table [dataSource]="data().league.standings![0]">
       <ng-container matColumnDef="rank">
-        <th mat-header-cell *matHeaderCellDef>#</th>
+        <th mat-header-cell *matHeaderCellDef>
+          <futbet-optimized-image
+            [source]="data().league.logo"
+            alternate="league logo"
+            width="24"
+            height="24"
+            [fill]="true"
+          />
+        </th>
         <td mat-cell *matCellDef="let element">{{ element.rank }}.</td>
       </ng-container>
 
