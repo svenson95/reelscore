@@ -48,6 +48,10 @@ import { BreakpointObserverService } from '../../../../services';
 
     .name-wrapper {
       @apply flex gap-2;
+
+      span {
+        @apply leading-[14px];
+      }
     }
   `,
   template: `
