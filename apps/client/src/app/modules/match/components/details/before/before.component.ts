@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'futbet-match-before-details',
+  selector: 'futbet-match-details-before',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
@@ -19,4 +19,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </section>
   `,
 })
-export class MatchBeforeDetailsComponent {}
+export class MatchDetailsBeforeComponent {}
