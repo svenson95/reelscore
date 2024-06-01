@@ -30,7 +30,7 @@ import { CompetitionFixtures } from '../../../../models';
       border-right: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
     .teams { @apply align-middle px-3; }
-    .teams > div { @apply flex gap-2; }
+    .teams > div { @apply flex items-center gap-2; }
   `,
   template: `
     <div class="header">

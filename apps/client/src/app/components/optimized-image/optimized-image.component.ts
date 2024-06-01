@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgOptimizedImage],
   styles: `
-    :host { @apply self-center; }
+    :host { @apply flex items-center justify-center; }
     .fill-parent { position: relative; }
     .fill-parent img { object-fit: contain; }
   `,
