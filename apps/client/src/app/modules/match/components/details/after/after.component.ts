@@ -1,26 +1,21 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
 import { FixtureStatisticsDTO } from '@lib/models';
+
+import { MatchStatisticsComponent } from '../../../components';
 
 @Component({
   selector: 'futbet-match-details-after',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [MatchStatisticsComponent],
   styles: ``,
   template: `
-    <!-- <section>
-      <div>match events...</div>
-    </section> -->
-
-    <section>
-      <div>match stats...</div>
-    </section>
-
-    <!-- <section>
-      <div>line-up...</div>
-    </section> -->
+    <!-- <futbet-match-events /> -->
+    <futbet-match-statistics [data]="statistics()" />
+    <!-- <futbet-match-lineups /> -->
   `,
 })
 export class MatchDetailsAfterComponent {
-  data = input.required<FixtureStatisticsDTO>();
+  statistics = input.required<FixtureStatisticsDTO>();
 }
