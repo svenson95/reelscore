@@ -1,6 +1,8 @@
 import { MongoDbId } from './mongo-db.model';
 import { StandingsRanks, Team } from './standings.model';
 
+export type FixtureId = number | string;
+
 export interface MatchDTO {
   _id: MongoDbId;
   fixture: Fixture;
@@ -23,7 +25,7 @@ export interface PredictedMatchDTO extends MatchDTO {
 }
 
 export interface Fixture {
-  id: number;
+  id: FixtureId;
   referee: string;
   timezone: string;
   date: string;

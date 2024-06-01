@@ -1,26 +1,26 @@
-import { Component, signal } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { FixtureId } from '@lib/models';
+
+import { FixturesService } from '../../services';
+
+import { BackButtonComponent } from '../../components';
 import {
   MatchAfterDetailsComponent,
   MatchBeforeDetailsComponent,
   MatchResultComponent,
 } from './components';
-import { MatchDetails } from './models';
-
-const MATCH_DETAILS_EXAMPLE: MatchDetails = {
-  home: 'Bayern München',
-  away: 'Borussia Dortmund',
-  homeLogo: 'https://media.api-sports.io/football/teams/157.png',
-  awayLogo: 'https://media.api-sports.io/football/teams/165.png',
-  date: '23. Mai',
-  time: '20:30',
-  result: '1 - 0',
-};
 
 @Component({
   selector: 'futbet-match',
   standalone: true,
   imports: [
+    AsyncPipe,
+    NgIf,
+    MatProgressSpinnerModule,
+    BackButtonComponent,
     MatchResultComponent,
     MatchBeforeDetailsComponent,
     MatchAfterDetailsComponent,
@@ -30,22 +30,37 @@ const MATCH_DETAILS_EXAMPLE: MatchDetails = {
     
     futbet-match-result, 
     futbet-match-before-details, 
-    futbet-match-after-details { @apply py-5 text-center; }
+    futbet-match-after-details { @apply pb-5; }
 
     futbet-match-before-details, 
     futbet-match-after-details { @apply gap-5 flex flex-col; }
   `,
   template: `
-    <futbet-match-result [data]="matchDetails()" [isUpcoming]="isUpcoming()" />
+    <section class="header">
+      <futbet-back-button />
+    </section>
 
-    @switch(isUpcoming()) { @case(true) {
+    <ng-container *ngIf="{ data: fixture() | async } as myData">
+      @switch (!!myData.data) { @case(false) {
+      <mat-spinner *ngIf="!myData.data" class="my-2 mx-auto" diameter="20" />
+      } @case (true) {
+      <futbet-match-result [data]="myData.data!" [isUpcoming]="isUpcoming()" />
+      } }
+    </ng-container>
+
+    <!-- @switch(isUpcoming()) { @case(true) {
     <futbet-match-before-details />
     } @case(false) {
     <futbet-match-after-details />
-    }}
+    }} -->
   `,
 })
 export class MatchComponent {
+  fixtureId = input.required<FixtureId>();
+
+  fs = inject(FixturesService);
+
+  fixture = computed(() => this.fs.requestFixtureDetails(this.fixtureId()));
+
   isUpcoming = signal<boolean>(true);
-  matchDetails = signal<MatchDetails>(MATCH_DETAILS_EXAMPLE);
 }

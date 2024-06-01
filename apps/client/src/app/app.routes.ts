@@ -19,7 +19,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'match/:id',
+        path: 'match/:fixtureId',
         loadComponent: () =>
           import('./modules/match/match.component').then(
             (m) => m.MatchComponent

@@ -1,6 +1,8 @@
+import { FixtureId } from './fixture.model';
+
 export interface FixtureStatisticsDTO {
   parameters: {
-    fixture: string;
+    fixture: FixtureId;
   };
   response: FixtureStatisticsResponse[];
 }

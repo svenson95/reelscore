@@ -1,14 +1,12 @@
 import { Injectable, Signal, computed, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { MatchDTO } from '@lib/models';
+import { FixtureId, MatchDTO } from '@lib/models';
 
 import { DateService, HttpFixturesService } from '../../services';
-
-type FixturesState = MatchDTO[] | 'loading' | undefined;
-
 export abstract class FixturesService {
   abstract fixtures$: Signal<Observable<MatchDTO[]>>;
+  abstract requestFixtureDetails(id: FixtureId): Observable<MatchDTO>;
 }
 
 @Injectable()
@@ -23,6 +21,10 @@ export class AbstractedFixturesService extends FixturesService {
 
     return this.http.getFixtures(dateString);
   });
+
+  requestFixtureDetails(id: FixtureId): Observable<MatchDTO> {
+    return this.http.getFixtureDetails(id);
+  }
 }
 
 export const FIXTURES_SERVICE_PROVIDER = {
