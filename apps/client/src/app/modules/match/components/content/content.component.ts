@@ -1,10 +1,11 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   input,
+  signal,
 } from '@angular/core';
 
 import { MatchDTO } from '@lib/models';
@@ -14,9 +15,9 @@ import { FixtureStatisticsService } from '../../../../services';
 
 import {
   MatchDetailsAfterComponent,
+  MatchDetailsBaseComponent,
   MatchHeaderComponent,
 } from '../../components';
-import { MatchDetailsBaseComponent } from '../details/base/base.component';
 
 @Component({
   selector: 'futbet-match-content',
@@ -24,6 +25,7 @@ import { MatchDetailsBaseComponent } from '../details/base/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     BackButtonComponent,
+    NgIf,
     DatePipe,
     AsyncPipe,
     MatchHeaderComponent,
@@ -34,7 +36,7 @@ import { MatchDetailsBaseComponent } from '../details/base/base.component';
     :host { @apply flex flex-col gap-5; }
     .header { @apply flex items-center justify-between;}
     .date-label { @apply text-fb-font-size-body-2 mr-3; }
-    section.data > *:not(futbet-match-header) { @apply border-b-[1px] my-10; }
+    section.data { @apply flex flex-col gap-10; }
   `,
   template: `
     <section class="header">
@@ -50,16 +52,20 @@ import { MatchDetailsBaseComponent } from '../details/base/base.component';
 
       <futbet-match-details-base [data]="data()" />
 
-      <!-- @switch(isUpcoming()) { @case(true) {
-        <futbet-match-before-details />
-        } @case(false) { -->
-      <futbet-match-details-after [data]="(statistics() | async)!" />
-      <!-- }} -->
+      @switch(isUpcoming()) { @case(true) {
+      <!-- <futbet-match-before-details /> -->
+      } @case(false) {
+      <futbet-match-details-after
+        *ngIf="statistics() | async as statistics"
+        [statistics]="statistics"
+      />
+      }}
     </section>
   `,
 })
 export class MatchContentComponent {
   data = input.required<MatchDTO>();
+  isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
 
   fs = inject(FixtureStatisticsService);
   statistics = computed(() =>
