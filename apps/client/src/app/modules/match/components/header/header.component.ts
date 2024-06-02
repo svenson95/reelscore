@@ -18,9 +18,9 @@ import { OptimizedImageComponent } from '../../../../components';
   styles: `
     :host { @apply flex; }
     div { @apply flex flex-1 gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
-    .team-column { @apply gap-3; }
+    .team-column { @apply flex-col gap-3; }
     .result-column { @apply gap-2; }
-    .team-name { @apply leading-[14px]; }
+    .team-name { @apply leading-[14px] text-center; }
   `,
   template: `
     <div class="team-column">
@@ -42,13 +42,13 @@ import { OptimizedImageComponent } from '../../../../components';
     </div>
 
     <div class="team-column">
-      <span class="team-name text-right">{{ data().teams.away.name }}</span>
       <futbet-optimized-image
         [source]="data().teams.away.logo"
         alternate="away logo"
         width="50"
         height="50"
       />
+      <span class="team-name">{{ data().teams.away.name }}</span>
     </div>
   `,
 })
