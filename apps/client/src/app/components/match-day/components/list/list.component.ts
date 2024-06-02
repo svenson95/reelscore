@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { logoFromAssets } from '@lib/models';
+
 import { OptimizedImageComponent } from '../../../../components';
 import { CompetitionFixtures } from '../../../../models';
 
@@ -57,7 +59,7 @@ import { CompetitionFixtures } from '../../../../models';
         <section class="teams">
           <div>
             <futbet-optimized-image
-              [source]="item.teams.home.logo"
+              [source]="logoFromAssets(item.teams.home.id)"
               alternate="home logo"
               width="12"
               height="12"
@@ -67,7 +69,7 @@ import { CompetitionFixtures } from '../../../../models';
           </div>
           <div>
             <futbet-optimized-image
-              [source]="item.teams.away.logo"
+              [source]="logoFromAssets(item.teams.away.id)"
               alternate="away logo"
               width="12"
               height="12"
@@ -83,4 +85,6 @@ import { CompetitionFixtures } from '../../../../models';
 })
 export class MatchDayListComponent {
   readonly competition = input.required<CompetitionFixtures>();
+
+  logoFromAssets = logoFromAssets;
 }
