@@ -8,7 +8,7 @@ import { FixtureId } from '@lib/models';
 
 import { FixturesService } from '../../services';
 
-import { MatchContentComponent } from './components';
+import { MatchContentComponent } from './components/content/content.component';
 
 @Component({
   selector: 'futbet-match',
