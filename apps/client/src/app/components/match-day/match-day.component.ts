@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchDTO } from '@lib/models';
 
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
-import { FixturesService, LeagueService } from '../../services';
+import { DateService, FixturesService, LeagueService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({
@@ -39,6 +39,7 @@ import { MatchDayListComponent } from './components';
   `,
 })
 export class MatchDayComponent {
+  ds = inject(DateService);
   ls = inject(LeagueService);
   fs = inject(FixturesService);
 

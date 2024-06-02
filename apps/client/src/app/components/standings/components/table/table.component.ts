@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
-import { StandingsDTO } from '@lib/models';
+import { StandingsDTO, logoFromAssets } from '@lib/models';
 
 import { OptimizedImageComponent } from '../../../../components';
 import { BreakpointObserverService } from '../../../../services';
@@ -76,7 +76,7 @@ import { BreakpointObserverService } from '../../../../services';
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
             <futbet-optimized-image
-              [source]="element.team.logo"
+              [source]="logoFromAssets(element.team.id)"
               alternate="team logo"
               width="12"
               height="12"
@@ -169,6 +169,8 @@ export class TableComponent {
   isMobile = this.breakpoint.isMobile;
 
   data = input.required<StandingsDTO>();
+
+  logoFromAssets = logoFromAssets;
 
   columns = computed(() => {
     const filtered = this.displayedColumns.filter(

@@ -13,6 +13,10 @@ export interface Team {
   logo: string;
 }
 
+export const logoFromAssets = (teamId: number) => {
+  return 'assets/images/team-logo/' + teamId + '.png';
+};
+
 export interface StandingsRanks {
   rank: number;
   team: Team;
