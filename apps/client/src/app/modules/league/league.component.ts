@@ -1,30 +1,17 @@
-import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Component } from '@angular/core';
 
 import {
   DateBarComponent,
   MatchDayComponent,
   StandingsComponent,
 } from '../../components';
-import {
-  DateService,
-  HttpFixturesService,
-  ROUTE_SERVICE_PROVIDER,
-} from '../../services';
+import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 
 @Component({
   selector: 'futbet-league',
   standalone: true,
-  imports: [
-    NgIf,
-    AsyncPipe,
-    MatProgressSpinnerModule,
-    DateBarComponent,
-    MatchDayComponent,
-    StandingsComponent,
-  ],
+  imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
   providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
@@ -43,29 +30,9 @@ import { RouterView } from '../router-view';
     <futbet-start-date-bar />
 
     <section>
-      <futbet-match-day
-        *ngIf="fixtures$() | async as fixtures; else loading"
-        [fixtureData]="fixtures"
-      />
-
-      <ng-template #loading>
-        <div class="w-full">
-          <mat-spinner class="my-10 mx-auto" diameter="20" />
-        </div>
-      </ng-template>
-
+      <futbet-match-day />
       <futbet-standings />
     </section>
   `,
 })
-export class LeagueComponent extends RouterView {
-  httpFixtures = inject(HttpFixturesService);
-  date = inject(DateService);
-
-  fixtures$ = computed(() => {
-    const d = new Date(this.date.selectedDay());
-    const date = new Date(d.setDate(d.getDate() + 1)).toISOString();
-    const dateString = date.split('T')[0];
-    return this.httpFixtures.getFixtures(dateString);
-  });
-}
+export class LeagueComponent extends RouterView {}

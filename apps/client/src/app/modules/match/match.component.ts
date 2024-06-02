@@ -1,12 +1,14 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { switchMap } from 'rxjs';
 
 import { FixtureId } from '@lib/models';
 
 import { FixturesService } from '../../services';
 
-import { MatchContentComponent } from './components/content/content.component';
+import { MatchContentComponent } from './components';
 
 @Component({
   selector: 'futbet-match',
@@ -23,18 +25,20 @@ import { MatchContentComponent } from './components/content/content.component';
     futbet-match-after-details { @apply gap-5 flex flex-col; }
   `,
   template: `
-    <ng-container *ngIf="{ data: fixture() | async } as myData">
-      @switch (!!myData.data) { @case(false) {
-      <mat-spinner class="my-2 mx-auto" diameter="20" />
-      } @case (true) {
-      <futbet-match-content [data]="myData.data!" />
-      } }
-    </ng-container>
+    @if (fixture() === undefined) {
+    <mat-spinner class="my-2 mx-auto" diameter="20" />
+    } @else {
+    <futbet-match-content [data]="fixture()!" />
+    }
   `,
 })
 export class MatchComponent {
   fixtureId = input.required<FixtureId>();
   fs = inject(FixturesService);
 
-  fixture = computed(() => this.fs.requestFixtureDetails(this.fixtureId()));
+  fixture = toSignal(
+    toObservable(this.fixtureId).pipe(
+      switchMap((id) => this.fs.requestFixtureDetails(id))
+    )
+  );
 }

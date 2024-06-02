@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  effect,
   inject,
   input,
 } from '@angular/core';
@@ -20,10 +20,9 @@ import { MatchStatisticsComponent } from '../../statistics/statistics.component'
   styles: ``,
   template: `
     <!-- <futbet-match-events /> -->
-    <futbet-match-statistics
-      *ngIf="statistics() | async as data"
-      [data]="data"
-    />
+    @if (statistics()) {
+    <futbet-match-statistics [data]="statistics()!" />
+    }
     <!-- <futbet-match-lineups /> -->
   `,
 })
@@ -31,7 +30,12 @@ export class MatchDetailsAfterComponent {
   fixtureId = input.required<FixtureId>();
   fs = inject(FixtureStatisticsService);
 
-  statistics = computed(() =>
-    this.fs.requestFixtureStatistics(this.fixtureId())
+  idEffect = effect(
+    () => {
+      this.fs.fixtureId.set(this.fixtureId());
+    },
+    { allowSignalWrites: true }
   );
+
+  statistics = this.fs.statistics;
 }
