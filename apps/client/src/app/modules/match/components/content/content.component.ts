@@ -30,8 +30,8 @@ import {
     MatchDetailsAfterComponent,
   ],
   styles: `
-    :host { @apply flex flex-col gap-5; }
-    .header { @apply flex items-center justify-between;}
+    :host { @apply flex flex-col gap-10; }
+    .header { @apply flex items-center justify-between border-b-[1px] pb-2;}
     .date-label { @apply text-fb-font-size-body-2 mr-3; }
     section.data { @apply flex flex-col gap-10; }
   `,
