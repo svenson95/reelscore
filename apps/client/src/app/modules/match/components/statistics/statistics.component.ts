@@ -19,10 +19,10 @@ import {
   styles: `
     :host { @apply flex flex-col; }
     section { @apply my-5; }
-    div { @apply flex gap-5 justify-center; }
+    div { @apply flex gap-5 justify-center mb-5; }
     h3 { @apply pb-2 mb-2 border-b-[1px] text-center; } // todo refac 
     h4, li { @apply text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
-    h4 { @apply text-center mb-2; }
+    h4 { @apply text-fb-color-text-2 text-center mb-2; }
   `,
   template: `
     <h3>STATISTIKEN</h3>
