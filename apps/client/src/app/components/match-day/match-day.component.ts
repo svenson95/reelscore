@@ -3,17 +3,12 @@ import {
   Component,
   computed,
   inject,
-  input,
 } from '@angular/core';
 
 import { MatchDTO } from '@lib/models';
 
-import {
-  CompetitionFixtures,
-  FilteredCompetitions,
-  SelectLeagueData,
-} from '../../models';
-import { LeagueService } from '../../services';
+import { CompetitionFixtures, FilteredCompetitions } from '../../models';
+import { FixturesService, LeagueService } from '../../services';
 
 import { MatchDayListComponent } from './components';
 
@@ -41,23 +36,25 @@ import { MatchDayListComponent } from './components';
 })
 export class MatchDayComponent {
   ls = inject(LeagueService);
-
-  fixtureData = input.required<MatchDTO[]>();
+  fs = inject(FixturesService);
 
   competitions = computed<CompetitionFixtures[]>(() => {
-    const selectedLeague = this.ls.selectedLeague() as SelectLeagueData;
-    const competitions = [
-      ...new Set(this.fixtureData().map((f) => f.league.name)),
-    ];
-    const fixtures = competitions.map((c) => ({
-      name: c,
-      image:
-        this.fixtureData().find((f) => f.league.name === c)?.league.flag || '',
-      fixtures: this.fixtureData().filter((f) => f.league.name === c),
-    }));
+    const data = this.fs.fixtures();
+    const selectedLeague = this.ls.selectedLeague();
+    if (data === undefined) return [];
+
+    const competitions = [...new Set(data.map((f) => f.league.name))];
+    const fixtures = competitions.map((c) => this.filterByCompetition(c, data));
+
     const filtered = new FilteredCompetitions(fixtures).byLeague(
       selectedLeague?.label
     );
     return filtered.competitions;
+  });
+
+  filterByCompetition = (name: string, data: MatchDTO[]) => ({
+    name,
+    image: data.find((f) => f.league.name === name)?.league.flag || 'error',
+    fixtures: data.filter((f) => f.league.name === name),
   });
 }

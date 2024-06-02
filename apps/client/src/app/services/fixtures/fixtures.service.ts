@@ -1,11 +1,12 @@
-import { Injectable, Signal, computed, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, Signal, inject } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Observable, switchMap } from 'rxjs';
 
 import { FixtureId, MatchDTO } from '@lib/models';
 
 import { DateService, HttpFixturesService } from '../../services';
 export abstract class FixturesService {
-  abstract fixtures$: Signal<Observable<MatchDTO[]>>;
+  abstract fixtures: Signal<MatchDTO[] | undefined>;
   abstract requestFixtureDetails(id: FixtureId): Observable<MatchDTO>;
 }
 
@@ -14,13 +15,16 @@ export class AbstractedFixturesService extends FixturesService {
   http = inject(HttpFixturesService);
   date = inject(DateService);
 
-  fixtures$ = computed(() => {
-    const d = new Date(this.date.selectedDay());
-    const date = new Date(d.setDate(d.getDate() + 1)).toISOString();
-    const dateString = date.split('T')[0];
-
-    return this.http.getFixtures(dateString);
-  });
+  fixtures = toSignal(
+    toObservable(this.date.selectedDay).pipe(
+      switchMap((date) => {
+        const d = new Date(date);
+        const nextDay = new Date(d.setDate(d.getDate() + 1)).toISOString();
+        const dateString = nextDay.split('T')[0];
+        return this.http.getFixtures(dateString);
+      })
+    )
+  );
 
   requestFixtureDetails(id: FixtureId): Observable<MatchDTO> {
     return this.http.getFixtureDetails(id);
