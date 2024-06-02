@@ -2,8 +2,6 @@ import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
-  inject,
   input,
   signal,
 } from '@angular/core';
@@ -11,7 +9,6 @@ import {
 import { MatchDTO } from '@lib/models';
 
 import { BackButtonComponent } from '../../../../components';
-import { FixtureStatisticsService } from '../../../../services';
 
 import {
   MatchDetailsAfterComponent,
@@ -55,10 +52,7 @@ import {
       @switch(isUpcoming()) { @case(true) {
       <!-- <futbet-match-before-details /> -->
       } @case(false) {
-      <futbet-match-details-after
-        *ngIf="statistics() | async as statistics"
-        [statistics]="statistics"
-      />
+      <futbet-match-details-after [fixtureId]="data().fixture.id" />
       }}
     </section>
   `,
@@ -66,9 +60,4 @@ import {
 export class MatchContentComponent {
   data = input.required<MatchDTO>();
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
-
-  fs = inject(FixtureStatisticsService);
-  statistics = computed(() =>
-    this.fs.requestFixtureStatistics(this.data().fixture.id)
-  );
 }
