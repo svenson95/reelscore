@@ -25,7 +25,7 @@ import { MatchContentComponent } from './components/content/content.component';
   template: `
     <ng-container *ngIf="{ data: fixture() | async } as myData">
       @switch (!!myData.data) { @case(false) {
-      <mat-spinner *ngIf="!myData.data" class="my-2 mx-auto" diameter="20" />
+      <mat-spinner class="my-2 mx-auto" diameter="20" />
       } @case (true) {
       <futbet-match-content [data]="myData.data!" />
       } }
@@ -35,5 +35,6 @@ import { MatchContentComponent } from './components/content/content.component';
 export class MatchComponent {
   fixtureId = input.required<FixtureId>();
   fs = inject(FixturesService);
+
   fixture = computed(() => this.fs.requestFixtureDetails(this.fixtureId()));
 }
