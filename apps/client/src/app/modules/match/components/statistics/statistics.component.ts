@@ -50,11 +50,11 @@ import { StatisticList } from './models';
       <h4>Schüsse</h4>
       <div>
         <ul>
-          <li>{{ stats().shotsOnGoal.home }}</li>
+          <li>{{ stats().shotsOffGoal.home }}</li>
         </ul>
 
         <ul>
-          <li>{{ stats().shotsOnGoal.away }}</li>
+          <li>{{ stats().shotsOffGoal.away }}</li>
         </ul>
       </div>
 
