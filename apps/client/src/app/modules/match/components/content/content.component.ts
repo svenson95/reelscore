@@ -1,15 +1,15 @@
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   input,
   signal,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import { MatchDTO } from '@lib/models';
 
 import { BackButtonComponent } from '../../../../components';
-
 import {
   MatchDetailsAfterComponent,
   MatchDetailsBaseComponent,
@@ -22,9 +22,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     BackButtonComponent,
-    NgIf,
     DatePipe,
-    AsyncPipe,
+    MatButtonModule,
     MatchHeaderComponent,
     MatchDetailsBaseComponent,
     MatchDetailsAfterComponent,
@@ -32,16 +31,21 @@ import {
   styles: `
     :host { @apply flex flex-col gap-10; }
     .header { @apply flex items-center justify-between border-b-[1px] pb-2;}
-    .date-label { @apply text-fb-font-size-body-2 mr-3; }
+    .dates { @apply flex gap-2; }
     section.data { @apply flex flex-col gap-10; }
   `,
   template: `
     <section class="header">
       <futbet-back-button />
 
-      <span class="date-label">
-        {{ data().fixture.date | date : 'HH:mm | dd.MM.yy' }}
-      </span>
+      <div class="dates">
+        <button mat-stroked-button disabled>
+          {{ data().fixture.date | date : 'HH:mm' }}
+        </button>
+        <button mat-stroked-button disabled>
+          {{ data().fixture.date | date : 'dd.MM.yy' }}
+        </button>
+      </div>
     </section>
 
     <section class="data">
