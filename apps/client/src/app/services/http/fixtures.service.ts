@@ -10,8 +10,8 @@ import { environment } from '../../../environments/environment';
 import { DateString } from '../../models';
 
 export abstract class HttpFixturesService {
+  abstract getFixture(id: FixtureId): Observable<MatchDTO>;
   abstract getFixtures(date: DateString): Observable<MatchDTO[]>;
-  abstract getFixtureDetails(id: FixtureId): Observable<MatchDTO>;
   abstract getAllFixtures(
     sort: string,
     order: SortDirection,
@@ -27,16 +27,16 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
 
   http = inject(HttpClient);
 
+  getFixture(id: FixtureId): Observable<MatchDTO> {
+    const params = new HttpParams().set('fixtureId', String(id));
+    return this.http.get<MatchDTO>(this.BASE_URL + '/get', { params });
+  }
+
   getFixtures(date: DateString): Observable<MatchDTO[]> {
     const params = new HttpParams().set('date', date);
     return this.http.get<MatchDTO[]>(this.BASE_URL + '/get', {
       params,
     });
-  }
-
-  getFixtureDetails(id: FixtureId): Observable<MatchDTO> {
-    const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<MatchDTO>(this.BASE_URL + '/get', { params });
   }
 
   getAllFixtures(

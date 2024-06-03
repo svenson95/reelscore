@@ -7,7 +7,7 @@ import { FixtureId, MatchDTO } from '@lib/models';
 import { DateService, HttpFixturesService } from '../../services';
 export abstract class FixturesService {
   abstract fixtures: Signal<MatchDTO[] | undefined>;
-  abstract requestFixtureDetails(id: FixtureId): Observable<MatchDTO>;
+  abstract loadFixture(id: FixtureId): Observable<MatchDTO>;
 }
 
 @Injectable()
@@ -26,8 +26,8 @@ export class AbstractedFixturesService extends FixturesService {
     )
   );
 
-  requestFixtureDetails(id: FixtureId): Observable<MatchDTO> {
-    return this.http.getFixtureDetails(id);
+  loadFixture(id: FixtureId): Observable<MatchDTO> {
+    return this.http.getFixture(id);
   }
 }
 
