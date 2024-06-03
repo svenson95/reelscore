@@ -75,43 +75,44 @@ export const getFixturesByDate = async (req, res, date) => {
 };
 
 export const getAllFixtures = async (req, res) => {
-  const sort = String(req.query.sort);
-  const order = req.query.order;
-  const page = Number(req.query.page);
-  const limit = Number(req.query.limit);
-
-  let query: string;
-
-  if (sort === '_id') {
-    query = '_id';
-  } else if (sort === 'fixtureId') {
-    query = 'fixture.id';
-  } else if (sort === 'date') {
-    query = 'fixture.date';
-  } else if (sort === 'league') {
-    query = 'league.name';
-  } else if (sort === 'round') {
-    query = 'league.round';
-  } else if (sort === 'home') {
-    query = 'teams.home.name';
-  } else if (sort === 'away') {
-    query = 'teams.away.name';
-  } else if (sort === 'score') {
-    query = 'score.fulltime.home';
-  }
-
   try {
-    const length = await Fixtures.countDocuments();
+    const sort = String(req.query.sort);
+    const query = getQuery(sort);
+    const order = req.query.order;
+    const limit = Number(req.query.limit);
+    const page = Number(req.query.page);
+
     const data = await Fixtures.find()
       .sort({ [query]: order === 'asc' ? 1 : -1 })
       .limit(limit)
       .skip(page * limit);
+    const length = await Fixtures.countDocuments();
     return res.json({ data, length });
   } catch (error) {
     return res.json({
       status: 'error happened',
       error,
     });
+  }
+};
+
+const getQuery = (sort: string): string => {
+  if (sort === '_id') {
+    return '_id';
+  } else if (sort === 'fixtureId') {
+    return 'fixture.id';
+  } else if (sort === 'date') {
+    return 'fixture.date';
+  } else if (sort === 'league') {
+    return 'league.name';
+  } else if (sort === 'round') {
+    return 'league.round';
+  } else if (sort === 'home') {
+    return 'teams.home.name';
+  } else if (sort === 'away') {
+    return 'teams.away.name';
+  } else if (sort === 'score') {
+    return 'score.fulltime.home';
   }
 };
 
