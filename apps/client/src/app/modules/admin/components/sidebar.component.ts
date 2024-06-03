@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+import { DatabaseService } from '../service';
 
 @Component({
   selector: 'futbet-admin-sidebar',
@@ -35,22 +43,36 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <ul>
         <li>
           <span>Datensätze insgesamt:</span>
-          <span>4</span>
+          <span>{{ totalLength() }}</span>
         </li>
         <li>
           <span>Standings Datensätze:</span>
-          <span>2</span>
+          <span>{{ standingsLength() }}</span>
         </li>
         <li>
           <span>Fixtures Datensätze:</span>
-          <span>1</span>
+          <span>{{ fixturesLength() }}</span>
         </li>
         <li>
           <span>Fixture-Statistics Datensätze:</span>
-          <span>1</span>
+          <span>{{ fixtureStatisticsLength() }}</span>
         </li>
       </ul>
     </section>
   `,
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  ds = inject(DatabaseService);
+
+  standingsLength = toSignal(this.ds.getAllStandingsCount());
+  fixturesLength = toSignal(this.ds.getAllFixturesCount());
+  fixtureStatisticsLength = toSignal(this.ds.getAllFixtureStatisticsCount());
+
+  totalLength = computed(() => {
+    const standings = this.standingsLength();
+    const fixtures = this.fixturesLength();
+    const fixtureStatistics = this.fixtureStatisticsLength();
+    if (!standings || !fixtures || !fixtureStatistics) return 0;
+    return fixtures + fixtureStatistics + standings;
+  });
+}

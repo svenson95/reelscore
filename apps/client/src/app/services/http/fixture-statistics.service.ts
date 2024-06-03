@@ -10,22 +10,24 @@ export abstract class HttpFixtureStatisticsService {
   abstract getFixtureStatistics(
     id: FixtureId
   ): Observable<FixtureStatisticsDTO>;
+  abstract getAllFixtureStatisticsCount(): Observable<number>;
 }
 
 @Injectable()
 export class AbstractedHttpFixtureStatisticsService extends HttpFixtureStatisticsService {
-  BASE_URL = environment.api;
+  BASE_URL = environment.api + 'fixture-statistics';
 
   http = inject(HttpClient);
 
   getFixtureStatistics(id: FixtureId): Observable<FixtureStatisticsDTO> {
     const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<FixtureStatisticsDTO>(
-      this.BASE_URL + 'fixture-statistics/get',
-      {
-        params,
-      }
-    );
+    return this.http.get<FixtureStatisticsDTO>(this.BASE_URL + '/get', {
+      params,
+    });
+  }
+
+  getAllFixtureStatisticsCount(): Observable<number> {
+    return this.http.get<number>(this.BASE_URL + '/count');
   }
 }
 

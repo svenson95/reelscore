@@ -115,6 +115,18 @@ export const getAllFixtures = async (req, res) => {
   }
 };
 
+export const getAllFixturesCount = async (req, res) => {
+  try {
+    const length = await Fixtures.countDocuments();
+    return res.json(length);
+  } catch (error) {
+    return res.json({
+      status: 'error happened',
+      error,
+    });
+  }
+};
+
 export const fetchFixtures = async (req, res) => {
   const leagueId = req.query.league;
   const round = req.query.round;

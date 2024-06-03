@@ -18,24 +18,25 @@ export abstract class HttpFixturesService {
     page: number,
     limit: number
   ): Observable<GetAllFixturesDTO>;
+  abstract getAllFixturesCount(): Observable<number>;
 }
 
 @Injectable()
 export class AbstractedHttpFixturesService extends HttpFixturesService {
-  BASE_URL = environment.api;
+  BASE_URL = environment.api + 'fixtures';
 
   http = inject(HttpClient);
 
   getFixtures(date: DateString): Observable<MatchDTO[]> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<MatchDTO[]>(this.BASE_URL + 'fixtures/get', {
+    return this.http.get<MatchDTO[]>(this.BASE_URL + '/get', {
       params,
     });
   }
 
   getFixtureDetails(id: FixtureId): Observable<MatchDTO> {
     const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<MatchDTO>(this.BASE_URL + 'fixtures/get', { params });
+    return this.http.get<MatchDTO>(this.BASE_URL + '/get', { params });
   }
 
   getAllFixtures(
@@ -46,8 +47,12 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
   ): Observable<GetAllFixturesDTO> {
     const queryParams = `?sort=${sort}&order=${order}&page=${page}&limit=${limit}`;
     return this.http.get<GetAllFixturesDTO>(
-      this.BASE_URL + `fixtures/get-all${queryParams}`
+      this.BASE_URL + `/get-all${queryParams}`
     );
+  }
+
+  getAllFixturesCount(): Observable<number> {
+    return this.http.get<number>(this.BASE_URL + '/count');
   }
 }
 

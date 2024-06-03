@@ -3,6 +3,7 @@ import express from 'express';
 import {
   fetchFixtureStatistics,
   getAllFixtureStatistics,
+  getAllFixtureStatisticsCount,
   getFixtureStatisticsById,
 } from '../controllers';
 
@@ -18,6 +19,10 @@ fixturesStatistics.get('/get-all', async (req, res) => {
   await getAllFixtureStatistics(req, res, (docs) => {
     return res.json(docs);
   });
+});
+
+fixturesStatistics.get('/count', async (req, res) => {
+  await getAllFixtureStatisticsCount(req, res);
 });
 
 fixturesStatistics.get('/fetch', async (req, res) => {

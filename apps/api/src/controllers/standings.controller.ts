@@ -56,6 +56,18 @@ export const getAllStandings = async (req, res, next) => {
   }
 };
 
+export const getAllStandingsCount = async (req, res) => {
+  try {
+    const length = await Standings.countDocuments();
+    return res.json(length);
+  } catch (error) {
+    return res.json({
+      status: 'error happened',
+      error,
+    });
+  }
+};
+
 export const fetchStandings = async (req, res, next) => {
   const leagueId = req.query.league;
 
