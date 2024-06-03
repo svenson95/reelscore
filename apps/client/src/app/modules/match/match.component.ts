@@ -40,7 +40,7 @@ export class MatchComponent extends RouterView {
 
   fixture = toSignal(
     toObservable(this.fixtureId).pipe(
-      switchMap((id) => this.fs.requestFixtureDetails(id))
+      switchMap((id) => this.fs.loadFixture(id))
     )
   );
 }
