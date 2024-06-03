@@ -3,6 +3,11 @@ import { StandingsRanks, Team } from './standings.model';
 
 export type FixtureId = number | string;
 
+export interface GetAllFixturesDTO {
+  data: MatchDTO[];
+  length: number;
+}
+
 export interface MatchDTO {
   _id: MongoDbId;
   fixture: Fixture;

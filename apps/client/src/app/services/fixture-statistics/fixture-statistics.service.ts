@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { map, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 
 import { FixtureId, FixtureStatisticsDTO } from '@lib/models';
 
@@ -27,7 +27,9 @@ export class AbstractedFixtureStatisticsService extends FixtureStatisticsService
   statistics = toSignal(
     toObservable(this.fixtureId).pipe(
       map((id) => id as FixtureId), // TODO filter id is undefined
-      switchMap((id) => this.http.getFixtureStatistics(id))
+      switchMap((id) =>
+        id ? this.http.getFixtureStatistics(id) : of(undefined)
+      )
     )
   );
 }
