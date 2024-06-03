@@ -1,2 +1,2 @@
 export * from './fixtures.controller';
-export * from './standings';
+export * from './standings.controller';
