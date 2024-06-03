@@ -1,3 +1,3 @@
-export * from './fixtures-statistics';
+export * from './fixtures-statistics.route';
 export * from './fixtures.route';
-export * from './standings';
+export * from './standings.route';
