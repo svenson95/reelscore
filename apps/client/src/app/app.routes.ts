@@ -9,6 +9,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin',
+    loadComponent: () =>
+      import('./modules/admin/admin.component').then((m) => m.AdminComponent),
+  },
+  {
     path: 'leagues/:url',
     children: [
       {
