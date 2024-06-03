@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ContentComponent } from './components/content.component';
+import { ContentComponent } from './components/content/content.component';
 import { SidebarComponent } from './components/sidebar.component';
 
 @Component({
