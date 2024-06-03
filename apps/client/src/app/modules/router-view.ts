@@ -14,7 +14,7 @@ export class RouterView {
   );
 
   updateLeague(url: CompetitionUrl): void {
-    const league = SELECT_LEAGUE.find((l) => l.url === url);
+    const league = SELECT_LEAGUE.find((l) => url.includes(l.url));
     this.leagueService.setSelectedLeague(league);
   }
 }

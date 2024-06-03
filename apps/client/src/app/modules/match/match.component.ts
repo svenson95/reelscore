@@ -6,7 +6,8 @@ import { switchMap } from 'rxjs';
 
 import { FixtureId } from '@lib/models';
 
-import { FixturesService } from '../../services';
+import { FixturesService, ROUTE_SERVICE_PROVIDER } from '../../services';
+import { RouterView } from '../router-view';
 
 import { MatchContentComponent } from './components/content/content.component';
 
@@ -14,6 +15,7 @@ import { MatchContentComponent } from './components/content/content.component';
   selector: 'futbet-match',
   standalone: true,
   imports: [AsyncPipe, NgIf, MatProgressSpinnerModule, MatchContentComponent],
+  providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { @apply w-full; } 
     
@@ -32,7 +34,7 @@ import { MatchContentComponent } from './components/content/content.component';
     }
   `,
 })
-export class MatchComponent {
+export class MatchComponent extends RouterView {
   fixtureId = input.required<FixtureId>();
   fs = inject(FixturesService);
 
