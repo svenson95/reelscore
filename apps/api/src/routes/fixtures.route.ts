@@ -16,7 +16,7 @@ export const fixtures = express.Router();
 fixtures.get('/get', async (req, res) => {
   const fixtureId = req.query.fixtureId;
   const teamId = req.query.teamId;
-  const round = req.query.round ? `Regular Season - ${req.query.round}` : null;
+  const round = req.query.round;
   const date = req.query.date;
 
   if (fixtureId) {

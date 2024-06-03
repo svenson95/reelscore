@@ -34,11 +34,12 @@ export const getFixturesByTeamId = async (req, res, teamId) => {
 
 export const getFixturesByRound = async (req, res, round) => {
   const leagueId = req.query.league;
+  const roundString = round ? `Regular Season - ${round}` : null;
 
   try {
     const docs = await Fixtures.find({
       'league.id': leagueId,
-      'league.round': round,
+      'league.round': roundString,
       'league.season': 2023,
     });
     return res.json(docs);
