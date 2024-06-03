@@ -30,6 +30,18 @@ export const getAllFixtureStatistics = async (req, res, next) => {
   }
 };
 
+export const getAllFixtureStatisticsCount = async (req, res) => {
+  try {
+    const length = await FixturesStatistics.countDocuments();
+    return res.json(length);
+  } catch (error) {
+    return res.json({
+      status: 'error happened',
+      error,
+    });
+  }
+};
+
 export const fetchFixtureStatistics = async (req, res, next) => {
   try {
     const fixtureId = req.query.fixtureId;

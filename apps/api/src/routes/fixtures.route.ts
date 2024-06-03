@@ -4,6 +4,7 @@ import {
   deleteFixture,
   fetchFixtures,
   getAllFixtures,
+  getAllFixturesCount,
   getFixturesByDate,
   getFixturesById,
   getFixturesByRound,
@@ -38,6 +39,10 @@ fixtures.get('/get', async (req, res) => {
 
 fixtures.get('/get-all', async (req, res) => {
   await getAllFixtures(req, res);
+});
+
+fixtures.get('/count', async (req, res) => {
+  await getAllFixturesCount(req, res);
 });
 
 fixtures.get('/fetch', async (req, res) => {

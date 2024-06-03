@@ -1,6 +1,11 @@
 import express from 'express';
 
-import { fetchStandings, getAllStandings, getStandings } from '../controllers';
+import {
+  fetchStandings,
+  getAllStandings,
+  getAllStandingsCount,
+  getStandings,
+} from '../controllers';
 
 export const standings = express.Router();
 
@@ -14,6 +19,10 @@ standings.get('/get-all', async (req, res) => {
   await getAllStandings(req, res, (docs) => {
     return res.json(docs);
   });
+});
+
+standings.get('/count', async (req, res) => {
+  await getAllStandingsCount(req, res);
 });
 
 standings.get('/fetch', async (req, res) => {
