@@ -15,13 +15,13 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, ShortTeamNamePipe],
   styles: `
-    :host { @apply flex-1 py-2 px-4; }
+    :host { @apply flex-1 py-4 px-4; }
     table { @apply w-full; }
     tr:not(:last-of-type) { @apply border-b-[1px]; }
     td {
       @apply text-fb-font-size-small py-2;
 
-      &:first-of-type { @apply w-[60px]; }
+      &.date { @apply w-[60px] min-w-[60px] border-r-[1px]; }
       &.team { @apply w-[35%] leading-[13px]; }
       &.home { @apply text-right; }
       &.result { @apply text-center w-[60px]; }
@@ -33,8 +33,8 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
       @for(match of latestFixtures(); track match.fixture.id; let idx = $index)
       {
       <tr>
-        <td>
-          <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
+        <td class="date">
+          <span>{{ match.fixture.date | date : 'ccc | dd.MM' }}</span>
         </td>
 
         <td class="team home">
