@@ -16,7 +16,7 @@ import { OptimizedImageComponent } from '../../../../components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, DatePipe],
   styles: `
-    :host { @apply flex; }
+    :host { @apply flex bg-white py-5 border-[1px]; }
     div { @apply flex flex-1 gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
     .team-column { @apply flex-col gap-3; }
     .result-column { @apply gap-2; }

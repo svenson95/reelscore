@@ -29,7 +29,7 @@ import {
     MatchDetailsAfterComponent,
   ],
   styles: `
-    :host { @apply flex flex-col gap-10; }
+    :host { @apply flex flex-col gap-3; }
     .header { @apply flex items-center justify-between border-b-[1px] pb-2;}
     .dates { @apply flex gap-2; }
     section.data { @apply flex flex-col gap-10; }

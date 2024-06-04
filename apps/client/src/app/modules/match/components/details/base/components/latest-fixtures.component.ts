@@ -10,7 +10,7 @@ import { MatchFixturesTableComponent } from './fixtures-table.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixturesTableComponent],
   styles: `
-    :host { @apply flex flex-col gap-3; }
+    :host { @apply flex flex-col bg-white py-5 border-[1px]; }
     div { @apply flex gap-5 flex-col md:flex-row; }
   `,
   template: `
