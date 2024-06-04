@@ -9,6 +9,7 @@ import {
   getFixturesById,
   getFixturesByRound,
   getFixturesByTeamId,
+  getLatestFixtures,
   updateFixture,
 } from '../controllers';
 
@@ -35,6 +36,14 @@ fixtures.get('/get', async (req, res) => {
   if (date && typeof date === 'string') {
     await getFixturesByDate(req, res, date);
   }
+});
+
+fixtures.get('/get-latest', async (req, res) => {
+  const fixtureId = req.query.fixtureId;
+
+  await getLatestFixtures(req, res, fixtureId, (docs) => {
+    return res.json(docs);
+  });
 });
 
 fixtures.get('/get-all', async (req, res) => {

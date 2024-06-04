@@ -8,6 +8,11 @@ export interface GetAllFixturesDTO {
   length: number;
 }
 
+export interface LatestFixturesDTO {
+  home: MatchDTO[];
+  away: MatchDTO[];
+}
+
 export interface MatchDTO {
   _id: MongoDbId;
   fixture: Fixture;

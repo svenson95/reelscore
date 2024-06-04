@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { MatchDTO } from '@lib/models';
+import { LatestFixturesDTO, MatchDTO } from '@lib/models';
 
 import { BackButtonComponent } from '../../../../components';
 import {
@@ -51,10 +51,13 @@ import {
     <section class="data">
       <futbet-match-header [data]="data()" />
 
-      <futbet-match-details-base [data]="data()" />
+      <futbet-match-details-base
+        [data]="data()"
+        [latestFixtures]="latestFixtures()!"
+      />
 
       @switch(isUpcoming()) { @case(true) {
-      <!-- <futbet-match-before-details /> -->
+      <!-- <futbet-match-details-before /> -->
       } @case(false) {
       <futbet-match-details-after [fixtureId]="data().fixture.id" />
       }}
@@ -63,5 +66,6 @@ import {
 })
 export class MatchContentComponent {
   data = input.required<MatchDTO>();
+  latestFixtures = input.required<LatestFixturesDTO>();
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
 }
