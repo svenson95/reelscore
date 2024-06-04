@@ -63,7 +63,6 @@ import { BreakpointObserverService } from '../../../../services';
             alternate="league logo"
             width="24"
             height="24"
-            [fill]="true"
           />
         </th>
         <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
@@ -80,7 +79,6 @@ import { BreakpointObserverService } from '../../../../services';
               alternate="team logo"
               width="12"
               height="12"
-              [fill]="true"
             />
             <span>{{ element.team.name }}</span>
           </div>
