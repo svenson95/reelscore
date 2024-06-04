@@ -12,6 +12,7 @@ type StandingsParams = undefined | CompetitionId;
 
 export abstract class HttpStandingsService {
   abstract getStandings(id: StandingsParams): Observable<StandingsDTO>;
+  abstract getAllStandings(): Observable<StandingsDTO[]>;
   abstract getAllStandingsCount(): Observable<number>;
 }
 
@@ -27,6 +28,10 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
     return this.http.get<StandingsDTO>(this.BASE_URL + '/get', {
       params,
     });
+  }
+
+  getAllStandings(): Observable<StandingsDTO[]> {
+    return this.http.get<StandingsDTO[]>(this.BASE_URL + '/get-top-five');
   }
 
   getAllStandingsCount(): Observable<number> {
