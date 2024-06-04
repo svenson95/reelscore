@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { MatchDTO } from '@lib/models';
+import { MatchDTO, logoFromAssets } from '@lib/models';
 import { OptimizedImageComponent } from '../../../../components';
 import { ShortTeamNamePipe } from '../../../../pipes';
 
@@ -25,7 +25,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
   template: `
     <div class="team-column">
       <futbet-optimized-image
-        [source]="data().teams.home.logo"
+        [source]="logoFromAssets(data().teams.home.id)"
         alternate="home logo"
         width="50"
         height="50"
@@ -45,7 +45,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
 
     <div class="team-column">
       <futbet-optimized-image
-        [source]="data().teams.away.logo"
+        [source]="logoFromAssets(data().teams.away.id)"
         alternate="away logo"
         width="50"
         height="50"
@@ -59,4 +59,6 @@ import { ShortTeamNamePipe } from '../../../../pipes';
 export class MatchHeaderComponent {
   data = input.required<MatchDTO>();
   isUpcoming = signal<boolean>(true); // TODO derive value from fixture date
+
+  logoFromAssets = logoFromAssets;
 }
