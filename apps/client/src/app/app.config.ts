@@ -3,7 +3,11 @@ import { provideHttpClient } from '@angular/common/http';
 import * as de from '@angular/common/locales/de';
 import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -22,7 +26,13 @@ const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+      })
+    ),
     provideAnimationsAsync(),
     provideHttpClient(),
     LOCALE_PROVIDER,
