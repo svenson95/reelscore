@@ -15,7 +15,7 @@ import { StatisticList } from './models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col bg-white border-[1px] py-5; }
+    :host { @apply flex flex-col bg-white border-[1px]; }
     section { @apply my-5; }
     div { @apply flex gap-5 justify-center mb-5; }
     h4, li { @apply text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
