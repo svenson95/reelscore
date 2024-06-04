@@ -8,25 +8,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   imports: [NgOptimizedImage],
   styles: `
     :host { @apply flex items-center justify-center; }
-    .fill-parent { position: relative; }
-    .fill-parent img { object-fit: contain; }
   `,
   template: `
-    @if (fill()) {
-    <div
-      class="fill-parent"
-      [style.height]="height() + 'px'"
-      [style.width]="width() + 'px'"
-    >
-      <img [ngSrc]="source()" [alt]="alternate()" priority fill />
-    </div>
-    } @else {<img
+    <img
       [ngSrc]="source()"
       [alt]="alternate()"
       priority
       [width]="width()"
       [height]="height()"
-    />}
+    />
   `,
 })
 export class OptimizedImageComponent {
@@ -35,6 +25,4 @@ export class OptimizedImageComponent {
 
   width = input<string>();
   height = input<string>();
-
-  fill = input<boolean>(false);
 }
