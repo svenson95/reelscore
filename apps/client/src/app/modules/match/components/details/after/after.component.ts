@@ -1,8 +1,7 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   input,
 } from '@angular/core';
@@ -16,26 +15,19 @@ import { MatchStatisticsComponent } from '../../statistics/statistics.component'
   selector: 'futbet-match-details-after',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchStatisticsComponent, NgIf, AsyncPipe],
+  imports: [NgIf, MatchStatisticsComponent],
   styles: ``,
   template: `
     <!-- <futbet-match-events /> -->
-    @if (statistics()) {
-    <futbet-match-statistics [data]="statistics()!" />
-    }
+    <ng-container *ngIf="statistics() as stats">
+      <futbet-match-statistics [data]="stats.response" />
+    </ng-container>
     <!-- <futbet-match-lineups /> -->
   `,
 })
 export class MatchDetailsAfterComponent {
   fixtureId = input.required<FixtureId>();
+
   fs = inject(FixtureStatisticsService);
-
-  idEffect = effect(
-    () => {
-      this.fs.fixtureId.set(this.fixtureId());
-    },
-    { allowSignalWrites: true }
-  );
-
   statistics = this.fs.statistics;
 }
