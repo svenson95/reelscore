@@ -32,6 +32,9 @@ module.exports = {
         'fb-padding-2': 'var(--fb-padding-2)',
         'fb-padding-3': 'var(--fb-padding-3)',
       },
+      maxWidth: {
+        'fb-max-width': 'var(--fb-size-max-width)',
+      },
     },
   },
   plugins: [],
