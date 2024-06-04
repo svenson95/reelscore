@@ -29,7 +29,7 @@ import { MatchDayListComponent } from './components';
     }
   `,
   template: `
-    @if (competitions() === undefined) {
+    @if (isLoading()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
     } @else { @for (competition of competitions(); track competition.name) {
     <futbet-match-day-list [competition]="competition" />
@@ -42,6 +42,8 @@ export class MatchDayComponent {
   ds = inject(DateService);
   ls = inject(LeagueService);
   fs = inject(FixturesService);
+
+  isLoading = this.fs.isLoading;
 
   competitions = computed<CompetitionFixtures[] | undefined>(() => {
     const data = this.fs.fixtures();
