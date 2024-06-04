@@ -58,6 +58,8 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
           </span>
         </td>
       </tr>
+      } @empty {
+      <p class="no-data">Keine Spiele gefunden.</p>
       }
     </table>
   `,

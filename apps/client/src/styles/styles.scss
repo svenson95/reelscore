@@ -20,5 +20,9 @@ body {
 
 h3.match-section-title {
   // TODO refactor border-b-[1px] pb-2 mb-2 to a utility class
-  @apply pb-2 mb-2 border-b-[1px] text-center;
+  @apply py-3 border-b-[1px] text-center;
+}
+
+p.no-data {
+  @apply text-fb-font-size-body-1 text-fb-color-text-2 text-center py-10;
 }

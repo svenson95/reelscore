@@ -23,10 +23,6 @@ import { MatchDayListComponent } from './components';
     futbet-match-day-list:not(:last-child) {
         @apply flex flex-col mb-5;
     }
-
-    p {
-        @apply text-fb-font-size-body-1 text-fb-color-text-2 text-center py-10;
-    }
   `,
   template: `
     @if (isLoading()) {
@@ -34,7 +30,7 @@ import { MatchDayListComponent } from './components';
     } @else { @for (competition of competitions(); track competition.name) {
     <futbet-match-day-list [competition]="competition" />
     } @empty {
-    <p>Es finden keine Spiele statt.</p>
+    <p class="no-data">Es finden keine Spiele statt.</p>
     } }
   `,
 })
