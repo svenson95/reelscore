@@ -37,7 +37,11 @@ import { CompetitionFixtures } from '../../../../models';
   template: `
     <div class="header">
       <futbet-optimized-image
-        [source]="competition().image"
+        [source]="
+          'assets/images/country/' +
+          competition().fixtures[0].league.id +
+          '.svg'
+        "
         alternate="country flag"
         width="16"
         height="12"

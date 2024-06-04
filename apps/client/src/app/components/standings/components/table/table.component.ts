@@ -59,7 +59,7 @@ import { BreakpointObserverService } from '../../../../services';
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>
           <futbet-optimized-image
-            [source]="data().league.logo"
+            [source]="'assets/images/league/' + data().league.id + '.png'"
             alternate="league logo"
             width="24"
             height="24"
