@@ -3,7 +3,12 @@ import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 
-import { FixtureId, GetAllFixturesDTO, MatchDTO } from '@lib/models';
+import {
+  FixtureId,
+  GetAllFixturesDTO,
+  LatestFixturesDTO,
+  MatchDTO,
+} from '@lib/models';
 
 import { environment } from '../../../environments/environment';
 
@@ -12,6 +17,9 @@ import { DateString } from '../../models';
 export abstract class HttpFixturesService {
   abstract getFixture(id: FixtureId): Observable<MatchDTO>;
   abstract getFixtures(date: DateString): Observable<MatchDTO[]>;
+  abstract getLatestFixtures(
+    fixtureId: FixtureId
+  ): Observable<LatestFixturesDTO>;
   abstract getAllFixtures(
     sort: string,
     order: SortDirection,
@@ -35,6 +43,13 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
   getFixtures(date: DateString): Observable<MatchDTO[]> {
     const params = new HttpParams().set('date', date);
     return this.http.get<MatchDTO[]>(this.BASE_URL + '/get', {
+      params,
+    });
+  }
+
+  getLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
+    const params = new HttpParams().set('fixtureId', fixtureId);
+    return this.http.get<LatestFixturesDTO>(this.BASE_URL + '/get-latest', {
       params,
     });
   }

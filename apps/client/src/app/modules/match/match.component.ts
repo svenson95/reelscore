@@ -27,10 +27,13 @@ import { MatchContentComponent } from './components/content/content.component';
     futbet-match-after-details { @apply gap-5 flex flex-col; }
   `,
   template: `
-    @if (fixture() === undefined) {
+    @if (fixture() === undefined || latestFixtures() === undefined){
     <mat-spinner class="my-2 mx-auto" diameter="20" />
     } @else {
-    <futbet-match-content [data]="fixture()!" />
+    <futbet-match-content
+      [data]="fixture()!"
+      [latestFixtures]="latestFixtures()!"
+    />
     }
   `,
 })
@@ -41,6 +44,12 @@ export class MatchComponent extends RouterView {
   fixture = toSignal(
     toObservable(this.fixtureId).pipe(
       switchMap((id) => this.fs.loadFixture(id))
+    )
+  );
+
+  latestFixtures = toSignal(
+    toObservable(this.fixtureId).pipe(
+      switchMap((fixtureId) => this.fs.loadLatestFixtures(fixtureId))
     )
   );
 }

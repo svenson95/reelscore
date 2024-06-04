@@ -2,11 +2,12 @@ import { Injectable, Signal, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Observable, switchMap } from 'rxjs';
 
-import { FixtureId, MatchDTO } from '@lib/models';
+import { FixtureId, LatestFixturesDTO, MatchDTO } from '@lib/models';
 
 import { DateService, HttpFixturesService } from '../../services';
 export abstract class FixturesService {
   abstract fixtures: Signal<MatchDTO[] | undefined>;
+  abstract loadLatestFixtures(id: FixtureId): Observable<LatestFixturesDTO>;
   abstract loadFixture(id: FixtureId): Observable<MatchDTO>;
 }
 
@@ -25,6 +26,10 @@ export class AbstractedFixturesService extends FixturesService {
       })
     )
   );
+
+  loadLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
+    return this.http.getLatestFixtures(fixtureId);
+  }
 
   loadFixture(id: FixtureId): Observable<MatchDTO> {
     return this.http.getFixture(id);

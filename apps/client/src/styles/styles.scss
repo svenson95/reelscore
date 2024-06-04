@@ -17,3 +17,8 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+h3.match-section-title {
+  // TODO refactor border-b-[1px] pb-2 mb-2 to a utility class
+  @apply pb-2 mb-2 border-b-[1px] text-center;
+}

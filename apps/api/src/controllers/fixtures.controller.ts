@@ -75,6 +75,40 @@ export const getFixturesByDate = async (req, res, date) => {
   }
 };
 
+export const getLatestFixtures = async (req, res, fixtureId, next) => {
+  try {
+    const fixtureDoc = await Fixtures.findOne({
+      'fixture.id': fixtureId,
+    });
+
+    const home = await findLatestFixturesForTeam(
+      fixtureDoc.teams.home.id,
+      fixtureDoc.fixture.date
+    );
+
+    const away = await findLatestFixturesForTeam(
+      fixtureDoc.teams.away.id,
+      fixtureDoc.fixture.date
+    );
+
+    return next({ home, away });
+  } catch (error) {
+    return res.json({
+      status: 'error happened',
+      error,
+    });
+  }
+};
+
+const findLatestFixturesForTeam = async (teamId: number, date: string) => {
+  return await Fixtures.find()
+    .where('fixture.date')
+    .lt(Number(date))
+    .or([{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }])
+    .limit(5)
+    .sort({ 'fixture.date': -1 });
+};
+
 export const getAllFixtures = async (req, res) => {
   try {
     const sort = String(req.query.sort);
