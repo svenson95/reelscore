@@ -30,7 +30,7 @@ import {
   ],
   styles: `
     :host { @apply flex flex-col gap-3; }
-    .header { @apply flex items-center justify-between border-b-[1px] pb-2;}
+    .header { @apply flex items-center justify-between;}
     .dates { @apply flex gap-2; }
     section.data { @apply flex flex-col gap-10; }
   `,
