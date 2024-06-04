@@ -14,7 +14,7 @@ import { FixtureTeam, MatchDTO } from '@lib/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe],
   styles: `
-    :host { @apply flex-1 bg-white py-2 px-4 border-[1px]; }
+    :host { @apply flex-1 py-2 px-4; }
     table { @apply w-full; }
     tr:not(:last-of-type) { @apply border-b-[1px]; }
     td {
