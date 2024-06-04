@@ -22,9 +22,9 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
       @apply text-fb-font-size-small py-2;
 
       &:first-of-type { @apply w-[60px]; }
-      &.team { @apply leading-[13px]; }
+      &.team { @apply w-[35%] leading-[13px]; }
       &.home { @apply text-right; }
-      &.result { @apply text-center min-w-[50px]; }
+      &.result { @apply text-center w-[60px]; }
     }
     .related-team { @apply font-bold; }
   `,
@@ -34,7 +34,7 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
       {
       <tr>
         <td>
-          <span>{{ match.fixture.date | date : 'dd.MM.yy' }}</span>
+          <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
         </td>
 
         <td class="team home">
