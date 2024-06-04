@@ -1,4 +1,11 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+import { environment } from '../environments/environment';
+
+export const adminGuard = () => {
+  const router = inject(Router);
+  return environment.isAdmin ? true : router.navigate(['/']);
+};
 
 export const routes: Routes = [
   {
@@ -10,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [adminGuard],
     loadComponent: () =>
       import('./modules/admin/admin.component').then((m) => m.AdminComponent),
   },
