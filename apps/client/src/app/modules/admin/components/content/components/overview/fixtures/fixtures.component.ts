@@ -24,10 +24,10 @@ import {
 
 import { GetAllFixturesDTO, MatchDTO } from '@lib/models';
 
-import { DatabaseService } from '../../../../service/database.service';
+import { DatabaseService } from '../../../../../service/database.service';
 
 @Component({
-  selector: 'futbet-admin-content-table',
+  selector: 'futbet-admin-overview-fixtures',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -134,7 +134,7 @@ import { DatabaseService } from '../../../../service/database.service';
     ></mat-paginator>
   `,
 })
-export class TableComponent implements AfterViewInit {
+export class OverviewFixturesComponent implements AfterViewInit {
   readonly pageSize = 10;
   readonly pageSizeOptions = [10, 20, 50, 250];
   readonly displayedColumns = [

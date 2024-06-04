@@ -169,35 +169,30 @@ export const fetchFixtures = async (req, res) => {
 
   const uri = `fixtures?league=${leagueId}&round=Regular%20Season%20-%20${round}&season=2023`;
   const response = await fetchFromRapidApi(uri);
-  const body = (await response.json()) as any; // TODO fix any
+  const body = await response.json(); // TODO fix any
   const data = body.response;
 
-  // await Fixtures.find().exec((error, fixtures) => {
-  //   if (error) {
-  //       return res.json({
-  //           status: "error happened",
-  //           error: error
-  //       });
-  //   }
-
-  //   fixtures.forEach(fixture => {
-  //     Fixtures.findOne({ 'fixture.id': fixture.id }).exec((error, fixture) => {
-  //       if (error) {
-  //         // TODO: create fixture
-  //         Fixtures.create(fixture);
-  //       } else {
-  //         // TODO: update fixture
-  //         Fixtures.updateOne({ 'fixture.id': fixture!.id }).exec();
-  //       }
-  //     });
-  //   });
-  // });
-
   try {
-    const documents = await Fixtures.updateMany(data);
+    const fixtureIds = data.map((d) => d.fixture.id);
+    const existingFixtures = await Fixtures.find();
+    const fixtures = [];
+
+    await fixtureIds.forEach(async (id, idx) => {
+      const fixture = data[idx];
+      const existingFixture = existingFixtures.find((f) => f.fixture.id === id);
+
+      if (!existingFixture) {
+        const doc = await Fixtures.create(fixture);
+        fixtures.push(doc);
+      } else {
+        const doc = await Fixtures.updateOne({ 'fixture.id': id }, fixture);
+        fixtures.push(doc);
+      }
+    });
+
     return res.json({
       response: 'documents saved',
-      documents,
+      documents: fixtures,
     });
   } catch (error) {
     return res.json({

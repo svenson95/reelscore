@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ContentComponent } from './components/content/content.component';
-import { SidebarComponent } from './components/sidebar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ADMIN_SERVICE_PROVIDER } from './service';
 
 @Component({
   selector: 'futbet-admin',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SidebarComponent, ContentComponent],
+  providers: [ADMIN_SERVICE_PROVIDER],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
     .page-title { @apply text-center border-b-[1px] pb-2 mb-2; }
