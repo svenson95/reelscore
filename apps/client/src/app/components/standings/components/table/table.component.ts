@@ -10,13 +10,14 @@ import { MatTableModule } from '@angular/material/table';
 import { StandingsDTO, logoFromAssets } from '@lib/models';
 
 import { OptimizedImageComponent } from '../../../../components';
+import { ShortTeamNamePipe } from '../../../../pipes';
 import { BreakpointObserverService } from '../../../../services';
 
 @Component({
   selector: 'futbet-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatTableModule, OptimizedImageComponent],
+  imports: [MatTableModule, OptimizedImageComponent, ShortTeamNamePipe],
   styles: `
     :host {
       @apply flex overflow-hidden border;
@@ -80,7 +81,7 @@ import { BreakpointObserverService } from '../../../../services';
               width="12"
               height="12"
             />
-            <span>{{ element.team.name }}</span>
+            <span>{{ element.team.name | shortTeamName }}</span>
           </div>
         </td>
       </ng-container>

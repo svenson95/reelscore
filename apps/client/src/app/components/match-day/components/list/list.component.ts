@@ -3,15 +3,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { logoFromAssets } from '@lib/models';
-
 import { OptimizedImageComponent } from '../../../../components';
 import { CompetitionFixtures } from '../../../../models';
+import { ShortTeamNamePipe } from '../../../../pipes';
 
 @Component({
   selector: 'futbet-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterModule, OptimizedImageComponent],
+  imports: [DatePipe, RouterModule, OptimizedImageComponent, ShortTeamNamePipe],
   styles: `
     :host {
       @apply flex flex-col overflow-hidden border;
@@ -68,7 +68,7 @@ import { CompetitionFixtures } from '../../../../models';
               width="12"
               height="12"
             />
-            <span>{{ item.teams.home.name }}</span>
+            <span>{{ item.teams.home.name | shortTeamName }}</span>
           </div>
           <div>
             <futbet-optimized-image
@@ -77,7 +77,7 @@ import { CompetitionFixtures } from '../../../../models';
               width="12"
               height="12"
             />
-            <span>{{ item.teams.away.name }}</span>
+            <span>{{ item.teams.away.name | shortTeamName }}</span>
           </div>
         </section>
       </li>

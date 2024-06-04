@@ -7,19 +7,19 @@ import {
 } from '@angular/core';
 
 import { MatchDTO } from '@lib/models';
-
 import { OptimizedImageComponent } from '../../../../components';
+import { ShortTeamNamePipe } from '../../../../pipes';
 
 @Component({
   selector: 'futbet-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, DatePipe],
+  imports: [OptimizedImageComponent, DatePipe, ShortTeamNamePipe],
   styles: `
-    :host { @apply flex bg-white py-5 border-[1px]; }
-    div { @apply flex flex-1 gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
-    .team-column { @apply flex-col gap-3; }
-    .result-column { @apply gap-2; }
+    :host { @apply flex bg-white p-5 border-[1px]; }
+    div { @apply flex gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
+    .team-column { @apply flex-[2] flex-col gap-3; }
+    .result-column { @apply flex-1 gap-1; }
     .team-name { @apply leading-[14px] text-center; }
   `,
   template: `
@@ -30,7 +30,9 @@ import { OptimizedImageComponent } from '../../../../components';
         width="50"
         height="50"
       />
-      <span class="team-name">{{ data().teams.home.name }}</span>
+      <span class="team-name">
+        {{ data().teams.home.name | shortTeamName }}
+      </span>
     </div>
 
     <div class="result-column">
@@ -48,7 +50,9 @@ import { OptimizedImageComponent } from '../../../../components';
         width="50"
         height="50"
       />
-      <span class="team-name">{{ data().teams.away.name }}</span>
+      <span class="team-name">
+        {{ data().teams.away.name | shortTeamName }}
+      </span>
     </div>
   `,
 })

@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 
 import { FixtureTeam, MatchDTO } from '@lib/models';
+import { ShortTeamNamePipe } from '../../../../../../pipes';
 
 @Component({
   selector: 'futbet-match-fixtures-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe],
+  imports: [DatePipe, ShortTeamNamePipe],
   styles: `
     :host { @apply flex-1 py-2 px-4; }
     table { @apply w-full; }
@@ -38,7 +39,7 @@ import { FixtureTeam, MatchDTO } from '@lib/models';
 
         <td class="team home">
           <span [class.related-team]="relatedTeamId(match.teams.home.id)">
-            {{ match.teams.home.name }}
+            {{ match.teams.home.name | shortTeamName }}
           </span>
         </td>
 
@@ -53,7 +54,7 @@ import { FixtureTeam, MatchDTO } from '@lib/models';
 
         <td class="team">
           <span [class.related-team]="relatedTeamId(match.teams.away.id)">
-            {{ match.teams.away.name }}
+            {{ match.teams.away.name | shortTeamName }}
           </span>
         </td>
       </tr>
