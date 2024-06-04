@@ -44,7 +44,7 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
         </td>
 
         <td class="result">
-          @if(match.score.fulltime.home){
+          @if(match.score.fulltime.home !== null) {
           <span>
             {{ match.score.fulltime.home }} -
             {{ match.score.fulltime.away }}
