@@ -1,22 +1,18 @@
+import { DestroyRef, Injectable, Signal, inject } from '@angular/core';
 import {
-  DestroyRef,
-  Injectable,
-  WritableSignal,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
+import { of, switchMap } from 'rxjs';
 
 import { StandingsDTO } from '@lib/models';
 
 import { HttpStandingsService, LeagueService } from '../../services';
 
-type StandingsState = 'init' | StandingsDTO | StandingsDTO[] | undefined;
-
 export abstract class StandingsService {
-  abstract standings: WritableSignal<StandingsState>;
-  abstract isLoading: WritableSignal<boolean>;
+  abstract standing: Signal<StandingsDTO | undefined>;
+  abstract topFiveStandings: Signal<StandingsDTO[] | undefined>;
 }
 
 @Injectable()
@@ -25,26 +21,18 @@ export class AbstractedStandingsService extends StandingsService {
   standingsService = inject(HttpStandingsService);
   destroyRef = inject(DestroyRef);
 
-  standings = signal<StandingsState>('init');
+  standing = toSignal<StandingsDTO | undefined>(
+    toObservable(this.leagueService.selectedLeague).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      switchMap((league) =>
+        league ? this.standingsService.getStandings(league.id) : of(undefined)
+      )
+    )
+  );
 
-  isLoading = signal<boolean>(true);
-
-  onSelectedLeagueChange = effect(() => this.setStandings(), {
-    allowSignalWrites: true,
-  });
-
-  setStandings(): void {
-    const league = this.leagueService.selectedLeague();
-
-    this.isLoading.set(true);
-    this.standingsService
-      .getStandings(league?.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((data) => {
-        this.isLoading.set(false);
-        this.standings.set(data);
-      });
-  }
+  topFiveStandings = toSignal<StandingsDTO[] | undefined>(
+    this.standingsService.getAllStandings()
+  );
 }
 
 export const STANDINGS_SERVICE_PROVIDER = {

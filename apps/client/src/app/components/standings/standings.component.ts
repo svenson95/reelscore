@@ -6,43 +6,54 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { StandingsDTO } from '@lib/models';
+import { LeagueService, StandingsService } from '../../services';
 
-import { StandingsService } from '../../services';
-
+import { JsonPipe } from '@angular/common';
 import { TableComponent } from './components';
 
 @Component({
   selector: 'futbet-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatProgressSpinnerModule, TableComponent],
+  imports: [MatProgressSpinnerModule, TableComponent, JsonPipe],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (isLoading()) {
+    @if (isLoadingStanding() || isLoadingTopFive()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
-    } @else if(showAllTables()) {@for (singleTable of multiple; track
+    } @else { @if(isLeagueSelected()) {
+    <futbet-standings-table [data]="standing()!" />
+    } @else { @for (singleTable of topFiveStandings(); track
     singleTable.league.id) {
     <futbet-standings-table [data]="singleTable" />
-    } } @else {
-    <futbet-standings-table [data]="single" />
-    }
+    } } }
   `,
 })
 export class StandingsComponent {
-  service = inject(StandingsService);
-  standings = this.service.standings;
-  isLoading = this.service.isLoading;
+  ls = inject(LeagueService);
+  ss = inject(StandingsService);
 
-  showAllTables = computed(() => this.standings() instanceof Array);
+  standing = this.ss.standing;
+  topFiveStandings = this.ss.topFiveStandings;
 
-  get single(): StandingsDTO {
-    return this.standings() as StandingsDTO;
-  }
+  isLoadingStanding = computed<boolean>(() => {
+    const selectedLeague = this.ls.selectedLeague();
+    const isLeagueSelected = selectedLeague !== undefined;
+    if (!isLeagueSelected) return false;
 
-  get multiple(): StandingsDTO[] {
-    return this.standings() as StandingsDTO[];
-  }
+    const standing = this.standing();
+    const isSame = selectedLeague?.id === String(standing?.league.id);
+
+    return !standing || !isSame;
+  });
+
+  isLoadingTopFive = computed<boolean>(() => {
+    const selectedLeague = this.ls.selectedLeague();
+    if (selectedLeague !== undefined) return false;
+
+    return this.topFiveStandings() === undefined;
+  });
+
+  isLeagueSelected = computed<boolean>(() => this.standing() !== undefined);
 }
