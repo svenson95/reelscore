@@ -1,11 +1,15 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { switchMap } from 'rxjs';
 
 import { FixtureId } from '@lib/models';
 
-import { FixturesService, ROUTE_SERVICE_PROVIDER } from '../../services';
+import {
+  FixtureStatisticsService,
+  FixturesService,
+  ROUTE_SERVICE_PROVIDER,
+} from '../../services';
 import { RouterView } from '../router-view';
 import { MatchContentComponent } from './components/content/content.component';
 
@@ -31,6 +35,7 @@ import { MatchContentComponent } from './components/content/content.component';
 export class MatchComponent extends RouterView {
   fixtureId = input.required<FixtureId>();
   fs = inject(FixturesService);
+  fss = inject(FixtureStatisticsService);
 
   fixture = toSignal(
     toObservable(this.fixtureId).pipe(
@@ -42,5 +47,12 @@ export class MatchComponent extends RouterView {
     toObservable(this.fixtureId).pipe(
       switchMap((fixtureId) => this.fs.loadLatestFixtures(fixtureId))
     )
+  );
+
+  setFixtureId = effect(
+    () => {
+      this.fss.fixtureId.set(this.fixtureId());
+    },
+    { allowSignalWrites: true }
   );
 }
