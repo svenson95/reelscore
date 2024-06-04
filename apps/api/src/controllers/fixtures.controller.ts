@@ -224,16 +224,12 @@ export const updateFixture = async (req, res) => {
   }
 };
 
-export const deleteFixture = async (req, res) => {
-  const round = `Regular Season - 6`;
+export const deleteFixture = async (req, res, next) => {
   const _id = req.query.id;
 
   try {
-    const docs = await Fixtures.deleteOne({ _id });
-    res.json({
-      response: 'documents saved',
-      documents: docs,
-    });
+    const docs = await Fixtures.deleteOne().where('_id').equals(_id);
+    return next(docs);
   } catch (error) {
     return res.json({
       response: 'error happened',
