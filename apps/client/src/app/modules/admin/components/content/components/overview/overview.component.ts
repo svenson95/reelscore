@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AdminService, DATABASE_SERVICE_PROVIDER } from '../../../../service';
+import { AdminService } from '../../../../service';
 import { OverviewFixturesComponent } from './fixtures/fixtures.component';
 
 @Component({
@@ -7,7 +7,6 @@ import { OverviewFixturesComponent } from './fixtures/fixtures.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OverviewFixturesComponent],
-  providers: [DATABASE_SERVICE_PROVIDER],
   styles: `
   `,
   template: `
