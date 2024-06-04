@@ -15,10 +15,10 @@ import { RouterView } from '../router-view';
   providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
-      @apply w-full; 
+      @apply flex flex-col w-full; 
 
       section {
-        @apply inline-flex flex-wrap md:flex-nowrap w-full gap-5;
+        @apply max-w-fb-max-width inline-flex flex-wrap md:flex-nowrap w-full gap-5 mx-auto;
 
         futbet-match-day, futbet-standings {
           @apply w-full min-w-[200px];
