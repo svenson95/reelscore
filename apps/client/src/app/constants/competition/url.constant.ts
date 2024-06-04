@@ -5,7 +5,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
   [CompetitionCode.GERMANY_BUNDESLIGA]: 'bundesliga',
   [CompetitionCode.GERMANY_BUNDESLIGA_2]: 'bundesliga-2',
-  [CompetitionCode.ITALY_SERIE_A]: 'seria-a',
+  [CompetitionCode.ITALY_SERIE_A]: 'serie-a',
   [CompetitionCode.SPAIN_LA_LIGA]: 'la-liga',
   [CompetitionCode.FRANCE_LIGUE_1]: 'ligue-1',
 
