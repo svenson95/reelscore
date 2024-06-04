@@ -59,12 +59,13 @@ export const getFixturesByDate = async (req, res, date) => {
   tomorrow.setDate(tomorrow.getDate() + 1);
 
   try {
-    const docs = await Fixtures.find({
-      'fixture.date': {
-        $gte: day,
-        $lt: tomorrow,
-      },
-    }).sort({ 'fixture.date': 1 });
+    const docs = await Fixtures.find()
+      .where('fixture.date')
+      .gte(Number(day))
+      .lt(Number(tomorrow))
+      .where('league.id')
+      .in(['39', '78', '135', '140', '61'])
+      .sort({ 'fixture.date': 1 });
     return res.json(docs);
   } catch (error) {
     return res.json({
