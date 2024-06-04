@@ -1,4 +1,3 @@
-import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -8,23 +7,15 @@ import { FixtureId } from '@lib/models';
 
 import { FixturesService, ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
-
 import { MatchContentComponent } from './components/content/content.component';
 
 @Component({
   selector: 'futbet-match',
   standalone: true,
-  imports: [AsyncPipe, NgIf, MatProgressSpinnerModule, MatchContentComponent],
+  imports: [MatProgressSpinnerModule, MatchContentComponent],
   providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
-    :host { @apply w-full; } 
-    
-    futbet-match-result, 
-    futbet-match-before-details, 
-    futbet-match-after-details { @apply pb-5; }
-
-    futbet-match-before-details, 
-    futbet-match-after-details { @apply gap-5 flex flex-col; }
+    :host { @apply w-full; }
   `,
   template: `
     @if (fixture() === undefined || latestFixtures() === undefined){
