@@ -71,8 +71,8 @@ export class MatchFixturesTableComponent {
     const nextGame = fixtures[1];
     const home = firstGame.teams.home;
     if (
-      home.id === nextGame.teams.home.id ||
-      home.id === nextGame.teams.away.id
+      home.id === nextGame?.teams.home.id ||
+      home.id === nextGame?.teams.away.id
     ) {
       return home;
     } else {
