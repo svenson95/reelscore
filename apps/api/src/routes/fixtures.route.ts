@@ -63,5 +63,10 @@ fixtures.patch('/update', async (req, res) => {
 });
 
 fixtures.delete('/delete', async (req, res) => {
-  await deleteFixture(req, res);
+  await deleteFixture(req, res, (docs) => {
+    return res.json({
+      response: 'documents deleted',
+      documents: docs,
+    });
+  });
 });
