@@ -5,6 +5,7 @@ import {
   computed,
   input,
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { FixtureTeam, MatchDTO } from '@lib/models';
 import { ShortTeamNamePipe } from '../../../../../../pipes';
@@ -13,10 +14,11 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
   selector: 'futbet-match-fixtures-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, ShortTeamNamePipe],
+  imports: [RouterModule, DatePipe, ShortTeamNamePipe],
   styles: `
     :host { @apply flex-1 py-4 px-4; }
     table { @apply w-full; }
+    tr { @apply cursor-pointer; }
     tr:not(:last-of-type) { @apply border-b-[1px]; }
     td {
       @apply text-fb-font-size-small py-2;
@@ -32,7 +34,7 @@ import { ShortTeamNamePipe } from '../../../../../../pipes';
     <table>
       @for(match of latestFixtures(); track match.fixture.id; let idx = $index)
       {
-      <tr>
+      <tr [routerLink]="['..', match.fixture.id]">
         <td class="date">
           <span>{{ match.fixture.date | date : 'ccc | dd.MM' }}</span>
         </td>
