@@ -75,7 +75,7 @@ export const fetchStandings = async (req, res, next) => {
   const data = body.response[0];
 
   try {
-    const docs = new Standings(data);
+    const docs = await Standings.create(data);
     return next(docs);
   } catch (error) {
     return res.json({

@@ -3,19 +3,20 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AdminService, HTTP_RAPID_SERVICE_PROVIDER } from '../../../../service';
 
 import { UpdateFixturesComponent } from './fixtures/fixtures.component';
+import { UpdateStandingsComponent } from './standings/standings.component';
 
 @Component({
   selector: 'futbet-admin-content-update',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UpdateFixturesComponent],
+  imports: [UpdateFixturesComponent, UpdateStandingsComponent],
   providers: [HTTP_RAPID_SERVICE_PROVIDER],
   styles: `
     :host { @apply flex flex-col flex-[3]; }
   `,
   template: `
     @switch(activeView()) { @case('update-standings') {
-    <!-- <futbet-admin-update-standings /> -->
+    <futbet-admin-update-standings />
     } @case('update-fixtures') {
     <futbet-admin-update-fixtures />
     } @case('update-statistics') {
