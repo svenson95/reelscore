@@ -51,7 +51,13 @@ import { ShortTeamNamePipe } from '../../../../pipes';
     <ul>
       @for(item of competition().fixtures; track item.league.id) {
       <li
-        [routerLink]="['/', 'leagues', 'bundesliga', 'match', item.fixture.id]"
+        [routerLink]="[
+          '/',
+          'leagues',
+          routerLinks[item.league.id],
+          'match',
+          item.fixture.id
+        ]"
       >
         <section class="time">
           <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
@@ -86,6 +92,14 @@ import { ShortTeamNamePipe } from '../../../../pipes';
   `,
 })
 export class MatchDayListComponent {
+  readonly routerLinks: Record<number, string> = {
+    78: 'bundesliga',
+    39: 'premier-league',
+    140: 'la-liga',
+    135: 'serie-a',
+    61: 'ligue-1',
+  };
+
   readonly competition = input.required<CompetitionFixtures>();
 
   logoFromAssets = logoFromAssets;
