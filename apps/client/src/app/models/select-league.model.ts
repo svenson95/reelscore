@@ -9,4 +9,5 @@ export interface SelectLeagueData {
   label: CompetitionLabel;
   id: CompetitionId;
   url: CompetitionUrl;
+  size: number;
 }
