@@ -48,6 +48,8 @@ export class TeamNamePipe implements PipeTransform {
         return 'Augsburg';
       case 'VfB Stuttgart':
         return 'Stuttgart';
+      case 'Werder Bremen':
+        return 'Bremen';
 
       // Premiere League
       case 'Nottingham Forest':
