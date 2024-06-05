@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY } from '../../../models';
+import { DateString, TODAY } from '@app/models';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -26,10 +26,6 @@ class CustomDateAdapter extends NativeDateAdapter {
   }
 }
 
-const LAST_YEAR = new Date(TODAY.getFullYear() - 1, 0, 1);
-const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
-
-// TODO: refactor to lib?
 @Component({
   selector: 'futbet-date-picker',
   standalone: true,
@@ -79,10 +75,9 @@ const NEXT_YEAR = new Date(TODAY.getFullYear() + 1, 11, 31);
   `,
 })
 export class DatePickerComponent {
-  readonly MIN_DATE = LAST_YEAR;
-  readonly MAX_DATE = NEXT_YEAR;
+  readonly MIN_DATE = new Date(TODAY.getFullYear() - 1, 0, 1);
+  readonly MAX_DATE = new Date(TODAY.getFullYear() + 1, 11, 31);
 
   selectedDay = input.required<DateString>();
-
   dateSelected = output<DateString>();
 }

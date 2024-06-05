@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString, TODAY_ISO_STRING } from '../../../models';
+import { DateString, TODAY_ISO_STRING } from '@app/models';
 
 @Component({
   selector: 'futbet-today-button',
@@ -21,10 +21,7 @@ import { DateString, TODAY_ISO_STRING } from '../../../models';
 })
 export class TodayButtonComponent {
   isToday = input.required<boolean>();
-
   onClick = output<DateString>();
 
-  setToday(): void {
-    this.onClick.emit(TODAY_ISO_STRING);
-  }
+  setToday = () => this.onClick.emit(TODAY_ISO_STRING);
 }

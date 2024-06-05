@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { BreakpointObserverService, DateService } from '../../services';
+import { BreakpointObserverService, DateService } from '@app/services';
 
 import {
   CalenderWeekLabelComponent,
@@ -9,9 +9,8 @@ import {
   WeekToggleGroupComponent,
 } from './components';
 
-// TODO: refactor to lib?
 @Component({
-  selector: 'futbet-start-date-bar',
+  selector: 'futbet-date-bar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -70,13 +69,13 @@ import {
   `,
 })
 export class DateBarComponent {
-  private breakpoint = inject(BreakpointObserverService);
-  private dateService = inject(DateService);
+  bos = inject(BreakpointObserverService);
+  ds = inject(DateService);
 
-  selectedDay = this.dateService.selectedDay;
-  weekdays = this.dateService.weekdays;
-  calenderWeek = this.dateService.calenderWeek;
-  isToday = this.dateService.isToday;
+  selectedDay = this.ds.selectedDay;
+  weekdays = this.ds.weekdays;
+  calenderWeek = this.ds.calenderWeek;
+  isToday = this.ds.isToday;
 
-  isMobile = this.breakpoint.isMobile;
+  isMobile = this.bos.isMobile;
 }
