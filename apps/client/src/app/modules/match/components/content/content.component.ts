@@ -44,6 +44,9 @@ import {
 
       <div class="dates">
         <button mat-stroked-button disabled>
+          {{ data().fixture.date | date : 'ccc' }}
+        </button>
+        <button mat-stroked-button disabled>
           {{ data().fixture.date | date : 'HH:mm' }}
         </button>
         <button mat-stroked-button disabled>
