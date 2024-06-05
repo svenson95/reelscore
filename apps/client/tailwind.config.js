@@ -18,6 +18,8 @@ module.exports = {
         'fb-color-green-2': 'var(--fb-color-green-2)',
         'fb-color-text-1': 'var(--fb-color-text-1)',
         'fb-color-text-2': 'var(--fb-color-text-2)',
+        'fb-win': 'var(--fb-color-win)',
+        'fb-lose': 'var(--fb-color-lose)',
       },
       fontSize: {
         'fb-font-size-title': 'var(--fb-font-size-title)',

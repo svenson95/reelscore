@@ -13,14 +13,16 @@ export interface LatestFixturesDTO {
   away: MatchDTO[];
 }
 
+export type MatchTeams = {
+  home: FixtureTeam;
+  away: FixtureTeam;
+};
+
 export interface MatchDTO {
   _id: MongoDbId;
   fixture: Fixture;
   league: League;
-  teams: {
-    home: FixtureTeam;
-    away: FixtureTeam;
-  };
+  teams: MatchTeams;
   goals: Goals;
   score: Score;
 }
