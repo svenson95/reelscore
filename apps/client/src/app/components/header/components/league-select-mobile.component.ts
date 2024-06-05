@@ -55,9 +55,9 @@ import { SelectLeagueData } from '../../../models';
         [value]="selectedLeague()?.url ?? null"
       >
         @for (l of leagues; track l.id) {
-        <mat-option [value]="l.url" [routerLink]="['leagues', l.url]">{{
-          l.label
-        }}</mat-option>
+        <mat-option [value]="l.url">
+          <a [routerLink]="['leagues', l.url]">{{ l.label }}</a>
+        </mat-option>
         }
       </mat-select>
     </mat-form-field>
