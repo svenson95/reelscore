@@ -8,7 +8,7 @@ import {
 import { RouterModule } from '@angular/router';
 
 import { TeamNamePipe } from '@app/pipes';
-import { FixtureTeam, MatchDTO } from '@lib/models';
+import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
 
 @Component({
   selector: 'futbet-match-fixtures-table',
@@ -18,29 +18,35 @@ import { FixtureTeam, MatchDTO } from '@lib/models';
   styles: `
     :host { @apply flex-1 py-4 px-4; }
     table { @apply w-full; }
-    tr { @apply cursor-pointer; }
+    tr { @apply cursor-pointer sm:hover:bg-fb-color-green-1-light; }
     tr:not(:last-of-type) { @apply border-b-[1px]; }
     td {
-      @apply text-fb-font-size-small py-2;
+      @apply text-fb-font-size-small p-2;
 
       &.date { @apply w-[60px] min-w-[60px] border-r-[1px]; }
       &.team { @apply w-[35%] leading-[13px]; }
       &.home { @apply text-right; }
       &.result { @apply text-center w-[60px]; }
     }
-    .related-team { @apply font-bold; }
+    .is-related-team { @apply font-bold; }
+    .is-winner td:not(.date) { @apply bg-fb-win; }
+    .is-loser td:not(.date) { @apply bg-fb-lose; }
   `,
   template: `
     <table>
       @for(match of latestFixtures(); track match.fixture.id; let idx = $index)
       {
-      <tr [routerLink]="['..', match.fixture.id]">
+      <tr
+        [routerLink]="['..', match.fixture.id]"
+        [class.is-winner]="isWinner(match.teams)"
+        [class.is-loser]="isLoser(match.teams)"
+      >
         <td class="date">
-          <span>{{ match.fixture.date | date : 'ccc | dd.MM' }}</span>
+          <span>{{ match.fixture.date | date : 'dd.MM | ccc' }}</span>
         </td>
 
         <td class="team home">
-          <span [class.related-team]="relatedTeamId(match.teams.home.id)">
+          <span [class.is-related-team]="relatedTeamId(match.teams.home.id)">
             {{ match.teams.home.name | teamName : 'short' }}
           </span>
         </td>
@@ -55,7 +61,7 @@ import { FixtureTeam, MatchDTO } from '@lib/models';
         </td>
 
         <td class="team">
-          <span [class.related-team]="relatedTeamId(match.teams.away.id)">
+          <span [class.is-related-team]="relatedTeamId(match.teams.away.id)">
             {{ match.teams.away.name | teamName : 'short' }}
           </span>
         </td>
@@ -87,4 +93,12 @@ export class MatchFixturesTableComponent {
   relatedTeamId(id: number): boolean {
     return this.relatedTeam().id === id;
   }
+
+  isWinner = (t: MatchTeams): boolean => this.getTeam(t).winner === true;
+  isLoser = (t: MatchTeams): boolean => this.getTeam(t).winner === false;
+
+  private getTeam = (teams: MatchTeams): FixtureTeam => {
+    const isHome = teams.home.id === this.relatedTeam().id;
+    return isHome ? teams.home : teams.away;
+  };
 }
