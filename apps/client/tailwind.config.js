@@ -40,5 +40,17 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtitilites = {
+        '.fb-as-label': {
+          background: 'white',
+          '--mdc-outlined-button-disabled-label-text-color':
+            'var(--fb-color-text-1)',
+        },
+      };
+
+      addUtilities(newUtitilites);
+    },
+  ],
 };

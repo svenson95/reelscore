@@ -33,10 +33,7 @@ import {
     .header { @apply flex items-center justify-between;}
     .dates { @apply flex gap-2; }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-10 mx-auto; }
-    button { 
-      @apply bg-white;
-      --mdc-outlined-button-disabled-label-text-color: var(--fb-color-text-1);
-    }
+    button { @apply fb-as-label; }
   `,
   template: `
     <section class="header">
