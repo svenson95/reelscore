@@ -78,8 +78,9 @@ export class WeekToggleGroupComponent {
   }
 
   setDateTo(value: number): void {
+    const oneWeek = value * 7;
     const date = new Date(this.selectedDay());
-    date.setDate(date.getDate() + value);
+    date.setDate(date.getDate() + oneWeek);
     this.dateSelected.emit(date.toISOString());
   }
 }
