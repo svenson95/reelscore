@@ -26,8 +26,10 @@ export class TeamNamePipe implements PipeTransform {
         return 'Bochum';
       case 'Eintracht Frankfurt':
         return 'Frankfurt';
-      case '1.FC Köln':
+      case 'FC Koln':
         return 'Köln';
+      case 'Bayer Leverkusen':
+        return 'Leverkusen';
       case 'Hertha Berlin':
         return 'Hertha';
       case '1899 Hoffenheim':
@@ -109,6 +111,8 @@ export class TeamNamePipe implements PipeTransform {
         return 'Hertha BSC';
       case 'FC Koln':
         return '1.FC Köln';
+      case 'Bayer Leverkusen':
+        return 'Bayer 04 Leverkusen';
 
       // Premiere League
       case 'Arsenal':
