@@ -16,7 +16,9 @@ import { ShortTeamNamePipe } from '../../../../pipes';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, DatePipe, ShortTeamNamePipe],
   styles: `
-    :host { @apply flex bg-white p-8 border-[1px]; }
+    :host { 
+      @apply flex bg-white p-8 border-[1px] rounded-fb; 
+    }
     div { @apply flex gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
     .team-column { @apply flex-[2] flex-col gap-3; }
     .result-column { @apply flex-1 gap-1; }
