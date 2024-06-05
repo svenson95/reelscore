@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { CalenderWeek } from '../../../models';
+import { CalenderWeek } from '@app/models';
 
 @Component({
   selector: 'futbet-calender-week-label',

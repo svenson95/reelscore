@@ -9,9 +9,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY_ISO_STRING } from '../../../models';
+import { DateString, TODAY_ISO_STRING } from '@app/models';
 
-// TODO: refactor to lib?
 @Component({
   selector: 'futbet-week-toogle-group',
   standalone: true,
