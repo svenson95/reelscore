@@ -6,15 +6,15 @@ import {
   signal,
 } from '@angular/core';
 
+import { OptimizedImageComponent } from '@app/components';
+import { TeamNamePipe } from '@app/pipes';
 import { MatchDTO, logoFromAssets } from '@lib/models';
-import { OptimizedImageComponent } from '../../../../components';
-import { ShortTeamNamePipe } from '../../../../pipes';
 
 @Component({
   selector: 'futbet-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, DatePipe, ShortTeamNamePipe],
+  imports: [OptimizedImageComponent, DatePipe, TeamNamePipe],
   styles: `
     :host { 
       @apply flex bg-white p-8 border-[1px] rounded-fb; 
@@ -33,7 +33,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
         height="50"
       />
       <span class="team-name">
-        {{ data().teams.home.name | shortTeamName }}
+        {{ data().teams.home.name | teamName }}
       </span>
     </div>
 
@@ -53,7 +53,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
         height="50"
       />
       <span class="team-name">
-        {{ data().teams.away.name | shortTeamName }}
+        {{ data().teams.away.name | teamName }}
       </span>
     </div>
   `,

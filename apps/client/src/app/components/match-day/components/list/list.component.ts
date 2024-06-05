@@ -2,16 +2,16 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { OptimizedImageComponent } from '@app/components';
+import { CompetitionFixtures } from '@app/models';
+import { TeamNamePipe } from '@app/pipes';
 import { logoFromAssets } from '@lib/models';
-import { OptimizedImageComponent } from '../../../../components';
-import { CompetitionFixtures } from '../../../../models';
-import { ShortTeamNamePipe } from '../../../../pipes';
 
 @Component({
   selector: 'futbet-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterModule, OptimizedImageComponent, ShortTeamNamePipe],
+  imports: [DatePipe, RouterModule, OptimizedImageComponent, TeamNamePipe],
   styles: `
     :host {
       @apply flex flex-col overflow-hidden border;
@@ -74,7 +74,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
               width="12"
               height="12"
             />
-            <span>{{ item.teams.home.name | shortTeamName }}</span>
+            <span>{{ item.teams.home.name | teamName }}</span>
           </div>
           <div>
             <futbet-optimized-image
@@ -83,7 +83,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
               width="12"
               height="12"
             />
-            <span>{{ item.teams.away.name | shortTeamName }}</span>
+            <span>{{ item.teams.away.name | teamName }}</span>
           </div>
         </section>
       </li>

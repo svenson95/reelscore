@@ -1,1 +1,1 @@
-export { ShortTeamNamePipe } from "./short-team-name.pipe";
+export * from './team-name.pipe';
