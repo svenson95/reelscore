@@ -70,20 +70,16 @@ import { BreakpointObserverService } from '../../../services';
       hideSingleSelectionIndicator
       [value]="selectedLeague()?.url ?? default"
     >
-      <mat-button-toggle
-        [value]="default"
-        class="logo-toggle"
-        [routerLink]="['/']"
-      >
-        <futbet-logo />
+      <mat-button-toggle [value]="default" class="logo-toggle">
+        <a [routerLink]="['/']">
+          <futbet-logo />
+        </a>
       </mat-button-toggle>
       @if (!isMobile()) { @for (l of leagues; track l.label) {
-      <mat-button-toggle
-        [value]="l.url"
-        [routerLink]="['leagues', l.url]"
-        [class]="l.url"
-      >
-        <span class="league-label">{{ l.label }}</span>
+      <mat-button-toggle [value]="l.url">
+        <a [routerLink]="['leagues', l.url]">
+          {{ l.label }}
+        </a>
       </mat-button-toggle>
       } }
     </mat-button-toggle-group>

@@ -21,13 +21,14 @@ import { logoFromAssets } from '@lib/models';
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
     .header span { @apply text-fb-font-size-body-1; }
     ul { @apply w-full text-fb-font-size-small; }
-    li { @apply bg-white sm:hover:bg-fb-color-green-1-light cursor-pointer; }
+    li { @apply bg-white; }
+    li > a { @apply flex items-center sm:hover:bg-fb-color-green-1-light; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply min-w-[50px] py-[16.5px]; }
+    .time { @apply justify-center min-w-[50px] py-[16.5px]; }
     .time, .result { @apply flex text-center leading-[16px]; }
     .result { 
-      @apply align-middle px-2; 
+      @apply flex-col align-middle px-2; 
       border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
       border-right: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
@@ -50,42 +51,44 @@ import { logoFromAssets } from '@lib/models';
     </div>
     <ul>
       @for(item of competition().fixtures; track item.league.id) {
-      <li
-        [routerLink]="[
-          '/',
-          'leagues',
-          routerLinks[item.league.id],
-          'match',
-          item.fixture.id
-        ]"
-      >
-        <section class="time">
-          <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
-        </section>
-        <section class="result">
-          <span>{{ item.score.fulltime.home }}</span>
-          <span>{{ item.score.fulltime.away }}</span>
-        </section>
-        <section class="teams">
-          <div>
-            <futbet-optimized-image
-              [source]="logoFromAssets(item.teams.home.id)"
-              alternate="home logo"
-              width="12"
-              height="12"
-            />
-            <span>{{ item.teams.home.name | teamName }}</span>
-          </div>
-          <div>
-            <futbet-optimized-image
-              [source]="logoFromAssets(item.teams.away.id)"
-              alternate="away logo"
-              width="12"
-              height="12"
-            />
-            <span>{{ item.teams.away.name | teamName }}</span>
-          </div>
-        </section>
+      <li>
+        <a
+          [routerLink]="[
+            '/',
+            'leagues',
+            routerLinks[item.league.id],
+            'match',
+            item.fixture.id
+          ]"
+        >
+          <section class="time">
+            <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
+          </section>
+          <section class="result">
+            <span>{{ item.score.fulltime.home }}</span>
+            <span>{{ item.score.fulltime.away }}</span>
+          </section>
+          <section class="teams">
+            <div>
+              <futbet-optimized-image
+                [source]="logoFromAssets(item.teams.home.id)"
+                alternate="home logo"
+                width="12"
+                height="12"
+              />
+              <span>{{ item.teams.home.name | teamName }}</span>
+            </div>
+            <div>
+              <futbet-optimized-image
+                [source]="logoFromAssets(item.teams.away.id)"
+                alternate="away logo"
+                width="12"
+                height="12"
+              />
+              <span>{{ item.teams.away.name | teamName }}</span>
+            </div>
+          </section>
+        </a>
       </li>
       }
     </ul>

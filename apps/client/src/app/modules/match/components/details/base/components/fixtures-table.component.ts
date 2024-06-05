@@ -37,34 +37,35 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
       @for(match of latestFixtures(); track match.fixture.id; let idx = $index)
       {
       <tr
-        [routerLink]="['..', match.fixture.id]"
         [class.is-winner]="isWinner(match.teams)"
         [class.is-loser]="isLoser(match.teams)"
       >
-        <td class="date">
-          <span>{{ match.fixture.date | date : 'dd.MM | ccc' }}</span>
-        </td>
+        <a [routerLink]="['..', match.fixture.id]">
+          <td class="date">
+            <span>{{ match.fixture.date | date : 'dd.MM | ccc' }}</span>
+          </td>
 
-        <td class="team home">
-          <span [class.is-related-team]="relatedTeamId(match.teams.home.id)">
-            {{ match.teams.home.name | teamName : 'short' }}
-          </span>
-        </td>
+          <td class="team home">
+            <span [class.is-related-team]="relatedTeamId(match.teams.home.id)">
+              {{ match.teams.home.name | teamName : 'short' }}
+            </span>
+          </td>
 
-        <td class="result">
-          @if(match.score.fulltime.home !== null) {
-          <span>
-            {{ match.score.fulltime.home }} -
-            {{ match.score.fulltime.away }}
-          </span>
-          }
-        </td>
+          <td class="result">
+            @if(match.score.fulltime.home !== null) {
+            <span>
+              {{ match.score.fulltime.home }} -
+              {{ match.score.fulltime.away }}
+            </span>
+            }
+          </td>
 
-        <td class="team">
-          <span [class.is-related-team]="relatedTeamId(match.teams.away.id)">
-            {{ match.teams.away.name | teamName : 'short' }}
-          </span>
-        </td>
+          <td class="team">
+            <span [class.is-related-team]="relatedTeamId(match.teams.away.id)">
+              {{ match.teams.away.name | teamName : 'short' }}
+            </span>
+          </td>
+        </a>
       </tr>
       } @empty {
       <p class="no-data">Keine Spiele gefunden.</p>
