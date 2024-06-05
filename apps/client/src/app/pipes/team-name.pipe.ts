@@ -33,7 +33,7 @@ export class TeamNamePipe implements PipeTransform {
       case '1899 Hoffenheim':
         return 'Hoffenheim';
       case 'FC Heidenheim':
-        return 'Hoffenheim';
+        return 'Heidenheim';
       case 'Borussia Dortmund':
         return 'Dortmund';
       case 'VfL Wolfsburg':
