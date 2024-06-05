@@ -24,7 +24,7 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
       @apply text-fb-font-size-small p-2;
 
       &.date { @apply w-[70px] min-w-[70px] border-r-[1px]; }
-      &.team { @apply w-[35%] leading-[13px]; }
+      &.team { @apply w-[30%] leading-[13px]; }
       &.home { @apply text-right; }
       &.result { @apply text-center w-[60px]; }
     }
