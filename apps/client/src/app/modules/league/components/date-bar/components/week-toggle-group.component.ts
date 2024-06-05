@@ -19,10 +19,11 @@ import { DateString, TODAY_ISO_STRING } from '@app/models';
   styles: `
     :host mat-button-toggle-group {
       --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
-      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1); 
+      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1);
+      --mat-standard-button-toggle-height: 34px; 
 
       mat-button-toggle.mat-button-toggle {
-        @apply text-fb-font-size-body-2;
+        @apply text-fb-font-size-small border-l-0;
 
         &.is-today {
           --mat-standard-button-toggle-background-color: var(--fb-color-white);
