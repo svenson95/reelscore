@@ -13,6 +13,9 @@ import { DateString, TODAY_ISO_STRING } from '@app/models';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
+  styles: `
+    button:disabled { @apply fb-as-label; }
+  `,
   template: `
     <button mat-stroked-button (click)="setToday()" [disabled]="isToday()">
       Heute
