@@ -65,7 +65,15 @@ export const getFixturesByDate = async (req, res, date) => {
       .lt(Number(tomorrow))
       .where('league.id')
       .in(['39', '78', '135', '140', '61'])
-      .sort({ 'fixture.date': 1 });
+      .sort({ 'fixture.date': 1 })
+      .select({
+        'fixture.date': 1,
+        'fixture.id': 1,
+        'league.name': 1,
+        'league.id': 1,
+        'score.fulltime': 1,
+        teams: 1,
+      });
     return res.json(docs);
   } catch (error) {
     return res.json({
