@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
-import { AdminService } from '../../service';
+import { AdminService } from '../../services';
 import { ContentOverviewComponent } from './components/overview/overview.component';
 import { ContentUpdateComponent } from './components/update/update.component';
 

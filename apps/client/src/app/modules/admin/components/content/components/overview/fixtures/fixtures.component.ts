@@ -24,7 +24,7 @@ import {
 
 import { GetAllFixturesDTO, MatchDTO } from '@lib/models';
 
-import { DatabaseService } from '../../../../../service/database.service';
+import { DatabaseService } from '../../../../../services/database.service';
 
 @Component({
   selector: 'futbet-admin-overview-fixtures',

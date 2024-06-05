@@ -17,7 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { COMPETITION_ID, SELECT_LEAGUE } from '../../../../../../../constants';
-import { HttpRapidService } from '../../../../../service';
+import { HttpRapidService } from '../../../../../services';
 
 @Component({
   selector: 'futbet-admin-update-fixtures',

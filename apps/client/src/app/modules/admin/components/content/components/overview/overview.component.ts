@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AdminService } from '../../../../service';
+import { AdminService } from '../../../../services';
 import { OverviewFixturesComponent } from './fixtures/fixtures.component';
 
 @Component({
