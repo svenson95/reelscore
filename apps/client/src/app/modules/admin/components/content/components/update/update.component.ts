@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { AdminService, HTTP_RAPID_SERVICE_PROVIDER } from '../../../../service';
+import {
+  AdminService,
+  HTTP_RAPID_SERVICE_PROVIDER,
+} from '../../../../services';
 
 import { UpdateFixturesComponent } from './fixtures/fixtures.component';
 import { UpdateStandingsComponent } from './standings/standings.component';

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ContentComponent } from './components/content/content.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ADMIN_SERVICE_PROVIDER, DATABASE_SERVICE_PROVIDER } from './service';
+import { ADMIN_SERVICE_PROVIDER, DATABASE_SERVICE_PROVIDER } from './services';
 
 @Component({
   selector: 'futbet-admin',

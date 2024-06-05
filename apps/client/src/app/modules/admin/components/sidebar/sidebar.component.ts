@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { AdminView } from '../../models';
-import { AdminService } from '../../service';
+import { AdminService } from '../../services';
 import { SidebarDetailsComponent } from './components/details.component';
 
 @Component({
