@@ -37,6 +37,11 @@ $futbet-theme: mat.define-light-theme(
 // that you are using.
 @include mat.all-component-themes($futbet-theme);
 
+:root {
+  --mat-standard-button-toggle-shape: var(--fb-size-border-radius);
+  --mdc-outlined-button-container-shape: var(--fb-size-border-radius);
+}
+
 mat-button-toggle {
   --mat-standard-button-toggle-state-layer-color: var(--fb-color-green-1);
 }

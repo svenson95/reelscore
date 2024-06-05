@@ -35,6 +35,9 @@ module.exports = {
       maxWidth: {
         'fb-max-width': 'var(--fb-size-max-width)',
       },
+      borderRadius: {
+        fb: 'var(--fb-size-border-radius)',
+      },
     },
   },
   plugins: [],

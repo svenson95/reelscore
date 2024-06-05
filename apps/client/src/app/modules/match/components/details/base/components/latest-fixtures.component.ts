@@ -10,7 +10,7 @@ import { MatchFixturesTableComponent } from './fixtures-table.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixturesTableComponent],
   styles: `
-    :host { @apply flex flex-col bg-white border-[1px]; }
+    :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
     section { @apply flex flex-col md:flex-row; }
     futbet-match-fixtures-table:first-of-type {
       @apply border-b-[1px] md:border-b-0 md:border-r-[1px]; 

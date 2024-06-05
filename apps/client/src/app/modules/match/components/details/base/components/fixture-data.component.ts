@@ -13,7 +13,7 @@ import { MatchDTO } from '@lib/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-      :host { @apply bg-white border-[1px]; }
+      :host { @apply bg-white border-[1px] rounded-fb; }
       ul { @apply py-2;}
       .item { @apply flex justify-center py-2 gap-5; }
       .item > *:not(.key) { @apply flex-[2] sm:flex-1; }
