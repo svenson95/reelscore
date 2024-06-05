@@ -22,7 +22,7 @@ import { ShortTeamNamePipe } from '../../../../pipes';
     div { @apply flex gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
     .team-column { @apply flex-[2] flex-col gap-3; }
     .result-column { @apply flex-1 gap-1; }
-    .team-name { @apply leading-[14px] text-center; }
+    .team-name { @apply leading-[16px] text-center; }
   `,
   template: `
     <div class="team-column">
