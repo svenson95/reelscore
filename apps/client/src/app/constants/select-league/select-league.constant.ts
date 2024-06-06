@@ -2,10 +2,10 @@ import {
   COMPETITION_ID,
   COMPETITION_LABEL,
   COMPETITION_URL,
-} from '../constants';
-import { SelectLeagueData } from '../models';
+} from '@app/constants';
+import { SelectLeagueData as SelectCompetition } from '@app/models';
 
-export const SELECT_LEAGUE: SelectLeagueData[] = [
+export const COMPETITION_DATA: SelectCompetition[] = [
   {
     image: 'https://media-3.api-sports.io/flags/de.svg',
     label: COMPETITION_LABEL.GERMANY_BUNDESLIGA,

@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
-import { CompetitionFixtures } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { logoFromAssets } from '@lib/models';
+import { CompetitionFixtures } from '../../../../models';
 
 @Component({
   selector: 'futbet-match-day-list',

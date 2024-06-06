@@ -1,4 +1,4 @@
-import { CompetitionFixtures } from '.';
+import { CompetitionFixtures } from './match.model';
 
 export class FilteredCompetitions extends Array<CompetitionFixtures> {
   competitions: CompetitionFixtures[];
