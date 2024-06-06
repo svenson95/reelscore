@@ -20,14 +20,13 @@ import { BreakpointObserverService } from '../../../services';
   imports: [RouterModule, MatButtonToggleModule, LogoComponent],
   styles: `
 		:host {
-			width: 100%;
 			@apply w-full self-end;
 
-      mat-button-toggle.mat-button-toggle {
-        &:not(.logo-toggle) ::ng-deep .mat-button-toggle-label-content {
-          font-size: var(--fb-font-size-body-2);
-          // material class height change (1)
-          line-height: calc(var(--fb-size-league-select-height) - 10px);
+      .mat-button-toggle ::ng-deep .mat-button-toggle-label-content {
+        @apply p-0;
+
+        &:not(.logo-toggle) {
+          @apply text-fb-font-size-body-2;
         }
       }
 		}
@@ -41,6 +40,7 @@ import { BreakpointObserverService } from '../../../services';
 		}
 
 		mat-button-toggle.mat-button-toggle {
+      --mat-standard-button-toggle-height: var(--fb-size-league-select-height);
 			border-bottom: 2px solid transparent;
 
 			&.mat-button-toggle-checked {
@@ -48,22 +48,20 @@ import { BreakpointObserverService } from '../../../services';
 			}
 
       &.logo-toggle {
-        @apply mr-2 min-[600px]:mr-auto;
-
         --mat-standard-button-toggle-selected-state-background-color: transparent;
+        @apply mr-2 min-[600px]:mr-auto;
       }
 
 			&:not(.logo-toggle) {
         @apply bg-transparent self-end;
-
-				// material class height change (2)
-				height: var(--fb-size-league-select-height);
 
         &:not(.mat-button-toggle-checked) {
           --mat-standard-button-toggle-text-color: var(--fb-color-text-2);
         }
 			}
 		}
+
+    a { @apply flex w-full h-full px-4 py-1; }
 	`,
   template: `
     <mat-button-toggle-group
