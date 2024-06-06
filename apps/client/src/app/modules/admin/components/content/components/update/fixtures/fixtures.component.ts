@@ -16,7 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { COMPETITION_ID, SELECT_LEAGUE } from '../../../../../../../constants';
+import {
+  COMPETITION_DATA,
+  COMPETITION_ID,
+} from '../../../../../../../constants';
 import { HttpRapidService } from '../../../../../services';
 
 @Component({
@@ -59,7 +62,7 @@ import { HttpRapidService } from '../../../../../services';
   `,
 })
 export class UpdateFixturesComponent {
-  protected readonly leagues = SELECT_LEAGUE;
+  protected readonly leagues = COMPETITION_DATA;
 
   readonly formGroup = new FormGroup({
     leagueId: new FormControl(COMPETITION_ID.GERMANY_BUNDESLIGA, [

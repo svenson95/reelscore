@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router';
 
 import { LogoComponent } from '../../../components';
-import { SELECT_LEAGUE } from '../../../constants';
+import { COMPETITION_DATA } from '../../../constants';
 import { SelectLeagueData } from '../../../models';
 import { BreakpointObserverService } from '../../../services';
 
@@ -84,7 +84,7 @@ import { BreakpointObserverService } from '../../../services';
   `,
 })
 export class LeagueSelectComponent {
-  readonly leagues = SELECT_LEAGUE;
+  readonly leagues = COMPETITION_DATA;
 
   private breakpoint = inject(BreakpointObserverService);
 

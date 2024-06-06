@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { COMPETITION_ID, SELECT_LEAGUE } from '@app/constants';
+import { COMPETITION_DATA, COMPETITION_ID } from '@app/constants';
 import { HttpFixturesService } from '@app/services';
 import { HttpRapidService } from '../../../../../services';
 
@@ -56,7 +56,7 @@ import { HttpRapidService } from '../../../../../services';
   `,
 })
 export class UpdateFixtureStatisticsComponent {
-  readonly leagues = SELECT_LEAGUE;
+  readonly leagues = COMPETITION_DATA;
   snackBar = inject(MatSnackBar);
   rapidService = inject(HttpRapidService);
   ds = inject(HttpFixturesService);

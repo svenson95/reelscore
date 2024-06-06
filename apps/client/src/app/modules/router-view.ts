@@ -1,8 +1,8 @@
 import { effect, inject } from '@angular/core';
 
-import { SELECT_LEAGUE } from '../constants';
-import { CompetitionUrl } from '../models';
-import { LeagueService, RouteService } from '../services';
+import { COMPETITION_DATA } from '@app/constants';
+import { CompetitionUrl } from '@app/models';
+import { LeagueService, RouteService } from '@app/services';
 
 export class RouterView {
   routeService = inject(RouteService);
@@ -14,7 +14,7 @@ export class RouterView {
   );
 
   updateLeague(url: CompetitionUrl): void {
-    const league = SELECT_LEAGUE.find((l) => url.includes(l.url));
+    const league = COMPETITION_DATA.find((l) => url.includes(l.url));
     this.leagueService.setSelectedLeague(league);
   }
 }

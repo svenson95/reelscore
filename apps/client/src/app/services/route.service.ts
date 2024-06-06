@@ -3,7 +3,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
-import { CompetitionUrl } from '../models';
+import { CompetitionUrl } from '@app/models';
 
 export abstract class RouteService {
   abstract router: Router;
