@@ -1,17 +1,25 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
 import { TeamNamePipe } from '@app/pipes';
 import { logoFromAssets } from '@lib/models';
+
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
   selector: 'futbet-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterModule, OptimizedImageComponent, TeamNamePipe],
+  imports: [
+    DatePipe,
+    RouterModule,
+    MatRippleModule,
+    OptimizedImageComponent,
+    TeamNamePipe,
+  ],
   styles: `
     :host {
       @apply flex flex-col overflow-hidden border;
@@ -53,6 +61,7 @@ import { CompetitionFixtures } from '../../../../models';
       @for(item of competition().fixtures; track item.league.id) {
       <li>
         <a
+          matRipple
           [routerLink]="[
             '/',
             'leagues',
