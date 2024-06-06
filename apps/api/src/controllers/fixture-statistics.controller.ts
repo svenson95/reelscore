@@ -49,12 +49,22 @@ export const fetchFixtureStatistics = async (req, res, next) => {
 
     const response = await fetchFromRapidApi(uri);
     const body = await response.json();
+    const data = body.response;
 
-    const docs = await new FixturesStatistics({
-      parameters: body.parameters,
-      response: body.response,
-    }).save();
-    return next(docs);
+    const existingStatistics = await FixturesStatistics.find()
+      .where('parameters.fixture')
+      .equals(Number(body.parameters.fixture));
+
+    if (existingStatistics.length === 0) {
+      const doc = await FixturesStatistics.create(body);
+      return next(doc);
+    } else {
+      const doc = await FixturesStatistics.updateOne(
+        { 'parameters.fixture': data.parameters.fixture },
+        data
+      );
+      return next(doc);
+    }
   } catch (error) {
     return res.json({
       status: 'error happened',

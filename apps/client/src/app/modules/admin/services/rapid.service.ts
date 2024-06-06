@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { FixtureId } from '@lib/models';
+import { FixtureId, FixtureStatisticsDTO } from '@lib/models';
 import { environment } from '../../../../environments/environment';
 import { CompetitionId } from '../../../models';
 
@@ -12,7 +12,9 @@ export abstract class HttpRapidService {
     leagueId: CompetitionId,
     matchDay: number
   ): Observable<unknown>;
-  abstract fetchStatistics(fixtureId: FixtureId): Observable<unknown>;
+  abstract fetchStatistics(
+    fixtureId: FixtureId
+  ): Observable<FixtureStatisticsDTO>;
 }
 
 @Injectable()
@@ -35,10 +37,10 @@ export class AbstractedHttpRapidService extends HttpRapidService {
     return this.http.get(url);
   }
 
-  fetchStatistics(fixtureId: FixtureId): Observable<unknown> {
+  fetchStatistics(fixtureId: FixtureId): Observable<FixtureStatisticsDTO> {
     const url =
       this.BASE_URL + `fixture-statistics/fetch?fixtureId=${fixtureId}`;
-    return this.http.get(url);
+    return this.http.get<FixtureStatisticsDTO>(url);
   }
 }
 
