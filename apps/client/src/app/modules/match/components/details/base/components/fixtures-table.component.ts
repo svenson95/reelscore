@@ -5,6 +5,7 @@ import {
   computed,
   input,
 } from '@angular/core';
+import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { TeamNamePipe } from '@app/pipes';
@@ -14,10 +15,10 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
   selector: 'futbet-match-fixtures-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, DatePipe, TeamNamePipe],
+  imports: [RouterModule, DatePipe, MatRippleModule, TeamNamePipe],
   styles: `
     :host { @apply flex-1 p-4 text-fb-font-size-small; }
-    a { @apply flex p-2 sm:hover:bg-fb-color-green-1-light; }
+    a { @apply flex p-2; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
     .date { @apply w-[60px] border-r-[1px]; }
     .team { @apply w-[30%] content-center leading-[13px]; }
@@ -30,6 +31,7 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
   template: `
     @for(match of latestFixtures(); track match.fixture.id; let idx = $index) {
     <a
+      mat-ripple
       [routerLink]="['..', match.fixture.id]"
       [class.is-winner]="isWinner(match.teams)"
       [class.is-loser]="isLoser(match.teams)"
