@@ -5,6 +5,7 @@ import {
   HTTP_RAPID_SERVICE_PROVIDER,
 } from '../../../../services';
 
+import { UpdateFixtureStatisticsComponent } from './fixture-statistics/fixture-statistics.component';
 import { UpdateFixturesComponent } from './fixtures/fixtures.component';
 import { UpdateStandingsComponent } from './standings/standings.component';
 
@@ -12,7 +13,11 @@ import { UpdateStandingsComponent } from './standings/standings.component';
   selector: 'futbet-admin-content-update',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UpdateFixturesComponent, UpdateStandingsComponent],
+  imports: [
+    UpdateFixturesComponent,
+    UpdateStandingsComponent,
+    UpdateFixtureStatisticsComponent,
+  ],
   providers: [HTTP_RAPID_SERVICE_PROVIDER],
   styles: `
     :host { @apply flex flex-col flex-[3]; }
@@ -23,7 +28,7 @@ import { UpdateStandingsComponent } from './standings/standings.component';
     } @case('update-fixtures') {
     <futbet-admin-update-fixtures />
     } @case('update-statistics') {
-    <!-- <futbet-admin-update-statistics /> -->
+    <futbet-admin-update-fixture-statistics />
     } }
   `,
 })

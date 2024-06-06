@@ -17,6 +17,10 @@ import { DateString } from '../../models';
 export abstract class HttpFixturesService {
   abstract getFixture(id: FixtureId): Observable<MatchDTO>;
   abstract getFixtures(date: DateString): Observable<MatchDTO[]>;
+  abstract getMatchDayFixtures(
+    league: string,
+    round: number
+  ): Observable<MatchDTO[]>;
   abstract getLatestFixtures(
     fixtureId: FixtureId
   ): Observable<LatestFixturesDTO>;
@@ -45,6 +49,18 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
     return this.http.get<MatchDTO[]>(this.BASE_URL + '/get', {
       params,
     });
+  }
+
+  getMatchDayFixtures(league: string, round: number): Observable<MatchDTO[]> {
+    const url = `${this.BASE_URL}/get`;
+    const params = new HttpParams({
+      fromObject: {
+        league,
+        round,
+      },
+    });
+
+    return this.http.get<MatchDTO[]>(url, { params });
   }
 
   getLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
