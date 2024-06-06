@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { MatchDayComponent, StandingsComponent } from '../../components';
 import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
-import { DateBarComponent } from './components';
+import {
+  DateBarComponent,
+  MatchDayComponent,
+  StandingsComponent,
+} from './components';
 
 @Component({
   selector: 'futbet-league',

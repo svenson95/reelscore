@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { LeagueService, StandingsService } from '../../services';
+import { LeagueService, StandingsService } from '../../../../services';
 
 import { JsonPipe } from '@angular/common';
 import { TableComponent } from './components';
