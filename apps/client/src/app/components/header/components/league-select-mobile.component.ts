@@ -44,8 +44,18 @@ import { SelectLeagueData } from '../../../models';
       .mdc-text-field--filled:not(.mdc-text-field--disabled)
         .mdc-line-ripple::after {
         border-bottom-color: var(--fb-color-green-1);
+        }
+    }
+
+    mat-option {
+      padding: 0;
+
+      ::ng-deep .mdc-list-item__primary-text {
+        @apply w-full;
       }
     }
+
+    a { @apply flex w-full h-full px-4 py-3; }
   `,
   template: `
     <mat-form-field>
