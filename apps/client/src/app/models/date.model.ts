@@ -1,4 +1,4 @@
-export const TODAY = new Date('2023-08-18');
+export const TODAY = new Date('2023-09-30');
 TODAY.setHours(0, 0, 0, 0);
 export const TODAY_ISO_STRING = TODAY.toISOString();
 
