@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { LatestFixturesDTO, MatchDTO } from '@lib/models';
+import { MatchDTO } from '@lib/models';
 
 import { MatchFixtureDataComponent } from './components/fixture-data.component';
 import { MatchLatestFixturesComponent } from './components/latest-fixtures.component';
@@ -19,10 +19,9 @@ import { MatchLatestFixturesComponent } from './components/latest-fixtures.compo
   `,
   template: `
     <futbet-match-fixture-data [data]="data()" />
-    <futbet-match-latest-fixtures [latestFixtures]="latestFixtures()" />
+    <futbet-match-latest-fixtures />
   `,
 })
 export class MatchDetailsBaseComponent {
   data = input.required<MatchDTO>();
-  latestFixtures = input.required<LatestFixturesDTO>();
 }
