@@ -4,6 +4,8 @@ import {
   Component,
   computed,
   input,
+  Pipe,
+  PipeTransform,
 } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
@@ -11,11 +13,52 @@ import { RouterModule } from '@angular/router';
 import { TeamNamePipe } from '@app/pipes';
 import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
 
+@Pipe({
+  name: 'sameId',
+  standalone: true,
+})
+export class SameIdPipe implements PipeTransform {
+  transform = (id: number, team: FixtureTeam): boolean => id === team.id;
+}
+
+const getTeam = (teams: MatchTeams, team: FixtureTeam): FixtureTeam => {
+  const isHome = teams.home.id === team.id;
+  return isHome ? teams.home : teams.away;
+};
+
+@Pipe({
+  name: 'isWinner',
+  standalone: true,
+})
+export class IsWinnerPipe implements PipeTransform {
+  transform = (m: MatchTeams, t: FixtureTeam): boolean => {
+    return getTeam(m, t).winner === true;
+  };
+}
+
+@Pipe({
+  name: 'isLoser',
+  standalone: true,
+})
+export class IsLoserPipe implements PipeTransform {
+  transform = (m: MatchTeams, t: FixtureTeam): boolean => {
+    return getTeam(m, t).winner === false;
+  };
+}
+
 @Component({
   selector: 'futbet-match-fixtures-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, DatePipe, MatRippleModule, TeamNamePipe],
+  imports: [
+    RouterModule,
+    DatePipe,
+    MatRippleModule,
+    TeamNamePipe,
+    SameIdPipe,
+    IsWinnerPipe,
+    IsLoserPipe,
+  ],
   styles: `
     :host { @apply flex-1 p-4 text-fb-font-size-small; }
     a { @apply flex p-2; }
@@ -33,15 +76,17 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
     <a
       mat-ripple
       [routerLink]="['..', match.fixture.id]"
-      [class.is-winner]="isWinner(match.teams)"
-      [class.is-loser]="isLoser(match.teams)"
+      [class.is-winner]="match.teams | isWinner : relatedTeam()"
+      [class.is-loser]="match.teams | isLoser : relatedTeam()"
     >
       <div class="date">
         <span>{{ match.fixture.date | date : 'dd.MM | ccc' }}</span>
       </div>
 
       <div class="team home">
-        <span [class.is-related-team]="relatedTeamId(match.teams.home.id)">
+        <span
+          [class.is-related-team]="match.teams.home.id | sameId : relatedTeam()"
+        >
           {{ match.teams.home.name | teamName : 'short' }}
         </span>
       </div>
@@ -56,7 +101,9 @@ import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
       </div>
 
       <div class="team">
-        <span [class.is-related-team]="relatedTeamId(match.teams.away.id)">
+        <span
+          [class.is-related-team]="match.teams.away.id | sameId : relatedTeam()"
+        >
           {{ match.teams.away.name | teamName : 'short' }}
         </span>
       </div>
@@ -70,29 +117,7 @@ export class MatchFixturesTableComponent {
   latestFixtures = input.required<MatchDTO[]>();
 
   relatedTeam = computed<FixtureTeam>(() => {
-    const fixtures = this.latestFixtures();
-    const firstGame = fixtures[0];
-    const nextGame = fixtures[1];
-    const home = firstGame.teams.home;
-    if (
-      home.id === nextGame?.teams.home.id ||
-      home.id === nextGame?.teams.away.id
-    ) {
-      return home;
-    } else {
-      return firstGame.teams.away;
-    }
+    const teams = this.latestFixtures()[0].teams;
+    return getTeam(teams, teams.home);
   });
-
-  relatedTeamId(id: number): boolean {
-    return this.relatedTeam().id === id;
-  }
-
-  isWinner = (t: MatchTeams): boolean => this.getTeam(t).winner === true;
-  isLoser = (t: MatchTeams): boolean => this.getTeam(t).winner === false;
-
-  private getTeam = (teams: MatchTeams): FixtureTeam => {
-    const isHome = teams.home.id === this.relatedTeam().id;
-    return isHome ? teams.home : teams.away;
-  };
 }
