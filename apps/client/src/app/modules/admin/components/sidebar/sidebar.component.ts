@@ -39,6 +39,12 @@ import { SidebarDetailsComponent } from './components/details.component';
         >
           Fixture-Statistics
         </li>
+        <li
+          [class.active]="isVisible('overview-events')"
+          (click)="setView('overview-events')"
+        >
+          Fixture-Events
+        </li>
       </ul>
     </section>
 

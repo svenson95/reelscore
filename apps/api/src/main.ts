@@ -10,7 +10,12 @@ import helmet from 'helmet';
 dotenv.config();
 
 import { DBHelper } from './middleware';
-import { fixtures, fixturesStatistics, standings } from './routes';
+import {
+  fixtureEvents,
+  fixtures,
+  fixturesStatistics,
+  standings,
+} from './routes';
 
 const app = express();
 app.use(express.json());
@@ -31,6 +36,7 @@ app.get('/', (req, res) => {
 app.use('/standings', standings);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
+app.use('/fixture-events', fixtureEvents);
 
 DBHelper.init();
 
