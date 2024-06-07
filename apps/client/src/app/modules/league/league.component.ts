@@ -7,12 +7,13 @@ import {
   MatchDayComponent,
   StandingsComponent,
 } from './components';
+import { SERVICE_PROVIDERS } from './services';
 
 @Component({
   selector: 'futbet-league',
   standalone: true,
   imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
-  providers: [ROUTE_SERVICE_PROVIDER],
+  providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
       @apply flex flex-col w-full; 

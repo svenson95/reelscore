@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { MatchDTO } from '@lib/models';
-
-import { MatchFixtureDataComponent } from './components/fixture-data.component';
-import { MatchLatestFixturesComponent } from './components/latest-fixtures.component';
+import {
+  MatchFixtureDataComponent,
+  MatchLatestFixturesComponent,
+} from './components';
 
 @Component({
   selector: 'futbet-match-details-base',

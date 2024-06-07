@@ -3,14 +3,12 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { FixtureId, FixtureStatisticsDTO } from '@lib/models';
-
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureStatisticsService {
   abstract getFixtureStatistics(
     id: FixtureId
   ): Observable<FixtureStatisticsDTO>;
-  abstract getAllFixtureStatisticsCount(): Observable<number>;
 }
 
 @Injectable()
@@ -24,10 +22,6 @@ export class AbstractedHttpFixtureStatisticsService extends HttpFixtureStatistic
     return this.http.get<FixtureStatisticsDTO>(this.BASE_URL + '/get', {
       params,
     });
-  }
-
-  getAllFixtureStatisticsCount(): Observable<number> {
-    return this.http.get<number>(this.BASE_URL + '/count');
   }
 }
 

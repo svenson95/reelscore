@@ -6,16 +6,15 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { LeagueService, StandingsService } from '../../../../services';
-
-import { JsonPipe } from '@angular/common';
+import { LeagueService } from '@app/services';
+import { StandingsService } from '../../services';
 import { TableComponent } from './components';
 
 @Component({
   selector: 'futbet-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatProgressSpinnerModule, TableComponent, JsonPipe],
+  imports: [MatProgressSpinnerModule, TableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,

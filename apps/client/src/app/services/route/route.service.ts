@@ -6,7 +6,6 @@ import { filter, map } from 'rxjs';
 import { CompetitionUrl } from '@app/models';
 
 export abstract class RouteService {
-  abstract router: Router;
   abstract url: Signal<string | undefined>;
   abstract activeRoute: Signal<CompetitionUrl>;
 }
