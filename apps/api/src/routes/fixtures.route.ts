@@ -1,9 +1,6 @@
 import express from 'express';
 
 import {
-  fetchFixtures,
-  getAllFixtures,
-  getAllFixturesCount,
   getFixturesByDate,
   getFixturesById,
   getFixturesByRound,
@@ -42,16 +39,4 @@ fixtures.get('/get-latest', async (req, res) => {
   await getLatestFixtures(req, res, fixtureId, (docs) => {
     return res.json(docs);
   });
-});
-
-fixtures.get('/get-all', async (req, res) => {
-  await getAllFixtures(req, res);
-});
-
-fixtures.get('/count', async (req, res) => {
-  await getAllFixturesCount(req, res);
-});
-
-fixtures.get('/fetch', async (req, res) => {
-  await fetchFixtures(req, res);
 });

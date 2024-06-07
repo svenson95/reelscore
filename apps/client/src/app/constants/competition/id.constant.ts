@@ -15,12 +15,16 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   // [CompetitionCode.ENGLAND_FA_CUP]: '45',
   // [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: '528',
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: '871',
+
   // [CompetitionCode.GERMANY_SUPER_CUP]: '529',
   // [CompetitionCode.GERMANY_DFB_POKAL]: '81',
+
   // [CompetitionCode.ITALY_SUPER_CUP]: '547',
   // [CompetitionCode.ITALY_COPPA_ITALIA]: '137',
+
   // [CompetitionCode.SPAIN_SUPER_CUP]: '556',
   // [CompetitionCode.SPAIN_COPA_DEL_REY]: '143',
+
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: '65',
   // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: '66',
   // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: '526',

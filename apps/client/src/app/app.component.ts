@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ViewChild,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -40,24 +40,26 @@ import { FooterComponent, HeaderComponent } from './components';
     <header></header>
 
     <main>
+      @defer (on idle) {
       <router-outlet />
-      @if (isLoading()) { <mat-spinner /> }
+      } @loading (after 0ms; minimum 1s) {
+      <mat-spinner />
+      }
     </main>
 
     <footer></footer>
   `,
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild(RouterOutlet)
-  private outlet!: RouterOutlet;
+  private outlet = viewChild(RouterOutlet);
 
   isLoading = signal<boolean>(true);
 
   destroyRef = inject(DestroyRef);
 
   public ngAfterViewInit(): void {
-    this.outlet.activateEvents
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    this.outlet()
+      ?.activateEvents.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.isLoading.set(false));
   }
 }
