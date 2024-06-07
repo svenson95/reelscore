@@ -1,4 +1,3 @@
-import { fetchFromRapidApi } from '../middleware';
 import { Standings } from '../models';
 
 export const getStanding = async (req, res, next) => {
@@ -34,49 +33,6 @@ export const getTopFiveStandings = async (req, res, next) => {
         },
       }));
     return next(topFiveRanks(docs));
-  } catch (error) {
-    return res.json({
-      status: 'error happened',
-      error,
-    });
-  }
-};
-
-export const getAllStandings = async (req, res, next) => {
-  try {
-    const docs = await Standings.find();
-    return next(docs);
-  } catch (error) {
-    return res.json({
-      status: 'error happened',
-      error,
-    });
-  }
-};
-
-export const getAllStandingsCount = async (req, res) => {
-  try {
-    const length = await Standings.countDocuments();
-    return res.json(length);
-  } catch (error) {
-    return res.json({
-      status: 'error happened',
-      error,
-    });
-  }
-};
-
-export const fetchStandings = async (req, res, next) => {
-  const leagueId = req.query.league;
-
-  const uri = `standings?season=2023&league=${leagueId}`;
-  const response = await fetchFromRapidApi(uri);
-  const body = await response.json();
-  const data = body.response[0];
-
-  try {
-    const docs = await Standings.create(data);
-    return next(docs);
   } catch (error) {
     return res.json({
       status: 'error happened',
