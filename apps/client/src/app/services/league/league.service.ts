@@ -1,6 +1,6 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 
-import { SelectLeagueData } from '../../models';
+import { SelectLeagueData } from '@app/models';
 
 export abstract class LeagueService {
   abstract selectedLeague: WritableSignal<SelectLeagueData | undefined>;

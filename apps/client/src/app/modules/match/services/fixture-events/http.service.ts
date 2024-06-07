@@ -3,16 +3,15 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { FixtureEventsDTO, FixtureId } from '@lib/models';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureEventsService {
   abstract getFixtureEvents(id: FixtureId): Observable<FixtureEventsDTO>;
-  abstract getAllFixtureEventsCount(): Observable<number>;
 }
 
 @Injectable()
 export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService {
-  BASE_URL = environment.api + 'fixture-statistics';
+  BASE_URL = environment.api + 'fixture-events';
 
   http = inject(HttpClient);
 
@@ -21,10 +20,6 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
     return this.http.get<FixtureEventsDTO>(this.BASE_URL + '/get', {
       params,
     });
-  }
-
-  getAllFixtureEventsCount(): Observable<number> {
-    return this.http.get<number>(this.BASE_URL + '/count');
   }
 }
 

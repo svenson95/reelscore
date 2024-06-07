@@ -1,15 +1,9 @@
 import { DatePipe, NgIf } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { switchMap } from 'rxjs';
 
 import { BackButtonComponent } from '@app/components';
-import {
-  FixtureStatisticsService,
-  FixturesService,
-  ROUTE_SERVICE_PROVIDER,
-} from '@app/services';
+import { ROUTE_SERVICE_PROVIDER } from '@app/services';
 import { FixtureId } from '@lib/models';
 import { RouterView } from '../router-view';
 import {
@@ -17,6 +11,7 @@ import {
   MatchDetailsBaseComponent,
   MatchHeaderComponent,
 } from './components';
+import { FixtureService, SERVICE_PROVIDERS } from './services';
 
 @Component({
   selector: 'futbet-match',
@@ -30,7 +25,7 @@ import {
     MatchDetailsBaseComponent,
     MatchDetailsAfterComponent,
   ],
-  providers: [ROUTE_SERVICE_PROVIDER],
+  providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
     .header { @apply flex items-center justify-between;}
@@ -63,7 +58,12 @@ import {
         @switch(isUpcoming()) { @case(true) {
         <!-- <futbet-match-details-before /> -->
         } @case(false) {
-        <futbet-match-details-after [fixtureId]="match.fixture.id" />
+        <ng-container *ngIf="fixture() as f">
+          <futbet-match-details-after
+            [fixtureId]="match.fixture.id"
+            [fixture]="f"
+          />
+        </ng-container>
         }}
       </section>
     </ng-container>
@@ -71,21 +71,12 @@ import {
 })
 export class MatchComponent extends RouterView {
   fixtureId = input.required<FixtureId>();
-  fss = inject(FixtureStatisticsService);
-  fs = inject(FixturesService);
+  fs = inject(FixtureService);
+  fixture = this.fs.fixture;
 
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
 
-  fixture = toSignal(
-    toObservable(this.fixtureId).pipe(
-      switchMap((id) => this.fs.loadFixture(id))
-    )
-  );
-
-  setFixtureId = effect(
-    () => {
-      this.fss.fixtureId.set(this.fixtureId());
-    },
-    { allowSignalWrites: true }
-  );
+  setFixtureId = effect(() => this.fs.fixtureId.set(this.fixtureId()), {
+    allowSignalWrites: true,
+  });
 }

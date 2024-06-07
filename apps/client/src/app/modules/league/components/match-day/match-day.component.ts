@@ -6,9 +6,10 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DateService, FixturesService, LeagueService } from '@app/services';
+import { DateService, LeagueService } from '@app/services';
 import { MatchDTO } from '@lib/models';
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
+import { FixturesService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({

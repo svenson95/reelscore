@@ -6,8 +6,9 @@ import {
 } from '@angular/core/rxjs-interop';
 import { of, switchMap } from 'rxjs';
 
+import { LeagueService } from '@app/services';
 import { StandingsDTO } from '@lib/models';
-import { HttpStandingsService, LeagueService } from '../../../services';
+import { HttpStandingsService } from './http.service';
 
 export abstract class StandingsService {
   abstract standing: Signal<StandingsDTO | undefined>;
@@ -16,21 +17,21 @@ export abstract class StandingsService {
 
 @Injectable()
 export class AbstractedStandingsService extends StandingsService {
-  leagueService = inject(LeagueService);
-  standingsService = inject(HttpStandingsService);
+  ls = inject(LeagueService);
+  hss = inject(HttpStandingsService);
   destroyRef = inject(DestroyRef);
 
   standing = toSignal<StandingsDTO | undefined>(
-    toObservable(this.leagueService.selectedLeague).pipe(
+    toObservable(this.ls.selectedLeague).pipe(
       takeUntilDestroyed(this.destroyRef),
       switchMap((league) =>
-        league ? this.standingsService.getStandings(league.id) : of(undefined)
+        league ? this.hss.getStandings(league.id) : of(undefined)
       )
     )
   );
 
   topFiveStandings = toSignal<StandingsDTO[] | undefined>(
-    this.standingsService.getAllStandings()
+    this.hss.getAllStandings()
   );
 }
 

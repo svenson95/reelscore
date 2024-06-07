@@ -6,28 +6,40 @@ import {
   input,
 } from '@angular/core';
 
-import { FixtureId } from '@lib/models';
-
-import { FixtureStatisticsService } from '../../../../../services';
-import { MatchStatisticsComponent } from '../../statistics/statistics.component';
+import { FixtureId, MatchDTO } from '@lib/models';
+import {
+  FixtureEventsService,
+  FixtureStatisticsService,
+} from '../../../services';
+import { MatchEventsComponent, MatchStatisticsComponent } from './components';
 
 @Component({
   selector: 'futbet-match-details-after',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, MatchStatisticsComponent],
-  styles: ``,
+  imports: [NgIf, MatchStatisticsComponent, MatchEventsComponent],
+  styles: `
+    :host { @apply flex flex-col gap-10; }
+  `,
   template: `
-    <!-- <futbet-match-events /> -->
-    <ng-container *ngIf="statistics() as stats">
-      <futbet-match-statistics [data]="stats.response" />
+    <ng-container *ngIf="events() as e">
+      <futbet-match-events [data]="e.response" />
     </ng-container>
+
+    <ng-container *ngIf="statistics() as s">
+      <futbet-match-statistics [data]="s.response" />
+    </ng-container>
+
     <!-- <futbet-match-lineups /> -->
   `,
 })
 export class MatchDetailsAfterComponent {
   fixtureId = input.required<FixtureId>();
+  fixture = input.required<MatchDTO>();
 
-  fs = inject(FixtureStatisticsService);
-  statistics = this.fs.statistics;
+  fss = inject(FixtureStatisticsService);
+  statistics = this.fss.statistics;
+
+  fes = inject(FixtureEventsService);
+  events = this.fes.events;
 }

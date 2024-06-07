@@ -61,7 +61,8 @@ export class MatchFixtureDataComponent {
   data = input.required<MatchDTO>();
 
   round = computed(() => {
-    const idx = this.data().league.round.lastIndexOf('-') + 2;
-    return this.data().league.round.slice(idx, this.data().league.round.length);
+    const rnd = this.data().league.round;
+    const idx = rnd.lastIndexOf('-') + 2;
+    return rnd.slice(idx, rnd.length);
   });
 }

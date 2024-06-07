@@ -16,7 +16,7 @@ import {
   createWeekDaysArray,
   getMondayFromDate,
   moveItem,
-} from '../../models';
+} from '@app/models';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;

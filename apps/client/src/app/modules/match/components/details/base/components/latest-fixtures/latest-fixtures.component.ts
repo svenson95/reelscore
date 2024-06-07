@@ -1,12 +1,9 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { of, switchMap } from 'rxjs';
 
-import { FixtureStatisticsService, FixturesService } from '@app/services';
-import { LatestFixturesDTO } from '@lib/models';
-import { MatchFixturesTableComponent } from './fixtures-table.component';
+import { FixturesService } from '../../../../../services';
+import { MatchFixturesTableComponent } from './components';
 
 @Component({
   selector: 'futbet-match-latest-fixtures',
@@ -39,12 +36,6 @@ import { MatchFixturesTableComponent } from './fixtures-table.component';
 })
 export class MatchLatestFixturesComponent {
   fs = inject(FixturesService);
-  fss = inject(FixtureStatisticsService);
-  fixtureId = this.fss.fixtureId;
 
-  latestFixtures = toSignal<LatestFixturesDTO | null>(
-    toObservable(this.fixtureId).pipe(
-      switchMap((id) => (id ? this.fs.loadLatestFixtures(id) : of(null)))
-    )
-  );
+  latestFixtures = this.fs.latestFixtures;
 }
