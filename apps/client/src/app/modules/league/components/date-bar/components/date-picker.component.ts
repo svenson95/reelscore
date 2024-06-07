@@ -51,6 +51,10 @@ class CustomDateAdapter extends NativeDateAdapter {
         @apply opacity-0 w-0 h-0;
       }
     }
+
+    ::ng-deep mat-datepicker-content {
+      touch-action: pan-x pan-y;
+    }
   `,
   template: `
     <button

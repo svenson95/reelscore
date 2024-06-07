@@ -17,6 +17,7 @@ import { DateString, TODAY_ISO_STRING } from '@app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, MatButtonToggleModule, MatIconModule, MatTooltipModule],
   styles: `
+    :host { touch-action: pan-x pan-y; }
     :host mat-button-toggle-group {
       --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
       --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-green-1);
