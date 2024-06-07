@@ -4,6 +4,7 @@ import { SortDirection } from '@angular/material/sort';
 import { GetAllFixturesDTO } from '@lib/models';
 import { Observable } from 'rxjs';
 import {
+  HttpFixtureEventsService,
   HttpFixtureStatisticsService,
   HttpFixturesService,
   HttpStandingsService,
@@ -13,6 +14,7 @@ export abstract class DatabaseService {
   abstract getAllFixturesCount(): Observable<number>;
   abstract getAllFixtureStatisticsCount(): Observable<number>;
   abstract getAllStandingsCount(): Observable<number>;
+  abstract getAllFixtureEventsCount(): Observable<number>;
   abstract getTableData(
     sort: string,
     order: SortDirection,
@@ -24,6 +26,7 @@ export abstract class DatabaseService {
 @Injectable()
 export class AbstractedDatabaseService extends DatabaseService {
   hfs = inject(HttpFixturesService);
+  hfes = inject(HttpFixtureEventsService);
   hfss = inject(HttpFixtureStatisticsService);
   hss = inject(HttpStandingsService);
 
@@ -37,6 +40,10 @@ export class AbstractedDatabaseService extends DatabaseService {
 
   getAllStandingsCount() {
     return this.hss.getAllStandingsCount();
+  }
+
+  getAllFixtureEventsCount() {
+    return this.hfes.getAllFixtureEventsCount();
   }
 
   getTableData(

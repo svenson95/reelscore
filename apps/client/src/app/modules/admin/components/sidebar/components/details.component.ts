@@ -38,6 +38,10 @@ import { AdminService, DatabaseService } from '../../../services';
         <span>Fixture-Statistics Datensätze:</span>
         <span>{{ details()?.statisticsLength }}</span>
       </li>
+      <li>
+        <span>Fixture-Events Datensätze:</span>
+        <span>{{ details()?.eventsLength }}</span>
+      </li>
     </ul>
   `,
 })
@@ -50,12 +54,21 @@ export class SidebarDetailsComponent {
       this.ds.getAllStandingsCount(),
       this.ds.getAllFixturesCount(),
       this.ds.getAllFixtureStatisticsCount(),
+      this.ds.getAllFixtureEventsCount(),
     ]).pipe(
-      map(([standingsLength, fixturesLength, statisticsLength]) => ({
-        standingsLength,
-        fixturesLength,
-        statisticsLength,
-      }))
+      map(
+        ([
+          standingsLength,
+          fixturesLength,
+          statisticsLength,
+          eventsLength,
+        ]) => ({
+          standingsLength,
+          fixturesLength,
+          statisticsLength,
+          eventsLength,
+        })
+      )
     )
   );
 
@@ -63,7 +76,10 @@ export class SidebarDetailsComponent {
     const standings = this.details()?.standingsLength;
     const fixtures = this.details()?.fixturesLength;
     const fixtureStatistics = this.details()?.statisticsLength;
-    if (!standings || !fixtures || !fixtureStatistics) return null;
-    return fixtures + fixtureStatistics + standings;
+    const fixtureEvents = this.details()?.statisticsLength;
+    if (!standings || !fixtures || !fixtureStatistics || !fixtureEvents) {
+      return null;
+    }
+    return fixtures + fixtureStatistics + standings + fixtureEvents;
   });
 }

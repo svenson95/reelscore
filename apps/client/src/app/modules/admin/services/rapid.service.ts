@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
+  FixtureEventsDTO,
   FixtureId,
   FixtureStatisticsDTO,
   MatchDTO,
@@ -20,6 +21,7 @@ export abstract class HttpRapidService {
   abstract fetchStatistics(
     fixtureId: FixtureId
   ): Observable<FixtureStatisticsDTO>;
+  abstract fetchEvents(fixtureId: FixtureId): Observable<FixtureEventsDTO>;
 }
 
 @Injectable()
@@ -46,6 +48,11 @@ export class AbstractedHttpRapidService extends HttpRapidService {
     const url =
       this.BASE_URL + `fixture-statistics/fetch?fixtureId=${fixtureId}`;
     return this.http.get<FixtureStatisticsDTO>(url);
+  }
+
+  fetchEvents(fixtureId: FixtureId): Observable<FixtureEventsDTO> {
+    const url = this.BASE_URL + `fixture-events/fetch?fixture=${fixtureId}`;
+    return this.http.get<FixtureEventsDTO>(url);
   }
 }
 

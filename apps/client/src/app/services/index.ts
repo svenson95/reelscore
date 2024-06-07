@@ -2,6 +2,7 @@ export * from './breakpoint-observer.service';
 export * from './date/date.service';
 export * from './fixture-statistics/fixture-statistics.service';
 export * from './fixtures/fixtures.service';
+export * from './http/fixture-events.service';
 export * from './http/fixture-statistics.service';
 export * from './http/fixtures.service';
 export * from './http/standings.service';
