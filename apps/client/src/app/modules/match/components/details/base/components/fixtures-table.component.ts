@@ -21,13 +21,6 @@ export class SameIdPipe implements PipeTransform {
   transform = (id: number, team: FixtureTeam): boolean => id === team.id;
 }
 
-const getTeam = (matches: MatchDTO[]): FixtureTeam =>
-  matches.reduce(
-    (acc, curr) =>
-      curr.teams.home.id === acc.id ? curr.teams.home : curr.teams.away,
-    {} as FixtureTeam
-  );
-
 const getResult = (m: MatchTeams, t: FixtureTeam, winner: boolean): boolean => {
   const home = m.home.id === t.id && m.home.winner === winner;
   const away = m.away.id === t.id && m.away.winner === winner;
@@ -69,15 +62,16 @@ export class IsLoserPipe implements PipeTransform {
   ],
   styles: `
     :host { @apply flex-1 p-4 text-fb-font-size-small; }
-    a { @apply flex p-2; }
+    a { @apply flex p-2 items-center; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
-    .date { @apply w-[60px] border-r-[1px]; }
+    .date { @apply w-[60px]; }
     .team { @apply w-[30%] content-center leading-[13px]; }
     .home { @apply text-right; }
     .result { @apply text-center w-[60px]; }
     .is-related-team { @apply font-bold; }
-    .is-winner { @apply bg-fb-win; }
-    .is-loser { @apply bg-fb-lose; }
+    .is-winner .is-related-team { @apply bg-fb-win; }
+    .is-loser .is-related-team { @apply bg-fb-lose; }
+    .team span { @apply px-2 py-1; }
   `,
   template: `
     @for(match of latestFixtures(); track match.fixture.id; let idx = $index) {
@@ -88,7 +82,7 @@ export class IsLoserPipe implements PipeTransform {
       [class.is-loser]="match.teams | isLoser : relatedTeam()"
     >
       <div class="date">
-        <span>{{ match.fixture.date | date : 'dd.MM | ccc' }}</span>
+        <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
       </div>
 
       <div class="team home">
@@ -123,5 +117,14 @@ export class IsLoserPipe implements PipeTransform {
 })
 export class MatchFixturesTableComponent {
   latestFixtures = input.required<MatchDTO[]>();
-  relatedTeam = computed<FixtureTeam>(() => getTeam(this.latestFixtures()));
+  relatedTeam = computed<FixtureTeam>(() =>
+    this.getTeam(this.latestFixtures())
+  );
+
+  getTeam = (matches: MatchDTO[]): FixtureTeam =>
+    matches.reduce(
+      (acc, curr) =>
+        curr.teams.home.id === acc.id ? curr.teams.home : curr.teams.away,
+      {} as FixtureTeam
+    );
 }
