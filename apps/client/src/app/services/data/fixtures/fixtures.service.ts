@@ -9,8 +9,8 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Observable, switchMap, tap } from 'rxjs';
 
 import { FixtureId, LatestFixturesDTO, MatchDTO } from '@lib/models';
+import { DateService, HttpFixturesService } from '../../../services';
 
-import { DateService, HttpFixturesService } from '../../services';
 export abstract class FixturesService {
   abstract fixtures: Signal<MatchDTO[] | undefined>;
   abstract isLoading: WritableSignal<boolean>;

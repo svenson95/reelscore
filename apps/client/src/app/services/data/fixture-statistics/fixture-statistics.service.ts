@@ -9,8 +9,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, of, switchMap } from 'rxjs';
 
 import { FixtureId, FixtureStatisticsDTO } from '@lib/models';
-
-import { DateService, HttpFixtureStatisticsService } from '../../services';
+import { DateService, HttpFixtureStatisticsService } from '../../../services';
 
 export abstract class FixtureStatisticsService {
   abstract fixtureId: WritableSignal<FixtureId | undefined>;

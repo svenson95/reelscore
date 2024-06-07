@@ -7,8 +7,7 @@ import {
 import { of, switchMap } from 'rxjs';
 
 import { StandingsDTO } from '@lib/models';
-
-import { HttpStandingsService, LeagueService } from '../../services';
+import { HttpStandingsService, LeagueService } from '../../../services';
 
 export abstract class StandingsService {
   abstract standing: Signal<StandingsDTO | undefined>;
