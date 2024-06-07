@@ -21,9 +21,17 @@ export class SameIdPipe implements PipeTransform {
   transform = (id: number, team: FixtureTeam): boolean => id === team.id;
 }
 
-const getTeam = (teams: MatchTeams, team: FixtureTeam): FixtureTeam => {
-  const isHome = teams.home.id === team.id;
-  return isHome ? teams.home : teams.away;
+const getTeam = (matches: MatchDTO[]): FixtureTeam =>
+  matches.reduce(
+    (acc, curr) =>
+      curr.teams.home.id === acc.id ? curr.teams.home : curr.teams.away,
+    {} as FixtureTeam
+  );
+
+const getResult = (m: MatchTeams, t: FixtureTeam, winner: boolean): boolean => {
+  const home = m.home.id === t.id && m.home.winner === winner;
+  const away = m.away.id === t.id && m.away.winner === winner;
+  return home || away;
 };
 
 @Pipe({
@@ -31,8 +39,8 @@ const getTeam = (teams: MatchTeams, team: FixtureTeam): FixtureTeam => {
   standalone: true,
 })
 export class IsWinnerPipe implements PipeTransform {
-  transform = (m: MatchTeams, t: FixtureTeam): boolean => {
-    return getTeam(m, t).winner === true;
+  transform = (teams: MatchTeams, t: FixtureTeam): boolean => {
+    return getResult(teams, t, true);
   };
 }
 
@@ -41,8 +49,8 @@ export class IsWinnerPipe implements PipeTransform {
   standalone: true,
 })
 export class IsLoserPipe implements PipeTransform {
-  transform = (m: MatchTeams, t: FixtureTeam): boolean => {
-    return getTeam(m, t).winner === false;
+  transform = (teams: MatchTeams, t: FixtureTeam): boolean => {
+    return getResult(teams, t, false);
   };
 }
 
@@ -115,9 +123,5 @@ export class IsLoserPipe implements PipeTransform {
 })
 export class MatchFixturesTableComponent {
   latestFixtures = input.required<MatchDTO[]>();
-
-  relatedTeam = computed<FixtureTeam>(() => {
-    const teams = this.latestFixtures()[0].teams;
-    return getTeam(teams, teams.home);
-  });
+  relatedTeam = computed<FixtureTeam>(() => getTeam(this.latestFixtures()));
 }
