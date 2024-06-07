@@ -1,7 +1,6 @@
 import express from 'express';
 
 import {
-  deleteFixture,
   fetchFixtures,
   getAllFixtures,
   getAllFixturesCount,
@@ -10,7 +9,6 @@ import {
   getFixturesByRound,
   getFixturesByTeamId,
   getLatestFixtures,
-  updateFixture,
 } from '../controllers';
 
 export const fixtures = express.Router();
@@ -56,17 +54,4 @@ fixtures.get('/count', async (req, res) => {
 
 fixtures.get('/fetch', async (req, res) => {
   await fetchFixtures(req, res);
-});
-
-fixtures.patch('/update', async (req, res) => {
-  await updateFixture(req, res);
-});
-
-fixtures.delete('/delete', async (req, res) => {
-  await deleteFixture(req, res, (docs) => {
-    return res.json({
-      response: 'documents deleted',
-      documents: docs,
-    });
-  });
 });
