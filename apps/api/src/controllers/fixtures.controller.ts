@@ -209,34 +209,3 @@ export const fetchFixtures = async (req, res) => {
     });
   }
 };
-
-export const updateFixture = async (req, res) => {
-  const body = req.body;
-
-  try {
-    const documents = await Fixtures.findOneAndUpdate({ _id: body._id }, body);
-    return res.json({
-      response: 'document saved',
-      documents,
-    });
-  } catch (error) {
-    return res.json({
-      response: 'error happened',
-      error,
-    });
-  }
-};
-
-export const deleteFixture = async (req, res, next) => {
-  const _id = req.query.id;
-
-  try {
-    const docs = await Fixtures.deleteOne().where('_id').equals(_id);
-    return next(docs);
-  } catch (error) {
-    return res.json({
-      response: 'error happened',
-      error,
-    });
-  }
-};
