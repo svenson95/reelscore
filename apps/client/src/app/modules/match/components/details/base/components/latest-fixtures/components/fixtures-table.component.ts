@@ -14,36 +14,13 @@ import { TeamNamePipe } from '@app/pipes';
 import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
 
 @Pipe({
-  name: 'sameId',
-  standalone: true,
-})
-export class SameIdPipe implements PipeTransform {
-  transform = (id: number, team: FixtureTeam): boolean => id === team.id;
-}
-
-const getResult = (m: MatchTeams, t: FixtureTeam, winner: boolean): boolean => {
-  const home = m.home.id === t.id && m.home.winner === winner;
-  const away = m.away.id === t.id && m.away.winner === winner;
-  return home || away;
-};
-
-@Pipe({
   name: 'isWinner',
   standalone: true,
 })
 export class IsWinnerPipe implements PipeTransform {
-  transform = (teams: MatchTeams, t: FixtureTeam): boolean => {
-    return getResult(teams, t, true);
-  };
-}
-
-@Pipe({
-  name: 'isLoser',
-  standalone: true,
-})
-export class IsLoserPipe implements PipeTransform {
-  transform = (teams: MatchTeams, t: FixtureTeam): boolean => {
-    return getResult(teams, t, false);
+  transform = (fs: MatchTeams, r: FixtureTeam, v: boolean): boolean => {
+    const f = fs.home.id === r.id ? fs.home : fs.away;
+    return f.id === r.id && f.winner === v;
   };
 }
 
@@ -56,9 +33,7 @@ export class IsLoserPipe implements PipeTransform {
     DatePipe,
     MatRippleModule,
     TeamNamePipe,
-    SameIdPipe,
     IsWinnerPipe,
-    IsLoserPipe,
   ],
   styles: `
     :host { @apply flex-1 p-4 text-fb-font-size-small; }
@@ -74,12 +49,12 @@ export class IsLoserPipe implements PipeTransform {
     .team span { @apply px-2 py-1; }
   `,
   template: `
-    @for(match of latestFixtures(); track match.fixture.id; let idx = $index) {
+    @for(match of latestFixtures(); track match.fixture.id) {
     <a
       mat-ripple
       [routerLink]="['..', match.fixture.id]"
-      [class.is-winner]="match.teams | isWinner : relatedTeam()"
-      [class.is-loser]="match.teams | isLoser : relatedTeam()"
+      [class.is-winner]="match.teams | isWinner : relatedTeam() : true"
+      [class.is-loser]="match.teams | isWinner : relatedTeam() : false"
     >
       <div class="date">
         <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
@@ -87,7 +62,7 @@ export class IsLoserPipe implements PipeTransform {
 
       <div class="team home">
         <span
-          [class.is-related-team]="match.teams.home.id | sameId : relatedTeam()"
+          [class.is-related-team]="match.teams.home.id === relatedTeam().id"
         >
           {{ match.teams.home.name | teamName : 'short' }}
         </span>
@@ -104,7 +79,7 @@ export class IsLoserPipe implements PipeTransform {
 
       <div class="team">
         <span
-          [class.is-related-team]="match.teams.away.id | sameId : relatedTeam()"
+          [class.is-related-team]="match.teams.away.id === relatedTeam().id"
         >
           {{ match.teams.away.name | teamName : 'short' }}
         </span>

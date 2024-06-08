@@ -1,4 +1,4 @@
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -17,7 +17,6 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
   selector: 'futbet-match',
   standalone: true,
   imports: [
-    NgIf,
     DatePipe,
     MatButtonModule,
     BackButtonComponent,
@@ -34,39 +33,35 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
     button { @apply fb-as-label; }
   `,
   template: `
-    <ng-container *ngIf="fixture() as match">
-      <section class="header">
-        <futbet-back-button />
+    @if (fixture(); as match) {
+    <section class="header">
+      <futbet-back-button />
 
-        <div class="dates">
-          <button mat-stroked-button disabled>
-            {{ match.fixture.date | date : 'ccc' }}
-          </button>
-          <button mat-stroked-button disabled>
-            {{ match.fixture.date | date : 'HH:mm' }}
-          </button>
-          <button mat-stroked-button disabled>
-            {{ match.fixture.date | date : 'dd.MM.yy' }}
-          </button>
-        </div>
-      </section>
+      <div class="dates">
+        <button mat-stroked-button disabled>
+          {{ match.fixture.date | date : 'ccc' }}
+        </button>
+        <button mat-stroked-button disabled>
+          {{ match.fixture.date | date : 'HH:mm' }}
+        </button>
+        <button mat-stroked-button disabled>
+          {{ match.fixture.date | date : 'dd.MM.yy' }}
+        </button>
+      </div>
+    </section>
 
-      <section class="data">
-        <futbet-match-header [data]="match" />
-        <futbet-match-details-base [data]="match" />
+    <section class="data">
+      <futbet-match-header [data]="match" />
 
-        @switch(isUpcoming()) { @case(true) {
-        <!-- <futbet-match-details-before /> -->
-        } @case(false) {
-        <ng-container *ngIf="fixture() as f">
-          <futbet-match-details-after
-            [fixtureId]="match.fixture.id"
-            [fixture]="f"
-          />
-        </ng-container>
-        }}
-      </section>
-    </ng-container>
+      @switch(isUpcoming()) { @case(true) {
+      <!-- <futbet-match-details-before /> -->
+      } @case(false) { @if (fixture(); as f) {
+      <futbet-match-details-after [fixture]="f" />
+      } }}
+
+      <futbet-match-details-base [data]="match" />
+    </section>
+    }
   `,
 })
 export class MatchComponent extends RouterView {
