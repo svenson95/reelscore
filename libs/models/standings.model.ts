@@ -1,4 +1,4 @@
-import { League } from './fixture.model';
+import { League } from './league.model';
 
 export interface StandingsPlayed {
   played: number;
@@ -17,7 +17,7 @@ export const logoFromAssets = (teamId: number) => {
   return 'assets/images/team-logo/' + teamId + '.png';
 };
 
-export interface StandingsRanks {
+export interface StandingRanks {
   rank: number;
   team: Team;
   points: number;
