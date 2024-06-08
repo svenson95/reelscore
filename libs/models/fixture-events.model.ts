@@ -1,6 +1,5 @@
 import { BaseDTO } from './base-dto.model';
 
-export type FixtureEventsDTO = BaseDTO<FixtureEventsResponse>;
 export type EventTime = { elapsed: number; extra: number };
 export type EventTeam = { id: number; name: string; logo: string };
 export type EventPlayer = { id: number; name: string };
@@ -27,6 +26,7 @@ export type EventDetail =
   | 'Substitution [9]'
   | 'Substitution [10]';
 
+export type FixtureEventsDTO = BaseDTO<FixtureEventsResponse>;
 export interface FixtureEventsResponse {
   time: EventTime;
   team: EventTeam;
