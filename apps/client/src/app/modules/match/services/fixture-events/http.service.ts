@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 
 import {
   FixtureEventsDTO,
@@ -26,6 +26,7 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
         params,
       })
       .pipe(
+        filter((d) => !!d),
         map((event) => ({
           ...event,
           response: this.sortEvents(event.response),
