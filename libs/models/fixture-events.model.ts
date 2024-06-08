@@ -4,7 +4,7 @@ export type EventTime = { elapsed: number; extra: number };
 export type EventTeam = { id: number; name: string; logo: string };
 export type EventPlayer = { id: number; name: string };
 export type EventAssist = { id: number; name: string };
-export type EventType = 'Goal' | 'Card' | 'Subst' | 'Var';
+export type EventType = 'Goal' | 'Card' | 'subst' | 'Var';
 export type EventDetail =
   | 'Normal Goal'
   | 'Own Goal'

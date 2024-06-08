@@ -1,8 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-import { FixtureEventsDTO, FixtureId } from '@lib/models';
+import {
+  FixtureEventsDTO,
+  FixtureEventsResponse,
+  FixtureId,
+} from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureEventsService {
@@ -17,9 +21,22 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
 
   getFixtureEvents(id: FixtureId): Observable<FixtureEventsDTO> {
     const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<FixtureEventsDTO>(this.BASE_URL + '/get', {
-      params,
-    });
+    return this.http
+      .get<FixtureEventsDTO>(this.BASE_URL + '/get', {
+        params,
+      })
+      .pipe(
+        map((event) => ({
+          ...event,
+          response: this.sortEvents(event.response),
+        }))
+      );
+  }
+
+  private sortEvents(d: FixtureEventsResponse[]) {
+    return d.sort(
+      (a, b) => b.time.elapsed + b.time.extra - (a.time.elapsed + a.time.extra)
+    );
   }
 }
 
