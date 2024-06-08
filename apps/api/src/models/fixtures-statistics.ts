@@ -1,8 +1,7 @@
+import { FixtureStatisticsDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
-import { FixtureStatisticsDTO } from '@lib/models';
-
-const FixturesStatisticsSchema = new mongoose.Schema<FixtureStatisticsDTO>({
+const StatisticsSchema = new mongoose.Schema<FixtureStatisticsDTO>({
   parameters: {
     fixture: String,
   },
@@ -20,5 +19,5 @@ const FixturesStatisticsSchema = new mongoose.Schema<FixtureStatisticsDTO>({
 
 export const FixturesStatistics = mongoose.model(
   'fixtures-statistics',
-  FixturesStatisticsSchema
+  StatisticsSchema
 );
