@@ -1,13 +1,12 @@
 import { FixturesStatistics } from '../models';
 
 export const getFixtureStatisticsById = async (req, res, next) => {
-  const fixtureId = req.query.fixtureId;
+  const fixture = req.query.fixtureId;
 
   try {
-    const query = {
-      'parameters.fixture': fixtureId,
-    };
-    const docs = await FixturesStatistics.find(query);
+    const docs = await FixturesStatistics.find().where('parameters').equals({
+      fixture,
+    });
     return next(docs[0]);
   } catch (error) {
     return res.json({

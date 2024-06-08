@@ -10,6 +10,7 @@ const StandingsSchema = new mongoose.Schema<StandingsDTO>({
     logo: String,
     flag: String,
     season: Number,
+    round: String,
     standings: [
       [
         {
@@ -30,30 +31,18 @@ const StandingsSchema = new mongoose.Schema<StandingsDTO>({
             win: Number,
             draw: Number,
             lose: Number,
-            goals: {
-              for: Number,
-              against: Number,
-            },
           },
           home: {
             played: Number,
             win: Number,
             draw: Number,
             lose: Number,
-            goals: {
-              for: Number,
-              against: Number,
-            },
           },
           away: {
             played: Number,
             win: Number,
             draw: Number,
             lose: Number,
-            goals: {
-              for: Number,
-              against: Number,
-            },
           },
           update: String,
         },
