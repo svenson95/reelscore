@@ -2,11 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-import {
-  FixtureEventsDTO,
-  FixtureEventsResponse,
-  FixtureId,
-} from '@lib/models';
+import { FixtureEventsDTO, FixtureId } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureEventsService {
@@ -27,12 +23,6 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
         params,
       })
       .pipe(map((d) => d ?? undefined));
-  }
-
-  private sortEvents(d: FixtureEventsResponse[]) {
-    return d.sort(
-      (a, b) => b.time.elapsed + b.time.extra - (a.time.elapsed + a.time.extra)
-    );
   }
 }
 
