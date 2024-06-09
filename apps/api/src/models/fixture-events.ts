@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const EventsSchema = new mongoose.Schema<FixtureEventsDTO>({
   parameters: {
-    fixture: Number,
+    fixture: String,
   },
   response: [
     {
