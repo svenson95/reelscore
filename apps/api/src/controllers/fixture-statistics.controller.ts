@@ -7,7 +7,7 @@ export const getFixtureStatisticsById = async (req, res, next) => {
     const docs = await FixturesStatistics.find().where('parameters').equals({
       fixture,
     });
-    return next(docs[0]);
+    return next(docs[0] ?? null);
   } catch (error) {
     return res.json({
       status: 'error happened',
