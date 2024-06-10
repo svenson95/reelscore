@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { FixtureStatisticsResponse } from '@lib/models';
+import { StatisticsResponse } from '@lib/models';
 import { StatisticList } from './models';
 
 @Component({
@@ -168,7 +168,7 @@ import { StatisticList } from './models';
   `,
 })
 export class MatchStatisticsComponent {
-  data = input.required<FixtureStatisticsResponse[]>();
+  data = input.required<StatisticsResponse[]>();
 
   stats = computed(() => StatisticList.init(this.data()));
 }

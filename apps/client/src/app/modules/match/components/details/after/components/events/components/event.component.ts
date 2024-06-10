@@ -13,7 +13,7 @@ import {
   EventTeam,
   EventTime,
   EventType,
-  FixtureEventsResponse,
+  EventsResponse,
 } from '@lib/models';
 import {
   EventCardComponent,
@@ -22,7 +22,7 @@ import {
   EventVarComponent,
 } from './types';
 
-export interface EventWithResult extends FixtureEventsResponse {
+export interface EventWithResult extends EventsResponse {
   result: { home: number; away: number };
 }
 
@@ -37,8 +37,8 @@ class GoalEvent implements EventWithResult {
   result: { home: number; away: number };
 
   constructor(
-    goals: FixtureEventsResponse[],
-    event: FixtureEventsResponse,
+    goals: EventsResponse[],
+    event: EventsResponse,
     homeTeamId: number
   ) {
     this.time = event.time;
@@ -51,7 +51,7 @@ class GoalEvent implements EventWithResult {
     this.result = this.calculateGoals(goals, homeTeamId);
   }
 
-  private calculateGoals(goals: FixtureEventsResponse[], homeTeamId: number) {
+  private calculateGoals(goals: EventsResponse[], homeTeamId: number) {
     const home = goals.filter((e) => e.team.id === homeTeamId).length;
     const away = goals.length - home;
     return { home, away };
@@ -85,8 +85,8 @@ class GoalEvent implements EventWithResult {
   `,
 })
 export class MatchEventComponent {
-  goals = input.required<FixtureEventsResponse[]>();
-  event = input.required<FixtureEventsResponse>();
+  goals = input.required<EventsResponse[]>();
+  event = input.required<EventsResponse>();
   homeTeamId = input.required<number>();
   awayTeamId = input.required<number>();
 

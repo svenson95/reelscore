@@ -1,4 +1,4 @@
-import { FixtureStatisticsResponse, StatisticItemValue } from '@lib/models';
+import { StatisticItemValue, StatisticsResponse } from '@lib/models';
 
 export type StatisticListItem = {
   home: StatisticItemValue;
@@ -6,7 +6,7 @@ export type StatisticListItem = {
 };
 
 export class StatisticList {
-  static init(data: FixtureStatisticsResponse[]): StatisticList {
+  static init(data: StatisticsResponse[]): StatisticList {
     return new StatisticList(data);
   }
 
@@ -23,7 +23,7 @@ export class StatisticList {
   yellowCards!: StatisticListItem;
   redCards!: StatisticListItem;
 
-  constructor(data: FixtureStatisticsResponse[]) {
+  constructor(data: StatisticsResponse[]) {
     const homeStats = data[0].statistics;
     const awayStats = data[1].statistics;
 

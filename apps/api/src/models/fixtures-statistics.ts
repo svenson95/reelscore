@@ -1,7 +1,8 @@
-import { FixtureStatisticsDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
-const StatisticsSchema = new mongoose.Schema<FixtureStatisticsDTO>({
+import { StatisticsDTO } from '@lib/models';
+
+const StatisticsSchema = new mongoose.Schema<StatisticsDTO>({
   parameters: {
     fixture: String,
   },

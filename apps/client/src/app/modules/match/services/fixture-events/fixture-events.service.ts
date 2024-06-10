@@ -2,12 +2,12 @@ import { Injectable, Signal, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { of, switchMap } from 'rxjs';
 
-import { FixtureEventsDTO } from '@lib/models';
+import { EventsDTO } from '@lib/models';
 import { FixtureService } from '../../services';
 import { HttpFixtureEventsService } from './http.service';
 
 export abstract class FixtureEventsService {
-  abstract events: Signal<FixtureEventsDTO | undefined>;
+  abstract events: Signal<EventsDTO | undefined>;
 }
 
 @Injectable()

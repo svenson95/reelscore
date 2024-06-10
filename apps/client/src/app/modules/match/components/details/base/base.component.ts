@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { MatchDTO } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 import {
   MatchFixtureDataComponent,
   MatchLatestFixturesComponent,
@@ -24,5 +24,5 @@ import {
   `,
 })
 export class MatchDetailsBaseComponent {
-  data = input.required<MatchDTO>();
+  data = input.required<FixtureDTO>();
 }

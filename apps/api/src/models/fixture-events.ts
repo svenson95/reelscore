@@ -1,7 +1,8 @@
-import { FixtureEventsDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
-const EventsSchema = new mongoose.Schema<FixtureEventsDTO>({
+import { EventsDTO } from '@lib/models';
+
+const EventsSchema = new mongoose.Schema<EventsDTO>({
   parameters: {
     fixture: String,
   },

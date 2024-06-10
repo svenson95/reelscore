@@ -6,14 +6,14 @@ import {
   signal,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { FixtureId, MatchDTO } from '@lib/models';
+import { FixtureDTO, FixtureId } from '@lib/models';
 import { of, switchMap } from 'rxjs';
 
 import { HttpFixtureService } from './http.service';
 
 export abstract class FixtureService {
   abstract fixtureId: WritableSignal<FixtureId | undefined>;
-  abstract fixture: Signal<MatchDTO | undefined>;
+  abstract fixture: Signal<FixtureDTO | undefined>;
 }
 
 @Injectable()
