@@ -70,7 +70,8 @@ class GoalEvent implements EventWithResult {
   ],
   styles: `
     :host { @apply flex text-fb-font-size-body-2; }
-    :host.is-home { @apply justify-end; }
+    :host.is-home { @apply justify-end pl-4; }
+    :host:not(.is-home) { @apply pr-4; }
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {

@@ -8,19 +8,21 @@ import { EventWithResult } from '../event.component';
   imports: [],
   styles: `
       :host-context(.is-home) { @apply flex-row-reverse; }
-      :host { @apply flex gap-3; }
+      :host { @apply flex gap-3 flex-col md:flex-row; }
+      .result { @apply flex shrink-0; }
       .names { @apply flex flex-col; }
       .names div { @apply text-fb-font-size-small; }
+      .assist { @apply flex flex-col md:flex-row items-start; }
     `,
   template: `
     @if (event(); as event) {
-    <div>
+    <div class="result">
       <span>{{ event.result.home }} - {{ event.result.away }}</span>
     </div>
     <div class="names">
       <span>{{ event.player.name }}</span>
       @if (event.assist.id) {
-      <div>
+      <div class="assist">
         <span>Vorlage: </span>
         <span>{{ event.assist.name }}</span>
       </div>

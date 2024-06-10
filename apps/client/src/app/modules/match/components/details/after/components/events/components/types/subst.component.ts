@@ -13,7 +13,7 @@ import { EventsResponse } from '@lib/models';
         @apply flex flex-col; 
 
         span:first-child { @apply text-green-800; }
-        span:last-child { @apply text-red-800; }
+        span:last-child { @apply text-red-800 text-fb-font-size-small; }
       }
     `,
   template: `
