@@ -4,5 +4,5 @@
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
   ],
-  "installCommand": "yum install hostname && npm ci"
+  "installCommand": "yum install -y hostname && npm ci"
 }
