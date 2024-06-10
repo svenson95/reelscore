@@ -25,13 +25,13 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
     }
 
     table {
-      --mat-table-header-headline-size: var(--fb-font-size-small);
-      --mat-table-row-item-label-text-size: var(--fb-font-size-small);
+      --mat-table-header-headline-size: var(--fb-font-size-body-2);
+      --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
       --mat-table-header-container-height: 47px;
       --mat-table-row-item-container-height: 25px;
     }
 
-    td { @apply py-[4px] leading-[16px]; }
+    td { @apply py-[6px] leading-[16px]; }
 
     td, th { &:first-of-type {
       @apply pr-0 text-center;
