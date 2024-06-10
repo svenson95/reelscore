@@ -8,11 +8,8 @@ export const getFixtureEventsById = async (req, res, next) => {
       fixture,
     });
 
-    if (docs.length === 0) {
-      return null;
-    }
-    const sortedEvents = sortEvents(docs[0].response);
-    return next({ ...docs[0], response: sortedEvents });
+    if (docs.length === 0) next(null);
+    return next({ ...docs[0], response: sortEvents(docs[0].response) });
   } catch (error) {
     return res.json({
       status: 'error happened',
