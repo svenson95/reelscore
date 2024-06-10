@@ -27,7 +27,7 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
   providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
-    .header { @apply flex items-center justify-between;}
+    .header { @apply flex justify-between;}
     .dates { @apply flex gap-2; }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-10 mx-auto; }
     button { @apply fb-as-label; }
