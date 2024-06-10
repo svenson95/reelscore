@@ -84,6 +84,8 @@ export class TeamNamePipe implements PipeTransform {
         return 'Almería';
       case 'Granada CF':
         return 'Granada';
+      case 'Rayo Vallecano':
+        return 'Vallecano';
 
       // Serie A
       case 'AC Milan':
