@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { MatchDTO } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'futbet-match-fixture-data',
@@ -58,7 +58,7 @@ import { MatchDTO } from '@lib/models';
   `,
 })
 export class MatchFixtureDataComponent {
-  data = input.required<MatchDTO>();
+  data = input.required<FixtureDTO>();
 
   round = computed(() => {
     const rnd = this.data().league.round;

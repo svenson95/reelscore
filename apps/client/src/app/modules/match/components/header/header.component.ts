@@ -8,7 +8,7 @@ import {
 
 import { OptimizedImageComponent } from '@app/components';
 import { TeamNamePipe } from '@app/pipes';
-import { MatchDTO, logoFromAssets } from '@lib/models';
+import { FixtureDTO, logoFromAssets } from '@lib/models';
 
 @Component({
   selector: 'futbet-match-header',
@@ -59,7 +59,7 @@ import { MatchDTO, logoFromAssets } from '@lib/models';
   `,
 })
 export class MatchHeaderComponent {
-  data = input.required<MatchDTO>();
+  data = input.required<FixtureDTO>();
   isUpcoming = signal<boolean>(true); // TODO derive value from fixture date
 
   logoFromAssets = logoFromAssets;

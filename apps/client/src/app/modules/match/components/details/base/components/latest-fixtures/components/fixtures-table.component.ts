@@ -11,7 +11,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { TeamNamePipe } from '@app/pipes';
-import { FixtureTeam, MatchDTO, MatchTeams } from '@lib/models';
+import { FixtureDTO, FixtureTeam, MatchTeams } from '@lib/models';
 
 @Pipe({
   name: 'isWinner',
@@ -91,12 +91,12 @@ export class IsWinnerPipe implements PipeTransform {
   `,
 })
 export class MatchFixturesTableComponent {
-  latestFixtures = input.required<MatchDTO[]>();
+  latestFixtures = input.required<FixtureDTO[]>();
   relatedTeam = computed<FixtureTeam>(() =>
     this.getTeam(this.latestFixtures())
   );
 
-  getTeam = (matches: MatchDTO[]): FixtureTeam =>
+  getTeam = (matches: FixtureDTO[]): FixtureTeam =>
     matches.reduce(
       (acc, curr) =>
         curr.teams.home.id === acc.id ? curr.teams.home : curr.teams.away,

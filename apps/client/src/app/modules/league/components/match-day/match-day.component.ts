@@ -7,7 +7,7 @@ import {
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DateService, LeagueService } from '@app/services';
-import { MatchDTO } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
 import { FixturesService } from '../../services';
 import { MatchDayListComponent } from './components';
@@ -55,7 +55,7 @@ export class MatchDayComponent {
     return filtered.competitions;
   });
 
-  filterByCompetition = (name: string, data: MatchDTO[]) => ({
+  filterByCompetition = (name: string, data: FixtureDTO[]) => ({
     name,
     image: data.find((f) => f.league.name === name)?.league.flag || 'error',
     fixtures: data.filter((f) => f.league.name === name),

@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { MatchDTO } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 import {
   FixtureEventsService,
   FixtureStatisticsService,
@@ -31,7 +31,7 @@ import { MatchEventsComponent, MatchStatisticsComponent } from './components';
   `,
 })
 export class MatchDetailsAfterComponent {
-  fixture = input.required<MatchDTO>();
+  fixture = input.required<FixtureDTO>();
 
   fss = inject(FixtureStatisticsService);
   statistics = this.fss.statistics;

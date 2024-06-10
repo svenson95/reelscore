@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { FixtureEventsResponse } from '@lib/models';
+import { EventsResponse } from '@lib/models';
 
 @Component({
   selector: 'futbet-event-card',
@@ -21,5 +21,5 @@ import { FixtureEventsResponse } from '@lib/models';
   `,
 })
 export class EventCardComponent {
-  event = input.required<FixtureEventsResponse>();
+  event = input.required<EventsResponse>();
 }
