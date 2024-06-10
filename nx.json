@@ -35,15 +35,8 @@
     "@nx/jest:jest": {
       "cache": true,
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
+      "options": { "passWithNoTests": true },
+      "configurations": { "ci": { "ci": true, "codeCoverage": true } }
     }
   },
   "plugins": [
@@ -54,12 +47,7 @@
         "componentTestingTargetName": "component-test"
       }
     },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
       "plugin": "@nx/webpack/plugin",
       "options": {
@@ -82,12 +70,9 @@
       "inlineTemplate": "true",
       "changeDetection": "OnPush"
     },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    }
+    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "jest" }
   },
-  "nxCloudAccessToken": "NDRhOTAzODAtMDFjNS00MGYyLTgzZjAtMjIwOWVlMGFjNjhlfHJlYWQtd3JpdGU=",
+  "nxCloudAccessToken": "ZDY0YjhmYjQtNDZlMS00NTkyLWJiOTItYjg5NWFlNjU3NzJmfHJlYWQtd3JpdGU=",
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx-cloud",
