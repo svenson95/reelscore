@@ -12,6 +12,7 @@ import {
   logoFromAssets,
 } from '@lib/models';
 
+import { COMPETITION_DATA, COMPETITION_URL } from '@app/constants';
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
@@ -100,20 +101,17 @@ import { CompetitionFixtures } from '../../../../models';
   `,
 })
 export class MatchDayListComponent {
-  readonly routerLinks: Record<CompetitionId, CompetitionUrl> = {
-    78: 'bundesliga',
-    39: 'premier-league',
-    140: 'la-liga',
-    135: 'serie-a',
-    61: 'ligue-1',
-  };
+  readonly routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
 
   readonly competition = input.required<CompetitionFixtures>();
 
   logoFromAssets = logoFromAssets;
 
   linkToMatch(i: FixtureDTO): string[] {
-    const leagueUrl = this.routerLinks[i.league.id];
+    const leagueUrl = COMPETITION_DATA.find(
+      (c) => c.id === String(i.league.id)
+    )?.url;
+    if (!leagueUrl) throw new Error('Error in linkToMatch');
     const fixtureId = String(i.fixture.id);
     return ['/', 'leagues', leagueUrl, 'match', fixtureId];
   }
