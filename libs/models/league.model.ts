@@ -22,9 +22,13 @@ export type StandingRanks = {
   update: string;
 };
 
+export type CompetitionUrl = string;
+export type CompetitionId = string;
+export type CompetitionLabel = string;
+
 export type League = {
-  id: number;
-  name: string;
+  id: CompetitionId;
+  name: CompetitionLabel;
   country: string;
   logo: string;
   flag: string;

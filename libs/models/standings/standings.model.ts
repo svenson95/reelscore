@@ -1,3 +1,4 @@
+import { MongoDbId } from '../fixtures/fixture.model';
 import { League } from '../league.model';
 
 export const logoFromAssets = (teamId: number) => {
@@ -5,5 +6,6 @@ export const logoFromAssets = (teamId: number) => {
 };
 
 export interface StandingsDTO {
+  _id: MongoDbId;
   league: League;
 }

@@ -2,13 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-import { FixtureId, StatisticsDTO } from '@lib/models';
+import { FixtureId, RapidStatisticsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureStatisticsService {
   abstract getFixtureStatistics(
     id: FixtureId
-  ): Observable<StatisticsDTO | undefined>;
+  ): Observable<RapidStatisticsDTO | undefined>;
 }
 
 @Injectable()
@@ -16,10 +16,12 @@ export class AbstractedHttpFixtureStatisticsService extends HttpFixtureStatistic
   BASE_URL = environment.api + 'fixture-statistics';
   http = inject(HttpClient);
 
-  getFixtureStatistics(id: FixtureId): Observable<StatisticsDTO | undefined> {
+  getFixtureStatistics(
+    id: FixtureId
+  ): Observable<RapidStatisticsDTO | undefined> {
     const params = new HttpParams().set('fixtureId', String(id));
     return this.http
-      .get<StatisticsDTO | null>(this.BASE_URL + '/get', {
+      .get<RapidStatisticsDTO | null>(this.BASE_URL + '/get', {
         params,
       })
       .pipe(map((d) => d ?? undefined));

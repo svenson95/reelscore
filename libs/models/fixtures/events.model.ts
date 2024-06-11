@@ -1,5 +1,3 @@
-import { BaseDTO } from '../base-dto.model';
-
 export type EventTime = { elapsed: number; extra: number };
 export type EventTeam = { id: number; name: string; logo: string };
 export type EventPlayer = { id: number; name: string };
@@ -26,7 +24,7 @@ export type EventDetail =
   | 'Substitution [9]'
   | 'Substitution [10]';
 
-export interface EventsResponse {
+export interface EventDTO {
   time: EventTime;
   team: EventTeam;
   player: EventPlayer;
@@ -35,4 +33,3 @@ export interface EventsResponse {
   detail: EventDetail;
   comments: string;
 }
-export type EventsDTO = BaseDTO<EventsResponse>;

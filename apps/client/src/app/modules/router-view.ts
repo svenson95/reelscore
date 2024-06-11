@@ -1,8 +1,8 @@
 import { effect, inject } from '@angular/core';
 
 import { COMPETITION_DATA } from '@app/constants';
-import { CompetitionUrl } from '@app/models';
 import { LeagueService, RouteService } from '@app/services';
+import { CompetitionUrl } from '@lib/models';
 
 export class RouterView {
   routeService = inject(RouteService);

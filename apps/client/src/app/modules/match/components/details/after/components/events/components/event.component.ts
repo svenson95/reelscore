@@ -8,12 +8,12 @@ import {
 
 import {
   EventAssist,
+  EventDTO,
   EventDetail,
   EventPlayer,
   EventTeam,
   EventTime,
   EventType,
-  EventsResponse,
 } from '@lib/models';
 import {
   EventCardComponent,
@@ -22,7 +22,7 @@ import {
   EventVarComponent,
 } from './types';
 
-export interface EventWithResult extends EventsResponse {
+export interface EventWithResult extends EventDTO {
   result: { home: number; away: number };
 }
 
@@ -36,11 +36,7 @@ class GoalEvent implements EventWithResult {
   comments: string;
   result: { home: number; away: number };
 
-  constructor(
-    goals: EventsResponse[],
-    event: EventsResponse,
-    homeTeamId: number
-  ) {
+  constructor(goals: EventDTO[], event: EventDTO, homeTeamId: number) {
     this.time = event.time;
     this.team = event.team;
     this.player = event.player;
@@ -51,7 +47,7 @@ class GoalEvent implements EventWithResult {
     this.result = this.calculateGoals(goals, homeTeamId);
   }
 
-  private calculateGoals(goals: EventsResponse[], homeTeamId: number) {
+  private calculateGoals(goals: EventDTO[], homeTeamId: number) {
     const home = goals.filter((e) => e.team.id === homeTeamId).length;
     const away = goals.length - home;
     return { home, away };
@@ -86,8 +82,8 @@ class GoalEvent implements EventWithResult {
   `,
 })
 export class MatchEventComponent {
-  goals = input.required<EventsResponse[]>();
-  event = input.required<EventsResponse>();
+  goals = input.required<EventDTO[]>();
+  event = input.required<EventDTO>();
   homeTeamId = input.required<number>();
   awayTeamId = input.required<number>();
 

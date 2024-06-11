@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CompetitionId } from '@app/models';
-import { StandingsDTO } from '@lib/models';
+import { CompetitionId, StandingsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 type StandingsParams = undefined | CompetitionId;

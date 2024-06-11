@@ -1,8 +1,7 @@
+import { RapidStatisticsDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
-import { StatisticsDTO } from '@lib/models';
-
-const StatisticsSchema = new mongoose.Schema<StatisticsDTO>({
+const StatisticsSchema = new mongoose.Schema<RapidStatisticsDTO>({
   parameters: {
     fixture: String,
   },

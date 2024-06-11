@@ -1,4 +1,4 @@
-import { StatisticItemValue, StatisticsResponse } from '@lib/models';
+import { StatisticDTO, StatisticItemValue } from '@lib/models';
 
 export type StatisticListItem = {
   home: StatisticItemValue;
@@ -6,7 +6,7 @@ export type StatisticListItem = {
 };
 
 export class StatisticList {
-  static init(data: StatisticsResponse[]): StatisticList {
+  static init(data: StatisticDTO[]): StatisticList {
     return new StatisticList(data);
   }
 
@@ -23,7 +23,7 @@ export class StatisticList {
   yellowCards!: StatisticListItem;
   redCards!: StatisticListItem;
 
-  constructor(data: StatisticsResponse[]) {
+  constructor(data: StatisticDTO[]) {
     const homeStats = data[0].statistics;
     const awayStats = data[1].statistics;
 
