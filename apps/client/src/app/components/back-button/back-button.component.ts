@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
       margin-right: 0;
     }
 
+    button { --mdc-outlined-button-container-height: 40px; }
     div { @apply flex items-center gap-2; }
     mat-icon { @apply text-[20px] w-[16px] h-[20px]; }
   `,

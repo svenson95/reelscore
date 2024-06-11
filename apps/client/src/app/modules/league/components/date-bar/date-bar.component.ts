@@ -22,31 +22,32 @@ import {
   styles: `
     :host { 
       @apply flex flex-wrap items-center justify-between mb-5 gap-3 sm:gap-5; 
-
-      section { 
-        @apply inline-flex flex-wrap items-center justify-center sm:w-fit gap-5; 
-
-        div {
-          @apply flex gap-5 items-center;
-        }
-      }
     }
+
+    section { 
+      @apply inline-flex flex-wrap items-center justify-center sm:w-fit gap-5; 
+    }
+      
+    div { @apply flex gap-5 items-center; }
+    .top { @apply w-full justify-between; }
   `,
   template: `
     <section>
-      <div>
+      <div class="top">
         <futbet-date-picker
           [selectedDay]="selectedDay()"
           (dateSelected)="selectedDay.set($event)"
         />
 
-        @if (isMobile()) {
-        <futbet-calender-week-label [week]="calenderWeek()" />
-        <futbet-today-button
-          [isToday]="isToday()"
-          (onClick)="selectedDay.set($event)"
-        />
-        }
+        <div class="week-and-time">
+          @if (isMobile()) {
+          <futbet-calender-week-label [week]="calenderWeek()" />
+          <futbet-today-button
+            [isToday]="isToday()"
+            (onClick)="selectedDay.set($event)"
+          />
+          }
+        </div>
       </div>
 
       <futbet-week-toogle-group
