@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
 import { ROUTE_SERVICE_PROVIDER } from '@app/services';
-import { FixtureId } from '@lib/models';
+import { CompetitionUrl, FixtureId } from '@lib/models';
+import { COMPETITION_DATA } from '../../constants';
 import { RouterView } from '../router-view';
 import {
   MatchDetailsAfterComponent,
@@ -66,12 +68,36 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
 })
 export class MatchComponent extends RouterView {
   fixtureId = input.required<FixtureId>();
+  leagueUrl = input.required<CompetitionUrl>();
   fs = inject(FixtureService);
+  router = inject(Router);
   fixture = this.fs.fixture;
 
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
 
   setFixtureId = effect(() => this.fs.fixtureId.set(this.fixtureId()), {
     allowSignalWrites: true,
+  });
+
+  invalidUrlEffect = effect(() => {
+    const fixture = this.fixture();
+    const leagueUrl = this.leagueUrl();
+    if (!fixture) return;
+
+    const invalidUrl = fixture.league.id !== leagueUrl;
+    if (invalidUrl) {
+      const fixtureLeagueId = String(fixture.league.id);
+      const validLeague = COMPETITION_DATA.find(
+        (c) => c.id === fixtureLeagueId
+      );
+      if (!validLeague) throw Error('League not found');
+
+      this.router.navigate([
+        'leagues',
+        validLeague.url,
+        'match',
+        fixture.fixture.id,
+      ]);
+    }
   });
 }

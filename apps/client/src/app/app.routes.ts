@@ -9,7 +9,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'leagues/:url',
+    path: 'leagues/:leagueUrl',
     children: [
       {
         path: '',
