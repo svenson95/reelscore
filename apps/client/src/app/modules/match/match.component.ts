@@ -30,12 +30,15 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
     .header { @apply flex justify-between;}
     .dates { @apply flex gap-2; }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-10 mx-auto; }
-    button { @apply fb-as-label; }
+    button { 
+      --mdc-outlined-button-container-height: 40px;
+      @apply fb-as-label; 
+    }
   `,
   template: `
     @if (fixture(); as match) {
     <section class="header">
-      <futbet-back-button />
+      <futbet-back-button [date]="match.fixture.date" />
 
       <div class="dates">
         <button mat-stroked-button disabled>
@@ -43,9 +46,6 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
         </button>
         <button mat-stroked-button disabled>
           {{ match.fixture.date | date : 'HH:mm' }}
-        </button>
-        <button mat-stroked-button disabled>
-          {{ match.fixture.date | date : 'dd.MM.yy' }}
         </button>
       </div>
     </section>

@@ -9,7 +9,10 @@ import { CalenderWeek } from '@app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `
-    button { @apply fb-as-label; }
+    button { 
+      --mdc-outlined-button-container-height: 40px;
+      @apply fb-as-label; 
+    }
   `,
   template: ` <button mat-stroked-button disabled>KW {{ week() }}</button> `,
 })

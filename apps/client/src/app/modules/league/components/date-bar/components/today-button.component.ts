@@ -14,6 +14,7 @@ import { DateString, TODAY_ISO_STRING } from '@app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `
+    button { --mdc-outlined-button-container-height: 40px; }
     button:disabled { @apply fb-as-label; }
   `,
   template: `
