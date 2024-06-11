@@ -29,7 +29,7 @@ import {
     }
       
     div { @apply flex gap-5 items-center; }
-    .top { @apply w-full justify-between; }
+    .top { @apply w-full sm:w-fit justify-between; }
   `,
   template: `
     <section>
