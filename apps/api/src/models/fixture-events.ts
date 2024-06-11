@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { EventsDTO } from '@lib/models';
+import { RapidEventsDTO } from '@lib/models';
 
-const EventsSchema = new mongoose.Schema<EventsDTO>({
+const EventsSchema = new mongoose.Schema<RapidEventsDTO>({
   parameters: {
     fixture: String,
   },

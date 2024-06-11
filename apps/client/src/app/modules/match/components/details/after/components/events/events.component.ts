@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventsResponse } from '@lib/models';
+import { EventDTO } from '@lib/models';
 import { FixtureService } from '../../../../../services';
 import { MatchEventComponent } from './components';
 
@@ -80,7 +80,7 @@ import { MatchEventComponent } from './components';
   `,
 })
 export class MatchEventsComponent {
-  data = input.required<EventsResponse[]>();
+  data = input.required<EventDTO[]>();
   fs = inject(FixtureService);
 
   homeTeamId = computed(() => this.fs.fixture()?.teams.home.id);

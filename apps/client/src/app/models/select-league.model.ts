@@ -1,8 +1,4 @@
-import {
-  CompetitionId,
-  CompetitionLabel,
-  CompetitionUrl,
-} from './competition.model';
+import { CompetitionLabel, CompetitionId, CompetitionUrl } from '@lib/models';
 
 export interface SelectLeagueData {
   image: string;

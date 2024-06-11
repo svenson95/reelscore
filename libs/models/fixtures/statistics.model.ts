@@ -1,10 +1,8 @@
-import { BaseDTO } from '../base-dto.model';
-
 export type TeamDetails = { id: number; name: string; logo: string };
 export type StatisticItemValue = string | number | null;
 export type StatisticItem = { type: string; value: StatisticItemValue };
-export interface StatisticsResponse {
+export type TeamStatistics = Array<StatisticItem>;
+export interface StatisticDTO {
   team: TeamDetails;
-  statistics: Array<StatisticItem>;
+  statistics: TeamStatistics;
 }
-export type StatisticsDTO = BaseDTO<StatisticsResponse>;

@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { StatisticsResponse } from '@lib/models';
+import { StatisticDTO } from '@lib/models';
 import { StatisticList } from './models';
 
 @Component({
@@ -168,7 +168,7 @@ import { StatisticList } from './models';
   `,
 })
 export class MatchStatisticsComponent {
-  data = input.required<StatisticsResponse[]>();
+  data = input.required<StatisticDTO[]>();
 
   stats = computed(() => StatisticList.init(this.data()));
 }

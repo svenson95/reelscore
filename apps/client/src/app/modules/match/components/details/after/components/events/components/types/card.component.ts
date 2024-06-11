@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { EventsResponse } from '@lib/models';
+import { EventDTO } from '@lib/models';
 
 @Component({
   selector: 'futbet-event-card',
@@ -21,5 +21,5 @@ import { EventsResponse } from '@lib/models';
   `,
 })
 export class EventCardComponent {
-  event = input.required<EventsResponse>();
+  event = input.required<EventDTO>();
 }

@@ -5,7 +5,12 @@ import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
 import { TeamNamePipe } from '@app/pipes';
-import { logoFromAssets } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionUrl,
+  FixtureDTO,
+  logoFromAssets,
+} from '@lib/models';
 
 import { CompetitionFixtures } from '../../../../models';
 
@@ -60,16 +65,7 @@ import { CompetitionFixtures } from '../../../../models';
     <ul>
       @for(item of competition().fixtures; track item.league.id) {
       <li>
-        <a
-          matRipple
-          [routerLink]="[
-            '/',
-            'leagues',
-            routerLinks[item.league.id],
-            'match',
-            item.fixture.id
-          ]"
-        >
+        <a matRipple [routerLink]="linkToMatch(item)">
           <section class="time">
             <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
           </section>
@@ -104,7 +100,7 @@ import { CompetitionFixtures } from '../../../../models';
   `,
 })
 export class MatchDayListComponent {
-  readonly routerLinks: Record<number, string> = {
+  readonly routerLinks: Record<CompetitionId, CompetitionUrl> = {
     78: 'bundesliga',
     39: 'premier-league',
     140: 'la-liga',
@@ -115,4 +111,10 @@ export class MatchDayListComponent {
   readonly competition = input.required<CompetitionFixtures>();
 
   logoFromAssets = logoFromAssets;
+
+  linkToMatch(i: FixtureDTO): string[] {
+    const leagueUrl = this.routerLinks[i.league.id];
+    const fixtureId = String(i.fixture.id);
+    return ['/', 'leagues', leagueUrl, 'match', fixtureId];
+  }
 }

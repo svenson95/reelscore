@@ -2,11 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-import { EventsDTO, FixtureId } from '@lib/models';
+import { FixtureId, RapidEventsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureEventsService {
-  abstract getFixtureEvents(id: FixtureId): Observable<EventsDTO | undefined>;
+  abstract getFixtureEvents(
+    id: FixtureId
+  ): Observable<RapidEventsDTO | undefined>;
 }
 
 @Injectable()
@@ -14,10 +16,10 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
   BASE_URL = environment.api + 'fixture-events';
   http = inject(HttpClient);
 
-  getFixtureEvents(id: FixtureId): Observable<EventsDTO | undefined> {
+  getFixtureEvents(id: FixtureId): Observable<RapidEventsDTO | undefined> {
     const params = new HttpParams().set('fixtureId', String(id));
     return this.http
-      .get<EventsDTO | null>(this.BASE_URL + '/get', {
+      .get<RapidEventsDTO | null>(this.BASE_URL + '/get', {
         params,
       })
       .pipe(map((d) => d ?? undefined));

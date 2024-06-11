@@ -1,5 +1,5 @@
+import { CompetitionId } from '@lib/models';
 import { CompetitionCode } from '../../constants';
-import { CompetitionId } from '../../models';
 
 export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: '39',
