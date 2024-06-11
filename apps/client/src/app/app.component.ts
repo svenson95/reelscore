@@ -40,11 +40,7 @@ import { FooterComponent, HeaderComponent } from './components';
     <header></header>
 
     <main>
-      @defer (on idle) {
       <router-outlet />
-      } @loading (after 0ms; minimum 1s) {
-      <mat-spinner />
-      }
     </main>
 
     <footer></footer>
