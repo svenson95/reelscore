@@ -43,7 +43,8 @@
               "with": "apps/client/src/environments/environment.prod.ts"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "serviceWorker": "apps/client/ngsw-config.json"
         },
         "development": {
           "optimization": false,

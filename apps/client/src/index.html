@@ -13,13 +13,17 @@
 
     <!-- Angular Material -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&amp;display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+
+    <!-- Angular PWA -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1976d2" />
 
     <!-- OptimizedImageComponent - fix NG02956 (NgOptimizedImage) -->
     <link rel="preconnect" href="https://media.api-sports.io" />
@@ -28,5 +32,8 @@
   </head>
   <body>
     <futbet-root></futbet-root>
+    <noscript>
+      Please enable JavaScript to continue using this application.
+    </noscript>
   </body>
 </html>
