@@ -14,6 +14,9 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LeagueSelectComponent, LeagueSelectMobileComponent],
+  styles: `
+    :host { @apply flex p-fb-padding-3 pb-0 border-b-[1px]; }
+  `,
   template: `
     <futbet-header-league-select
       [selectedLeague]="selectedLeague()"

@@ -7,7 +7,10 @@ import { LogoComponent } from '../logo/logo.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
-  styles: `futbet-logo { @apply grayscale opacity-35; }`,
+  styles: `
+    :host { @apply flex justify-center px-fb-padding-3 py-10; }
+    futbet-logo { @apply grayscale opacity-35; }
+  `,
   template: `
     <section>
       <futbet-logo disabled />
