@@ -10,10 +10,7 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s",
-      "!{projectRoot}/cypress/**/*",
-      "!{projectRoot}/**/*.cy.[jt]s?(x)",
-      "!{projectRoot}/cypress.config.[jt]s"
+      "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
   },
@@ -48,10 +45,9 @@
   },
   "plugins": [
     {
-      "plugin": "@nx/cypress/plugin",
+      "plugin": "@nx/playwright/plugin",
       "options": {
-        "targetName": "e2e",
-        "componentTestingTargetName": "component-test"
+        "targetName": "e2e"
       }
     },
     {
@@ -71,29 +67,11 @@
   ],
   "generators": {
     "@nx/angular:application": {
-      "e2eTestRunner": "cypress",
+      "e2eTestRunner": "playwright",
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "jest"
-    },
-    "@nx/angular:component": {
-      "style": "css",
-      "inlineStyle": "true",
-      "inlineTemplate": "true",
-      "changeDetection": "OnPush"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
     }
   },
-  "nxCloudAccessToken": "NDRhOTAzODAtMDFjNS00MGYyLTgzZjAtMjIwOWVlMGFjNjhlfHJlYWQtd3JpdGU=",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "accessToken": "NzE0ZjYwZGMtYTJiZC00MjM2LWIyYzYtMzU0NGYxMWVkZWJhfHJlYWQtd3JpdGU="
-      }
-    }
-  }
+  "nxCloudAccessToken": "Mjk5NTI0ZmQtZmRiYS00YWMwLThlNzItZmMzMGNlMGVmNTRlfHJlYWQtd3JpdGU="
 }
