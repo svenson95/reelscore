@@ -7,23 +7,22 @@ import { EventWithResult } from '../event.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-      :host-context(.is-home) { @apply flex-row-reverse; }
+      :host-context(.is-home) .result { @apply flex-row-reverse; }
       :host { @apply flex gap-3 flex-col md:flex-row; }
-      .result { @apply flex shrink-0; }
+      .result { @apply flex shrink-0 gap-2; }
       .names { @apply flex flex-col; }
-      .names div { @apply text-fb-font-size-small; }
-      .assist { @apply flex flex-col md:flex-row items-start; }
+      .assist { @apply flex md:flex-row items-start text-fb-color-text-2 text-fb-font-size-small; }
     `,
   template: `
     @if (event(); as event) {
-    <div class="result">
-      <span>{{ event.result.home }} - {{ event.result.away }}</span>
-    </div>
     <div class="names">
-      <span>{{ event.player.name }}</span>
+      <div class="result">
+        <span>{{ event.result.home }} - {{ event.result.away }}</span>
+        <span>{{ event.player.name }}</span>
+      </div>
       @if (event.assist.id) {
       <div class="assist">
-        <span>Vorlage: </span>
+        <span>Vorlage:&nbsp;</span>
         <span>{{ event.assist.name }}</span>
       </div>
       } @else if(event.detail === 'Penalty') {
