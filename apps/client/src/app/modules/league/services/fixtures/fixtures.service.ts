@@ -8,6 +8,7 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap, tap } from 'rxjs';
 
+import { DateString } from '@app/models';
 import { DateService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
 import { HttpFixturesService } from './http.service';
@@ -32,10 +33,8 @@ export class AbstractedFixturesService extends FixturesService {
     )
   );
 
-  fixturesForDay(date: string) {
-    const d = new Date(date);
-    const nextDay = new Date(d.setDate(d.getDate() + 1)).toISOString();
-    const dateString = nextDay.split('T')[0];
+  fixturesForDay(date: DateString) {
+    const dateString = date.split('T')[0];
     return this.http.getFixtures(dateString);
   }
 }

@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY_ISO_STRING } from '@app/models';
+import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/models';
 
 @Component({
   selector: 'futbet-week-toogle-group',
@@ -82,6 +82,6 @@ export class WeekToggleGroupComponent {
     const oneWeek = value * 7;
     const date = new Date(this.selectedDay());
     date.setDate(date.getDate() + oneWeek);
-    this.dateSelected.emit(date.toISOString());
+    this.dateSelected.emit(toIsoString(date));
   }
 }

@@ -1,15 +1,33 @@
-export const TODAY = new Date('2024-05-18');
-TODAY.setHours(0, 0, 0, 0);
-export const TODAY_ISO_STRING = TODAY.toISOString();
+export const toIsoString = (date: Date): DateString => {
+  const tzo = -date.getTimezoneOffset();
+  const dif = tzo >= 0 ? '+' : '-';
+  const pad = (num: number) => (num < 10 ? '0' : '') + num;
 
-export type DateString = string;
-
-export type CalenderWeek = number;
+  return (
+    date.getFullYear() +
+    '-' +
+    pad(date.getMonth() + 1) +
+    '-' +
+    pad(date.getDate()) +
+    'T' +
+    pad(date.getHours()) +
+    ':' +
+    pad(date.getMinutes()) +
+    ':' +
+    pad(date.getSeconds()) +
+    dif +
+    pad(Math.floor(Math.abs(tzo) / 60)) +
+    ':' +
+    pad(Math.abs(tzo) % 60)
+  );
+};
 
 export const getMondayFromDate = (date: Date): Date => {
   const day = date.getDay();
+  const newDate = new Date(date);
   const difference = day === 0 ? 6 : day - 1;
-  return new Date(date.setDate(date.getDate() - difference));
+  newDate.setDate(newDate.getDate() - difference);
+  return newDate;
 };
 
 export const createWeekDaysArray = (date: Date): DateString[] => {
@@ -18,10 +36,10 @@ export const createWeekDaysArray = (date: Date): DateString[] => {
     .map((d, i) => {
       const day = new Date(d.setDate(d.getDate() - d.getDay() + i));
       const isSunday = d.getDay() === 0;
-      if (isSunday) day.setDate(day.getDate() + 7);
-
-      day.setHours(0, 0, 0, 0);
-      return day.toISOString();
+      if (isSunday) {
+        day.setDate(day.getDate() + 7);
+      }
+      return toIsoString(day);
     });
 };
 
@@ -32,3 +50,14 @@ export const isSameDay = (a: Date, b: Date): boolean => {
     a.getFullYear() === b.getFullYear()
   );
 };
+
+export type DateString = string;
+export type CalenderWeek = number;
+
+export const TODAY = new Date('2024-05-18');
+TODAY.setHours(0, 0, 0, 0);
+export const TODAY_ISO_STRING = toIsoString(TODAY);
+export const TODAY_DATE_STRING = toIsoString(TODAY).slice(0, 10);
+
+export const LAST_YEAR_START = new Date(TODAY.getFullYear() - 1, 0, 1);
+export const NEXT_YEAR_END = new Date(TODAY.getFullYear() + 1, 11, 31);

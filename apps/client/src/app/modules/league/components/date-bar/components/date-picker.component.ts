@@ -17,7 +17,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY } from '@app/models';
+import {
+  DateString,
+  LAST_YEAR_START,
+  NEXT_YEAR_END,
+  toIsoString,
+} from '@app/models';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -73,7 +78,7 @@ class CustomDateAdapter extends NativeDateAdapter {
         matInput
         tabindex="-1"
         [value]="selectedDay()"
-        (dateChange)="dateSelected.emit($event.value.toISOString())"
+        (dateChange)="dateSelected.emit(toIsoString($event.value))"
         [min]="MIN_DATE"
         [max]="MAX_DATE"
         [matDatepicker]="picker"
@@ -83,9 +88,11 @@ class CustomDateAdapter extends NativeDateAdapter {
   `,
 })
 export class DatePickerComponent {
-  readonly MIN_DATE = new Date(TODAY.getFullYear() - 1, 0, 1);
-  readonly MAX_DATE = new Date(TODAY.getFullYear() + 1, 11, 31);
+  readonly MIN_DATE = LAST_YEAR_START;
+  readonly MAX_DATE = NEXT_YEAR_END;
 
   selectedDay = input.required<DateString>();
   dateSelected = output<DateString>();
+
+  toIsoString = toIsoString;
 }
