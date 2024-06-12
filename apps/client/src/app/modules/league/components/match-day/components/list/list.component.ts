@@ -39,8 +39,8 @@ import { CompetitionFixtures } from '../../../../models';
     li > a { @apply flex items-center sm:hover:bg-fb-color-green-1-light; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply justify-center min-w-[50px] py-[20.5px]; }
-    .time, .result { @apply flex text-center leading-[16px]; }
+    .time { @apply justify-center min-w-[55px] py-[20.5px]; }
+    .time, .result { @apply flex text-center; }
     .result { 
       @apply flex-col align-middle px-2; 
       border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
