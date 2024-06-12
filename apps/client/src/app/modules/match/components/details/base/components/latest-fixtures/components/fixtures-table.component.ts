@@ -39,7 +39,7 @@ export class IsWinnerPipe implements PipeTransform {
     :host { @apply flex-1 p-4 text-fb-font-size-body-2; }
     a { @apply flex px-2 py-3 items-center; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
-    .date { @apply w-[60px]; }
+    .date { @apply w-[50px]; }
     .team { @apply w-[30%] content-center leading-[13px]; }
     .home { @apply text-right; }
     .result { @apply text-center w-[60px]; }
