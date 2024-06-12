@@ -44,3 +44,6 @@ Thumbs.db
 
 # Custom files
 .env
+
+
+.nx/workspace-data

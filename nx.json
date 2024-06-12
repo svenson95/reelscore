@@ -73,5 +73,6 @@
       "unitTestRunner": "jest"
     }
   },
-  "nxCloudAccessToken": "REMOVED_NX_CLOUD_TOKEN"
+  "nxCloudAccessToken": "REMOVED_NX_CLOUD_TOKEN",
+  "defaultBase": "main"
 }
