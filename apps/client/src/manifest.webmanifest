@@ -1,0 +1,13 @@
+{
+  "name": "futbet",
+  "short_name": "futbet",
+  "start_url": "https://futbet.vercel.app",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "public/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
