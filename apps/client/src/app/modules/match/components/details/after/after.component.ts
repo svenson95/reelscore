@@ -18,7 +18,7 @@ import { MatchEventsComponent, MatchStatisticsComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchStatisticsComponent, MatchEventsComponent],
   styles: `
-    :host { @apply flex flex-col gap-10; }
+    :host { @apply flex flex-col gap-5; }
   `,
   template: `
     @if(events(); as e) { @if (e !== undefined) {

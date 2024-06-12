@@ -31,7 +31,7 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
     :host { @apply w-full flex flex-col gap-5; }
     .header { @apply flex justify-between;}
     .dates { @apply flex gap-5; }
-    section.data { @apply max-w-fb-max-width w-full flex flex-col gap-10 mx-auto; }
+    section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
       --mdc-outlined-button-container-height: 40px;
       @apply fb-as-label; 

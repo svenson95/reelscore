@@ -12,7 +12,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixtureDataComponent, MatchLatestFixturesComponent],
   styles: `
-    :host { @apply flex flex-col gap-10; }
+    :host { @apply flex flex-col gap-5; }
     .item { @apply flex justify-center py-2 gap-5; }
     .item > *:not(.key) { @apply flex-[2] sm:flex-1; }
     .key { @apply text-fb-color-text-2 text-right flex-1; }
