@@ -15,13 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@app/models": ["apps/client/src/app/models/index.ts"],
-      "@app/constants": ["apps/client/src/app/constants/index.ts"],
       "@app/components": ["apps/client/src/app/components/index.ts"],
+      "@app/constants": ["apps/client/src/app/constants/index.ts"],
+      "@app/models": ["apps/client/src/app/models/index.ts"],
       "@app/pipes": ["apps/client/src/app/pipes/index.ts"],
       "@app/services": ["apps/client/src/app/services/index.ts"],
-      "@lib/models": ["libs/models/index.ts"],
-      "@lib/components": ["libs/components/index.ts"]
+      "@lib/components": ["lib/components/index.ts"],
+      "@lib/models": ["lib/models/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

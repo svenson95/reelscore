@@ -24,6 +24,7 @@ const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(
       routes,
       withComponentInputBinding(),
@@ -33,7 +34,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideExperimentalZonelessChangeDetection(),
     LOCALE_PROVIDER,
     BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
     DATE_SERVICE_PROVIDER,

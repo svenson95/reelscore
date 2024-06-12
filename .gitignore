@@ -38,12 +38,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx
 .nx/cache
+.nx/workspace-data
+
 .angular
 
 # Custom files
 .env
-
-
-.nx/workspace-data
