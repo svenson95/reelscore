@@ -1,7 +1,7 @@
 {
   "name": "futbet",
   "short_name": "futbet",
-  "theme_color": "#fffff",
+  "theme_color": "#fff",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
@@ -54,27 +54,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
-    },
-    {
-      "src": "icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "maskable any",
-      "rel": "apple-touch-icon"
-    },
-    {
-      "src": "icons/icon-167x167.png",
-      "sizes": "167x167",
-      "type": "image/png",
-      "purpose": "maskable any",
-      "rel": "apple-touch-icon"
-    },
-    {
-      "src": "icons/icon-180x180.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "maskable any",
-      "rel": "apple-touch-icon"
     }
   ]
 }
