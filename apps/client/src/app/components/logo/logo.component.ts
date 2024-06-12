@@ -1,21 +1,26 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+
+import { OptimizedImageComponent } from '../optimized-image/optimized-image.component';
 
 @Component({
   selector: 'futbet-logo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIconModule],
+  imports: [OptimizedImageComponent],
   styles: `
     :host { @apply select-none; }
     :host > * { @apply align-middle; }
-    mat-icon { @apply mx-1; }
+    futbet-optimized-image { @apply inline-flex mx-1; }
     span { @apply font-bold; }
-    span:last-child { @apply text-fb-color-green-1; }
   `,
   template: `
     <span>FUT</span>
-    <mat-icon>sports_soccer</mat-icon>
+    <futbet-optimized-image
+      source="assets/icons/sports_and_outdoors.svg"
+      alternate="futbet logo"
+      width="20"
+      height="20"
+    />
     <span>BET</span>
   `,
 })
