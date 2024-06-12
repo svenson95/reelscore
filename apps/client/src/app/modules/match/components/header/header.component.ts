@@ -17,11 +17,11 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
   imports: [OptimizedImageComponent, DatePipe, TeamNamePipe],
   styles: `
     :host { 
-      @apply flex bg-white p-8 border-[1px] rounded-fb; 
+      @apply flex bg-white py-6 px-4 border-[1px] rounded-fb; 
     }
-    div { @apply flex gap-2 items-center justify-center text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
-    .team-column { @apply flex-[2] flex-col gap-3; }
-    .result-column { @apply flex-1 gap-1; }
+    div { @apply flex flex-1 text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
+    .team-column { @apply flex-col gap-3; }
+    .result-column { @apply items-center justify-center gap-1 text-lg; }
     .team-name { @apply leading-[16px] text-center; }
   `,
   template: `
@@ -29,8 +29,8 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
       <futbet-optimized-image
         [source]="logoFromAssets(data().teams.home.id)"
         alternate="home logo"
-        width="50"
-        height="50"
+        width="32"
+        height="32"
       />
       <span class="team-name">
         {{ data().teams.home.name | teamName }}
@@ -38,19 +38,19 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
     </div>
 
     <div class="result-column">
-      @switch(isUpcoming()) { @case(true) {
+      @if (!isUpcoming()) {
       <span>{{ data().score.fulltime.home }}</span>
       <span>:</span>
       <span>{{ data().score.fulltime.away }}</span>
-      } @case(false) { }}
+      }
     </div>
 
     <div class="team-column">
       <futbet-optimized-image
         [source]="logoFromAssets(data().teams.away.id)"
         alternate="away logo"
-        width="50"
-        height="50"
+        width="32"
+        height="32"
       />
       <span class="team-name">
         {{ data().teams.away.name | teamName }}
@@ -60,7 +60,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
 })
 export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
-  isUpcoming = signal<boolean>(true); // TODO derive value from fixture date
+  isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
 
   logoFromAssets = logoFromAssets;
 }
