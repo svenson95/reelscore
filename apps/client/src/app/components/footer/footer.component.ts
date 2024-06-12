@@ -8,7 +8,7 @@ import { LogoComponent } from '../logo/logo.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
   styles: `
-    :host { @apply flex justify-center px-fb-padding-3 py-10; }
+    :host { @apply flex justify-center px-fb-padding-3 py-10 border-t-[1px]; }
     futbet-logo { @apply grayscale opacity-35; }
   `,
   template: `
