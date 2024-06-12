@@ -40,7 +40,7 @@ export class IsWinnerPipe implements PipeTransform {
     a { @apply flex px-2 py-3 items-center; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
     .date { @apply w-[40px]; }
-    .team { @apply w-[30%] content-center leading-[13px]; }
+    .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
     .result { @apply text-center w-[60px]; }
     .is-related-team { @apply font-bold; }
