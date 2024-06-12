@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
 import { ROUTE_SERVICE_PROVIDER } from '@app/services';
-import { CompetitionUrl, FixtureId } from '@lib/models';
+import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
 import { COMPETITION_DATA } from '../../constants';
 import { RouterView } from '../router-view';
 import {
@@ -82,22 +82,19 @@ export class MatchComponent extends RouterView {
   invalidUrlEffect = effect(() => {
     const fixture = this.fixture();
     const leagueUrl = this.leagueUrl();
-    if (!fixture) return;
+    const league = COMPETITION_DATA.find((c) => c.url === leagueUrl);
+    if (!fixture || !league) return;
 
-    const invalidUrl = fixture.league.id !== leagueUrl;
+    const fixtureLeagueId = String(fixture.league.id);
+    const invalidUrl = fixtureLeagueId !== league.id;
     if (invalidUrl) {
-      const fixtureLeagueId = String(fixture.league.id);
-      const validLeague = COMPETITION_DATA.find(
-        (c) => c.id === fixtureLeagueId
-      );
-      if (!validLeague) throw Error('League not found');
-
-      this.router.navigate([
-        'leagues',
-        validLeague.url,
-        'match',
-        fixture.fixture.id,
-      ]);
+      this.redirectTo(fixtureLeagueId, fixture.fixture.id);
     }
   });
+
+  redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
+    const validLeague = COMPETITION_DATA.find((c) => c.id === leagueId);
+    if (!validLeague) throw Error('League not found');
+    this.router.navigate(['leagues', validLeague.url, 'match', fixtureId]);
+  }
 }
