@@ -28,7 +28,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       --mat-table-header-headline-size: var(--fb-font-size-body-2);
       --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
       --mat-table-header-container-height: 47px;
-      --mat-table-row-item-container-height: 25px;
+      --mat-table-row-item-container-height: 30.23px;
     }
 
     td { @apply py-[6px] leading-[16px]; }
@@ -41,8 +41,12 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       &.name-column { min-width: 150px; }
 
       &.number-column {
-        padding: 0 4px 0 4px;
+        padding: 0 5px 0 5px;
         text-align: center;
+      }
+
+      &.points-column {
+        @apply text-center;
       }
     }
 
@@ -107,7 +111,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       </ng-container>
 
       <ng-container matColumnDef="lost">
-        <th mat-header-cell *matHeaderCellDef class="number-column">V</th>
+        <th mat-header-cell *matHeaderCellDef class="number-column">N</th>
         <td mat-cell *matCellDef="let element" class="number-column">
           {{ element.all.lose }}
         </td>
@@ -137,8 +141,8 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       }
 
       <ng-container matColumnDef="points">
-        <th mat-header-cell *matHeaderCellDef>Pkt</th>
-        <td mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef class="points-column">Pkt</th>
+        <td mat-cell *matCellDef="let element" class="points-column">
           {{ element.points }}
         </td>
       </ng-container>
