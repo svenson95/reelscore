@@ -60,6 +60,8 @@ export class TeamNamePipe implements PipeTransform {
         return 'Man City';
       case 'Tottenham':
         return 'Spurs';
+      case 'Crystal Palace':
+        return 'Crystal';
 
       // Ligue 1
       case 'Paris Saint Germain':
