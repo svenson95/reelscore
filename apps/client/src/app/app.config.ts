@@ -1,7 +1,11 @@
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import * as de from '@angular/common/locales/de';
-import { ApplicationConfig, LOCALE_ID } from '@angular/core';
+import {
+  ApplicationConfig,
+  LOCALE_ID,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
@@ -29,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     provideHttpClient(),
+    provideExperimentalZonelessChangeDetection(),
     LOCALE_PROVIDER,
     BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
     DATE_SERVICE_PROVIDER,
