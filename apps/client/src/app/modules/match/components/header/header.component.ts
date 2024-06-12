@@ -29,8 +29,8 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
       <futbet-optimized-image
         [source]="logoFromAssets(data().teams.home.id)"
         alternate="home logo"
-        width="32"
-        height="32"
+        width="40"
+        height="40"
       />
       <span class="team-name">
         {{ data().teams.home.name | teamName }}
@@ -49,8 +49,8 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
       <futbet-optimized-image
         [source]="logoFromAssets(data().teams.away.id)"
         alternate="away logo"
-        width="32"
-        height="32"
+        width="40"
+        height="40"
       />
       <span class="team-name">
         {{ data().teams.away.name | teamName }}
