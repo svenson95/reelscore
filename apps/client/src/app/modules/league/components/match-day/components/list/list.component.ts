@@ -64,7 +64,7 @@ import { CompetitionFixtures } from '../../../../models';
       <span>{{ competition().name }}</span>
     </div>
     <ul>
-      @for(item of competition().fixtures; track item.league.id) {
+      @for(item of competition().fixtures; track item.fixture.id) {
       <li>
         <a matRipple [routerLink]="linkToMatch(item)">
           <section class="time">
