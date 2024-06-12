@@ -11,7 +11,6 @@ import { OptimizedImageComponent } from '../optimized-image/optimized-image.comp
     :host { @apply select-none; }
     :host > * { @apply align-middle; }
     futbet-optimized-image { @apply inline-flex mx-1; }
-    span { @apply font-bold; }
   `,
   template: `
     <span>FUT</span>
