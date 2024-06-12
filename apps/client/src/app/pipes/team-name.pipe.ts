@@ -75,9 +75,9 @@ export class TeamNamePipe implements PipeTransform {
 
       // La Liga
       case 'Athletic Club':
-        return 'Athletic Bilbao';
+        return 'Bilbao';
       case 'Atletico Madrid':
-        return 'Atlético Madrid';
+        return 'Atlético';
       case 'Cadiz':
         return 'Cádiz';
       case 'Almeria':
@@ -86,6 +86,8 @@ export class TeamNamePipe implements PipeTransform {
         return 'Granada';
       case 'Rayo Vallecano':
         return 'Vallecano';
+      case 'Real Sociedad':
+        return 'Sociedad';
 
       // Serie A
       case 'AC Milan':
