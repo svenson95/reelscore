@@ -77,13 +77,6 @@
       "options": {
         "jestConfig": "apps/client/jest.config.ts"
       }
-    },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "client:build",
-        "staticFilePath": "dist/apps/client/browser"
-      }
     }
   }
 }
