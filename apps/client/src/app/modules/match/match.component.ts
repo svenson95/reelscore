@@ -28,16 +28,20 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
   ],
   providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
-    :host { @apply w-full flex flex-col gap-5 pb-5; }
+    :host { @apply w-full flex flex-col gap-5; }
     .header {
-      @apply flex flex-col justify-between gap-5 pt-5;
-      position: sticky;
-      top: 0px;
-      background: var(--fb-color-green-1-light);
-      z-index: 100;
+      @apply flex flex-col justify-between gap-5;
     }
     .header > div { @apply flex justify-between items-center; }
     .dates { @apply flex gap-5; }
+    .match-header { 
+      margin-top: -1.25rem;
+      padding-top: 1.25rem;
+      position: sticky;
+      top: 0;
+      background: var(--fb-color-green-1-light);
+      z-index: 100;
+    }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
       --mdc-outlined-button-container-height: 40px;
@@ -59,7 +63,9 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
           </button>
         </div>
       </div>
+    </section>
 
+    <section class="match-header">
       <futbet-match-header [data]="match" />
     </section>
 
