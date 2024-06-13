@@ -31,7 +31,7 @@ import { FooterComponent, HeaderComponent } from './components';
 
       @apply text-fb-color-text-1;
     }
-    main { @apply flex bg-fb-color-green-1-light p-fb-padding-3; }
+    main { @apply flex bg-fb-color-green-1-light px-fb-padding-3; }
     mat-spinner { @apply mx-auto my-10; }
   `,
   template: `
