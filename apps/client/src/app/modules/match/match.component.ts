@@ -28,8 +28,15 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
   ],
   providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
-    :host { @apply w-full flex flex-col gap-5; }
-    .header { @apply flex justify-between;}
+    :host { @apply w-full flex flex-col gap-5 pb-5; }
+    .header {
+      @apply flex flex-col justify-between gap-5 pt-5;
+      position: sticky;
+      top: 0px;
+      background: var(--fb-color-green-1-light);
+      z-index: 100;
+    }
+    .header > div { @apply flex justify-between items-center; }
     .dates { @apply flex gap-5; }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
@@ -40,21 +47,23 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
   template: `
     @if (fixture(); as match) {
     <section class="header">
-      <futbet-back-button [date]="match.fixture.date" />
+      <div>
+        <futbet-back-button [date]="match.fixture.date" />
 
-      <div class="dates">
-        <button mat-stroked-button disabled>
-          {{ match.fixture.date | date : 'ccc' }}
-        </button>
-        <button mat-stroked-button disabled>
-          {{ match.fixture.date | date : 'HH:mm' }}
-        </button>
+        <div class="dates">
+          <button mat-stroked-button disabled>
+            {{ match.fixture.date | date : 'ccc' }}
+          </button>
+          <button mat-stroked-button disabled>
+            {{ match.fixture.date | date : 'HH:mm' }}
+          </button>
+        </div>
       </div>
+
+      <futbet-match-header [data]="match" />
     </section>
 
     <section class="data">
-      <futbet-match-header [data]="match" />
-
       @switch(isUpcoming()) { @case(true) {
       <!-- <futbet-match-details-before /> -->
       } @case(false) { @if (fixture(); as f) {

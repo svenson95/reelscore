@@ -16,7 +16,7 @@ import { SERVICE_PROVIDERS } from './services';
   providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
-      @apply flex flex-col w-full; 
+      @apply flex flex-col w-full py-5; 
 
       section {
         @apply max-w-fb-max-width inline-flex flex-wrap md:flex-nowrap w-full gap-5 mx-auto;
