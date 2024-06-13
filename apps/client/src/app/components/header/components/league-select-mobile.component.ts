@@ -17,10 +17,6 @@ import { SelectLeagueData } from '../../../models';
     }
 
     :host mat-form-field.mat-mdc-form-field-type-mat-select ::ng-deep {
-      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-        @apply bg-transparent;
-      }
-
       .mat-mdc-floating-label mat-label {
         @apply opacity-50;
       }
@@ -47,6 +43,13 @@ import { SelectLeagueData } from '../../../models';
         }
     }
 
+    :host mat-form-field.mat-mdc-form-field-type-mat-select.is-selected {
+      ::ng-deep .mdc-text-field--filled .mdc-line-ripple::before {
+        border-bottom-width: 2px;
+        --mdc-filled-text-field-active-indicator-color: var(--fb-color-green-1);
+      }
+    }
+
     mat-option {
       padding: 0;
 
@@ -58,7 +61,7 @@ import { SelectLeagueData } from '../../../models';
     a { @apply flex w-full h-full px-4 py-3; }
   `,
   template: `
-    <mat-form-field>
+    <mat-form-field [class.is-selected]="!!selectedLeague()">
       <mat-label>Liga</mat-label>
       <mat-select
         hideSingleSelectionIndicator
