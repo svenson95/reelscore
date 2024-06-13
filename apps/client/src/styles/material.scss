@@ -59,3 +59,8 @@ mat-button-toggle {
 .mat-datepicker-content {
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  background-color: #000;
+  opacity: 0.1;
+}
