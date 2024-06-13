@@ -2,12 +2,14 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   input,
   signal,
 } from '@angular/core';
 
 import { OptimizedImageComponent } from '@app/components';
 import { TeamNamePipe } from '@app/pipes';
+import { BreakpointObserverService } from '@app/services';
 import { FixtureDTO, logoFromAssets } from '@lib/models';
 
 @Component({
@@ -33,7 +35,11 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
         height="40"
       />
       <span class="team-name">
+        @if (isMobile()) {
+        {{ data().teams.home.name | teamName : 'short' }}
+        } @else {
         {{ data().teams.home.name | teamName }}
+        }
       </span>
     </div>
 
@@ -53,14 +59,21 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
         height="40"
       />
       <span class="team-name">
+        @if (isMobile()) {
+        {{ data().teams.away.name | teamName : 'short' }}
+        } @else {
         {{ data().teams.away.name | teamName }}
+        }
       </span>
     </div>
   `,
 })
 export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
+  bos = inject(BreakpointObserverService);
+
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
+  isMobile = this.bos.isMobile;
 
   logoFromAssets = logoFromAssets;
 }
