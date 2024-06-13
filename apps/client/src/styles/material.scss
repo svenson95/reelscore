@@ -38,14 +38,16 @@ $futbet-theme: mat.m2-define-light-theme(
 @include mat.all-component-themes($futbet-theme);
 
 :root {
+  --mat-ripple-color: var(--fb-color-green-1-bg-light);
   --mat-standard-button-toggle-shape: var(--fb-size-border-radius);
   --mdc-outlined-button-container-shape: var(--fb-size-border-radius);
+  --mat-outlined-button-ripple-color: var(--fb-color-green-1-light);
+  --mat-outlined-button-state-layer-color: var(--fb-color-green-1);
+  --mat-outlined-button-pressed-state-layer-opacity: 0;
+  --mat-outlined-button-hover-state-layer-opacity: 0;
+  --mat-outlined-button-focus-state-layer-opacity: 0;
 }
 
 mat-button-toggle {
   --mat-standard-button-toggle-state-layer-color: var(--fb-color-green-1);
-}
-
-.mat-ripple-element {
-  background-color: var(--fb-color-green-1-light);
 }
