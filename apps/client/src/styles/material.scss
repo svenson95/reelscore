@@ -50,6 +50,7 @@ $futbet-theme: mat.m2-define-light-theme(
   --mat-form-field-state-layer-color: var(--fb-color-green-1);
   --mat-datepicker-calendar-container-shape: var(--fb-size-border-radius);
   --mat-datepicker-calendar-container-elevation-shadow: none;
+  --mat-select-container-elevation-shadow: none;
 }
 
 mat-button-toggle {
@@ -63,4 +64,9 @@ mat-button-toggle {
 .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
   background-color: #000;
   opacity: 0.1;
+}
+
+.cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
+  border-radius: var(--fb-size-border-radius);
+  border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
