@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { COMPETITION_DATA } from '../../../constants';
@@ -66,6 +66,7 @@ import { SelectLeagueData } from '../../../models';
       <mat-select
         hideSingleSelectionIndicator
         [value]="selectedLeague()?.url ?? null"
+        (selectionChange)="removeFocus($event)"
       >
         @for (l of leagues; track l.id) {
         <mat-option [value]="l.url">
@@ -80,4 +81,6 @@ export class LeagueSelectMobileComponent {
   readonly leagues = COMPETITION_DATA;
 
   selectedLeague = input.required<SelectLeagueData | undefined>();
+
+  removeFocus = (e: MatSelectChange) => e.source.close();
 }
