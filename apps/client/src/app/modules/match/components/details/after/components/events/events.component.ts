@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventDTO } from '@lib/models';
+import { EventWithResult } from '@lib/models';
 import { FixtureService } from '../../../../../services';
 import { MatchEventComponent } from './components';
 
@@ -22,6 +22,7 @@ import { MatchEventComponent } from './components';
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }
     .home { @apply text-right; }
+    .result { @apply text-fb-font-size-body-2; }
     mat-icon {
       @apply align-middle;
       &.yellow-card { @apply text-yellow-500; }
@@ -37,18 +38,24 @@ import { MatchEventComponent } from './components';
         <div class="team home">
           @if (event.team.id === homeTeamId()) { @if (homeTeamId(); as homeId) {
           @if (awayTeamId(); as awayId) {
-          <futbet-match-event
-            [event]="event"
-            [goals]="goals()"
-            [homeTeamId]="homeId"
-            [awayTeamId]="awayId"
-          />
+          <futbet-match-event [event]="event" [homeTeamId]="homeId" />
           }}} @else {
           <span class="time">{{ event.time.elapsed + event.time.extra }}'</span>
           }
         </div>
 
         <div class="event-icon">
+          @if (event.type === "Goal") {
+          <span class="result">
+            <span [class.font-bold]="event.team.id === homeTeamId()">
+              {{ event.result.home }}
+            </span>
+            <span>&nbsp;-&nbsp;</span>
+            <span [class.font-bold]="event.team.id === awayTeamId()">
+              {{ event.result.away }}
+            </span>
+          </span>
+          } @else {
           <mat-icon
             [class.yellow-card]="
               event.type === 'Card' && event.detail === 'Yellow Card'
@@ -57,20 +64,16 @@ import { MatchEventComponent } from './components';
               event.type === 'Card' && event.detail === 'Red Card'
             "
           >
-            @switch(event.type) { @case("Goal") { sports_soccer } @case("subst")
-            { sync } @case("Card") { style } @case("Var") { visibility } }
+            @switch(event.type) { @case("subst") { sync } @case("Card") { style
+            } @case("Var") { visibility } }
           </mat-icon>
+          }
         </div>
 
         <div class="team away">
           @if (event.team.id === awayTeamId()) { @if (homeTeamId(); as homeId) {
           @if (awayTeamId(); as awayId) {
-          <futbet-match-event
-            [event]="event"
-            [goals]="goals()"
-            [homeTeamId]="homeId"
-            [awayTeamId]="awayId"
-          />
+          <futbet-match-event [event]="event" [homeTeamId]="homeId" />
           }}} @else {
           <span class="time">{{ event.time.elapsed + event.time.extra }}'</span>
           }
@@ -81,11 +84,9 @@ import { MatchEventComponent } from './components';
   `,
 })
 export class MatchEventsComponent {
-  data = input.required<EventDTO[]>();
+  data = input.required<EventWithResult[]>();
   fs = inject(FixtureService);
 
   homeTeamId = computed(() => this.fs.fixture()?.teams.home.id);
   awayTeamId = computed(() => this.fs.fixture()?.teams.away.id);
-
-  goals = computed(() => this.data().filter((e) => e.type === 'Goal'));
 }

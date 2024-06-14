@@ -2,57 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  computed,
   input,
 } from '@angular/core';
 
-import {
-  EventAssist,
-  EventDTO,
-  EventDetail,
-  EventPlayer,
-  EventTeam,
-  EventTime,
-  EventType,
-} from '@lib/models';
+import { EventDTO } from '@lib/models';
 import {
   EventCardComponent,
   EventGoalComponent,
   EventSubstComponent,
   EventVarComponent,
 } from './types';
-
-export interface EventWithResult extends EventDTO {
-  result: { home: number; away: number };
-}
-
-class GoalEvent implements EventWithResult {
-  time: EventTime;
-  team: EventTeam;
-  player: EventPlayer;
-  assist: EventAssist;
-  type: EventType;
-  detail: EventDetail;
-  comments: string;
-  result: { home: number; away: number };
-
-  constructor(goals: EventDTO[], event: EventDTO, homeTeamId: number) {
-    this.time = event.time;
-    this.team = event.team;
-    this.player = event.player;
-    this.assist = event.assist;
-    this.type = event.type;
-    this.detail = event.detail;
-    this.comments = event.comments;
-    this.result = this.calculateGoals(goals, homeTeamId);
-  }
-
-  private calculateGoals(goals: EventDTO[], homeTeamId: number) {
-    const home = goals.filter((e) => e.team.id === homeTeamId).length;
-    const away = goals.length - home;
-    return { home, away };
-  }
-}
 
 @Component({
   selector: 'futbet-match-event',
@@ -71,7 +30,7 @@ class GoalEvent implements EventWithResult {
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
-    <futbet-event-goal [event]="goalEvent()" [isHome]="isHome" />
+    <futbet-event-goal [event]="event" />
     } @case("subst") {
     <futbet-event-subst [event]="event" />
     } @case("Card") {
@@ -82,18 +41,8 @@ class GoalEvent implements EventWithResult {
   `,
 })
 export class MatchEventComponent {
-  goals = input.required<EventDTO[]>();
   event = input.required<EventDTO>();
   homeTeamId = input.required<number>();
-  awayTeamId = input.required<number>();
-
-  goalEvent = computed(() => {
-    const event = this.event();
-    const goals = this.goals().filter(
-      (e) => e.time.elapsed < event.time.elapsed
-    );
-    return new GoalEvent([...goals, event], event, this.homeTeamId());
-  });
 
   @HostBinding('class.is-home')
   get isHome() {

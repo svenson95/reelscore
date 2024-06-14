@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { EventWithResult } from '../event.component';
+import { EventDTO } from '@lib/models';
 
 @Component({
   selector: 'futbet-event-goal',
@@ -10,18 +10,12 @@ import { EventWithResult } from '../event.component';
       :host-context(.is-home) .top { @apply flex-row-reverse; }
       :host { @apply flex flex-col; }
       .top { @apply flex flex-wrap gap-2; }
-      .result { @apply flex shrink-0; }
       .bottom { @apply flex text-fb-font-size-small text-fb-color-text-2; }
       .assist { @apply inline-flex flex-wrap; }
     `,
   template: `
     @if (event(); as event) {
     <div class="top">
-      <span class="result">
-        <span [class.font-bold]="isHome()">{{ event.result.home }}</span>
-        <span>&nbsp;-&nbsp;</span>
-        <span [class.font-bold]="!isHome()">{{ event.result.away }}</span>
-      </span>
       <span>{{ event.player.name }}</span>
     </div>
     @if (event.assist.id) {
@@ -41,6 +35,5 @@ import { EventWithResult } from '../event.component';
   `,
 })
 export class EventGoalComponent {
-  event = input.required<EventWithResult>();
-  isHome = input.required<boolean>();
+  event = input.required<EventDTO>();
 }

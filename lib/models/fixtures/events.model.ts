@@ -33,3 +33,8 @@ export interface EventDTO {
   detail: EventDetail;
   comments: string;
 }
+
+export type EventResult = { home: number; away: number };
+export interface EventWithResult extends EventDTO {
+  result: EventResult;
+}

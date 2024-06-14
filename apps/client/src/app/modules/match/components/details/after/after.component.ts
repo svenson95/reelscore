@@ -21,8 +21,8 @@ import { MatchEventsComponent, MatchStatisticsComponent } from './components';
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if(events(); as e) { @if (e !== undefined) {
-    <futbet-match-events [data]="e.response" />
+    @if(events(); as events) { @if (events !== undefined) {
+    <futbet-match-events [data]="events" />
     } } @if (statistics(); as s) { @if (s !== undefined) {
     <futbet-match-statistics [data]="s.response" />
     } }
