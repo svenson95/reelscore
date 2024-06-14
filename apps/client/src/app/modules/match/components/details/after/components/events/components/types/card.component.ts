@@ -9,11 +9,12 @@ import { EventDTO } from '@lib/models';
   imports: [],
   styles: `
     :host { @apply flex flex-col; }
-    span { @apply text-fb-font-size-small; }
+    span:last-child { @apply text-fb-font-size-small text-fb-color-text-2; }
   `,
   template: `
     @if (event(); as event) {
     <span>{{ event.player.name }}</span>
+    <span>{{ event.comments }}</span>
     }
   `,
 })
