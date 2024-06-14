@@ -9,7 +9,7 @@ import { EventWithResult } from '../event.component';
   styles: `
       :host-context(.is-home) .top { @apply flex-row-reverse; }
       :host { @apply flex flex-col; }
-      .top { @apply flex gap-2; }
+      .top { @apply flex flex-wrap gap-2; }
       .result { @apply flex shrink-0; }
       .bottom { @apply flex text-fb-font-size-small text-fb-color-text-2; }
       .assist { @apply inline-flex flex-wrap; }
