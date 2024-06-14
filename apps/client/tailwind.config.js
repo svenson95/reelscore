@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: '600px',
+      },
       colors: {
         'fb-color-black-1': 'var(--fb-color-black-1)',
         'fb-color-black-2': 'var(--fb-color-black-2)',
