@@ -71,7 +71,7 @@ class GoalEvent implements EventWithResult {
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
-    <futbet-event-goal [event]="goalEvent()" />
+    <futbet-event-goal [event]="goalEvent()" [isHome]="isHome" />
     } @case("subst") {
     <futbet-event-subst [event]="event" />
     } @case("Card") {

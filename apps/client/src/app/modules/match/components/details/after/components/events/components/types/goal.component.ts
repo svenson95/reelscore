@@ -18,7 +18,9 @@ import { EventWithResult } from '../event.component';
     @if (event(); as event) {
     <div class="top">
       <span class="result">
-        {{ event.result.home }} - {{ event.result.away }}
+        <span [class.font-bold]="isHome()">{{ event.result.home }}</span>
+        <span>&nbsp;-&nbsp;</span>
+        <span [class.font-bold]="!isHome()">{{ event.result.away }}</span>
       </span>
       <span>{{ event.player.name }}</span>
     </div>
@@ -40,4 +42,5 @@ import { EventWithResult } from '../event.component';
 })
 export class EventGoalComponent {
   event = input.required<EventWithResult>();
+  isHome = input.required<boolean>();
 }
