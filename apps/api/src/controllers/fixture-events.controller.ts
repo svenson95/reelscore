@@ -11,7 +11,7 @@ export const getFixtureEventsById = async (req, res, next) => {
     if (docs.length === 0) next(null);
     next({ ...docs[0], response: sortEvents(docs[0].response) });
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
