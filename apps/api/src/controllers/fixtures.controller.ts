@@ -100,7 +100,7 @@ export const getLatestFixtures = async (req, res, fixtureId, next) => {
 
     next({ home, away });
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
