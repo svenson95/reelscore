@@ -7,7 +7,7 @@ export const getStanding = async (req, res, next) => {
 
   try {
     const docs = await Standings.find(query).sort({ _id: -1 });
-    return next(docs[0]);
+    next(docs[0]);
   } catch (error) {
     return res.json({
       status: 'error happened',
@@ -32,7 +32,7 @@ export const getTopFiveStandings = async (req, res, next) => {
           standings: [d.league.standings[0].slice(0, 5)],
         },
       }));
-    return next(topFiveRanks(docs));
+    next(topFiveRanks(docs));
   } catch (error) {
     return res.json({
       status: 'error happened',

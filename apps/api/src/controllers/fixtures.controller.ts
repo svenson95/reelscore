@@ -98,7 +98,7 @@ export const getLatestFixtures = async (req, res, fixtureId, next) => {
       fixtureDoc.fixture.date
     );
 
-    return next({ home, away });
+    next({ home, away });
   } catch (error) {
     return res.json({
       status: 'error happened',
