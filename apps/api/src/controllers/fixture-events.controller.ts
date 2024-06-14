@@ -4,12 +4,17 @@ import { FixtureEvents } from '../models';
 export const getFixtureEventsById = async (req, res, next) => {
   const fixture = req.query.fixtureId;
   try {
-    const docs = await FixtureEvents.find().where('parameters').equals({
-      fixture,
-    });
+    const docs = await FixtureEvents.find()
+      .where('parameters')
+      .equals({
+        fixture,
+      })
+      .lean();
 
-    if (docs.length === 0) next(null);
-    next({ ...docs[0], response: sortEvents(docs[0].response) });
+    if (docs.length === 0) return next(null);
+    const doc = docs[0];
+    const sortedEvents = sortEvents(doc.response);
+    next({ ...doc, response: sortedEvents });
   } catch (error) {
     next({
       status: 'error happened',
@@ -17,8 +22,5 @@ export const getFixtureEventsById = async (req, res, next) => {
     });
   }
 };
-
-const sortEvents = (d: EventDTO[]) => {
-  const time = (t: EventDTO) => t.time.elapsed + t.time.extra;
-  return d.sort((a, b) => time(b) - time(a));
-};
+const time = (t: EventDTO) => t.time.elapsed + t.time.extra;
+const sortEvents = (d: EventDTO[]) => d.sort((a, b) => time(b) - time(a));

@@ -1,18 +1,18 @@
 import { Fixtures } from '../models';
 
-export const getFixturesById = async (req, res, fixtureId) => {
+export const getFixturesById = async (req, res, fixtureId, next) => {
   try {
     const docs = await Fixtures.find({ 'fixture.id': fixtureId });
-    return res.json(docs[0]);
+    next(docs[0]);
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
   }
 };
 
-export const getFixturesByTeamId = async (req, res, teamId) => {
+export const getFixturesByTeamId = async (req, res, teamId, next) => {
   const homeTeamId = { 'teams.home.id': teamId };
   const awayTeamId = { 'teams.away.id': teamId };
   const currentSeason = { 'league.season': 2023 };
@@ -22,16 +22,16 @@ export const getFixturesByTeamId = async (req, res, teamId) => {
       $or: [homeTeamId, awayTeamId],
       $and: [currentSeason],
     });
-    return res.json(docs);
+    next(docs);
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
   }
 };
 
-export const getFixturesByRound = async (req, res, round) => {
+export const getFixturesByRound = async (req, res, round, next) => {
   const leagueId = req.query.league;
   const roundString = round ? `Regular Season - ${round}` : null;
 
@@ -41,16 +41,16 @@ export const getFixturesByRound = async (req, res, round) => {
       'league.round': roundString,
       'league.season': 2023,
     });
-    return res.json(docs);
+    next(docs);
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
   }
 };
 
-export const getFixturesByDate = async (req, res, date) => {
+export const getFixturesByDate = async (req, res, date, next) => {
   const day = new Date(date);
   day.setHours(0, 0, 0, 0);
 
@@ -73,16 +73,17 @@ export const getFixturesByDate = async (req, res, date) => {
         'score.fulltime': 1,
         teams: 1,
       });
-    return res.json(docs);
+    next(docs);
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
   }
 };
 
-export const getLatestFixtures = async (req, res, fixtureId, next) => {
+export const getLatestFixtures = async (req, res, next) => {
+  const fixtureId = req.query.fixtureId;
   try {
     const fixtureDoc = await Fixtures.findOne({
       'fixture.id': fixtureId,
