@@ -13,16 +13,16 @@ export type EventDetail =
   | 'Goal cancelled'
   | 'Penalty confirmed'
   | 'Substitution'
-  | 'Substitution [1]'
-  | 'Substitution [2]'
-  | 'Substitution [3]'
-  | 'Substitution [4]'
-  | 'Substitution [5]'
-  | 'Substitution [6]'
-  | 'Substitution [7]'
-  | 'Substitution [8]'
-  | 'Substitution [9]'
-  | 'Substitution [10]';
+  | 'Substitution 1'
+  | 'Substitution 2'
+  | 'Substitution 3'
+  | 'Substitution 4'
+  | 'Substitution 5'
+  | 'Substitution 6'
+  | 'Substitution 7'
+  | 'Substitution 8'
+  | 'Substitution 9'
+  | 'Substitution 10';
 
 export interface EventDTO {
   time: EventTime;
