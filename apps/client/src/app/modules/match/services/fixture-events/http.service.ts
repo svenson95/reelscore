@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import {
   EventDTO,
@@ -28,10 +28,7 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
       .get<RapidEventsDTO | null>(this.BASE_URL + '/get', {
         params,
       })
-      .pipe(
-        map((d) => (d ? this.mappedEvents(d) : undefined)),
-        tap((d) => console.log('test', d))
-      );
+      .pipe(map((d) => (d ? this.mappedEvents(d) : undefined)));
   }
 
   mappedEvents = (events: RapidEventsDTO): EventWithResult[] =>
