@@ -6,6 +6,6 @@ export const fixtureEvents = express.Router();
 
 fixtureEvents.get('/get', async (req, res) => {
   await getFixtureEventsById(req, res, (docs) => {
-    return res.json(docs);
+    res.json(docs);
   });
 });

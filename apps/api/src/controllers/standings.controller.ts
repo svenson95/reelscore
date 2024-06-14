@@ -9,7 +9,7 @@ export const getStanding = async (req, res, next) => {
     const docs = await Standings.find(query).sort({ _id: -1 });
     next(docs[0]);
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
@@ -34,7 +34,7 @@ export const getTopFiveStandings = async (req, res, next) => {
       }));
     next(topFiveRanks(docs));
   } catch (error) {
-    return res.json({
+    next({
       status: 'error happened',
       error,
     });
