@@ -107,11 +107,10 @@ export const getLatestFixtures = async (req, res, fixtureId, next) => {
   }
 };
 
-const findLatestFixturesForTeam = async (teamId: number, date: string) => {
-  return await Fixtures.find()
+const findLatestFixturesForTeam = async (teamId: number, date: string) =>
+  await Fixtures.find()
     .where('fixture.date')
     .lt(Number(date))
     .or([{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }])
     .limit(5)
     .sort({ 'fixture.date': -1 });
-};
