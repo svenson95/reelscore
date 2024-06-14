@@ -19,10 +19,11 @@ import { MatchEventComponent } from './components';
   styles: `
     :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
     section { @apply flex flex-col my-5 gap-5; }
-    .event-row { @apply flex gap-5; }
+    .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }
     .home { @apply text-right; }
     mat-icon {
+      @apply align-middle;
       &.yellow-card { @apply text-yellow-500; }
       &.red-card { @apply text-red-500; }
     }
