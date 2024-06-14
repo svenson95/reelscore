@@ -38,7 +38,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
     } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.name-column { min-width: 150px; }
+      &.name-column { min-width: 120px; }
 
       &.number-column {
         padding: 0 5px 0 5px;
