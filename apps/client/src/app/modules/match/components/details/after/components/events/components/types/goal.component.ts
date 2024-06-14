@@ -12,7 +12,7 @@ import { EventWithResult } from '../event.component';
       .top { @apply flex gap-2; }
       .result { @apply flex shrink-0; }
       .bottom { @apply flex text-fb-font-size-small text-fb-color-text-2; }
-      .assist { @apply flex-col md:flex-row items-start; }
+      .assist { @apply inline-flex flex-wrap; }
     `,
   template: `
     @if (event(); as event) {
