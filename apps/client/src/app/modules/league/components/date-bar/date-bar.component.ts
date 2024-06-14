@@ -29,7 +29,7 @@ import {
     }
       
     div { @apply flex gap-5 items-center; }
-    .top { @apply w-full sm:w-fit justify-between; }
+    .top { @apply w-full xs:w-fit justify-between; }
   `,
   template: `
     <section>
@@ -39,15 +39,15 @@ import {
           (dateSelected)="selectedDay.set($event)"
         />
 
+        @if (isMobile()) {
         <div class="week-and-time">
-          @if (isMobile()) {
           <futbet-calender-week-label [week]="calenderWeek()" />
           <futbet-today-button
             [isToday]="isToday()"
             (onClick)="selectedDay.set($event)"
           />
-          }
         </div>
+        }
       </div>
 
       <futbet-week-toogle-group
