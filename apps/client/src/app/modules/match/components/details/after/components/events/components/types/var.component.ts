@@ -8,19 +8,17 @@ import { EventDTO } from '@lib/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-      :host { @apply flex gap-5; }
-      .names { @apply flex flex-col; }
-      .names div { @apply text-fb-font-size-small; }
-    `,
+    :host { @apply flex flex-col; }
+    span:last-child { @apply text-fb-color-text-2 text-fb-font-size-small; }
+  `,
   template: `
     @if (event(); as event) {
-    <div>
-      <!-- <span>{{ result() }}</span> -->
-    </div>
-    <div class="names">
-      <span>{{ event.player.name }}</span>
-    </div>
-    }
+    <span>VAR</span>
+    @if (event.detail === 'Goal cancelled') {
+    <span>Tor aberkannt</span>
+    } @else if (event.detail === 'Penalty confirmed') {
+    <span>Elfmeter bestätigt</span>
+    } }
   `,
 })
 export class EventVarComponent {
