@@ -8,7 +8,7 @@ export const getFixtureStatisticsById = async (req, res, next) => {
       fixture,
     });
     if (docs.length === 0) next(null);
-    return next(docs[0]);
+    next(docs[0]);
   } catch (error) {
     return res.json({
       status: 'error happened',

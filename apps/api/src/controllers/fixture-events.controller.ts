@@ -9,7 +9,7 @@ export const getFixtureEventsById = async (req, res, next) => {
     });
 
     if (docs.length === 0) next(null);
-    return next({ ...docs[0], response: sortEvents(docs[0].response) });
+    next({ ...docs[0], response: sortEvents(docs[0].response) });
   } catch (error) {
     return res.json({
       status: 'error happened',
