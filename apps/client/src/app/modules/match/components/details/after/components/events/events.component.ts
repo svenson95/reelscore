@@ -33,13 +33,14 @@ import { MatchEventComponent } from './components';
   template: `
     <h3 class="match-section-title">SPIELBERICHT</h3>
     <section>
-      @for (event of data(); track $index) {
+      @for (event of data(); track $index) { @if (homeTeamId(); as homeId) { @if
+      (awayTeamId(); as awayId) {
+
       <div class="event-row">
         <div class="team home">
-          @if (event.team.id === homeTeamId()) { @if (homeTeamId(); as homeId) {
-          @if (awayTeamId(); as awayId) {
+          @if (event.team.id === homeId) {
           <futbet-match-event [event]="event" [homeTeamId]="homeId" />
-          }}} @else {
+          } @else {
           <span class="time">{{ timeTotal(event) }}'</span>
           }
         </div>
@@ -47,11 +48,11 @@ import { MatchEventComponent } from './components';
         <div class="event-icon">
           @if (event.type === "Goal") {
           <span class="result">
-            <span [class.font-bold]="event.team.id === homeTeamId()">
+            <span [class.font-bold]="event.team.id === homeId">
               {{ event.result.home }}
             </span>
             <span>&nbsp;-&nbsp;</span>
-            <span [class.font-bold]="event.team.id === awayTeamId()">
+            <span [class.font-bold]="event.team.id === awayId">
               {{ event.result.away }}
             </span>
           </span>
@@ -71,15 +72,14 @@ import { MatchEventComponent } from './components';
         </div>
 
         <div class="team away">
-          @if (event.team.id === awayTeamId()) { @if (homeTeamId(); as homeId) {
-          @if (awayTeamId(); as awayId) {
+          @if (event.team.id === awayId) {
           <futbet-match-event [event]="event" [homeTeamId]="homeId" />
-          }}} @else {
+          } @else {
           <span class="time">{{ timeTotal(event) }}'</span>
           }
         </div>
       </div>
-      }
+      }}}
     </section>
   `,
 })
