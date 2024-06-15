@@ -1,5 +1,11 @@
-export type EventTime = { elapsed: number; extra: number };
-export type EventTeam = { id: number; name: string; logo: string };
+export type EventTime = { elapsed: number; extra: null | number };
+export const timeTotal = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);
+export type EventTeam = {
+  id: number;
+  name: string;
+  logo: string;
+  goals: number;
+};
 export type EventPlayer = { id: number; name: string };
 export type EventAssist = { id: number; name: string };
 export type EventType = 'Goal' | 'Card' | 'subst' | 'Var';

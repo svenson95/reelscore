@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventWithResult } from '@lib/models';
+import { EventWithResult, timeTotal } from '@lib/models';
 import { FixtureService } from '../../../../../services';
 import { MatchEventComponent } from './components';
 
@@ -40,7 +40,7 @@ import { MatchEventComponent } from './components';
           @if (awayTeamId(); as awayId) {
           <futbet-match-event [event]="event" [homeTeamId]="homeId" />
           }}} @else {
-          <span class="time">{{ event.time.elapsed + event.time.extra }}'</span>
+          <span class="time">{{ timeTotal(event) }}'</span>
           }
         </div>
 
@@ -75,7 +75,7 @@ import { MatchEventComponent } from './components';
           @if (awayTeamId(); as awayId) {
           <futbet-match-event [event]="event" [homeTeamId]="homeId" />
           }}} @else {
-          <span class="time">{{ event.time.elapsed + event.time.extra }}'</span>
+          <span class="time">{{ timeTotal(event) }}'</span>
           }
         </div>
       </div>
@@ -89,4 +89,6 @@ export class MatchEventsComponent {
 
   homeTeamId = computed(() => this.fs.fixture()?.teams.home.id);
   awayTeamId = computed(() => this.fs.fixture()?.teams.away.id);
+
+  timeTotal = timeTotal;
 }
