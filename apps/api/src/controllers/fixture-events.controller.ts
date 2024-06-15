@@ -1,4 +1,4 @@
-import { EventDTO, timeTotal } from '@lib/models';
+import { EventDTO } from '@lib/models';
 import { FixtureEvents } from '../models';
 
 export const getFixtureEventsById = async (req, res, next) => {
@@ -22,5 +22,5 @@ export const getFixtureEventsById = async (req, res, next) => {
     });
   }
 };
-const sortEvents = (d: EventDTO[]) =>
-  d.sort((a, b) => timeTotal(b) - timeTotal(a));
+const time = (t: EventDTO) => t.time.elapsed + t.time.extra;
+const sortEvents = (d: EventDTO[]) => d.sort((a, b) => time(b) - time(a));
