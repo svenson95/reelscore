@@ -1,4 +1,4 @@
-import { DatePipe, Location } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+
+import { DateString, toIsoString } from '../../models';
+import { DateService, LeagueService } from '../../services';
 
 @Component({
   selector: 'futbet-back-button',
@@ -33,10 +37,21 @@ import { MatIconModule } from '@angular/material/icon';
   `,
 })
 export class BackButtonComponent {
-  location = inject(Location);
+  router = inject(Router);
+  ds = inject(DateService);
+  ls = inject(LeagueService);
   date = input.required<string>();
 
   navigateBack(): void {
-    this.location.back();
+    const league = this.ls.selectedLeague();
+    if (!league) return;
+    this.setSelectedDate(this.date());
+    this.router.navigate(['leagues', league.url]);
+  }
+
+  setSelectedDate(date: DateString): void {
+    const selectedDay = new Date(date);
+    const dateStr = toIsoString(selectedDay);
+    this.ds.selectedDay.set(dateStr);
   }
 }
