@@ -14,7 +14,7 @@ import { EvaluationsService } from '../../../../../services';
 
       &:first-of-type { @apply border-b-[1px]; }
       .header { @apply flex justify-between; }
-      .section-hints { @apply flex gap-5 items-center; }
+      .section-hints { @apply flex gap-3 items-center; }
       .section-title { @apply text-fb-font-size-body-2; }
       .section-hints, .today { @apply text-fb-font-size-body-2 text-fb-color-text-2; }
     }
