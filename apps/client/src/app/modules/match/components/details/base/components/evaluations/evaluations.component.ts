@@ -23,13 +23,13 @@ import { EvaluationsService } from '../../../../../services';
       @apply flex gap-5 text-fb-font-size-small xs:text-fb-font-size-body-2;
 
       > div:not(.today) { 
-        @apply flex flex-1 xs:gap-2; 
+        @apply flex flex-1 gap-1 xs:gap-2; 
 
         &:first-of-type { @apply justify-end; }
       }
 
       span {
-        @apply w-[20px] h-[20px] xs:w-[24px] xs:h-[24px] text-center content-center;
+        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-none;
 
         &.loss, &.low { @apply bg-fb-lose; }
         &.draw, &.middle { @apply bg-gray-200; }
