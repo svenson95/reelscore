@@ -1,7 +1,6 @@
 import {
   EvaluationTeam,
   FixtureDTO,
-  FixtureId,
   FixturePerformance,
   FixtureResult,
   StatisticDTO,
@@ -32,11 +31,7 @@ export const getFixtureEvaluations = async (req, res, next) => {
       fixtures: FixtureDTO[],
       teamId: number
     ): Promise<EvaluationTeam> => {
-      const performances = await analyzePerformances(
-        fixtureId,
-        teamId,
-        fixtures
-      );
+      const performances = await analyzePerformances(teamId, fixtures);
       const results = await analyzeResults(teamId, fixtures);
 
       return {
@@ -112,13 +107,12 @@ const analyzeTeamPerformance = (
 };
 
 const analyzePerformances = async (
-  fixtureId: FixtureId,
   teamId: number,
   fixtures: FixtureDTO[]
 ): Promise<FixturePerformance[]> => {
   const performances = fixtures.map(async (fixture) => {
     const stats = await FixturesStatistics.find({
-      'parameters.fixture': fixtureId,
+      'parameters.fixture': fixture.fixture.id,
     });
     const teams = stats[0].response;
     const teamIndex = teams[0].team.id === teamId ? 0 : 1;
