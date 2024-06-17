@@ -11,6 +11,7 @@ dotenv.config();
 
 import { DBHelper } from './middleware';
 import {
+  fixtureEvaluations,
   fixtureEvents,
   fixtures,
   fixturesStatistics,
@@ -30,6 +31,7 @@ app.use('/standings', standings);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
 app.use('/fixture-events', fixtureEvents);
+app.use('/fixture-evaluations', fixtureEvaluations);
 
 DBHelper.init();
 

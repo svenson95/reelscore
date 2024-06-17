@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { EvaluatedFixtureDTO } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 
-const fixturesSchema = new mongoose.Schema<EvaluatedFixtureDTO>({
+const fixturesSchema = new mongoose.Schema<FixtureDTO>({
   fixture: {
     id: Number,
     referee: String,

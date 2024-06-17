@@ -108,7 +108,7 @@ export const getLatestFixtures = async (req, res, next) => {
   }
 };
 
-const findLatestFixturesForTeam = async (teamId: number, date: string) =>
+export const findLatestFixturesForTeam = async (teamId: number, date: string) =>
   await Fixtures.find()
     .where('fixture.date')
     .lt(Number(date))
