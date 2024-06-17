@@ -29,7 +29,7 @@ import { EvaluationsService } from '../../../../../services';
       }
 
       span {
-        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-none;
+        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px];
 
         &.loss, &.low { @apply bg-fb-lose; }
         &.draw, &.middle { @apply bg-gray-200; }
