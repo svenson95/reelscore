@@ -10,30 +10,32 @@ import { EvaluationsService } from '../../../../../services';
   styles: `
     :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
     section { 
-      @apply flex flex-col gap-5 p-5;
+      @apply flex flex-col gap-3 p-5;
 
       &:first-of-type { @apply border-b-[1px]; }
-      .header { @apply flex flex-col xs:flex-row xs:justify-between; }
-      .header > div { @apply flex gap-5 items-center; }
-      .today { @apply content-center; }
-      .header > div, .today { @apply text-fb-font-size-body-2 text-fb-color-text-2; }
+      .header { @apply flex justify-between; }
+      .section-hints { @apply flex gap-5 items-center; }
+      .section-title { @apply text-fb-font-size-body-2; }
+      .section-hints, .today { @apply text-fb-font-size-body-2 text-fb-color-text-2; }
     }
 
     .evaluation {
       @apply flex gap-5 text-fb-font-size-small xs:text-fb-font-size-body-2;
 
-      > div:not(.today) { 
+      .team { 
         @apply flex flex-1 gap-1 xs:gap-2; 
 
         &:first-of-type { @apply justify-end; }
       }
 
+      .today { @apply content-center; }
+
       span {
         @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px];
 
-        &.loss, &.low { @apply bg-fb-lose; }
+        &.loss, &.low { @apply bg-red-200; }
         &.draw, &.middle { @apply bg-gray-200; }
-        &.win, &.high { @apply bg-fb-win; }
+        &.win, &.high { @apply bg-green-200; }
       }
     }
   `,
@@ -43,15 +45,15 @@ import { EvaluationsService } from '../../../../../services';
     <div class="content">
       <section>
         <div class="header">
-          <h4>Ergebnisse</h4>
-          <div>
-            <span>N = Niederlage</span>
-            <span>U = Unentschieden</span>
-            <span>S = Sieg</span>
+          <span class="section-title">Ergebnisse</span>
+          <div class="section-hints">
+            <span><b>N</b>iederlage</span>
+            <span><b>U</b>nentschieden</span>
+            <span><b>S</b>ieg</span>
           </div>
         </div>
         <div class="evaluation">
-          <div id="home">
+          <div class="team">
             @for (result of teams.home.results.reverse(); track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
@@ -62,7 +64,7 @@ import { EvaluationsService } from '../../../../../services';
 
           <div class="today">Heute</div>
 
-          <div id="away">
+          <div class="team">
             @for (result of teams.away.results; track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
@@ -75,15 +77,15 @@ import { EvaluationsService } from '../../../../../services';
 
       <section>
         <div class="header">
-          <h4>Performance</h4>
-          <div>
-            <span>S = Schlecht</span>
-            <span>M = Mittelmäßig</span>
-            <span>G = Gut</span>
+          <span class="section-title">Performance</span>
+          <div class="section-hints">
+            <span><b>S</b>chlecht</span>
+            <span><b>M</b>ittelmäßig</span>
+            <span><b>G</b>ut</span>
           </div>
         </div>
         <div class="evaluation">
-          <div id="home">
+          <div class="team">
             @for (performance of teams.home.performances.reverse(); track
             performance) {
             <span [class]="performance.toLowerCase()">
@@ -95,7 +97,7 @@ import { EvaluationsService } from '../../../../../services';
 
           <div class="today">Heute</div>
 
-          <div id="away">
+          <div class="team">
             @for (performance of teams.away.performances; track performance) {
             <span [class]="performance.toLowerCase()">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
