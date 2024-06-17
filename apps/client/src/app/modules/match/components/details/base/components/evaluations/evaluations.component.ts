@@ -14,10 +14,11 @@ import { EvaluationsService } from '../../../../../services';
 
       &:first-of-type { @apply border-b-[1px]; }
       .header { @apply flex justify-between; }
-      .section-hints { @apply flex gap-3 items-center; }
-      .section-title { @apply text-fb-font-size-body-2 xs:text-fb-font-size-body-1; }
-      .section-hints, .today { @apply text-fb-font-size-body-2 text-fb-color-text-2; }
+      .section-hints { @apply flex gap-3 items-center text-fb-color-text-2; }
+      .section-title { @apply text-fb-font-size-body-1; }
     }
+
+    .section-hints, .today { @apply text-fb-font-size-small xs:text-fb-font-size-body-2; }
 
     .evaluation {
       @apply flex gap-5 text-fb-font-size-small xs:text-fb-font-size-body-2;
@@ -28,28 +29,28 @@ import { EvaluationsService } from '../../../../../services';
         &:first-of-type { @apply justify-end; }
       }
 
-      .today { @apply content-center; }
+      .today { @apply self-center; }
 
       span {
         @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px];
 
-        &.loss, &.low { @apply bg-red-200; }
+        &.loss, &.low { @apply bg-red-500 text-white; }
         &.draw, &.middle { @apply bg-gray-200; }
-        &.win, &.high { @apply bg-green-200; }
+        &.win, &.high { @apply bg-green-500 text-white; }
       }
     }
   `,
   template: `
-    <h3 class="match-section-title">ANALYSE</h3>
+    <h3 class="match-section-title">FORM</h3>
     @if (evaluations()?.teams; as teams) {
     <div class="content">
       <section>
         <div class="header">
           <span class="section-title">Ergebnisse</span>
           <div class="section-hints">
-            <span><b>N</b>iederlage</span>
-            <span><b>U</b>nentschieden</span>
-            <span><b>S</b>ieg</span>
+            <span>Niederlage</span>
+            <span>Unentschieden</span>
+            <span>Sieg</span>
           </div>
         </div>
         <div class="evaluation">
@@ -79,9 +80,9 @@ import { EvaluationsService } from '../../../../../services';
         <div class="header">
           <span class="section-title">Performance</span>
           <div class="section-hints">
-            <span><b>S</b>chlecht</span>
-            <span><b>M</b>ittelmäßig</span>
-            <span><b>G</b>ut</span>
+            <span>Schlecht</span>
+            <span>Mittelmäßig</span>
+            <span>Gut</span>
           </div>
         </div>
         <div class="evaluation">
