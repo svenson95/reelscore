@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { FixtureDTO } from '@lib/models';
 import {
+  MatchEvaluationsComponent,
   MatchFixtureDataComponent,
   MatchLatestFixturesComponent,
 } from './components';
@@ -10,7 +11,11 @@ import {
   selector: 'futbet-match-details-base',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchFixtureDataComponent, MatchLatestFixturesComponent],
+  imports: [
+    MatchFixtureDataComponent,
+    MatchLatestFixturesComponent,
+    MatchEvaluationsComponent,
+  ],
   styles: `
     :host { @apply flex flex-col gap-5; }
     .item { @apply flex justify-center py-2 gap-5; }
@@ -20,6 +25,7 @@ import {
   `,
   template: `
     <futbet-match-fixture-data [data]="data()" />
+    <futbet-match-evaluations />
     <futbet-match-latest-fixtures />
   `,
 })
