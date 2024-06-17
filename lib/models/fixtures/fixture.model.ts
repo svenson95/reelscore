@@ -1,10 +1,12 @@
 import { League, Team } from '../league.model';
+import { FixturePrediction } from './evaluated-fixture.model';
 
 export type MongoDbId = string;
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };
 export type FixtureStatus = { long: string; short: string; elapsed: number };
+export type FixtureResult = 'WIN' | 'DRAW' | 'LOSS';
 export interface Fixture {
   id: FixtureId;
   referee: string;
@@ -34,6 +36,7 @@ export type FixtureDTO = {
   teams: MatchTeams;
   goals: Goals;
   score: Score;
+  prediction: FixturePrediction;
 };
 
 export interface LatestFixturesDTO {
