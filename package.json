@@ -24,6 +24,7 @@
     "express": "^4.18.1",
     "helmet": "^7.1.0",
     "mongoose": "^8.4.1",
+    "ngx-skeleton-loader": "^9.0.0",
     "node-fetch": "^3.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
