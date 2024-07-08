@@ -124,20 +124,6 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
           {{ element.goalsDiff }}
         </td>
       </ng-container>
-
-      <ng-container matColumnDef="goalsFor">
-        <th mat-header-cell *matHeaderCellDef class="number-column">+</th>
-        <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.goals.for }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="goalsAgainst">
-        <th mat-header-cell *matHeaderCellDef class="number-column">-</th>
-        <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.goals.against }}
-        </td>
-      </ng-container>
       }
 
       <ng-container matColumnDef="points">
@@ -161,8 +147,6 @@ export class TableComponent {
     'draw',
     'lost',
     'goalDifference',
-    'goalsFor',
-    'goalsAgainst',
     'points',
   ];
 
@@ -176,10 +160,7 @@ export class TableComponent {
 
   columns = computed(() => {
     const filtered = this.displayedColumns.filter(
-      (column) =>
-        column !== 'goalDifference' &&
-        column !== 'goalsFor' &&
-        column !== 'goalsAgainst'
+      (column) => column !== 'goalDifference'
     );
     return this.isMobile() ? filtered : this.displayedColumns;
   });
