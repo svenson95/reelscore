@@ -54,7 +54,7 @@ export const isSameDay = (a: Date, b: Date): boolean => {
 export type DateString = string;
 export type CalenderWeek = number;
 
-export const TODAY = new Date('2024-05-18');
+export const TODAY = new Date();
 TODAY.setHours(0, 0, 0, 0);
 export const TODAY_ISO_STRING = toIsoString(TODAY);
 export const TODAY_DATE_STRING = toIsoString(TODAY).slice(0, 10);
