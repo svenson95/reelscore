@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 import { BreakpointObserverService, LeagueService } from '../../services';
-
-import {
-  LeagueSelectComponent,
-  LeagueSelectMobileComponent,
-} from './components';
+import { LogoComponent } from '../logo/logo.component';
+import { LeagueSelectComponent } from './components';
 
 const SELECTED_LEAGUE_DEFAULT = 'start';
 
@@ -13,18 +12,15 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   selector: 'header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LeagueSelectComponent, LeagueSelectMobileComponent],
+  imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply flex p-fb-padding-3 pb-0 border-b-[1px]; }
+    :host { @apply flex justify-between p-fb-padding-3 pb-0 border-b-[1px]; }
   `,
   template: `
-    <futbet-header-league-select
-      [selectedLeague]="selectedLeague()"
-      [default]="default"
-    />
-    @if (isMobile()) {
+    <a mat-button [routerLink]="['/']">
+      <futbet-logo />
+    </a>
     <futbet-league-select-mobile [selectedLeague]="selectedLeague()" />
-    }
   `,
 })
 export class HeaderComponent {

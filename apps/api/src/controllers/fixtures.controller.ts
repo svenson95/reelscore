@@ -1,3 +1,4 @@
+import { APP_DATA } from '../middleware/app.data';
 import { Fixtures } from '../models';
 
 export const getFixturesById = async (req, res, fixtureId, next) => {
@@ -15,7 +16,7 @@ export const getFixturesById = async (req, res, fixtureId, next) => {
 export const getFixturesByTeamId = async (req, res, teamId, next) => {
   const homeTeamId = { 'teams.home.id': teamId };
   const awayTeamId = { 'teams.away.id': teamId };
-  const currentSeason = { 'league.season': 2023 };
+  const currentSeason = { 'league.season': APP_DATA.season };
 
   try {
     const docs = await Fixtures.find({
@@ -39,7 +40,7 @@ export const getFixturesByRound = async (req, res, round, next) => {
     const docs = await Fixtures.find({
       'league.id': leagueId,
       'league.round': roundString,
-      'league.season': 2023,
+      'league.season': APP_DATA.season,
     });
     next(docs);
   } catch (error) {
@@ -62,8 +63,6 @@ export const getFixturesByDate = async (req, res, date, next) => {
       .where('fixture.date')
       .gte(Number(day))
       .lt(Number(tomorrow))
-      .where('league.id')
-      .in(['39', '78', '135', '140', '61'])
       .sort({ 'fixture.date': 1 })
       .select({
         'fixture.date': 1,

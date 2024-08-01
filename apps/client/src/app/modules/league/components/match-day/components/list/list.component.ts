@@ -12,7 +12,7 @@ import {
   logoFromAssets,
 } from '@lib/models';
 
-import { COMPETITION_DATA, COMPETITION_URL } from '@app/constants';
+import { COMPETITION_URL, SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
@@ -108,7 +108,7 @@ export class MatchDayListComponent {
   logoFromAssets = logoFromAssets;
 
   linkToMatch(i: FixtureDTO): string[] {
-    const leagueUrl = COMPETITION_DATA.find(
+    const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
       (c) => c.id === String(i.league.id)
     )?.url;
     if (!leagueUrl) throw new Error('Error in linkToMatch');

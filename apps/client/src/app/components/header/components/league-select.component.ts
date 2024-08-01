@@ -1,95 +1,88 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-
-import { LogoComponent } from '../../../components';
-import { COMPETITION_DATA } from '../../../constants';
-import { SelectLeagueData } from '../../../models';
-import { BreakpointObserverService } from '../../../services';
+import { SELECT_COMPETITION_DATA } from '@app/constants';
+import { CompetitionData } from '@app/models';
 
 @Component({
-  selector: 'futbet-header-league-select',
+  selector: 'futbet-league-select-mobile',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, MatButtonToggleModule, LogoComponent],
+  imports: [RouterModule, MatFormFieldModule, MatSelectModule],
   styles: `
-		:host {
-			@apply w-full self-end;
+    mat-form-field {
+      @apply w-[200px];
+    }
 
-      .mat-button-toggle ::ng-deep .mat-button-toggle-label-content {
-        @apply p-0;
-
-        &:not(.logo-toggle) {
-          @apply text-fb-font-size-body-2;
-        }
-      }
-		}
-
-		mat-button-toggle-group {
-			@apply w-full border-none rounded-none self-end;
-
-			.mat-button-toggle-appearance-standard + .mat-button-toggle-appearance-standard {
-    			border-left: none;
-			}
-		}
-
-		mat-button-toggle.mat-button-toggle {
-      --mat-standard-button-toggle-height: var(--fb-size-league-select-height);
-			border-bottom: 2px solid transparent;
-
-			&.mat-button-toggle-checked {
-				border-bottom-color: var(--fb-color-green-1);
-			}
-
-      &.logo-toggle {
-        --mat-standard-button-toggle-selected-state-background-color: transparent;
-        @apply mr-2 min-[600px]:mr-auto;
+    :host mat-form-field.mat-mdc-form-field-type-mat-select ::ng-deep {
+      .mat-mdc-floating-label mat-label {
+        @apply opacity-50;
       }
 
-			&:not(.logo-toggle) {
-        @apply bg-transparent self-end;
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
 
-        &:not(.mat-button-toggle-checked) {
-          --mat-standard-button-toggle-text-color: var(--fb-color-text-2);
+      .mat-mdc-select-arrow {
+        @apply opacity-50;
+      }
+
+      &.mat-focused .mat-mdc-select-arrow {
+        @apply opacity-50;
+      }
+
+      .mdc-text-field--filled .mdc-line-ripple::before {
+        border-bottom-width: 0;
+      }
+
+      .mdc-text-field--filled:not(.mdc-text-field--disabled)
+        .mdc-line-ripple::after {
+        border-bottom-color: var(--fb-color-green-1);
         }
-			}
-		}
+    }
 
-    a { @apply flex w-full h-full px-4 py-1; }
-	`,
+    :host mat-form-field.mat-mdc-form-field-type-mat-select.is-selected {
+      ::ng-deep .mdc-text-field--filled .mdc-line-ripple::before {
+        border-bottom-width: 2px;
+        --mdc-filled-text-field-active-indicator-color: var(--fb-color-green-1);
+      }
+    }
+
+    mat-option {
+      padding: 0;
+      --mat-option-label-text-size: 14px;
+
+      ::ng-deep .mdc-list-item__primary-text {
+        @apply w-full;
+      }
+    }
+
+    a { @apply flex w-full h-full px-4 py-3; }
+  `,
   template: `
-    <mat-button-toggle-group
-      hideSingleSelectionIndicator
-      [value]="selectedLeague()?.url ?? default"
-    >
-      <mat-button-toggle [value]="default" class="logo-toggle">
-        <a [routerLink]="['/']">
-          <futbet-logo />
-        </a>
-      </mat-button-toggle>
-      @if (!isMobile()) { @for (l of leagues; track l.label) {
-      <mat-button-toggle [value]="l.url">
-        <a [routerLink]="['leagues', l.url]">
-          {{ l.label }}
-        </a>
-      </mat-button-toggle>
-      } }
-    </mat-button-toggle-group>
+    <mat-form-field [class.is-selected]="!!selectedLeague()">
+      <mat-label>Liga</mat-label>
+      <mat-select
+        hideSingleSelectionIndicator
+        [value]="selectedLeague()?.url ?? null"
+        (selectionChange)="removeFocus($event)"
+      >
+        @for (group of groups; track group.label) {
+        <mat-optgroup [label]="group.label">
+          @for (c of group.competitions; track c.id) {
+          <mat-option [value]="c.url">
+            <a [routerLink]="['leagues', c.url]">{{ c.label }}</a>
+          </mat-option>
+          }
+        </mat-optgroup>
+        }
+      </mat-select>
+    </mat-form-field>
   `,
 })
 export class LeagueSelectComponent {
-  readonly leagues = COMPETITION_DATA;
-
-  private breakpoint = inject(BreakpointObserverService);
-
-  selectedLeague = input.required<SelectLeagueData | undefined>();
-  default = input.required<string>();
-
-  isMobile = computed<boolean>(() => this.breakpoint.isMobile());
+  groups = SELECT_COMPETITION_DATA;
+  selectedLeague = input.required<CompetitionData | undefined>();
+  removeFocus = (e: MatSelectChange) => e.source.close();
 }
