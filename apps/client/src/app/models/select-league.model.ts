@@ -1,9 +1,14 @@
-import { CompetitionLabel, CompetitionId, CompetitionUrl } from '@lib/models';
+import { CompetitionId, CompetitionLabel, CompetitionUrl } from '@lib/models';
 
-export interface SelectLeagueData {
+export type CompetitionData = {
   image: string;
   label: CompetitionLabel;
   id: CompetitionId;
   url: CompetitionUrl;
   size: number;
-}
+};
+
+export type SelectCompetitionGroup = {
+  label: string;
+  competitions: CompetitionData[];
+};

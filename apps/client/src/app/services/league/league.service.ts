@@ -1,17 +1,16 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-
-import { SelectLeagueData } from '@app/models';
+import { CompetitionData } from '@app/models';
 
 export abstract class LeagueService {
-  abstract selectedLeague: WritableSignal<SelectLeagueData | undefined>;
-  abstract setSelectedLeague(data: SelectLeagueData | undefined): void;
+  abstract selectedLeague: WritableSignal<CompetitionData | undefined>;
+  abstract setSelectedLeague(data: CompetitionData | undefined): void;
 }
 
 @Injectable()
 export class AbstractedLeagueService extends LeagueService {
-  selectedLeague = signal<SelectLeagueData | undefined>(undefined);
+  selectedLeague = signal<CompetitionData | undefined>(undefined);
 
-  setSelectedLeague(data: SelectLeagueData): void {
+  setSelectedLeague(data: CompetitionData): void {
     this.selectedLeague.set(data);
   }
 }

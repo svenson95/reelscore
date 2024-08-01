@@ -70,3 +70,7 @@ mat-button-toggle {
   border-radius: var(--fb-size-border-radius);
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
+
+.mat-mdc-optgroup-label {
+  @apply text-fb-font-size-small text-fb-color-text-2;
+}

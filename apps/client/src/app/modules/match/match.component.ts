@@ -4,9 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { ROUTE_SERVICE_PROVIDER } from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
-import { COMPETITION_DATA } from '../../constants';
 import { RouterView } from '../router-view';
 import {
   MatchDetailsAfterComponent,
@@ -97,7 +97,9 @@ export class MatchComponent extends RouterView {
   invalidUrlEffect = effect(() => {
     const fixture = this.fixture();
     const leagueUrl = this.leagueUrl();
-    const league = COMPETITION_DATA.find((c) => c.url === leagueUrl);
+    const league = SELECT_COMPETITION_DATA_FLAT.find(
+      (c) => c.url === leagueUrl
+    );
     if (!fixture || !league) return;
 
     const fixtureLeagueId = String(fixture.league.id);
@@ -108,7 +110,9 @@ export class MatchComponent extends RouterView {
   });
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
-    const validLeague = COMPETITION_DATA.find((c) => c.id === leagueId);
+    const validLeague = SELECT_COMPETITION_DATA_FLAT.find(
+      (c) => c.id === leagueId
+    );
     if (!validLeague) throw Error('League not found');
     this.router.navigate(['leagues', validLeague.url, 'match', fixtureId]);
   }
