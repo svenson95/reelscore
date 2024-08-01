@@ -7,7 +7,7 @@ export const getStanding = async (req, res, next) => {
 
   try {
     const docs = await Standings.find(query).sort({ _id: -1 });
-    next(docs[0]);
+    next(docs);
   } catch (error) {
     next({
       status: 'error happened',
@@ -17,10 +17,9 @@ export const getStanding = async (req, res, next) => {
 };
 
 export const getTopFiveStandings = async (req, res, next) => {
-  const season = 2023;
   const query = {
     'league.id': ['39', '78', '135', '140', '61'],
-    $and: [{ 'league.season': season }],
+    $and: [{ 'league.season': 2023 }], // TODO: getSeason(req.query.date) und bei selectedDay change fetch standings
   };
 
   try {
