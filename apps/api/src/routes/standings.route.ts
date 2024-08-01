@@ -6,7 +6,8 @@ export const standings = express.Router();
 
 standings.get('/get', async (req, res) => {
   await getStanding(req, res, (docs) => {
-    res.json(docs);
+    const result = docs.length > 0 ? docs[0] : null;
+    res.json(result);
   });
 });
 

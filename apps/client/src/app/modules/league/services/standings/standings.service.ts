@@ -6,7 +6,7 @@ import {
 } from '@angular/core/rxjs-interop';
 import { of, switchMap } from 'rxjs';
 
-import { LeagueService } from '@app/services';
+import { DateService, LeagueService } from '@app/services';
 import { StandingsDTO } from '@lib/models';
 import { HttpStandingsService } from './http.service';
 
@@ -19,6 +19,7 @@ export abstract class StandingsService {
 export class AbstractedStandingsService extends StandingsService {
   ls = inject(LeagueService);
   hss = inject(HttpStandingsService);
+  ds = inject(DateService);
   destroyRef = inject(DestroyRef);
 
   standing = toSignal<StandingsDTO | undefined>(
@@ -31,7 +32,7 @@ export class AbstractedStandingsService extends StandingsService {
   );
 
   topFiveStandings = toSignal<StandingsDTO[] | undefined>(
-    this.hss.getAllStandings()
+    this.hss.getAllStandings(this.ds.selectedDay())
   );
 }
 

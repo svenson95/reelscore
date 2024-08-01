@@ -17,12 +17,18 @@ import { TableComponent } from './components';
   imports: [MatProgressSpinnerModule, TableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
-  `,
+  `, // TODO refactor template
   template: `
-    @if (isLoadingStanding() || isLoadingTopFive()) {
+    @if (isLeagueSelected()) { @if (isLoadingStanding()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
-    } @else { @if(isLeagueSelected()) {
+    } @else if (standing() === null) {
+    <p class="no-data">Keine Tabelle gefunden.</p>
+    } @else {
     <futbet-standings-table [data]="standing()!" />
+    } } @else { @if (isLoadingTopFive()) {
+    <mat-spinner class="my-10 mx-auto" diameter="20" />
+    } @else if (topFiveStandings() === null) {
+    <p class="no-data">Keine Tabelle gefunden.</p>
     } @else { @for (singleTable of topFiveStandings(); track
     singleTable.league.id) {
     <futbet-standings-table [data]="singleTable" />
@@ -36,23 +42,24 @@ export class StandingsComponent {
   standing = this.ss.standing;
   topFiveStandings = this.ss.topFiveStandings;
 
+  isLeagueSelected = computed<boolean>(() => {
+    return this.ls.selectedLeague() !== undefined;
+  });
+
   isLoadingStanding = computed<boolean>(() => {
     const selectedLeague = this.ls.selectedLeague();
     const isLeagueSelected = selectedLeague !== undefined;
     if (!isLeagueSelected) return false;
 
-    const standing = this.standing();
-    const isSame = selectedLeague?.id === String(standing?.league.id);
-
-    return !standing || !isSame;
+    const data = this.standing();
+    return data === undefined;
   });
 
   isLoadingTopFive = computed<boolean>(() => {
     const selectedLeague = this.ls.selectedLeague();
     if (selectedLeague !== undefined) return false;
 
-    return this.topFiveStandings() === undefined;
+    const data = this.topFiveStandings();
+    return data === undefined;
   });
-
-  isLeagueSelected = computed<boolean>(() => this.standing() !== undefined);
 }
