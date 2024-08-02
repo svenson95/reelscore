@@ -76,6 +76,7 @@ button.mdc-button {
   @apply text-fb-font-size-small text-fb-color-text-2;
 }
 
-div.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
+mat-option-group.mat-mdc-optgroup
+  .mat-mdc-option:not(.mat-mdc-option-multiple) {
   padding-left: 0;
 }
