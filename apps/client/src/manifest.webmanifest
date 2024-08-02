@@ -1,8 +1,8 @@
 {
   "name": "reelscore",
   "short_name": "reelscore",
-  "theme_color": "#222",
-  "background_color": "#222",
+  "theme_color": "#444",
+  "background_color": "#444",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
