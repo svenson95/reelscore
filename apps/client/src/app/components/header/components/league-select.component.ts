@@ -6,7 +6,7 @@ import { SELECT_COMPETITION_DATA } from '@app/constants';
 import { CompetitionData } from '@app/models';
 
 @Component({
-  selector: 'reelscore-league-select-mobile',
+  selector: 'reelscore-league-select',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, MatFormFieldModule, MatSelectModule],
