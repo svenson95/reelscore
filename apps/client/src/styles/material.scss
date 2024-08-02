@@ -67,11 +67,6 @@ button.mdc-button {
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
 
-.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
-  background-color: #000;
-  opacity: 0.1;
-}
-
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
   border-radius: var(--fb-size-border-radius);
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
