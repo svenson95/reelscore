@@ -10,7 +10,7 @@ import {
 } from '../constants';
 import { CompetitionUrl } from '../models';
 
-import { LeagueComponent } from './league/league.component';
+import { LeagueComponent } from './start/start.component';
 
 describe('RouterView', () => {
   let fixture: ComponentFixture<LeagueComponent>;
