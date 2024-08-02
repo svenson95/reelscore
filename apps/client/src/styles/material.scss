@@ -80,3 +80,7 @@ button.mdc-button {
 .mat-mdc-optgroup-label {
   @apply text-fb-font-size-small text-fb-color-text-2;
 }
+
+.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
+  padding-left: 0;
+}
