@@ -20,7 +20,7 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
     <a mat-button [routerLink]="['/']">
       <reelscore-logo />
     </a>
-    <reelscore-league-select-mobile [selectedLeague]="selectedLeague()" />
+    <reelscore-league-select [selectedLeague]="selectedLeague()" />
   `,
 })
 export class HeaderComponent {
