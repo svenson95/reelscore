@@ -23,9 +23,9 @@ import { TableComponent } from './components';
     <mat-spinner class="my-10 mx-auto" diameter="20" />
     } @else if (standings() === null) {
     <p class="no-data">Keine Tabelle gefunden.</p>
-    } @else { @for (standings of standings(); track standings.league.id) {
-    <reelscore-standings-table [data]="standings" />
-    } }
+    } @else {
+    <reelscore-standings-table [data]="standings()!" />
+    }
   `,
 })
 export class StandingsComponent {
@@ -33,7 +33,7 @@ export class StandingsComponent {
   ss = inject(StandingsService);
   rs = inject(RouteService);
 
-  standings = this.ss.topFiveStandings;
+  standings = this.ss.standing;
 
   isLoading = computed<boolean>(() => this.standings() === null);
 }

@@ -17,22 +17,16 @@ import { TableComponent } from './components';
   imports: [MatProgressSpinnerModule, TableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
-  `, // TODO refactor template
+  `,
   template: `
-    @if (isLeagueSelected() === true) { @if (isLoadingStanding()) {
-    <mat-spinner class="my-10 mx-auto" diameter="20" />
-    } @else if (standing() === null) {
-    <p class="no-data">Keine Tabelle gefunden.</p>
-    } @else {
-    <reelscore-standings-table [data]="standing()!" />
-    } } @else { @if (isLoadingTopFive()) {
+    @if (isLoading()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
     } @else if (topFiveStandings() === null) {
-    <p class="no-data">Keine Tabelle gefunden.</p>
-    } @else { @for (singleTable of topFiveStandings(); track
-    singleTable.league.id) {
-    <reelscore-standings-table [data]="singleTable" />
-    } } }
+    <p class="no-data">Keine Tabellen gefunden.</p>
+    } @else { @for (standings of topFiveStandings(); track standings.league.id)
+    {
+    <reelscore-standings-table [data]="standings" />
+    } }
   `,
 })
 export class StandingsComponent {
@@ -40,27 +34,7 @@ export class StandingsComponent {
   ss = inject(StandingsService);
   rs = inject(RouteService);
 
-  isLeagueSelected = computed<boolean | undefined>(() => {
-    return this.rs.url()?.startsWith('/league') ?? undefined;
-  });
-
-  standing = this.ss.standing;
   topFiveStandings = this.ss.topFiveStandings;
 
-  isLoadingStanding = computed<boolean>(() => {
-    const selectedLeague = this.ls.selectedLeague();
-    const isLeagueSelected = selectedLeague !== undefined;
-    if (!isLeagueSelected) return false;
-
-    const data = this.standing();
-    return data === undefined;
-  });
-
-  isLoadingTopFive = computed<boolean>(() => {
-    const selectedLeague = this.ls.selectedLeague();
-    if (selectedLeague !== undefined) return false;
-
-    const data = this.topFiveStandings();
-    return data === undefined;
-  });
+  isLoading = computed<boolean>(() => this.topFiveStandings() === null);
 }
