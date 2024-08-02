@@ -22,28 +22,45 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         size: 40,
       },
       {
-        image: 'https://media-3.api-sports.io/flags/eu.svg',
-        label: COMPETITION_LABEL.EUROPA_UEFA_SUPER_CUP,
-        id: COMPETITION_ID.EUROPA_UEFA_SUPER_CUP,
-        url: COMPETITION_URL.EUROPA_UEFA_SUPER_CUP,
-        size: 2,
-      },
-    ],
-  },
-  {
-    label: 'International',
-    competitions: [],
-  },
-  {
-    label: 'Deutschland',
-    competitions: [
-      {
         image: 'https://media-3.api-sports.io/flags/de.svg',
         label: COMPETITION_LABEL.GERMANY_BUNDESLIGA,
         id: COMPETITION_ID.GERMANY_BUNDESLIGA,
         url: COMPETITION_URL.GERMANY_BUNDESLIGA,
         size: 18,
       },
+      {
+        image: 'https://media-3.api-sports.io/flags/gb.svg',
+        label: COMPETITION_LABEL.ENGLAND_PREMIER_LEAGUE,
+        id: COMPETITION_ID.ENGLAND_PREMIER_LEAGUE,
+        url: COMPETITION_URL.ENGLAND_PREMIER_LEAGUE,
+        size: 20,
+      },
+      {
+        image: 'https://media-3.api-sports.io/flags/es.svg',
+        label: COMPETITION_LABEL.SPAIN_LA_LIGA,
+        id: COMPETITION_ID.SPAIN_LA_LIGA,
+        url: COMPETITION_URL.SPAIN_LA_LIGA,
+        size: 20,
+      },
+      {
+        image: 'https://media-3.api-sports.io/flags/it.svg',
+        label: COMPETITION_LABEL.ITALY_SERIE_A,
+        id: COMPETITION_ID.ITALY_SERIE_A,
+        url: COMPETITION_URL.ITALY_SERIE_A,
+        size: 20,
+      },
+      {
+        image: 'https://media-3.api-sports.io/flags/fr.svg',
+        label: COMPETITION_LABEL.FRANCE_LIGUE_1,
+        id: COMPETITION_ID.FRANCE_LIGUE_1,
+        url: COMPETITION_URL.FRANCE_LIGUE_1,
+        size: 18,
+      },
+    ],
+  },
+  {
+    label: 'Deutschland',
+    competitions: [
       {
         image: 'https://media-3.api-sports.io/flags/de.svg',
         label: COMPETITION_LABEL.GERMANY_BUNDESLIGA_2,
@@ -70,13 +87,6 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'England',
     competitions: [
-      {
-        image: 'https://media-3.api-sports.io/flags/gb.svg',
-        label: COMPETITION_LABEL.ENGLAND_PREMIER_LEAGUE,
-        id: COMPETITION_ID.ENGLAND_PREMIER_LEAGUE,
-        url: COMPETITION_URL.ENGLAND_PREMIER_LEAGUE,
-        size: 20,
-      },
       {
         image: 'https://media-3.api-sports.io/flags/gb.svg',
         label: COMPETITION_LABEL.ENGLAND_LEAGUE_CUP,
@@ -126,13 +136,6 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
     competitions: [
       {
         image: 'https://media-3.api-sports.io/flags/es.svg',
-        label: COMPETITION_LABEL.SPAIN_LA_LIGA,
-        id: COMPETITION_ID.SPAIN_LA_LIGA,
-        url: COMPETITION_URL.SPAIN_LA_LIGA,
-        size: 20,
-      },
-      {
-        image: 'https://media-3.api-sports.io/flags/es.svg',
         label: COMPETITION_LABEL.SPAIN_SUPER_CUP,
         id: COMPETITION_ID.SPAIN_SUPER_CUP,
         url: COMPETITION_URL.SPAIN_SUPER_CUP,
@@ -152,13 +155,6 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
     competitions: [
       {
         image: 'https://media-3.api-sports.io/flags/it.svg',
-        label: COMPETITION_LABEL.ITALY_SERIE_A,
-        id: COMPETITION_ID.ITALY_SERIE_A,
-        url: COMPETITION_URL.ITALY_SERIE_A,
-        size: 20,
-      },
-      {
-        image: 'https://media-3.api-sports.io/flags/it.svg',
         label: COMPETITION_LABEL.ITALY_SUPER_CUP,
         id: COMPETITION_ID.ITALY_SUPER_CUP,
         url: COMPETITION_URL.ITALY_SUPER_CUP,
@@ -176,13 +172,6 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'Frankreich',
     competitions: [
-      {
-        image: 'https://media-3.api-sports.io/flags/fr.svg',
-        label: COMPETITION_LABEL.FRANCE_LIGUE_1,
-        id: COMPETITION_ID.FRANCE_LIGUE_1,
-        url: COMPETITION_URL.FRANCE_LIGUE_1,
-        size: 18,
-      },
       // {
       //   image: 'https://media-3.api-sports.io/flags/fr.svg',
       //   label: COMPETITION_LABEL.FRANCE_COUPE_DE_LA_LIGUE,
@@ -205,6 +194,22 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         size: 2,
       },
     ],
+  },
+  {
+    label: 'Andere',
+    competitions: [
+      {
+        image: 'https://media-3.api-sports.io/flags/eu.svg',
+        label: COMPETITION_LABEL.EUROPA_UEFA_SUPER_CUP,
+        id: COMPETITION_ID.EUROPA_UEFA_SUPER_CUP,
+        url: COMPETITION_URL.EUROPA_UEFA_SUPER_CUP,
+        size: 2,
+      },
+    ],
+  },
+  {
+    label: 'International',
+    competitions: [],
   },
 ];
 export const SELECT_COMPETITION_DATA_FLAT = SELECT_COMPETITION_DATA.flatMap(
