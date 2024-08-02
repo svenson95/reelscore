@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 
 import { DateString, toIsoString } from '../../models';
-import { DateService, LeagueService } from '../../services';
+import { DateService } from '../../services';
 
 @Component({
   selector: 'futbet-back-button',
@@ -39,14 +39,11 @@ import { DateService, LeagueService } from '../../services';
 export class BackButtonComponent {
   router = inject(Router);
   ds = inject(DateService);
-  ls = inject(LeagueService);
   date = input.required<string>();
 
   navigateBack(): void {
-    const league = this.ls.selectedLeague();
-    if (!league) return;
     this.setSelectedDate(this.date());
-    this.router.navigate(['leagues', league.url]);
+    this.router.navigate(['']);
   }
 
   setSelectedDate(date: DateString): void {
