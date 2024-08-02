@@ -70,10 +70,12 @@ import { CompetitionFixtures } from '../../../../models';
           <section class="time">
             <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
           </section>
+          @if (item.score.fulltime.home !== null) {
           <section class="result">
             <span>{{ item.score.fulltime.home }}</span>
             <span>{{ item.score.fulltime.away }}</span>
           </section>
+          }
           <section class="teams">
             <div>
               <futbet-optimized-image
