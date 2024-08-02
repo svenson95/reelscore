@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:4200', 'https://futbet.vercel.app'],
+    origin: ['http://localhost:4200', 'https://reelscore.vercel.app'],
   })
 );
 app.use(helmet());
