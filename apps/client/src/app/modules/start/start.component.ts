@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 
 import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
-
-import { StandingsComponent } from '../start/components';
-import { SERVICE_PROVIDERS } from '../start/services';
+import {
+  DateBarComponent,
+  MatchDayComponent,
+  StandingsComponent,
+} from './components';
+import { SERVICE_PROVIDERS } from './services';
 
 @Component({
   selector: 'reelscore-league',
   standalone: true,
-  imports: [StandingsComponent],
+  imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
   providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
@@ -24,6 +27,13 @@ import { SERVICE_PROVIDERS } from '../start/services';
       }
     }
   `,
-  template: ` league works ... `,
+  template: `
+    <reelscore-date-bar />
+
+    <section>
+      <reelscore-match-day />
+      <reelscore-standings />
+    </section>
+  `,
 })
-export class LeagueComponent extends RouterView {}
+export class StartComponent extends RouterView {}
