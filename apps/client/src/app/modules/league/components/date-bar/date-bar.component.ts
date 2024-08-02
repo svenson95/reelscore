@@ -10,7 +10,7 @@ import {
 } from './components';
 
 @Component({
-  selector: 'futbet-date-bar',
+  selector: 'reelscore-date-bar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -34,15 +34,15 @@ import {
   template: `
     <section>
       <div class="top">
-        <futbet-date-picker
+        <reelscore-date-picker
           [selectedDay]="selectedDay()"
           (dateSelected)="selectedDay.set($event)"
         />
 
         @if (isMobile()) {
         <div class="week-and-time">
-          <futbet-calender-week-label [week]="calenderWeek()" />
-          <futbet-today-button
+          <reelscore-calender-week-label [week]="calenderWeek()" />
+          <reelscore-today-button
             [isToday]="isToday()"
             (onClick)="selectedDay.set($event)"
           />
@@ -50,19 +50,19 @@ import {
         }
       </div>
 
-      <futbet-week-toogle-group
+      <reelscore-week-toogle-group
         [weekdays]="weekdays()"
         [selectedDay]="selectedDay()"
         (dateSelected)="selectedDay.set($event)"
       />
 
       @if (!isMobile()) {
-      <futbet-calender-week-label [week]="calenderWeek()" />
+      <reelscore-calender-week-label [week]="calenderWeek()" />
       }
     </section>
 
     @if (!isMobile()) {
-    <futbet-today-button
+    <reelscore-today-button
       [isToday]="isToday()"
       (onClick)="selectedDay.set($event)"
     />

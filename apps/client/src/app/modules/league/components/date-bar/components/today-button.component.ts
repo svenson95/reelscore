@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DateString, TODAY_ISO_STRING } from '@app/models';
 
 @Component({
-  selector: 'futbet-today-button',
+  selector: 'reelscore-today-button',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],

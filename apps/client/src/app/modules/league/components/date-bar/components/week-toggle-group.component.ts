@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/models';
 
 @Component({
-  selector: 'futbet-week-toogle-group',
+  selector: 'reelscore-week-toogle-group',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, MatButtonToggleModule, MatIconModule, MatTooltipModule],

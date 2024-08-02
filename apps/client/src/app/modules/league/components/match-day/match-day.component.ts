@@ -13,14 +13,14 @@ import { FixturesService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({
-  selector: 'futbet-match-day',
+  selector: 'reelscore-match-day',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent, MatProgressSpinnerModule],
   styles: `
     :host { @apply flex flex-col; }
 
-    futbet-match-day-list:not(:last-child) {
+    reelscore-match-day-list:not(:last-child) {
         @apply flex flex-col mb-5;
     }
   `,
@@ -28,7 +28,7 @@ import { MatchDayListComponent } from './components';
     @if (isLoading()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
     } @else { @for (competition of competitions(); track competition.name) {
-    <futbet-match-day-list [competition]="competition" />
+    <reelscore-match-day-list [competition]="competition" />
     } @empty {
     <p class="no-data">Es finden keine Spiele statt.</p>
     } }

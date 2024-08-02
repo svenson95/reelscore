@@ -12,7 +12,7 @@ import { FixtureService } from '../../../../../services';
 import { MatchEventComponent } from './components';
 
 @Component({
-  selector: 'futbet-match-events',
+  selector: 'reelscore-match-events',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent],
@@ -39,7 +39,7 @@ import { MatchEventComponent } from './components';
       <div class="event-row">
         <div class="team home">
           @if (event.team.id === homeId) {
-          <futbet-match-event [event]="event" [homeTeamId]="homeId" />
+          <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
           <span class="time">{{ timeTotal(event) }}'</span>
           }
@@ -73,7 +73,7 @@ import { MatchEventComponent } from './components';
 
         <div class="team away">
           @if (event.team.id === awayId) {
-          <futbet-match-event [event]="event" [homeTeamId]="homeId" />
+          <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
           <span class="time">{{ timeTotal(event) }}'</span>
           }

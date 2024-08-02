@@ -13,7 +13,7 @@ import { BreakpointObserverService } from '@app/services';
 import { FixtureDTO, logoFromAssets } from '@lib/models';
 
 @Component({
-  selector: 'futbet-match-header',
+  selector: 'reelscore-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, DatePipe, TeamNamePipe],
@@ -28,7 +28,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
   `,
   template: `
     <div class="team-column">
-      <futbet-optimized-image
+      <reelscore-optimized-image
         [source]="logoFromAssets(data().teams.home.id)"
         alternate="home logo"
         width="36"
@@ -52,7 +52,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
     </div>
 
     <div class="team-column">
-      <futbet-optimized-image
+      <reelscore-optimized-image
         [source]="logoFromAssets(data().teams.away.id)"
         alternate="away logo"
         width="36"

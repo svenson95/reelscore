@@ -25,12 +25,12 @@ describe('HeaderComponent', () => {
   });
 
   /* DOM Tests */
-  it(`should display 'futbet' logo`, () => {
+  it(`should display 'reelscore' logo`, () => {
     // given
     const debugElement = fixture.debugElement;
 
     // when
-    const logo = debugElement.query(By.css('futbet-logo'));
+    const logo = debugElement.query(By.css('reelscore-logo'));
 
     // then
     expect(logo).toBeTruthy();

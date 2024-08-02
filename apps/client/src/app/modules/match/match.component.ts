@@ -16,7 +16,7 @@ import {
 import { FixtureService, SERVICE_PROVIDERS } from './services';
 
 @Component({
-  selector: 'futbet-match',
+  selector: 'reelscore-match',
   standalone: true,
   imports: [
     DatePipe,
@@ -52,7 +52,7 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
     @if (fixture(); as match) {
     <section class="header">
       <div>
-        <futbet-back-button [date]="match.fixture.date" />
+        <reelscore-back-button [date]="match.fixture.date" />
 
         <div class="dates">
           <button mat-stroked-button disabled>
@@ -66,17 +66,17 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
     </section>
 
     <section class="match-header">
-      <futbet-match-header [data]="match" />
+      <reelscore-match-header [data]="match" />
     </section>
 
     <section class="data">
       @switch(isUpcoming()) { @case(true) {
-      <!-- <futbet-match-details-before /> -->
+      <!-- <reelscore-match-details-before /> -->
       } @case(false) { @if (fixture(); as f) {
-      <futbet-match-details-after [fixture]="f" />
+      <reelscore-match-details-after [fixture]="f" />
       } }}
 
-      <futbet-match-details-base [data]="match" />
+      <reelscore-match-details-base [data]="match" />
     </section>
     }
   `,

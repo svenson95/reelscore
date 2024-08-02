@@ -11,22 +11,27 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$futbet-primary: mat.m2-define-palette(mat.$m2-green-palette, 800, 300, 900);
-$futbet-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$reelscore-primary: mat.m2-define-palette(mat.$m2-green-palette, 800, 300, 900);
+$reelscore-accent: mat.m2-define-palette(
+  mat.$m2-pink-palette,
+  A200,
+  A100,
+  A400
+);
 
 // The warn palette is optional (defaults to red).
-$futbet-warn: mat.m2-define-palette(mat.$m2-red-palette);
+$reelscore-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 $my-typography: mat.m2-define-typography-config();
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$futbet-theme: mat.m2-define-light-theme(
+$reelscore-theme: mat.m2-define-light-theme(
   (
     color: (
-      primary: $futbet-primary,
-      accent: $futbet-accent,
-      warn: $futbet-warn,
+      primary: $reelscore-primary,
+      accent: $reelscore-accent,
+      warn: $reelscore-warn,
     ),
     typography: $my-typography,
   )
@@ -35,7 +40,7 @@ $futbet-theme: mat.m2-define-light-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($futbet-theme);
+@include mat.all-component-themes($reelscore-theme);
 
 :root {
   --mat-ripple-color: var(--fb-color-green-1-bg-light);

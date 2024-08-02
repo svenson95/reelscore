@@ -16,7 +16,7 @@ import { COMPETITION_URL, SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
-  selector: 'futbet-match-day-list',
+  selector: 'reelscore-match-day-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -51,7 +51,7 @@ import { CompetitionFixtures } from '../../../../models';
   `,
   template: `
     <div class="header">
-      <futbet-optimized-image
+      <reelscore-optimized-image
         [source]="
           'assets/images/country/' +
           competition().fixtures[0].league.id +
@@ -78,7 +78,7 @@ import { CompetitionFixtures } from '../../../../models';
           }
           <section class="teams">
             <div>
-              <futbet-optimized-image
+              <reelscore-optimized-image
                 [source]="logoFromAssets(item.teams.home.id)"
                 alternate="home logo"
                 width="12"
@@ -87,7 +87,7 @@ import { CompetitionFixtures } from '../../../../models';
               <span>{{ item.teams.home.name | teamName }}</span>
             </div>
             <div>
-              <futbet-optimized-image
+              <reelscore-optimized-image
                 [source]="logoFromAssets(item.teams.away.id)"
                 alternate="away logo"
                 width="12"

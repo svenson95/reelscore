@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { EvaluationsService } from '../../../../../services';
 
 @Component({
-  selector: 'futbet-match-evaluations',
+  selector: 'reelscore-match-evaluations',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],

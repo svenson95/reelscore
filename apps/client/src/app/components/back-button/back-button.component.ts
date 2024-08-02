@@ -13,7 +13,7 @@ import { DateString, toIsoString } from '../../models';
 import { DateService } from '../../services';
 
 @Component({
-  selector: 'futbet-back-button',
+  selector: 'reelscore-back-button',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, MatIconModule, DatePipe],

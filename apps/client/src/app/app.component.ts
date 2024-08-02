@@ -14,7 +14,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent } from './components';
 
 @Component({
-  selector: 'futbet-root',
+  selector: 'reelscore-root',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
