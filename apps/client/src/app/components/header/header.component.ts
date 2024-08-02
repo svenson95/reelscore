@@ -14,7 +14,7 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply flex justify-between p-fb-padding-3 pb-0 border-b-[1px]; }
+    :host { @apply flex items-center justify-between py-fb-padding-1 px-fb-padding-3 border-b-[1px]; }
   `,
   template: `
     <a mat-button [routerLink]="['/']">

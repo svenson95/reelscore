@@ -9,8 +9,6 @@ import { OptimizedImageComponent } from '../optimized-image/optimized-image.comp
   imports: [OptimizedImageComponent],
   styles: `
     :host { @apply select-none; }
-    :host > * { @apply align-middle; }
-    reelscore-optimized-image { @apply inline-flex mx-1; }
   `,
   template: `
     <span class="font-bold">reel</span>
