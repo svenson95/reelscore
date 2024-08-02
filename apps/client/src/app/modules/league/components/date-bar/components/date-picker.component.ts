@@ -66,11 +66,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     }
   `,
   template: `
-    <button
-      mat-stroked-button
-      matTooltip="Datum auswählen"
-      (click)="picker.open()"
-    >
+    <button mat-button matTooltip="Datum auswählen" (click)="picker.open()">
       {{ selectedDay() | date : 'dd.MM.YY' }}
     </button>
     <mat-form-field>

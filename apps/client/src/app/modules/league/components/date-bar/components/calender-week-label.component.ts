@@ -14,7 +14,7 @@ import { CalenderWeek } from '@app/models';
       @apply fb-as-label; 
     }
   `,
-  template: ` <button mat-stroked-button disabled>KW {{ week() }}</button> `,
+  template: ` <button mat-button disabled>KW {{ week() }}</button> `,
 })
 export class CalenderWeekLabelComponent {
   week = input.required<CalenderWeek>();

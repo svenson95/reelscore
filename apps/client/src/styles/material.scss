@@ -43,23 +43,29 @@ $reelscore-theme: mat.m2-define-light-theme(
 @include mat.all-component-themes($reelscore-theme);
 
 :root {
-  --mat-ripple-color: var(--fb-color-green-1-bg-light);
+  --mat-select-enabled-trigger-text-color: var(--fb-color-white);
+  --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
+  --mdc-text-button-disabled-label-text-color: var(--fb-color-text-2);
+  --mat-select-enabled-arrow-color: var(--fb-color-text-2);
+  --mat-select-disabled-arrow-color: var(--fb-color-text-1);
+  --mdc-filled-text-field-hover-label-text-color: var(--fb-color-white);
+  --mdc-filled-text-field-focus-label-text-color: var(--fb-color-white);
   --mat-standard-button-toggle-shape: var(--fb-size-border-radius);
   --mdc-outlined-button-container-shape: var(--fb-size-border-radius);
-  --mat-outlined-button-ripple-color: var(--fb-color-green-1-light);
-  --mat-outlined-button-state-layer-color: var(--fb-color-green-1);
   --mat-outlined-button-pressed-state-layer-opacity: 0;
   --mat-outlined-button-hover-state-layer-opacity: 0;
   --mat-outlined-button-focus-state-layer-opacity: 0;
   --mdc-filled-text-field-container-color: transparent;
-  --mat-form-field-state-layer-color: var(--fb-color-green-1);
   --mat-datepicker-calendar-container-shape: var(--fb-size-border-radius);
+  --mdc-text-button-container-shape: var(--fb-size-border-radius);
   --mat-datepicker-calendar-container-elevation-shadow: none;
   --mat-select-container-elevation-shadow: none;
+  --mat-text-button-horizontal-padding: 14px;
+  --mat-text-button-with-icon-horizontal-padding: 14px;
 }
 
-mat-button-toggle {
-  --mat-standard-button-toggle-state-layer-color: var(--fb-color-green-1);
+button.mdc-button {
+  @apply bg-white;
 }
 
 .mat-datepicker-content {
