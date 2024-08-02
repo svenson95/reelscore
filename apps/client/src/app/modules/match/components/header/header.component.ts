@@ -19,8 +19,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
   imports: [OptimizedImageComponent, DatePipe, TeamNamePipe],
   styles: `
     :host { 
-      @apply flex mx-auto py-5 px-4 rounded-fb w-full max-w-fb-max-width;
-      background-color: var(--fb-color-white);
+      @apply flex mx-auto py-5 px-4 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
     }
     div { @apply flex flex-1 text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
     .team-column { @apply flex-col gap-2; }
