@@ -1,3 +1,4 @@
+import { getSeason } from '../middleware';
 import { Standings } from '../models';
 
 export const getStanding = async (req, res, next) => {
@@ -19,7 +20,7 @@ export const getStanding = async (req, res, next) => {
 export const getTopFiveStandings = async (req, res, next) => {
   const query = {
     'league.id': ['39', '78', '135', '140', '61'],
-    $and: [{ 'league.season': 2023 }], // TODO: getSeason(req.query.date) und bei selectedDay change fetch standings
+    $and: [{ 'league.season': getSeason(req.query.date) }],
   };
 
   try {
