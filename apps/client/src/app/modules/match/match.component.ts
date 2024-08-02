@@ -39,12 +39,13 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
       padding-top: 1.25rem;
       position: sticky;
       top: 0;
-      background: var(--fb-color-green-black);
+      background: var(--fb-color-bg-black);
       z-index: 100;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
       --mdc-outlined-button-container-height: 40px;
+      --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
       @apply fb-as-label; 
     }
   `,

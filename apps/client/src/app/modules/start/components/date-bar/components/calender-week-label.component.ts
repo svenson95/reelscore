@@ -10,6 +10,7 @@ import { CalenderWeek } from '@app/models';
   imports: [MatButtonModule],
   styles: `
     button { 
+      --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
       --mdc-outlined-button-container-height: 40px;
       @apply fb-as-label; 
     }
