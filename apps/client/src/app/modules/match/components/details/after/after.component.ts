@@ -13,7 +13,7 @@ import {
 import { MatchEventsComponent, MatchStatisticsComponent } from './components';
 
 @Component({
-  selector: 'futbet-match-details-after',
+  selector: 'reelscore-match-details-after',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchStatisticsComponent, MatchEventsComponent],
@@ -22,12 +22,12 @@ import { MatchEventsComponent, MatchStatisticsComponent } from './components';
   `,
   template: `
     @if(events(); as events) { @if (events !== undefined) {
-    <futbet-match-events [data]="events" />
+    <reelscore-match-events [data]="events" />
     } } @if (statistics(); as s) { @if (s !== undefined) {
-    <futbet-match-statistics [data]="s.response" />
+    <reelscore-match-statistics [data]="s.response" />
     } }
 
-    <!-- <futbet-match-lineups /> -->
+    <!-- <reelscore-match-lineups /> -->
   `,
 })
 export class MatchDetailsAfterComponent {

@@ -14,12 +14,12 @@ describe('FooterComponent', () => {
     fixture.detectChanges();
   });
 
-  it(`should display 'futbet' logo`, () => {
+  it(`should display 'reelscore' logo`, () => {
     // Arrange
     const nativeElement = fixture.debugElement.nativeElement;
 
     // Act
-    const logo = nativeElement.querySelector('futbet-logo');
+    const logo = nativeElement.querySelector('reelscore-logo');
 
     // Assert
     expect(logo).toBeTruthy();

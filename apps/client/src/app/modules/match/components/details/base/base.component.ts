@@ -8,7 +8,7 @@ import {
 } from './components';
 
 @Component({
-  selector: 'futbet-match-details-base',
+  selector: 'reelscore-match-details-base',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -24,9 +24,9 @@ import {
     .fixture-data span { @apply text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
   `,
   template: `
-    <futbet-match-fixture-data [data]="data()" />
-    <futbet-match-evaluations />
-    <futbet-match-latest-fixtures />
+    <reelscore-match-fixture-data [data]="data()" />
+    <reelscore-match-evaluations />
+    <reelscore-match-latest-fixtures />
   `,
 })
 export class MatchDetailsBaseComponent {

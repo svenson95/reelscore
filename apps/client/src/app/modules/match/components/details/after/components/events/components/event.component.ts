@@ -14,7 +14,7 @@ import {
 } from './types';
 
 @Component({
-  selector: 'futbet-match-event',
+  selector: 'reelscore-match-event',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -30,13 +30,13 @@ import {
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
-    <futbet-event-goal [event]="event" />
+    <reelscore-event-goal [event]="event" />
     } @case("subst") {
-    <futbet-event-subst [event]="event" />
+    <reelscore-event-subst [event]="event" />
     } @case("Card") {
-    <futbet-event-card [event]="event" />
+    <reelscore-event-card [event]="event" />
     } @case("Var") {
-    <futbet-event-var [event]="event" />
+    <reelscore-event-var [event]="event" />
     }} }
   `,
 })

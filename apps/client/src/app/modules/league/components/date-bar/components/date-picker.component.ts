@@ -32,7 +32,7 @@ class CustomDateAdapter extends NativeDateAdapter {
 }
 
 @Component({
-  selector: 'futbet-date-picker',
+  selector: 'reelscore-date-picker',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

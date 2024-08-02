@@ -11,7 +11,7 @@ import { StandingsService } from '../../services';
 import { TableComponent } from './components';
 
 @Component({
-  selector: 'futbet-standings',
+  selector: 'reelscore-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressSpinnerModule, TableComponent],
@@ -24,14 +24,14 @@ import { TableComponent } from './components';
     } @else if (standing() === null) {
     <p class="no-data">Keine Tabelle gefunden.</p>
     } @else {
-    <futbet-standings-table [data]="standing()!" />
+    <reelscore-standings-table [data]="standing()!" />
     } } @else { @if (isLoadingTopFive()) {
     <mat-spinner class="my-10 mx-auto" diameter="20" />
     } @else if (topFiveStandings() === null) {
     <p class="no-data">Keine Tabelle gefunden.</p>
     } @else { @for (singleTable of topFiveStandings(); track
     singleTable.league.id) {
-    <futbet-standings-table [data]="singleTable" />
+    <reelscore-standings-table [data]="singleTable" />
     } } }
   `,
 })

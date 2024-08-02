@@ -13,7 +13,7 @@ import { BreakpointObserverService } from '@app/services';
 import { StandingsDTO, logoFromAssets } from '@lib/models';
 
 @Component({
-  selector: 'futbet-standings-table',
+  selector: 'reelscore-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatTableModule, OptimizedImageComponent, TeamNamePipe],
@@ -62,7 +62,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
     <table mat-table [dataSource]="data().league.standings![0]">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>
-          <futbet-optimized-image
+          <reelscore-optimized-image
             [source]="'assets/images/league/' + data().league.id + '.png'"
             alternate="league logo"
             width="24"
@@ -78,7 +78,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
-            <futbet-optimized-image
+            <reelscore-optimized-image
               [source]="logoFromAssets(element.team.id)"
               alternate="team logo"
               width="12"

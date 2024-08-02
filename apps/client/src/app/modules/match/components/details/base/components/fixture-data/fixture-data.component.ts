@@ -8,7 +8,7 @@ import {
 import { FixtureDTO } from '@lib/models';
 
 @Component({
-  selector: 'futbet-match-fixture-data',
+  selector: 'reelscore-match-fixture-data',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],

@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CalenderWeek } from '@app/models';
 
 @Component({
-  selector: 'futbet-calender-week-label',
+  selector: 'reelscore-calender-week-label',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],

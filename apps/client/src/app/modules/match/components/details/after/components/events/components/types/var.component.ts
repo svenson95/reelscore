@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { EventDTO } from '@lib/models';
 
 @Component({
-  selector: 'futbet-event-var',
+  selector: 'reelscore-event-var',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],

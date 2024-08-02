@@ -25,7 +25,7 @@ export class IsWinnerPipe implements PipeTransform {
 }
 
 @Component({
-  selector: 'futbet-match-fixtures-table',
+  selector: 'reelscore-match-fixtures-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

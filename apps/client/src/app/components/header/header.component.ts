@@ -18,9 +18,9 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   `,
   template: `
     <a mat-button [routerLink]="['/']">
-      <futbet-logo />
+      <reelscore-logo />
     </a>
-    <futbet-league-select-mobile [selectedLeague]="selectedLeague()" />
+    <reelscore-league-select-mobile [selectedLeague]="selectedLeague()" />
   `,
 })
 export class HeaderComponent {

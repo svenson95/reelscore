@@ -13,7 +13,7 @@
           "warn",
           {
             "type": "attribute",
-            "prefix": "futbet",
+            "prefix": "reelscore",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "warn",
           {
             "type": "element",
-            "prefix": "futbet",
+            "prefix": "reelscore",
             "style": "kebab-case"
           }
         ]
