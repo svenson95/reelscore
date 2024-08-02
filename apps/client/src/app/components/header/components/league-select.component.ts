@@ -54,7 +54,7 @@ import { CompetitionData } from '@app/models';
   `,
   template: `
     <mat-form-field [class.is-selected]="!!selectedLeague()">
-      <mat-label>Liga</mat-label>
+      <mat-label>Wettbewerb</mat-label>
       <mat-select
         hideSingleSelectionIndicator
         panelClass="leagueSelectMenu"
