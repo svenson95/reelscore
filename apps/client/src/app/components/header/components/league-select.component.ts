@@ -11,11 +11,7 @@ import { CompetitionData } from '@app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, MatFormFieldModule, MatSelectModule],
   styles: `
-    mat-form-field {
-      @apply w-[200px];
-    }
-
-    :host mat-form-field.mat-mdc-form-field-type-mat-select ::ng-deep {
+    :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
       .mat-mdc-floating-label mat-label {
         @apply opacity-50;
       }
@@ -35,18 +31,14 @@ import { CompetitionData } from '@app/models';
       .mdc-text-field--filled .mdc-line-ripple::before {
         border-bottom-width: 0;
       }
-
-      .mdc-text-field--filled:not(.mdc-text-field--disabled)
-        .mdc-line-ripple::after {
-        border-bottom-color: var(--fb-color-green-1);
-        }
     }
 
-    :host mat-form-field.mat-mdc-form-field-type-mat-select.is-selected {
-      ::ng-deep .mdc-text-field--filled .mdc-line-ripple::before {
-        border-bottom-width: 2px;
-        --mdc-filled-text-field-active-indicator-color: var(--fb-color-green-1);
-      }
+    ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
+      max-height: 70vh;
+    }
+
+    mat-form-field {
+      @apply w-[200px];
     }
 
     mat-option {
@@ -65,6 +57,7 @@ import { CompetitionData } from '@app/models';
       <mat-label>Liga</mat-label>
       <mat-select
         hideSingleSelectionIndicator
+        panelClass="leagueSelectMenu"
         [value]="selectedLeague()?.url ?? null"
         (selectionChange)="removeFocus($event)"
       >
