@@ -13,10 +13,11 @@ export class RouterView {
     { allowSignalWrites: true }
   );
 
-  updateLeague(url: CompetitionUrl): void {
-    const league = SELECT_COMPETITION_DATA_FLAT.find((l) =>
-      url.includes(l.url)
-    );
+  updateLeague(route: CompetitionUrl): void {
+    const league = SELECT_COMPETITION_DATA_FLAT.find((l) => {
+      const url = route.substring(0, route.indexOf('/'));
+      return url === l.url;
+    });
     this.leagueService.setSelectedLeague(league);
   }
 }
