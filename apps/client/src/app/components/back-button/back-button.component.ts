@@ -28,7 +28,7 @@ import { DateService } from '../../services';
     mat-icon { @apply text-[20px] w-[16px] h-[20px]; }
   `,
   template: `
-    <button mat-stroked-button extended (click)="navigateBack()">
+    <button mat-button extended (click)="navigateBack()">
       <div>
         <span>{{ date() | date : 'dd.MM.yy' }}</span>
         <mat-icon>chevron_left</mat-icon>

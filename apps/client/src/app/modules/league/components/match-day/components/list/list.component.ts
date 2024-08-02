@@ -36,7 +36,7 @@ import { CompetitionFixtures } from '../../../../models';
     .header span { @apply text-fb-font-size-body-1; }
     ul { @apply w-full text-fb-font-size-body-2; }
     li { @apply bg-white; }
-    li > a { @apply flex items-center sm:hover:bg-fb-color-green-1-light; }
+    li > a { @apply flex items-center; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
     .time { @apply justify-center min-w-[55px] py-[20px]; }

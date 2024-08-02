@@ -18,7 +18,7 @@ import { DateString, TODAY_ISO_STRING } from '@app/models';
     button:disabled { @apply fb-as-label; }
   `,
   template: `
-    <button mat-stroked-button (click)="setToday()" [disabled]="isToday()">
+    <button mat-button (click)="setToday()" [disabled]="isToday()">
       Heute
     </button>
   `,

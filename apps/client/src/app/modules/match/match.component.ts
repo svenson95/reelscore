@@ -39,7 +39,7 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
       padding-top: 1.25rem;
       position: sticky;
       top: 0;
-      background: var(--fb-color-green-1-light);
+      background: var(--fb-color-green-black);
       z-index: 100;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
@@ -55,10 +55,10 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
         <reelscore-back-button [date]="match.fixture.date" />
 
         <div class="dates">
-          <button mat-stroked-button disabled>
+          <button mat-button disabled>
             {{ match.fixture.date | date : 'ccc' }}
           </button>
-          <button mat-stroked-button disabled>
+          <button mat-button disabled>
             {{ match.fixture.date | date : 'HH:mm' }}
           </button>
         </div>
