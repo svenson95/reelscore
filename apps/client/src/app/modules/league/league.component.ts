@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 
 import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
-
-import { StandingsComponent } from '../start/components';
-import { SERVICE_PROVIDERS } from '../start/services';
+import { StandingsComponent } from './components';
+import { SERVICE_PROVIDERS } from './services';
 
 @Component({
   selector: 'reelscore-league',
