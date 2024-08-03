@@ -5,14 +5,14 @@ import { Observable } from 'rxjs';
 import { FixtureId, LatestFixturesDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
-export abstract class HttpFixturesService {
+export abstract class HttpLatestFixturesService {
   abstract getLatestFixtures(
     fixtureId: FixtureId
   ): Observable<LatestFixturesDTO>;
 }
 
 @Injectable()
-export class AbstractedHttpFixturesService extends HttpFixturesService {
+export class AbstractedHttpLatestFixturesService extends HttpLatestFixturesService {
   BASE_URL = environment.api + 'fixtures';
 
   http = inject(HttpClient);
@@ -25,7 +25,7 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
   }
 }
 
-export const HTTP_FIXTURES_SERVICE_PROVIDER = {
-  provide: HttpFixturesService,
-  useClass: AbstractedHttpFixturesService,
+export const HTTP_LATEST_FIXTURES_SERVICE_PROVIDER = {
+  provide: HttpLatestFixturesService,
+  useClass: AbstractedHttpLatestFixturesService,
 };

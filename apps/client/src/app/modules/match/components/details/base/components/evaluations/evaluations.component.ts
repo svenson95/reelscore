@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 
-import { EvaluationsService } from '../../../../../services';
+import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
 @Component({
   selector: 'reelscore-match-evaluations',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  providers: [EvaluationsStore],
   styles: `
     :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
     section { 
@@ -112,8 +117,11 @@ import { EvaluationsService } from '../../../../../services';
     }
   `,
 })
-export class MatchEvaluationsComponent {
-  es = inject(EvaluationsService);
+export class MatchEvaluationsComponent implements OnInit {
+  store = inject(EvaluationsStore);
+  evaluations = this.store.evaluations;
 
-  evaluations = this.es.evaluations;
+  ngOnInit(): void {
+    this.store.loadEvaluations();
+  }
 }

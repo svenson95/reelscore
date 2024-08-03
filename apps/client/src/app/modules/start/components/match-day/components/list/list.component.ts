@@ -13,6 +13,7 @@ import {
 } from '@lib/models';
 
 import { COMPETITION_URL, SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
+import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
@@ -26,6 +27,7 @@ import { CompetitionFixtures } from '../../../../models';
     OptimizedImageComponent,
     TeamNamePipe,
   ],
+  providers: [FixtureStore],
   styles: `
     :host {
       @apply flex flex-col overflow-hidden border;
@@ -103,18 +105,17 @@ import { CompetitionFixtures } from '../../../../models';
   `,
 })
 export class MatchDayListComponent {
-  readonly routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
-
-  readonly competition = input.required<CompetitionFixtures>();
+  routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
+  competition = input.required<CompetitionFixtures>();
 
   logoFromAssets = logoFromAssets;
 
-  linkToMatch(i: FixtureDTO): string[] {
+  linkToMatch(data: FixtureDTO): string[] {
     const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.id === String(i.league.id)
+      (c) => c.id === String(data.league.id)
     )?.url;
     if (!leagueUrl) throw new Error('Error in linkToMatch');
-    const fixtureId = String(i.fixture.id);
+    const fixtureId = String(data.fixture.id);
     return ['/', 'leagues', leagueUrl, 'match', fixtureId];
   }
 }

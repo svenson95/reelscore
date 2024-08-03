@@ -1,32 +1,54 @@
-import { DatePipe } from '@angular/common';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { DatePipe, NgIf } from '@angular/common';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { ROUTE_SERVICE_PROVIDER } from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
+import { FixtureStore } from '../../store/fixture.store';
 import { RouterView } from '../router-view';
+import { MatchHeaderComponent } from './components';
 import {
-  MatchDetailsAfterComponent,
-  MatchDetailsBaseComponent,
-  MatchHeaderComponent,
-} from './components';
-import { FixtureService, SERVICE_PROVIDERS } from './services';
+  MatchEventsComponent,
+  MatchStatisticsComponent,
+} from './components/details/after/components';
+import {
+  MatchEvaluationsComponent,
+  MatchFixtureDataComponent,
+  MatchLatestFixturesComponent,
+} from './components/details/base/components';
+import { SERVICE_PROVIDERS } from './services';
+import { EventsStore } from './store/events.store';
+import { LatestFixturesStore } from './store/latest-fixtures.store';
+import { StatisticsStore } from './store/statistics.store';
 
 @Component({
   selector: 'reelscore-match',
   standalone: true,
   imports: [
+    NgIf,
     DatePipe,
     MatButtonModule,
+    MatTabsModule,
     BackButtonComponent,
     MatchHeaderComponent,
-    MatchDetailsBaseComponent,
-    MatchDetailsAfterComponent,
+    MatchFixtureDataComponent,
+    MatchLatestFixturesComponent,
+    MatchEventsComponent,
+    MatchEvaluationsComponent,
+    MatchStatisticsComponent,
   ],
-  providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
+  providers: [
+    ...SERVICE_PROVIDERS,
+    ROUTE_SERVICE_PROVIDER,
+    FixtureStore,
+    LatestFixturesStore,
+    EventsStore,
+    StatisticsStore,
+  ],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
     .header {
@@ -48,55 +70,83 @@ import { FixtureService, SERVICE_PROVIDERS } from './services';
       --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
       @apply fb-as-label; 
     }
-  `,
-  template: `
-    @if (fixture(); as match) {
-    <section class="header">
-      <div>
-        <reelscore-back-button [date]="match.fixture.date" />
-
-        <div class="dates">
-          <button mat-button disabled>
-            {{ match.fixture.date | date : 'ccc' }}
-          </button>
-          <button mat-button disabled>
-            {{ match.fixture.date | date : 'HH:mm' }}
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="match-header">
-      <reelscore-match-header [data]="match" />
-    </section>
-
-    <section class="data">
-      @switch(isUpcoming()) { @case(true) {
-      <!-- <reelscore-match-details-before /> -->
-      } @case(false) { @if (fixture(); as f) {
-      <reelscore-match-details-after [fixture]="f" />
-      } }}
-
-      <reelscore-match-details-base [data]="match" />
-    </section>
+    mat-tab-group {
+      --mat-tab-header-inactive-label-text-color: var(--fb-color-text-2);
+      --mat-tab-header-active-label-text-color: #fff;
+      --mat-tab-header-inactive-ripple-color: var(--fb-color-text-2);
+      --mat-tab-header-active-ripple-color: var(--fb-color-text-2);
+      --mat-tab-header-active-focus-label-text-color: white;
+      --mat-tab-header-inactive-hover-label-text-color: white;
+      --mat-tab-header-active-hover-label-text-color: white;
+      --mat-tab-header-active-focus-indicator-color: white;
+    }
+    :host ::ng-deep .foobar > div {
+      @apply flex flex-col gap-5;
     }
   `,
+  template: `
+    <ng-container *ngIf="data as match">
+      @if (match.isLoading()) {
+      <p class="no-data">Spiel werden geladen ...</p>
+      } @else if (match.error()) {
+      <p class="no-data">Es ist ein Fehler aufgetreten.</p>
+      } @else if (match.fixture() !== null){
+      <section class="header">
+        <div>
+          <reelscore-back-button [date]="match.fixture()!.fixture.date" />
+
+          <div class="dates">
+            <button mat-button disabled>
+              {{ match.fixture()!.fixture.date | date : 'ccc' }}
+            </button>
+            <button mat-button disabled>
+              {{ match.fixture()!.fixture.date | date : 'HH:mm' }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="match-header">
+        <reelscore-match-header [data]="match.fixture()!" />
+      </section>
+
+      <section class="data">
+        <mat-tab-group>
+          <mat-tab label="Details" bodyClass="foobar">
+            <reelscore-match-fixture-data />
+            <reelscore-match-evaluations />
+            <reelscore-match-latest-fixtures />
+          </mat-tab>
+          <mat-tab label="Bericht" [disabled]="!es.events()">
+            <ng-template matTabContent>
+              <reelscore-match-events />
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Statistiken" [disabled]="!ss.statistics()">
+            <ng-template matTabContent>
+              @if (!!ss.statistics()) {
+              <reelscore-match-statistics [data]="ss.statistics()!" />
+              }
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </section>
+      }
+    </ng-container>
+  `,
 })
-export class MatchComponent extends RouterView {
+export class MatchComponent extends RouterView implements OnInit {
+  router = inject(Router);
+  fs = inject(FixtureStore);
+  es = inject(EventsStore);
+  ss = inject(StatisticsStore);
+
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
-  fs = inject(FixtureService);
-  router = inject(Router);
-  fixture = this.fs.fixture;
-
-  isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
-
-  setFixtureId = effect(() => this.fs.fixtureId.set(this.fixtureId()), {
-    allowSignalWrites: true,
-  });
+  data = this.fs;
 
   invalidUrlEffect = effect(() => {
-    const fixture = this.fixture();
+    const fixture = this.data.fixture();
     const leagueUrl = this.leagueUrl();
     const league = SELECT_COMPETITION_DATA_FLAT.find(
       (c) => c.url === leagueUrl
@@ -109,6 +159,12 @@ export class MatchComponent extends RouterView {
       this.redirectTo(fixtureLeagueId, fixture.fixture.id);
     }
   });
+
+  ngOnInit(): void {
+    this.fs.loadFixture(this.fixtureId());
+    this.es.loadEvents(this.fixtureId());
+    this.ss.loadStatistics(this.fixtureId());
+  }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
     const validLeague = SELECT_COMPETITION_DATA_FLAT.find(

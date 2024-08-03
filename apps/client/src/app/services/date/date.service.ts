@@ -19,7 +19,7 @@ import {
   getMondayFromDate,
   moveItem,
 } from '@app/models';
-import { loadFixtures, loadStandings } from '../../state';
+import { loadFixtures, loadStandings } from '../../store';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;

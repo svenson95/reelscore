@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { loadStandings, selectStandings } from '../../../../state';
+import { loadStandings, selectStandings } from '../../../../store';
 import { TableComponent } from './components';
 
 @Component({
