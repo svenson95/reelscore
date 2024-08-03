@@ -3,8 +3,8 @@ import { provideHttpClient } from '@angular/common/http';
 import * as de from '@angular/common/locales/de';
 import {
   ApplicationConfig,
-  LOCALE_ID,
   isDevMode,
+  LOCALE_ID,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -21,14 +21,15 @@ import { routes } from './app.routes';
 import {
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   DATE_SERVICE_PROVIDER,
+  HTTP_FIXTURE_SERVICE_PROVIDER,
   HTTP_FIXTURES_SERVICE_PROVIDER,
   HTTP_STANDINGS_SERVICE_PROVIDER,
   LEAGUE_SERVICE_PROVIDER,
 } from './services';
-import { FixturesEffects } from './state/fixtures/fixtures.effects';
-import { fixturesReducer } from './state/fixtures/fixtures.reducer';
-import { StandingsEffects } from './state/standings/standings.effects';
-import { standingsReducer } from './state/standings/standings.reducer';
+import { FixturesEffects } from './store/fixtures/fixtures.effects';
+import { fixturesReducer } from './store/fixtures/fixtures.reducer';
+import { StandingsEffects } from './store/standings/standings.effects';
+import { standingsReducer } from './store/standings/standings.reducer';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
@@ -40,6 +41,7 @@ const STORE_PROVIDERS = [
 const HTTP_DATA_PROVIDERS = [
   HTTP_STANDINGS_SERVICE_PROVIDER,
   HTTP_FIXTURES_SERVICE_PROVIDER,
+  HTTP_FIXTURE_SERVICE_PROVIDER,
 ];
 
 export const appConfig: ApplicationConfig = {

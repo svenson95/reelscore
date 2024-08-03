@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 
 import { LeagueService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
-import { loadFixtures, selectFixtures } from '../../../../state';
+import { loadFixtures, selectFixtures } from '../../../../store';
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
 import { MatchDayListComponent } from './components';
 

@@ -1,32 +1,13 @@
-import {
-  Injectable,
-  Signal,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { FixtureDTO, FixtureId } from '@lib/models';
-import { of, switchMap } from 'rxjs';
-
-import { HttpFixtureService } from './http.service';
+import { Injectable, WritableSignal, signal } from '@angular/core';
+import { FixtureId } from '@lib/models';
 
 export abstract class FixtureService {
   abstract fixtureId: WritableSignal<FixtureId | undefined>;
-  abstract fixture: Signal<FixtureDTO | undefined>;
 }
 
 @Injectable()
 export class AbstractedFixtureService extends FixtureService {
-  http = inject(HttpFixtureService);
-
   fixtureId = signal<FixtureId | undefined>(undefined);
-
-  fixture = toSignal(
-    toObservable(this.fixtureId).pipe(
-      switchMap((id) => (id ? this.http.getFixture(id) : of(undefined)))
-    )
-  );
 }
 
 export const FIXTURE_SERVICE_PROVIDER = {

@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  input,
+  inject,
 } from '@angular/core';
 
-import { FixtureDTO } from '@lib/models';
+import { FixtureStore } from '../../../../../../../store';
 
 @Component({
   selector: 'reelscore-match-fixture-data',
@@ -21,7 +21,6 @@ import { FixtureDTO } from '@lib/models';
       span { @apply text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
     `,
   template: `
-    <h3 class="match-section-title">SPIELDATEN</h3>
     <ul>
       <li>
         <div class="item">
@@ -34,7 +33,7 @@ import { FixtureDTO } from '@lib/models';
         <div class="item">
           <span class="key">Stadion</span>
           <span>
-            {{ data().fixture.venue.name }}
+            {{ data()!.fixture.venue.name }}
           </span>
         </div>
       </li>
@@ -43,7 +42,7 @@ import { FixtureDTO } from '@lib/models';
         <div class="item">
           <span class="key">Stadt</span>
           <span>
-            {{ data().fixture.venue.city }}
+            {{ data()!.fixture.venue.city }}
           </span>
         </div>
       </li>
@@ -51,17 +50,18 @@ import { FixtureDTO } from '@lib/models';
       <li>
         <div class="item">
           <span class="key">Schiedsrichter</span>
-          <span>{{ data().fixture.referee }}</span>
+          <span>{{ data()!.fixture.referee }}</span>
         </div>
       </li>
     </ul>
   `,
 })
 export class MatchFixtureDataComponent {
-  data = input.required<FixtureDTO>();
+  fs = inject(FixtureStore);
+  data = this.fs.fixture;
 
   round = computed(() => {
-    const rnd = this.data().league.round;
+    const rnd = this.data()!.league.round;
     const idx = rnd.lastIndexOf('-') + 2;
     return rnd.slice(idx, rnd.length);
   });

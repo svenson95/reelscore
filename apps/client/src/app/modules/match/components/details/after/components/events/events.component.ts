@@ -3,12 +3,12 @@ import {
   Component,
   computed,
   inject,
-  input,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventWithResult, timeTotal } from '@lib/models';
-import { FixtureService } from '../../../../../services';
+import { timeTotal } from '@lib/models';
+import { FixtureStore } from '../../../../../../../store';
+import { EventsStore } from '../../../../../store/events.store';
 import { MatchEventComponent } from './components';
 
 @Component({
@@ -31,11 +31,9 @@ import { MatchEventComponent } from './components';
     .time { @apply text-fb-font-size-body-2; }
   `,
   template: `
-    <h3 class="match-section-title">SPIELBERICHT</h3>
     <section>
-      @for (event of data(); track $index) { @if (homeTeamId(); as homeId) { @if
-      (awayTeamId(); as awayId) {
-
+      @for (event of events(); track $index) { @if (homeTeamId(); as homeId) {
+      @if (awayTeamId(); as awayId) {
       <div class="event-row">
         <div class="team home">
           @if (event.team.id === homeId) {
@@ -84,11 +82,14 @@ import { MatchEventComponent } from './components';
   `,
 })
 export class MatchEventsComponent {
-  data = input.required<EventWithResult[]>();
-  fs = inject(FixtureService);
+  es = inject(EventsStore);
+  events = this.es.events;
 
-  homeTeamId = computed(() => this.fs.fixture()?.teams.home.id);
-  awayTeamId = computed(() => this.fs.fixture()?.teams.away.id);
+  fs = inject(FixtureStore);
+  fixture = this.fs.fixture;
+
+  homeTeamId = computed(() => this.fixture()?.teams.home.id);
+  awayTeamId = computed(() => this.fixture()?.teams.away.id);
 
   timeTotal = timeTotal;
 }

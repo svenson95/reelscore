@@ -23,7 +23,6 @@ import { StatisticList } from './models';
     h4 { @apply text-fb-color-text-2 text-center mb-2; }
   `,
   template: `
-    <h3 class="match-section-title">STATISTIKEN</h3>
     <section>
       <div>
         <div>
@@ -169,6 +168,5 @@ import { StatisticList } from './models';
 })
 export class MatchStatisticsComponent {
   data = input.required<StatisticDTO[]>();
-
   stats = computed(() => StatisticList.init(this.data()));
 }

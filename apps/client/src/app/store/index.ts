@@ -1,3 +1,4 @@
+export * from './fixture.store';
 export * from './fixtures/fixtures.actions';
 export * from './fixtures/fixtures.effects';
 export * from './fixtures/fixtures.reducer';
