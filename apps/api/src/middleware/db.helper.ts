@@ -41,6 +41,6 @@ export class DBHelper {
 export const getSeason = (date: string): number => {
   const today = new Date();
   const year = today.getFullYear();
-  const seasonEnd = new Date(year, 6, 31);
+  const seasonEnd = new Date(year, 5, 30);
   return seasonEnd.getTime() > new Date(date).getTime() ? year - 1 : year;
 };

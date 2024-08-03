@@ -14,15 +14,33 @@ import {
   withInMemoryScrolling,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
 
 import { routes } from './app.routes';
 import {
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   DATE_SERVICE_PROVIDER,
+  HTTP_FIXTURES_SERVICE_PROVIDER,
+  HTTP_STANDINGS_SERVICE_PROVIDER,
   LEAGUE_SERVICE_PROVIDER,
 } from './services';
+import { FixturesEffects } from './state/fixtures/fixtures.effects';
+import { fixturesReducer } from './state/fixtures/fixtures.reducer';
+import { StandingsEffects } from './state/standings/standings.effects';
+import { standingsReducer } from './state/standings/standings.reducer';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
+
+const STORE_PROVIDERS = [
+  provideStore({ standings: standingsReducer, fixtures: fixturesReducer }),
+  provideEffects([StandingsEffects, FixturesEffects]),
+];
+
+const HTTP_DATA_PROVIDERS = [
+  HTTP_STANDINGS_SERVICE_PROVIDER,
+  HTTP_FIXTURES_SERVICE_PROVIDER,
+];
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,6 +62,8 @@ export const appConfig: ApplicationConfig = {
     BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
     DATE_SERVICE_PROVIDER,
     LEAGUE_SERVICE_PROVIDER,
+    ...HTTP_DATA_PROVIDERS,
+    ...STORE_PROVIDERS,
   ],
 };
 
