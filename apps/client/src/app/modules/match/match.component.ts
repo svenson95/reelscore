@@ -1,5 +1,12 @@
 import { DatePipe, NgIf } from '@angular/common';
-import { Component, effect, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
@@ -117,12 +124,12 @@ import { StatisticsStore } from './store/statistics.store';
             <reelscore-match-evaluations />
             <reelscore-match-latest-fixtures />
           </mat-tab>
-          <mat-tab label="Bericht" [disabled]="!es.events()">
+          <mat-tab label="Bericht" [disabled]="!hasEvents()">
             <ng-template matTabContent>
               <reelscore-match-events />
             </ng-template>
           </mat-tab>
-          <mat-tab label="Statistiken" [disabled]="!ss.statistics()">
+          <mat-tab label="Statistiken" [disabled]="!hasStatistics()">
             <ng-template matTabContent>
               @if (!!ss.statistics()) {
               <reelscore-match-statistics [data]="ss.statistics()!" />
@@ -144,6 +151,9 @@ export class MatchComponent extends RouterView implements OnInit {
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
   data = this.fs;
+
+  hasEvents = computed<boolean>(() => !!this.es.events());
+  hasStatistics = computed<boolean>(() => !!this.ss.statistics());
 
   invalidUrlEffect = effect(() => {
     const fixture = this.data.fixture();
