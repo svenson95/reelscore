@@ -48,7 +48,7 @@ import { CompetitionFixtures } from '../../../../models';
       border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
       border-right: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
-    .teams { @apply align-middle px-3; }
+    .teams { @apply align-middle pl-2; }
     .teams > div { @apply flex items-center gap-2; }
   `,
   template: `
