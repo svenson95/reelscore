@@ -1,22 +1,25 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
+  OnInit,
 } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
 
-import { DateService, LeagueService } from '@app/services';
+import { LeagueService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
+import { loadFixtures, selectFixtures } from '../../../../state';
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
-import { FixturesService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-day',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchDayListComponent, MatProgressSpinnerModule],
+  imports: [AsyncPipe, NgIf, MatchDayListComponent],
   styles: `
     :host { @apply flex flex-col; }
 
@@ -25,24 +28,31 @@ import { MatchDayListComponent } from './components';
     }
   `,
   template: `
-    @if (isLoading()) {
-    <mat-spinner class="my-10 mx-auto" diameter="20" />
-    } @else { @for (competition of competitions(); track competition.name) {
-    <reelscore-match-day-list [competition]="competition" />
-    } @empty {
-    <p class="no-data">Es finden keine Spiele statt.</p>
-    } }
+    <ng-container *ngIf="data$ | async as data">
+      @if (data.isLoading && data.fixtures.length === 0) {
+      <p class="no-data">Spiele werden geladen ...</p>
+      } @else if (data.error) {
+      <p class="no-data">Fehler beim Laden der Spiele.</p>
+      } @else if (data.fixtures.length === 0) {
+      <p class="no-data">Es finden keine Spiele statt.</p>
+      } @else { @for (competition of competitions(); track competition.name) {
+      <reelscore-match-day-list [competition]="competition" />
+      } }
+    </ng-container>
   `,
 })
-export class MatchDayComponent {
-  ds = inject(DateService);
+export class MatchDayComponent implements OnInit {
   ls = inject(LeagueService);
-  fs = inject(FixturesService);
+  store = inject(Store);
+  data$ = this.store.select(selectFixtures);
+  data = toSignal(this.data$);
 
-  isLoading = this.fs.isLoading;
+  ngOnInit(): void {
+    this.store.dispatch(loadFixtures());
+  }
 
   competitions = computed<CompetitionFixtures[] | undefined>(() => {
-    const data = this.fs.fixtures();
+    const data = this.data()?.fixtures;
     const selectedLeague = this.ls.selectedLeague();
     if (data === undefined) return undefined;
 

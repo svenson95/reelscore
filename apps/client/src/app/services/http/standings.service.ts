@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { DateString } from '@app/models';
 import { CompetitionId, StandingsDTO } from '@lib/models';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 type StandingsParams = undefined | CompetitionId;
 

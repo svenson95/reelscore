@@ -1,40 +1,43 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
+  OnInit,
 } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
 
-import { LeagueService, RouteService } from '@app/services';
-import { StandingsService } from '../../services';
+import { loadStandings, selectStandings } from '../../../../state';
 import { TableComponent } from './components';
 
 @Component({
   selector: 'reelscore-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatProgressSpinnerModule, TableComponent],
+  imports: [CommonModule, TableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (isLoading()) {
-    <mat-spinner class="my-10 mx-auto" diameter="20" />
-    } @else if (topFiveStandings() === null) {
-    <p class="no-data">Keine Tabellen gefunden.</p>
-    } @else { @for (standings of topFiveStandings(); track standings.league.id)
-    {
-    <reelscore-standings-table [data]="standings" />
-    } }
+    <ng-container *ngIf="data$ | async as data">
+      @if (data.isLoading && data.standings.length === 0) {
+      <p class="no-data">Tabellen werden geladen ...</p>
+      } @else if (data.error) {
+      <p class="no-data">Fehler beim Laden der Tabellen.</p>
+      } @else if (data.standings.length === 0) {
+      <p class="no-data">Keine Tabellen gefunden.</p>
+      } @else { @for (standings of data.standings; track standings.league.id) {
+      <reelscore-standings-table [data]="standings" />
+      } }
+    </ng-container>
   `,
 })
-export class StandingsComponent {
-  ls = inject(LeagueService);
-  ss = inject(StandingsService);
-  rs = inject(RouteService);
+export class StandingsComponent implements OnInit {
+  store = inject(Store);
 
-  topFiveStandings = this.ss.topFiveStandings;
+  ngOnInit(): void {
+    this.store.dispatch(loadStandings());
+  }
 
-  isLoading = computed<boolean>(() => this.topFiveStandings() === null);
+  data$ = this.store.select(selectStandings);
 }

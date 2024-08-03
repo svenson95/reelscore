@@ -2,10 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { FixtureDTO } from '@lib/models';
-
 import { DateString } from '@app/models';
-import { environment } from '../../../../../environments/environment';
+import { FixtureDTO } from '@lib/models';
+import { environment } from '../../../environments/environment';
 
 export abstract class HttpFixturesService {
   abstract getFixtures(date: DateString): Observable<FixtureDTO[]>;

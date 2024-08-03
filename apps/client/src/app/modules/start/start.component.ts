@@ -7,13 +7,12 @@ import {
   MatchDayComponent,
   StandingsComponent,
 } from './components';
-import { SERVICE_PROVIDERS } from './services';
 
 @Component({
   selector: 'reelscore-league',
   standalone: true,
   imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
-  providers: [...SERVICE_PROVIDERS, ROUTE_SERVICE_PROVIDER],
+  providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { 
       @apply flex flex-col w-full; 
