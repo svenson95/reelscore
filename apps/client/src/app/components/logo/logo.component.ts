@@ -5,10 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { 
-      @apply select-none; 
-      color: #fff;
-    }
+    :host { @apply select-none text-white text-fb-font-size-subtitle-2; }
   `,
   template: `
     <span class="font-bold">reel</span>
