@@ -38,7 +38,7 @@ import { CompetitionData } from '@app/models';
     }
 
     mat-form-field {
-      @apply w-[200px];
+      @apply w-[210px];
     }
 
     mat-option {
