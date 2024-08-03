@@ -55,13 +55,11 @@ import { CompetitionFixtures } from '../../../../models';
     <div class="header">
       <reelscore-optimized-image
         [source]="
-          'assets/images/country/' +
-          competition().fixtures[0].league.id +
-          '.svg'
+          'assets/images/league/' + competition().fixtures[0].league.id + '.png'
         "
-        alternate="country flag"
-        width="16"
-        height="12"
+        alternate=""
+        width="24"
+        height="24"
       />
       <span>{{ competition().name }}</span>
     </div>
