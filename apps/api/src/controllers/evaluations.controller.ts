@@ -27,6 +27,16 @@ export const getFixtureEvaluations = async (req, res, next) => {
       fixtureDoc.fixture.date
     );
 
+    if (homeFixtures.length === 0 && awayFixtures.length === 0) {
+      return next(null);
+    }
+
+    const hasUpcomingGames = (fixtures: FixtureDTO[]): boolean =>
+      !!fixtures.filter((f) => f.goals.home === null);
+    if (hasUpcomingGames([...homeFixtures, ...awayFixtures])) {
+      return next(null);
+    }
+
     const analyzedFixtures = async (
       fixtures: FixtureDTO[],
       teamId: number

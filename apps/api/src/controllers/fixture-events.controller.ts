@@ -1,26 +1,21 @@
 import { EventDTO } from '@lib/models';
+import { findDocument } from '../middleware';
 import { FixtureEvents } from '../models';
 
 export const getFixtureEventsById = async (req, res, next) => {
-  const fixture = req.query.fixtureId;
-  try {
-    const docs = await FixtureEvents.find()
-      .where('parameters')
-      .equals({
-        fixture,
-      })
-      .lean();
+  const fixtureId = req.query.fixtureId;
+  const doc = await findDocument(
+    FixtureEvents,
+    'parameters.fixture',
+    fixtureId
+  );
 
-    if (docs.length === 0) return next(null);
-    const doc = docs[0];
-    const sortedEvents = sortEvents(doc.response);
-    next({ ...doc, response: sortedEvents });
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
+  if (!doc || typeof doc === 'string') {
+    next(doc);
+  } else {
+    next({ ...doc, response: sortEvents(doc.response) });
   }
 };
-export const time = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);
+
+const time = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);
 const sortEvents = (d: EventDTO[]) => d.sort((a, b) => time(b) - time(a));

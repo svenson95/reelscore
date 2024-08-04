@@ -1,18 +1,13 @@
+import { findDocument } from '../middleware';
 import { FixturesStatistics } from '../models';
 
 export const getFixtureStatisticsById = async (req, res, next) => {
-  const fixture = req.query.fixtureId;
+  const fixtureId = req.query.fixtureId;
 
-  try {
-    const docs = await FixturesStatistics.find().where('parameters').equals({
-      fixture,
-    });
-    if (docs.length === 0) next(null);
-    next(docs[0]);
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
-  }
+  const docs = await findDocument(
+    FixturesStatistics,
+    'parameters.fixture',
+    fixtureId
+  );
+  next(docs);
 };
