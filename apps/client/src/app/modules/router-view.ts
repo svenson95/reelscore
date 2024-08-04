@@ -1,5 +1,6 @@
 import { effect, inject } from '@angular/core';
 
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { LeagueService, RouteService } from '@app/services';
 import { CompetitionUrl } from '@lib/models';
 
@@ -13,6 +14,9 @@ export class RouterView {
   );
 
   updateLeague(route: CompetitionUrl): void {
-    // TODO route to league page
+    const competitionData = SELECT_COMPETITION_DATA_FLAT.find(
+      (d) => d.url === route.split('/')[0]
+    );
+    this.leagueService.setSelectedLeague(competitionData);
   }
 }
