@@ -81,6 +81,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
       </section>
 
+      @if (hasPerformances()) {
       <section>
         <div class="header">
           <span class="section-title">Performance</span>
@@ -113,6 +114,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           </div>
         </div>
       </section>
+      }
     </div>
   `,
 })
@@ -120,4 +122,8 @@ export class MatchEvaluationsComponent {
   evaluations = input.required<EvaluationDTO>();
   home = computed(() => this.evaluations().teams.home);
   away = computed(() => this.evaluations().teams.away);
+  hasPerformances = computed(
+    () =>
+      this.home().performances.length > 0 || this.away().performances.length > 0
+  );
 }

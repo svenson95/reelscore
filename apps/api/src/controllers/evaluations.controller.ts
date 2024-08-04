@@ -42,10 +42,11 @@ export const getFixtureEvaluations = async (req, res, next) => {
       teamId: number
     ): Promise<EvaluationTeam> => {
       const performances = await analyzePerformances(teamId, fixtures);
+      if (performances === null) return null;
       const results = await analyzeResults(teamId, fixtures);
 
       return {
-        performances,
+        performances: performances.filter((p) => p !== null),
         results,
       };
     };
@@ -119,12 +120,13 @@ const analyzeTeamPerformance = (
 const analyzePerformances = async (
   teamId: number,
   fixtures: FixtureDTO[]
-): Promise<FixturePerformance[]> => {
+): Promise<FixturePerformance[]> | null => {
   const performances = fixtures.map(async (fixture) => {
-    const stats = await FixturesStatistics.find({
+    const stats = await FixturesStatistics.findOne({
       'parameters.fixture': fixture.fixture.id,
-    });
-    const teams = stats[0].response;
+    }).lean();
+    if (!stats || stats.response.length === 0) return null;
+    const teams = stats.response;
     const teamIndex = teams[0].team.id === teamId ? 0 : 1;
     const statistics = teams[teamIndex] as StatisticDTO;
     return analyzeTeamPerformance(statistics, fixture);
