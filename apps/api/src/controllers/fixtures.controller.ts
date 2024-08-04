@@ -86,7 +86,7 @@ export const getLatestFixtures = async (req, res, next) => {
   try {
     const fixtureDoc = await Fixtures.findOne({
       'fixture.id': fixtureId,
-    });
+    }).lean();
 
     const home = await findLatestFixturesForTeam(
       fixtureDoc.teams.home.id,
