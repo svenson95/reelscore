@@ -32,7 +32,7 @@ export const getFixtureEvaluations = async (req, res, next) => {
     }
 
     const hasUpcomingGames = (fixtures: FixtureDTO[]): boolean =>
-      !!fixtures.filter((f) => f.goals.home === null);
+      fixtures.filter((f) => f.goals.home === null).length > 0;
     if (hasUpcomingGames([...homeFixtures, ...awayFixtures])) {
       return next(null);
     }
