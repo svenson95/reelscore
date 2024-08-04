@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   input,
   Pipe,
   PipeTransform,
@@ -92,14 +91,5 @@ export class IsWinnerPipe implements PipeTransform {
 })
 export class MatchFixturesTableComponent {
   latestFixtures = input.required<FixtureDTO[]>();
-  relatedTeam = computed<FixtureTeam>(() =>
-    this.getTeam(this.latestFixtures())
-  );
-
-  getTeam = (matches: FixtureDTO[]): FixtureTeam =>
-    matches.reduce(
-      (acc, curr) =>
-        curr.teams.home.id === acc.id ? curr.teams.home : curr.teams.away,
-      {} as FixtureTeam
-    );
+  relatedTeam = input.required<FixtureTeam>();
 }

@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 
+import { FixtureStore } from '../../../../../../../store';
 import { LatestFixturesStore } from '../../../../../store';
 import { MatchFixturesTableComponent } from './components';
 
@@ -24,28 +25,33 @@ import { MatchFixturesTableComponent } from './components';
   template: `
     <h3 class="match-section-title">LETZTE SPIELE</h3>
     <section>
-      @if (data.isLoading()) {
+      @if (latestFixtures.isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
-      } @else if (data.error()) {
-      <p class="no-data">Fehler beim Laden der Spiele.</p>
-      } @else if (!data.latestFixtures()) {
-      <p class="no-data">Keine Spiele gefunden.</p>
-      } @else { @if (data.latestFixtures()) {
+      } @else if (latestFixtures.error()) {
+      <p class="no-latestFixtures">Fehler beim Laden der Spiele.</p>
+      } @else if (!latestFixtures.latestFixtures()) {
+      <p class="no-latestFixtures">Keine Spiele gefunden.</p>
+      } @else { @if (latestFixtures.latestFixtures()) {
       <reelscore-match-fixtures-table
-        [latestFixtures]="data.latestFixtures()!.home"
+        [relatedTeam]="fixture()!.teams.home"
+        [latestFixtures]="latestFixtures.latestFixtures()!.home"
       />
       <reelscore-match-fixtures-table
-        [latestFixtures]="data.latestFixtures()!.away"
+        [relatedTeam]="fixture()!.teams.away"
+        [latestFixtures]="latestFixtures.latestFixtures()!.away"
       />
       } }
     </section>
   `,
 })
 export class MatchLatestFixturesComponent implements OnInit {
-  store = inject(LatestFixturesStore);
-  data = this.store;
+  lfs = inject(LatestFixturesStore);
+  latestFixtures = this.lfs;
+
+  fs = inject(FixtureStore);
+  fixture = this.fs.fixture;
 
   ngOnInit(): void {
-    this.store.loadLatestFixtures();
+    this.lfs.loadLatestFixtures();
   }
 }
