@@ -28,6 +28,7 @@ import {
   MatchLatestFixturesComponent,
 } from './components/details/base/components';
 import { SERVICE_PROVIDERS } from './services';
+import { EvaluationsStore } from './store';
 import { EventsStore } from './store/events.store';
 import { LatestFixturesStore } from './store/latest-fixtures.store';
 import { StatisticsStore } from './store/statistics.store';
@@ -55,6 +56,7 @@ import { StatisticsStore } from './store/statistics.store';
     LatestFixturesStore,
     EventsStore,
     StatisticsStore,
+    EvaluationsStore,
   ],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
@@ -121,7 +123,9 @@ import { StatisticsStore } from './store/statistics.store';
         <mat-tab-group>
           <mat-tab label="Details" bodyClass="foobar">
             <reelscore-match-fixture-data />
-            <reelscore-match-evaluations />
+            @if (!!evs.evaluations()) {
+            <reelscore-match-evaluations [evaluations]="evs.evaluations()!" />
+            }
             <reelscore-match-latest-fixtures />
           </mat-tab>
           <mat-tab label="Bericht" [disabled]="!hasEvents()">
@@ -147,6 +151,7 @@ export class MatchComponent extends RouterView implements OnInit {
   fs = inject(FixtureStore);
   es = inject(EventsStore);
   ss = inject(StatisticsStore);
+  evs = inject(EvaluationsStore);
 
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
@@ -174,6 +179,7 @@ export class MatchComponent extends RouterView implements OnInit {
     this.fs.loadFixture(this.fixtureId());
     this.es.loadEvents(this.fixtureId());
     this.ss.loadStatistics(this.fixtureId());
+    this.evs.loadEvaluations(this.fixtureId());
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {

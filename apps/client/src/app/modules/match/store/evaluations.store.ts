@@ -2,8 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
-import { EvaluationDTO } from '@lib/models';
-import { FixtureStore } from '../../../store';
+import { EvaluationDTO, FixtureId } from '@lib/models';
 import { HttpEvaluationsService } from '../services';
 
 type EvaluationsState = {
@@ -20,24 +19,15 @@ const initialState: EvaluationsState = {
 
 export const EvaluationsStore = signalStore(
   withState(initialState),
-  withMethods(
-    (
-      store,
-      http = inject(HttpEvaluationsService),
-      fixtureStore = inject(FixtureStore)
-    ) => ({
-      async loadEvaluations(): Promise<void> {
-        patchState(store, { isLoading: true });
-        const id = fixtureStore.fixture()?.fixture.id;
-        const evaluations = id
-          ? await firstValueFrom(http.getEvaluations(id))
-          : null;
-        patchState(store, {
-          evaluations,
-          isLoading: false,
-          error: evaluations ? null : 'Latest Fixtures not found',
-        });
-      },
-    })
-  )
+  withMethods((store, http = inject(HttpEvaluationsService)) => ({
+    async loadEvaluations(fixtureId: FixtureId): Promise<void> {
+      patchState(store, { isLoading: true });
+      const evaluations = await firstValueFrom(http.getEvaluations(fixtureId));
+      patchState(store, {
+        evaluations,
+        isLoading: false,
+        error: null,
+      });
+    },
+  }))
 );

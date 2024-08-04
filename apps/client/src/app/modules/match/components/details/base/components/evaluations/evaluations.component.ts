@@ -1,10 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
-  OnInit,
+  computed,
+  input,
 } from '@angular/core';
 
+import { EvaluationDTO } from '@lib/models';
 import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
 @Component({
@@ -47,7 +48,6 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   `,
   template: `
     <h3 class="match-section-title">FORM</h3>
-    @if (evaluations()?.teams; as teams) {
     <div class="content">
       <section>
         <div class="header">
@@ -60,7 +60,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (result of teams.home.results.reverse(); track result) {
+            @for (result of home().results.reverse(); track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} }
@@ -71,7 +71,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (result of teams.away.results; track result) {
+            @for (result of away().results; track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} }
@@ -92,7 +92,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (performance of teams.home.performances.reverse(); track
+            @for (performance of home().performances.reverse(); track
             performance) {
             <span [class]="performance.toLowerCase()">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
@@ -104,7 +104,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (performance of teams.away.performances; track performance) {
+            @for (performance of away().performances; track performance) {
             <span [class]="performance.toLowerCase()">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
               @case ("HIGH") {G} }
@@ -114,14 +114,10 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
       </section>
     </div>
-    }
   `,
 })
-export class MatchEvaluationsComponent implements OnInit {
-  store = inject(EvaluationsStore);
-  evaluations = this.store.evaluations;
-
-  ngOnInit(): void {
-    this.store.loadEvaluations();
-  }
+export class MatchEvaluationsComponent {
+  evaluations = input.required<EvaluationDTO>();
+  home = computed(() => this.evaluations().teams.home);
+  away = computed(() => this.evaluations().teams.away);
 }
