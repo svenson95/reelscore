@@ -14,8 +14,8 @@ import { EventDTO } from '@lib/models';
   `,
   template: `
     @if (event(); as event) {
-    <span>{{ event.assist.name }}</span>
     <span>{{ event.player.name }}</span>
+    <span>{{ event.assist.name }}</span>
     }
   `,
 })
