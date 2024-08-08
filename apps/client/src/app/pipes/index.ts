@@ -1,1 +1,2 @@
-export * from './team-name.pipe';
+export * from './competition/competition-round.pipe';
+export * from './team/team-name.pipe';

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+import { CompetitionRoundPipe } from '@app/pipes';
 import { FixtureStore } from '../../../../../../../store';
 
 @Component({
   selector: 'reelscore-match-fixture-data',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [CompetitionRoundPipe],
   styles: `
       :host { @apply bg-white border-[1px] rounded-fb; }
       ul { @apply py-2;}
@@ -20,7 +21,7 @@ import { FixtureStore } from '../../../../../../../store';
       <li>
         <div class="item">
           <span class="key">Spieltag</span>
-          <span> {{ data()!.league.round }} </span>
+          <span> {{ data()!.league.round | competitionRound }} </span>
         </div>
       </li>
 
