@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FixtureStore } from '../../../../../../../store';
 
@@ -25,7 +20,7 @@ import { FixtureStore } from '../../../../../../../store';
       <li>
         <div class="item">
           <span class="key">Spieltag</span>
-          <span> {{ round() }} </span>
+          <span> {{ data()!.league.round }} </span>
         </div>
       </li>
 
@@ -59,10 +54,4 @@ import { FixtureStore } from '../../../../../../../store';
 export class MatchFixtureDataComponent {
   fs = inject(FixtureStore);
   data = this.fs.fixture;
-
-  round = computed(() => {
-    const rnd = this.data()!.league.round;
-    const idx = rnd.lastIndexOf('-') + 2;
-    return rnd.slice(idx, rnd.length);
-  });
 }
