@@ -175,11 +175,11 @@ export class MatchComponent extends RouterView implements OnInit {
     }
   });
 
-  ngOnInit(): void {
-    this.fs.loadFixture(this.fixtureId());
-    this.es.loadEvents(this.fixtureId());
-    this.ss.loadStatistics(this.fixtureId());
-    this.evs.loadEvaluations(this.fixtureId());
+  async ngOnInit() {
+    await this.fs.loadFixture(this.fixtureId());
+    await this.es.loadEvents(this.fixtureId());
+    await this.ss.loadStatistics(this.fixtureId());
+    await this.evs.loadEvaluations(this.fixtureId());
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
