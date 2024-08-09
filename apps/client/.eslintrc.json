@@ -24,6 +24,13 @@
             "prefix": "reelscore",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+          }
         ]
       }
     },
