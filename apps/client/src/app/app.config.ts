@@ -9,9 +9,11 @@ import {
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
+  PreloadAllModules,
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
+  withPreloading,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideEffects } from '@ngrx/effects';
@@ -52,7 +54,8 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withInMemoryScrolling({
         scrollPositionRestoration: 'top',
-      })
+      }),
+      withPreloading(PreloadAllModules)
     ),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
