@@ -5,7 +5,8 @@ import {
   effect,
   inject,
   input,
-  OnInit,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -146,7 +147,7 @@ import { StatisticsStore } from './store/statistics.store';
     </ng-container>
   `,
 })
-export class MatchComponent extends RouterView implements OnInit {
+export class MatchComponent extends RouterView implements OnChanges {
   router = inject(Router);
   fs = inject(FixtureStore);
   es = inject(EventsStore);
@@ -175,7 +176,7 @@ export class MatchComponent extends RouterView implements OnInit {
     }
   });
 
-  async ngOnInit() {
+  async ngOnChanges(_: SimpleChanges) {
     await this.fs.loadFixture(this.fixtureId());
     await this.es.loadEvents(this.fixtureId());
     await this.ss.loadStatistics(this.fixtureId());
