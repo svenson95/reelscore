@@ -2,15 +2,14 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { StateHandler } from '@app/models';
 import { LatestFixturesDTO } from '@lib/models';
 import { FixtureStore } from '../../../store';
 import { HttpLatestFixturesService } from '../services';
 
-type LatestFixturesState = {
+type LatestFixturesState = StateHandler<{
   latestFixtures: LatestFixturesDTO | null;
-  isLoading: boolean;
-  error: string | null;
-};
+}>;
 
 const initialState: LatestFixturesState = {
   latestFixtures: null,

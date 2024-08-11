@@ -2,14 +2,11 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { StateHandler } from '@app/models';
 import { FixtureId, StatisticDTO } from '@lib/models';
 import { HttpFixtureStatisticsService } from '../services';
 
-type StatisticsState = {
-  statistics: StatisticDTO[] | null;
-  isLoading: boolean;
-  error: string | null;
-};
+type StatisticsState = StateHandler<{ statistics: StatisticDTO[] | null }>;
 
 const initialState: StatisticsState = {
   statistics: null,
