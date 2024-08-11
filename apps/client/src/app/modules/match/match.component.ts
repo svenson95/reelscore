@@ -96,7 +96,7 @@ import { StatisticsStore } from './store/statistics.store';
   template: `
     <ng-container *ngIf="data as match">
       @if (match.isLoading()) {
-      <p class="no-data">Spiel werden geladen ...</p>
+      <p class="no-data">Spiel wird geladen ...</p>
       } @else if (match.error()) {
       <p class="no-data">Es ist ein Fehler aufgetreten.</p>
       } @else if (match.fixture() !== null){
