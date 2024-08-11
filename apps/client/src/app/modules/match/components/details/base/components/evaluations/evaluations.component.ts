@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { EvaluationDTO } from '@lib/models';
+import { EvaluationDTO, EvaluationTeam } from '@lib/models';
 import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
 @Component({
@@ -120,10 +120,12 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
 })
 export class MatchEvaluationsComponent {
   evaluations = input.required<EvaluationDTO>();
-  home = computed(() => this.evaluations().teams.home);
-  away = computed(() => this.evaluations().teams.away);
-  hasPerformances = computed(
-    () =>
-      this.home().performances.length > 0 || this.away().performances.length > 0
-  );
+
+  home = computed<EvaluationTeam>(() => this.evaluations().teams.home);
+  away = computed<EvaluationTeam>(() => this.evaluations().teams.away);
+
+  hasPerformances = computed<boolean>(() => {
+    const { home, away } = this.evaluations().teams;
+    return home.performances.length > 0 || away.performances.length > 0;
+  });
 }
