@@ -2,19 +2,16 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { StateHandler } from '@app/models';
 import { EvaluationDTO, FixtureId } from '@lib/models';
 import { HttpEvaluationsService } from '../services';
 
-type EvaluationsState = {
-  evaluations: EvaluationDTO | null;
-  isLoading: boolean;
-  error: string | null;
-};
+type EvaluationsState = StateHandler<{ evaluations: EvaluationDTO | null }>;
 
 const initialState: EvaluationsState = {
-  evaluations: null,
   isLoading: false,
   error: null,
+  evaluations: null,
 };
 
 export const EvaluationsStore = signalStore(

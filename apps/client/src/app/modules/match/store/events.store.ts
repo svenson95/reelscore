@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { StateHandler } from '@app/models';
 import {
   EventDTO,
   EventResult,
@@ -14,11 +15,7 @@ import {
 import { FixtureStore } from '../../../store';
 import { HttpFixtureEventsService } from '../services';
 
-type EventsState = {
-  events: EventWithResult[] | null;
-  isLoading: boolean;
-  error: string | null;
-};
+type EventsState = StateHandler<{ events: EventWithResult[] | null }>;
 
 const initialState: EventsState = {
   events: null,
