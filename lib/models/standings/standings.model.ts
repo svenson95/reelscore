@@ -8,4 +8,6 @@ export const logoFromAssets = (teamId: number) => {
 export interface StandingsDTO {
   _id: MongoDbId;
   league: League;
+  createdAt: Date;
+  updatedAt: Date;
 }
