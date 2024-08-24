@@ -1,3 +1,4 @@
+import { COMPETITION_ID } from '@lib/constants';
 import { getSeason } from '../middleware';
 import { Standings } from '../models';
 
@@ -27,11 +28,12 @@ export const getTopFiveStandings = async (req, res, next) => {
     $and: [{ createdAt: { $lte: date } }],
   });
 
-  const BUNDESLIGA_ID = '78';
-  const PREMIER_LEAGUE_ID = '39';
-  const LA_LIGA_ID = '140';
-  const SERIE_A_ID = '135';
-  const LIGUE_1_ID = '61';
+  const BUNDESLIGA_ID = COMPETITION_ID.GERMANY_BUNDESLIGA;
+  const PREMIER_LEAGUE_ID = COMPETITION_ID.ENGLAND_PREMIER_LEAGUE;
+  const LA_LIGA_ID = COMPETITION_ID.SPAIN_LA_LIGA;
+  const SERIE_A_ID = COMPETITION_ID.ITALY_SERIE_A;
+  const LIGUE_1_ID = COMPETITION_ID.FRANCE_LIGUE_1;
+
   const getStandings = async (leagueId) =>
     await Standings.findOne(query(leagueId)).sort({ _id: -1 });
 
