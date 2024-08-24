@@ -21,7 +21,8 @@
       "@app/pipes": ["apps/client/src/app/pipes/index.ts"],
       "@app/services": ["apps/client/src/app/services/index.ts"],
       "@lib/components": ["lib/components/index.ts"],
-      "@lib/models": ["lib/models/index.ts"]
+      "@lib/models": ["lib/models/index.ts"],
+      "@lib/constants": ["lib/constants/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

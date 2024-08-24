@@ -1,7 +1,9 @@
-import { SelectCompetitionGroup } from '../../models';
-import { COMPETITION_ID } from '../competition/id.constant';
-import { COMPETITION_LABEL } from '../competition/label.constant';
-import { COMPETITION_URL } from '../competition/url.constant';
+import {
+  COMPETITION_ID,
+  COMPETITION_LABEL,
+  COMPETITION_URL,
+} from '@lib/constants';
+import { SelectCompetitionGroup } from '../models';
 
 export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
