@@ -4,15 +4,15 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { TeamNamePipe } from '@app/pipes';
+import { COMPETITION_URL } from '@lib/constants';
 import {
   CompetitionId,
   CompetitionUrl,
   FixtureDTO,
   logoFromAssets,
 } from '@lib/models';
-
-import { COMPETITION_URL, SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 

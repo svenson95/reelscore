@@ -1,4 +1,4 @@
-import { CompetitionId } from '@lib/models';
+import { CompetitionId } from '../../models';
 import { CompetitionCode } from './code.constant';
 
 export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
