@@ -27,8 +27,8 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   }
 
   getAllStandings(date: DateString): Observable<StandingsDTO[]> {
-    const toIso = new Date(date).toISOString().substring(0, 10);
-    const params = new HttpParams().append('date', toIso);
+    const dateString = date.substring(0, 10);
+    const params = new HttpParams().append('date', dateString);
     return this.http.get<StandingsDTO[]>(this.BASE_URL + '/get-top-five', {
       params,
     });
