@@ -1,14 +1,19 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  input,
+  viewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'reelscore-optimized-image',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgOptimizedImage],
-  styles: `
-    :host { @apply flex items-center justify-center; }
-  `,
+  styles: `img { object-fit: contain; height: revert-layer; margin: auto; }`,
   template: `
     <img
       [ngSrc]="source()"
@@ -16,13 +21,23 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       priority
       [width]="width()"
       [height]="height()"
+      #imgRef
     />
   `,
 })
-export class OptimizedImageComponent {
+export class OptimizedImageComponent implements AfterViewChecked {
   source = input.required<string>();
   alternate = input.required<string>();
 
   width = input<string>();
   height = input<string>();
+
+  img = viewChild.required<ElementRef<HTMLImageElement>>('imgRef');
+
+  ngAfterViewChecked() {
+    this.img().nativeElement.classList.add(
+      `max-w-[${this.width()}px]`,
+      `max-h-[${this.height()}px]`
+    );
+  }
 }
