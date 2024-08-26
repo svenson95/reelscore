@@ -101,18 +101,14 @@ const analyzeTeamPerformance = (
       return 'MIDDLE';
     }
   } else {
-    if (shotsOnGoal >= 4 && shotsTotal >= 8) {
-      return 'MIDDLE';
-    } else {
-      if (shotsOnGoal >= 3 && shotsTotal >= 5) {
-        if (goals >= 1 && luckyGoals <= 0) {
-          return 'HIGH';
-        } else {
-          return 'MIDDLE';
-        }
+    if (shotsOnGoal >= 3 && shotsTotal >= 5) {
+      if (goals > 1 && luckyGoals <= 0) {
+        return 'HIGH';
       } else {
-        return 'LOW';
+        return 'MIDDLE';
       }
+    } else {
+      return 'LOW';
     }
   }
 };
