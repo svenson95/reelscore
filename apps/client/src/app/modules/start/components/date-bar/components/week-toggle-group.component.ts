@@ -55,7 +55,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/models';
       hideSingleSelectionIndicator
       [value]="selectedDay()"
     >
-      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Zurück">
+      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Gestern">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
       @for(day of weekdays(); track day) {
@@ -67,7 +67,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/models';
         {{ day | date : 'ccc' }}
       </mat-button-toggle>
       }
-      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Weiter">
+      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Morgen">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
@@ -84,9 +84,9 @@ export class WeekToggleGroupComponent {
   }
 
   setDateTo(value: number): void {
-    const oneWeek = value * 7;
     const date = new Date(this.selectedDay());
-    date.setDate(date.getDate() + oneWeek);
-    this.dateSelected.emit(toIsoString(date));
+    date.setDate(date.getDate() + value);
+    const formattedDate = toIsoString(date);
+    this.dateSelected.emit(formattedDate);
   }
 }
