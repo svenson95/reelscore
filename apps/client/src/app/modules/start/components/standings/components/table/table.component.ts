@@ -74,7 +74,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
-          Mannschaft
+          {{ data().league.name }}
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
