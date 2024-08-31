@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   input,
+  signal,
   viewChild,
 } from '@angular/core';
 
@@ -22,6 +23,8 @@ import {
       [width]="width()"
       [height]="height()"
       #imgRef
+      (load)="isLoaded.set(true)"
+      [hidden]="!isLoaded()"
     />
   `,
 })
@@ -33,6 +36,7 @@ export class OptimizedImageComponent implements AfterViewChecked {
   height = input<string>();
 
   img = viewChild.required<ElementRef<HTMLImageElement>>('imgRef');
+  isLoaded = signal<boolean>(false);
 
   ngAfterViewChecked() {
     this.img().nativeElement.classList.add(
