@@ -9,7 +9,6 @@ import express from 'express';
 import helmet from 'helmet';
 dotenv.config();
 
-import { cron } from './controllers';
 import { DBHelper } from './middleware';
 import {
   fixtureEvaluations,
@@ -34,8 +33,6 @@ app.use('/fixture-statistics', fixturesStatistics);
 // app.use('/players-statistics', playersStatistics);
 app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
-
-app.use('/cron', cron);
 
 DBHelper.init();
 
