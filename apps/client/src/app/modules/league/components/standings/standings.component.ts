@@ -24,7 +24,7 @@ import { TableComponent } from './components';
     } @else if (standings() === null) {
     <p class="no-data">Keine Tabelle gefunden.</p>
     } @else {
-    <reelscore-standings-table [data]="standings()!" />
+    <reelscore-league-standings-table [data]="standings()!" />
     }
   `,
 })

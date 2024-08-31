@@ -13,7 +13,7 @@ import { BreakpointObserverService } from '@app/services';
 import { StandingsDTO } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-standings-table',
+  selector: 'reelscore-league-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatTableModule, OptimizedImageComponent, TeamNamePipe],
