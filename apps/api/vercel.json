@@ -15,9 +15,9 @@
   ],
   "crons": [
     {
+      "path": "/cron",
       "name": "every-minute",
-      "schedule": "*/1 * * * *",
-      "command": "src/main.ts"
+      "schedule": "*/1 * * * *"
     }
   ]
 }
