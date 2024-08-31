@@ -35,7 +35,14 @@ import { CompetitionFixtures } from '../../../../models';
       border-radius: var(--mat-standard-button-toggle-shape);
     }
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px]; }
-    .header span { @apply text-fb-font-size-body-1; }
+    .header span { 
+      -webkit-font-smoothing: antialiased;
+      color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
+      font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
+      line-height: var(--mat-table-header-headline-line-height);
+      font-size: var(--mat-table-header-headline-size, 14px);
+      font-weight: var(--mat-table-header-headline-weight, 500);
+    }
     ul { @apply w-full text-fb-font-size-body-2; }
     li { @apply bg-white; }
     li > a { @apply flex items-center; }
