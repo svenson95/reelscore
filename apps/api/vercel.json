@@ -15,7 +15,7 @@
   ],
   "crons": [
     {
-      "path": "/api/src/controllers/cron",
+      "path": "src/controllers/cron",
       "schedule": "*/1 * * * *"
     }
   ]
