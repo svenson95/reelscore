@@ -23,7 +23,7 @@ export type StandingRanks = {
 };
 
 export type CompetitionUrl = string;
-export type CompetitionId = string;
+export type CompetitionId = number;
 export type CompetitionLabel = string;
 
 export type League = {

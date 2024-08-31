@@ -168,7 +168,7 @@ export class MatchComponent extends RouterView implements OnInit {
     );
     if (!fixture || !league) return;
 
-    const fixtureLeagueId = String(fixture.league.id);
+    const fixtureLeagueId = fixture.league.id;
     const invalidUrl = fixtureLeagueId !== league.id;
     if (invalidUrl) {
       this.redirectTo(fixtureLeagueId, fixture.fixture.id);
