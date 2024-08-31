@@ -69,7 +69,6 @@ export const getFixturesByDate = async (req, res, date, next) => {
         'fixture.id': 1,
         'league.name': 1,
         'league.id': 1,
-        'league.logo': 1,
         'score.fulltime': 1,
         teams: 1,
       });
