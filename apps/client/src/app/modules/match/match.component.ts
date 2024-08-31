@@ -60,12 +60,8 @@ import { StatisticsStore } from './store/statistics.store';
   ],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
-    .header {
-      @apply flex flex-col justify-between gap-5;
-    }
-    .header > div { @apply flex justify-between items-center; }
-    .dates { @apply flex gap-5; }
-    .match-header { 
+    .header > div { @apply flex gap-5; }
+    .match-header {
       margin-top: -1.25rem;
       padding-top: 1.25rem;
       position: sticky;
@@ -92,6 +88,9 @@ import { StatisticsStore } from './store/statistics.store';
     :host ::ng-deep .foobar > div {
       @apply flex flex-col gap-5;
     }
+    .spacer {
+      flex: 1;
+    }
   `,
   template: `
     <ng-container *ngIf="data as match">
@@ -103,15 +102,18 @@ import { StatisticsStore } from './store/statistics.store';
       <section class="header">
         <div>
           <reelscore-back-button [date]="match.fixture()!.fixture.date" />
+          <button mat-button disabled>
+            {{ match.fixture()!.fixture.date | date : 'dd.MM.yy' }}
+          </button>
 
-          <div class="dates">
-            <button mat-button disabled>
-              {{ match.fixture()!.fixture.date | date : 'ccc' }}
-            </button>
-            <button mat-button disabled>
-              {{ match.fixture()!.fixture.date | date : 'HH:mm' }}
-            </button>
-          </div>
+          <div class="spacer"></div>
+
+          <button mat-button disabled>
+            {{ match.fixture()!.fixture.date | date : 'ccc' }}
+          </button>
+          <button mat-button disabled>
+            {{ match.fixture()!.fixture.date | date : 'HH:mm' }}
+          </button>
         </div>
       </section>
 
