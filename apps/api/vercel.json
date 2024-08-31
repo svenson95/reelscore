@@ -16,7 +16,6 @@
   "crons": [
     {
       "path": "/cron",
-      "name": "every-minute-1",
       "schedule": "*/1 * * * *"
     }
   ]
