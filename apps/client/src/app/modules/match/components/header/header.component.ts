@@ -10,7 +10,7 @@ import {
 import { OptimizedImageComponent } from '@app/components';
 import { TeamNamePipe } from '@app/pipes';
 import { BreakpointObserverService } from '@app/services';
-import { FixtureDTO } from '@lib/models';
+import { FixtureDTO, logoFromAssets } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-header',
@@ -29,7 +29,7 @@ import { FixtureDTO } from '@lib/models';
   template: `
     <div class="team-column">
       <reelscore-optimized-image
-        [source]="data().teams.home.logo"
+        [source]="logoFromAssets(data().teams.home.id)"
         alternate="home logo"
         width="36"
         height="36"
@@ -53,7 +53,7 @@ import { FixtureDTO } from '@lib/models';
 
     <div class="team-column">
       <reelscore-optimized-image
-        [source]="data().teams.away.logo"
+        [source]="logoFromAssets(data().teams.away.id)"
         alternate="away logo"
         width="36"
         height="36"
@@ -74,4 +74,6 @@ export class MatchHeaderComponent {
 
   isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
   isMobile = this.bos.isMobile;
+
+  logoFromAssets = logoFromAssets;
 }

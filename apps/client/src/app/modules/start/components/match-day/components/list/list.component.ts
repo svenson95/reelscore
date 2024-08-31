@@ -7,7 +7,12 @@ import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
-import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionUrl,
+  FixtureDTO,
+  logoFromAssets,
+} from '@lib/models';
 import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 
@@ -49,7 +54,9 @@ import { CompetitionFixtures } from '../../../../models';
   template: `
     <div class="header">
       <reelscore-optimized-image
-        [source]="competition().fixtures[0].league.logo"
+        [source]="
+          'assets/images/league/' + competition().fixtures[0].league.id + '.png'
+        "
         alternate=""
         width="24"
         height="24"
@@ -72,7 +79,7 @@ import { CompetitionFixtures } from '../../../../models';
           <section class="teams">
             <div>
               <reelscore-optimized-image
-                [source]="item.teams.home.logo"
+                [source]="logoFromAssets(item.teams.home.id)"
                 alternate="home logo"
                 width="12"
                 height="12"
@@ -81,7 +88,7 @@ import { CompetitionFixtures } from '../../../../models';
             </div>
             <div>
               <reelscore-optimized-image
-                [source]="item.teams.away.logo"
+                [source]="logoFromAssets(item.teams.away.id)"
                 alternate="away logo"
                 width="12"
                 height="12"
@@ -98,6 +105,8 @@ import { CompetitionFixtures } from '../../../../models';
 export class MatchDayListComponent {
   routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
   competition = input.required<CompetitionFixtures>();
+
+  logoFromAssets = logoFromAssets;
 
   linkToMatch(data: FixtureDTO): string[] {
     const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
