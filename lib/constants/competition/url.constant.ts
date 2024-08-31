@@ -8,6 +8,11 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   [CompetitionCode.EUROPA_UEFA_SUPER_CUP]: 'uefa-super-cup',
 
   // International
+  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: '4',
+  // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: '21',
+  // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: '1',
+  // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: '15',
+  [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: '5',
 
   // Deutschland
   [CompetitionCode.GERMANY_BUNDESLIGA]: 'bundesliga',

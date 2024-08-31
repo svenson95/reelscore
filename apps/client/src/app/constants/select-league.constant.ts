@@ -211,7 +211,15 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   },
   {
     label: 'International',
-    competitions: [],
+    competitions: [
+      {
+        image: 'https://media-3.api-sports.io/flags/eu.svg',
+        label: COMPETITION_LABEL.INTERNATIONAL_UEFA_NATIONS_LEAGUE,
+        id: COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE,
+        url: COMPETITION_URL.INTERNATIONAL_UEFA_NATIONS_LEAGUE,
+        size: 18,
+      },
+    ],
   },
 ];
 export const SELECT_COMPETITION_DATA_FLAT = SELECT_COMPETITION_DATA.flatMap(
