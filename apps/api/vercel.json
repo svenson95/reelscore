@@ -15,8 +15,8 @@
   ],
   "crons": [
     {
-      "name": "every-5-minutes",
-      "schedule": "*/5 * * * *",
+      "name": "every-minute",
+      "schedule": "*/1 * * * *",
       "command": "src/main.ts"
     }
   ]
