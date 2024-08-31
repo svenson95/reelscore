@@ -12,11 +12,5 @@
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
-  ],
-  "crons": [
-    {
-      "path": "/cron",
-      "schedule": "*/1 * * * *"
-    }
   ]
 }
