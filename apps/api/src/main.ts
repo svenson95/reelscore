@@ -9,7 +9,7 @@ import express from 'express';
 import helmet from 'helmet';
 dotenv.config();
 
-import { cron } from './controllers';
+import { cron } from './controllers/cron';
 import { DBHelper } from './middleware';
 import {
   fixtureEvaluations,
