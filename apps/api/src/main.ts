@@ -20,6 +20,7 @@ import {
 } from './routes';
 
 const app = express();
+app.use('/cron', cron);
 app.use(express.json());
 app.use(
   cors({
@@ -34,8 +35,6 @@ app.use('/fixture-statistics', fixturesStatistics);
 // app.use('/players-statisticss', playersStatistics);
 app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
-
-app.use('/cron', cron);
 
 DBHelper.init();
 
