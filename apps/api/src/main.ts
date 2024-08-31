@@ -30,6 +30,7 @@ app.use(helmet());
 app.use('/standings', standings);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
+// app.use('/players-statistics', playersStatistics);
 app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
 
