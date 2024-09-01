@@ -25,6 +25,7 @@ export type StandingRanks = {
 export type CompetitionUrl = string;
 export type CompetitionId = number;
 export type CompetitionLabel = string;
+export type CompetitionRound = string;
 
 export type League = {
   id: CompetitionId;
@@ -33,6 +34,6 @@ export type League = {
   logo: string;
   flag: string;
   season: number;
-  round: string;
+  round: CompetitionRound;
   standings?: StandingRanks[][];
 };

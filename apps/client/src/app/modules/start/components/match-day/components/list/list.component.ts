@@ -1,11 +1,16 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { TeamNamePipe } from '@app/pipes';
+import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import {
   CompetitionId,
@@ -26,6 +31,7 @@ import { CompetitionFixtures } from '../../../../models';
     MatRippleModule,
     OptimizedImageComponent,
     TeamNamePipe,
+    CompetitionRoundPipe,
   ],
   providers: [FixtureStore],
   styles: `
@@ -33,6 +39,8 @@ import { CompetitionFixtures } from '../../../../models';
       @apply flex flex-col overflow-hidden border;
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
+
+      --mat-table-header-headline-line-height: 18px;
     }
     .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px] items-center; }
     .header span { 
@@ -42,6 +50,8 @@ import { CompetitionFixtures } from '../../../../models';
       line-height: var(--mat-table-header-headline-line-height);
       font-size: var(--fb-font-size-body-2);
       font-weight: var(--mat-table-header-headline-weight, 500);
+
+      &.gray { @apply text-fb-color-text-2; }
     }
     ul { @apply w-full text-fb-font-size-body-2; }
     li { @apply bg-white; }
@@ -57,6 +67,7 @@ import { CompetitionFixtures } from '../../../../models';
     }
     .teams { @apply align-middle pl-2; }
     .teams > div { @apply flex items-center gap-2; }
+    .spacer { @apply flex-1; }
   `,
   template: `
     <div class="header">
@@ -69,6 +80,10 @@ import { CompetitionFixtures } from '../../../../models';
         height="24"
       />
       <span>{{ competition().name }}</span>
+      <div class="spacer"></div>
+      <span class="gray">
+        {{ round() | competitionRound : 'header' }}
+      </span>
     </div>
     <ul>
       @for(item of competition().fixtures; track item.fixture.id) {
@@ -112,6 +127,11 @@ import { CompetitionFixtures } from '../../../../models';
 export class MatchDayListComponent {
   routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
   competition = input.required<CompetitionFixtures>();
+
+  round = computed(() => {
+    const fixture = this.competition().fixtures[0];
+    return fixture ? fixture.league.round : '';
+  });
 
   logoFromAssets = logoFromAssets;
 
