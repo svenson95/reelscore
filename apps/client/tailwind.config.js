@@ -16,6 +16,7 @@ module.exports = {
         'fb-color-black-1': 'var(--fb-color-black-1)',
         'fb-color-black-2': 'var(--fb-color-black-2)',
         'fb-color-white': 'var(--fb-color-white)',
+        'fb-color-white-2': 'var(--fb-color-white-2)',
         'fb-color-green-1': 'var(--fb-color-green-1)',
         'fb-color-green-1-light': 'var(--fb-color-green-1-light)',
         'fb-color-green-2': 'var(--fb-color-green-2)',
