@@ -5,7 +5,7 @@ export const longTeamName = (value: string): string => {
       return 'FC Bayern München';
     case 'Bayern München':
       return 'FC Bayern München';
-    case 'VfL Bochum':
+    case 'Vfl Bochum':
       return 'VfL Bochum';
     case 'Eintracht Frankfurt':
       return 'Eintracht Frankfurt';
@@ -17,6 +17,8 @@ export const longTeamName = (value: string): string => {
       return '1. FC Köln';
     case 'Bayer Leverkusen':
       return 'Bayer 04 Leverkusen';
+    case 'Borussia Monchengladbach':
+      return 'Borussia Mönchengladbach';
 
     // 2. Bundesliga
     case 'SpVgg Greuter Furth':
@@ -26,6 +28,8 @@ export const longTeamName = (value: string): string => {
     case 'SSV ULM 1846':
       return 'SSV Ulm 1846';
     case 'Preussen Münster':
+      return 'Preußen Münster';
+    case 'Preussen Munster':
       return 'Preußen Münster';
     case 'FC Nurnberg':
       return 'FC Nürnberg';
@@ -183,6 +187,10 @@ export const longTeamName = (value: string): string => {
       return 'US Lecce';
     case 'Monza':
       return 'AC Monza';
+
+    // Europa
+    case 'Slavia Praha':
+      return 'Slavia Prag';
 
     // International
     case 'Northern Ireland':
