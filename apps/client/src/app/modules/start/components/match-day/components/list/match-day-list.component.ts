@@ -58,14 +58,24 @@ import { CompetitionFixtures } from '../../../../models';
     li > a { @apply flex items-stretch; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply justify-center items-center min-w-[55px]; }
+    .time { @apply justify-center items-center min-w-[50px]; }
     .time, .result { 
-      @apply flex text-center;
-      border-right: 1px solid var(--mat-standard-button-toggle-divider-color); 
+      @apply flex text-center justify-center;
     }
-    .result { @apply flex-col align-middle justify-center px-2 gap-1; }
-    .teams { @apply flex flex-col align-middle pl-2 py-2 gap-1; }
-    .teams > div { @apply flex items-center gap-2; }
+    .result { 
+      @apply min-w-[59px] items-center px-2 gap-1; 
+      border-right: 1px solid var(--mat-standard-button-toggle-divider-color); 
+      border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
+    }
+    .teams { @apply w-full flex p-2 gap-3; }
+    .teams > div:not(.result) { @apply flex items-center gap-3; }
+    .teams > div:first-of-type { 
+      @apply justify-end text-end; 
+      width: calc(50% - 50px);
+    }
+    .teams > div:last-of-type { 
+      width: 50%;
+    }
     .spacer { @apply flex-1; }
   `,
   template: `
@@ -91,30 +101,37 @@ import { CompetitionFixtures } from '../../../../models';
           <section class="time">
             <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
           </section>
-          @if (item.score.fulltime.home !== null) {
-          <section class="result">
-            <span>{{ item.score.fulltime.home }}</span>
-            <span>{{ item.score.fulltime.away }}</span>
-          </section>
-          }
           <section class="teams">
             <div>
+              <span>{{ item.teams.home.name | teamName : 'short' }}</span>
               <reelscore-optimized-image
                 [source]="logoFromAssets(item.teams.home.id)"
                 alternate="home logo"
-                width="12"
-                height="12"
+                width="14"
+                height="14"
               />
-              <span>{{ item.teams.home.name | teamName }}</span>
+            </div>
+            <div class="result">
+              @if (item.score.fulltime.home !== null && item.score.fulltime.away
+              !== null) {
+              <span>
+                {{ item.score.fulltime.home }} -
+                {{ item.score.fulltime.away }}
+              </span>
+              } @if (item.fixture.status.short === 'NS') {
+              <span>-</span>
+              } @if (item.fixture.status.short === "PST") {
+              <span>abgesagt</span>
+              }
             </div>
             <div>
               <reelscore-optimized-image
                 [source]="logoFromAssets(item.teams.away.id)"
                 alternate="away logo"
-                width="12"
-                height="12"
+                width="14"
+                height="14"
               />
-              <span>{{ item.teams.away.name | teamName }}</span>
+              <span>{{ item.teams.away.name | teamName : 'short' }}</span>
             </div>
           </section>
         </a>
