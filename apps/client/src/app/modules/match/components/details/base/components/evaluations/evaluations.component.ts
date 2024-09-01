@@ -43,7 +43,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         &.loss, &.low { @apply bg-red-500 text-white; }
         &.draw, &.middle { @apply bg-gray-200; }
         &.win, &.high { @apply bg-green-500 text-white; }
-        &.match-postponed, &.match-not-started, &.no-statistics-available { 
+        &.match-postponed, &.match-not-started, &.no-statistics-available, &.no-result-available { 
           @apply bg-gray-500 text-white font-bold; 
         }
       }
@@ -67,9 +67,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         <div class="evaluation">
           <div class="team">
             @for (result of home()!.results.reverse(); track result) {
-            <span [class]="result.toLowerCase()">
+            <span [class]="result.toLowerCase().split('_').join('-')">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
-              ("WIN") {S} }
+              ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
             </span>
             }
           </div>
@@ -78,9 +78,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
           <div class="team">
             @for (result of away()!.results; track result) {
-            <span [class]="result.toLowerCase()">
+            <span [class]="result.toLowerCase().split('_').join('-')">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
-              ("WIN") {S} }
+              ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
             </span>
             }
           </div>

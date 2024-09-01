@@ -26,10 +26,6 @@ export const getFixtureEvaluations = async (req, res, next) => {
     fixtureDoc.fixture.date
   );
 
-  if (homeFixtures.length === 0 && awayFixtures.length === 0) {
-    return next(null);
-  }
-
   const analyzedFixtures = async (
     fixtures: FixtureDTO[],
     teamId: number
@@ -125,6 +121,9 @@ const analyzePerformances = async (
     const statistics = teams[teamIndex] as StatisticDTO;
     return analyzeTeamPerformance(statistics, fixture);
   });
+  while (performances.length < 5) {
+    performances.push(Promise.resolve('NO_STATISTICS_AVAILABLE'));
+  }
   return Promise.all(performances);
 };
 
@@ -135,6 +134,9 @@ const analyzeResults = async (
   const mapped = fixtures.map(async (fixture) => {
     return analyzeTeamResult(teamId, fixture);
   });
+  while (mapped.length < 5) {
+    mapped.push(Promise.resolve('NO_RESULT_AVAILABLE'));
+  }
   return Promise.all(mapped);
 };
 

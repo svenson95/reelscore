@@ -6,7 +6,7 @@ export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };
 export type FixtureStatus = { long: string; short: string; elapsed: number };
-export type FixtureResult = 'WIN' | 'DRAW' | 'LOSS';
+export type FixtureResult = 'NO_RESULT_AVAILABLE' | 'WIN' | 'DRAW' | 'LOSS';
 export interface Fixture {
   id: FixtureId;
   referee: string;
