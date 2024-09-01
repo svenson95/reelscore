@@ -19,7 +19,7 @@ export const shortTeamName = (value: string): string => {
       return 'Hertha';
     case '1899 Hoffenheim':
       return 'Hoffenheim';
-    case 'FC Heidenheim':
+    case '1. FC Heidenheim':
       return 'Heidenheim';
     case 'Borussia Dortmund':
       return 'Dortmund';
