@@ -36,6 +36,42 @@ export const shortTeamName = (value: string): string => {
     case 'Werder Bremen':
       return 'Bremen';
 
+    // 2. Bundesliga
+    case 'SC Paderborn 07':
+      return 'Paderborn';
+    case 'SSV Ulm 1846':
+      return 'Ulm';
+    case 'FC Schalke 04':
+      return 'Schalke';
+    case '1. FC Köln':
+      return 'Köln';
+    case 'Eintrach Braunschweig':
+      return 'Braunschweig';
+    case 'Karlsruher SC':
+      return 'Karlsruhe';
+    case 'Hambuger SV':
+      return 'Hamburg';
+    case 'Preußen Münster':
+      return 'Münster';
+    case '1. FC Nürnberg':
+      return 'Nürnberg';
+    case '1. FC Magdeburg':
+      return 'Magdeburg';
+    case 'SV Elversberg':
+      return 'Elversberg';
+    case '1. FC Kaiserslautern':
+      return 'Kaiserslautern';
+    case 'Hertha BSC':
+      return 'Hertha';
+    case 'Fortuna Düsseldorf':
+      return 'Düsseldorf';
+    case 'Hannover 96':
+      return 'Hannover';
+    case 'SSV Jahn Regensburg':
+      return 'Regensburg';
+    case 'SpVgg Greuther Fürth':
+      return 'Fürth';
+
     // Premiere League
     case 'Nottingham Forest':
       return 'Nottingham';
@@ -86,5 +122,89 @@ export const shortTeamName = (value: string): string => {
 
     default:
       return value;
+
+    // International
+    case 'Northern Ireland':
+      return 'Nordirland';
+    case 'Azerbaijan':
+      return 'Aserbaidschan';
+    case 'Sweden':
+      return 'Schweden';
+    case 'Croatia':
+      return 'Kroatien';
+    case 'Denmark':
+      return 'Dänemark';
+    case 'Switzerland':
+      return 'Schweiz';
+    case 'Scotland':
+      return 'Schottland';
+    case 'Poland':
+      return 'Polen';
+    case 'Serbia':
+      return 'Serbien';
+    case 'Spain':
+      return 'Spanien';
+    case 'Bulgaria':
+      return 'Bulgarien';
+    case 'Estonia':
+      return 'Estland';
+    case 'Slovakia':
+      return 'Slowakei';
+    case 'Luxembourg':
+      return 'Luxemburg';
+    case 'Lithuania':
+      return 'Litauen';
+    case 'Cyprus':
+      return 'Zypern';
+    case 'France':
+      return 'Frankreich';
+    case 'Italy':
+      return 'Italien';
+    case 'Belgium':
+      return 'Belgien';
+    case 'Romania':
+      return 'Rumänien';
+    case 'Faroe Islands':
+      return 'Färöer';
+    case 'FYR Macedonia':
+      return 'Nordmazedonien';
+    case 'Armenia':
+      return 'Armenien';
+    case 'Latvia':
+      return 'Lettland';
+    case 'Moldova':
+      return 'Moldawien';
+    case 'Netherlands':
+      return 'Niederlande';
+    case 'Bosnia & Herzegovina':
+      return 'Bosnien-Herzegowina';
+    case 'Germany':
+      return 'Deutschland';
+    case 'Hungary':
+      return 'Ungarn';
+    case 'Kazakhstan':
+      return 'Kasachstan';
+    case 'Norway':
+      return 'Norwegen';
+    case 'Iceland':
+      return 'Island';
+    case 'Slovenia':
+      return 'Slowenien';
+    case 'Austria':
+      return 'Österreich';
+    case 'Türkiye':
+      return 'Türkei';
+    case 'Georgia':
+      return 'Georgien';
+    case 'Czech Republic':
+      return 'Tschechien';
+    case 'Rep. of Ireland':
+      return 'Irland';
+    case 'Greece':
+      return 'Griechenland';
+    case 'Finland':
+      return 'Finnland';
+    case 'Albania':
+      return 'Albanien';
   }
 };
