@@ -64,10 +64,8 @@ import { CompetitionFixtures } from '../../../../models';
     }
     .result { 
       @apply min-w-[59px] items-center px-2 gap-1; 
-      border-right: 1px solid var(--mat-standard-button-toggle-divider-color); 
-      border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
-    .teams { @apply w-full flex p-2 gap-3; }
+    .teams { @apply w-full flex p-2; }
     .teams > div:not(.result) { @apply flex items-center gap-3; }
     .teams > div:first-of-type { 
       @apply justify-end text-end; 
