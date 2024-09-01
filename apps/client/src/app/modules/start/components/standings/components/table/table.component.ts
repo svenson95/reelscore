@@ -34,7 +34,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
     td { @apply py-[4px] leading-[16px]; }
 
     td, th { &:first-of-type {
-      @apply pr-0 pl-1 text-center;
+      @apply pr-0 pl-2 text-center;
     } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
