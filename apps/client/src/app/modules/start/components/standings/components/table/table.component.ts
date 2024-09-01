@@ -26,27 +26,29 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
 
     table {
       --mat-table-header-headline-size: var(--fb-font-size-body-2);
-      --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
+      --mat-table-row-item-label-text-size: var(--fb-font-size-small);
       --mat-table-header-container-height: 49px;
-      --mat-table-row-item-container-height: 30.23px;
+      --mat-table-row-item-container-height: 27px;
     }
 
-    td { @apply py-[6px] leading-[16px]; }
+    td { @apply py-[4px] leading-[16px]; }
 
     td, th { &:first-of-type {
       @apply pr-0 text-center;
     } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.name-column { min-width: 120px; }
+      &.rank-column { width: 40px; }
 
       &.number-column {
         padding: 0 5px 0 5px;
         text-align: center;
+        width: 30px;
       }
 
       &.points-column {
         @apply text-center;
+        width: 30px;
       }
     }
 
@@ -61,7 +63,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
   template: `
     <table mat-table [dataSource]="data().league.standings![0]">
       <ng-container matColumnDef="rank">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef class="rank-column">
           <reelscore-optimized-image
             [source]="'assets/images/league/' + data().league.id + '.png'"
             alternate="league logo"
@@ -69,7 +71,9 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
             height="24"
           />
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
+        <td mat-cell *matCellDef="let element" class="rank-column">
+          {{ element.rank }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="team">
