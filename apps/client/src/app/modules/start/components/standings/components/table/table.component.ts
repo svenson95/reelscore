@@ -87,8 +87,8 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
             <reelscore-optimized-image
               [source]="logoFromAssets(element.team.id)"
               alternate="team logo"
-              width="12"
-              height="12"
+              width="14"
+              height="14"
             />
             <span>{{ element.team.name | teamName : 'short' }}</span>
           </div>
