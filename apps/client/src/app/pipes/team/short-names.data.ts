@@ -1,17 +1,23 @@
 export const shortTeamName = (value: string): string => {
   switch (value) {
     // Bundesliga
-    case 'Borussia Monchengladbach':
+    case 'Borussia Mönchengladbach':
       return "M'Gladbach";
     case 'SV Darmstadt 98':
       return 'Darmstadt';
+    case 'Bayern München':
+      return 'Bayern';
     case 'Bayern Munich':
       return 'Bayern';
-    case 'VfL BOCHUM':
+    case 'VfL Bochum':
       return 'Bochum';
     case 'Eintracht Frankfurt':
       return 'Frankfurt';
     case 'FC Koln':
+      return 'Köln';
+    case '1.FC Köln':
+      return 'Köln';
+    case '1. FC Köln':
       return 'Köln';
     case 'Bayer Leverkusen':
       return 'Leverkusen';
@@ -20,6 +26,8 @@ export const shortTeamName = (value: string): string => {
     case '1899 Hoffenheim':
       return 'Hoffenheim';
     case '1. FC Heidenheim':
+      return 'Heidenheim';
+    case 'FC Heidenheim':
       return 'Heidenheim';
     case 'Borussia Dortmund':
       return 'Dortmund';
@@ -39,21 +47,23 @@ export const shortTeamName = (value: string): string => {
     // 2. Bundesliga
     case 'SC Paderborn 07':
       return 'Paderborn';
-    case 'SSV Ulm 1846':
+    case 'SSV ULM 1846':
       return 'Ulm';
     case 'FC Schalke 04':
       return 'Schalke';
-    case '1. FC Köln':
-      return 'Köln';
     case 'Eintrach Braunschweig':
       return 'Braunschweig';
     case 'Karlsruher SC':
       return 'Karlsruhe';
     case 'Hamburger SV':
       return 'Hamburg';
+    case 'Preußen Münster':
+      return 'Münster';
     case 'Preussen Münster':
       return 'Münster';
     case '1. FC Nürnberg':
+      return 'Nürnberg';
+    case 'FC Nurnberg':
       return 'Nürnberg';
     case '1. FC Magdeburg':
       return 'Magdeburg';
@@ -61,15 +71,19 @@ export const shortTeamName = (value: string): string => {
       return 'Elversberg';
     case '1. FC Kaiserslautern':
       return 'Kaiserslautern';
+    case 'FC Kaiserslautern':
+      return 'Kaiserslautern';
     case 'Hertha BSC':
       return 'Hertha';
-    case 'Fortuna Düsseldorf':
+    case 'Fortuna Dusseldorf':
       return 'Düsseldorf';
     case 'Hannover 96':
       return 'Hannover';
-    case 'SSV Jahn Regensburg':
+    case 'Jahn Regensburg':
       return 'Regensburg';
     case 'SpVgg Greuther Fürth':
+      return 'Fürth';
+    case 'SpVgg Greuther Furth':
       return 'Fürth';
     case 'FC Saarbrücken':
       return 'Saarbrücken';
@@ -77,6 +91,10 @@ export const shortTeamName = (value: string): string => {
       return 'Braunschweig';
     case 'SpVgg Greuter Furth':
       return 'Fürth';
+    case 'SV Sandhausen':
+      return 'Sandhausen';
+    case 'Hansa-Rostock':
+      return 'Rostock';
 
     // 3. Liga
     case 'Kickers Offenbach':
@@ -87,6 +105,10 @@ export const shortTeamName = (value: string): string => {
       return 'Hildesheim';
     case 'Würzburger Kickers':
       return 'Würzburger K.';
+    case 'Rot-Weiß Essen':
+      return 'RW Essen';
+    case 'TuS Koblenz':
+      return 'Koblenz';
 
     // Premiere League
     case 'Nottingham Forest':

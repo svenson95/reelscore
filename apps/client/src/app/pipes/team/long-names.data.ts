@@ -1,24 +1,36 @@
 export const longTeamName = (value: string): string => {
   switch (value) {
     // Bundesliga
-    case 'Borussia Monchengladbach':
-      return 'Borussia Mönchengladbach';
     case 'Bayern Munich':
       return 'FC Bayern München';
-    case 'VfL BOCHUM':
+    case 'Bayern München':
+      return 'FC Bayern München';
+    case 'VfL Bochum':
       return 'VfL Bochum';
     case 'Eintracht Frankfurt':
       return 'Eintracht Frankfurt';
     case 'Hertha Berlin':
       return 'Hertha BSC';
     case 'FC Koln':
-      return '1.FC Köln';
+      return '1. FC Köln';
+    case '1.FC Köln':
+      return '1. FC Köln';
     case 'Bayer Leverkusen':
       return 'Bayer 04 Leverkusen';
 
     // 2. Bundesliga
     case 'SpVgg Greuter Furth':
       return 'SpVgg Greuter Fürth';
+    case 'Fortuna Dusseldorf':
+      return 'Fortuna Düsseldorf';
+    case 'SSV ULM 1846':
+      return 'SSV Ulm 1846';
+    case 'Preussen Münster':
+      return 'Preußen Münster';
+    case 'FC Nurnberg':
+      return 'FC Nürnberg';
+    case '1.FC Heidenheim':
+      return '1. FC Heidenheim';
 
     // Premiere League
     case 'Arsenal':
