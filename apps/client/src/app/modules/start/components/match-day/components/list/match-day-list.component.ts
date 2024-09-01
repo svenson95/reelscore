@@ -42,7 +42,7 @@ import { CompetitionFixtures } from '../../../../models';
 
       --mat-table-header-headline-line-height: 18px;
     }
-    .header { @apply flex px-4 py-3 gap-3 bg-white border-b-[1px] items-center; }
+    .header { @apply flex px-3 py-2 gap-3 bg-white border-b-[1px] items-center; }
     .header span { 
       -webkit-font-smoothing: antialiased;
       color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
@@ -63,7 +63,7 @@ import { CompetitionFixtures } from '../../../../models';
       @apply flex text-center justify-center;
     }
     .result { 
-      @apply min-w-[59px] items-center px-2 gap-1; 
+      @apply min-w-[75px] items-center px-2 gap-1; 
     }
     .teams { @apply w-full flex p-2; }
     .teams > div:not(.result) { @apply flex items-center gap-3; }
@@ -74,6 +74,7 @@ import { CompetitionFixtures } from '../../../../models';
     .teams > div:last-of-type { 
       width: 50%;
     }
+    .team-name-label { line-height: 14px; }
     .spacer { @apply flex-1; }
   `,
   template: `
@@ -97,7 +98,9 @@ import { CompetitionFixtures } from '../../../../models';
       <li>
         <a matRipple [routerLink]="linkToMatch(item)">
           <section class="time">
-            <span>{{ item.fixture.date | date : 'HH:mm' }}</span>
+            <span class="team-name-label">
+              {{ item.fixture.date | date : 'HH:mm' }}
+            </span>
           </section>
           <section class="teams">
             <div>
@@ -129,7 +132,9 @@ import { CompetitionFixtures } from '../../../../models';
                 width="14"
                 height="14"
               />
-              <span>{{ item.teams.away.name | teamName : 'short' }}</span>
+              <span class="team-name-label">
+                {{ item.teams.away.name | teamName : 'short' }}
+              </span>
             </div>
           </section>
         </a>
