@@ -63,7 +63,7 @@ import { CompetitionFixtures } from '../../../../models';
       @apply flex text-center justify-center;
     }
     .result { 
-      @apply min-w-[59px] items-center px-3 gap-1; 
+      @apply min-w-[45px] items-center gap-1; 
     }
     .teams { @apply w-full flex p-2; }
     .teams > div:not(.result) { @apply flex items-center gap-3; }
