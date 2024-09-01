@@ -69,7 +69,7 @@ import { CompetitionFixtures } from '../../../../models';
     .teams > div:not(.result) { @apply flex items-center gap-3; }
     .teams > div:first-of-type { 
       @apply justify-end text-end; 
-      width: calc(50% - 50px);
+      width: calc(50% - 20px);
     }
     .teams > div:last-of-type { 
       width: 50%;
