@@ -21,7 +21,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
       &:first-of-type { @apply border-b-[1px]; }
       .header { @apply flex justify-between; }
       .section-hints { @apply flex gap-3 items-center text-fb-color-text-2; }
-      .section-title { @apply text-fb-font-size-body-1; }
+      .section-title { @apply text-fb-font-size-body-2 xs:text-fb-font-size-body-1; }
     }
 
     .section-hints, .today { @apply text-fb-font-size-small xs:text-fb-font-size-body-2; }
