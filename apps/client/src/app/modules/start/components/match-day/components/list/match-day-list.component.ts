@@ -116,7 +116,7 @@ import { CompetitionFixtures } from '../../../../models';
               @if (item.score.fulltime.home !== null && item.score.fulltime.away
               !== null) {
               <span>
-                {{ item.score.fulltime.home }} -
+                {{ item.score.fulltime.home }} :
                 {{ item.score.fulltime.away }}
               </span>
               } @if (item.fixture.status.short === 'NS') {
