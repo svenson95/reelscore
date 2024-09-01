@@ -16,6 +16,10 @@ export const longTeamName = (value: string): string => {
     case 'Bayer Leverkusen':
       return 'Bayer 04 Leverkusen';
 
+    // 2. Bundesliga
+    case 'SpVgg Greuter Furth':
+      return 'SpVgg Greuter Fürth';
+
     // Premiere League
     case 'Arsenal':
       return 'Arsenal FC';
