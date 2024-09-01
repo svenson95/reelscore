@@ -73,6 +73,14 @@ export class IsWinnerPipe implements PipeTransform {
           {{ match.score.fulltime.home }} -
           {{ match.score.fulltime.away }}
         </span>
+        } @else if (match.fixture.status.short === 'PST') {
+        <span class="text-fb-font-size-small text-fb-color-text-2">
+          abgesagt
+        </span>
+        } @else if (match.fixture.status.short === 'NS') {
+        <span class="text-fb-font-size-small text-fb-color-text-2">
+          anstehend
+        </span>
         }
       </div>
 
