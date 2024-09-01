@@ -80,15 +80,15 @@ const analyzeTeamPerformance = (
   //   isLuckyGoal(a)
   // ).length;
 
-  if (shotsOnGoal >= 6 && shotsTotal >= 10) {
+  if (shotsOnGoal >= 8 && shotsTotal >= 12) {
     if (goals >= 2 && luckyGoals <= 1) {
       return 'HIGH';
     } else {
       return 'MIDDLE';
     }
   } else {
-    if (shotsOnGoal >= 3 && shotsTotal >= 5) {
-      if (goals > 1 && luckyGoals <= 0) {
+    if (shotsOnGoal >= 4 && shotsTotal >= 8) {
+      if ((goals >= 2 && luckyGoals === 0) || (goals >= 3 && luckyGoals <= 1)) {
         return 'HIGH';
       } else {
         return 'MIDDLE';
