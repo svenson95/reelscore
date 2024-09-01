@@ -43,12 +43,14 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       &.number-column {
         padding: 0 5px 0 5px;
         text-align: center;
-        width: 30px;
       }
 
       &.points-column {
         @apply text-center;
-        width: 30px;
+      }
+
+      &.number-column, &.points-column {
+        @apply w-[20px] md:w-[30px];
       }
     }
 
