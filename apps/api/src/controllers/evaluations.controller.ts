@@ -119,6 +119,8 @@ const analyzePerformances = async (
     if (isMatchPostponed) return 'MATCH_POSTPONED';
 
     const teams = stats.response;
+    if (teams.length === 0) return 'NO_STATISTICS_AVAILABLE';
+
     const teamIndex = teams[0].team.id === teamId ? 0 : 1;
     const statistics = teams[teamIndex] as StatisticDTO;
     return analyzeTeamPerformance(statistics, fixture);
