@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
       --mdc-outlined-button-container-height: 40px;
       @apply p-0 min-w-[36px]; 
       
-      mat-icon { @apply text-[24px] w-[22px] h-[22px] mr-0; }
+      mat-icon { @apply text-[24px] w-[24px] h-[24px] mr-0; }
     }
   `,
   template: `
