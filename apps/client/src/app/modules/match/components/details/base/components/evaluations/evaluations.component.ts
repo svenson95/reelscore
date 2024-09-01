@@ -43,12 +43,18 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         &.loss, &.low { @apply bg-red-500 text-white; }
         &.draw, &.middle { @apply bg-gray-200; }
         &.win, &.high { @apply bg-green-500 text-white; }
+        &.match-postponed, &.match-not-started, &.no-statistics-available { 
+          @apply bg-gray-500 text-white font-bold; 
+        }
       }
     }
   `,
   template: `
     <h3 class="match-section-title">FORM</h3>
     <div class="content">
+      @if (evaluations() === null) {
+      <p class="no-data">Form wird geladen ...</p>
+      } @else {
       <section>
         <div class="header">
           <span class="section-title">Ergebnisse</span>
@@ -60,7 +66,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (result of home().results.reverse(); track result) {
+            @for (result of home()!.results.reverse(); track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} }
@@ -71,7 +77,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (result of away().results; track result) {
+            @for (result of away()!.results; track result) {
             <span [class]="result.toLowerCase()">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} }
@@ -81,7 +87,6 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
       </section>
 
-      @if (hasPerformances()) {
       <section>
         <div class="header">
           <span class="section-title">Performance</span>
@@ -93,11 +98,13 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (performance of home().performances.reverse(); track
+            @for (performance of home()!.performances.reverse(); track
             performance) {
-            <span [class]="performance.toLowerCase()">
+            <span [class]="performance.toLowerCase().split('_').join('-')">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
-              @case ("HIGH") {G} }
+              @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}
+              @case("MATCH_POSTPONED") {-} @case("NO_STATISTICS_AVAILABLE") {-}
+              }
             </span>
             }
           </div>
@@ -105,10 +112,12 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (performance of away().performances; track performance) {
-            <span [class]="performance.toLowerCase()">
+            @for (performance of away()!.performances; track performance) {
+            <span [class]="performance.toLowerCase().split('_').join('-')">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
-              @case ("HIGH") {G} }
+              @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}
+              @case("MATCH_POSTPONED") {-} @case("NO_STATISTICS_AVAILABLE") {-}
+              }
             </span>
             }
           </div>
@@ -119,13 +128,12 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   `,
 })
 export class MatchEvaluationsComponent {
-  evaluations = input.required<EvaluationDTO>();
+  evaluations = input.required<EvaluationDTO | null>();
 
-  home = computed<EvaluationTeam>(() => this.evaluations().teams.home);
-  away = computed<EvaluationTeam>(() => this.evaluations().teams.away);
-
-  hasPerformances = computed<boolean>(() => {
-    const { home, away } = this.evaluations().teams;
-    return home.performances.length > 0 || away.performances.length > 0;
-  });
+  home = computed<EvaluationTeam | undefined>(
+    () => this.evaluations()?.teams.home
+  );
+  away = computed<EvaluationTeam | undefined>(
+    () => this.evaluations()?.teams.away
+  );
 }
