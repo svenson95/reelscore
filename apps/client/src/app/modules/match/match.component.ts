@@ -179,12 +179,8 @@ export class MatchComponent extends RouterView implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     await this.fs.loadFixture(this.fixtureId());
     await this.evs.loadEvaluations(this.fixtureId());
-
-    const isFinished = this.data.fixture()?.fixture.status.short === 'FT';
-    if (isFinished) {
-      await this.ss.loadStatistics(this.fixtureId());
-      await this.es.loadEvents(this.fixtureId());
-    }
+    await this.ss.loadStatistics(this.fixtureId());
+    await this.es.loadEvents(this.fixtureId());
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
