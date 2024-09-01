@@ -1,17 +1,15 @@
+import { RapidDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
-export const findDocument = async <T>(
+export const findDocument = async <T extends RapidDTO<unknown>>(
   Model: mongoose.Model<T>,
   where,
   equals
 ) => {
-  try {
-    const doc = await Model.findOne({ [where]: equals }).lean();
-    if (doc['response']?.length === 0) return null;
-    return doc;
-  } catch (error) {
-    return 'Find document failed';
-  }
+  const doc = await Model.findOne({ [where]: equals }).lean();
+  const response = doc?.response;
+  if (response && response.length === 0) return null;
+  return doc;
 };
 
 // TODO use this util for mongoose models
