@@ -12,7 +12,9 @@ const ROUND_LABEL_TYPES = [
   '1st Qualifying Round',
   '2nd Qualifying Round',
   '3rd Qualifying Round',
+  'Preliminary Round',
   'Play-offs',
+  'Final',
 ];
 
 export const translatedCompetitionRound = (
@@ -41,6 +43,14 @@ const roundString = (round: CompetitionRound): CompetitionRoundLabel => {
   return round.slice(idx, round.length);
 };
 
+const groupstageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
+  const groupIdx = 7;
+  const group = value.slice(groupIdx, groupIdx + 1);
+  const roundIdx = 11;
+  const round = value.slice(roundIdx, value.length);
+  return `Gruppe ${group} #${round}`;
+};
+
 const translateDefault = (
   type: CompetitionRoundType,
   value: CompetitionRound
@@ -55,13 +65,19 @@ const translateDefault = (
     case '3rd Round':
       return '3. Runde';
     case '1st Qualifying Round':
-      return '1. Qualifikationsrunde';
+      return 'Qualifikation 1. Runde';
     case '2nd Qualifying Round':
-      return '2. Qualifikationsrunde';
+      return 'Qualifikation 2. Runde';
     case '3rd Qualifying Round':
-      return '3. Qualifikationsrunde';
+      return 'Qualifikation 3. Runde';
+    case 'League':
+      return groupstageLabel(value);
+    case 'Preliminary Round':
+      return 'Vorrunde';
     case 'Play-offs':
       return 'Ausscheidungsspiele';
+    case 'Final':
+      return 'Finale';
     default:
       return value;
   }
@@ -74,8 +90,6 @@ const translateHeader = (
   switch (type) {
     case 'Regular Season':
       return `${roundString(value)}. Spieltag`;
-    case 'League':
-      return '';
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
@@ -83,13 +97,19 @@ const translateHeader = (
     case '3rd Round':
       return '3. Runde';
     case '1st Qualifying Round':
-      return '1. Runde';
+      return 'Qualifikation #1';
     case '2nd Qualifying Round':
-      return '2. Runde';
+      return 'Qualifikation #2';
     case '3rd Qualifying Round':
-      return '3. Runde';
+      return 'Qualifikation #3';
+    case 'League':
+      return groupstageLabel(value);
+    case 'Preliminary Round':
+      return 'Vorrunde';
     case 'Play-offs':
       return 'Ausscheidungsspiele';
+    case 'Final':
+      return 'Finale';
     default:
       return value;
   }
