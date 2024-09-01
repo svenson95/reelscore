@@ -67,6 +67,7 @@ export const getFixturesByDate = async (req, res, date, next) => {
       .select({
         'fixture.date': 1,
         'fixture.id': 1,
+        'fixture.status': 1,
         'league.name': 1,
         'league.id': 1,
         'league.round': 1,
