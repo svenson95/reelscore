@@ -7,6 +7,7 @@ export const findDocument = async <T>(
 ) => {
   try {
     const doc = await Model.findOne({ [where]: equals }).lean();
+    if (doc['response']?.length === 0) return null;
     return doc;
   } catch (error) {
     return 'Find document failed';

@@ -12,61 +12,47 @@ import { findLatestFixturesForTeam } from './fixtures.controller';
 
 export const getFixtureEvaluations = async (req, res, next) => {
   const fixtureId = req.query.fixture;
-  try {
-    const fixtureDoc = await Fixtures.findOne({
-      'fixture.id': fixtureId,
-    });
+  const fixtureDoc = await Fixtures.findOne({
+    'fixture.id': fixtureId,
+  });
 
-    const homeFixtures = await findLatestFixturesForTeam(
-      fixtureDoc.teams.home.id,
-      fixtureDoc.fixture.date
-    );
+  const homeFixtures = await findLatestFixturesForTeam(
+    fixtureDoc.teams.home.id,
+    fixtureDoc.fixture.date
+  );
 
-    const awayFixtures = await findLatestFixturesForTeam(
-      fixtureDoc.teams.away.id,
-      fixtureDoc.fixture.date
-    );
+  const awayFixtures = await findLatestFixturesForTeam(
+    fixtureDoc.teams.away.id,
+    fixtureDoc.fixture.date
+  );
 
-    if (homeFixtures.length === 0 && awayFixtures.length === 0) {
-      return next(null);
-    }
-
-    const hasUpcomingGames = (fixtures: FixtureDTO[]): boolean =>
-      fixtures.filter((f) => f.goals.home === null).length > 0;
-    if (hasUpcomingGames([...homeFixtures, ...awayFixtures])) {
-      return next(null);
-    }
-
-    const analyzedFixtures = async (
-      fixtures: FixtureDTO[],
-      teamId: number
-    ): Promise<EvaluationTeam> => {
-      const performances = await analyzePerformances(teamId, fixtures);
-      if (performances === null) return null;
-      const results = await analyzeResults(teamId, fixtures);
-
-      return {
-        performances: performances.filter((p) => p !== null),
-        results,
-      };
-    };
-
-    const home = await analyzedFixtures(homeFixtures, fixtureDoc.teams.home.id);
-    const away = await analyzedFixtures(awayFixtures, fixtureDoc.teams.away.id);
-
-    next({
-      fixture: fixtureId,
-      teams: {
-        home,
-        away,
-      },
-    });
-  } catch (error) {
-    next({
-      status: 'Error in getFixturePerformances',
-      error,
-    });
+  if (homeFixtures.length === 0 && awayFixtures.length === 0) {
+    return next(null);
   }
+
+  const analyzedFixtures = async (
+    fixtures: FixtureDTO[],
+    teamId: number
+  ): Promise<EvaluationTeam> => {
+    const performances = await analyzePerformances(teamId, fixtures);
+    const results = await analyzeResults(teamId, fixtures);
+
+    return {
+      performances,
+      results,
+    };
+  };
+
+  const home = await analyzedFixtures(homeFixtures, fixtureDoc.teams.home.id);
+  const away = await analyzedFixtures(awayFixtures, fixtureDoc.teams.away.id);
+
+  next({
+    fixture: fixtureId,
+    teams: {
+      home,
+      away,
+    },
+  });
 };
 
 const analyzeTeamPerformance = (
@@ -78,6 +64,7 @@ const analyzeTeamPerformance = (
     if (!stats) throw new Error(`Statistic ${type} not found`);
     return stats;
   };
+
   const find = (type: StatisticItemType) => Number(statistic(type).value);
   const shotsOnGoal = find('Shots on Goal');
   const shotsTotal = find('Total Shots');
@@ -86,6 +73,9 @@ const analyzeTeamPerformance = (
       ? fixture.goals.home
       : fixture.goals.away;
   if (goals === null) throw new Error('Fixture has no goals');
+
+  const hasStatistics = find('Ball Possession') !== 0;
+  if (!hasStatistics) return 'NO_STATISTICS_AVAILABLE';
 
   // const isLuckyGoal = (a: FixtureAnalysis) =>
   //   a.level === 'GOOD' && a.type === 'GOAL';
@@ -121,7 +111,13 @@ const analyzePerformances = async (
     const stats = await FixturesStatistics.findOne({
       'parameters.fixture': fixture.fixture.id,
     }).lean();
-    if (!stats || stats.response.length === 0) return null;
+    const { status } = fixture.fixture;
+    const isUpcomingMatch = status.short === 'NS' || status.short === 'TBD';
+    if (isUpcomingMatch) return 'MATCH_NOT_STARTED';
+
+    const isMatchPostponed = fixture.fixture.status.short === 'PST';
+    if (isMatchPostponed) return 'MATCH_POSTPONED';
+
     const teams = stats.response;
     const teamIndex = teams[0].team.id === teamId ? 0 : 1;
     const statistics = teams[teamIndex] as StatisticDTO;

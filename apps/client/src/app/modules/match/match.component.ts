@@ -125,9 +125,7 @@ import { StatisticsStore } from './store/statistics.store';
         <mat-tab-group>
           <mat-tab label="Details" bodyClass="foobar">
             <reelscore-match-fixture-data />
-            @if (!!evs.evaluations()) {
-            <reelscore-match-evaluations [evaluations]="evs.evaluations()!" />
-            }
+            <reelscore-match-evaluations [evaluations]="evs.evaluations()" />
             <reelscore-match-latest-fixtures />
           </mat-tab>
           <mat-tab label="Bericht" [disabled]="!hasEvents()">
@@ -180,9 +178,13 @@ export class MatchComponent extends RouterView implements OnInit {
   async ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     await this.fs.loadFixture(this.fixtureId());
-    await this.es.loadEvents(this.fixtureId());
-    await this.ss.loadStatistics(this.fixtureId());
     await this.evs.loadEvaluations(this.fixtureId());
+
+    const isFinished = this.data.fixture()?.fixture.status.short === 'FT';
+    if (isFinished) {
+      await this.ss.loadStatistics(this.fixtureId());
+      await this.es.loadEvents(this.fixtureId());
+    }
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
