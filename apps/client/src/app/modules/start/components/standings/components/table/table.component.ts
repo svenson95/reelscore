@@ -27,14 +27,14 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
     table {
       --mat-table-header-headline-size: var(--fb-font-size-body-2);
       --mat-table-row-item-label-text-size: var(--fb-font-size-small);
-      --mat-table-header-container-height: 49px;
-      --mat-table-row-item-container-height: 27px;
+      --mat-table-header-container-height: 41px;
+      --mat-table-row-item-container-height: 33px;
     }
 
     td { @apply py-[4px] leading-[16px]; }
 
     td, th { &:first-of-type {
-      @apply pr-0 text-center;
+      @apply pr-0 pl-1 text-center;
     } }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
