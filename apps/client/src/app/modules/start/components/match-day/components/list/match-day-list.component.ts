@@ -53,19 +53,18 @@ import { CompetitionFixtures } from '../../../../models';
 
       &.gray { @apply text-fb-color-text-2 text-fb-font-size-small; }
     }
-    ul { @apply w-full text-fb-font-size-body-2; }
+    ul { @apply w-full text-fb-font-size-small; }
     li { @apply bg-white; }
-    li > a { @apply flex items-center; }
+    li > a { @apply flex items-stretch; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply justify-center min-w-[55px] py-[20px]; }
-    .time, .result { @apply flex text-center; }
-    .result { 
-      @apply flex-col align-middle px-2; 
-      border-left: 1px solid var(--mat-standard-button-toggle-divider-color);
-      border-right: 1px solid var(--mat-standard-button-toggle-divider-color);
+    .time { @apply justify-center items-center min-w-[55px]; }
+    .time, .result { 
+      @apply flex text-center;
+      border-right: 1px solid var(--mat-standard-button-toggle-divider-color); 
     }
-    .teams { @apply align-middle pl-2; }
+    .result { @apply flex-col align-middle justify-center px-2 gap-1; }
+    .teams { @apply flex flex-col align-middle pl-2 py-2 gap-1; }
     .teams > div { @apply flex items-center gap-2; }
     .spacer { @apply flex-1; }
   `,
