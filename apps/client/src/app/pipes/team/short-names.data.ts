@@ -83,6 +83,10 @@ export const shortTeamName = (value: string): string => {
       return 'Offenbach';
     case 'FC Ingolstadt 04':
       return 'Ingolstadt';
+    case 'Borussia Hildesheim':
+      return 'Hildesheim';
+    case 'Würzburger Kickers':
+      return 'Würzburger K.';
 
     // Premiere League
     case 'Nottingham Forest':
