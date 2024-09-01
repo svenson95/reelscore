@@ -51,7 +51,7 @@ import { CompetitionFixtures } from '../../../../models';
       font-size: var(--fb-font-size-body-2);
       font-weight: var(--mat-table-header-headline-weight, 500);
 
-      &.gray { @apply text-fb-color-text-2; }
+      &.gray { @apply text-fb-color-text-2 text-fb-font-size-small; }
     }
     ul { @apply w-full text-fb-font-size-body-2; }
     li { @apply bg-white; }
