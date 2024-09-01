@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
-  signal,
 } from '@angular/core';
 
 import { OptimizedImageComponent } from '@app/components';
@@ -44,10 +44,14 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
     </div>
 
     <div class="result-column">
-      @if (!isUpcoming()) {
+      @if (isFinished()) {
       <span>{{ data().score.fulltime.home }}</span>
       <span>:</span>
       <span>{{ data().score.fulltime.away }}</span>
+      } @else if (isPostponed()) {
+      <span>Abgesagt</span>
+      } @else if (isNotStarted()) {
+      <span>:</span>
       }
     </div>
 
@@ -72,8 +76,17 @@ export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
   bos = inject(BreakpointObserverService);
 
-  isUpcoming = signal<boolean>(false); // TODO derive value from fixture date
   isMobile = this.bos.isMobile;
-
   logoFromAssets = logoFromAssets;
+
+  isFinished = computed(() => {
+    const { short } = this.data().fixture.status;
+    const isFinished = short === 'FT';
+    const isFinishedAfterExtraTime = short === 'AET';
+    const isFinishedAfterPenalties = short === 'PEN';
+    return isFinished || isFinishedAfterExtraTime || isFinishedAfterPenalties;
+  });
+
+  isPostponed = computed(() => this.data().fixture.status.short === 'PST');
+  isNotStarted = computed(() => this.data().fixture.status.short === 'NS');
 }

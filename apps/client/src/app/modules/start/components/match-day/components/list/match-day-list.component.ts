@@ -120,9 +120,9 @@ import { CompetitionFixtures } from '../../../../models';
                 {{ item.score.fulltime.away }}
               </span>
               } @if (item.fixture.status.short === 'NS') {
-              <span>-</span>
+              <span>:</span>
               } @if (item.fixture.status.short === "PST") {
-              <span>abgesagt</span>
+              <span>-</span>
               }
             </div>
             <div>
