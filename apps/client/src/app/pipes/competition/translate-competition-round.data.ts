@@ -89,7 +89,7 @@ const translateHeader = (
     case '3rd Qualifying Round':
       return '3. Runde';
     case 'Play-offs':
-      return 'Play-offs';
+      return 'Ausscheidungsspiele';
     default:
       return value;
   }
