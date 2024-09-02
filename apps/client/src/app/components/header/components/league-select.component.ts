@@ -34,24 +34,28 @@ import { CompetitionData } from '@app/models';
       }
     }
 
+    mat-select { --mat-select-trigger-text-size: var(--fb-font-size-body-2); }
+    :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
+      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-2);
+    }
+
     ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
       max-height: 70vh;
     }
 
-    mat-form-field {
-      @apply w-[210px];
-    }
+    mat-form-field { @apply w-[240px]; }
+
+    a { @apply flex w-full h-full px-4 py-1; }
 
     mat-option {
       padding: 0;
-      --mat-option-label-text-size: 14px;
+      --mat-option-label-text-size: var(--fb-font-size-small);
+      min-height: 32px;
 
       ::ng-deep .mdc-list-item__primary-text {
         @apply w-full;
       }
     }
-
-    a { @apply flex w-full h-full px-4 py-3; }
   `,
   template: `
     <mat-form-field [class.is-selected]="!!selectedLeague()">
