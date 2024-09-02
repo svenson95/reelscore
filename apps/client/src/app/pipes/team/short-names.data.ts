@@ -49,6 +49,10 @@ export const shortTeamName = (value: string): string => {
       return 'Stuttgart';
     case 'Werder Bremen':
       return 'Bremen';
+    case 'FC St. Pauli':
+      return 'St. Pauli';
+    case 'Holstein Kiel':
+      return 'Kiel';
 
     // 2. Bundesliga
     case 'SC Paderborn 07':
@@ -161,7 +165,9 @@ export const shortTeamName = (value: string): string => {
     case 'Lens':
       return 'RC Lens';
     case 'Saint-Etienne':
-      return 'Saint-Étienne';
+      return 'St-Étienne';
+    case 'Saint Etienne':
+      return 'St-Étienne';
     case 'Clermont Foot':
       return 'Clermont';
 
@@ -185,7 +191,7 @@ export const shortTeamName = (value: string): string => {
     case 'AC Milan':
       return 'Milan';
     case 'AS Roma':
-      return 'Roma';
+      return 'AS Rom';
     case 'Fiorentina':
     case 'AC Florenz':
       return 'Florenz';
@@ -196,6 +202,40 @@ export const shortTeamName = (value: string): string => {
     // Europa
     case 'Slavia Praha':
       return 'Prag';
+    case 'Dinamo Minsk':
+      return 'Minsk';
+    case 'Heart Of Midlothian':
+      return 'Hearts';
+    case 'TSC Backa Topola':
+      return 'Backa Topola';
+    case 'Maccabi Tel Aviv':
+      return 'Maccabi';
+    case 'Apoel Nicosia':
+      return 'APOEL';
+    case 'Rapid Vienna':
+      return 'SK Rapid';
+    case 'Borac Banja Luka':
+      return 'Borac';
+    case 'Ferencvarosi TC':
+      return 'Ferencvárosi';
+    case 'Plzen':
+      return 'Viktoria Pilsen';
+    case 'Ajax':
+      return 'Ajax';
+    case 'FC Carl Zeiss Jena':
+      return 'CZ Jena';
+    case 'FC Midtjylland':
+      return 'Midtjylland';
+    case 'Slovan Bratislava':
+      return 'Bratislava';
+    case 'FK Crvena Zvezda':
+      return 'Roter Stern';
+    case 'Bodo/Glimt':
+      return 'Bodø/Glimt';
+    case 'Red Bull Salzburg':
+      return 'RB Salzburg';
+    case 'BSC Young Boys':
+      return 'Young Boys';
 
     // International
     case 'Northern Ireland':
