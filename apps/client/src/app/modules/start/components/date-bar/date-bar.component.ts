@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
 
 import { BreakpointObserverService, DateService } from '@app/services';
-
+import { selectStandings } from '../../../../store';
 import {
-  CalenderWeekLabelComponent,
   DatePickerComponent,
   TodayButtonComponent,
   WeekToggleGroupComponent,
@@ -15,9 +22,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePickerComponent,
-    CalenderWeekLabelComponent,
     TodayButtonComponent,
     WeekToggleGroupComponent,
+    MatProgressSpinnerModule,
   ],
   styles: `
     :host { 
@@ -30,6 +37,7 @@ import {
       
     div { @apply flex gap-5 items-center; }
     .top { @apply w-full xs:w-fit justify-between; }
+    mat-spinner { --mdc-circular-progress-active-indicator-color: var(--fb-color-white); }
   `,
   template: `
     <section>
@@ -41,7 +49,6 @@ import {
 
         @if (isMobile()) {
         <div class="week-and-time">
-          <reelscore-calender-week-label [week]="calenderWeek()" />
           <reelscore-today-button
             [isToday]="isToday()"
             (onClick)="selectedDay.set($event)"
@@ -56,9 +63,7 @@ import {
         (dateSelected)="selectedDay.set($event)"
       />
 
-      @if (!isMobile()) {
-      <reelscore-calender-week-label [week]="calenderWeek()" />
-      }
+      @if (isLoading()) { <mat-spinner diameter="24"></mat-spinner>}
     </section>
 
     @if (!isMobile()) {
@@ -72,6 +77,7 @@ import {
 export class DateBarComponent {
   bos = inject(BreakpointObserverService);
   ds = inject(DateService);
+  store = inject(Store);
 
   selectedDay = this.ds.selectedDay;
   weekdays = this.ds.weekdays;
@@ -79,4 +85,7 @@ export class DateBarComponent {
   isToday = this.ds.isToday;
 
   isMobile = this.bos.isMobile;
+
+  standings = toSignal(this.store.select(selectStandings));
+  isLoading = computed(() => this.standings()?.isLoading);
 }
