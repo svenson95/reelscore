@@ -19,6 +19,12 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+main,
+header .wrapper {
+  max-width: 1200px;
+  margin: auto;
+}
+
 h3.match-section-title {
   // TODO refactor border-b-[1px] pb-2 mb-2 to a utility class
   @apply py-3 border-b-[1px] text-center;

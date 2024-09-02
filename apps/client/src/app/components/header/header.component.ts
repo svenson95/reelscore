@@ -14,13 +14,16 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply flex items-center justify-between py-fb-padding-1 px-fb-padding-3 border-b-[1px]; }
+    :host { @apply py-fb-padding-1 px-fb-padding-3 border-b-[1px]; }
+    .wrapper { @apply flex items-center justify-between; }
   `,
   template: `
-    <a mat-button [routerLink]="['/']">
-      <reelscore-logo />
-    </a>
-    <reelscore-league-select [selectedLeague]="selectedLeague()" />
+    <div class="wrapper">
+      <a mat-button [routerLink]="['/']">
+        <reelscore-logo />
+      </a>
+      <reelscore-league-select [selectedLeague]="selectedLeague()" />
+    </div>
   `,
 })
 export class HeaderComponent {
