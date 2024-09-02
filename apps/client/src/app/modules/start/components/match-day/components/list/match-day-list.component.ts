@@ -61,10 +61,10 @@ import { CompetitionFixtures } from '../../../../models';
       @apply flex text-center justify-center;
     }
     .result { 
-      @apply min-w-[40px] items-center gap-1; 
+      @apply min-w-[40px] items-center gap-[0.1rem]; 
     }
     .teams { @apply w-full flex p-2 text-fb-font-size-body-2; }
-    .teams > div:not(.result) { @apply flex flex-1 items-center gap-3; }
+    .teams > div:not(.result) { @apply flex flex-1 items-center gap-2; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }
     .spacer { @apply flex-1; }
@@ -107,9 +107,9 @@ import { CompetitionFixtures } from '../../../../models';
             <div class="result">
               @if (item.score.fulltime.home !== null && item.score.fulltime.away
               !== null) {
-              <span>
-                {{ item.score.fulltime.home }}:{{ item.score.fulltime.away }}
-              </span>
+              <span>{{ item.score.fulltime.home }}</span>
+              <span>:</span>
+              <span>{{ item.score.fulltime.away }}</span>
               } @if (item.fixture.status.short === 'NS') {
               <span>:</span>
               } @if (item.fixture.status.short === "PST") {
