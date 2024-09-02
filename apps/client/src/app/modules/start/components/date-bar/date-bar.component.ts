@@ -33,16 +33,20 @@ import {
   styles: `
     :host { 
       @apply w-full flex flex-wrap items-center justify-between mb-5 gap-5; 
+
+      .search-button ::ng-deep .mat-mdc-button-persistent-ripple { 
+        @apply rounded-[0];
+      }
     }
     mat-spinner { --mdc-circular-progress-active-indicator-color: var(--fb-color-white); }
     
     .top { @apply flex w-full sm:w-fit items-center gap-5; }
     .spacer { @apply flex-grow; }
     .search-button { 
-      --mdc-icon-button-icon-size: 16px;
       --mdc-icon-button-state-layer-size: 36px;
-      background-color: var(--fb-color-white); 
-      padding: 6px;
+      @apply bg-fb-color-white p-[2px] rounded-[0];
+      
+      .mat-icon { @apply w-[20px] h-[20px] text-[20px]; }
     }
   `,
   template: `
