@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/cron",
-      "schedule": "5 17 * * *"
+      "schedule": "15 6 * * *"
     }
   ],
   "builds": [
