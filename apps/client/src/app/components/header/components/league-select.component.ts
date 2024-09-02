@@ -19,34 +19,32 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
   ],
   styles: `
     :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
-      .mat-mdc-floating-label mat-label { @apply opacity-50; }
-      .mat-mdc-form-field-subscript-wrapper { display: none; }
-      .mat-mdc-select-arrow { @apply opacity-50; }
-      &.mat-focused .mat-mdc-select-arrow { @apply opacity-50; }
-
-      .mdc-text-field--filled .mdc-line-ripple::before {
-        border-bottom-width: 0;
-      }
+      .mat-mdc-form-field-subscript-wrapper { @apply hidden; }
+      .mdc-text-field--filled .mdc-line-ripple::before { @apply border-b-0; }
     }
 
     mat-form-field { @apply w-[220px]; }
     ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
-      max-height: 70vh;
+      @apply max-h-[70vh];
 
-      mat-option .mdc-list-item__primary-text {
-        @apply w-full;
-      }
+      mat-option .mdc-list-item__primary-text { @apply w-full; }
     }
 
-    mat-select { --mat-select-trigger-text-size: var(--fb-font-size-body-2); }
     mat-form-field.mat-mdc-form-field-type-mat-select {
-      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-2);
+      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-1);
+      --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
+      --mdc-filled-text-field-hover-label-text-color: var(--fb-color-white-2);
+    }
+
+    mat-select { 
+      --mat-select-trigger-text-size: var(--fb-font-size-body-1);
+      --mat-select-enabled-arrow-color: var(--fb-color-text-2);
+      --mat-select-focused-arrow-color: var(--fb-color-white-2);
     }
 
     mat-option {
-      padding: 0;
       --mat-option-label-text-size: var(--fb-font-size-small);
-      min-height: 32px;
+      @apply min-h-[32px] p-0;
 
       a { @apply flex w-full h-full px-4 py-1 gap-2; }
     }

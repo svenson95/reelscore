@@ -72,7 +72,6 @@ import { StatisticsStore } from './store/statistics.store';
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
       --mdc-outlined-button-container-height: 40px;
-      --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
       @apply fb-as-label; 
     }
     mat-tab-group {
