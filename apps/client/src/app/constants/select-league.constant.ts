@@ -89,20 +89,20 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'England',
     competitions: [
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_LEAGUE_CUP),
-        label: COMPETITION_LABEL.ENGLAND_LEAGUE_CUP,
-        id: COMPETITION_ID.ENGLAND_LEAGUE_CUP,
-        url: COMPETITION_URL.ENGLAND_LEAGUE_CUP,
-        size: 20, // ??
-      },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_EFL_TROPHY),
-        label: COMPETITION_LABEL.ENGLAND_EFL_TROPHY,
-        id: COMPETITION_ID.ENGLAND_EFL_TROPHY,
-        url: COMPETITION_URL.ENGLAND_EFL_TROPHY,
-        size: 72,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_LEAGUE_CUP),
+      //   label: COMPETITION_LABEL.ENGLAND_LEAGUE_CUP,
+      //   id: COMPETITION_ID.ENGLAND_LEAGUE_CUP,
+      //   url: COMPETITION_URL.ENGLAND_LEAGUE_CUP,
+      //   size: 20, // ??
+      // },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_EFL_TROPHY),
+      //   label: COMPETITION_LABEL.ENGLAND_EFL_TROPHY,
+      //   id: COMPETITION_ID.ENGLAND_EFL_TROPHY,
+      //   url: COMPETITION_URL.ENGLAND_EFL_TROPHY,
+      //   size: 72,
+      // },
       {
         image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_TROPHY),
         label: COMPETITION_LABEL.ENGLAND_FA_TROPHY,
@@ -110,13 +110,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         url: COMPETITION_URL.ENGLAND_FA_TROPHY,
         size: 149,
       },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_CUP),
-        label: COMPETITION_LABEL.ENGLAND_FA_CUP,
-        id: COMPETITION_ID.ENGLAND_FA_CUP,
-        url: COMPETITION_URL.ENGLAND_FA_CUP,
-        size: 124,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_CUP),
+      //   label: COMPETITION_LABEL.ENGLAND_FA_CUP,
+      //   id: COMPETITION_ID.ENGLAND_FA_CUP,
+      //   url: COMPETITION_URL.ENGLAND_FA_CUP,
+      //   size: 124,
+      // },
       {
         image: getCompetitionLogo(COMPETITION_ID.ENGLAND_COMMUNITY_SHIELD),
         label: COMPETITION_LABEL.ENGLAND_COMMUNITY_SHIELD,
@@ -136,13 +136,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'Spanien',
     competitions: [
-      {
-        image: getCompetitionLogo(COMPETITION_ID.SPAIN_SUPER_CUP),
-        label: COMPETITION_LABEL.SPAIN_SUPER_CUP,
-        id: COMPETITION_ID.SPAIN_SUPER_CUP,
-        url: COMPETITION_URL.SPAIN_SUPER_CUP,
-        size: 2,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.SPAIN_SUPER_CUP),
+      //   label: COMPETITION_LABEL.SPAIN_SUPER_CUP,
+      //   id: COMPETITION_ID.SPAIN_SUPER_CUP,
+      //   url: COMPETITION_URL.SPAIN_SUPER_CUP,
+      //   size: 2,
+      // },
       {
         image: getCompetitionLogo(COMPETITION_ID.SPAIN_COPA_DEL_REY),
         label: COMPETITION_LABEL.SPAIN_COPA_DEL_REY,
@@ -155,13 +155,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'Italien',
     competitions: [
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ITALY_SUPER_CUP),
-        label: COMPETITION_LABEL.ITALY_SUPER_CUP,
-        id: COMPETITION_ID.ITALY_SUPER_CUP,
-        url: COMPETITION_URL.ITALY_SUPER_CUP,
-        size: 20, // ??,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ITALY_SUPER_CUP),
+      //   label: COMPETITION_LABEL.ITALY_SUPER_CUP,
+      //   id: COMPETITION_ID.ITALY_SUPER_CUP,
+      //   url: COMPETITION_URL.ITALY_SUPER_CUP,
+      //   size: 20, // ??,
+      // },
       {
         image: getCompetitionLogo(COMPETITION_ID.ITALY_COPPA_ITALIA),
         label: COMPETITION_LABEL.ITALY_COPPA_ITALIA,

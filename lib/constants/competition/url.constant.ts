@@ -8,7 +8,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   [CompetitionCode.EUROPA_UEFA_SUPER_CUP]: 'uefa-super-cup',
 
   // International
-  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: '4',
+  // [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: '4',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: '21',
   // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: '1',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: '15',
@@ -22,21 +22,21 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
 
   // England
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
-  [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'en-league-cup',
-  [CompetitionCode.ENGLAND_EFL_TROPHY]: 'efl-trophy',
+  // [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'en-league-cup',
+  // [CompetitionCode.ENGLAND_EFL_TROPHY]: 'efl-trophy',
   [CompetitionCode.ENGLAND_FA_TROPHY]: 'fa-trophy',
-  [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
+  // [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 'community-shield',
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'premier-league-cup',
 
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 'la-liga',
-  [CompetitionCode.SPAIN_SUPER_CUP]: 'es-super-cup',
+  // [CompetitionCode.SPAIN_SUPER_CUP]: 'es-super-cup',
   [CompetitionCode.SPAIN_COPA_DEL_REY]: 'copa-del-rey',
 
   // Italien
   [CompetitionCode.ITALY_SERIE_A]: 'serie-a',
-  [CompetitionCode.ITALY_SUPER_CUP]: 'it-super-cup',
+  // [CompetitionCode.ITALY_SUPER_CUP]: 'it-super-cup',
   [CompetitionCode.ITALY_COPPA_ITALIA]: 'coppa-italia',
 
   // Frankreich
