@@ -74,16 +74,6 @@ import { StatisticsStore } from './store/statistics.store';
       --mdc-outlined-button-container-height: 40px;
       @apply fb-as-label; 
     }
-    mat-tab-group {
-      --mat-tab-header-inactive-label-text-color: var(--fb-color-text-2);
-      --mat-tab-header-active-label-text-color: #fff;
-      --mat-tab-header-inactive-ripple-color: var(--fb-color-text-2);
-      --mat-tab-header-active-ripple-color: var(--fb-color-text-2);
-      --mat-tab-header-active-focus-label-text-color: white;
-      --mat-tab-header-inactive-hover-label-text-color: white;
-      --mat-tab-header-active-hover-label-text-color: white;
-      --mat-tab-header-active-focus-indicator-color: white;
-    }
     :host ::ng-deep .foobar > div {
       @apply flex flex-col gap-5;
     }
