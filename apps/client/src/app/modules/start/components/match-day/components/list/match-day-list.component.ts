@@ -54,7 +54,7 @@ import { CompetitionFixtures } from '../../../../models';
     li > a { @apply flex items-stretch; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply justify-center items-center min-w-[50px] bg-fb-color-white; }
+    .time { @apply justify-center items-center min-w-[50px] bg-fb-color-white-2; }
     .time, .result { 
       @apply flex text-center justify-center;
     }
