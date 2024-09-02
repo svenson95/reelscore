@@ -96,7 +96,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     --mat-tab-header-label-text-size: var(--fb-font-size-body-2);
   }
 
-  .mat-mdc-tab-label-container {
+  &[disablepagination] .mat-mdc-tab-label-container {
     overflow: scroll;
   }
 }
