@@ -103,8 +103,22 @@ export const longTeamName = (value: string): string => {
       return 'Racing Club de Strasbourg';
     case 'Saint-Etienne':
       return 'AS Saint-Étienne';
+    case 'Saint Etienne':
+      return 'AS Saint-Étienne';
     case 'Toulouse':
       return 'FC Toulouse';
+    case 'Ferencvarosi TC':
+      return 'Ferencváros Budapest';
+    case 'Plzen':
+      return 'FC Viktoria Pilsen';
+    case 'Ajax':
+      return 'Ajax Amsterdam';
+    case 'Slovan Bratislava':
+      return 'ŠK Slovan Bratislava';
+    case 'FK Crvena Zvezda':
+      return 'FK Roter Stern Belgrad';
+    case 'Bodo/Glimt':
+      return 'FK Bodø/Glimt';
 
     // La Liga
     case 'Athletic Club':
@@ -152,7 +166,7 @@ export const longTeamName = (value: string): string => {
 
     // Serie A
     case 'AS Roma':
-      return 'AS Roma';
+      return 'AS Rom';
     case 'Atalanta':
       return 'Atalanta Bergamo';
     case 'Bologna':
@@ -191,6 +205,14 @@ export const longTeamName = (value: string): string => {
     // Europa
     case 'Slavia Praha':
       return 'Slavia Prag';
+    case 'Dinamo Minsk':
+      return 'FK Dinamo Minsk';
+    case 'TSC Backa Topola':
+      return 'Backa Topola';
+    case 'Apoel Nicosia':
+      return 'APOEL Nicosia';
+    case 'Rapid Vienna':
+      return 'Sportklub Rapid Wien';
 
     // International
     case 'Northern Ireland':
