@@ -62,14 +62,8 @@ import { CompetitionFixtures } from '../../../../models';
       @apply min-w-[45px] px-3 items-center gap-1; 
     }
     .teams { @apply w-full flex p-2; }
-    .teams > div:not(.result) { @apply flex items-center gap-3; }
-    .teams > div:first-of-type { 
-      @apply justify-end text-end; 
-      width: calc(50% - 20px);
-    }
-    .teams > div:last-of-type { 
-      width: 50%;
-    }
+    .teams > div:not(.result) { @apply flex flex-1 items-center gap-3; }
+    .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name-label { line-height: 14px; }
     .spacer { @apply flex-1; }
   `,
