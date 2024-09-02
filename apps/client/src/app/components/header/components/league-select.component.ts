@@ -5,12 +5,18 @@ import { RouterModule } from '@angular/router';
 
 import { SELECT_COMPETITION_DATA } from '@app/constants';
 import { CompetitionData } from '@app/models';
+import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
   selector: 'reelscore-league-select',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, MatFormFieldModule, MatSelectModule],
+  imports: [
+    RouterModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    OptimizedImageComponent,
+  ],
   styles: `
     :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
       .mat-mdc-floating-label mat-label { @apply opacity-50; }
@@ -42,7 +48,7 @@ import { CompetitionData } from '@app/models';
       --mat-option-label-text-size: var(--fb-font-size-small);
       min-height: 32px;
 
-      a { @apply flex w-full h-full px-4 py-1; }
+      a { @apply flex w-full h-full px-4 py-1 gap-2; }
     }
   `,
   template: `
@@ -58,7 +64,15 @@ import { CompetitionData } from '@app/models';
         <mat-optgroup [label]="group.label">
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
-            <a [routerLink]="['leagues', c.url]">{{ c.label }}</a>
+            <a [routerLink]="['leagues', c.url]">
+              <reelscore-optimized-image
+                [source]="c.image"
+                [alternate]="c.label"
+                width="14"
+                height="14"
+              />
+              <span>{{ c.label }}</span>
+            </a>
           </mat-option>
           }
         </mat-optgroup>
