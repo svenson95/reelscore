@@ -42,10 +42,14 @@ import {
   template: `
     <section>
       <div class="top">
-        <reelscore-date-picker
-          [selectedDay]="selectedDay()"
-          (dateSelected)="selectedDay.set($event)"
-        />
+        <div>
+          <reelscore-date-picker
+            [selectedDay]="selectedDay()"
+            (dateSelected)="selectedDay.set($event)"
+          />
+          @if (isMobile() && isLoading()) {
+          <mat-spinner diameter="20"></mat-spinner>}
+        </div>
 
         @if (isMobile()) {
         <div class="week-and-time">
@@ -63,7 +67,8 @@ import {
         (dateSelected)="selectedDay.set($event)"
       />
 
-      @if (isLoading()) { <mat-spinner diameter="24"></mat-spinner>}
+      @if (!isMobile() && isLoading()) {
+      <mat-spinner diameter="20"></mat-spinner>}
     </section>
 
     @if (!isMobile()) {
