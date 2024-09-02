@@ -21,7 +21,7 @@ body {
 
 main,
 header .wrapper {
-  max-width: 1200px;
+  max-width: var(--fb-size-max-width);
   margin: auto;
 }
 
