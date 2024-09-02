@@ -27,7 +27,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.ENGLAND_FA_TROPHY]: 47,
   [CompetitionCode.ENGLAND_FA_CUP]: 45,
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 528,
-  [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 871,
+  // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 871,
 
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 140,

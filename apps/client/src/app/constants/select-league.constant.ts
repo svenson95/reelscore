@@ -124,13 +124,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         url: COMPETITION_URL.ENGLAND_COMMUNITY_SHIELD,
         size: 2,
       },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_PREMIER_LEAGUE_CUP),
-        label: COMPETITION_LABEL.ENGLAND_PREMIER_LEAGUE_CUP,
-        id: COMPETITION_ID.ENGLAND_PREMIER_LEAGUE_CUP,
-        url: COMPETITION_URL.ENGLAND_PREMIER_LEAGUE_CUP,
-        size: 20, // ??,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_PREMIER_LEAGUE_CUP),
+      //   label: COMPETITION_LABEL.ENGLAND_PREMIER_LEAGUE_CUP,
+      //   id: COMPETITION_ID.ENGLAND_PREMIER_LEAGUE_CUP,
+      //   url: COMPETITION_URL.ENGLAND_PREMIER_LEAGUE_CUP,
+      //   size: 20, // ??,
+      // },
     ],
   },
   {
