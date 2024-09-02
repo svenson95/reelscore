@@ -236,6 +236,14 @@ export const shortTeamName = (value: string): string => {
       return 'RB Salzburg';
     case 'BSC Young Boys':
       return 'Young Boys';
+    case 'IF elfsborg':
+      return 'Elfsborg';
+    case 'Malmo FF':
+      return 'Malmö';
+    case 'Sparta Praha':
+      return 'Sparta Prag';
+    case 'Dynamo Kyiv':
+      return 'Dynamo Kiew';
 
     // International
     case 'Northern Ireland':
