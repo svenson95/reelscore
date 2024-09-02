@@ -92,3 +92,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   --mat-tab-header-active-focus-indicator-color: white;
   --mat-tab-header-pagination-icon-color: white;
 }
+
+.mat-mdc-tab-header {
+  --mat-tab-header-label-text-size: var(--fb-font-size-body-2);
+}
