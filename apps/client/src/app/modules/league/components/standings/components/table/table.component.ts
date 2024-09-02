@@ -8,9 +8,10 @@ import {
 import { MatTableModule } from '@angular/material/table';
 
 import { OptimizedImageComponent } from '@app/components';
+import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { BreakpointObserverService } from '@app/services';
-import { StandingsDTO, logoFromAssets } from '@lib/models';
+import { StandingsDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-league-standings-table',
@@ -63,7 +64,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>
           <reelscore-optimized-image
-            [source]="'assets/images/league/' + data().league.id + '.png'"
+            [source]="getCompetitionLogo(data().league.id)"
             alternate="league logo"
             width="24"
             height="24"
@@ -79,7 +80,7 @@ import { StandingsDTO, logoFromAssets } from '@lib/models';
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
             <reelscore-optimized-image
-              [source]="logoFromAssets(element.team.id)"
+              [source]="getTeamLogo(element.team.id)"
               alternate="team logo"
               width="14"
               height="14"
@@ -151,12 +152,11 @@ export class TableComponent {
   ];
 
   breakpoint = inject(BreakpointObserverService);
-
   isMobile = this.breakpoint.isMobile;
-
   data = input.required<StandingsDTO>();
 
-  logoFromAssets = logoFromAssets;
+  getCompetitionLogo = getCompetitionLogo;
+  getTeamLogo = getTeamLogo;
 
   columns = computed(() => {
     const filtered = this.displayedColumns.filter(

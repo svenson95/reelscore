@@ -6,8 +6,9 @@ import {
 } from '@angular/core';
 
 import { OptimizedImageComponent } from '@app/components';
+import { getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
-import { FixtureDTO, logoFromAssets } from '@lib/models';
+import { FixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-header',
@@ -26,7 +27,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
   template: `
     <div class="team-column">
       <reelscore-optimized-image
-        [source]="logoFromAssets(data().teams.home.id)"
+        [source]="getTeamLogo(data().teams.home.id)"
         alternate="home logo"
         width="36"
         height="36"
@@ -50,7 +51,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
 
     <div class="team-column">
       <reelscore-optimized-image
-        [source]="logoFromAssets(data().teams.away.id)"
+        [source]="getTeamLogo(data().teams.away.id)"
         alternate="away logo"
         width="36"
         height="36"
@@ -64,7 +65,7 @@ import { FixtureDTO, logoFromAssets } from '@lib/models';
 export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
 
-  logoFromAssets = logoFromAssets;
+  getTeamLogo = getTeamLogo;
 
   isFinished = computed(() => {
     const { short } = this.data().fixture.status;
