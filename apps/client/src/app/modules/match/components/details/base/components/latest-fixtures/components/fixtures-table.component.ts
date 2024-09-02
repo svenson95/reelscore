@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 
 import { TeamNamePipe } from '@app/pipes';
 import { FixtureDTO, FixtureTeam, MatchTeams } from '@lib/models';
+import { ResultLabelComponent } from '../../../../../../../../components';
 
 @Pipe({
   name: 'isWinner',
@@ -33,6 +34,7 @@ export class IsWinnerPipe implements PipeTransform {
     MatRippleModule,
     TeamNamePipe,
     IsWinnerPipe,
+    ResultLabelComponent,
   ],
   styles: `
     :host { @apply flex-1 p-4 text-fb-font-size-small sm:text-fb-font-size-body-2; }
@@ -68,20 +70,10 @@ export class IsWinnerPipe implements PipeTransform {
       </div>
 
       <div class="result">
-        @if(match.score.fulltime.home !== null) {
-        <span>
-          {{ match.score.fulltime.home }} -
-          {{ match.score.fulltime.away }}
-        </span>
-        } @else if (match.fixture.status.short === 'PST') {
-        <span class="text-fb-font-size-small text-fb-color-text-2">
-          abgesagt
-        </span>
-        } @else if (match.fixture.status.short === 'NS') {
-        <span class="text-fb-font-size-small text-fb-color-text-2">
-          anstehend
-        </span>
-        }
+        <reelscore-result-label
+          [result]="match.score.fulltime"
+          [status]="match.fixture.status.short"
+        />
       </div>
 
       <div class="team">

@@ -14,6 +14,7 @@ import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
+import { ResultLabelComponent } from '../../../../../../components';
 import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 
@@ -28,6 +29,7 @@ import { CompetitionFixtures } from '../../../../models';
     OptimizedImageComponent,
     TeamNamePipe,
     CompetitionRoundPipe,
+    ResultLabelComponent,
   ],
   providers: [FixtureStore],
   styles: `
@@ -105,16 +107,10 @@ import { CompetitionFixtures } from '../../../../models';
               />
             </div>
             <div class="result">
-              @if (item.score.fulltime.home !== null && item.score.fulltime.away
-              !== null) {
-              <span>{{ item.score.fulltime.home }}</span>
-              <span>:</span>
-              <span>{{ item.score.fulltime.away }}</span>
-              } @if (item.fixture.status.short === 'NS') {
-              <span>:</span>
-              } @if (item.fixture.status.short === "PST") {
-              <span>-</span>
-              }
+              <reelscore-result-label
+                [result]="item.score.fulltime"
+                [status]="item.fixture.status.short"
+              />
             </div>
             <div>
               <reelscore-optimized-image

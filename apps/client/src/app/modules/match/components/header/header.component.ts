@@ -1,20 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { OptimizedImageComponent } from '@app/components';
 import { getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { FixtureDTO } from '@lib/models';
+import { ResultLabelComponent } from '../../../../components';
 
 @Component({
   selector: 'reelscore-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, TeamNamePipe],
+  imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
     :host { 
       @apply flex mx-auto py-5 px-4 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
@@ -38,15 +34,11 @@ import { FixtureDTO } from '@lib/models';
     </div>
 
     <div class="result-column">
-      @if (isFinished()) {
-      <span>{{ data().score.fulltime.home }}</span>
-      <span>:</span>
-      <span>{{ data().score.fulltime.away }}</span>
-      } @else if (isPostponed()) {
-      <span class="text-fb-font-size-small">Abgesagt</span>
-      } @else if (isNotStarted()) {
-      <span>:</span>
-      }
+      <reelscore-result-label
+        [result]="data().score.fulltime"
+        [status]="data().fixture.status.short"
+        [showPostponed]="true"
+      />
     </div>
 
     <div class="team-column">
@@ -66,15 +58,4 @@ export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
 
   getTeamLogo = getTeamLogo;
-
-  isFinished = computed(() => {
-    const { short } = this.data().fixture.status;
-    const isFinished = short === 'FT';
-    const isFinishedAfterExtraTime = short === 'AET';
-    const isFinishedAfterPenalties = short === 'PEN';
-    return isFinished || isFinishedAfterExtraTime || isFinishedAfterPenalties;
-  });
-
-  isPostponed = computed(() => this.data().fixture.status.short === 'PST');
-  isNotStarted = computed(() => this.data().fixture.status.short === 'NS');
 }
