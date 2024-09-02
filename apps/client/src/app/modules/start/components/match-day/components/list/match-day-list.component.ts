@@ -49,22 +49,24 @@ import { CompetitionFixtures } from '../../../../models';
 
       &.gray { @apply text-fb-color-text-2 text-fb-font-size-small; }
     }
-    ul { @apply w-full text-fb-font-size-small; }
+    ul { @apply w-full; }
     li { @apply bg-white; }
     li > a { @apply flex items-stretch; }
     li:not(:last-of-type) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time { @apply justify-center items-center min-w-[50px] bg-fb-color-white-2; }
+    .time { 
+      @apply justify-center items-center min-w-[50px] bg-fb-color-white-2 text-fb-font-size-small; 
+    }
     .time, .result { 
       @apply flex text-center justify-center;
     }
     .result { 
-      @apply min-w-[45px] px-3 items-center gap-1; 
+      @apply min-w-[40px] items-center gap-1; 
     }
-    .teams { @apply w-full flex p-2; }
+    .teams { @apply w-full flex p-2 text-fb-font-size-body-2; }
     .teams > div:not(.result) { @apply flex flex-1 items-center gap-3; }
     .teams > div:first-of-type { @apply justify-end text-end; }
-    .team-name-label { line-height: 14px; }
+    .team-name { line-height: 14px; text-wrap: balance; }
     .spacer { @apply flex-1; }
   `,
   template: `
@@ -92,7 +94,9 @@ import { CompetitionFixtures } from '../../../../models';
           </section>
           <section class="teams">
             <div>
-              <span>{{ item.teams.home.name | teamName : 'short' }}</span>
+              <span class="team-name">
+                {{ item.teams.home.name | teamName : 'short' }}
+              </span>
               <reelscore-optimized-image
                 [source]="getTeamLogo(item.teams.home.id)"
                 alternate="home logo"
@@ -104,8 +108,7 @@ import { CompetitionFixtures } from '../../../../models';
               @if (item.score.fulltime.home !== null && item.score.fulltime.away
               !== null) {
               <span>
-                {{ item.score.fulltime.home }} :
-                {{ item.score.fulltime.away }}
+                {{ item.score.fulltime.home }}:{{ item.score.fulltime.away }}
               </span>
               } @if (item.fixture.status.short === 'NS') {
               <span>:</span>
@@ -120,7 +123,7 @@ import { CompetitionFixtures } from '../../../../models';
                 width="14"
                 height="14"
               />
-              <span class="team-name-label">
+              <span class="team-name">
                 {{ item.teams.away.name | teamName : 'short' }}
               </span>
             </div>
