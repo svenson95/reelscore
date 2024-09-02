@@ -27,7 +27,7 @@ import { StandingsDTO } from '@lib/models';
 
     table {
       --mat-table-header-headline-size: var(--fb-font-size-body-2);
-      --mat-table-row-item-label-text-size: var(--fb-font-size-small);
+      --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
       --mat-table-header-container-height: 41px;
       --mat-table-row-item-container-height: 33px;
     }
