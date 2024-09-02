@@ -43,8 +43,8 @@ export class IsWinnerPipe implements PipeTransform {
     .home { @apply text-right; }
     .result { @apply text-center w-[60px]; }
     .is-related-team { @apply font-bold; }
-    .is-winner .is-related-team { @apply bg-fb-win; }
-    .is-loser .is-related-team { @apply bg-fb-lose; }
+    .is-winner .is-related-team { @apply bg-green-500 text-white; }
+    .is-loser .is-related-team { @apply bg-red-500 text-white; }
     .team span { @apply px-2 py-1; }
   `,
   template: `
