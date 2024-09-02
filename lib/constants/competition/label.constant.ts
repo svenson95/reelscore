@@ -27,7 +27,7 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   [CompetitionCode.ENGLAND_FA_TROPHY]: 'FA Trophy',
   [CompetitionCode.ENGLAND_FA_CUP]: 'FA Cup',
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 'Community Shield',
-  [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'Premier League Cup',
+  // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'Premier League Cup',
 
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 'La Liga',

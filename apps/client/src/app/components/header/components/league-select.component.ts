@@ -29,7 +29,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       }
     }
 
-    mat-form-field { @apply w-[240px]; }
+    mat-form-field { @apply w-[220px]; }
     ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
       max-height: 70vh;
 
