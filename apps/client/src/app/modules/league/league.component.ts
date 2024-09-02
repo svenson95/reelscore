@@ -32,7 +32,7 @@ import { RouterView } from '../router-view';
       }
     </section>
     <section class="league-content">
-      <mat-tab-group>
+      <mat-tab-group disablePagination>
         <mat-tab label="Ergebnisse"> Letzte Spiele </mat-tab>
         <mat-tab label="Spielplan"> Anstehende Spiele </mat-tab>
         <mat-tab label="Tabellen">
