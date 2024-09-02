@@ -10,14 +10,10 @@ import { RouterModule } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
+import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
-import {
-  CompetitionId,
-  CompetitionUrl,
-  FixtureDTO,
-  logoFromAssets,
-} from '@lib/models';
+import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
 import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 
@@ -80,9 +76,7 @@ import { CompetitionFixtures } from '../../../../models';
   template: `
     <div class="header">
       <reelscore-optimized-image
-        [source]="
-          'assets/images/league/' + competition().fixtures[0].league.id + '.png'
-        "
+        [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
         alternate=""
         width="24"
         height="24"
@@ -106,7 +100,7 @@ import { CompetitionFixtures } from '../../../../models';
             <div>
               <span>{{ item.teams.home.name | teamName : 'short' }}</span>
               <reelscore-optimized-image
-                [source]="logoFromAssets(item.teams.home.id)"
+                [source]="getTeamLogo(item.teams.home.id)"
                 alternate="home logo"
                 width="14"
                 height="14"
@@ -127,7 +121,7 @@ import { CompetitionFixtures } from '../../../../models';
             </div>
             <div>
               <reelscore-optimized-image
-                [source]="logoFromAssets(item.teams.away.id)"
+                [source]="getTeamLogo(item.teams.away.id)"
                 alternate="away logo"
                 width="14"
                 height="14"
@@ -152,7 +146,8 @@ export class MatchDayListComponent {
     return fixture ? fixture.league.round : '';
   });
 
-  logoFromAssets = logoFromAssets;
+  getCompetitionLogo = getCompetitionLogo;
+  getTeamLogo = getTeamLogo;
 
   linkToMatch(data: FixtureDTO): string[] {
     const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
