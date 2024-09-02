@@ -13,48 +13,36 @@ import { CompetitionData } from '@app/models';
   imports: [RouterModule, MatFormFieldModule, MatSelectModule],
   styles: `
     :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
-      .mat-mdc-floating-label mat-label {
-        @apply opacity-50;
-      }
-
-      .mat-mdc-form-field-subscript-wrapper {
-        display: none;
-      }
-
-      .mat-mdc-select-arrow {
-        @apply opacity-50;
-      }
-
-      &.mat-focused .mat-mdc-select-arrow {
-        @apply opacity-50;
-      }
+      .mat-mdc-floating-label mat-label { @apply opacity-50; }
+      .mat-mdc-form-field-subscript-wrapper { display: none; }
+      .mat-mdc-select-arrow { @apply opacity-50; }
+      &.mat-focused .mat-mdc-select-arrow { @apply opacity-50; }
 
       .mdc-text-field--filled .mdc-line-ripple::before {
         border-bottom-width: 0;
       }
     }
 
-    mat-select { --mat-select-trigger-text-size: var(--fb-font-size-body-2); }
-    :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
-      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-2);
-    }
-
+    mat-form-field { @apply w-[240px]; }
     ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
       max-height: 70vh;
+
+      mat-option .mdc-list-item__primary-text {
+        @apply w-full;
+      }
     }
 
-    mat-form-field { @apply w-[240px]; }
-
-    a { @apply flex w-full h-full px-4 py-1; }
+    mat-select { --mat-select-trigger-text-size: var(--fb-font-size-body-2); }
+    mat-form-field.mat-mdc-form-field-type-mat-select {
+      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-2);
+    }
 
     mat-option {
       padding: 0;
       --mat-option-label-text-size: var(--fb-font-size-small);
       min-height: 32px;
 
-      ::ng-deep .mdc-list-item__primary-text {
-        @apply w-full;
-      }
+      a { @apply flex w-full h-full px-4 py-1; }
     }
   `,
   template: `
