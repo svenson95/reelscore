@@ -30,7 +30,6 @@ import { FooterComponent, HeaderComponent } from './components';
       -moz-osx-font-smoothing: grayscale;
     }
     main { @apply flex p-fb-padding-3; }
-    mat-spinner { @apply mx-auto my-10; }
   `,
   template: `
     <header></header>
