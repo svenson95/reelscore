@@ -17,7 +17,7 @@ import { MatchEventComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent],
   styles: `
-    :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
+    :host { @apply flex flex-col; }
     section { @apply flex flex-col my-5 gap-5; }
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }

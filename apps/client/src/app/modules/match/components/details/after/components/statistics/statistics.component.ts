@@ -14,7 +14,7 @@ import { StatisticList } from './models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
+    :host { @apply flex flex-col; }
     section { @apply flex flex-col my-5 gap-5; }
     section > div { @apply flex; }
     div > div { @apply basis-6/12; }
