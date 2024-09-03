@@ -44,11 +44,9 @@ const roundString = (round: CompetitionRound): CompetitionRoundLabel => {
 };
 
 const groupstageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
-  const groupIdx = 7;
-  const group = value.slice(groupIdx, groupIdx + 1);
   const roundIdx = 11;
   const round = value.slice(roundIdx, value.length);
-  return `Gruppe ${group} #${round}`;
+  return `Gruppenphase #${round}`;
 };
 
 const translateDefault = (
