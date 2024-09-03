@@ -40,7 +40,7 @@ import { CompetitionFixtures } from '../../../../models';
 
       --mat-table-header-headline-line-height: 18px;
     }
-    .header { @apply flex px-3 py-2 gap-3 bg-white border-b-[1px] items-center; }
+    .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
     .header span { 
       -webkit-font-smoothing: antialiased;
       color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
