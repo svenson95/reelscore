@@ -10,17 +10,44 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { TeamNamePipe } from '@app/pipes';
-import { FixtureDTO, FixtureTeam, MatchTeams } from '@lib/models';
+import {
+  FixtureDTO,
+  FixtureResult,
+  FixtureTeam,
+  MatchTeams,
+} from '@lib/models';
 import { ResultLabelComponent } from '../../../../../../../../components';
 
 @Pipe({
-  name: 'isWinner',
+  name: 'check',
   standalone: true,
 })
-export class IsWinnerPipe implements PipeTransform {
-  transform = (fs: MatchTeams, r: FixtureTeam, v: boolean): boolean => {
-    const f = fs.home.id === r.id ? fs.home : fs.away;
-    return f.id === r.id && f.winner === v;
+export class CheckScorePipe implements PipeTransform {
+  transform = (
+    teams: MatchTeams,
+    relatedTeam: FixtureTeam,
+    type: FixtureResult
+  ): boolean => {
+    const { home, away } = teams;
+    const team = home.id === relatedTeam.id ? home : away;
+    switch (type) {
+      case 'WIN':
+        return team.winner === true;
+      case 'LOSS':
+        return team.winner === false;
+      default:
+        return false;
+    }
+  };
+}
+
+@Pipe({
+  name: 'isRelated',
+  standalone: true,
+})
+export class IsRelatedPipe implements PipeTransform {
+  transform = (team: FixtureTeam, relatedTeam: FixtureTeam): boolean => {
+    return team.id === relatedTeam.id;
   };
 }
 
@@ -33,38 +60,36 @@ export class IsWinnerPipe implements PipeTransform {
     DatePipe,
     MatRippleModule,
     TeamNamePipe,
-    IsWinnerPipe,
+    CheckScorePipe,
+    IsRelatedPipe,
     ResultLabelComponent,
   ],
   styles: `
-    :host { @apply flex-1 p-4 text-fb-font-size-small sm:text-fb-font-size-body-2; }
-    a { @apply flex px-2 py-3 items-center; }
+    :host { @apply flex-1 p-4 text-fb-font-size-body-2; }
+    a { @apply flex items-center p-2; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
     .date { @apply w-[40px]; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
-    .result { @apply text-center w-[60px]; }
-    .is-related-team { @apply font-bold; }
-    .is-winner .is-related-team { @apply bg-green-500 text-white; }
-    .is-loser .is-related-team { @apply bg-red-500 text-white; }
-    .team span { @apply px-2 py-1; }
+    .result { @apply text-center w-[40px]; }
+    .is-related { @apply underline decoration-2; }
+    .is-winner .is-related { @apply decoration-green-500; }
+    .is-loser .is-related { @apply decoration-red-500; }
   `,
   template: `
-    @for(match of latestFixtures(); track match.fixture.id) {
+    @for(match of fixtures(); track match.fixture.id) {
     <a
       mat-ripple
       [routerLink]="['..', match.fixture.id]"
-      [class.is-winner]="match.teams | isWinner : relatedTeam() : true"
-      [class.is-loser]="match.teams | isWinner : relatedTeam() : false"
+      [class.is-winner]="match.teams | check : team() : 'WIN'"
+      [class.is-loser]="match.teams | check : team() : 'LOSS'"
     >
       <div class="date">
         <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
       </div>
 
       <div class="team home">
-        <span
-          [class.is-related-team]="match.teams.home.id === relatedTeam().id"
-        >
+        <span [class.is-related]="match.teams.home | isRelated : team()">
           {{ match.teams.home.name | teamName : 'short' }}
         </span>
       </div>
@@ -77,9 +102,7 @@ export class IsWinnerPipe implements PipeTransform {
       </div>
 
       <div class="team">
-        <span
-          [class.is-related-team]="match.teams.away.id === relatedTeam().id"
-        >
+        <span [class.is-related]="match.teams.away | isRelated : team()">
           {{ match.teams.away.name | teamName : 'short' }}
         </span>
       </div>
@@ -90,6 +113,6 @@ export class IsWinnerPipe implements PipeTransform {
   `,
 })
 export class MatchFixturesTableComponent {
-  latestFixtures = input.required<FixtureDTO[]>();
-  relatedTeam = input.required<FixtureTeam>();
+  fixtures = input.required<FixtureDTO[]>();
+  team = input.required<FixtureTeam>();
 }
