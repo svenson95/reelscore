@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
-import { StateHandler } from '@app/models';
+import { DateString, StateHandler } from '@app/models';
 import { HttpStandingsService } from '@app/services';
 import { CompetitionId, StandingsDTO } from '@lib/models';
 
@@ -17,9 +17,9 @@ const initialState: StandingState = {
 export const StandingStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadStanding(id: CompetitionId): Promise<void> {
+    async loadStanding(date: DateString, id: CompetitionId): Promise<void> {
       patchState(store, { isLoading: true });
-      const standing = await firstValueFrom(http.getStandings(id));
+      const standing = await firstValueFrom(http.getStandings(date, id));
       patchState(store, {
         standing,
         isLoading: false,

@@ -1,10 +1,16 @@
-import { getSeason } from '../middleware';
+import { APP_DATA, getSeason } from '../middleware';
 import { Standings } from '../models';
 
 export const getStanding = async (req, res, next) => {
   const leagueId = req.query.league;
-  const season = 2023;
-  const query = { 'league.id': leagueId, 'league.season': season };
+  const [year, month, day] = req.query.date.split('-');
+  const date = new Date(Date.UTC(year, month - 1, day));
+  date.setDate(date.getDate() + 1);
+  const query = {
+    'league.id': leagueId,
+    'league.season': APP_DATA.season,
+    $and: [{ createdAt: { $lte: date } }],
+  };
 
   try {
     const docs = await Standings.find(query).sort({ _id: -1 });

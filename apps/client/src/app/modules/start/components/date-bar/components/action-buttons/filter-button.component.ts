@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -6,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA } from '@app/constants';
+import { DateService } from '@app/services';
 import { CompetitionId } from '@lib/models';
 import { FilterService } from '../../../../services';
 import { StandingStore } from '../../../../store';
@@ -84,17 +90,31 @@ import { StandingStore } from '../../../../store';
 export class FilterButtonComponent {
   groups = SELECT_COMPETITION_DATA;
   standingStore = inject(StandingStore);
+  dateService = inject(DateService);
   fs = inject(FilterService);
   selectedCompetition = this.fs.selectedCompetition;
 
-  setFilter(competitionId: CompetitionId) {
-    if (this.selectedCompetition() === competitionId) {
+  setFilter(id: CompetitionId) {
+    if (this.selectedCompetition() === id) {
       this.selectedCompetition.set(null);
       this.standingStore.reset();
     } else {
-      this.standingStore.loadStanding(competitionId).then(() => {
-        this.selectedCompetition.set(competitionId);
-      });
+      this.updateStanding(id);
     }
   }
+
+  updateStanding(id: CompetitionId): void {
+    const date = this.dateService.selectedDay();
+    this.standingStore.loadStanding(date, id).then(() => {
+      this.selectedCompetition.set(id);
+    });
+  }
+
+  dateEffect = effect(
+    () => {
+      const id = this.selectedCompetition();
+      if (id) this.updateStanding(id);
+    },
+    { allowSignalWrites: true }
+  );
 }

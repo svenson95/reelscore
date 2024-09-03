@@ -9,7 +9,10 @@ import { environment } from '../../../environments/environment';
 type StandingsParams = CompetitionId | null;
 
 export abstract class HttpStandingsService {
-  abstract getStandings(id: StandingsParams): Observable<StandingsDTO>;
+  abstract getStandings(
+    date: DateString,
+    id: StandingsParams
+  ): Observable<StandingsDTO>;
   abstract getAllStandings(date: DateString): Observable<StandingsDTO[]>;
 }
 
@@ -18,8 +21,13 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   BASE_URL = environment.api + 'standings';
   http = inject(HttpClient);
 
-  getStandings(id: StandingsParams): Observable<StandingsDTO> {
+  getStandings(
+    date: DateString,
+    id: StandingsParams
+  ): Observable<StandingsDTO> {
+    const dateString = date.substring(0, 10);
     let params = new HttpParams();
+    if (date) params = params.append('date', dateString);
     if (id) params = params.append('league', id);
     return this.http.get<StandingsDTO>(this.BASE_URL + '/get', {
       params,
