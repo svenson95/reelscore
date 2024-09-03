@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -6,8 +6,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA } from '@app/constants';
-
 import { CompetitionId } from '@lib/models';
+import { FilterService } from '../../../../services';
+import { StandingStore } from '../../../../store';
 
 @Component({
   selector: 'reelscore-filter-button',
@@ -32,7 +33,7 @@ import { CompetitionId } from '@lib/models';
     }
     ::ng-deep {
         .filter-menu .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
-            @apply flex gap-2;
+            @apply flex items-center gap-2;
         }
 
         .mat-mdc-menu-panel {
@@ -81,15 +82,19 @@ import { CompetitionId } from '@lib/models';
   `,
 })
 export class FilterButtonComponent {
-  selectedCompetition = signal<CompetitionId | null>(null);
-
   groups = SELECT_COMPETITION_DATA;
+  standingStore = inject(StandingStore);
+  fs = inject(FilterService);
+  selectedCompetition = this.fs.selectedCompetition;
 
   setFilter(competitionId: CompetitionId) {
     if (this.selectedCompetition() === competitionId) {
       this.selectedCompetition.set(null);
+      this.standingStore.reset();
     } else {
-      this.selectedCompetition.set(competitionId);
+      this.standingStore.loadStanding(competitionId).then(() => {
+        this.selectedCompetition.set(competitionId);
+      });
     }
   }
 }
