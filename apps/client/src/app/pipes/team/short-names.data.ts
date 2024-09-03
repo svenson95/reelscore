@@ -159,7 +159,7 @@ export const shortTeamName = (value: string): string => {
     case 'Paris Saint Germain':
       return 'Paris SG';
     case 'Stade Brestois 29':
-      return 'Stade Brest';
+      return 'Brest';
     case 'LE Havre':
       return 'Le Havre';
     case 'Lens':
@@ -186,6 +186,8 @@ export const shortTeamName = (value: string): string => {
       return 'Vallecano';
     case 'Real Sociedad':
       return 'Sociedad';
+    case 'Leganes':
+      return 'Leganés';
 
     // Serie A
     case 'AC Milan':
@@ -195,6 +197,14 @@ export const shortTeamName = (value: string): string => {
     case 'Fiorentina':
     case 'AC Florenz':
       return 'Florenz';
+    case 'Genoa':
+      return 'Genua';
+    case 'Venezia':
+      return 'Venedig';
+    case 'Torino':
+      return 'Turin';
+    case 'Napoli':
+      return 'Neapel';
 
     default:
       return value;
