@@ -74,7 +74,7 @@ export const longTeamName = (value: string): string => {
     case 'Paris Saint Germain':
       return 'Paris Saint-Germain';
     case 'LE Havre':
-      return 'Le Havre';
+      return 'Le Havre AC';
     case 'Marseille':
       return 'Olympique de Marseille';
     case 'Metz':
@@ -107,6 +107,10 @@ export const longTeamName = (value: string): string => {
       return 'AS Saint-Étienne';
     case 'Toulouse':
       return 'FC Toulouse';
+    case 'Auxerre':
+      return 'AJ Auxerre';
+    case 'Angers':
+      return 'SCO Angers';
 
     // La Liga
     case 'Athletic Club':
@@ -151,22 +155,26 @@ export const longTeamName = (value: string): string => {
       return 'Girona FC';
     case 'Cadiz':
       return 'Cádiz CF';
+    case 'Valladolid':
+      return 'Real Valladolid';
+    case 'Leganes':
+      return 'CD Leganés';
 
     // Serie A
     case 'AS Roma':
-      return 'AS Rom';
+      return 'AS Roma';
     case 'Atalanta':
       return 'Atalanta Bergamo';
     case 'Bologna':
-      return 'FC Bologna';
+      return 'Bologna FC 1909';
     case 'Cagliari':
       return 'Cagliari Calcio';
     case 'Empoli':
       return 'Empoli FC';
     case 'Fiorentina':
-      return 'AC Florenz';
+      return 'AC Fiorentina';
     case 'Genoa':
-      return 'CFC Genoa';
+      return 'CFC Genua';
     case 'Juventus':
       return 'Juventus Turin';
     case 'Lazio':
@@ -176,7 +184,7 @@ export const longTeamName = (value: string): string => {
     case 'Sassuolo':
       return 'US Sassuolo';
     case 'Torino':
-      return 'FC Turin';
+      return 'Torino FC';
     case 'Udinese':
       return 'Udinese Calcio';
     case 'Verona':
@@ -189,6 +197,14 @@ export const longTeamName = (value: string): string => {
       return 'US Lecce';
     case 'Monza':
       return 'AC Monza';
+    case 'Como':
+      return 'Como 1907';
+    case 'Parma':
+      return 'Parma Calcio 1913';
+    case 'Venezia':
+      return 'Venezia FC';
+    case 'Inter':
+      return 'Inter Mailand';
 
     // Europa
     case 'Slavia Praha':
