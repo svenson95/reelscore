@@ -8,12 +8,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { ROUTE_SERVICE_PROVIDER } from '@app/services';
+import {
+  BreakpointObserverService,
+  ROUTE_SERVICE_PROVIDER,
+} from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
 import { FixtureStore } from '../../store/fixture.store';
 import { RouterView } from '../router-view';
@@ -41,6 +45,7 @@ import { StatisticsStore } from './store/statistics.store';
     DatePipe,
     MatButtonModule,
     MatTabsModule,
+    MatIconModule,
     BackButtonComponent,
     MatchHeaderComponent,
     MatchFixtureDataComponent,
@@ -112,17 +117,34 @@ import { StatisticsStore } from './store/statistics.store';
 
       <section class="data">
         <mat-tab-group>
-          <mat-tab label="Details" bodyClass="foobar">
+          <mat-tab bodyClass="foobar">
+            <ng-template mat-tab-label>
+              @if (isMobile()) {
+              <mat-icon>info</mat-icon>
+              } @else { Details }
+            </ng-template>
+
             <reelscore-match-fixture-data />
             <reelscore-match-evaluations [evaluations]="evs.evaluations()" />
             <reelscore-match-latest-fixtures />
           </mat-tab>
-          <mat-tab label="Bericht" [disabled]="!hasEvents()">
+          <mat-tab [disabled]="!hasEvents()">
+            <ng-template mat-tab-label>
+              @if (isMobile()) {
+              <mat-icon>article</mat-icon>
+              } @else { Bericht }
+            </ng-template>
+
             <ng-template matTabContent>
               <reelscore-match-events />
             </ng-template>
           </mat-tab>
-          <mat-tab label="Statistiken" [disabled]="!hasStatistics()">
+          <mat-tab [disabled]="!hasStatistics()">
+            <ng-template mat-tab-label>
+              @if (isMobile()) {
+              <mat-icon>assessment</mat-icon>
+              } @else { Statistiken }
+            </ng-template>
             <ng-template matTabContent>
               @if (!!ss.statistics()) {
               <reelscore-match-statistics [data]="ss.statistics()!" />
@@ -141,10 +163,12 @@ export class MatchComponent extends RouterView implements OnInit {
   es = inject(EventsStore);
   ss = inject(StatisticsStore);
   evs = inject(EvaluationsStore);
+  bos = inject(BreakpointObserverService);
 
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
   data = this.fs;
+  isMobile = this.bos.isMobile;
 
   hasEvents = computed<boolean>(() => !!this.es.events());
   hasStatistics = computed<boolean>(() => !!this.ss.statistics());
