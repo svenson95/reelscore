@@ -30,8 +30,14 @@ import { CompetitionId } from '@lib/models';
     button.mdc-icon-button, button.mat-mdc-menu-item {
         &.is-filtering { @apply bg-blue-500 text-fb-color-white; }
     }
-    ::ng-deep .filter-menu .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
-        @apply flex gap-2;
+    ::ng-deep {
+        .filter-menu .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
+            @apply flex gap-2;
+        }
+
+        .mat-mdc-menu-panel {
+            max-height: 70vh;
+        }
     }
     .mat-mdc-menu-item {
         .mat-icon { --mat-menu-item-icon-size: 12px; font-size: 12px; margin-right: 0; }
