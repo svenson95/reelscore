@@ -14,9 +14,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [EvaluationsStore],
   styles: `
-    :host { @apply flex flex-col bg-white border-[1px] rounded-fb; }
+    :host { @apply flex flex-col; }
     section { 
-      @apply flex flex-col gap-3 p-5;
+      @apply flex flex-col gap-3 px-5 pb-5 pt-3;
 
       &:first-of-type { @apply border-b-[1px]; }
       .header { @apply flex justify-between; }

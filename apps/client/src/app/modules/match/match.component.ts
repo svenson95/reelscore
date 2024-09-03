@@ -79,8 +79,8 @@ import { StatisticsStore } from './store/statistics.store';
       --mdc-outlined-button-container-height: 40px;
       @apply fb-as-label; 
     }
-    :host ::ng-deep .foobar > div {
-      @apply flex flex-col gap-5;
+    :host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active {
+      @apply flex flex-col gap-2 bg-white; 
     }
     .spacer {
       flex: 1;
@@ -117,7 +117,7 @@ import { StatisticsStore } from './store/statistics.store';
 
       <section class="data">
         <mat-tab-group>
-          <mat-tab bodyClass="foobar">
+          <mat-tab>
             <ng-template mat-tab-label>
               @if (isMobile()) {
               <mat-icon>info</mat-icon>
