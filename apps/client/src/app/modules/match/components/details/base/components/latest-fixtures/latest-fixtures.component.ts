@@ -33,12 +33,12 @@ import { MatchFixturesTableComponent } from './components';
       <p class="no-latestFixtures">Keine Spiele gefunden.</p>
       } @else { @if (latestFixtures.latestFixtures()) {
       <reelscore-match-fixtures-table
-        [relatedTeam]="fixture()!.teams.home"
-        [latestFixtures]="latestFixtures.latestFixtures()!.home"
+        [team]="fixture()!.teams.home"
+        [fixtures]="latestFixtures.latestFixtures()!.home"
       />
       <reelscore-match-fixtures-table
-        [relatedTeam]="fixture()!.teams.away"
-        [latestFixtures]="latestFixtures.latestFixtures()!.away"
+        [team]="fixture()!.teams.away"
+        [fixtures]="latestFixtures.latestFixtures()!.away"
       />
       } }
     </section>
