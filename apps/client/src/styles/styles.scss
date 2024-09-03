@@ -27,7 +27,7 @@ header .wrapper {
 
 h3.match-section-title {
   // TODO refactor border-b-[1px] pb-2 mb-2 to a utility class
-  @apply py-3 border-b-[1px] text-center;
+  @apply py-3 mx-5 border-b-[1px] text-center text-fb-color-text-1;
 }
 
 p.no-data {

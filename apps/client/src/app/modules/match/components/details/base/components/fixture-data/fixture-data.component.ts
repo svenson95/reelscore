@@ -9,7 +9,6 @@ import { FixtureStore } from '../../../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CompetitionRoundPipe],
   styles: `
-      :host { @apply bg-white border-[1px] rounded-fb; }
       ul { @apply py-2;}
       .item { @apply flex justify-center py-2 px-4 gap-5; }
       .item > *:not(.key) { @apply flex-[2] sm:flex-1; }
