@@ -13,6 +13,7 @@ import { LeagueService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
 import { loadFixtures, selectFixtures } from '../../../../store';
 import { CompetitionFixtures, FilteredCompetitions } from '../../models';
+import { FilterService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({
@@ -43,6 +44,7 @@ import { MatchDayListComponent } from './components';
 })
 export class MatchDayComponent implements OnInit {
   ls = inject(LeagueService);
+  fs = inject(FilterService);
   store = inject(Store);
   data$ = this.store.select(selectFixtures);
   data = toSignal(this.data$);
@@ -53,20 +55,19 @@ export class MatchDayComponent implements OnInit {
 
   competitions = computed<CompetitionFixtures[] | undefined>(() => {
     const data = this.data()?.fixtures;
-    const selectedLeague = this.ls.selectedLeague();
     if (data === undefined) return undefined;
 
     const competitions = [...new Set(data.map((f) => f.league.name))];
     const fixtures = competitions.map((c) => this.filterByCompetition(c, data));
 
-    const filtered = new FilteredCompetitions(fixtures).byLeague(
-      selectedLeague?.label
-    );
+    const id = this.fs.selectedCompetition();
+    const filtered = new FilteredCompetitions(fixtures).byLeague(id);
     return filtered.competitions;
   });
 
   filterByCompetition = (name: string, data: FixtureDTO[]) => ({
     name,
+    id: data.find((f) => f.league.name === name)?.league.id || -1,
     image: data.find((f) => f.league.name === name)?.league.flag || 'error',
     fixtures: data.filter((f) => f.league.name === name),
   });

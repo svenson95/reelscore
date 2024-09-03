@@ -1,5 +1,8 @@
+import { CompetitionId, CompetitionLabel } from '@lib/models';
+
 export interface Competition {
-  name: string;
+  id: CompetitionId;
+  name: CompetitionLabel;
   image: string;
 }
 
