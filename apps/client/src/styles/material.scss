@@ -61,6 +61,9 @@ $reelscore-theme: mat.m2-define-light-theme(
 
 button.mdc-button {
   @apply bg-white;
+
+  --mdc-text-button-label-text-size: var(--fb-font-size-body-2);
+  --mat-text-button-horizontal-padding: 10px;
 }
 
 .mat-datepicker-content {
