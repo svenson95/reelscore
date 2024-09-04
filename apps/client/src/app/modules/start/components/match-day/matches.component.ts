@@ -24,17 +24,19 @@ import { MatchDayListComponent } from './components';
     }
   `,
   template: `
-    @if (data.fixtures()) { @if (data.isLoading()) {
+    @if (data.isLoading() && !data.fixtures()) {
     <p class="no-data">Spiele werden geladen ...</p>
     } @else if (data.error()) {
     <p class="no-data">Fehler beim Laden der Spiele.</p>
-    } @else if (data.fixtures()?.length === 0) {
+    } @else if (data.fixtures()?.length === 0) { @if (data.isLoading()) {
+    <p class="no-data">Spiele werden geladen ...</p>
+    } @else {
     <p class="no-data">Es finden keine Spiele statt.</p>
-    } @else if (competitions()?.length === 0) {
+    } } @else if (competitions()?.length === 0) {
     <p class="no-data">Keine Spiele für diesen Wettbewerb gefunden.</p>
     } @else { @for (competition of competitions(); track competition.name) {
     <reelscore-match-day-list [competition]="competition" />
-    } } }
+    } }
   `,
 })
 export class MatchesComponent {
