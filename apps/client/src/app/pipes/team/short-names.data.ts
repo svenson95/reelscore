@@ -251,9 +251,19 @@ export const shortTeamName = (value: string): string => {
     case 'Malmo FF':
       return 'Malmö';
     case 'Sparta Praha':
-      return 'Sparta Prag';
+      return 'Prag';
     case 'Dynamo Kyiv':
       return 'Dynamo Kiew';
+    case 'PSV Eindhoven':
+      return 'Eindhoven';
+    case 'Sporting CP':
+      return 'Sporting';
+    case 'Shakhtar Donetsk':
+      return 'Shakhtar';
+    case 'Club Brugge KV':
+      return 'Brügge';
+    case 'Benfica':
+      return 'Benfica';
 
     // International
     case 'Northern Ireland':
