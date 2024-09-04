@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { firstValueFrom } from 'rxjs';
 
 import { StateHandler } from '@app/models';
 import { LatestFixturesDTO } from '@lib/models';
@@ -28,13 +27,27 @@ export const LatestFixturesStore = signalStore(
       async loadLatestFixtures(): Promise<void> {
         patchState(store, { isLoading: true });
         const id = fixtureStore.fixture()?.fixture.id;
-        const latestFixtures = id
-          ? await firstValueFrom(http.getLatestFixtures(id))
-          : null;
-        patchState(store, {
-          latestFixtures,
-          isLoading: false,
-          error: latestFixtures ? null : 'Latest Fixtures not found',
+        if (!id) {
+          return patchState(store, {
+            latestFixtures: null,
+            isLoading: false,
+            error: 'Fixture Id in fixture store not defined',
+          });
+        }
+
+        http.getLatestFixtures(id).subscribe({
+          next: (latestFixtures) =>
+            patchState(store, {
+              latestFixtures,
+              isLoading: false,
+              error: latestFixtures ? null : 'Latest Fixtures not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              latestFixtures: null,
+              isLoading: false,
+              error,
+            }),
         });
       },
     })

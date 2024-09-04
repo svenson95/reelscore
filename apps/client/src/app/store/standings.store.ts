@@ -3,39 +3,36 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { DateString, StateHandler } from '@app/models';
 import { HttpStandingsService } from '@app/services';
-import { CompetitionId, StandingsDTO } from '@lib/models';
+import { StandingsDTO } from '@lib/models';
 
-type StandingState = StateHandler<{ standing: StandingsDTO | null }>;
+type StandingsState = StateHandler<{ standings: StandingsDTO[] | null }>;
 
-const initialState: StandingState = {
+const initialState: StandingsState = {
+  standings: null,
   isLoading: false,
   error: null,
-  standing: null,
 };
 
-export const StandingStore = signalStore(
+export const StandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadStanding(date: DateString, id: CompetitionId): Promise<void> {
+    async loadStandings(date: DateString): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getStandings(date, id).subscribe({
-        next: (standing) =>
+      http.getAllStandings(date).subscribe({
+        next: (standings) =>
           patchState(store, {
-            standing,
+            standings,
             isLoading: false,
-            error: standing ? null : 'Standing not found',
+            error: standings ? null : 'Standings not found',
           }),
         error: (error) =>
           patchState(store, {
-            standing: null,
+            standings: null,
             isLoading: false,
             error,
           }),
       });
-    },
-    reset(): void {
-      patchState(store, initialState);
     },
   }))
 );

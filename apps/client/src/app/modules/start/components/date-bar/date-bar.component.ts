@@ -1,15 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Store } from '@ngrx/store';
 
 import { BreakpointObserverService, DateService } from '@app/services';
-import { selectStandings } from '../../../../store';
+import { StandingsStore } from '../../../../store';
 import {
   ActionButtonsComponent,
   DatePickerComponent,
@@ -71,17 +64,16 @@ import {
   `,
 })
 export class DateBarComponent {
-  bos = inject(BreakpointObserverService);
-  ds = inject(DateService);
-  store = inject(Store);
+  breakpointObserverService = inject(BreakpointObserverService);
+  isMobile = this.breakpointObserverService.isMobile;
 
-  selectedDay = this.ds.selectedDay;
-  weekdays = this.ds.weekdays;
-  calenderWeek = this.ds.calenderWeek;
-  isToday = this.ds.isToday;
+  dateService = inject(DateService);
+  selectedDay = this.dateService.selectedDay;
+  weekdays = this.dateService.weekdays;
+  calenderWeek = this.dateService.calenderWeek;
+  isToday = this.dateService.isToday;
 
-  isMobile = this.bos.isMobile;
-
-  standings = toSignal(this.store.select(selectStandings));
-  isLoading = computed(() => this.standings()?.isLoading);
+  standingsStore = inject(StandingsStore);
+  standings = this.standingsStore.standings;
+  isLoading = this.standingsStore.isLoading;
 }
