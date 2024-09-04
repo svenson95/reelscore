@@ -36,6 +36,8 @@ import { MatchDayListComponent } from './components';
       <p class="no-data">Fehler beim Laden der Spiele.</p>
       } @else if (data.fixtures.length === 0) {
       <p class="no-data">Es finden keine Spiele statt.</p>
+      } @else if (competitions()?.length === 0) {
+      <p class="no-data">Keine Spiele für diesen Wettbewerb gefunden.</p>
       } @else { @for (competition of competitions(); track competition.name) {
       <reelscore-match-day-list [competition]="competition" />
       } }
