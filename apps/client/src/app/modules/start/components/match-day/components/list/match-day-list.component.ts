@@ -47,7 +47,7 @@ import { CompetitionWithFixtures } from '../../../../models';
       font-size: var(--fb-font-size-body-2);
       font-weight: var(--mat-table-header-headline-weight, 500);
 
-      &.gray { @apply text-fb-color-text-2 text-fb-font-size-small; }
+      &.gray { @apply text-fb-color-text-2 text-fb-font-size-small shrink-0; }
     }
     ul { @apply w-full; }
     li { @apply bg-white; }
