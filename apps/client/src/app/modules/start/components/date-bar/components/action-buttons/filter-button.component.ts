@@ -42,12 +42,10 @@ import { StandingStore } from '../../../../store';
             @apply flex items-center gap-2;
         }
 
-        .mat-mdc-menu-panel {
-            max-height: 70vh;
-        }
+        .mat-mdc-menu-panel { @apply max-h-[70vh]; }
     }
     .mat-mdc-menu-item {
-        .mat-icon { --mat-menu-item-icon-size: 12px; font-size: 12px; margin-right: 0; }
+        .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
         .reset-button { @apply ml-auto; }
     }
   `,
