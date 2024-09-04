@@ -6,6 +6,7 @@ type CompetitionRoundType = string;
 const ROUND_LABEL_TYPES = [
   'Regular Season',
   'League', // UEFA Nations League group stage
+  'League Stage', // UEFA CHampions league group stage
   '1st Round',
   '2nd Round',
   '3rd Round',
@@ -44,7 +45,7 @@ const roundString = (round: CompetitionRound): CompetitionRoundLabel => {
 };
 
 const groupstageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
-  const roundIdx = 11;
+  const roundIdx = value.indexOf('-') + 2;
   const round = value.slice(roundIdx, value.length);
   return `Gruppenphase #${round}`;
 };
