@@ -7,7 +7,6 @@ import {
   BreakpointObserverService,
   ROUTE_SERVICE_PROVIDER,
 } from '@app/services';
-import { CompetitionId } from '@lib/models';
 import { OptimizedImageComponent } from '../../components';
 import { RouterView } from '../router-view';
 
@@ -85,5 +84,5 @@ export class CompetitionComponent extends RouterView {
   bos = inject(BreakpointObserverService);
   isMobile = this.bos.isMobile;
 
-  getCompetitionLogo = (id: CompetitionId) => getCompetitionLogo(id, false);
+  getCompetitionLogo = getCompetitionLogo;
 }
