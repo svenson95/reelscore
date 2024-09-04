@@ -48,6 +48,10 @@ import { StandingStore } from '../../../../store';
         .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
         .reset-button { @apply ml-auto; }
     }
+    button {
+      reelscore-optimized-image { @apply p-1; }
+      &.is-filtering reelscore-optimized-image { @apply bg-white rounded-full; }
+    }
   `,
   template: `
     <button
