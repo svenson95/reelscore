@@ -4,7 +4,7 @@ import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 import {
   DateBarComponent,
-  MatchDayComponent,
+  MatchesComponent,
   StandingsComponent,
 } from './components';
 import { FILTER_SERVICE_PROVIDER } from './services';
@@ -13,7 +13,7 @@ import { StandingStore } from './store';
 @Component({
   selector: 'reelscore-league',
   standalone: true,
-  imports: [DateBarComponent, MatchDayComponent, StandingsComponent],
+  imports: [DateBarComponent, MatchesComponent, StandingsComponent],
   providers: [ROUTE_SERVICE_PROVIDER, FILTER_SERVICE_PROVIDER, StandingStore],
   styles: `
     :host { 
@@ -22,7 +22,7 @@ import { StandingStore } from './store';
       section {
         @apply max-w-fb-max-width inline-flex flex-wrap md:flex-nowrap w-full gap-5 mx-auto;
 
-        reelscore-match-day, reelscore-standings {
+        reelscore-matches, reelscore-standings {
           @apply w-full min-w-[200px];
         }
       }
@@ -32,7 +32,7 @@ import { StandingStore } from './store';
     <reelscore-date-bar />
 
     <section>
-      <reelscore-match-day />
+      <reelscore-matches />
       <reelscore-standings />
     </section>
   `,
