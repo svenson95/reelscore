@@ -241,14 +241,24 @@ export const longTeamName = (value: string): string => {
       return 'FC Petrocub-Hîncesti';
     case 'Malmo FF':
       return 'Malmö FF';
-    case 'Sparta Praha':
-      return 'Sparta Prag';
     case 'Dynamo Kyiv':
       return 'FK Dynamo Kiew';
     case 'Galatasaray':
       return 'Galatasaray Istanbul';
     case 'Molde':
       return 'Molde FK';
+    case 'Sporting CP':
+      return 'Sporting Clube de Portugal';
+    case 'Shakhtar Donetsk':
+      return 'Schachtar Donezk';
+    case 'Celtic':
+      return 'Celtic Glasgow';
+    case 'Benfica':
+      return 'SL Benfica';
+    case 'Feyenoord':
+      return 'Feyenoord Rotterdam';
+    case 'Sturm Graz':
+      return 'SK Sturm Graz';
 
     // International
     case 'Northern Ireland':
