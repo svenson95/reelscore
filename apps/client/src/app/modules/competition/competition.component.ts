@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { MatIconModule } from '@angular/material/icon';
 import { getCompetitionLogo } from '@app/models';
 import {
   BreakpointObserverService,
   ROUTE_SERVICE_PROVIDER,
 } from '@app/services';
+import { CompetitionId } from '@lib/models';
 import { OptimizedImageComponent } from '../../components';
 import { RouterView } from '../router-view';
 
@@ -84,5 +85,5 @@ export class CompetitionComponent extends RouterView {
   bos = inject(BreakpointObserverService);
   isMobile = this.bos.isMobile;
 
-  getCompetitionLogo = getCompetitionLogo;
+  getCompetitionLogo = (id: CompetitionId) => getCompetitionLogo(id, false);
 }

@@ -25,8 +25,8 @@ import { ResultLabelComponent } from '../../../../components';
       <reelscore-optimized-image
         [source]="getTeamLogo(data().teams.home.id)"
         alternate="home logo"
-        width="36"
-        height="36"
+        width="48"
+        height="48"
       />
       <span class="team-name">
         {{ data().teams.home.name | teamName }}
@@ -45,8 +45,8 @@ import { ResultLabelComponent } from '../../../../components';
       <reelscore-optimized-image
         [source]="getTeamLogo(data().teams.away.id)"
         alternate="away logo"
-        width="36"
-        height="36"
+        width="48"
+        height="48"
       />
       <span class="team-name">
         {{ data().teams.away.name | teamName }}
@@ -57,5 +57,5 @@ import { ResultLabelComponent } from '../../../../components';
 export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
 
-  getTeamLogo = getTeamLogo;
+  getTeamLogo = (id: number) => getTeamLogo(id, false);
 }
