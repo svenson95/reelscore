@@ -19,7 +19,8 @@ export const FixturesStore = signalStore(
     async loadFixtures(date: DateString): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getFixtures(date).subscribe({
+      const dateString = date.split('T')[0];
+      http.getFixtures(dateString).subscribe({
         next: (fixtures) =>
           patchState(store, {
             fixtures,
