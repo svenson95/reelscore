@@ -7,12 +7,12 @@ import {
 
 import { FixtureDTO } from '@lib/models';
 import { FixturesStore } from '../../../../store';
-import { CompetitionFixtures, FilteredCompetitions } from '../../models';
+import { CompetitionWithFixtures } from '../../models';
 import { FilterService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({
-  selector: 'reelscore-match-day',
+  selector: 'reelscore-matches',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent],
@@ -37,34 +37,33 @@ import { MatchDayListComponent } from './components';
     } } }
   `,
 })
-export class MatchDayComponent {
+export class MatchesComponent {
   filterService = inject(FilterService);
   fixturesStore = inject(FixturesStore);
   data = this.fixturesStore;
 
-  competitions = computed<CompetitionFixtures[] | undefined>(() => {
+  competitions = computed<CompetitionWithFixtures[] | undefined>(() => {
     const fixtures = this.data.fixtures();
     if (fixtures === undefined || fixtures === null) return undefined;
+    return this.getCompetitionWithFixtures(fixtures);
+  });
 
-    const fixturesCompetitions = [
-      ...new Set(fixtures.map((f) => f.league.name)),
-    ];
-    const competitions = fixturesCompetitions.map((competitionName) =>
-      this.filterByCompetition(competitionName, fixtures)
+  getCompetitionWithFixtures = (
+    fixtures: Array<FixtureDTO>
+  ): Array<CompetitionWithFixtures> => {
+    const allCompetitions = [...new Set(fixtures.map((f) => f.league.name))];
+    const competitions: Array<CompetitionWithFixtures> = allCompetitions.map(
+      (name) => ({
+        name,
+        id: fixtures.find((f) => f.league.name === name)?.league.id || -1,
+        image:
+          fixtures.find((f) => f.league.name === name)?.league.flag || 'error',
+        fixtures: fixtures.filter((f) => f.league.name === name),
+      })
     );
 
-    const id = this.filterService.selectedCompetition();
-    const filtered = new FilteredCompetitions(competitions).byLeague(id);
-    return filtered.competitions;
-  });
-
-  filterByCompetition = (
-    name: string,
-    data: FixtureDTO[]
-  ): CompetitionFixtures => ({
-    name,
-    id: data.find((f) => f.league.name === name)?.league.id || -1,
-    image: data.find((f) => f.league.name === name)?.league.flag || 'error',
-    fixtures: data.filter((f) => f.league.name === name),
-  });
+    const filter = this.filterService.selectedCompetition();
+    const filtered = competitions.filter((c) => c.id === filter);
+    return filter ? filtered : competitions;
+  };
 }

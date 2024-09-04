@@ -15,7 +15,7 @@ import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
 import { ResultLabelComponent } from '../../../../../../components';
-import { CompetitionFixtures } from '../../../../models';
+import { CompetitionWithFixtures } from '../../../../models';
 
 @Component({
   selector: 'reelscore-match-day-list',
@@ -130,7 +130,7 @@ import { CompetitionFixtures } from '../../../../models';
 })
 export class MatchDayListComponent {
   routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
-  competition = input.required<CompetitionFixtures>();
+  competition = input.required<CompetitionWithFixtures>();
 
   round = computed(() => {
     const fixture = this.competition().fixtures[0];
