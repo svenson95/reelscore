@@ -16,10 +16,10 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   styles: `
     :host { @apply flex flex-col; }
     section { 
-      @apply flex flex-col gap-3 px-5 pb-5 pt-3;
+      @apply flex flex-col gap-5 m-5;
 
-      &:first-of-type { @apply border-b-[1px]; }
-      .header { @apply flex justify-between; }
+      &:first-of-type { @apply border-b-[1px] pb-5; }
+      .header { @apply flex justify-between px-5; }
       .section-hints { @apply flex gap-3 items-center text-fb-color-text-2; }
       .section-title { @apply text-fb-font-size-body-2 xs:text-fb-font-size-body-1; }
     }
