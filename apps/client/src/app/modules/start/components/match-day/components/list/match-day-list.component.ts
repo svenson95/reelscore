@@ -15,7 +15,6 @@ import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
 import { ResultLabelComponent } from '../../../../../../components';
-import { FixtureStore } from '../../../../../../store';
 import { CompetitionFixtures } from '../../../../models';
 
 @Component({
@@ -31,7 +30,6 @@ import { CompetitionFixtures } from '../../../../models';
     CompetitionRoundPipe,
     ResultLabelComponent,
   ],
-  providers: [FixtureStore],
   styles: `
     :host {
       @apply flex flex-col overflow-hidden border;

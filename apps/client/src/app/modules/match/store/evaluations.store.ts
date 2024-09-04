@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { firstValueFrom } from 'rxjs';
 
 import { StateHandler } from '@app/models';
 import { EvaluationDTO, FixtureId } from '@lib/models';
@@ -19,11 +18,20 @@ export const EvaluationsStore = signalStore(
   withMethods((store, http = inject(HttpEvaluationsService)) => ({
     async loadEvaluations(fixtureId: FixtureId): Promise<void> {
       patchState(store, { isLoading: true });
-      const evaluations = await firstValueFrom(http.getEvaluations(fixtureId));
-      patchState(store, {
-        evaluations,
-        isLoading: false,
-        error: null,
+
+      http.getEvaluations(fixtureId).subscribe({
+        next: (evaluations) =>
+          patchState(store, {
+            evaluations,
+            isLoading: false,
+            error: evaluations ? null : 'Evaluations not found',
+          }),
+        error: (error) =>
+          patchState(store, {
+            evaluations: null,
+            isLoading: false,
+            error,
+          }),
       });
     },
   }))

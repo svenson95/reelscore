@@ -9,7 +9,6 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 
 import {
   CalenderWeek,
@@ -19,7 +18,7 @@ import {
   getMondayFromDate,
   moveItem,
 } from '@app/models';
-import { loadFixtures, loadStandings } from '../../store';
+import { FixturesStore, StandingsStore } from '../../store';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;
@@ -33,14 +32,16 @@ export abstract class DateService {
 
 @Injectable()
 export class AbstractedDateService extends DateService {
-  store = inject(Store);
+  fixturesStore = inject(FixturesStore);
+  standingsStore = inject(StandingsStore);
   selectedDay = signal<DateString>(TODAY_ISO_STRING);
 
   selectedDayEffect = effect(
     () => {
-      const weekOfDay = this.getCalenderWeekFrom(this.selectedDay());
-      this.store.dispatch(loadStandings());
-      this.store.dispatch(loadFixtures());
+      const date = this.selectedDay();
+      const weekOfDay = this.getCalenderWeekFrom(date);
+      this.standingsStore.loadStandings(date);
+      this.fixturesStore.loadFixtures(date);
       if (this.calenderWeek() !== weekOfDay) {
         this.calenderWeek.set(weekOfDay);
       }

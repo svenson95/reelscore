@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { firstValueFrom } from 'rxjs';
 
 import { StateHandler } from '@app/models';
 import {
@@ -33,16 +32,30 @@ export const EventsStore = signalStore(
     ) => ({
       async loadEvents(fixtureId: FixtureId): Promise<void> {
         patchState(store, { isLoading: true });
-        const events = fixtureId
-          ? await firstValueFrom(http.getFixtureEvents(fixtureId))
-          : null;
 
-        const teams = fixtureStore.fixture()?.teams;
-        if (!events || !teams) return;
-        patchState(store, {
-          events: mappedEvents(events, teams),
-          isLoading: false,
-          error: events ? null : 'Events not found',
+        http.getFixtureEvents(fixtureId).subscribe({
+          next: (events) => {
+            const teams = fixtureStore.fixture()?.teams;
+            if (!events || !teams) {
+              return patchState(store, {
+                events: null,
+                isLoading: false,
+                error: 'Events not found',
+              });
+            }
+
+            patchState(store, {
+              events: mappedEvents(events, teams),
+              isLoading: false,
+              error: events ? null : 'Events not found',
+            });
+          },
+          error: (error) =>
+            patchState(store, {
+              events: null,
+              isLoading: false,
+              error,
+            }),
         });
       },
     })

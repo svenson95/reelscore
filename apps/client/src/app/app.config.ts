@@ -16,8 +16,6 @@ import {
   withPreloading,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideEffects } from '@ngrx/effects';
-import { provideStore } from '@ngrx/store';
 
 import { routes } from './app.routes';
 import {
@@ -28,17 +26,11 @@ import {
   HTTP_STANDINGS_SERVICE_PROVIDER,
   LEAGUE_SERVICE_PROVIDER,
 } from './services';
-import { FixturesEffects } from './store/fixtures/fixtures.effects';
-import { fixturesReducer } from './store/fixtures/fixtures.reducer';
-import { StandingsEffects } from './store/standings/standings.effects';
-import { standingsReducer } from './store/standings/standings.reducer';
+import { FixturesStore, FixtureStore, StandingsStore } from './store';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
-const STORE_PROVIDERS = [
-  provideStore({ standings: standingsReducer, fixtures: fixturesReducer }),
-  provideEffects([StandingsEffects, FixturesEffects]),
-];
+const STORE_PROVIDERS = [StandingsStore, FixtureStore, FixturesStore];
 
 const HTTP_DATA_PROVIDERS = [
   HTTP_STANDINGS_SERVICE_PROVIDER,

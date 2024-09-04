@@ -1,15 +1,11 @@
 import { inject } from '@angular/core';
-import { FixtureDTO, FixtureId } from '@lib/models';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { firstValueFrom } from 'rxjs';
 
+import { StateHandler } from '@app/models';
 import { HttpFixtureService } from '@app/services';
+import { FixtureDTO, FixtureId } from '@lib/models';
 
-type FixtureState = {
-  fixture: FixtureDTO | null;
-  isLoading: boolean;
-  error: string | null;
-};
+type FixtureState = StateHandler<{ fixture: FixtureDTO | null }>;
 
 const initialState: FixtureState = {
   fixture: null,
@@ -22,11 +18,20 @@ export const FixtureStore = signalStore(
   withMethods((store, http = inject(HttpFixtureService)) => ({
     async loadFixture(id: FixtureId): Promise<void> {
       patchState(store, { isLoading: true });
-      const fixture = id ? await firstValueFrom(http.getFixture(id)) : null;
-      patchState(store, {
-        fixture,
-        isLoading: false,
-        error: fixture ? null : 'Fixture not found',
+
+      http.getFixture(id).subscribe({
+        next: (fixture) =>
+          patchState(store, {
+            fixture,
+            isLoading: false,
+            error: fixture ? null : 'Fixture not found',
+          }),
+        error: (error) =>
+          patchState(store, {
+            fixture: null,
+            isLoading: false,
+            error,
+          }),
       });
     },
   }))
