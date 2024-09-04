@@ -1,12 +1,5 @@
 import { DatePipe, NgIf } from '@angular/common';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  OnInit,
-} from '@angular/core';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -87,7 +80,7 @@ import { StatisticsStore } from './store/statistics.store';
     }
   `,
   template: `
-    <ng-container *ngIf="data as match">
+    <ng-container *ngIf="fixtureStore as match">
       @if (match.isLoading()) {
       <p class="no-data">Spiel wird geladen ...</p>
       } @else if (match.error()) {
@@ -125,10 +118,12 @@ import { StatisticsStore } from './store/statistics.store';
             </ng-template>
 
             <reelscore-match-fixture-data />
-            <reelscore-match-evaluations [evaluations]="evs.evaluations()" />
+            <reelscore-match-evaluations
+              [evaluations]="evaluationsStore.evaluations()"
+            />
             <reelscore-match-latest-fixtures />
           </mat-tab>
-          <mat-tab [disabled]="!hasEvents()">
+          <mat-tab [disabled]="!eventsStore.events()">
             <ng-template mat-tab-label>
               @if (isMobile()) {
               <mat-icon>article</mat-icon>
@@ -139,16 +134,16 @@ import { StatisticsStore } from './store/statistics.store';
               <reelscore-match-events />
             </ng-template>
           </mat-tab>
-          <mat-tab [disabled]="!hasStatistics()">
+          <mat-tab [disabled]="!statisticsStore.statistics()">
             <ng-template mat-tab-label>
               @if (isMobile()) {
               <mat-icon>assessment</mat-icon>
               } @else { Statistiken }
             </ng-template>
             <ng-template matTabContent>
-              @if (!!ss.statistics()) {
-              <reelscore-match-statistics [data]="ss.statistics()!" />
-              }
+              <reelscore-match-statistics
+                [data]="statisticsStore.statistics()!"
+              />
             </ng-template>
           </mat-tab>
         </mat-tab-group>
@@ -159,22 +154,27 @@ import { StatisticsStore } from './store/statistics.store';
 })
 export class MatchComponent extends RouterView implements OnInit {
   router = inject(Router);
-  fs = inject(FixtureStore);
-  es = inject(EventsStore);
-  ss = inject(StatisticsStore);
-  evs = inject(EvaluationsStore);
-  bos = inject(BreakpointObserverService);
+
+  fixtureStore = inject(FixtureStore);
+  fixture = this.fixtureStore.fixture;
+
+  eventsStore = inject(EventsStore);
+  events = this.eventsStore.events;
+
+  statisticsStore = inject(StatisticsStore);
+  statistics = this.statisticsStore.statistics;
+
+  evaluationsStore = inject(EvaluationsStore);
+  evaluations = this.evaluationsStore.evaluations;
+
+  breakpointObserverService = inject(BreakpointObserverService);
+  isMobile = this.breakpointObserverService.isMobile;
 
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
-  data = this.fs;
-  isMobile = this.bos.isMobile;
-
-  hasEvents = computed<boolean>(() => !!this.es.events());
-  hasStatistics = computed<boolean>(() => !!this.ss.statistics());
 
   invalidUrlEffect = effect(() => {
-    const fixture = this.data.fixture();
+    const fixture = this.fixture();
     const leagueUrl = this.leagueUrl();
     const league = SELECT_COMPETITION_DATA_FLAT.find(
       (c) => c.url === leagueUrl
@@ -190,10 +190,10 @@ export class MatchComponent extends RouterView implements OnInit {
 
   async ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    await this.fs.loadFixture(this.fixtureId());
-    await this.evs.loadEvaluations(this.fixtureId());
-    await this.ss.loadStatistics(this.fixtureId());
-    await this.es.loadEvents(this.fixtureId());
+    await this.fixtureStore.loadFixture(this.fixtureId());
+    await this.evaluationsStore.loadEvaluations(this.fixtureId());
+    await this.statisticsStore.loadStatistics(this.fixtureId());
+    await this.eventsStore.loadEvents(this.fixtureId());
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
