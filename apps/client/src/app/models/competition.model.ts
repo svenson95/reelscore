@@ -7,5 +7,8 @@ export interface Competition {
 }
 
 const BASE = 'assets/images';
-export const getCompetitionLogo = (id: number) => `${BASE}/league/${id}.png`;
-export const getTeamLogo = (id: number) => `${BASE}/team-logo/${id}.png`;
+const suffix = (v: boolean) => (v ? '-thumbnail' : '');
+export const getCompetitionLogo = (id: CompetitionId, thumbnail = true) =>
+  `${BASE}/league/${id}${suffix(thumbnail)}.png`;
+export const getTeamLogo = (id: number, thumbnail = true) =>
+  `${BASE}/team-logo/${id}${suffix(thumbnail)}.png`;
