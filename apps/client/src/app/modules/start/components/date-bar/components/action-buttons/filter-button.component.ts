@@ -72,7 +72,7 @@ import { StandingStore } from '../../../../store';
       <button
         mat-menu-item
         (click)="setFilter(competition.id)"
-        [class.is-filtering]="selectedCompetition() === competition.id"
+        [class.is-filtering]="isSameId(competition.id)"
       >
         <reelscore-optimized-image
           [source]="competition.image"
@@ -93,17 +93,26 @@ export class FilterButtonComponent {
   groups = SELECT_COMPETITION_DATA;
   standingStore = inject(StandingStore);
   dateService = inject(DateService);
-  fs = inject(FilterService);
-  selectedCompetition = this.fs.selectedCompetition;
+  filterService = inject(FilterService);
+  selectedCompetition = this.filterService.selectedCompetition;
+
+  isSameId = (id: CompetitionId) => this.selectedCompetition() === id;
 
   setFilter(id: CompetitionId) {
-    if (this.selectedCompetition() === id) {
-      this.selectedCompetition.set(null);
+    const isSameId = this.isSameId(id);
+    this.selectedCompetition.set(isSameId ? null : id);
+    if (isSameId) {
       this.standingStore.reset();
-    } else {
-      this.updateStanding(id);
     }
   }
+
+  filterEffect = effect(
+    () => {
+      const id = this.selectedCompetition();
+      if (id) this.updateStanding(id);
+    },
+    { allowSignalWrites: true }
+  );
 
   updateStanding(id: CompetitionId): void {
     const date = this.dateService.selectedDay();
@@ -111,12 +120,4 @@ export class FilterButtonComponent {
       this.selectedCompetition.set(id);
     });
   }
-
-  dateEffect = effect(
-    () => {
-      const id = this.selectedCompetition();
-      if (id) this.updateStanding(id);
-    },
-    { allowSignalWrites: true }
-  );
 }
