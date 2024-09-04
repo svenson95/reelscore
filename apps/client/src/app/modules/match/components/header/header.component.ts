@@ -57,5 +57,5 @@ import { ResultLabelComponent } from '../../../../components';
 export class MatchHeaderComponent {
   data = input.required<FixtureDTO>();
 
-  getTeamLogo = (id: number) => getTeamLogo(id, false);
+  getTeamLogo = getTeamLogo;
 }
