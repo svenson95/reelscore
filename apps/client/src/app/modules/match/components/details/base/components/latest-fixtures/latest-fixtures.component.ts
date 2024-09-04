@@ -16,9 +16,9 @@ import { MatchFixturesTableComponent } from './components';
   imports: [MatchFixturesTableComponent],
   styles: `
     :host { @apply flex flex-col; }
-    section { @apply flex flex-col md:flex-row; }
+    section { @apply flex flex-col md:flex-row px-5 pb-5 pt-4 gap-5; }
     reelscore-match-fixtures-table:first-of-type {
-      @apply border-b-[1px] md:border-b-0 md:border-r-[1px]; 
+      @apply pb-5 md:pb-0 md:pr-5 border-b-[1px] md:border-b-0 md:border-r-[1px]; 
     }
     .no-data { @apply m-auto; }
   `,

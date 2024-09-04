@@ -65,7 +65,7 @@ export class IsRelatedPipe implements PipeTransform {
     ResultLabelComponent,
   ],
   styles: `
-    :host { @apply flex-1 p-4 text-fb-font-size-body-2; }
+    :host { @apply flex-1 text-fb-font-size-body-2; }
     a { @apply flex items-center p-2; }
     a:not(:last-of-type) { @apply border-b-[1px]; }
     .date { @apply w-[40px]; }
