@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { BreakpointObserverService, DateService } from '@app/services';
-import { StandingsStore } from '../../../../store';
+import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
 import {
   ActionButtonsComponent,
   DatePickerComponent,
@@ -73,7 +78,11 @@ export class DateBarComponent {
   calenderWeek = this.dateService.calenderWeek;
   isToday = this.dateService.isToday;
 
+  topFiveStandingsStore = inject(TopFiveStandingsStore);
   standingsStore = inject(StandingsStore);
-  standings = this.standingsStore.standings;
-  isLoading = this.standingsStore.isLoading;
+
+  isLoading = computed(
+    () =>
+      this.topFiveStandingsStore.isLoading() || this.standingsStore.isLoading()
+  );
 }

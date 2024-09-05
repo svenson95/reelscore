@@ -11,7 +11,7 @@ import { OptimizedImageComponent } from '@app/components';
 import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { BreakpointObserverService } from '@app/services';
-import { StandingsDTO } from '@lib/models';
+import { League, StandingRanks } from '@lib/models';
 
 @Component({
   selector: 'reelscore-standings-table',
@@ -64,11 +64,11 @@ import { StandingsDTO } from '@lib/models';
     }
   `,
   template: `
-    <table mat-table [dataSource]="data().league.standings![0]">
+    <table mat-table [dataSource]="ranks()">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <reelscore-optimized-image
-            [source]="getCompetitionLogo(data().league.id)"
+            [source]="getCompetitionLogo(league().id)"
             alternate="league logo"
             width="24"
             height="24"
@@ -81,7 +81,7 @@ import { StandingsDTO } from '@lib/models';
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
-          {{ data().league.name }}
+          {{ league().name }}
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
@@ -146,7 +146,7 @@ import { StandingsDTO } from '@lib/models';
   `,
 })
 export class TableComponent {
-  readonly displayedColumns: string[] = [
+  readonly DISPLAYED_COLUMNS: string[] = [
     'rank',
     'team',
     'played',
@@ -159,15 +159,16 @@ export class TableComponent {
 
   breakpoint = inject(BreakpointObserverService);
   isMobile = this.breakpoint.isMobile;
-  data = input.required<StandingsDTO>();
+  ranks = input.required<StandingRanks[]>();
+  league = input.required<League>();
 
   getTeamLogo = getTeamLogo;
   getCompetitionLogo = getCompetitionLogo;
 
   columns = computed(() => {
-    const filtered = this.displayedColumns.filter(
+    const filtered = this.DISPLAYED_COLUMNS.filter(
       (column) => column !== 'goalDifference'
     );
-    return this.isMobile() ? filtered : this.displayedColumns;
+    return this.isMobile() ? filtered : this.DISPLAYED_COLUMNS;
   });
 }

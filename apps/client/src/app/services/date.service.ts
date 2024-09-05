@@ -18,7 +18,7 @@ import {
   getMondayFromDate,
   moveItem,
 } from '@app/models';
-import { FixturesStore, StandingsStore } from '../store';
+import { FixturesStore, TopFiveStandingsStore } from '../store';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;
@@ -33,14 +33,14 @@ export abstract class DateService {
 @Injectable()
 export class AbstractedDateService extends DateService {
   fixturesStore = inject(FixturesStore);
-  standingsStore = inject(StandingsStore);
+  topFiveStandingsStore = inject(TopFiveStandingsStore);
   selectedDay = signal<DateString>(TODAY_ISO_STRING);
 
   selectedDayEffect = effect(
     () => {
       const date = this.selectedDay();
       const weekOfDay = this.getCalenderWeekFrom(date);
-      this.standingsStore.loadStandings(date);
+      this.topFiveStandingsStore.loadStandings(date);
       this.fixturesStore.loadFixtures(date);
       if (this.calenderWeek() !== weekOfDay) {
         this.calenderWeek.set(weekOfDay);

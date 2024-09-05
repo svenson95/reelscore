@@ -13,7 +13,7 @@ import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA } from '@app/constants';
 import { DateService, FilterService } from '@app/services';
 import { CompetitionId } from '@lib/models';
-import { StandingStore } from '../../../../../../store';
+import { StandingsStore } from '../../../../../../store';
 
 @Component({
   selector: 'reelscore-filter-button',
@@ -90,7 +90,7 @@ import { StandingStore } from '../../../../../../store';
 })
 export class FilterButtonComponent {
   groups = SELECT_COMPETITION_DATA;
-  standingStore = inject(StandingStore);
+  standingsStore = inject(StandingsStore);
   dateService = inject(DateService);
   filterService = inject(FilterService);
   selectedCompetition = this.filterService.selectedCompetition;
@@ -101,7 +101,7 @@ export class FilterButtonComponent {
     const isSameId = this.isSameId(id);
     this.selectedCompetition.set(isSameId ? null : id);
     if (isSameId) {
-      this.standingStore.reset();
+      this.standingsStore.reset();
     }
   }
 
@@ -115,7 +115,7 @@ export class FilterButtonComponent {
 
   updateStanding(id: CompetitionId): void {
     const date = this.dateService.selectedDay();
-    this.standingStore.loadStanding(date, id).then(() => {
+    this.standingsStore.loadStanding(date, id).then(() => {
       this.selectedCompetition.set(id);
     });
   }
