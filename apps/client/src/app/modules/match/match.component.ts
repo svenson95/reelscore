@@ -76,76 +76,74 @@ import { StatisticsStore } from './store/statistics.store';
     }
   `,
   template: `
-    <ng-container *ngIf="fixtureStore as match">
-      @if (match.isLoading()) {
-      <p class="no-data">Spiel wird geladen ...</p>
-      } @else if (match.error()) {
-      <p class="no-data">Es ist ein Fehler aufgetreten.</p>
-      } @else if (match.fixture() !== null){
-      <section class="header">
-        <div>
-          <reelscore-back-button [date]="match.fixture()!.fixture.date" />
-          <button mat-button disabled>
-            {{ match.fixture()!.fixture.date | date : 'dd.MM.yy' }}
-          </button>
+    @if (fixtureStore.isLoading()) {
+    <p class="no-data">Spiel wird geladen ...</p>
+    } @else if (fixtureStore.error()) {
+    <p class="no-data">Es ist ein Fehler aufgetreten.</p>
+    } @else if (fixtureStore.fixture() !== null){
+    <section class="header">
+      <div>
+        <reelscore-back-button [date]="fixtureStore.fixture()!.fixture.date" />
+        <button mat-button disabled>
+          {{ fixtureStore.fixture()!.fixture.date | date : 'dd.MM.yy' }}
+        </button>
 
-          <div class="spacer"></div>
+        <div class="spacer"></div>
 
-          <button mat-button disabled>
-            {{ match.fixture()!.fixture.date | date : 'ccc' }}
-          </button>
-          <button mat-button disabled>
-            {{ match.fixture()!.fixture.date | date : 'HH:mm' }}
-          </button>
-        </div>
-      </section>
+        <button mat-button disabled>
+          {{ fixtureStore.fixture()!.fixture.date | date : 'ccc' }}
+        </button>
+        <button mat-button disabled>
+          {{ fixtureStore.fixture()!.fixture.date | date : 'HH:mm' }}
+        </button>
+      </div>
+    </section>
 
-      <section class="match-header">
-        <reelscore-match-header [data]="match.fixture()!" />
-      </section>
+    <section class="match-header">
+      <reelscore-match-header [data]="fixtureStore.fixture()!" />
+    </section>
 
-      <section class="data">
-        <mat-tab-group>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              @if (isMobile()) {
-              <mat-icon>info</mat-icon>
-              } @else { Details }
-            </ng-template>
+    <section class="data">
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            @if (isMobile()) {
+            <mat-icon>info</mat-icon>
+            } @else { Details }
+          </ng-template>
 
-            <reelscore-match-fixture-data />
-            <reelscore-match-evaluations
-              [evaluations]="evaluationsStore.evaluations()"
+          <reelscore-match-fixture-data />
+          <reelscore-match-evaluations
+            [evaluations]="evaluationsStore.evaluations()"
+          />
+          <reelscore-match-latest-fixtures />
+        </mat-tab>
+        <mat-tab [disabled]="eventsStore.events() === null">
+          <ng-template mat-tab-label>
+            @if (isMobile()) {
+            <mat-icon>article</mat-icon>
+            } @else { Bericht }
+          </ng-template>
+
+          <ng-template matTabContent>
+            <reelscore-match-events />
+          </ng-template>
+        </mat-tab>
+        <mat-tab [disabled]="statisticsStore.statistics() === null">
+          <ng-template mat-tab-label>
+            @if (isMobile()) {
+            <mat-icon>assessment</mat-icon>
+            } @else { Statistiken }
+          </ng-template>
+          <ng-template matTabContent>
+            <reelscore-match-statistics
+              [data]="statisticsStore.statistics()!"
             />
-            <reelscore-match-latest-fixtures />
-          </mat-tab>
-          <mat-tab [disabled]="!eventsStore.events()">
-            <ng-template mat-tab-label>
-              @if (isMobile()) {
-              <mat-icon>article</mat-icon>
-              } @else { Bericht }
-            </ng-template>
-
-            <ng-template matTabContent>
-              <reelscore-match-events />
-            </ng-template>
-          </mat-tab>
-          <mat-tab [disabled]="!statisticsStore.statistics()">
-            <ng-template mat-tab-label>
-              @if (isMobile()) {
-              <mat-icon>assessment</mat-icon>
-              } @else { Statistiken }
-            </ng-template>
-            <ng-template matTabContent>
-              <reelscore-match-statistics
-                [data]="statisticsStore.statistics()!"
-              />
-            </ng-template>
-          </mat-tab>
-        </mat-tab-group>
-      </section>
-      }
-    </ng-container>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </section>
+    }
   `,
 })
 export class MatchComponent extends RouterView implements OnInit {
