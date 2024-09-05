@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getFixtureEventsById } from '../controllers';
+import { getFixtureEventsById } from '../../controllers';
 
 export const fixtureEvents = express.Router();
 

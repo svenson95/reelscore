@@ -7,8 +7,8 @@ import {
   StatisticItem,
   StatisticItemType,
 } from '@lib/models';
-import { Fixtures, FixturesStatistics } from '../models';
-import { findLatestFixturesForTeam } from './fixtures.controller';
+import { Fixtures, FixturesStatistics } from '../../models';
+import { findLatestFixturesForTeam } from '../fixtures.controller';
 
 export const getFixtureEvaluations = async (req, res, next) => {
   const fixtureId = req.query.fixture;
