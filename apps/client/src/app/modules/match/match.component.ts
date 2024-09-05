@@ -7,10 +7,7 @@ import { Router } from '@angular/router';
 
 import { BackButtonComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import {
-  BreakpointObserverService,
-  ROUTE_SERVICE_PROVIDER,
-} from '@app/services';
+import { BreakpointObserverService } from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
 import { FixtureStore } from '../../store/fixture.store';
 import { RouterView } from '../router-view';
@@ -49,7 +46,6 @@ import { StatisticsStore } from './store/statistics.store';
   ],
   providers: [
     ...SERVICE_PROVIDERS,
-    ROUTE_SERVICE_PROVIDER,
     FixtureStore,
     LatestFixturesStore,
     EventsStore,

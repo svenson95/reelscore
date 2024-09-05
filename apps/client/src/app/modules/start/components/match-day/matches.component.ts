@@ -5,10 +5,10 @@ import {
   inject,
 } from '@angular/core';
 
+import { FilterService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
 import { FixturesStore } from '../../../../store';
 import { CompetitionWithFixtures } from '../../models';
-import { FilterService } from '../../services';
 import { MatchDayListComponent } from './components';
 
 @Component({

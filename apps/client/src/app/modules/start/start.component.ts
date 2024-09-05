@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
 
-import { ROUTE_SERVICE_PROVIDER } from '../../services';
 import { RouterView } from '../router-view';
 import {
   DateBarComponent,
   MatchesComponent,
   StandingsComponent,
 } from './components';
-import { FILTER_SERVICE_PROVIDER } from './services';
 import { StandingStore } from './store';
 
 @Component({
   selector: 'reelscore-league',
   standalone: true,
   imports: [DateBarComponent, MatchesComponent, StandingsComponent],
-  providers: [ROUTE_SERVICE_PROVIDER, FILTER_SERVICE_PROVIDER, StandingStore],
+  providers: [StandingStore],
   styles: `
     :host { 
       @apply flex flex-col w-full; 

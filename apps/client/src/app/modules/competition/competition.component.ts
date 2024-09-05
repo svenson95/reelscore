@@ -3,10 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { getCompetitionLogo } from '@app/models';
-import {
-  BreakpointObserverService,
-  ROUTE_SERVICE_PROVIDER,
-} from '@app/services';
+import { BreakpointObserverService } from '@app/services';
 import { OptimizedImageComponent } from '../../components';
 import { RouterView } from '../router-view';
 
@@ -14,7 +11,6 @@ import { RouterView } from '../router-view';
   selector: 'reelscore-league',
   standalone: true,
   imports: [MatTabsModule, MatIconModule, OptimizedImageComponent],
-  providers: [ROUTE_SERVICE_PROVIDER],
   styles: `
     :host { @apply w-full; }
     :host ::ng-deep {

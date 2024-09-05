@@ -11,9 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA } from '@app/constants';
-import { DateService } from '@app/services';
+import { DateService, FilterService } from '@app/services';
 import { CompetitionId } from '@lib/models';
-import { FilterService } from '../../../../services';
 import { StandingStore } from '../../../../store';
 
 @Component({

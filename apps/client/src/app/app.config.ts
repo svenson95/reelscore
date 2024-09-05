@@ -21,14 +21,24 @@ import { routes } from './app.routes';
 import {
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   DATE_SERVICE_PROVIDER,
+  FILTER_SERVICE_PROVIDER,
   HTTP_FIXTURE_SERVICE_PROVIDER,
   HTTP_FIXTURES_SERVICE_PROVIDER,
   HTTP_STANDINGS_SERVICE_PROVIDER,
   LEAGUE_SERVICE_PROVIDER,
+  ROUTE_SERVICE_PROVIDER,
 } from './services';
 import { FixturesStore, FixtureStore, StandingsStore } from './store';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
+
+const SERVICE_PRODIVDERS = [
+  BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
+  DATE_SERVICE_PROVIDER,
+  LEAGUE_SERVICE_PROVIDER,
+  FILTER_SERVICE_PROVIDER,
+  ROUTE_SERVICE_PROVIDER,
+];
 
 const STORE_PROVIDERS = [StandingsStore, FixtureStore, FixturesStore];
 
@@ -56,9 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     LOCALE_PROVIDER,
-    BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
-    DATE_SERVICE_PROVIDER,
-    LEAGUE_SERVICE_PROVIDER,
+    ...SERVICE_PRODIVDERS,
     ...HTTP_DATA_PROVIDERS,
     ...STORE_PROVIDERS,
   ],
