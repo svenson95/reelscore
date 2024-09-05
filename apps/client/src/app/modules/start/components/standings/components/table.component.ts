@@ -32,11 +32,15 @@ import { League, StandingRanks } from '@lib/models';
       --mat-table-row-item-container-height: 33px;
     }
 
-    td { @apply py-[4px] leading-[16px]; }
+    td { @apply py-[4px]; }
 
-    td, th { &:first-of-type {
-      @apply pr-0 pl-2 text-center;
-    } }
+    td, th { 
+      @apply leading-[14px];
+
+      &:first-of-type {
+        @apply pr-0 pl-2 text-center;
+      } 
+    }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
       &.rank-column { width: 40px; }
