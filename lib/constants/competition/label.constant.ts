@@ -8,7 +8,7 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   [CompetitionCode.EUROPA_UEFA_SUPER_CUP]: 'UEFA Super Cup',
 
   // International
-  // [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'Euro Championship',
+  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'UEFA Europameisterschaft',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: 'Confedarations Cup',
   // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'World Cup',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 'FIFA World Cup',
