@@ -5,8 +5,8 @@ type CompetitionRoundType = string;
 
 const ROUND_LABEL_TYPES = [
   'Regular Season',
+  'League Stage', // UEFA Champions league group stage
   'League', // UEFA Nations League group stage
-  'League Stage', // UEFA CHampions league group stage
   '1st Round',
   '2nd Round',
   '3rd Round',
@@ -44,19 +44,13 @@ const roundString = (round: CompetitionRound): CompetitionRoundLabel => {
   return round.slice(idx, round.length);
 };
 
-const groupstageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
-  const roundIdx = value.indexOf('-') + 2;
-  const round = value.slice(roundIdx, value.length);
-  return `Gruppenphase #${round}`;
-};
-
 const translateDefault = (
   type: CompetitionRoundType,
   value: CompetitionRound
 ): CompetitionRoundLabel => {
   switch (type) {
     case 'Regular Season':
-      return roundString(value);
+      return `${roundString(value)}. Spieltag`;
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
@@ -69,8 +63,10 @@ const translateDefault = (
       return 'Qualifikation 2. Runde';
     case '3rd Qualifying Round':
       return 'Qualifikation 3. Runde';
+    case 'League Stage':
+      return 'Ligaphase';
     case 'League':
-      return groupstageLabel(value);
+      return `${roundString(value)}. Spieltag`;
     case 'Preliminary Round':
       return 'Vorrunde';
     case 'Play-offs':
@@ -101,8 +97,10 @@ const translateHeader = (
       return 'Qualifikation #2';
     case '3rd Qualifying Round':
       return 'Qualifikation #3';
+    case 'League Stage':
+      return 'Ligaphase';
     case 'League':
-      return groupstageLabel(value);
+      return `${roundString(value)}. Spieltag`;
     case 'Preliminary Round':
       return 'Vorrunde';
     case 'Play-offs':
