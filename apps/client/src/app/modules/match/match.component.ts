@@ -186,10 +186,11 @@ export class MatchComponent extends RouterView implements OnInit {
 
   async ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    await this.fixtureStore.loadFixture(this.fixtureId());
-    await this.evaluationsStore.loadEvaluations(this.fixtureId());
-    await this.statisticsStore.loadStatistics(this.fixtureId());
-    await this.eventsStore.loadEvents(this.fixtureId());
+    await this.fixtureStore.loadFixture(this.fixtureId()).then(async () => {
+      await this.evaluationsStore.loadEvaluations(this.fixtureId());
+      await this.eventsStore.loadEvents(this.fixtureId());
+      await this.statisticsStore.loadStatistics(this.fixtureId());
+    });
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
