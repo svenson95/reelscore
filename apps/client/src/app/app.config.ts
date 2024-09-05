@@ -28,7 +28,12 @@ import {
   LEAGUE_SERVICE_PROVIDER,
   ROUTE_SERVICE_PROVIDER,
 } from './services';
-import { FixturesStore, FixtureStore, StandingsStore } from './store';
+import {
+  FixturesStore,
+  FixtureStore,
+  StandingsStore,
+  StandingStore,
+} from './store';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
@@ -40,7 +45,12 @@ const SERVICE_PRODIVDERS = [
   ROUTE_SERVICE_PROVIDER,
 ];
 
-const STORE_PROVIDERS = [StandingsStore, FixtureStore, FixturesStore];
+const STORE_PROVIDERS = [
+  StandingStore,
+  StandingsStore,
+  FixtureStore,
+  FixturesStore,
+];
 
 const HTTP_DATA_PROVIDERS = [
   HTTP_STANDINGS_SERVICE_PROVIDER,

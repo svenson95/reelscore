@@ -13,7 +13,7 @@ import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA } from '@app/constants';
 import { DateService, FilterService } from '@app/services';
 import { CompetitionId } from '@lib/models';
-import { StandingStore } from '../../../../store';
+import { StandingStore } from '../../../../../../store';
 
 @Component({
   selector: 'reelscore-filter-button',

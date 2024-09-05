@@ -6,8 +6,7 @@ import {
 } from '@angular/core';
 
 import { FilterService } from '@app/services';
-import { StandingsStore } from '../../../../store';
-import { StandingStore } from '../../store';
+import { StandingsStore, StandingStore } from '../../../../store';
 import { TableComponent } from './components';
 
 @Component({
@@ -19,19 +18,19 @@ import { TableComponent } from './components';
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (standings.standings()) { @if (standings.isLoading() &&
-    standings.standings()?.length === 0) {
-    <p class="no-data">Tabellen werden geladen ...</p>
-    } @else if (standings.error()) {
-    <p class="no-data">Fehler beim Laden der Tabellen.</p>
-    } @else if (standings.standings()?.length === 0) {
-    <p class="no-data">Keine Tabellen gefunden.</p>
-    } @else if (isFiltering() && !!standing.standing()) {
+    @if (isFiltering() && !!standing.standing()) {
     <reelscore-standings-table [data]="standing.standing()!" />
-    } @else { @for (standings of standings.standings(); track
-    standings.league.id) {
+    } @else if (standings.standings()) { @for (standings of
+    standings.standings(); track standings.league.id) {
     <reelscore-standings-table [data]="standings" />
-    } } }
+    } } @else {
+    <p class="no-data">
+      @if (standings.isLoading()) { Tabellen werden geladen ... } @else { @if
+      (standings.error()) { Fehler beim Laden der Tabellen. } @else if
+      (standings.standings()?.length === 0) { Keine Tabellen gefunden. } @else {
+      Keine Tabelle für diesen Wettbewerb gefunden. } }
+    </p>
+    }
   `,
 })
 export class StandingsComponent {
