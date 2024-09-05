@@ -1,5 +1,5 @@
-import { findDocument } from '../middleware';
-import { FixturesStatistics } from '../models';
+import { findDocument } from '../../middleware';
+import { FixturesStatistics } from '../../models';
 
 export const getFixtureStatisticsById = async (req, res, next) => {
   const fixtureId = req.query.fixtureId;

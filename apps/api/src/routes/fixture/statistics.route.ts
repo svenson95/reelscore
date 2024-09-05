@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getFixtureStatisticsById } from '../controllers';
+import { getFixtureStatisticsById } from '../../controllers';
 
 export const fixturesStatistics = express.Router();
 

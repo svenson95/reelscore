@@ -1,6 +1,6 @@
 import { EventDTO } from '@lib/models';
-import { findDocument } from '../middleware';
-import { FixtureEvents } from '../models';
+import { findDocument } from '../../middleware';
+import { FixtureEvents } from '../../models';
 
 export const getFixtureEventsById = async (req, res, next) => {
   const fixtureId = req.query.fixtureId;
