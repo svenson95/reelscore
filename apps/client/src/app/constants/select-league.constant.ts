@@ -221,6 +221,15 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         url: COMPETITION_URL.INTERNATIONAL_UEFA_NATIONS_LEAGUE,
         size: 18,
       },
+      {
+        image: getCompetitionLogo(
+          COMPETITION_ID.INTERNATIONAL_EURO_CHAMPIONSHIP
+        ),
+        label: COMPETITION_LABEL.INTERNATIONAL_EURO_CHAMPIONSHIP,
+        id: COMPETITION_ID.INTERNATIONAL_EURO_CHAMPIONSHIP,
+        url: COMPETITION_URL.INTERNATIONAL_EURO_CHAMPIONSHIP,
+        size: 24,
+      },
     ],
   },
 ];

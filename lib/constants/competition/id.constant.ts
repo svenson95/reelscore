@@ -8,7 +8,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.EUROPA_UEFA_SUPER_CUP]: 531,
 
   // International
-  // [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 4,
+  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 4,
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: 21,
   // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 1
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 15,
