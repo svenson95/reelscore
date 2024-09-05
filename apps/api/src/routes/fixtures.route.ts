@@ -11,10 +11,7 @@ import {
 export const fixtures = express.Router();
 
 fixtures.get('/get', async (req, res) => {
-  const fixtureId = req.query.fixtureId;
-  const teamId = req.query.teamId;
-  const round = req.query.round;
-  const date = req.query.date;
+  const { fixtureId, teamId, round, date } = req.query;
 
   if (fixtureId) {
     await getFixturesById(req, res, fixtureId, (docs) => {
@@ -42,7 +39,8 @@ fixtures.get('/get', async (req, res) => {
 });
 
 fixtures.get('/get-latest', async (req, res) => {
-  await getLatestFixtures(req, res, (docs) => {
+  const { fixtureId } = req.query;
+  await getLatestFixtures(fixtureId, (docs) => {
     res.json(docs);
   });
 });
