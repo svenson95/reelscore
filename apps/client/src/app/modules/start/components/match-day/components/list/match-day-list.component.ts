@@ -36,7 +36,7 @@ import { CompetitionWithFixtures } from '../../../../models';
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
 
-      --mat-table-header-headline-line-height: 18px;
+      --mat-table-header-headline-line-height: 14px;
     }
     .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
     .header span { 
