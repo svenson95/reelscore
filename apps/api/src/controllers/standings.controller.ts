@@ -1,7 +1,7 @@
 import { APP_DATA, getSeason } from '../middleware';
 import { Standings } from '../models';
 
-export const getStanding = async (req, res, next) => {
+export const getStandings = async (req, res, next) => {
   const leagueId = req.query.league;
   const [year, month, day] = req.query.date.split('-');
   const date = new Date(Date.UTC(year, month - 1, day));
@@ -12,15 +12,8 @@ export const getStanding = async (req, res, next) => {
     $and: [{ createdAt: { $lte: date } }],
   };
 
-  try {
-    const docs = await Standings.find(query).sort({ _id: -1 });
-    next(docs);
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
-  }
+  const docs = await Standings.find(query).sort({ _id: -1 });
+  next(docs);
 };
 
 export const getTopFiveStandings = async (req, res, next) => {

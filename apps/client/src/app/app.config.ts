@@ -32,7 +32,7 @@ import {
   FixturesStore,
   FixtureStore,
   StandingsStore,
-  StandingStore,
+  TopFiveStandingsStore,
 } from './store';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
@@ -46,8 +46,8 @@ const SERVICE_PRODIVDERS = [
 ];
 
 const STORE_PROVIDERS = [
-  StandingStore,
   StandingsStore,
+  TopFiveStandingsStore,
   FixtureStore,
   FixturesStore,
 ];
