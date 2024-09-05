@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { CompetitionRoundPipe } from '@app/pipes';
-import { FixtureStore } from '../../../../../../../store';
+import { FixtureStore } from '../../../../../store';
 
 @Component({
   selector: 'reelscore-match-fixture-data',
@@ -52,6 +52,6 @@ import { FixtureStore } from '../../../../../../../store';
   `,
 })
 export class MatchFixtureDataComponent {
-  fs = inject(FixtureStore);
-  data = this.fs.fixture;
+  fixtureStore = inject(FixtureStore);
+  data = this.fixtureStore.fixture;
 }

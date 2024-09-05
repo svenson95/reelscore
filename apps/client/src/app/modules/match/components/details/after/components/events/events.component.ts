@@ -7,7 +7,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 
 import { timeTotal } from '@lib/models';
-import { FixtureStore } from '../../../../../../../store';
+import { FixtureStore } from '../../../../../store';
 import { EventsStore } from '../../../../../store/events.store';
 import { MatchEventComponent } from './components';
 
@@ -85,8 +85,8 @@ export class MatchEventsComponent {
   es = inject(EventsStore);
   events = this.es.events;
 
-  fs = inject(FixtureStore);
-  fixture = this.fs.fixture;
+  fixtureStore = inject(FixtureStore);
+  fixture = this.fixtureStore.fixture;
 
   homeTeamId = computed(() => this.fixture()?.teams.home.id);
   awayTeamId = computed(() => this.fixture()?.teams.away.id);

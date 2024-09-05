@@ -1,4 +1,4 @@
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,29 +9,36 @@ import { BackButtonComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { BreakpointObserverService } from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
-import { FixtureStore } from '../../store/fixture.store';
 import { RouterView } from '../router-view';
-import { MatchHeaderComponent } from './components';
-import {
-  MatchEventsComponent,
-  MatchStatisticsComponent,
-} from './components/details/after/components';
 import {
   MatchEvaluationsComponent,
+  MatchEventsComponent,
   MatchFixtureDataComponent,
+  MatchHeaderComponent,
   MatchLatestFixturesComponent,
-} from './components/details/base/components';
+  MatchStatisticsComponent,
+} from './components';
 import { SERVICE_PROVIDERS } from './services';
-import { EvaluationsStore } from './store';
-import { EventsStore } from './store/events.store';
-import { LatestFixturesStore } from './store/latest-fixtures.store';
-import { StatisticsStore } from './store/statistics.store';
+import {
+  EvaluationsStore,
+  EventsStore,
+  FixtureStore,
+  LatestFixturesStore,
+  StatisticsStore,
+} from './store';
+
+const STORE_PROVIDERS = [
+  FixtureStore,
+  LatestFixturesStore,
+  EventsStore,
+  StatisticsStore,
+  EvaluationsStore,
+];
 
 @Component({
   selector: 'reelscore-match',
   standalone: true,
   imports: [
-    NgIf,
     DatePipe,
     MatButtonModule,
     MatTabsModule,
@@ -44,14 +51,7 @@ import { StatisticsStore } from './store/statistics.store';
     MatchEvaluationsComponent,
     MatchStatisticsComponent,
   ],
-  providers: [
-    ...SERVICE_PROVIDERS,
-    FixtureStore,
-    LatestFixturesStore,
-    EventsStore,
-    StatisticsStore,
-    EvaluationsStore,
-  ],
+  providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
     .header > div { @apply flex gap-5; }
@@ -118,7 +118,7 @@ import { StatisticsStore } from './store/statistics.store';
           />
           <reelscore-match-latest-fixtures />
         </mat-tab>
-        <mat-tab [disabled]="eventsStore.events() === null">
+        <mat-tab [disabled]="!eventsStore.events()">
           <ng-template mat-tab-label>
             @if (isMobile()) {
             <mat-icon>article</mat-icon>
@@ -129,7 +129,7 @@ import { StatisticsStore } from './store/statistics.store';
             <reelscore-match-events />
           </ng-template>
         </mat-tab>
-        <mat-tab [disabled]="statisticsStore.statistics() === null">
+        <mat-tab [disabled]="!statisticsStore.statistics()">
           <ng-template mat-tab-label>
             @if (isMobile()) {
             <mat-icon>assessment</mat-icon>
@@ -184,11 +184,7 @@ export class MatchComponent extends RouterView implements OnInit {
 
   async ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    await this.fixtureStore.loadFixture(this.fixtureId()).then(async () => {
-      await this.evaluationsStore.loadEvaluations(this.fixtureId());
-      await this.eventsStore.loadEvents(this.fixtureId());
-      await this.statisticsStore.loadStatistics(this.fixtureId());
-    });
+    await this.fixtureStore.loadFixture(this.fixtureId());
   }
 
   redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
