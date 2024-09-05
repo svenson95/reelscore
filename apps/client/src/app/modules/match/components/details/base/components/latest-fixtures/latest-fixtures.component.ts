@@ -1,12 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { FixtureStore } from '../../../../../../../store';
-import { LatestFixturesStore } from '../../../../../store';
+import { FixtureStore, LatestFixturesStore } from '../../../../../store';
 import { MatchFixturesTableComponent } from './components';
 
 @Component({
@@ -25,33 +19,28 @@ import { MatchFixturesTableComponent } from './components';
   template: `
     <h3 class="match-section-title">LETZTE SPIELE</h3>
     <section>
-      @if (latestFixtures.isLoading()) {
+      @if (latestFixturesStore.isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
-      } @else if (latestFixtures.error()) {
-      <p class="no-latestFixtures">Fehler beim Laden der Spiele.</p>
-      } @else if (!latestFixtures.latestFixtures()) {
-      <p class="no-latestFixtures">Keine Spiele gefunden.</p>
-      } @else { @if (latestFixtures.latestFixtures()) {
+      } @else if (latestFixturesStore.error()) {
+      <p class="no-data">Fehler beim Laden der Spiele.</p>
+      } @else if (!latestFixturesStore.latestFixtures()) {
+      <p class="no-data">Keine Spiele gefunden.</p>
+      } @else { @if (latestFixturesStore.latestFixtures()) {
       <reelscore-match-fixtures-table
         [team]="fixture()!.teams.home"
-        [fixtures]="latestFixtures.latestFixtures()!.home"
+        [fixtures]="latestFixturesStore.latestFixtures()!.home"
       />
       <reelscore-match-fixtures-table
         [team]="fixture()!.teams.away"
-        [fixtures]="latestFixtures.latestFixtures()!.away"
+        [fixtures]="latestFixturesStore.latestFixtures()!.away"
       />
       } }
     </section>
   `,
 })
-export class MatchLatestFixturesComponent implements OnInit {
-  lfs = inject(LatestFixturesStore);
-  latestFixtures = this.lfs;
+export class MatchLatestFixturesComponent {
+  latestFixturesStore = inject(LatestFixturesStore);
 
-  fs = inject(FixtureStore);
-  fixture = this.fs.fixture;
-
-  ngOnInit(): void {
-    this.lfs.loadLatestFixtures();
-  }
+  fixtureStore = inject(FixtureStore);
+  fixture = this.fixtureStore.fixture;
 }
