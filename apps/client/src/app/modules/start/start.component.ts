@@ -6,13 +6,11 @@ import {
   MatchesComponent,
   StandingsComponent,
 } from './components';
-import { StandingStore } from './store';
 
 @Component({
   selector: 'reelscore-league',
   standalone: true,
   imports: [DateBarComponent, MatchesComponent, StandingsComponent],
-  providers: [StandingStore],
   styles: `
     :host { 
       @apply flex flex-col w-full; 
