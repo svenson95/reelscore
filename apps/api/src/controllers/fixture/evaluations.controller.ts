@@ -8,47 +8,41 @@ import {
   StatisticItemType,
 } from '@lib/models';
 import { Fixtures, FixturesStatistics } from '../../models';
-import { findLatestFixturesForTeam } from '../fixtures.controller';
+import { findLatestFixtures } from '../fixtures.controller';
 
 export const getFixtureEvaluations = async (req, res, next) => {
   const fixtureId = req.query.fixture;
-  const fixtureDoc = await Fixtures.findOne({
+  const fixture = await Fixtures.findOne({
     'fixture.id': fixtureId,
   });
 
-  const homeFixtures = await findLatestFixturesForTeam(
-    fixtureDoc.teams.home.id,
-    fixtureDoc.fixture.date
-  );
+  const homeLatest = await findLatestFixtures(fixture, 'home');
+  const awayLatest = await findLatestFixtures(fixture, 'away');
 
-  const awayFixtures = await findLatestFixturesForTeam(
-    fixtureDoc.teams.away.id,
-    fixtureDoc.fixture.date
-  );
-
-  const analyzedFixtures = async (
-    fixtures: FixtureDTO[],
-    teamId: number
-  ): Promise<EvaluationTeam> => {
-    const performances = await analyzePerformances(teamId, fixtures);
-    const results = await analyzeResults(teamId, fixtures);
-
-    return {
-      performances,
-      results,
-    };
-  };
-
-  const home = await analyzedFixtures(homeFixtures, fixtureDoc.teams.home.id);
-  const away = await analyzedFixtures(awayFixtures, fixtureDoc.teams.away.id);
+  const { home, away } = fixture.teams;
+  const homeAnalyzed = await analyzedFixtures(home.id, homeLatest);
+  const awayAnalyzed = await analyzedFixtures(away.id, awayLatest);
 
   next({
     fixture: fixtureId,
     teams: {
-      home,
-      away,
+      home: homeAnalyzed,
+      away: awayAnalyzed,
     },
   });
+};
+
+const analyzedFixtures = async (
+  teamId: number,
+  fixtures: FixtureDTO[]
+): Promise<EvaluationTeam> => {
+  const performances = await analyzePerformances(teamId, fixtures);
+  const results = await analyzeResults(teamId, fixtures);
+
+  return {
+    performances,
+    results,
+  };
 };
 
 const analyzeTeamPerformance = (
