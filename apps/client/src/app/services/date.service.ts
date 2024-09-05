@@ -18,7 +18,7 @@ import {
   getMondayFromDate,
   moveItem,
 } from '@app/models';
-import { FixturesStore, StandingsStore } from '../../store';
+import { FixturesStore, StandingsStore } from '../store';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;

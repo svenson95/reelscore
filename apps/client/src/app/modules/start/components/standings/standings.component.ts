@@ -5,8 +5,8 @@ import {
   inject,
 } from '@angular/core';
 
+import { FilterService } from '@app/services';
 import { StandingsStore } from '../../../../store';
-import { FilterService } from '../../services';
 import { StandingStore } from '../../store';
 import { TableComponent } from './components';
 
