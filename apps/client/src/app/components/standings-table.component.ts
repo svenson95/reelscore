@@ -149,7 +149,7 @@ import { League, StandingRanks } from '@lib/models';
     </table>
   `,
 })
-export class TableComponent {
+export class StandingsTableComponent {
   readonly DISPLAYED_COLUMNS: string[] = [
     'rank',
     'team',
