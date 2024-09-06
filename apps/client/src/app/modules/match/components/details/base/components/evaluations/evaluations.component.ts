@@ -19,7 +19,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
       @apply flex flex-col gap-5 m-5;
 
       &:first-of-type { @apply border-b-[1px] pb-5; }
-      .header { @apply flex justify-between px-5; }
+      .header { @apply flex justify-between min-w-[290px] sm:min-w-[380px] m-auto; }
       .section-hints { @apply flex gap-3 items-center text-fb-color-text-2; }
       .section-title { @apply text-fb-font-size-body-2 xs:text-fb-font-size-body-1; }
     }
