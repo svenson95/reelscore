@@ -1,4 +1,4 @@
-import { League } from '../league.model';
+import { League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
 import { Team } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
