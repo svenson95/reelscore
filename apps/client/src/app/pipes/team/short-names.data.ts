@@ -57,8 +57,6 @@ export const shortTeamName = (value: string): string => {
       return 'Ulm';
     case 'FC Schalke 04':
       return 'Schalke';
-    case 'Eintrach Braunschweig':
-      return 'Braunschweig';
     case 'Karlsruher SC':
       return 'Karlsruhe';
     case 'Hamburger SV':
