@@ -52,7 +52,6 @@ export const getFixturesForCompetition = async (
   next
 ) => {
   const currentRound = await getCurrentRound(id);
-  console.log('currentRound', currentRound);
   if (type === 'last') {
     const fixtures = await getFixturesForCompetitionByRound(id, currentRound);
     next(fixtures);
@@ -75,7 +74,6 @@ export const getFixturesForCompetitionByRound = async (
   })
     .sort({ 'fixture.date': -1 })
     .lean();
-  console.log('fixtures', fixtures);
   return fixtures;
 };
 
