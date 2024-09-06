@@ -1,2 +1,2 @@
 export * from './app.data';
-export * from './round.helper';
+export * from './competition-rounds.data';
