@@ -6,8 +6,11 @@ import { OptimizedImageComponent } from '@app/components';
 import { getCompetitionLogo } from '@app/models';
 import { BreakpointObserverService } from '@app/services';
 import { RouterView } from '../router-view';
-import { LastFixturesComponent } from './components';
-import { NextFixturesComponent } from './components/next-fixtures.component';
+import {
+  CompetitionStandingsComponent,
+  LastFixturesComponent,
+  NextFixturesComponent,
+} from './components';
 import { SERVICE_PROVIDERS } from './services';
 import { STORE_PROVIDERS } from './store';
 
@@ -20,6 +23,7 @@ import { STORE_PROVIDERS } from './store';
     OptimizedImageComponent,
     LastFixturesComponent,
     NextFixturesComponent,
+    CompetitionStandingsComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
@@ -71,7 +75,7 @@ import { STORE_PROVIDERS } from './store';
             <mat-icon>format_list_numbered</mat-icon>
             } @else { Tabellen }
           </ng-template>
-          Tabelle, Heimtabelle & Auswärtstabelle
+          <reelscore-competition-standings />
         </mat-tab>
 
         <mat-tab>

@@ -5,15 +5,15 @@ import {
   inject,
 } from '@angular/core';
 
+import { StandingsTableComponent } from '@app/components';
 import { FilterService } from '@app/services';
 import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
-import { TableComponent } from './components';
 
 @Component({
   selector: 'reelscore-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TableComponent],
+  imports: [StandingsTableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,

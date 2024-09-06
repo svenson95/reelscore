@@ -1,30 +1,32 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { DateString, StateHandler } from '@app/models';
+import { StateHandler } from '@app/models';
 import { HttpStandingsService } from '@app/services';
 import { CompetitionId, StandingsDTO } from '@lib/models';
 
-type StandingsState = StateHandler<{ standings: StandingsDTO | null }>;
+type CompetitionStandingsState = StateHandler<{
+  standings: StandingsDTO | null;
+}>;
 
-const initialState: StandingsState = {
+const initialState: CompetitionStandingsState = {
+  standings: null,
   isLoading: false,
   error: null,
-  standings: null,
 };
 
-export const StandingsStore = signalStore(
+export const CompetitionStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadStanding(date: DateString, id: CompetitionId): Promise<void> {
+    async loadStandings(id: CompetitionId): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getStandings(id, date).subscribe({
+      http.getStandings(id).subscribe({
         next: (standings) =>
           patchState(store, {
             standings,
             isLoading: false,
-            error: standings ? null : 'Standing not found',
+            error: standings ? null : 'CompetitionStandings not found',
           }),
         error: (error) =>
           patchState(store, {
@@ -33,9 +35,6 @@ export const StandingsStore = signalStore(
             error,
           }),
       });
-    },
-    reset(): void {
-      patchState(store, initialState);
     },
   }))
 );

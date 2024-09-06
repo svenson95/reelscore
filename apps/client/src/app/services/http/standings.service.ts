@@ -10,8 +10,8 @@ type StandingsParams = CompetitionId | null;
 
 export abstract class HttpStandingsService {
   abstract getStandings(
-    date: DateString,
-    id: StandingsParams
+    id: StandingsParams,
+    date?: DateString
   ): Observable<StandingsDTO>;
   abstract getAllStandings(date: DateString): Observable<StandingsDTO[]>;
 }
@@ -22,12 +22,14 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   http = inject(HttpClient);
 
   getStandings(
-    date: DateString,
-    id: StandingsParams
+    id: StandingsParams,
+    date: DateString | null = null
   ): Observable<StandingsDTO> {
-    const dateString = date.substring(0, 10);
     let params = new HttpParams();
-    if (date) params = params.append('date', dateString);
+    if (date) {
+      const dateString = date.substring(0, 10);
+      params = params.append('date', dateString);
+    }
     if (id) params = params.append('league', id);
     return this.http.get<StandingsDTO>(this.BASE_URL + '/get', {
       params,

@@ -15,11 +15,6 @@ import { FixturesListComponent } from './fixtures-list.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, FixturesListComponent, CompetitionRoundPipe],
-  styles: `
-    :host { @apply flex flex-col gap-5; }
-    section:first-of-type { @apply flex justify-between; }
-    p { @apply text-fb-font-size-body-2; }
-  `,
   template: `
     @if (store.fixtures() !== null) {
     <reelscore-competition-fixtures-list

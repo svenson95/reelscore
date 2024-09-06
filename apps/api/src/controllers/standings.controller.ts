@@ -3,16 +3,24 @@ import { Standings } from '../models';
 
 export const getStandings = async (req, res, next) => {
   const leagueId = req.query.league;
-  const [year, month, day] = req.query.date.split('-');
-  const date = new Date(Date.UTC(year, month - 1, day));
-  date.setDate(date.getDate() + 1);
-  const query = {
+  const queryDate = req.query.date;
+  let query: Record<string, unknown> = {
     'league.id': leagueId,
     'league.season': APP_DATA.season,
-    $and: [{ createdAt: { $lte: date } }],
   };
 
+  if (queryDate) {
+    const [year, month, day] = queryDate.split('-');
+    const date = new Date(Date.UTC(year, month - 1, day));
+    date.setDate(date.getDate() + 1);
+    query = {
+      ...query,
+      createdAt: { $lte: date },
+    };
+  }
+
   const docs = await Standings.find(query).sort({ _id: -1 });
+
   next(docs);
 };
 
