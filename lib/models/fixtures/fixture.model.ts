@@ -1,8 +1,8 @@
 import { League } from '../league.model';
+import { MongoDbId } from '../mongodb.model';
 import { Team } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
 
-export type MongoDbId = string;
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };
