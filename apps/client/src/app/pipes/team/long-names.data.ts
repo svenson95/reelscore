@@ -257,6 +257,62 @@ export const longTeamName = (value: string): string => {
       return 'Feyenoord Rotterdam';
     case 'Sturm Graz':
       return 'SK Sturm Graz';
+    case 'HJK helsinki':
+      return 'HJK Helsinki';
+    case 'Panevėžys':
+      return 'FK Panevėžys';
+    case 'Hamrun Spartans':
+      return 'Ħamrun Spartans';
+    case 'The New Saints':
+      return 'The New Saints FC';
+    case 'Dečić':
+      return 'FK Dečić Tuzi';
+    case 'Ballkani':
+      return 'KF Ballkani';
+    case 'Vikingur Reykjavik':
+      return 'Víkingur Reykjavík';
+    case 'Virtus':
+      return 'SS Virtus';
+    case 'Ordabasy':
+      return 'FK Ordabassy Schymkent';
+    case 'Flora Tallinn':
+      return 'FC Flora Tallinn';
+    case 'Celje':
+      return 'NK Celje';
+    case 'Struga':
+      return 'FC Struga';
+    case 'Larne':
+      return 'Larne FC';
+    case 'KI Klaksvik':
+      return 'KÍ Klaksvík';
+    case 'Dinamo Batumi':
+      return 'FC Dinamo Batumi';
+    case 'Pyunik Yerevan':
+      return 'FC Pyunik Yerevan';
+    case 'Borac Banja Luka':
+      return 'FK Borac Banja Luka';
+    case 'Egnatia Rrogozhinë':
+      return 'KS Egnatia Rrogozhinë';
+    case 'Pafos':
+      return 'Paphos FC';
+    case 'Zira':
+      return 'Zirə FK';
+    case 'Ružomberok':
+      return 'MFK Ružomberok';
+    case 'FK Tobol Kostanay':
+      return 'FK Tobyl Qostanai';
+    case 'Paks':
+      return 'Paksi FC';
+    case 'Corvinul Hunedoara':
+      return 'CS Corvinul 1921 Hunedoara';
+    case 'Botev Plovdiv':
+      return 'PFK Botew Plowdiw';
+    case 'Maribor':
+      return 'NK Maribor';
+    case 'Wisla Krakow':
+      return 'Wisła Kraków';
+    case 'Llapi':
+      return 'KF Llapi Podujevë';
 
     // International
     case 'Northern Ireland':
@@ -333,7 +389,7 @@ export const longTeamName = (value: string): string => {
       return 'Georgien';
     case 'Czech Republic':
       return 'Tschechien';
-    case 'Rep. of Ireland':
+    case 'Rep. Of Ireland':
       return 'Irland';
     case 'Greece':
       return 'Griechenland';
