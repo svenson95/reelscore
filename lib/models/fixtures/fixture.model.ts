@@ -1,4 +1,5 @@
-import { League, Team } from '../league.model';
+import { League } from '../league.model';
+import { Team } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
 
 export type MongoDbId = string;

@@ -20,9 +20,9 @@
       "@app/models": ["apps/client/src/app/models/index.ts"],
       "@app/pipes": ["apps/client/src/app/pipes/index.ts"],
       "@app/services": ["apps/client/src/app/services/index.ts"],
-      "@lib/components": ["lib/components/index.ts"],
       "@lib/models": ["lib/models/index.ts"],
-      "@lib/constants": ["lib/constants/index.ts"]
+      "@lib/constants": ["lib/constants/index.ts"],
+      "@lib/shared": ["lib/shared/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

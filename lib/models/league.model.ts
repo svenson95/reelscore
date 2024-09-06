@@ -1,4 +1,9 @@
-export type Team = { id: number; name: string; logo: string };
+import {
+  CompetitionId,
+  CompetitionLabel,
+  CompetitionRound,
+} from './competition.model';
+import { Team } from './team.model';
 
 export type StandingsPlayed = {
   played: number;
@@ -22,11 +27,7 @@ export type StandingRanks = {
   update: string;
 };
 
-export type CompetitionUrl = string;
-export type CompetitionId = number;
-export type CompetitionLabel = string;
-export type CompetitionRound = string;
-
+export type LeagueType = 'League' | 'Cup' | 'Friendly' | 'International';
 export type League = {
   id: CompetitionId;
   name: CompetitionLabel;
