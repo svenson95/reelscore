@@ -1,4 +1,4 @@
-import { CompetitionId, FixtureDTO } from '@lib/models';
+import { CompetitionId, CompetitionRoundString, FixtureDTO } from '@lib/models';
 import { COMPETITION_ROUNDS } from '@lib/shared';
 import { APP_DATA } from '../middleware/app.data';
 import { Fixtures } from '../models';
@@ -56,7 +56,9 @@ export const getFixturesForCompetition = async (
     const fixtures = await getFixturesForCompetitionByRound(id, currentRound);
     next(fixtures);
   } else if (type === 'next') {
-    const rounds = Object.values(COMPETITION_ROUNDS[id]);
+    const rounds: CompetitionRoundString[] = Object.values(
+      COMPETITION_ROUNDS[id]
+    );
     const nextRound = getNextRound(rounds, currentRound);
     const fixtures = await getFixturesForCompetitionByRound(id, nextRound);
     next(fixtures);
@@ -90,8 +92,8 @@ export const getCurrentRound = async (
 };
 
 export const getNextRound = (
-  rounds: Array<string>,
-  currentRound: string
+  rounds: Array<CompetitionRoundString>,
+  currentRound: CompetitionRoundString
 ): string => {
   const currentRoundIndex = rounds.indexOf(currentRound);
   return rounds[currentRoundIndex + 1];
