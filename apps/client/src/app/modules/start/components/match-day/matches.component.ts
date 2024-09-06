@@ -17,11 +17,7 @@ import { MatchDayListComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent],
   styles: `
-    :host { @apply flex flex-col; }
-
-    reelscore-match-day-list:not(:last-child) {
-        @apply flex flex-col mb-5;
-    }
+    :host { @apply flex flex-col gap-5; }
   `,
   template: `
     @if (competitions()?.length) { @for (competition of competitions(); track
