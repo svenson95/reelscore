@@ -1,4 +1,5 @@
-import { FixtureDTO } from '@lib/models';
+import { CompetitionId, FixtureDTO } from '@lib/models';
+import { COMPETITION_ROUNDS } from '@lib/shared';
 import { APP_DATA } from '../middleware/app.data';
 import { Fixtures } from '../models';
 
@@ -43,6 +44,59 @@ export const getFixturesByRound = async (req, res, round, next) => {
     'league.season': APP_DATA.season,
   }).lean();
   next(docs);
+};
+
+export const getFixturesForCompetition = async (
+  id,
+  type: 'last' | 'next',
+  next
+) => {
+  const currentRound = await getCurrentRound(id);
+  console.log('currentRound', currentRound);
+  if (type === 'last') {
+    const fixtures = await getFixturesForCompetitionByRound(id, currentRound);
+    next(fixtures);
+  } else if (type === 'next') {
+    const rounds = Object.values(COMPETITION_ROUNDS[id]);
+    const nextRound = getNextRound(rounds, currentRound);
+    const fixtures = await getFixturesForCompetitionByRound(id, nextRound);
+    next(fixtures);
+  }
+};
+
+export const getFixturesForCompetitionByRound = async (
+  competitionId,
+  round
+) => {
+  const fixtures = await Fixtures.find({
+    'league.id': competitionId,
+    'league.round': round,
+    'league.season': APP_DATA.season,
+  })
+    .sort({ 'fixture.date': -1 })
+    .lean();
+  console.log('fixtures', fixtures);
+  return fixtures;
+};
+
+export const getCurrentRound = async (
+  competitionId: CompetitionId
+): Promise<string> => {
+  const currentSeason = { 'league.season': APP_DATA.season };
+  const isMatchFinished = { 'fixture.status.long': 'Match Finished' };
+  const lastMatch = await Fixtures.findOne({
+    'league.id': competitionId,
+    $and: [currentSeason, isMatchFinished],
+  }).sort({ 'fixture.date': -1 });
+  return lastMatch.league.round;
+};
+
+export const getNextRound = (
+  rounds: Array<string>,
+  currentRound: string
+): string => {
+  const currentRoundIndex = rounds.indexOf(currentRound);
+  return rounds[currentRoundIndex + 1];
 };
 
 export const getFixturesByDate = async (req, res, date, next) => {
