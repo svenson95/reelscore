@@ -2,7 +2,6 @@ export const longTeamName = (value: string): string => {
   switch (value) {
     // Bundesliga
     case 'Bayern Munich':
-      return 'FC Bayern München';
     case 'Bayern München':
       return 'FC Bayern München';
     case 'Vfl Bochum':
@@ -12,7 +11,6 @@ export const longTeamName = (value: string): string => {
     case 'Hertha Berlin':
       return 'Hertha BSC';
     case 'FC Koln':
-      return '1. FC Köln';
     case '1.FC Köln':
       return '1. FC Köln';
     case 'Bayer Leverkusen':
@@ -27,8 +25,8 @@ export const longTeamName = (value: string): string => {
       return 'Fortuna Düsseldorf';
     case 'SSV ULM 1846':
       return 'SSV Ulm 1846';
+    case 'Preußen Münster':
     case 'Preussen Münster':
-      return 'Preußen Münster';
     case 'Preussen Munster':
       return 'Preußen Münster';
     case 'FC Nurnberg':
