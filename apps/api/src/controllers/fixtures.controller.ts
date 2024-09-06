@@ -1,5 +1,5 @@
 import { CompetitionId, CompetitionRoundString, FixtureDTO } from '@lib/models';
-import { COMPETITION_ROUNDS } from '@lib/shared';
+import { COMPETITION_ROUNDS } from '../middleware';
 import { APP_DATA } from '../middleware/app.data';
 import { Fixtures } from '../models';
 
@@ -56,9 +56,7 @@ export const getFixturesForCompetition = async (
     const fixtures = await getFixturesForCompetitionByRound(id, currentRound);
     next(fixtures);
   } else if (type === 'next') {
-    const rounds: CompetitionRoundString[] = Object.values(
-      COMPETITION_ROUNDS[id]
-    );
+    const rounds = Object.values(COMPETITION_ROUNDS[id]);
     const nextRound = getNextRound(rounds, currentRound);
     const fixtures = await getFixturesForCompetitionByRound(id, nextRound);
     next(fixtures);
