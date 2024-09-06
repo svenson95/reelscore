@@ -1,5 +1,5 @@
-import { MongoDbId } from '../fixtures/fixture.model';
 import { League } from '../league.model';
+import { MongoDbId } from '../mongodb.model';
 
 export interface StandingsDTO {
   _id: MongoDbId;

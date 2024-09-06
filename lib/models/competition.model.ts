@@ -1,5 +1,5 @@
-import { MongoDbId } from './fixtures/fixture.model';
 import { LeagueType, StandingRanks } from './league.model';
+import { MongoDbId } from './mongodb.model';
 
 export type CompetitionUrl = string;
 export type CompetitionId = number;
