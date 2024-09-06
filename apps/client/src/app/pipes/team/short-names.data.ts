@@ -2,25 +2,20 @@ export const shortTeamName = (value: string): string => {
   switch (value) {
     // Bundesliga
     case 'Borussia Mönchengladbach':
-      return "M'Gladbach";
     case 'Borussia Monchengladbach':
       return "M'Gladbach";
     case 'SV Darmstadt 98':
       return 'Darmstadt';
     case 'Bayern München':
-      return 'Bayern';
     case 'Bayern Munich':
       return 'Bayern';
     case 'VfL Bochum':
-      return 'Bochum';
     case 'Vfl Bochum':
-      return 'VfL Bochum';
+      return 'Bochum';
     case 'Eintracht Frankfurt':
       return 'Frankfurt';
     case 'FC Koln':
-      return 'Köln';
     case '1.FC Köln':
-      return 'Köln';
     case '1. FC Köln':
       return 'Köln';
     case 'Bayer Leverkusen':
@@ -32,7 +27,6 @@ export const shortTeamName = (value: string): string => {
     case '1899 Hoffenheim':
       return 'Hoffenheim';
     case '1. FC Heidenheim':
-      return 'Heidenheim';
     case 'FC Heidenheim':
       return 'Heidenheim';
     case 'Borussia Dortmund':
@@ -70,9 +64,7 @@ export const shortTeamName = (value: string): string => {
     case 'Hamburger SV':
       return 'Hamburg';
     case 'Preußen Münster':
-      return 'Münster';
     case 'Preussen Münster':
-      return 'Münster';
     case 'Preussen Munster':
       return 'Münster';
     case '1. FC Nürnberg':
@@ -85,13 +77,11 @@ export const shortTeamName = (value: string): string => {
     case 'SV Elversberg':
       return 'Elversberg';
     case '1. FC Kaiserslautern':
-      return 'Kaiserslautern';
     case 'FC Kaiserslautern':
       return 'Kaiserslautern';
     case 'Hertha BSC':
       return 'Hertha';
     case 'Fortuna Dusseldorf':
-      return 'Düsseldorf';
     case 'Fortuna Düsseldorf':
       return 'Düsseldorf';
     case 'Hannover 96':
@@ -101,7 +91,6 @@ export const shortTeamName = (value: string): string => {
     case 'SSV Jahn Regensburg':
       return 'Regensburg';
     case 'SpVgg Greuther Fürth':
-      return 'Fürth';
     case 'SpVgg Greuther Furth':
       return 'Fürth';
     case 'FC Saarbrücken':
