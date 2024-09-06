@@ -2,15 +2,26 @@ import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { OptimizedImageComponent } from '@app/components';
 import { getCompetitionLogo } from '@app/models';
 import { BreakpointObserverService } from '@app/services';
-import { OptimizedImageComponent } from '../../components';
 import { RouterView } from '../router-view';
+import { LastFixturesComponent } from './components';
+import { NextFixturesComponent } from './components/next-fixtures.component';
+import { SERVICE_PROVIDERS } from './services';
+import { STORE_PROVIDERS } from './store';
 
 @Component({
   selector: 'reelscore-league',
   standalone: true,
-  imports: [MatTabsModule, MatIconModule, OptimizedImageComponent],
+  imports: [
+    MatTabsModule,
+    MatIconModule,
+    OptimizedImageComponent,
+    LastFixturesComponent,
+    NextFixturesComponent,
+  ],
+  providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply w-full; }
     :host ::ng-deep {
@@ -42,7 +53,7 @@ import { RouterView } from '../router-view';
             <mat-icon>article</mat-icon>
             } @else { Ergebnisse }
           </ng-template>
-          Letzte Spiele
+          <reelscore-competition-last-fixtures />
         </mat-tab>
 
         <mat-tab>
@@ -51,7 +62,7 @@ import { RouterView } from '../router-view';
             <mat-icon>calendar_month</mat-icon>
             } @else { Spielplan }
           </ng-template>
-          Anstehende Spiele
+          <reelscore-competition-next-fixtures />
         </mat-tab>
 
         <mat-tab>

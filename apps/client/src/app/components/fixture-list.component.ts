@@ -1,24 +1,18 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { OptimizedImageComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { getCompetitionLogo, getTeamLogo } from '@app/models';
-import { CompetitionRoundPipe, TeamNamePipe } from '@app/pipes';
+import { getTeamLogo } from '@app/models';
+import { TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
-import { ResultLabelComponent } from '../../../../../../components';
-import { CompetitionWithFixtures } from '../../../../models';
+import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
+import { ResultLabelComponent } from './result-label.component';
 
 @Component({
-  selector: 'reelscore-match-day-list',
+  selector: 'reelscore-fixture-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -27,28 +21,9 @@ import { CompetitionWithFixtures } from '../../../../models';
     MatRippleModule,
     OptimizedImageComponent,
     TeamNamePipe,
-    CompetitionRoundPipe,
     ResultLabelComponent,
   ],
   styles: `
-    :host {
-      @apply flex flex-col overflow-hidden border;
-      border-color: var(--mat-standard-button-toggle-divider-color);
-      border-radius: var(--mat-standard-button-toggle-shape);
-
-      --mat-table-header-headline-line-height: 14px;
-    }
-    .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
-    .header span { 
-      -webkit-font-smoothing: antialiased;
-      color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
-      font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
-      line-height: var(--mat-table-header-headline-line-height);
-      font-size: var(--fb-font-size-body-2);
-      font-weight: var(--mat-table-header-headline-weight, 500);
-
-      &.gray { @apply text-fb-color-text-2 text-fb-font-size-small shrink-0; }
-    }
     ul { @apply w-full; }
     li { @apply bg-white; }
     li > a { @apply flex items-stretch; }
@@ -67,24 +42,10 @@ import { CompetitionWithFixtures } from '../../../../models';
     .teams > div:not(.result) { @apply flex flex-1 items-center gap-2; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }
-    .spacer { @apply flex-1; }
   `,
   template: `
-    <div class="header">
-      <reelscore-optimized-image
-        [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
-        alternate=""
-        width="24"
-        height="24"
-      />
-      <span>{{ competition().name }}</span>
-      <div class="spacer"></div>
-      <span class="gray">
-        {{ round() | competitionRound : 'header' }}
-      </span>
-    </div>
     <ul>
-      @for(item of competition().fixtures; track item.fixture.id) {
+      @for(item of fixtures(); track item.fixture.id) {
       <li>
         <a matRipple [routerLink]="linkToMatch(item)">
           <section class="time">
@@ -128,16 +89,10 @@ import { CompetitionWithFixtures } from '../../../../models';
     </ul>
   `,
 })
-export class MatchDayListComponent {
+export class FixtureListComponent {
   routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
-  competition = input.required<CompetitionWithFixtures>();
+  fixtures = input.required<FixtureDTO[]>();
 
-  round = computed(() => {
-    const fixture = this.competition().fixtures[0];
-    return fixture ? fixture.league.round : '';
-  });
-
-  getCompetitionLogo = getCompetitionLogo;
   getTeamLogo = getTeamLogo;
 
   linkToMatch(data: FixtureDTO): string[] {

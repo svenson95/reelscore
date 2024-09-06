@@ -5,10 +5,10 @@ import {
   inject,
 } from '@angular/core';
 
+import { CompetitionWithFixtures } from '@app/models';
 import { FilterService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
 import { FixturesStore } from '../../../../store';
-import { CompetitionWithFixtures } from '../../models';
 import { MatchDayListComponent } from './components';
 
 @Component({
@@ -26,7 +26,7 @@ import { MatchDayListComponent } from './components';
   template: `
     @if (competitions()?.length) { @for (competition of competitions(); track
     competition.name) {
-    <reelscore-match-day-list [competition]="competition" />
+    <reelscore-start-match-day-list [competition]="competition" />
     } } @else {
     <p class="no-data">
       @if (fixturesStore.isLoading()) { Spiele werden geladen ... } @else { @if

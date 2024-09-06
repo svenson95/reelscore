@@ -1,1 +1,1 @@
-export * from './list/match-day-list.component';
+export * from './match-day-list.component';
