@@ -20,8 +20,6 @@ export const shortTeamName = (value: string): string => {
       return 'Köln';
     case 'Bayer Leverkusen':
       return 'Leverkusen';
-    case 'Hertha Berlin':
-      return 'Hertha';
     case 'Union Berlin':
       return 'Union';
     case '1899 Hoffenheim':
@@ -95,8 +93,6 @@ export const shortTeamName = (value: string): string => {
       return 'Saarbrücken';
     case 'Eintracht Braunschweig':
       return 'Braunschweig';
-    case 'SpVgg Greuter Furth':
-      return 'Fürth';
     case 'SV Sandhausen':
       return 'Sandhausen';
     case 'Hansa Rostock':
@@ -193,9 +189,6 @@ export const shortTeamName = (value: string): string => {
     case 'Napoli':
       return 'Neapel';
 
-    default:
-      return value;
-
     // Europa
     case 'Slavia Praha':
       return 'Prag';
@@ -251,6 +244,58 @@ export const shortTeamName = (value: string): string => {
       return 'Brügge';
     case 'Benfica':
       return 'Benfica';
+    case 'Union St. Gilloise':
+      return 'St. Gilloise';
+    case 'AZ Alkmaar':
+      return 'Alkmaar';
+    case 'Olympiakos Piraeus':
+      return 'Olympiakos';
+    case 'FC Porto':
+      return 'Porto';
+    case 'SC Braga':
+      return 'Braga';
+    case 'Rīgas FS':
+      return 'Rīgas';
+    case 'HJK helsinki':
+      return 'Helsinki';
+    case 'Hamrun Spartans':
+      return 'Ħamrun';
+    case 'Lincoln Red Imps FC':
+      return 'Lincoln';
+    case 'The New Saints':
+      return 'Saints';
+    case 'UE Santa Coloma':
+      return 'Coloma';
+    case 'Vikingur Reykjavik':
+      return 'Víkingur';
+    case 'Shamrock Rovers':
+      return 'Shamrock';
+    case 'Ordabasy':
+      return 'Ordabassy';
+    case 'Flora Tallinn':
+      return 'Flora';
+    case 'KI Klaksvik':
+      return 'Klaksvík';
+    case 'FC Differdange 03':
+      return 'Differdange';
+    case 'Dinamo Batumi':
+      return 'Batumi';
+    case 'Pyunik Yerevan':
+      return 'Pyunik';
+    case 'Egnatia Rrogozhinë':
+      return 'Egnatia';
+    case 'Sheriff Tiraspol':
+      return 'Sheriff';
+    case 'Zira':
+      return 'Zirə';
+    case 'FK Tobol Kostanay':
+      return 'Tobol';
+    case 'Corvinul Hunedoara':
+      return 'Corvinul';
+    case 'Botev Plovdiv':
+      return 'Botev';
+    case 'Wisla Krakow':
+      return 'Wisła';
 
     // International
     case 'Northern Ireland':
@@ -327,7 +372,7 @@ export const shortTeamName = (value: string): string => {
       return 'Georgien';
     case 'Czech Republic':
       return 'Tschechien';
-    case 'Rep. of Ireland':
+    case 'Rep. Of Ireland':
       return 'Irland';
     case 'Greece':
       return 'Griechenland';
@@ -335,5 +380,8 @@ export const shortTeamName = (value: string): string => {
       return 'Finnland';
     case 'Albania':
       return 'Albanien';
+
+    default:
+      return value;
   }
 };
