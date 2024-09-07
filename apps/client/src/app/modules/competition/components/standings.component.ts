@@ -23,7 +23,9 @@ import { CompetitionStandingsStore } from '../store/standings.store';
       [ranks]="standings()!.league.standings![0]"
       [league]="standings()!.league"
     />
-    } } @else if (store.isLoading()) { Tabelle wird geladen ... }
+    } } @else if (store.isLoading()) {
+    <p class="no-data">Tabelle wird geladen ...</p>
+    }
   `,
 })
 export class CompetitionStandingsComponent {
