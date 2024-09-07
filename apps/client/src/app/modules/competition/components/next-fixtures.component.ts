@@ -15,7 +15,9 @@ import { FixturesListComponent } from './fixtures-list.component';
       [competition]="competition()!.id"
       [isLoading]="store.isLoading()"
     />
-    } @else if (store.isLoading()) { Spiele werden geladen ... }
+    } @else if (store.isLoading()) {
+    <p class="no-data">Spiele werden geladen ...</p>
+    }
   `,
 })
 export class NextFixturesComponent {
