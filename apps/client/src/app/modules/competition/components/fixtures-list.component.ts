@@ -15,8 +15,10 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, FixtureListComponent, CompetitionRoundPipe],
   styles: `
-    :host { @apply flex flex-col gap-5; }
-    section:first-of-type { @apply flex justify-between; }
+    :host { @apply flex flex-col; }
+    section:first-of-type { 
+      @apply flex justify-between px-5 py-3 border-b-[1px] font-medium bg-white;
+    }
     p { @apply text-fb-font-size-body-2; }
   `,
   template: `

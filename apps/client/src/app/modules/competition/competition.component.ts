@@ -28,14 +28,7 @@ import { STORE_PROVIDERS } from './store';
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply w-full; }
-    :host ::ng-deep {
-      // TODO: remove this placeholder styling if content is loaded from api
-      .mat-mdc-tab-body.mat-mdc-tab-body-active {
-        @apply bg-white; 
-        .mat-mdc-tab-body-content { @apply p-5 text-center; }
-      }
-    }
-
+    :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
     .header { @apply w-fit bg-white rounded-full p-8 mx-auto mb-5; }
   `,
   template: `
@@ -50,7 +43,7 @@ import { STORE_PROVIDERS } from './store';
       }
     </section>
     <section class="data">
-      <mat-tab-group>
+      <mat-tab-group animationDuration="0">
         <mat-tab>
           <ng-template mat-tab-label>
             @if (isMobile()) {
