@@ -13,7 +13,12 @@ import {
   NextFixturesComponent,
 } from './components';
 import { SERVICE_PROVIDERS } from './services';
-import { STORE_PROVIDERS } from './store';
+import {
+  CompetitionStandingsStore,
+  LastFixturesStore,
+  NextFixturesStore,
+  STORE_PROVIDERS,
+} from './store';
 
 @Component({
   selector: 'reelscore-league',
@@ -90,9 +95,18 @@ export class CompetitionComponent extends RouterView implements OnInit {
   isMobile = this.bos.isMobile;
   routerService = inject(Router);
 
+  lastFixturesStore = inject(LastFixturesStore);
+  nextFixturesStore = inject(NextFixturesStore);
+  standingsStore = inject(CompetitionStandingsStore);
+
   getCompetitionLogo = getCompetitionLogo;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.routerService.routeReuseStrategy.shouldReuseRoute = () => false;
+    const competition = this.competition();
+    if (!competition) return;
+    await this.lastFixturesStore.loadLastFixtures(competition.id);
+    await this.nextFixturesStore.loadNextFixtures(competition.id);
+    await this.standingsStore.loadStandings(competition.id);
   }
 }

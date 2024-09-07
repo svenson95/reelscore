@@ -1,26 +1,12 @@
-import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { StandingsTableComponent } from '@app/components';
-import { CompetitionRoundPipe } from '@app/pipes';
-import { LeagueService } from '@app/services';
 import { CompetitionStandingsStore } from '../store/standings.store';
-import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
   selector: 'reelscore-competition-standings',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DatePipe,
-    FixturesListComponent,
-    CompetitionRoundPipe,
-    StandingsTableComponent,
-  ],
+  imports: [StandingsTableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,
@@ -43,16 +29,4 @@ import { FixturesListComponent } from './fixtures-list.component';
 export class CompetitionStandingsComponent {
   store = inject(CompetitionStandingsStore);
   standings = this.store.standings;
-
-  leagueService = inject(LeagueService);
-  competition = this.leagueService.selectedLeague;
-
-  leagueEffect = effect(
-    async () => {
-      const competition = this.competition();
-      if (!competition) return;
-      await this.store.loadStandings(competition.id);
-    },
-    { allowSignalWrites: true }
-  );
 }
