@@ -23,8 +23,6 @@ import { FixturesListComponent } from './fixtures-list.component';
   ],
   styles: `
     :host { @apply flex flex-col gap-5; }
-    section:first-of-type { @apply flex justify-between; }
-    p { @apply text-fb-font-size-body-2; }
   `,
   template: `
     @if (store.standings() !== null) { @if
