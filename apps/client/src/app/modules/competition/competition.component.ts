@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
@@ -65,7 +65,9 @@ import {
             <mat-icon>calendar_month</mat-icon>
             } @else { Spielplan }
           </ng-template>
-          <reelscore-competition-next-fixtures />
+          <ng-template matTabContent>
+            <reelscore-competition-next-fixtures />
+          </ng-template>
         </mat-tab>
 
         <mat-tab>
@@ -74,7 +76,9 @@ import {
             <mat-icon>format_list_numbered</mat-icon>
             } @else { Tabellen }
           </ng-template>
-          <reelscore-competition-standings />
+          <ng-template matTabContent>
+            <reelscore-competition-standings />
+          </ng-template>
         </mat-tab>
 
         <mat-tab>
@@ -83,13 +87,15 @@ import {
             <mat-icon>assessment</mat-icon>
             } @else { Statistiken }
           </ng-template>
-          Torschützen & Vorlagen Tabellen
+          <ng-template matTabContent>
+            <p class="no-data">Torschützen & Vorlagen Tabellen</p>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
     </section>
   `,
 })
-export class CompetitionComponent extends RouterView implements OnInit {
+export class CompetitionComponent extends RouterView {
   competition = this.leagueService.selectedLeague;
   bos = inject(BreakpointObserverService);
   isMobile = this.bos.isMobile;
@@ -101,11 +107,14 @@ export class CompetitionComponent extends RouterView implements OnInit {
 
   getCompetitionLogo = getCompetitionLogo;
 
-  async ngOnInit(): Promise<void> {
-    const competition = this.competition();
-    if (!competition) return;
-    await this.lastFixturesStore.loadLastFixtures(competition.id);
-    await this.nextFixturesStore.loadNextFixtures(competition.id);
-    await this.standingsStore.loadStandings(competition.id);
-  }
+  leagueEffect = effect(
+    async () => {
+      const competition = this.competition();
+      if (!competition) return;
+      await this.lastFixturesStore.loadLastFixtures(competition.id);
+      await this.nextFixturesStore.loadNextFixtures(competition.id);
+      await this.standingsStore.loadStandings(competition.id);
+    },
+    { allowSignalWrites: true }
+  );
 }
