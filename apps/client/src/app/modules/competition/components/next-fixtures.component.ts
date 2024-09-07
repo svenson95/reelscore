@@ -1,11 +1,4 @@
-import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-} from '@angular/core';
-import { CompetitionRoundPipe } from '@app/pipes';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LeagueService } from '@app/services';
 import { NextFixturesStore } from '../store';
 import { FixturesListComponent } from './fixtures-list.component';
@@ -14,7 +7,7 @@ import { FixturesListComponent } from './fixtures-list.component';
   selector: 'reelscore-competition-next-fixtures',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, FixturesListComponent, CompetitionRoundPipe],
+  imports: [FixturesListComponent],
   template: `
     @if (store.fixtures() !== null) {
     <reelscore-competition-fixtures-list
@@ -29,13 +22,4 @@ export class NextFixturesComponent {
   store = inject(NextFixturesStore);
   leagueService = inject(LeagueService);
   competition = this.leagueService.selectedLeague;
-
-  leagueEffect = effect(
-    async () => {
-      const competition = this.competition();
-      if (!competition) return;
-      await this.store.loadNextFixtures(competition.id);
-    },
-    { allowSignalWrites: true }
-  );
 }
