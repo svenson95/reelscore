@@ -4,6 +4,7 @@ export interface Competition {
   id: CompetitionId;
   name: CompetitionLabel;
   image: string;
+  url: string[];
 }
 
 export interface CompetitionWithFixtures extends Competition {

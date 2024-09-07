@@ -5,6 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { CompetitionWithFixtures } from '@app/models';
 import { FilterService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
@@ -49,13 +50,20 @@ export class MatchesComponent {
   ): Array<CompetitionWithFixtures> => {
     const allCompetitions = [...new Set(fixtures.map((f) => f.league.name))];
     const competitions: Array<CompetitionWithFixtures> = allCompetitions.map(
-      (name) => ({
-        name,
-        id: fixtures.find((f) => f.league.name === name)?.league.id || -1,
-        image:
-          fixtures.find((f) => f.league.name === name)?.league.flag || 'error',
-        fixtures: fixtures.filter((f) => f.league.name === name),
-      })
+      (name) => {
+        const fixture = fixtures.find((f) => f.league.name === name);
+        const competition = SELECT_COMPETITION_DATA_FLAT.find(
+          (c) => c.id === fixture?.league.id
+        );
+        if (!fixture || !competition) throw new Error(`Not found ('${name}')`);
+        return {
+          name,
+          url: ['leagues', competition.url],
+          id: fixture.league.id || -1,
+          image: fixture.league.flag || 'error',
+          fixtures: fixtures.filter((f) => f.league.name === name),
+        };
+      }
     );
 
     const filter = this.filterService.selectedCompetition();
