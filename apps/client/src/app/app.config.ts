@@ -20,6 +20,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
 import {
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
+  CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   DATE_SERVICE_PROVIDER,
   FILTER_SERVICE_PROVIDER,
   HTTP_FIXTURE_SERVICE_PROVIDER,
@@ -66,6 +67,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     LOCALE_PROVIDER,
+    CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...SERVICE_PRODIVDERS,
     ...HTTP_DATA_PROVIDERS,
     ...STORE_PROVIDERS,

@@ -102,7 +102,6 @@ export class CompetitionComponent extends RouterView implements OnInit {
   getCompetitionLogo = getCompetitionLogo;
 
   async ngOnInit(): Promise<void> {
-    this.routerService.routeReuseStrategy.shouldReuseRoute = () => false;
     const competition = this.competition();
     if (!competition) return;
     await this.lastFixturesStore.loadLastFixtures(competition.id);
