@@ -4,6 +4,7 @@ import {
   computed,
   input,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { FixtureListComponent, OptimizedImageComponent } from '@app/components';
 import { CompetitionWithFixtures, getCompetitionLogo } from '@app/models';
@@ -14,6 +15,7 @@ import { CompetitionRoundPipe } from '@app/pipes';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
     CompetitionRoundPipe,
     OptimizedImageComponent,
     FixtureListComponent,
@@ -27,15 +29,17 @@ import { CompetitionRoundPipe } from '@app/pipes';
       --mat-table-header-headline-line-height: 14px;
     }
     .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
-    .header span { 
-      -webkit-font-smoothing: antialiased;
-      color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
-      font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
-      line-height: var(--mat-table-header-headline-line-height);
-      font-size: var(--fb-font-size-body-2);
-      font-weight: var(--mat-table-header-headline-weight, 500);
-
-      &.gray { @apply text-fb-color-text-2 text-fb-font-size-small shrink-0; }
+    .header { 
+      span, a {
+        -webkit-font-smoothing: antialiased;
+        color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
+        font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
+        line-height: var(--mat-table-header-headline-line-height);
+        font-size: var(--fb-font-size-body-2);
+        font-weight: var(--mat-table-header-headline-weight, 500);
+  
+        &.gray { @apply text-fb-color-text-2 text-fb-font-size-small shrink-0; }
+      }
     }
     .spacer { @apply flex-1; }
   `,
@@ -47,7 +51,7 @@ import { CompetitionRoundPipe } from '@app/pipes';
         width="24"
         height="24"
       />
-      <span>{{ competition().name }}</span>
+      <a [routerLink]="competition().url">{{ competition().name }}</a>
       <div class="spacer"></div>
       <span class="gray">
         {{ round() | competitionRound : 'header' }}

@@ -6,18 +6,20 @@ import {
   input,
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { BreakpointObserverService } from '@app/services';
-import { League, StandingRanks } from '@lib/models';
+import { CompetitionId, League, StandingRanks } from '@lib/models';
 
 @Component({
   selector: 'reelscore-standings-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatTableModule, OptimizedImageComponent, TeamNamePipe],
+  imports: [RouterLink, MatTableModule, OptimizedImageComponent, TeamNamePipe],
   styles: `
     :host {
       @apply flex overflow-hidden border;
@@ -85,7 +87,9 @@ import { League, StandingRanks } from '@lib/models';
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
-          {{ league().name }}
+          <a [routerLink]="competitionRouterLink(league().id)">
+            {{ league().name }}
+          </a>
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
@@ -175,4 +179,10 @@ export class StandingsTableComponent {
     );
     return this.isMobile() ? filtered : this.DISPLAYED_COLUMNS;
   });
+
+  competitionRouterLink(id: CompetitionId): string[] {
+    const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
+    if (!competition) throw new Error(`Competition not found (${id})`);
+    return ['leagues', competition.url];
+  }
 }
