@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { @apply select-none text-white text-fb-font-size-body-1; }
+    :host { @apply select-none text-white text-fb-font-size-body-1 tracking-normal; }
   `,
   template: `
     <span class="font-bold">reel</span>
