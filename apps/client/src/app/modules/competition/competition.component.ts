@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 
 import { OptimizedImageComponent } from '@app/components';
 import { getCompetitionLogo } from '@app/models';
@@ -83,10 +84,15 @@ import { STORE_PROVIDERS } from './store';
     </section>
   `,
 })
-export class CompetitionComponent extends RouterView {
+export class CompetitionComponent extends RouterView implements OnInit {
   competition = this.leagueService.selectedLeague;
   bos = inject(BreakpointObserverService);
   isMobile = this.bos.isMobile;
+  routerService = inject(Router);
 
   getCompetitionLogo = getCompetitionLogo;
+
+  ngOnInit(): void {
+    this.routerService.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 }
