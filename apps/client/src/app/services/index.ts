@@ -5,4 +5,5 @@ export * from './http/fixture.service';
 export * from './http/fixtures.service';
 export * from './http/standings.service';
 export * from './league/league.service';
+export * from './route-reuse.provider';
 export * from './route.service';

@@ -5,6 +5,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./modules/start/start.component').then((m) => m.StartComponent),
+    data: { shouldReuse: true },
   },
   {
     path: 'leagues/:leagueUrl',

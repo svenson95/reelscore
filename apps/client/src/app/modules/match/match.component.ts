@@ -183,7 +183,6 @@ export class MatchComponent extends RouterView implements OnInit {
   });
 
   async ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     await this.fixtureStore.loadFixture(this.fixtureId());
   }
 
