@@ -10,7 +10,9 @@ import { FixtureEvents, Fixtures } from '../models';
 
 const getFixtureHighlights = (events: EventDTO[] | undefined) => {
   if (!events) return [];
-  const goals = events.filter((event) => event.type === 'Goal');
+  const goals = events.filter(
+    (event) => event.type === 'Goal' && event.detail !== 'Missed Penalty'
+  );
   const redCards = events.filter(
     (event) => event.type === 'Card' && event.detail === 'Red Card'
   );
