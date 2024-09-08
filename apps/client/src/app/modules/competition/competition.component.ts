@@ -3,11 +3,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
-import { OptimizedImageComponent } from '@app/components';
-import { getCompetitionLogo } from '@app/models';
 import { BreakpointObserverService } from '@app/services';
 import { RouterView } from '../router-view';
 import {
+  CompetitionHeaderComponent,
   CompetitionStandingsComponent,
   LastFixturesComponent,
   NextFixturesComponent,
@@ -21,33 +20,23 @@ import {
 } from './store';
 
 @Component({
-  selector: 'reelscore-league',
+  selector: 'reelscore-competition',
   standalone: true,
   imports: [
     MatTabsModule,
     MatIconModule,
-    OptimizedImageComponent,
     LastFixturesComponent,
     NextFixturesComponent,
     CompetitionStandingsComponent,
+    CompetitionHeaderComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply w-full; }
     :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
-    .header { @apply w-fit bg-white rounded-full p-8 mx-auto mb-5; }
   `,
   template: `
-    <section class="header">
-      @if (competition()?.id) {
-      <reelscore-optimized-image
-        [source]="getCompetitionLogo(competition()!.id)"
-        [alternate]="competition()!.label"
-        width="64"
-        height="64"
-      />
-      }
-    </section>
+    <reelscore-competition-header />
     <section class="data">
       <mat-tab-group animationDuration="0">
         <mat-tab>
@@ -96,7 +85,6 @@ import {
   `,
 })
 export class CompetitionComponent extends RouterView {
-  competition = this.leagueService.selectedLeague;
   bos = inject(BreakpointObserverService);
   isMobile = this.bos.isMobile;
   routerService = inject(Router);
@@ -105,11 +93,9 @@ export class CompetitionComponent extends RouterView {
   nextFixturesStore = inject(NextFixturesStore);
   standingsStore = inject(CompetitionStandingsStore);
 
-  getCompetitionLogo = getCompetitionLogo;
-
   leagueEffect = effect(
     async () => {
-      const competition = this.competition();
+      const competition = this.leagueService.selectedLeague();
       if (!competition) return;
       await this.lastFixturesStore.loadLastFixtures(competition.id);
       await this.nextFixturesStore.loadNextFixtures(competition.id);
