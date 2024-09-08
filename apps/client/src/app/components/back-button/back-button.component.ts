@@ -1,10 +1,5 @@
 import { Location } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -37,8 +32,6 @@ import { MatIconModule } from '@angular/material/icon';
   `,
 })
 export class BackButtonComponent {
-  date = input.required<string>();
-
   location = inject(Location);
   navigateBack = () => this.location.back();
 }

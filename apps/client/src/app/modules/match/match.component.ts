@@ -83,7 +83,7 @@ const STORE_PROVIDERS = [
     } @else if (fixtureStore.fixture() !== null){
     <section class="header">
       <div>
-        <reelscore-back-button [date]="fixtureStore.fixture()!.fixture.date" />
+        <reelscore-back-button />
         <button mat-button disabled>
           {{ fixtureStore.fixture()!.fixture.date | date : 'dd.MM.yy' }}
         </button>
