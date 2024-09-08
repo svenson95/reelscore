@@ -88,7 +88,11 @@ import { CompetitionId, League, StandingRanks } from '@lib/models';
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
           <a [routerLink]="competitionRouterLink(league().id)">
+            @if (isCompetitionWithMultipleTables()) {
+            {{ roundLabel() }}
+            } @else {
             {{ league().name }}
+            }
           </a>
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
@@ -165,10 +169,11 @@ export class StandingsTableComponent {
     'points',
   ];
 
-  breakpoint = inject(BreakpointObserverService);
-  isMobile = this.breakpoint.isMobile;
   ranks = input.required<StandingRanks[]>();
   league = input.required<League>();
+
+  breakpoint = inject(BreakpointObserverService);
+  isMobile = this.breakpoint.isMobile;
 
   getTeamLogo = getTeamLogo;
   getCompetitionLogo = getCompetitionLogo;
@@ -180,9 +185,23 @@ export class StandingsTableComponent {
     return this.isMobile() ? filtered : this.DISPLAYED_COLUMNS;
   });
 
+  roundLabel = computed(() => {
+    const round = this.ranks()[0].group;
+    const [leaguePart, groupPart] = round.split(',');
+    const league = leaguePart.replace('League', 'Liga');
+    const group = groupPart.replace('Group', 'Gruppe');
+    return `${league} ${group}`;
+  });
+
   competitionRouterLink(id: CompetitionId): string[] {
     const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
     if (!competition) throw new Error(`Competition not found (${id})`);
     return ['leagues', competition.url];
+  }
+
+  isCompetitionWithMultipleTables(): boolean {
+    const standings = this.league().standings;
+    if (!standings) throw new Error('No standings found for league');
+    return standings.length > 1;
   }
 }
