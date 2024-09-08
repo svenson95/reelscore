@@ -69,7 +69,10 @@ const getTeamGoals = (
   teams: MatchTeams
 ): EventResult => {
   if (teams === undefined) throw new Error('Teams not found in fixture');
-  const goals = events.filter((e) => e.type === 'Goal');
+  const goals = events.filter(
+    (e) => e.type === 'Goal' && e.detail !== 'Missed Penalty'
+  );
+  console.log('goals', goals);
   const elapsed = goals.filter((e) => timeTotal(e) <= timeTotal(event));
   const home = elapsed.filter((e) => e.team.id === teams.home.id).length;
   const away = elapsed.filter((e) => e.team.id === teams.away.id).length;
