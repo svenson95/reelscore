@@ -44,7 +44,7 @@ import { MatchEventComponent } from './components';
         </div>
 
         <div class="event-icon">
-          @if (event.type === "Goal") {
+          @if (event.type === 'Goal') {
           <span class="result">
             <span [class.font-bold]="event.team.id === homeId">
               {{ event.result.home }}
