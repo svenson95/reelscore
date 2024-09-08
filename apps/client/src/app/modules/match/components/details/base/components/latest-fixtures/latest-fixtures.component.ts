@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
 import { FixtureStore, LatestFixturesStore } from '../../../../../store';
 import { MatchFixturesTableComponent } from './components';
@@ -27,11 +32,11 @@ import { MatchFixturesTableComponent } from './components';
       <p class="no-data">Keine Spiele gefunden.</p>
       } @else { @if (latestFixturesStore.latestFixtures()) {
       <reelscore-match-fixtures-table
-        [team]="fixture()!.teams.home"
+        [team]="data()!.teams.home"
         [fixtures]="latestFixturesStore.latestFixtures()!.home"
       />
       <reelscore-match-fixtures-table
-        [team]="fixture()!.teams.away"
+        [team]="data()!.teams.away"
         [fixtures]="latestFixturesStore.latestFixtures()!.away"
       />
       } }
@@ -42,5 +47,5 @@ export class MatchLatestFixturesComponent {
   latestFixturesStore = inject(LatestFixturesStore);
 
   fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
+  data = computed(() => this.fixtureStore.fixture()?.data);
 }

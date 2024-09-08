@@ -1,5 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -85,22 +92,25 @@ const STORE_PROVIDERS = [
       <div>
         <reelscore-back-button />
         <button mat-button disabled>
-          {{ fixtureStore.fixture()!.fixture.date | date : 'dd.MM.yy' }}
+          {{ data()!.fixture.date | date : 'dd.MM.yy' }}
         </button>
 
         <div class="spacer"></div>
 
         <button mat-button disabled>
-          {{ fixtureStore.fixture()!.fixture.date | date : 'ccc' }}
+          {{ data()!.fixture.date | date : 'ccc' }}
         </button>
         <button mat-button disabled>
-          {{ fixtureStore.fixture()!.fixture.date | date : 'HH:mm' }}
+          {{ data()!.fixture.date | date : 'HH:mm' }}
         </button>
       </div>
     </section>
 
     <section class="match-header">
-      <reelscore-match-header [data]="fixtureStore.fixture()!" />
+      <reelscore-match-header
+        [data]="fixture()!.data"
+        [highlights]="fixture()?.highlights"
+      />
     </section>
 
     <section class="data">
@@ -151,6 +161,7 @@ export class MatchComponent extends RouterView implements OnInit {
 
   fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
+  data = computed(() => this.fixtureStore.fixture()?.data);
 
   eventsStore = inject(EventsStore);
   events = this.eventsStore.events;
@@ -168,10 +179,9 @@ export class MatchComponent extends RouterView implements OnInit {
   leagueUrl = input.required<CompetitionUrl>();
 
   invalidUrlEffect = effect(() => {
-    const fixture = this.fixture();
-    const leagueUrl = this.leagueUrl();
+    const fixture = this.data();
     const league = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.url === leagueUrl
+      (c) => c.url === this.leagueUrl()
     );
     if (!fixture || !league) return;
 

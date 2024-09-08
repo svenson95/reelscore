@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
 import { CompetitionRoundPipe } from '@app/pipes';
 import { FixtureStore } from '../../../../../store';
@@ -53,5 +58,5 @@ import { FixtureStore } from '../../../../../store';
 })
 export class MatchFixtureDataComponent {
   fixtureStore = inject(FixtureStore);
-  data = this.fixtureStore.fixture;
+  data = computed(() => this.fixtureStore.fixture()?.data);
 }
