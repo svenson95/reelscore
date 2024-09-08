@@ -32,12 +32,41 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       .divider { @apply w-full h-[1px] bg-[#e5e7eb]; }
       button { @apply flex; }
       mat-icon { @apply shrink-0; }
+
+      animation: slideUp 0.3s ease forwards;
+      .divider { animation: opacityUp 0.3s ease forwards;}
+      &.is-hidden {
+        animation: slideDown 0.3s ease forwards;
+
+        .divider {
+          animation: opacityDown 0.3s ease forwards;
+        }
+      }
+
+      @keyframes opacityUp {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+      @keyframes opacityDown {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+
+      $slideValue: calc(-24px + -0.5rem);
+      @keyframes slideUp {
+        0% { margin-top: $slideValue; }
+        100% { margin-top: 0; }
+      }
+      @keyframes slideDown {
+        0% { margin-top: 0; }
+        100% { margin-top: $slideValue; }
+      }
     }
   `,
   template: `
     <reelscore-match-header-data [data]="data()" />
     @if (highlights() && data().fixture.status.short === 'FT') {
-    <div class="header-divider">
+    <div class="header-divider" [class.is-hidden]="showHighlights() === false">
       <div class="divider"></div>
       <button
         (click)="toggleHighlights()"
