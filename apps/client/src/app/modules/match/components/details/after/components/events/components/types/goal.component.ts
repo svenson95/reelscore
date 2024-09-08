@@ -18,7 +18,7 @@ import { EventDTO } from '@lib/models';
     <div class="top">
       <span>{{ event.player.name }}</span>
     </div>
-    @if (event.assist.id) {
+    @if (event.assist.id && event.assist.id !== event.player.id) {
     <div class="bottom assist">
       <span>Vorlage:&nbsp;</span>
       <span>{{ event.assist.name }}</span>

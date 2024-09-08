@@ -44,7 +44,7 @@ import { MatchEventComponent } from './components';
         </div>
 
         <div class="event-icon">
-          @if (event.type === 'Goal') {
+          @if (event.type === 'Goal' && event.detail !== "Missed Penalty") {
           <span class="result">
             <span [class.font-bold]="event.team.id === homeId">
               {{ event.result.home }}
@@ -54,6 +54,8 @@ import { MatchEventComponent } from './components';
               {{ event.result.away }}
             </span>
           </span>
+          } @else if (event.detail === "Missed Penalty") {
+          <mat-icon>close</mat-icon>
           } @else {
           <mat-icon
             [class.yellow-card]="
