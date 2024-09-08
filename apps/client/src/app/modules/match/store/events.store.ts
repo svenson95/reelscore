@@ -72,7 +72,6 @@ const getTeamGoals = (
   const goals = events.filter(
     (e) => e.type === 'Goal' && e.detail !== 'Missed Penalty'
   );
-  console.log('goals', goals);
   const elapsed = goals.filter((e) => timeTotal(e) <= timeTotal(event));
   const home = elapsed.filter((e) => e.team.id === teams.home.id).length;
   const away = elapsed.filter((e) => e.team.id === teams.away.id).length;
