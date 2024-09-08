@@ -26,7 +26,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     :host { 
       @apply flex flex-col mx-auto p-5 gap-2 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
     }
-    .header-divider { 
+    .toggle-highlights-row { 
       @apply flex items-center gap-5;
 
       .divider { @apply w-full h-[1px] bg-[#e5e7eb]; }
@@ -37,10 +37,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       .divider { animation: opacityUp 0.3s ease forwards;}
       &.is-hidden {
         animation: slideDown 0.3s ease forwards;
-
-        .divider {
-          animation: opacityDown 0.3s ease forwards;
-        }
+        .divider { animation: opacityDown 0.3s ease forwards; }
       }
 
       @keyframes opacityUp {
@@ -66,7 +63,10 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   template: `
     <reelscore-match-header-data [data]="data()" />
     @if (highlights() && data().fixture.status.short === 'FT') {
-    <div class="header-divider" [class.is-hidden]="showHighlights() === false">
+    <div
+      class="toggle-highlights-row"
+      [class.is-hidden]="showHighlights() === false"
+    >
       <div class="divider"></div>
       <button
         (click)="toggleHighlights()"
