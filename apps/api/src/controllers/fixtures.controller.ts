@@ -1,18 +1,32 @@
-import { CompetitionId, CompetitionRoundString, FixtureDTO } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionRoundString,
+  EventDTO,
+  FixtureDTO,
+} from '@lib/models';
 import { COMPETITION_ROUNDS } from '../middleware';
 import { APP_DATA } from '../middleware/app.data';
-import { Fixtures } from '../models';
+import { FixtureEvents, Fixtures } from '../models';
+
+const getFixtureHighlights = (events: EventDTO[] | undefined) => {
+  if (!events) return [];
+  const goals = events.filter((event) => event.type === 'Goal');
+  const redCards = events.filter(
+    (event) => event.type === 'Card' && event.detail === 'Red Card'
+  );
+  return [...goals, ...redCards].sort((a, b) => {
+    const time = (t) => t.time.elapsed + (t.time.extra ?? 0);
+    return time(a) - time(b);
+  });
+};
 
 export const getFixturesById = async (req, res, fixtureId, next) => {
-  try {
-    const doc = await Fixtures.findOne({ 'fixture.id': fixtureId }).lean();
-    next(doc);
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
-  }
+  const data = await Fixtures.findOne({ 'fixture.id': fixtureId }).lean();
+  const eventsDoc = await FixtureEvents.findOne({
+    'parameters.fixture': fixtureId,
+  }).lean();
+  const highlights = getFixtureHighlights(eventsDoc?.response);
+  next({ data, highlights });
 };
 
 export const getFixturesByTeamId = async (req, res, teamId, next) => {

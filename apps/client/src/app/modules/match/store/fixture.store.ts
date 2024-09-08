@@ -3,13 +3,13 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { StateHandler } from '@app/models';
 import { HttpFixtureService } from '@app/services';
-import { FixtureDTO, FixtureId } from '@lib/models';
+import { FixtureId, GetFixtureDTO } from '@lib/models';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { StatisticsStore } from './statistics.store';
 
-type FixtureState = StateHandler<{ fixture: FixtureDTO | null }>;
+type FixtureState = StateHandler<{ fixture: GetFixtureDTO | null }>;
 
 const initialState: FixtureState = {
   fixture: null,
@@ -33,10 +33,10 @@ export const FixtureStore = signalStore(
 
         http.getFixture(id).subscribe({
           next: async (fixture) => {
-            const fixtureId = fixture.fixture.id;
+            const fixtureId = fixture.data.fixture.id;
             evaluationsStore.loadEvaluations(fixtureId);
             latestFixturesStore.loadLatestFixtures(fixtureId);
-            eventsStore.loadEvents(fixtureId, fixture.teams);
+            eventsStore.loadEvents(fixtureId, fixture.data.teams);
             statisticsStore.loadStatistics(fixtureId);
 
             return patchState(store, {

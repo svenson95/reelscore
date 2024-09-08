@@ -88,8 +88,8 @@ export class MatchEventsComponent {
   fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
 
-  homeTeamId = computed(() => this.fixture()?.teams.home.id);
-  awayTeamId = computed(() => this.fixture()?.teams.away.id);
+  homeTeamId = computed(() => this.fixture()?.data.teams.home.id);
+  awayTeamId = computed(() => this.fixture()?.data.teams.away.id);
 
   timeTotal = timeTotal;
 }

@@ -2,11 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { FixtureDTO, FixtureId } from '@lib/models';
+import { FixtureId, GetFixtureDTO } from '@lib/models';
 import { environment } from '../../../environments/environment';
 
 export abstract class HttpFixtureService {
-  abstract getFixture(id: FixtureId): Observable<FixtureDTO>;
+  abstract getFixture(id: FixtureId): Observable<GetFixtureDTO>;
 }
 
 @Injectable()
@@ -15,9 +15,9 @@ export class AbstractedHttpFixtureService extends HttpFixtureService {
 
   http = inject(HttpClient);
 
-  getFixture(id: FixtureId): Observable<FixtureDTO> {
+  getFixture(id: FixtureId): Observable<GetFixtureDTO> {
     const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<FixtureDTO>(this.BASE_URL + '/get', { params });
+    return this.http.get<GetFixtureDTO>(this.BASE_URL + '/get', { params });
   }
 }
 

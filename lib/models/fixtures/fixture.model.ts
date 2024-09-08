@@ -2,6 +2,7 @@ import { League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
 import { Team } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
+import { EventDTO } from './events.model';
 
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
@@ -43,4 +44,10 @@ export type FixtureDTO = {
 export interface LatestFixturesDTO {
   home: FixtureDTO[];
   away: FixtureDTO[];
+}
+
+export type FixtureHighlights = EventDTO[];
+export interface GetFixtureDTO {
+  data: FixtureDTO;
+  highlights: FixtureHighlights;
 }

@@ -1,61 +1,78 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
-import { OptimizedImageComponent } from '@app/components';
 import { getTeamLogo } from '@app/models';
-import { TeamNamePipe } from '@app/pipes';
-import { FixtureDTO } from '@lib/models';
-import { ResultLabelComponent } from '../../../../components';
+import { FixtureDTO, FixtureHighlights } from '@lib/models';
+import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    HeaderDataComponent,
+    HeaderDetailsComponent,
+  ],
   styles: `
     :host { 
-      @apply flex mx-auto py-5 px-4 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
+      @apply flex flex-col mx-auto p-5 gap-2 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
     }
-    div { @apply flex flex-1 sm:text-fb-font-size-body-1; }
-    .team-column { @apply flex-col gap-2 text-fb-font-size-body-2; }
-    .result-column { @apply items-center justify-center gap-1 text-fb-font-size-body-1; }
-    .team-name { @apply leading-[16px] text-center; }
+    .header-divider { 
+      @apply flex items-center gap-5;
+
+      .divider { @apply w-full h-[1px] bg-[#e5e7eb]; }
+      button { @apply flex; }
+      mat-icon { @apply shrink-0; }
+    }
   `,
   template: `
-    <div class="team-column">
-      <reelscore-optimized-image
-        [source]="getTeamLogo(data().teams.home.id)"
-        alternate="home logo"
-        width="48"
-        height="48"
-      />
-      <span class="team-name">
-        {{ data().teams.home.name | teamName }}
-      </span>
+    <reelscore-match-header-data [data]="data()" />
+    @if (highlights() && data().fixture.status.short === 'FT') {
+    <div class="header-divider">
+      <div class="divider"></div>
+      <button
+        (click)="toggleHighlights()"
+        [disabled]="highlights()!.length === 0"
+      >
+        <mat-icon>{{
+          showHighlights() ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
+        }}</mat-icon>
+      </button>
+      <div class="divider"></div>
     </div>
-
-    <div class="result-column">
-      <reelscore-result-label
-        [result]="data().score.fulltime"
-        [status]="data().fixture.status.short"
-        [showPostponed]="true"
-      />
-    </div>
-
-    <div class="team-column">
-      <reelscore-optimized-image
-        [source]="getTeamLogo(data().teams.away.id)"
-        alternate="away logo"
-        width="48"
-        height="48"
-      />
-      <span class="team-name">
-        {{ data().teams.away.name | teamName }}
-      </span>
-    </div>
+    @if (showHighlights()) {
+    <reelscore-match-header-details
+      [data]="data()"
+      [highlights]="highlights()!"
+    />
+    } }
   `,
 })
-export class MatchHeaderComponent {
+export class MatchHeaderComponent implements OnInit {
   data = input.required<FixtureDTO>();
+  highlights = input.required<FixtureHighlights | undefined>();
+  showHighlights = signal(false);
+
+  ngOnInit(): void {
+    const highlights = this.highlights();
+    if (highlights && highlights.length) {
+      this.showHighlights.set(true);
+    }
+  }
 
   getTeamLogo = getTeamLogo;
+
+  toggleHighlights() {
+    const currentValue = this.showHighlights();
+    this.showHighlights.set(!currentValue);
+  }
 }
