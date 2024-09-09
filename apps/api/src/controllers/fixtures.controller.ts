@@ -110,6 +110,10 @@ export const getNextRound = (
   currentRound: CompetitionRoundString
 ): string => {
   const currentRoundIndex = rounds.indexOf(currentRound);
+  const isLastRound = rounds.length - 1 === currentRoundIndex;
+  if (isLastRound) {
+    return rounds[currentRoundIndex];
+  }
   return rounds[currentRoundIndex + 1];
 };
 
