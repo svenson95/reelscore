@@ -187,10 +187,20 @@ export class StandingsTableComponent {
 
   roundLabel = computed(() => {
     const round = this.ranks()[0].group;
-    const [leaguePart, groupPart] = round.split(',');
-    const league = leaguePart.replace('League', 'Liga');
-    const group = groupPart.replace('Group', 'Gruppe');
-    return `${league} ${group}`;
+    const isGroupCompetition = round.includes('Group');
+    const isLeagueCompetition = round.includes('League');
+
+    if (isLeagueCompetition && isGroupCompetition) {
+      const [leaguePart, groupPart] = round.split(',');
+      const league = leaguePart.replace('League', 'Liga');
+      const group = groupPart.replace('Group', 'Gruppe');
+      return `${league} ${group}`;
+    } else if (isGroupCompetition) {
+      return `${round.replace('Group', 'Gruppe')}`;
+    } else if (round === 'Ranking of third-placed teams') {
+      return 'Rangliste der Drittplatzierten';
+    }
+    return `${round}`;
   });
 
   competitionRouterLink(id: CompetitionId): string[] {
