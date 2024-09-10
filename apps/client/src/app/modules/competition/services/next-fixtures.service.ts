@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 export abstract class HttpNextFixturesService {
   abstract getNextFixturesForCompetition(
     id: CompetitionId
-  ): Observable<FixtureDTO[][]>;
+  ): Observable<FixtureDTO[]>;
 }
 
 @Injectable()
@@ -17,8 +17,8 @@ export class AbstractedHttpNextFixturesService extends HttpNextFixturesService {
 
   http = inject(HttpClient);
 
-  getNextFixturesForCompetition(id: CompetitionId): Observable<FixtureDTO[][]> {
-    return this.http.get<FixtureDTO[][]>(this.BASE_URL + '/get-next', {
+  getNextFixturesForCompetition(id: CompetitionId): Observable<FixtureDTO[]> {
+    return this.http.get<FixtureDTO[]>(this.BASE_URL + '/get-next', {
       params: new HttpParams().set('competition', id),
     });
   }
