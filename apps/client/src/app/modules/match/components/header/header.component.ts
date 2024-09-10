@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { getTeamLogo } from '@app/models';
 import {
-  finishedMatchStatuses,
+  FinishedMatchStatusValues,
   FixtureDTO,
   FixtureHighlights,
 } from '@lib/models';
@@ -98,7 +98,7 @@ export class MatchHeaderComponent implements OnInit {
 
   isFinished = computed(() => {
     const status = this.data().fixture.status.short;
-    return finishedMatchStatuses.some((s) => s === status);
+    return FinishedMatchStatusValues.some((s) => s === status);
   });
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ import {
   CompetitionId,
   CompetitionRoundString,
   EventDTO,
-  finishedMatchStatuses,
+  FinishedMatchStatusValues,
   FixtureDTO,
 } from '@lib/models';
 import { COMPETITION_ROUNDS } from '../middleware';
@@ -132,16 +132,15 @@ const updateQueryToGetAllGroups = async (query, id, round, roundNumber) => {
     'league.round': { $in: leagueRounds },
   };
 
-  const finishStatuses = Object.values(finishedMatchStatuses);
   if (round === currentRound) {
     newQuery = {
       ...newQuery,
-      'fixture.status.short': { $in: finishStatuses },
+      'fixture.status.short': { $in: FinishedMatchStatusValues },
     };
   } else {
     newQuery = {
       ...newQuery,
-      'fixture.status.short': { $nin: finishStatuses },
+      'fixture.status.short': { $nin: FinishedMatchStatusValues },
     };
   }
 
