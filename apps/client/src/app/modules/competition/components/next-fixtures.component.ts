@@ -9,29 +9,19 @@ import { FixturesListComponent } from './fixtures-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FixturesListComponent],
   template: `
-    @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
-    (multipleFixtures of fixtures()!; track $index) {
+    @if (store.fixtures() !== null) {
     <reelscore-competition-fixtures-list
-      [fixtures]="multipleFixtures"
+      [fixtures]="store.fixtures()!"
       [competition]="competition()!.id"
-      [isLoading]="isLoading()"
+      [isLoading]="store.isLoading()"
     />
-    } } @else if (fixtures()!.length === 1) {
-    <reelscore-competition-fixtures-list
-      [fixtures]="fixtures()![0]"
-      [competition]="competition()!.id"
-      [isLoading]="isLoading()"
-    />
-    } } @else if (isLoading()) {
+    } @else if (store.isLoading()) {
     <p class="no-data">Spiele werden geladen ...</p>
     }
   `,
 })
 export class NextFixturesComponent {
   store = inject(NextFixturesStore);
-  fixtures = this.store.fixtures;
-  isLoading = this.store.isLoading;
-
   leagueService = inject(LeagueService);
   competition = this.leagueService.selectedLeague;
 }

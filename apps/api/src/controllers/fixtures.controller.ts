@@ -2,7 +2,6 @@ import {
   CompetitionId,
   CompetitionRoundString,
   EventDTO,
-  FinishedMatchStatusValues,
   FixtureDTO,
 } from '@lib/models';
 import { COMPETITION_ROUNDS } from '../middleware';
@@ -63,88 +62,35 @@ export const getFixturesByRound = async (req, res, round, next) => {
   next(docs);
 };
 
-export const getLastFixturesForCompetition = async (id: CompetitionId) => {
+export const getFixturesForCompetition = async (
+  id,
+  type: 'last' | 'next',
+  next
+) => {
   const currentRound = await getCurrentRound(id);
-  return await getFixturesForCompetitionByRound(id, currentRound);
-};
-
-export const getNextFixturesForCompetition = async (id: CompetitionId) => {
-  const currentRound = await getCurrentRound(id);
-  const rounds = Object.values(COMPETITION_ROUNDS[id]);
-  const nextRound = getNextRound(rounds, currentRound);
-  return await getFixturesForCompetitionByRound(id, nextRound);
+  if (type === 'last') {
+    const fixtures = await getFixturesForCompetitionByRound(id, currentRound);
+    next(fixtures);
+  } else if (type === 'next') {
+    const rounds = Object.values(COMPETITION_ROUNDS[id]);
+    const nextRound = getNextRound(rounds, currentRound);
+    const fixtures = await getFixturesForCompetitionByRound(id, nextRound);
+    next(fixtures);
+  }
 };
 
 export const getFixturesForCompetitionByRound = async (
   competitionId,
   round
 ) => {
-  const rounds = Object.values(COMPETITION_ROUNDS[competitionId]);
-  const nextRound = getNextRound(rounds, round);
-  const roundNumber = round[round.length - 1];
-  const nextRoundNumber = nextRound[nextRound.length - 1];
-  const hasMultipleRounds =
-    round.includes('League') && roundNumber === nextRoundNumber;
-
-  let query: { [key: string]: string | number | unknown } = {
+  const fixtures = await Fixtures.find({
     'league.id': competitionId,
-    'league.season': APP_DATA.season,
     'league.round': round,
-  };
-
-  if (hasMultipleRounds) {
-    query = await updateQueryToGetAllGroups(
-      query,
-      competitionId,
-      round,
-      roundNumber
-    );
-  }
-
-  const fixtures = await Fixtures.find(query)
+    'league.season': APP_DATA.season,
+  })
     .sort({ 'fixture.date': -1 })
     .lean();
-
-  if (hasMultipleRounds) {
-    const rounds = [...new Set(fixtures.map((f) => f.league.round))];
-    return rounds.map((round) =>
-      fixtures.filter((f) => f.league.round === round)
-    );
-  }
-
-  return [fixtures];
-};
-
-const updateQueryToGetAllGroups = async (query, id, round, roundNumber) => {
-  const leagueRound = (group: string) => `League ${group} - ${roundNumber}`;
-  const leagueRounds = [
-    leagueRound('A'),
-    leagueRound('B'),
-    leagueRound('C'),
-    leagueRound('D'),
-  ];
-
-  let newQuery = query;
-  const currentRound = await getCurrentRound(id);
-
-  newQuery = {
-    ...query,
-    'league.round': { $in: leagueRounds },
-  };
-
-  if (round === currentRound) {
-    newQuery = {
-      ...newQuery,
-      'fixture.status.short': { $in: FinishedMatchStatusValues },
-    };
-  } else {
-    newQuery = {
-      ...newQuery,
-      'fixture.status.short': { $nin: FinishedMatchStatusValues },
-    };
-  }
-
-  return newQuery;
+  return fixtures;
 };
 
 export const getCurrentRound = async (
