@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 export abstract class HttpLastFixturesService {
   abstract getLastFixturesForCompetition(
     id: CompetitionId
-  ): Observable<FixtureDTO[]>;
+  ): Observable<FixtureDTO[][]>;
 }
 
 @Injectable()
@@ -17,8 +17,8 @@ export class AbstractedHttpLastFixturesService extends HttpLastFixturesService {
 
   http = inject(HttpClient);
 
-  getLastFixturesForCompetition(id: CompetitionId): Observable<FixtureDTO[]> {
-    return this.http.get<FixtureDTO[]>(this.BASE_URL + '/get-last', {
+  getLastFixturesForCompetition(id: CompetitionId): Observable<FixtureDTO[][]> {
+    return this.http.get<FixtureDTO[][]>(this.BASE_URL + '/get-last', {
       params: new HttpParams().set('competition', id),
     });
   }
