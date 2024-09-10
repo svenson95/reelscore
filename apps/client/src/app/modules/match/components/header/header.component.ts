@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   OnInit,
   signal,
@@ -9,7 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { getTeamLogo } from '@app/models';
-import { FixtureDTO, FixtureHighlights } from '@lib/models';
+import {
+  finishedMatchStatuses,
+  FixtureDTO,
+  FixtureHighlights,
+} from '@lib/models';
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
@@ -62,7 +67,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   `,
   template: `
     <reelscore-match-header-data [data]="data()" />
-    @if (highlights() && data().fixture.status.short === 'FT') {
+    @if (highlights() && isFinished()) {
     <div
       class="toggle-highlights-row"
       [class.is-hidden]="showHighlights() === false"
@@ -90,6 +95,11 @@ export class MatchHeaderComponent implements OnInit {
   data = input.required<FixtureDTO>();
   highlights = input.required<FixtureHighlights | undefined>();
   showHighlights = signal(false);
+
+  isFinished = computed(() => {
+    const status = this.data().fixture.status.short;
+    return finishedMatchStatuses.some((s) => s === status);
+  });
 
   ngOnInit(): void {
     const highlights = this.highlights();
