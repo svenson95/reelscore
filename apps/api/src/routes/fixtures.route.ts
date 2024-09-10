@@ -5,8 +5,9 @@ import {
   getFixturesById,
   getFixturesByRound,
   getFixturesByTeamId,
-  getFixturesForCompetition,
+  getLastFixturesForCompetition,
   getLatestFixtures,
+  getNextFixturesForCompetition,
 } from '../controllers';
 
 export const fixtures = express.Router();
@@ -47,15 +48,13 @@ fixtures.get('/get-latest', async (req, res) => {
 });
 
 fixtures.get('/get-last', async (req, res) => {
-  const competitionId = Number(req.query.competition);
-  await getFixturesForCompetition(competitionId, 'last', (docs) => {
-    res.json(docs);
-  });
+  const id = Number(req.query.competition);
+  const docs = await getLastFixturesForCompetition(id);
+  res.json(docs);
 });
 
 fixtures.get('/get-next', async (req, res) => {
-  const competitionId = Number(req.query.competition);
-  await getFixturesForCompetition(competitionId, 'next', (docs) => {
-    res.json(docs);
-  });
+  const id = Number(req.query.competition);
+  const docs = await getNextFixturesForCompetition(id);
+  res.json(docs);
 });

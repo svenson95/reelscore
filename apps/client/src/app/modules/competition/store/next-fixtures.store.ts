@@ -5,7 +5,7 @@ import { StateHandler } from '@app/models';
 import { CompetitionId, FixtureDTO } from '@lib/models';
 import { HttpNextFixturesService } from '../services';
 
-type NextFixturesState = StateHandler<{ fixtures: FixtureDTO[] | null }>;
+type NextFixturesState = StateHandler<{ fixtures: FixtureDTO[][] | null }>;
 
 const initialState: NextFixturesState = {
   fixtures: null,
