@@ -48,8 +48,12 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
-export const finishedMatchStatuses = ['FT', 'AET', 'PEN'] as const;
-export type FinishedMatchStatus = (typeof finishedMatchStatuses)[number];
+export type FinishedMatchStatus = 'FT' | 'AET' | 'PEN';
+export const FinishedMatchStatusValues: FinishedMatchStatus[] = [
+  'FT',
+  'AET',
+  'PEN',
+];
 
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
