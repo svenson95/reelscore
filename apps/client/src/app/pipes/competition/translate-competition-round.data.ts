@@ -48,7 +48,7 @@ const leagueLabel = (value: CompetitionRound): CompetitionRoundLabel => {
   const roundIdx = value.indexOf('-') + 2;
   const round = value.slice(roundIdx, value.length);
   const group = value.slice('League'.length, roundIdx - 2);
-  return `${round} - Gruppe ${group}`;
+  return `Liga ${group} - ${round}. Spieltag`;
 };
 
 const leagueStageLabel = (value: CompetitionRound): CompetitionRoundLabel => {

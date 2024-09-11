@@ -5,6 +5,7 @@ import {
   computed,
   input,
 } from '@angular/core';
+
 import { FixtureListComponent } from '@app/components';
 import { CompetitionRoundPipe } from '@app/pipes';
 import { CompetitionId, FixtureDTO } from '@lib/models';
@@ -17,10 +18,12 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
   styles: `
     :host { @apply flex flex-col bg-white; }
     section:first-of-type { 
-      @apply flex justify-between px-5 py-3 border-b-[1px] font-medium;
+      @apply flex justify-between p-3 font-medium;
     }
     p { @apply text-fb-font-size-body-2; }
-    .group-date { @apply p-3; }
+    .group-date { 
+      @apply bg-fb-color-white-2 p-3 font-medium tracking-wider border-b-[1px] border-t-[1px]; 
+    }
   `,
   template: `
     <section>
@@ -28,7 +31,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
     </section>
     <section>
       @for (group of fixtureGroups(); track $index) {
-      <p class="group-date">{{ group.date | date : 'dd.MM.yy | ccc' }}</p>
+      <p class="group-date">{{ group.date | date : 'dd.MM.yy | cccc' }}</p>
       <reelscore-fixture-list [fixtures]="group.fixtures" />
       }
     </section>
