@@ -2,7 +2,6 @@ import {
   CompetitionId,
   CompetitionRoundString,
   EventDTO,
-  FinishedMatchStatusValues,
   FixtureDTO,
 } from '@lib/models';
 import { COMPETITION_ROUNDS } from '../middleware';
@@ -138,8 +137,8 @@ const getFixturesForCompetitionByRound = async (
 ) => {
   const status =
     type === 'last'
-      ? { $in: FinishedMatchStatusValues }
-      : { $nin: FinishedMatchStatusValues };
+      ? { $in: ['FT', 'AET', 'PEN'] }
+      : { $nin: ['FT', 'AET', 'PEN'] };
   const fixtures = await Fixtures.find({
     'league.id': competitionId,
     'league.round': { $in: rounds },
