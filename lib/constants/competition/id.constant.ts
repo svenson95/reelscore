@@ -24,7 +24,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 39,
   // [CompetitionCode.ENGLAND_LEAGUE_CUP]: 48,
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 46,
-  [CompetitionCode.ENGLAND_FA_TROPHY]: 47,
+  // [CompetitionCode.ENGLAND_FA_TROPHY]: 47,
   // [CompetitionCode.ENGLAND_FA_CUP]: 45,
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 528,
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 871,
@@ -32,7 +32,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 140,
   // [CompetitionCode.SPAIN_SUPER_CUP]: 556,
-  [CompetitionCode.SPAIN_COPA_DEL_REY]: 143,
+  // [CompetitionCode.SPAIN_COPA_DEL_REY]: 143,
 
   // Italien
   [CompetitionCode.ITALY_SERIE_A]: 135,
@@ -42,6 +42,6 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   // Frankreich
   [CompetitionCode.FRANCE_LIGUE_1]: 61,
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: 65,
-  [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 66,
-  [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 526,
+  // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 66,
+  // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 526,
 };

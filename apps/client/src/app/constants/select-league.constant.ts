@@ -103,13 +103,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
       //   url: COMPETITION_URL.ENGLAND_EFL_TROPHY,
       //   size: 72,
       // },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_TROPHY),
-        label: COMPETITION_LABEL.ENGLAND_FA_TROPHY,
-        id: COMPETITION_ID.ENGLAND_FA_TROPHY,
-        url: COMPETITION_URL.ENGLAND_FA_TROPHY,
-        size: 149,
-      },
+      // {
+      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_TROPHY),
+      //   label: COMPETITION_LABEL.ENGLAND_FA_TROPHY,
+      //   id: COMPETITION_ID.ENGLAND_FA_TROPHY,
+      //   url: COMPETITION_URL.ENGLAND_FA_TROPHY,
+      //   size: 149,
+      // },
       // {
       //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_FA_CUP),
       //   label: COMPETITION_LABEL.ENGLAND_FA_CUP,
@@ -133,25 +133,25 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
       // },
     ],
   },
-  {
-    label: 'Spanien',
-    competitions: [
-      // {
-      //   image: getCompetitionLogo(COMPETITION_ID.SPAIN_SUPER_CUP),
-      //   label: COMPETITION_LABEL.SPAIN_SUPER_CUP,
-      //   id: COMPETITION_ID.SPAIN_SUPER_CUP,
-      //   url: COMPETITION_URL.SPAIN_SUPER_CUP,
-      //   size: 2,
-      // },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.SPAIN_COPA_DEL_REY),
-        label: COMPETITION_LABEL.SPAIN_COPA_DEL_REY,
-        id: COMPETITION_ID.SPAIN_COPA_DEL_REY,
-        url: COMPETITION_URL.SPAIN_COPA_DEL_REY,
-        size: 126,
-      },
-    ],
-  },
+  // {
+  //   label: 'Spanien',
+  //   competitions: [
+  //     {
+  //       image: getCompetitionLogo(COMPETITION_ID.SPAIN_SUPER_CUP),
+  //       label: COMPETITION_LABEL.SPAIN_SUPER_CUP,
+  //       id: COMPETITION_ID.SPAIN_SUPER_CUP,
+  //       url: COMPETITION_URL.SPAIN_SUPER_CUP,
+  //       size: 2,
+  //     },
+  //     {
+  //       image: getCompetitionLogo(COMPETITION_ID.SPAIN_COPA_DEL_REY),
+  //       label: COMPETITION_LABEL.SPAIN_COPA_DEL_REY,
+  //       id: COMPETITION_ID.SPAIN_COPA_DEL_REY,
+  //       url: COMPETITION_URL.SPAIN_COPA_DEL_REY,
+  //       size: 126,
+  //     },
+  //   ],
+  // },
   {
     label: 'Italien',
     competitions: [
@@ -171,32 +171,32 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
       },
     ],
   },
-  {
-    label: 'Frankreich',
-    competitions: [
-      // {
-      //   image: getCompetitionLogo(COMPETITION_ID.FRANCE_COUPE_DE_LA_LIGUE),
-      //   label: COMPETITION_LABEL.FRANCE_COUPE_DE_LA_LIGUE,
-      //   id: COMPETITION_ID.FRANCE_COUPE_DE_LA_LIGUE,
-      //   url: COMPETITION_URL.FRANCE_COUPE_DE_LA_LIGUE,
-      //   size: 18,
-      // },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.FRANCE_COUPE_DE_FRANCE),
-        label: COMPETITION_LABEL.FRANCE_COUPE_DE_FRANCE,
-        id: COMPETITION_ID.FRANCE_COUPE_DE_FRANCE,
-        url: COMPETITION_URL.FRANCE_COUPE_DE_FRANCE,
-        size: 64,
-      },
-      {
-        image: getCompetitionLogo(COMPETITION_ID.FRANCE_TROPHEE_DES_CHAMPIONS),
-        label: COMPETITION_LABEL.FRANCE_TROPHEE_DES_CHAMPIONS,
-        id: COMPETITION_ID.FRANCE_TROPHEE_DES_CHAMPIONS,
-        url: COMPETITION_URL.FRANCE_TROPHEE_DES_CHAMPIONS,
-        size: 2,
-      },
-    ],
-  },
+  // {
+  //   label: 'Frankreich',
+  //   competitions: [
+  //     {
+  //       image: getCompetitionLogo(COMPETITION_ID.FRANCE_COUPE_DE_LA_LIGUE),
+  //       label: COMPETITION_LABEL.FRANCE_COUPE_DE_LA_LIGUE,
+  //       id: COMPETITION_ID.FRANCE_COUPE_DE_LA_LIGUE,
+  //       url: COMPETITION_URL.FRANCE_COUPE_DE_LA_LIGUE,
+  //       size: 18,
+  //     },
+  //     {
+  //       image: getCompetitionLogo(COMPETITION_ID.FRANCE_COUPE_DE_FRANCE),
+  //       label: COMPETITION_LABEL.FRANCE_COUPE_DE_FRANCE,
+  //       id: COMPETITION_ID.FRANCE_COUPE_DE_FRANCE,
+  //       url: COMPETITION_URL.FRANCE_COUPE_DE_FRANCE,
+  //       size: 64,
+  //     },
+  //     {
+  //       image: getCompetitionLogo(COMPETITION_ID.FRANCE_TROPHEE_DES_CHAMPIONS),
+  //       label: COMPETITION_LABEL.FRANCE_TROPHEE_DES_CHAMPIONS,
+  //       id: COMPETITION_ID.FRANCE_TROPHEE_DES_CHAMPIONS,
+  //       url: COMPETITION_URL.FRANCE_TROPHEE_DES_CHAMPIONS,
+  //       size: 2,
+  //     },
+  //   ],
+  // },
   {
     label: 'Andere',
     competitions: [
