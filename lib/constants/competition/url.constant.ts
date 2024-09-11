@@ -24,7 +24,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
   // [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'en-league-cup',
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 'efl-trophy',
-  [CompetitionCode.ENGLAND_FA_TROPHY]: 'fa-trophy',
+  // [CompetitionCode.ENGLAND_FA_TROPHY]: 'fa-trophy',
   // [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 'community-shield',
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'premier-league-cup',
@@ -32,7 +32,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 'la-liga',
   // [CompetitionCode.SPAIN_SUPER_CUP]: 'es-super-cup',
-  [CompetitionCode.SPAIN_COPA_DEL_REY]: 'copa-del-rey',
+  // [CompetitionCode.SPAIN_COPA_DEL_REY]: 'copa-del-rey',
 
   // Italien
   [CompetitionCode.ITALY_SERIE_A]: 'serie-a',
@@ -42,6 +42,6 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // Frankreich
   [CompetitionCode.FRANCE_LIGUE_1]: 'ligue-1',
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: '65',
-  [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'coupe-de-france',
-  [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'trophee-des-champions',
+  // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'coupe-de-france',
+  // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'trophee-des-champions',
 };
