@@ -28,29 +28,32 @@ import { StandingsStore } from '../../../../../../store';
   ],
   styles: `
     button[mat-menu-item] { 
-        --mat-menu-item-label-text-size: var(--fb-font-size-small);
-        --mat-menu-item-label-text-line-height: var(--fb-font-size-small);
-        --mat-menu-item-icon-color: var(--fb-color-white-2);
-        @apply min-h-[32px];
+      --mat-menu-item-label-text-size: var(--fb-font-size-small);
+      --mat-menu-item-label-text-line-height: var(--fb-font-size-small);
+      --mat-menu-item-icon-color: var(--fb-color-white-2);
+      @apply min-h-[32px];
     }
     button.mdc-icon-button, button.mat-mdc-menu-item {
-        &.is-filtering { @apply bg-blue-500 text-fb-color-white; }
+      &.is-filtering { @apply bg-blue-500 text-fb-color-white; }
     }
     ::ng-deep {
-        .filter-menu .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
-            @apply flex items-center gap-2;
-        }
+      .filter-menu .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
+        @apply flex items-center gap-2;
+      }
 
-        .mat-mdc-menu-panel { @apply max-h-[70vh]; }
+      .mat-mdc-menu-panel { @apply max-h-[70vh]; }
     }
     .mat-mdc-menu-item {
-        .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
-        .reset-button { @apply ml-auto; }
+      .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
+      .reset-button { @apply ml-auto; }
     }
     button {
       reelscore-optimized-image { @apply p-1; }
       &.is-filtering reelscore-optimized-image { @apply bg-white rounded-full; }
     }
+
+    button[disabled] { @apply py-5; }
+    .divider { @apply h-[1px] w-full bg-[#bababa]; }
   `,
   template: `
     <button
@@ -65,7 +68,8 @@ import { StandingsStore } from '../../../../../../store';
     <mat-menu #menu="matMenu" class="filter-menu">
       @for (group of groups; track group.label) {
       <button mat-menu-item class="group-title" disabled>
-        {{ group.label }}
+        <span>{{ group.label }}</span>
+        <div class="divider"></div>
       </button>
       @for (competition of group.competitions; track competition.id) {
       <button
