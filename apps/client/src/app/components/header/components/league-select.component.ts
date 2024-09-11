@@ -28,6 +28,20 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       @apply max-h-[70vh];
 
       mat-option .mdc-list-item__primary-text { @apply w-full; }
+
+      .mat-mdc-optgroup-label {
+        .mdc-list-item__primary-text { @apply contents; }
+
+        ::after {
+          content: '';
+          background: #e3e3e3;
+          height: 1px;
+          width: 100%;
+          display: inline-flex;
+          vertical-align: middle;
+          margin-left: 10px;
+        }
+      }
     }
 
     mat-form-field.mat-mdc-form-field-type-mat-select {
