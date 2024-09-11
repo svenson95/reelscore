@@ -57,6 +57,8 @@ $reelscore-theme: mat.m2-define-light-theme(
   --mat-select-container-elevation-shadow: none;
   --mat-text-button-horizontal-padding: 14px;
   --mat-text-button-with-icon-horizontal-padding: 14px;
+
+  --mat-menu-container-shape: var(--fb-size-border-radius);
 }
 
 button.mdc-button {
