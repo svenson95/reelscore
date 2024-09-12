@@ -118,6 +118,12 @@ const translateHeader = (
       return 'Vorrunde';
     case 'Play-offs':
       return 'Ausscheidungsspiele';
+    case 'Round of 16':
+      return 'Achtelfinale';
+    case 'Quarter-finals':
+      return 'Viertelfinale';
+    case 'Semi-finals':
+      return 'Halbfinale';
     case 'Final':
       return 'Finale';
     default:
