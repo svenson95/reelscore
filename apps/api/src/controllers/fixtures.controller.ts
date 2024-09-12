@@ -194,7 +194,7 @@ export const getFixturesByDate = async (req, res, date, next) => {
       'league.name': 1,
       'league.id': 1,
       'league.round': 1,
-      'score.fulltime': 1,
+      goals: 1,
       teams: 1,
     })
     .lean();

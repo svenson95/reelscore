@@ -55,7 +55,10 @@ import { ResultLabelComponent } from './result-label.component';
           </section>
           <section class="teams">
             <div>
-              <span class="team-name">
+              <span
+                class="team-name"
+                [class.line-through]="isTeamEliminated(item, 'home')"
+              >
                 {{ item.teams.home.name | teamName : 'short' }}
               </span>
               <reelscore-optimized-image
@@ -67,7 +70,7 @@ import { ResultLabelComponent } from './result-label.component';
             </div>
             <div class="result">
               <reelscore-result-label
-                [result]="item.score.fulltime"
+                [result]="item.goals"
                 [status]="item.fixture.status.short"
               />
             </div>
@@ -78,7 +81,10 @@ import { ResultLabelComponent } from './result-label.component';
                 width="14"
                 height="14"
               />
-              <span class="team-name">
+              <span
+                class="team-name"
+                [class.line-through]="isTeamEliminated(item, 'away')"
+              >
                 {{ item.teams.away.name | teamName : 'short' }}
               </span>
             </div>
@@ -102,5 +108,17 @@ export class FixtureListComponent {
     if (!leagueUrl) throw new Error('Error in linkToMatch');
     const fixtureId = String(data.fixture.id);
     return ['/', 'leagues', leagueUrl, 'match', fixtureId];
+  }
+
+  isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
+    const koPhaseRounds = [
+      'Round of 16',
+      'Quarter-finals',
+      'Semi-finals',
+      'Final',
+    ];
+    const isKoPhase = koPhaseRounds.some((r) => r === fixture.league.round);
+    const isEliminated = fixture.teams[team].winner === false;
+    return isKoPhase && isEliminated;
   }
 }
