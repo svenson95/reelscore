@@ -15,6 +15,9 @@ const ROUND_LABEL_TYPES = [
   '3rd Qualifying Round',
   'Preliminary Round',
   'Play-offs',
+  'Round of 16',
+  'Quarter-finals',
+  'Semi-finals',
   'Final',
 ];
 
@@ -61,6 +64,7 @@ const translateDefault = (
   type: CompetitionRoundType,
   value: CompetitionRound
 ): CompetitionRoundLabel => {
+  console.log('type', value);
   switch (type) {
     case 'Regular Season':
       return `${roundString(value)}. Spieltag`;
