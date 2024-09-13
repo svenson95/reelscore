@@ -1,3 +1,5 @@
+import { PlayerId, PlayerName } from '../player.model';
+
 export type EventTime = { elapsed: number; extra: null | number };
 export const timeTotal = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);
 export type EventTeam = {
@@ -6,8 +8,8 @@ export type EventTeam = {
   logo: string;
   goals: number;
 };
-export type EventPlayer = { id: number; name: string };
-export type EventAssist = { id: number; name: string };
+export type EventPlayer = { id: PlayerId; name: PlayerName };
+export type EventAssist = { id: PlayerId; name: PlayerName };
 export type EventType = 'Goal' | 'Card' | 'subst' | 'Var';
 export type EventDetail =
   | 'Normal Goal'
