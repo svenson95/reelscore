@@ -201,28 +201,24 @@ export const getFixturesByDate = async (req, res, date, next) => {
   next(docs);
 };
 
-export const getLatestFixtures = async (fixtureId, next) => {
-  try {
-    const fixture = await Fixtures.findOne({
-      'fixture.id': fixtureId,
-    }).lean();
+export const getLatestFixtures = async (
+  fixtureId,
+  next: (data: { home: FixtureDTO[]; away: FixtureDTO[] }) => void
+): Promise<void> => {
+  const fixture = await Fixtures.findOne({
+    'fixture.id': fixtureId,
+  }).lean();
 
-    const home = await findLatestFixtures(fixture, 'home');
-    const away = await findLatestFixtures(fixture, 'away');
+  const home = await findLatestFixtures(fixture, 'home');
+  const away = await findLatestFixtures(fixture, 'away');
 
-    next({ home, away });
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
-  }
+  next({ home, away });
 };
 
 export const findLatestFixtures = async (
   fixture: FixtureDTO,
   team: 'home' | 'away'
-) => {
+): Promise<FixtureDTO[]> => {
   const teamId = fixture.teams[team].id;
   const date = fixture.fixture.date;
 
