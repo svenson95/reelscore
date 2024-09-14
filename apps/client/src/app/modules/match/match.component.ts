@@ -19,6 +19,7 @@ import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
+  isKoPhase,
 } from '@lib/shared';
 import { RouterView } from '../router-view';
 import {
@@ -125,7 +126,8 @@ import {
           </ng-template>
 
           <reelscore-match-fixture-data />
-          @if (!hasNoStandings(fixture()!.data.league.id)) {
+          @if (!hasNoStandings(fixture()!.data.league.id) &&
+          !isKoPhase(fixture()!.data.league.round)) {
           <reelscore-match-fixture-standings
             [standings]="standingsStore.standings()"
           />
@@ -204,6 +206,7 @@ export class MatchComponent extends RouterView implements OnChanges {
 
   hasNoStandings = isCompetitionWithoutStandings;
   hasMultipleGroups = isCompetitionWithMultipleGroups;
+  isKoPhase = isKoPhase;
 
   invalidUrlEffect = effect(() => {
     const fixture = this.data();
