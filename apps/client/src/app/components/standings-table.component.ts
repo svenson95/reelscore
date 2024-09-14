@@ -53,7 +53,7 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       }
 
       &.points-column {
-        @apply px-2;
+        @apply pl-2;
       }
 
       &.number-column, &.points-column {
