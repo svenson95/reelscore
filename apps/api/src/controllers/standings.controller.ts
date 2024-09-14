@@ -1,5 +1,3 @@
-import { CompetitionId, StandingRanks, TeamId } from '@lib/models';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
 import { APP_DATA, getSeason } from '../middleware';
 import { Standings } from '../models';
 
@@ -76,10 +74,7 @@ const topFiveRanks = (data) =>
     },
   }));
 
-export const getFixtureStandings = async (
-  teamIds: string,
-  leagueId: CompetitionId
-) => {
+export const getFixtureStandings = async (teamIds: string, leagueId) => {
   const [homeId, awayId] = teamIds.split(',').map((id) => Number(id));
   const query = {
     'league.id': leagueId,
@@ -116,8 +111,9 @@ export const getFixtureStandings = async (
   }
 };
 
-const isHomeOrAwayTeam = (
-  team: StandingRanks,
-  homeId: TeamId,
-  awayId: TeamId
-): boolean => team.team.id === homeId || team.team.id === awayId;
+const isHomeOrAwayTeam = (team, homeId, awayId): boolean =>
+  team.team.id === homeId || team.team.id === awayId;
+
+// TODO check why importing lib causes serverless function crash
+const isCompetitionWithMultipleGroups = (competitionId) =>
+  [4, 5].includes(competitionId);

@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { CompetitionId } from '@lib/models';
 import {
   getFixtureStandings,
   getStandings,
@@ -24,7 +23,7 @@ standings.get('/get-top-five', async (req, res) => {
 
 standings.get('/get-fixture', async (req, res) => {
   const teamIds = req.query.teamIds as string; // comma separated team ids
-  const competitionId = Number(req.query.competition) as CompetitionId;
+  const competitionId = Number(req.query.competition);
   const doc = await getFixtureStandings(teamIds, competitionId);
   res.json(doc);
 });
