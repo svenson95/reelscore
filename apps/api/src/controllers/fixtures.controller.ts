@@ -99,7 +99,7 @@ const getLastFixtures = async (id, currentRound, hasMultipleRounds, rounds) => {
   const round = hasMultipleRounds
     ? getMultipleRounds(currentRound, rounds)
     : [currentRound];
-  return await getFixturesForCompetitionByRound(id, round, 'last');
+  return await getFixturesForCompetitionByRound(id, round);
 };
 
 const getNextFixtures = async (id, nextRound, hasMultipleRounds, rounds) => {
@@ -111,7 +111,7 @@ const getNextFixtures = async (id, nextRound, hasMultipleRounds, rounds) => {
   const round = hasMultipleRounds
     ? getMultipleRounds(nextMultipleRound, rounds)
     : [nextRound];
-  return await getFixturesForCompetitionByRound(id, round, 'next');
+  return await getFixturesForCompetitionByRound(id, round);
 };
 
 const isSameRoundNumber = (currentRound, nextRound) => {
@@ -132,18 +132,12 @@ const getMultipleRounds = (round, rounds) => {
 
 const getFixturesForCompetitionByRound = async (
   competitionId: CompetitionId,
-  rounds: CompetitionRoundString[],
-  type: 'last' | 'next'
+  rounds: CompetitionRoundString[]
 ) => {
-  const status =
-    type === 'last'
-      ? { $in: ['FT', 'AET', 'PEN'] }
-      : { $nin: ['FT', 'AET', 'PEN'] };
   const fixtures = await Fixtures.find({
     'league.id': competitionId,
     'league.round': { $in: rounds },
     'league.season': APP_DATA.season,
-    'fixture.status.short': status,
   })
     .sort({ 'fixture.date': -1 })
     .lean();
