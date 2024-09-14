@@ -16,7 +16,7 @@ import { FixtureStore } from '../../../../../store';
   styles: `
       ul { @apply py-5; }
       .item { @apply flex justify-center py-2 px-4 gap-5; }
-      .item > *:not(.key) { @apply flex-[2] sm:flex-1; }
+      .item > *:not(.key) { @apply flex-2 sm:flex-1; }
       .key { @apply text-fb-color-text-2 text-right flex-1; }
       span { @apply text-fb-font-size-body-2;}
     `,
