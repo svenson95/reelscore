@@ -25,7 +25,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
     :host { @apply flex flex-col bg-white; }
     p { @apply text-fb-font-size-body-2 font-medium; }
     section.round { 
-      @apply flex items-center gap-2 p-2 border-b-[1px];
+      @apply flex items-center gap-4 p-2 border-b-[1px];
       reelscore-optimized-image { min-width: 34px; min-height: 26px; }
     }
     section.days { 
