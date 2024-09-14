@@ -85,6 +85,7 @@ const getGameGoals = async (
     'parameters.fixture',
     fixtureId
   );
+  if (!events) return [];
   return events.response
     .filter(
       (event) => event.type === 'Goal' && event.detail !== 'Missed Penalty'
@@ -118,7 +119,7 @@ const getHomeOrAwayStrong = async (
 const getHomeOrAwayStrongForTeam = async (
   type: 'home' | 'away',
   fixture: FixtureDTO
-): Promise<boolean> => {
+): Promise<boolean | null> => {
   const TEAM_IS_HOME_OR_AWAY_STRONG_RANK = 5;
   const competitionId = fixture.league.id;
   const query = {
@@ -127,6 +128,7 @@ const getHomeOrAwayStrongForTeam = async (
   };
   const data = await Standings.findOne(query).sort({ _id: -1 }).lean();
   const teamId = fixture.teams[type].id;
+  if (data.league.standings.length <= 1) return null;
   const standings = data.league.standings[type === 'home' ? 1 : 2];
   const team = standings.find((r) => r.team.id === teamId);
   return team.rank <= TEAM_IS_HOME_OR_AWAY_STRONG_RANK;
