@@ -7,6 +7,7 @@ import { FixtureId, GetFixtureDTO } from '@lib/models';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
+import { MetricsStore } from './metrics.store';
 import { StatisticsStore } from './statistics.store';
 
 type FixtureState = StateHandler<{ fixture: GetFixtureDTO | null }>;
@@ -26,7 +27,8 @@ export const FixtureStore = signalStore(
       evaluationsStore = inject(EvaluationsStore),
       eventsStore = inject(EventsStore),
       statisticsStore = inject(StatisticsStore),
-      latestFixturesStore = inject(LatestFixturesStore)
+      latestFixturesStore = inject(LatestFixturesStore),
+      metricsStore = inject(MetricsStore)
     ) => ({
       async loadFixture(id: FixtureId): Promise<void> {
         patchState(store, { isLoading: true });
@@ -38,6 +40,7 @@ export const FixtureStore = signalStore(
             latestFixturesStore.loadLatestFixtures(fixtureId);
             eventsStore.loadEvents(fixtureId, fixture.data.teams);
             statisticsStore.loadStatistics(fixtureId);
+            metricsStore.loadMetrics(fixtureId);
 
             return patchState(store, {
               fixture,
