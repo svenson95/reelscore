@@ -14,6 +14,7 @@ import { getCompetitionLogo, getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { BreakpointObserverService } from '@app/services';
 import { CompetitionId, League, StandingRanks } from '@lib/models';
+import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 @Component({
   selector: 'reelscore-standings-table',
@@ -88,8 +89,10 @@ import { CompetitionId, League, StandingRanks } from '@lib/models';
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
           <a [routerLink]="competitionRouterLink(league().id)">
-            @if (isCompetitionWithMultipleTables()) {
+            @if (hasMultipleGroups(league().id)) {
             {{ roundLabel() }}
+            } @else if (header()) {
+            {{ header() }}
             } @else {
             {{ league().name }}
             }
@@ -171,6 +174,7 @@ export class StandingsTableComponent {
 
   ranks = input.required<StandingRanks[]>();
   league = input.required<League>();
+  header = input<string>();
 
   breakpoint = inject(BreakpointObserverService);
   isMobile = this.breakpoint.isMobile;
@@ -209,9 +213,5 @@ export class StandingsTableComponent {
     return ['leagues', competition.url];
   }
 
-  isCompetitionWithMultipleTables(): boolean {
-    const standings = this.league().standings;
-    if (!standings) throw new Error('No standings found for league');
-    return standings.length > 1;
-  }
+  hasMultipleGroups = isCompetitionWithMultipleGroups;
 }
