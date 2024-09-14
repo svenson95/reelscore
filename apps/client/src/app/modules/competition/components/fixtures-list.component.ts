@@ -31,7 +31,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
     </section>
     <section>
       @for (group of fixtureGroups(); track $index) {
-      <p class="group-date">{{ group.date | date : 'dd.MM.yy | cccc' }}</p>
+      <p class="group-date">{{ group.date | date : 'cccc | dd.MM' }}</p>
       <reelscore-fixture-list [fixtures]="group.fixtures" />
       }
     </section>
