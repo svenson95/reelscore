@@ -57,7 +57,7 @@ import { CompetitionId, League, StandingRanks } from '@lib/models';
       }
 
       &.number-column, &.points-column {
-        @apply w-[20px] md:w-[30px];
+        @apply w-[20px] lg:w-[30px];
       }
     }
 
