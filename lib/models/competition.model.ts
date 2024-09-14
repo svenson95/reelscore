@@ -6,6 +6,7 @@ export type StandingsPlayed = {
   win: number;
   draw: number;
   lose: number;
+  goals: { for: number; against: number };
 };
 
 export type StandingRanks = {

@@ -49,16 +49,15 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       &.rank-column { width: 40px; }
 
       &.number-column {
-        padding: 0 5px 0 5px;
-        text-align: center;
+        @apply px-1;
       }
 
       &.points-column {
-        @apply text-center;
+        @apply px-2;
       }
 
       &.number-column, &.points-column {
-        @apply w-[20px] lg:w-[30px];
+        @apply w-[20px] lg:w-[30px] text-center;
       }
     }
 
@@ -114,28 +113,28 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       <ng-container matColumnDef="played">
         <th mat-header-cell *matHeaderCellDef class="number-column">SP</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.played }}
+          {{ element[type()].played }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="win">
         <th mat-header-cell *matHeaderCellDef class="number-column">S</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.win }}
+          {{ element[type()].win }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="draw">
         <th mat-header-cell *matHeaderCellDef class="number-column">U</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.draw }}
+          {{ element[type()].draw }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="lost">
         <th mat-header-cell *matHeaderCellDef class="number-column">N</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element.all.lose }}
+          {{ element[type()].lose }}
         </td>
       </ng-container>
 
@@ -143,7 +142,13 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       <ng-container matColumnDef="goalDifference">
         <th mat-header-cell *matHeaderCellDef class="number-column">TD</th>
         <td mat-cell *matCellDef="let element" class="number-column">
+          @switch(header()) { @case ('Heimtabelle') {
+          {{ element.home.goals.for - element.home.goals.against }}
+          } @case ('Auswärtstabelle') {
+          {{ element.away.goals.for - element.away.goals.against }}
+          } @case (undefined) {
           {{ element.goalsDiff }}
+          } }
         </td>
       </ng-container>
       }
@@ -151,7 +156,13 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       <ng-container matColumnDef="points">
         <th mat-header-cell *matHeaderCellDef class="points-column">Pkt</th>
         <td mat-cell *matCellDef="let element" class="points-column">
+          @switch(header()) { @case ('Heimtabelle') {
+          {{ element.home.win * 3 + element.home.draw }}
+          } @case ('Auswärtstabelle') {
+          {{ element.away.win * 3 + element.away.draw }}
+          } @case (undefined) {
           {{ element.points }}
+          } }
         </td>
       </ng-container>
 
@@ -178,6 +189,17 @@ export class StandingsTableComponent {
 
   breakpoint = inject(BreakpointObserverService);
   isMobile = this.breakpoint.isMobile;
+
+  type = computed<'all' | 'home' | 'away'>(() => {
+    switch (this.header()) {
+      case 'Heimtabelle':
+        return 'home';
+      case 'Auswärtstabelle':
+        return 'away';
+      default:
+        return 'all';
+    }
+  });
 
   getTeamLogo = getTeamLogo;
   getCompetitionLogo = getCompetitionLogo;

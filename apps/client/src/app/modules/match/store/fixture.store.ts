@@ -4,10 +4,12 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { StateHandler } from '@app/models';
 import { HttpFixtureService } from '@app/services';
 import { FixtureId, GetFixtureDTO } from '@lib/models';
+import { isCompetitionWithoutStandings } from '@lib/shared';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { MetricsStore } from './metrics.store';
+import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
 
 type FixtureState = StateHandler<{ fixture: GetFixtureDTO | null }>;
@@ -24,6 +26,7 @@ export const FixtureStore = signalStore(
     (
       store,
       http = inject(HttpFixtureService),
+      standingsStore = inject(FixtureStandingsStore),
       evaluationsStore = inject(EvaluationsStore),
       eventsStore = inject(EventsStore),
       statisticsStore = inject(StatisticsStore),
@@ -36,6 +39,14 @@ export const FixtureStore = signalStore(
         http.getFixture(id).subscribe({
           next: async (fixture) => {
             const fixtureId = fixture.data.fixture.id;
+
+            if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
+              const { home, away } = fixture.data.teams;
+              const teamIds = home.id + ',' + away.id;
+              const competitionId = fixture.data.league.id;
+              standingsStore.loadFixtureStandings(teamIds, competitionId);
+            }
+
             evaluationsStore.loadEvaluations(fixtureId);
             latestFixturesStore.loadLatestFixtures(fixtureId);
             eventsStore.loadEvents(fixtureId, fixture.data.teams);

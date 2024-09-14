@@ -16,12 +16,17 @@ import { BackButtonComponent } from '@app/components';
 import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
 import { BreakpointObserverService } from '@app/services';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
+import {
+  isCompetitionWithMultipleGroups,
+  isCompetitionWithoutStandings,
+} from '@lib/shared';
 import { RouterView } from '../router-view';
 import {
   MatchEvaluationsComponent,
   MatchEventsComponent,
   MatchFixtureDataComponent,
   MatchFixtureMetricsComponent,
+  MatchFixtureStandingsComponent,
   MatchHeaderComponent,
   MatchLatestFixturesComponent,
   MatchStatisticsComponent,
@@ -30,6 +35,7 @@ import { SERVICE_PROVIDERS } from './services';
 import {
   EvaluationsStore,
   EventsStore,
+  FixtureStandingsStore,
   FixtureStore,
   MetricsStore,
   StatisticsStore,
@@ -52,6 +58,7 @@ import {
     MatchEvaluationsComponent,
     MatchStatisticsComponent,
     MatchFixtureMetricsComponent,
+    MatchFixtureStandingsComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
@@ -118,6 +125,11 @@ import {
           </ng-template>
 
           <reelscore-match-fixture-data />
+          @if (!hasNoStandings(fixture()!.data.league.id)) {
+          <reelscore-match-fixture-standings
+            [standings]="standingsStore.standings()"
+          />
+          }
           <reelscore-match-evaluations
             [evaluations]="evaluationsStore.evaluations()"
           />
@@ -172,6 +184,7 @@ export class MatchComponent extends RouterView implements OnInit {
   fixture = this.fixtureStore.fixture;
   data = computed(() => this.fixtureStore.fixture()?.data);
 
+  standingsStore = inject(FixtureStandingsStore);
   metricsStore = inject(MetricsStore);
 
   eventsStore = inject(EventsStore);
@@ -188,6 +201,9 @@ export class MatchComponent extends RouterView implements OnInit {
 
   fixtureId = input.required<FixtureId>();
   leagueUrl = input.required<CompetitionUrl>();
+
+  hasNoStandings = isCompetitionWithoutStandings;
+  hasMultipleGroups = isCompetitionWithMultipleGroups;
 
   invalidUrlEffect = effect(() => {
     const fixture = this.data();

@@ -32,18 +32,30 @@ const StandingsSchema = new mongoose.Schema<StandingsDTO>(
               win: Number,
               draw: Number,
               lose: Number,
+              goals: {
+                for: Number,
+                against: Number,
+              },
             },
             home: {
               played: Number,
               win: Number,
               draw: Number,
               lose: Number,
+              goals: {
+                for: Number,
+                against: Number,
+              },
             },
             away: {
               played: Number,
               win: Number,
               draw: Number,
               lose: Number,
+              goals: {
+                for: Number,
+                against: Number,
+              },
             },
             update: String,
           },
