@@ -30,17 +30,9 @@ import {
   EvaluationsStore,
   EventsStore,
   FixtureStore,
-  LatestFixturesStore,
   StatisticsStore,
+  STORE_PROVIDERS,
 } from './store';
-
-const STORE_PROVIDERS = [
-  FixtureStore,
-  LatestFixturesStore,
-  EventsStore,
-  StatisticsStore,
-  EvaluationsStore,
-];
 
 @Component({
   selector: 'reelscore-match',
