@@ -43,15 +43,15 @@ export const FixtureStore = signalStore(
           next: async (fixture) => {
             const fixtureId = fixture.data.fixture.id;
 
-            if (
-              !isCompetitionWithoutStandings(fixture.data.league.id) &&
-              !isCompetitionWithMultipleGroups(fixture.data.league.id)
-            ) {
+            if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
               const { home, away } = fixture.data.teams;
               const teamIds = home.id + ',' + away.id;
               const competitionId = fixture.data.league.id;
               standingsStore.loadFixtureStandings(teamIds, competitionId);
-              analysesStore.loadAnalyses(fixtureId);
+
+              if (!isCompetitionWithMultipleGroups(fixture.data.league.id)) {
+                analysesStore.loadAnalyses(fixtureId);
+              }
             }
 
             evaluationsStore.loadEvaluations(fixtureId);
