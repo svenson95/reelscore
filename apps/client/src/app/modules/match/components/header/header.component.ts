@@ -67,7 +67,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   `,
   template: `
     <reelscore-match-header-data [data]="data()" />
-    @if (highlights() && isFinished()) {
+    @if (highlights() && isFinished() && isNotGoalLess()) {
     <div
       class="toggle-highlights-row"
       [class.is-hidden]="showHighlights() === false"
@@ -99,6 +99,13 @@ export class MatchHeaderComponent implements OnInit {
   isFinished = computed(() => {
     const status = this.data().fixture.status.short;
     return FinishedMatchStatusValues.some((s) => s === status);
+  });
+
+  isNotGoalLess = computed(() => {
+    return (
+      (this.data().goals.home !== 0 || this.data().goals.away !== 0) &&
+      this.data().fixture.status.short !== 'PEN'
+    );
   });
 
   ngOnInit(): void {
