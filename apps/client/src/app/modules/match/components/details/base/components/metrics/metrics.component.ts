@@ -8,14 +8,14 @@ import { MetricsStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col py-7 px-5 gap-5 text-fb-font-size-body-2 sm:text-fb-font-size-body-1; }
+    :host { @apply flex flex-col py-7 px-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1; }
     section { @apply w-full flex gap-5; }
     section:not(:last-of-type) { @apply border-b-[1px] pb-5; }
-    section > div { @apply flex-1 self-center; }
-    section > div:first-child { @apply text-end; }
-    section > div:nth-child(2) { @apply text-center; }
-    .metric { @apply flex flex-col; }
-    .metric span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-1; }
+    .home { @apply text-end; }
+    .home, .away { @apply flex-1; }
+    .metric { @apply flex flex-col flex-2 text-center; }
+    .metric span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-2; }
+    .home, .away, .metric { @apply self-center; }
   `,
   template: `
     <section class="playersWithStreak">
