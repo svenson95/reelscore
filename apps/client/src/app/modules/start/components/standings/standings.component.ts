@@ -7,6 +7,7 @@ import {
 
 import { StandingsTableComponent } from '@app/components';
 import { FilterService } from '@app/services';
+import { isCompetitionWithMultipleGroups } from '@lib/shared';
 import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
 
 @Component({
@@ -19,7 +20,7 @@ import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
   `,
   template: `
     @if (isFiltering() && !!standings()) { @if
-    (standings()!.league.standings!.length > 0) { @for (multipleStanding of
+    (hasMultipleGroups(standings()!.league.id)) { @for (multipleStanding of
     standings()!.league.standings; track $index) {
     <reelscore-standings-table
       [ranks]="multipleStanding"
@@ -30,7 +31,18 @@ import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
       [ranks]="standings()!.league.standings![0]"
       [league]="standings()!.league"
     />
-    } } @else if (topFiveStandings()) { @for (standings of topFiveStandings();
+    @if (standings()!.league.standings!.length === 3) {
+    <reelscore-standings-table
+      [ranks]="standings()!.league.standings![1]"
+      [league]="standings()!.league"
+      header="Heimtabelle"
+    />
+    <reelscore-standings-table
+      [ranks]="standings()!.league.standings![2]"
+      [league]="standings()!.league"
+      header="Auswärtstabelle"
+    />
+    } } } @else if (topFiveStandings()) { @for (standings of topFiveStandings();
     track standings.league.id) {
     <reelscore-standings-table
       [ranks]="standings.league.standings![0]"
@@ -57,4 +69,6 @@ export class StandingsComponent {
   isFiltering = computed<boolean>(
     () => this.filterService.selectedCompetition() !== null
   );
+
+  hasMultipleGroups = isCompetitionWithMultipleGroups;
 }
