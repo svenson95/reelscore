@@ -112,6 +112,11 @@ export class FixtureListComponent {
 
   isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
     const koPhaseRounds = [
+      'Preliminary Round',
+      'Play-offs',
+      '1st Round',
+      '2nd Round',
+      '3rd Round',
       'Round of 16',
       'Quarter-finals',
       'Semi-finals',
