@@ -38,11 +38,15 @@ import { MetricsStore } from '../../../../../store';
     </section>
 
     <section class="strongAtHomeOrAway">
-      <div class="home">Ja</div>
+      <div class="home">
+        {{ metrics()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
+      </div>
       <div class="metric">
         <span>Heimstark / Auswärtsstark</span>
       </div>
-      <div class="away">Nein</div>
+      <div class="away">
+        {{ metrics()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
+      </div>
     </section>
   `,
 })
