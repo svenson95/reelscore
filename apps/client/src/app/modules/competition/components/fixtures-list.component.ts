@@ -6,7 +6,8 @@ import {
   input,
 } from '@angular/core';
 
-import { FixtureListComponent } from '@app/components';
+import { FixtureListComponent, OptimizedImageComponent } from '@app/components';
+import { getCompetitionLogo } from '@app/models';
 import { CompetitionRoundPipe } from '@app/pipes';
 import { CompetitionId, FixtureDTO } from '@lib/models';
 
@@ -14,25 +15,42 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
   selector: 'reelscore-competition-fixtures-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, FixtureListComponent, CompetitionRoundPipe],
+  imports: [
+    DatePipe,
+    FixtureListComponent,
+    CompetitionRoundPipe,
+    OptimizedImageComponent,
+  ],
   styles: `
     :host { @apply flex flex-col bg-white; }
-    section:first-of-type { 
-      @apply flex justify-between p-3 font-medium;
+    p { @apply text-fb-font-size-body-2 font-medium; }
+    section.round { 
+      @apply flex items-center gap-2 p-2 border-b-[1px];
+      reelscore-optimized-image { min-width: 34px; min-height: 26px; }
     }
-    p { @apply text-fb-font-size-body-2; }
-    .group-date { 
-      @apply bg-fb-color-white-2 p-3 font-medium tracking-wider border-b-[1px] border-t-[1px]; 
+    section.days { 
+      @apply flex flex-col gap-5; 
+      .group-date { 
+        @apply py-2 px-4 border-b-[1px]; 
+      }
     }
   `,
   template: `
-    <section>
+    <section class="round">
+      <reelscore-optimized-image
+        [source]="getCompetitionLogo(competitionId())"
+        alternate="league logo"
+        width="24"
+        height="24"
+      />
       <p>{{ round()! | competitionRound }}</p>
     </section>
-    <section>
+    <section class="days">
       @for (group of fixtureGroups(); track $index) {
-      <p class="group-date">{{ group.date | date : 'cccc | dd.MM' }}</p>
-      <reelscore-fixture-list [fixtures]="group.fixtures" />
+      <div class="day">
+        <p class="group-date">{{ group.date | date : 'cccc | dd.MM' }}</p>
+        <reelscore-fixture-list [fixtures]="group.fixtures" />
+      </div>
       }
     </section>
   `,
@@ -42,8 +60,11 @@ export class FixturesListComponent {
   fixtures = input.required<FixtureDTO[]>();
   isLoading = input.required<boolean>();
 
+  getCompetitionLogo = getCompetitionLogo;
+
   round = computed(() => this.fixtures()?.[0].league.round);
   date = computed(() => this.fixtures()?.[0].fixture.date);
+  competitionId = computed(() => this.fixtures()?.[0].league.id);
 
   fixtureGroups = computed(() => {
     const fixtures = this.fixtures();
