@@ -8,10 +8,10 @@ import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
 } from '@lib/shared';
+import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
-import { MetricsStore } from './metrics.store';
 import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
 
@@ -34,7 +34,7 @@ export const FixtureStore = signalStore(
       eventsStore = inject(EventsStore),
       statisticsStore = inject(StatisticsStore),
       latestFixturesStore = inject(LatestFixturesStore),
-      metricsStore = inject(MetricsStore)
+      analysesStore = inject(AnalysesStore)
     ) => ({
       async loadFixture(id: FixtureId): Promise<void> {
         patchState(store, { isLoading: true });
@@ -51,7 +51,7 @@ export const FixtureStore = signalStore(
               const teamIds = home.id + ',' + away.id;
               const competitionId = fixture.data.league.id;
               standingsStore.loadFixtureStandings(teamIds, competitionId);
-              metricsStore.loadMetrics(fixtureId);
+              analysesStore.loadAnalyses(fixtureId);
             }
 
             evaluationsStore.loadEvaluations(fixtureId);

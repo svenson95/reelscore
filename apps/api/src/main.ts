@@ -12,9 +12,9 @@ dotenv.config();
 import { cron } from './controllers/cron';
 import { DBHelper } from './middleware';
 import {
+  fixtureAnalyses,
   fixtureEvaluations,
   fixtureEvents,
-  fixtureMetrics,
   fixtures,
   fixturesStatistics,
   standings,
@@ -36,7 +36,7 @@ app.use('/fixture-statistics', fixturesStatistics);
 // app.use('/players-statisticss', playersStatistics);
 app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
-app.use('/fixture-metrics', fixtureMetrics);
+app.use('/fixture-analyses', fixtureAnalyses);
 
 DBHelper.init();
 
