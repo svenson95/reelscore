@@ -64,7 +64,6 @@ const translateDefault = (
   type: CompetitionRoundType,
   value: CompetitionRound
 ): CompetitionRoundLabel => {
-  console.log('type', value);
   switch (type) {
     case 'Regular Season':
       return `${roundString(value)}. Spieltag`;
