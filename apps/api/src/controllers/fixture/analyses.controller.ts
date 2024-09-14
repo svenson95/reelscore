@@ -1,10 +1,10 @@
 import {
+  AnalysesDTO,
   FixtureDTO,
   FixtureHomeOrAwayStrong,
   FixtureId,
   FixturePlayersWithStreak,
   GoalScorers,
-  MetricsDTO,
   PlayerName,
   TeamId,
 } from '@lib/models';
@@ -12,7 +12,7 @@ import { APP_DATA, findDocument } from '../../middleware';
 import { FixtureEvents, Fixtures, Standings } from '../../models';
 import { findLatestFixtures } from '../fixtures.controller';
 
-export const getFixtureMetrics = async (fixtureId): Promise<MetricsDTO> => {
+export const getFixtureAnalyses = async (fixtureId): Promise<AnalysesDTO> => {
   const fixture = await Fixtures.findOne({
     'fixture.id': fixtureId,
   }).lean();

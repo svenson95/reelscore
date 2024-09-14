@@ -24,8 +24,8 @@ import { RouterView } from '../router-view';
 import {
   MatchEvaluationsComponent,
   MatchEventsComponent,
+  MatchFixtureAnalysesComponent,
   MatchFixtureDataComponent,
-  MatchFixtureMetricsComponent,
   MatchFixtureStandingsComponent,
   MatchHeaderComponent,
   MatchLatestFixturesComponent,
@@ -33,11 +33,11 @@ import {
 } from './components';
 import { SERVICE_PROVIDERS } from './services';
 import {
+  AnalysesStore,
   EvaluationsStore,
   EventsStore,
   FixtureStandingsStore,
   FixtureStore,
-  MetricsStore,
   StatisticsStore,
   STORE_PROVIDERS,
 } from './store';
@@ -57,7 +57,7 @@ import {
     MatchEventsComponent,
     MatchEvaluationsComponent,
     MatchStatisticsComponent,
-    MatchFixtureMetricsComponent,
+    MatchFixtureAnalysesComponent,
     MatchFixtureStandingsComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
@@ -136,15 +136,15 @@ import {
           <reelscore-match-latest-fixtures />
         </mat-tab>
 
-        <mat-tab [disabled]="!metricsStore.metrics()">
+        <mat-tab [disabled]="!analysesStore.analyses()">
           <ng-template mat-tab-label>
             @if (isMobile()) {
             <mat-icon>pageview</mat-icon>
-            } @else { Metriken }
+            } @else { Analysen }
           </ng-template>
 
           <ng-template matTabContent>
-            <reelscore-match-fixture-metrics />
+            <reelscore-match-fixture-analyses />
           </ng-template>
         </mat-tab>
 
@@ -185,7 +185,7 @@ export class MatchComponent extends RouterView implements OnInit {
   data = computed(() => this.fixtureStore.fixture()?.data);
 
   standingsStore = inject(FixtureStandingsStore);
-  metricsStore = inject(MetricsStore);
+  analysesStore = inject(AnalysesStore);
 
   eventsStore = inject(EventsStore);
   events = this.eventsStore.events;

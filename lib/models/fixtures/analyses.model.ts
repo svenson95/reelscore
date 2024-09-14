@@ -8,7 +8,7 @@ export type FixtureHomeOrAwayStrong = {
   home: boolean;
   away: boolean;
 };
-export interface MetricsDTO {
+export interface AnalysesDTO {
   playersWithStreak: FixturePlayersWithStreak;
   homeOrAwayStrong: FixtureHomeOrAwayStrong;
 }

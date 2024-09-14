@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { MetricsStore } from '../../../../../store';
+import { AnalysesStore } from '../../../../../store';
 
 @Component({
-  selector: 'reelscore-match-fixture-metrics',
+  selector: 'reelscore-match-fixture-analyses',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
@@ -13,25 +13,25 @@ import { MetricsStore } from '../../../../../store';
     section:not(:last-of-type) { @apply border-b-[1px] pb-5; }
     .home { @apply text-end; }
     .home, .away { @apply flex-1; }
-    .metric { @apply flex flex-col flex-2 text-center; }
-    .metric span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-2; }
-    .home, .away, .metric { @apply self-center; }
+    .analysis { @apply flex flex-col flex-2 text-center; }
+    .analysis span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-2; }
+    .home, .away, .analysis { @apply self-center; }
   `,
   template: `
     <section class="playersWithStreak">
       <div class="home">
-        @if (metrics()!.playersWithStreak.home.length > 0) { @for (player of
-        metrics()!.playersWithStreak.home; track $index) {
+        @if (analyses()!.playersWithStreak.home.length > 0) { @for (player of
+        analyses()!.playersWithStreak.home; track $index) {
         <div class="player">{{ player }}</div>
         } } @else { - }
       </div>
-      <div class="metric">
+      <div class="analysis">
         <span>Spieler mit Torserie</span>
         <span>3+ Spiele in Folge getroffen</span>
       </div>
       <div class="away">
-        @if (metrics()!.playersWithStreak.away.length > 0) { @for (player of
-        metrics()!.playersWithStreak.away; track $index) {
+        @if (analyses()!.playersWithStreak.away.length > 0) { @for (player of
+        analyses()!.playersWithStreak.away; track $index) {
         <div class="player">{{ player }}</div>
         } } @else { - }
       </div>
@@ -39,18 +39,18 @@ import { MetricsStore } from '../../../../../store';
 
     <section class="strongAtHomeOrAway">
       <div class="home">
-        {{ metrics()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
+        {{ analyses()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
       </div>
-      <div class="metric">
+      <div class="analysis">
         <span>Heimstark / Auswärtsstark</span>
       </div>
       <div class="away">
-        {{ metrics()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
+        {{ analyses()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
       </div>
     </section>
   `,
 })
-export class MatchFixtureMetricsComponent {
-  metricsStore = inject(MetricsStore);
-  metrics = this.metricsStore.metrics;
+export class MatchFixtureAnalysesComponent {
+  analysesStore = inject(AnalysesStore);
+  analyses = this.analysesStore.analyses;
 }
