@@ -5,7 +5,7 @@ import {
   effect,
   inject,
   input,
-  OnInit,
+  OnChanges,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -177,7 +177,7 @@ import {
     }
   `,
 })
-export class MatchComponent extends RouterView implements OnInit {
+export class MatchComponent extends RouterView implements OnChanges {
   router = inject(Router);
 
   fixtureStore = inject(FixtureStore);
@@ -219,7 +219,7 @@ export class MatchComponent extends RouterView implements OnInit {
     }
   });
 
-  async ngOnInit() {
+  async ngOnChanges(): Promise<void> {
     await this.fixtureStore.loadFixture(this.fixtureId());
   }
 
