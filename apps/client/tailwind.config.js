@@ -12,6 +12,9 @@ module.exports = {
       screens: {
         xs: '600px',
       },
+      flex: {
+        2: '2 2 0%',
+      },
       colors: {
         'fb-color-black-1': 'var(--fb-color-black-1)',
         'fb-color-black-2': 'var(--fb-color-black-2)',
