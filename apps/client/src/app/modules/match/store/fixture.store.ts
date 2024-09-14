@@ -4,7 +4,10 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { StateHandler } from '@app/models';
 import { HttpFixtureService } from '@app/services';
 import { FixtureId, GetFixtureDTO } from '@lib/models';
-import { isCompetitionWithoutStandings } from '@lib/shared';
+import {
+  isCompetitionWithMultipleGroups,
+  isCompetitionWithoutStandings,
+} from '@lib/shared';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
@@ -40,18 +43,21 @@ export const FixtureStore = signalStore(
           next: async (fixture) => {
             const fixtureId = fixture.data.fixture.id;
 
-            if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
+            if (
+              !isCompetitionWithoutStandings(fixture.data.league.id) &&
+              !isCompetitionWithMultipleGroups(fixture.data.league.id)
+            ) {
               const { home, away } = fixture.data.teams;
               const teamIds = home.id + ',' + away.id;
               const competitionId = fixture.data.league.id;
               standingsStore.loadFixtureStandings(teamIds, competitionId);
+              metricsStore.loadMetrics(fixtureId);
             }
 
             evaluationsStore.loadEvaluations(fixtureId);
             latestFixturesStore.loadLatestFixtures(fixtureId);
             eventsStore.loadEvents(fixtureId, fixture.data.teams);
             statisticsStore.loadStatistics(fixtureId);
-            metricsStore.loadMetrics(fixtureId);
 
             return patchState(store, {
               fixture,
