@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { DateString, StateHandler } from '@app/models';
+import { DateString } from '@app/constants';
+import { StateHandler } from '@app/models';
 import { HttpStandingsService } from '@app/services';
 import { StandingsDTO } from '@lib/models';
 

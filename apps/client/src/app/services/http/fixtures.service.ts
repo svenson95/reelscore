@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { DateString } from '@app/models';
+import { DateString } from '@app/constants';
 import { FixtureDTO } from '@lib/models';
 import { environment } from '../../../environments/environment';
 

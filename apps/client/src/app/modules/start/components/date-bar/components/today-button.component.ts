@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString, TODAY_ISO_STRING } from '@app/models';
+import { DateString, TODAY_ISO_STRING } from '@app/constants';
 
 @Component({
   selector: 'reelscore-today-button',

@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/models';
+import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/constants';
 
 @Component({
   selector: 'reelscore-week-toogle-group',

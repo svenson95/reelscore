@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
+import { linkToMatch } from '@app/constants';
 import { getTeamLogo } from '@app/models';
 import { TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
@@ -101,14 +101,7 @@ export class FixtureListComponent {
 
   getTeamLogo = getTeamLogo;
 
-  linkToMatch(data: FixtureDTO): string[] {
-    const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.id === data.league.id
-    )?.url;
-    if (!leagueUrl) throw new Error('Error in linkToMatch');
-    const fixtureId = String(data.fixture.id);
-    return ['/', 'leagues', leagueUrl, 'match', fixtureId];
-  }
+  linkToMatch = linkToMatch;
 
   isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
     const koPhaseRounds = [

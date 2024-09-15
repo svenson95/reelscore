@@ -9,6 +9,7 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
+import { linkToMatch } from '@app/constants';
 import { TeamNamePipe } from '@app/pipes';
 import {
   FixtureDTO,
@@ -80,7 +81,7 @@ export class IsRelatedPipe implements PipeTransform {
     @for(match of fixtures(); track match.fixture.id) {
     <a
       mat-ripple
-      [routerLink]="['..', match.fixture.id]"
+      [routerLink]="linkToMatch(match)"
       [class.is-winner]="match.teams | check : team() : 'WIN'"
       [class.is-loser]="match.teams | check : team() : 'LOSS'"
     >
@@ -115,4 +116,6 @@ export class IsRelatedPipe implements PipeTransform {
 export class MatchFixturesTableComponent {
   fixtures = input.required<FixtureDTO[]>();
   team = input.required<FixtureTeam>();
+
+  linkToMatch = linkToMatch;
 }
