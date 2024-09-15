@@ -44,6 +44,8 @@ import { CompetitionStandingsStore } from '../store/standings.store';
     </div>
     } } } @else if (store.isLoading()) {
     <p class="no-data">Tabelle wird geladen ...</p>
+    } @else {
+    <p class="no-data">Keine Tabelle vorhanden</p>
     }
   `,
 })
