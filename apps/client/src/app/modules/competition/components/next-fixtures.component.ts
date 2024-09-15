@@ -23,6 +23,8 @@ import { FixturesListComponent } from './fixtures-list.component';
       [competition]="competition()!.id"
       [isLoading]="isLoading()"
     />
+    } @else if (fixtures()!.length === 0) {
+    <p class="no-data">Keine anstehenden Spiele</p>
     } } @else if (isLoading()) {
     <p class="no-data">Spiele werden geladen ...</p>
     }
