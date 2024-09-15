@@ -103,6 +103,7 @@ const getLastFixturesRound = async (
 };
 
 const getNextFixturesRound = async (nextRound, hasMultipleRounds, rounds) => {
+  if (!nextRound) return [];
   const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
   const nextMultipleRound = nextRound.replace(
     String(nextRoundNumber),
@@ -114,6 +115,7 @@ const getNextFixturesRound = async (nextRound, hasMultipleRounds, rounds) => {
 };
 
 const isSameRoundNumber = (currentRound, nextRound) => {
+  if (!nextRound) return false;
   const currentRoundNumber = Number(currentRound[currentRound.length - 1]);
   const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
 
@@ -163,12 +165,10 @@ const getCurrentRound = async (
 const getNextRound = (
   rounds: Array<CompetitionRoundString>,
   currentRound: CompetitionRoundString
-): string => {
+): string | null => {
   const currentRoundIndex = rounds.indexOf(currentRound);
   const isLastRound = rounds.length - 1 === currentRoundIndex;
-  if (isLastRound) {
-    return rounds[currentRoundIndex];
-  }
+  if (isLastRound) return null;
   return rounds[currentRoundIndex + 1];
 };
 
