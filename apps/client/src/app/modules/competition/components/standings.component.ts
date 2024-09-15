@@ -10,6 +10,11 @@ import { CompetitionStandingsStore } from '../store/standings.store';
   imports: [StandingsTableComponent],
   styles: `
     :host { @apply flex flex-col gap-5; }
+    .home-and-away-standings { 
+      @apply flex gap-5 flex-col md:flex-row; 
+
+      > reelscore-standings-table { @apply flex-1; }
+    }
   `,
   template: `
     @if (store.standings() !== null) { @if
@@ -25,16 +30,18 @@ import { CompetitionStandingsStore } from '../store/standings.store';
       [league]="standings()!.league"
     />
     @if (standings()!.league.standings!.length === 3) {
-    <reelscore-standings-table
-      [ranks]="standings()!.league.standings![1]"
-      [league]="standings()!.league"
-      header="Heimtabelle"
-    />
-    <reelscore-standings-table
-      [ranks]="standings()!.league.standings![2]"
-      [league]="standings()!.league"
-      header="Auswärtstabelle"
-    />
+    <div class="home-and-away-standings">
+      <reelscore-standings-table
+        [ranks]="standings()!.league.standings![1]"
+        [league]="standings()!.league"
+        header="Heimtabelle"
+      />
+      <reelscore-standings-table
+        [ranks]="standings()!.league.standings![2]"
+        [league]="standings()!.league"
+        header="Auswärtstabelle"
+      />
+    </div>
     } } } @else if (store.isLoading()) {
     <p class="no-data">Tabelle wird geladen ...</p>
     }
