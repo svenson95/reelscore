@@ -48,14 +48,16 @@ fixtures.get('/get-latest', async (req, res) => {
 
 fixtures.get('/get-last', async (req, res) => {
   const competitionId = Number(req.query.competition);
-  await getFixturesForCompetition(competitionId, 'last', (docs) => {
+  const showAll = req.query.showAll === 'true';
+  await getFixturesForCompetition(competitionId, 'last', showAll, (docs) => {
     res.json(docs);
   });
 });
 
 fixtures.get('/get-next', async (req, res) => {
   const competitionId = Number(req.query.competition);
-  await getFixturesForCompetition(competitionId, 'next', (docs) => {
+  const showAll = req.query.showAll === 'true';
+  await getFixturesForCompetition(competitionId, 'next', showAll, (docs) => {
     res.json(docs);
   });
 });

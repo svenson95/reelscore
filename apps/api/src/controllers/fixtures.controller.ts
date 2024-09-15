@@ -65,6 +65,7 @@ export const getFixturesByRound = async (req, res, round, next) => {
 export const getFixturesForCompetition = async (
   id,
   type: 'last' | 'next',
+  showAll: boolean,
   next
 ) => {
   const currentRound = await getCurrentRound(id);
@@ -73,45 +74,43 @@ export const getFixturesForCompetition = async (
   const rounds = Object.values(COMPETITION_ROUNDS[id]);
   const nextRound = getNextRound(rounds, currentRound);
   const hasMultipleRounds = isSameRoundNumber(currentRound, nextRound);
+  const round =
+    type === 'last'
+      ? await getLastFixturesRound(currentRound, hasMultipleRounds, rounds)
+      : await getNextFixturesRound(nextRound, hasMultipleRounds, rounds);
+  const fixtures = await getFixturesForCompetitionByRound(id, round, showAll);
+  const fixturesArray = fixtures.length === 0 ? [] : [fixtures];
 
-  let fixtures;
-  if (type === 'last') {
-    fixtures = await getLastFixtures(
-      id,
-      currentRound,
-      hasMultipleRounds,
-      rounds
+  if (hasMultipleRounds || showAll) {
+    const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
+    const mapped = fixturesRounds.map((round) =>
+      fixtures.filter((f) => f.league.round === round)
     );
-  } else if (type === 'next') {
-    fixtures = await getNextFixtures(id, nextRound, hasMultipleRounds, rounds);
+    return next(mapped);
   }
 
-  const fixturesArray = fixtures.length === 0 ? [] : [fixtures];
-  const docs = hasMultipleRounds
-    ? [...new Set(fixtures.map((f) => f.league.round))].map((round) =>
-        fixtures.filter((f) => f.league.round === round)
-      )
-    : fixturesArray;
-  next(docs);
+  next(fixturesArray);
 };
 
-const getLastFixtures = async (id, currentRound, hasMultipleRounds, rounds) => {
-  const round = hasMultipleRounds
+const getLastFixturesRound = async (
+  currentRound,
+  hasMultipleRounds,
+  rounds
+) => {
+  return hasMultipleRounds
     ? getMultipleRounds(currentRound, rounds)
     : [currentRound];
-  return await getFixturesForCompetitionByRound(id, round);
 };
 
-const getNextFixtures = async (id, nextRound, hasMultipleRounds, rounds) => {
+const getNextFixturesRound = async (nextRound, hasMultipleRounds, rounds) => {
   const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
   const nextMultipleRound = nextRound.replace(
     String(nextRoundNumber),
     String(nextRoundNumber + 1)
   );
-  const round = hasMultipleRounds
+  return hasMultipleRounds
     ? getMultipleRounds(nextMultipleRound, rounds)
     : [nextRound];
-  return await getFixturesForCompetitionByRound(id, round);
 };
 
 const isSameRoundNumber = (currentRound, nextRound) => {
@@ -132,13 +131,17 @@ const getMultipleRounds = (round, rounds) => {
 
 const getFixturesForCompetitionByRound = async (
   competitionId: CompetitionId,
-  rounds: CompetitionRoundString[]
+  rounds: CompetitionRoundString[],
+  showAll: boolean
 ) => {
-  const fixtures = await Fixtures.find({
+  const query: object = {
     'league.id': competitionId,
-    'league.round': { $in: rounds },
     'league.season': APP_DATA.season,
-  })
+  };
+
+  if (!showAll) query['league.round'] = { $in: rounds };
+  if (showAll) query['fixture.date'] = { $lt: Number(new Date()) };
+  const fixtures = await Fixtures.find(query)
     .sort({ 'fixture.date': -1 })
     .lean();
   return fixtures;

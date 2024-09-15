@@ -46,10 +46,10 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
       <p>{{ round()! | competitionRound }}</p>
     </section>
     <section class="days">
-      @for (group of fixtureGroups(); track $index) {
+      @for (day of fixturesDays(); track $index) {
       <div class="day">
-        <p class="group-date">{{ group.date | date : 'cccc | dd.MM' }}</p>
-        <reelscore-fixture-list [fixtures]="group.fixtures" />
+        <p class="group-date">{{ day.date | date : 'cccc | dd.MM' }}</p>
+        <reelscore-fixture-list [fixtures]="day.fixtures" />
       </div>
       }
     </section>
@@ -66,7 +66,7 @@ export class FixturesListComponent {
   date = computed(() => this.fixtures()?.[0].fixture.date);
   competitionId = computed(() => this.fixtures()?.[0].league.id);
 
-  fixtureGroups = computed(() => {
+  fixturesDays = computed(() => {
     const fixtures = this.fixtures();
     if (!fixtures) return [];
     const days = [
