@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { DateString } from '@app/constants';
-import { StateHandler } from '@app/models';
-import { HttpFixturesService } from '@app/services';
 import { FixtureDTO } from '@lib/models';
+import { DateString } from '../constants';
+import { StateHandler } from '../models';
+import { HttpFixturesService } from '../services/http/fixtures.service';
 
 type FixturesState = StateHandler<{ fixtures: FixtureDTO[] | null }>;
 

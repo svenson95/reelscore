@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { StateHandler } from '@app/models';
+import { StateHandler } from '@app/shared';
 import { FixtureId, StatisticDTO } from '@lib/models';
 import { HttpFixtureStatisticsService } from '../services';
 

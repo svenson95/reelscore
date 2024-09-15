@@ -5,11 +5,13 @@ import {
   inject,
 } from '@angular/core';
 
-import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { CompetitionWithFixtures } from '@app/models';
-import { FilterService } from '@app/services';
+import {
+  CompetitionWithFixtures,
+  FilterService,
+  FixturesStore,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
 import { FixtureDTO } from '@lib/models';
-import { FixturesStore } from '../../../../store';
 import { MatchDayListComponent } from './components';
 
 @Component({

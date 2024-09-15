@@ -8,13 +8,14 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
-import { OptimizedImageComponent } from '@app/components';
-import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { getCompetitionLogo, getTeamLogo } from '@app/models';
-import { TeamNamePipe } from '@app/pipes';
-import { BreakpointObserverService } from '@app/services';
 import { CompetitionId, League, StandingRanks } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
+
+import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
+import { getCompetitionLogo, getTeamLogo } from '../models';
+import { TeamNamePipe } from '../pipes';
+import { BreakpointObserverService } from '../services';
+import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
 
 @Component({
   selector: 'reelscore-standings-table',

@@ -3,8 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { SELECT_COMPETITION_DATA } from '@app/constants';
-import { CompetitionData } from '@app/models';
+import { CompetitionData, SELECT_COMPETITION_DATA } from '@app/shared';
 import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({

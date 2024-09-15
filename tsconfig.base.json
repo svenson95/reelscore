@@ -15,11 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@app/components": ["apps/client/src/app/components/index.ts"],
-      "@app/constants": ["apps/client/src/app/constants/index.ts"],
-      "@app/models": ["apps/client/src/app/models/index.ts"],
-      "@app/pipes": ["apps/client/src/app/pipes/index.ts"],
-      "@app/services": ["apps/client/src/app/services/index.ts"],
+      "@app/shared": ["apps/client/src/app/shared/index.ts"],
       "@lib/models": ["lib/models/index.ts"],
       "@lib/constants": ["lib/constants/index.ts"],
       "@lib/shared": ["lib/shared/index.ts"]

@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
-import { FooterComponent, HeaderComponent } from './components';
+import { FooterComponent, HeaderComponent } from './shared';
 
 @Component({
   selector: 'reelscore-root',

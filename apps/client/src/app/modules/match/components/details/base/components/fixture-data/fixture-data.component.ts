@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
-import { CompetitionRoundPipe } from '@app/pipes';
+import { CompetitionRoundPipe } from '@app/shared';
 import { FixtureStore } from '../../../../../store';
 
 @Component({

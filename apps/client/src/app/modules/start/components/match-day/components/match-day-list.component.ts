@@ -6,9 +6,13 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { FixtureListComponent, OptimizedImageComponent } from '@app/components';
-import { CompetitionWithFixtures, getCompetitionLogo } from '@app/models';
-import { CompetitionRoundPipe } from '@app/pipes';
+import {
+  CompetitionRoundPipe,
+  CompetitionWithFixtures,
+  FixtureListComponent,
+  getCompetitionLogo,
+  OptimizedImageComponent,
+} from '@app/shared';
 
 @Component({
   selector: 'reelscore-start-match-day-list',

@@ -6,8 +6,12 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { BreakpointObserverService, DateService } from '@app/services';
-import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
+import {
+  BreakpointObserverService,
+  DateService,
+  StandingsStore,
+  TopFiveStandingsStore,
+} from '@app/shared';
 import {
   ActionButtonsComponent,
   DatePickerComponent,

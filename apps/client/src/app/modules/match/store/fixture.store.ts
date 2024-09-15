@@ -1,8 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { StateHandler } from '@app/models';
-import { HttpFixtureService } from '@app/services';
+import { HttpFixtureService, StateHandler } from '@app/shared';
 import { FixtureId, GetFixtureDTO } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,

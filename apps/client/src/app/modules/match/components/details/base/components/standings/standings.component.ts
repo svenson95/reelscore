@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { StandingsTableComponent } from '@app/components';
+import { StandingsTableComponent } from '@app/shared';
 import { StandingsDTO } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 

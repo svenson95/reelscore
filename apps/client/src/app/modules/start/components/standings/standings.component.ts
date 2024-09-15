@@ -5,10 +5,13 @@ import {
   inject,
 } from '@angular/core';
 
-import { StandingsTableComponent } from '@app/components';
-import { FilterService } from '@app/services';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
-import { StandingsStore, TopFiveStandingsStore } from '../../../../store';
+import {
+  FilterService,
+  StandingsStore,
+  StandingsTableComponent,
+  TopFiveStandingsStore,
+} from '../../../../shared';
 
 @Component({
   selector: 'reelscore-standings',

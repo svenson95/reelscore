@@ -23,13 +23,15 @@ import {
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   DATE_SERVICE_PROVIDER,
   FILTER_SERVICE_PROVIDER,
+  FixturesStore,
   HTTP_FIXTURE_SERVICE_PROVIDER,
   HTTP_FIXTURES_SERVICE_PROVIDER,
   HTTP_STANDINGS_SERVICE_PROVIDER,
   LEAGUE_SERVICE_PROVIDER,
   ROUTE_SERVICE_PROVIDER,
-} from './services';
-import { FixturesStore, StandingsStore, TopFiveStandingsStore } from './store';
+  StandingsStore,
+  TopFiveStandingsStore,
+} from './shared';
 
 const LOCALE_PROVIDER = { provide: LOCALE_ID, useValue: 'de-DE' };
 
