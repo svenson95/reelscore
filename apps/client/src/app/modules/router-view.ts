@@ -1,7 +1,10 @@
 import { effect, inject } from '@angular/core';
 
-import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { LeagueService, RouteService } from '@app/services';
+import {
+  LeagueService,
+  RouteService,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
 import { CompetitionUrl } from '@lib/models';
 
 export class RouterView {

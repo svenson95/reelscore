@@ -22,7 +22,7 @@ import {
   LAST_YEAR_START,
   NEXT_YEAR_END,
   toIsoString,
-} from '@app/constants';
+} from '@app/shared';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {

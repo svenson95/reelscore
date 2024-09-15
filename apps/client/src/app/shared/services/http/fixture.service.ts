@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { FixtureId, GetFixtureDTO } from '@lib/models';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 export abstract class HttpFixtureService {
   abstract getFixture(id: FixtureId): Observable<GetFixtureDTO>;

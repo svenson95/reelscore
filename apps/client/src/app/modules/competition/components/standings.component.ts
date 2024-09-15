@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { StandingsTableComponent } from '@app/components';
+
+import { StandingsTableComponent } from '@app/shared';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
-import { CompetitionStandingsStore } from '../store/standings.store';
+import { CompetitionStandingsStore } from '../store';
 
 @Component({
   selector: 'reelscore-competition-standings',

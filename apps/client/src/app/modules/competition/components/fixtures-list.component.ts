@@ -6,9 +6,12 @@ import {
   input,
 } from '@angular/core';
 
-import { FixtureListComponent, OptimizedImageComponent } from '@app/components';
-import { getCompetitionLogo } from '@app/models';
-import { CompetitionRoundPipe } from '@app/pipes';
+import {
+  CompetitionRoundPipe,
+  FixtureListComponent,
+  OptimizedImageComponent,
+  getCompetitionLogo,
+} from '@app/shared';
 import { CompetitionId, FixtureDTO } from '@lib/models';
 
 @Component({

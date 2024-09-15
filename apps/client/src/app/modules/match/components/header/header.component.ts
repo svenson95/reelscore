@@ -9,7 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-import { getTeamLogo } from '@app/models';
+import { getTeamLogo } from '@app/shared';
 import {
   FinishedMatchStatusValues,
   FixtureDTO,

@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { OptimizedImageComponent, ResultLabelComponent } from '@app/components';
-import { getTeamLogo } from '@app/models';
-import { TeamNamePipe } from '@app/pipes';
+import {
+  OptimizedImageComponent,
+  ResultLabelComponent,
+  TeamNamePipe,
+  getTeamLogo,
+} from '@app/shared';
 import { FixtureDTO } from '@lib/models';
 
 @Component({

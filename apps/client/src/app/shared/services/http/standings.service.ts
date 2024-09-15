@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { DateString } from '@app/constants';
 import { CompetitionId, StandingsDTO } from '@lib/models';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
+import { DateString } from '../../constants';
 
 type StandingsParams = CompetitionId | null;
 

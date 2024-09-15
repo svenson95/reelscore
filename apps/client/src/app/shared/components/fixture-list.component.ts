@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { linkToMatch } from '@app/constants';
-import { getTeamLogo } from '@app/models';
-import { TeamNamePipe } from '@app/pipes';
 import { COMPETITION_URL } from '@lib/constants';
 import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
+
+import { linkToMatch } from '../constants';
+import { getTeamLogo } from '../models';
+import { TeamNamePipe } from '../pipes';
 import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
 import { ResultLabelComponent } from './result-label.component';
 

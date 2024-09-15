@@ -9,11 +9,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { OptimizedImageComponent } from '@app/components';
-import { SELECT_COMPETITION_DATA } from '@app/constants';
-import { DateService, FilterService } from '@app/services';
+import {
+  DateService,
+  FilterService,
+  OptimizedImageComponent,
+  SELECT_COMPETITION_DATA,
+  StandingsStore,
+} from '@app/shared';
 import { CompetitionId } from '@lib/models';
-import { StandingsStore } from '../../../../../../store';
 
 @Component({
   selector: 'reelscore-filter-button',

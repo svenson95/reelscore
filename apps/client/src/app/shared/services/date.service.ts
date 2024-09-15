@@ -17,7 +17,7 @@ import {
   createWeekDaysArray,
   getMondayFromDate,
   moveItem,
-} from '@app/constants';
+} from '@app/shared';
 import { FixturesStore, TopFiveStandingsStore } from '../store';
 
 export abstract class DateService {

@@ -12,9 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
-import { BackButtonComponent } from '@app/components';
-import { SELECT_COMPETITION_DATA_FLAT } from '@app/constants';
-import { BreakpointObserverService } from '@app/services';
+import {
+  BackButtonComponent,
+  BreakpointObserverService,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
 import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,

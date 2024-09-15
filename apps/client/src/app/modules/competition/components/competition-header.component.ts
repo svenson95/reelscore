@@ -1,8 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 
-import { BackButtonComponent, OptimizedImageComponent } from '@app/components';
-import { getCompetitionLogo } from '@app/models';
-import { LeagueService } from '@app/services';
+import {
+  BackButtonComponent,
+  LeagueService,
+  OptimizedImageComponent,
+  getCompetitionLogo,
+} from '@app/shared';
 
 @Component({
   selector: 'reelscore-competition-header',

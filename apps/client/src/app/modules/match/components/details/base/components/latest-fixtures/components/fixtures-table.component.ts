@@ -9,15 +9,13 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { linkToMatch } from '@app/constants';
-import { TeamNamePipe } from '@app/pipes';
+import { linkToMatch, ResultLabelComponent, TeamNamePipe } from '@app/shared';
 import {
   FixtureDTO,
   FixtureResult,
   FixtureTeam,
   MatchTeams,
 } from '@lib/models';
-import { ResultLabelComponent } from '../../../../../../../../components';
 
 @Pipe({
   name: 'check',
