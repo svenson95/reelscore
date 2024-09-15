@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { LeagueService } from '@app/services';
 import { CompetitionId } from '@lib/models';
+import { isCompetitionWithOneFixture } from '@lib/shared';
 import { LastFixturesStore } from '../store';
 import { FixturesListComponent } from './fixtures-list.component';
 
@@ -35,7 +36,7 @@ import { FixturesListComponent } from './fixtures-list.component';
     />
     } @else if (fixtures()!.length === 0) {
     <p class="no-data">Keine vergangenen Spiele</p>
-    } @if (!isFirstRound() && !showAll()) {
+    } @if (!isFirstRound() && !isCompetitionWithOneFixture() && !showAll()) {
     <button mat-button (click)="loadAllLastFixtures(competition()!.id)">
       Alle anzeigen
     </button>
@@ -73,6 +74,10 @@ export class LastFixturesComponent {
       'Group F - 1',
     ];
     return firstRounds.includes(round);
+  });
+  isCompetitionWithOneFixture = computed(() => {
+    const id = this.competition()?.id;
+    return !id ? false : isCompetitionWithOneFixture(id);
   });
   showAll = this.store.showAll;
 
