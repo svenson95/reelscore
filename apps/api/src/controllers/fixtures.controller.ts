@@ -141,8 +141,18 @@ const getFixturesForCompetitionByRound = async (
     'league.season': APP_DATA.season,
   };
 
-  if (!showAll) query['league.round'] = { $in: rounds };
-  if (showAll) query['fixture.date'] = { $lt: Number(new Date()) };
+  if (showAll) {
+    const allRounds = Object.values(COMPETITION_ROUNDS[competitionId]);
+    const finishedRounds = allRounds.filter((_, idx) => {
+      const firstRound = rounds[0];
+      const lastRound = rounds[rounds.length - 1];
+      const currentRound = rounds.length > 1 ? lastRound : firstRound;
+      return allRounds.findIndex((round) => round === currentRound) >= idx;
+    });
+    query['league.round'] = { $in: finishedRounds };
+  } else {
+    query['league.round'] = { $in: rounds };
+  }
   const fixtures = await Fixtures.find(query)
     .sort({ 'fixture.date': -1 })
     .lean();
