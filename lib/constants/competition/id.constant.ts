@@ -22,7 +22,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
 
   // England
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 39,
-  // [CompetitionCode.ENGLAND_LEAGUE_CUP]: 48,
+  [CompetitionCode.ENGLAND_LEAGUE_CUP]: 48,
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 46,
   // [CompetitionCode.ENGLAND_FA_TROPHY]: 47,
   // [CompetitionCode.ENGLAND_FA_CUP]: 45,
