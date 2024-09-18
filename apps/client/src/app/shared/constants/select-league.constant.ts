@@ -89,13 +89,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
   {
     label: 'England',
     competitions: [
-      // {
-      //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_LEAGUE_CUP),
-      //   label: COMPETITION_LABEL.ENGLAND_LEAGUE_CUP,
-      //   id: COMPETITION_ID.ENGLAND_LEAGUE_CUP,
-      //   url: COMPETITION_URL.ENGLAND_LEAGUE_CUP,
-      //   size: 20, // ??
-      // },
+      {
+        image: getCompetitionLogo(COMPETITION_ID.ENGLAND_LEAGUE_CUP),
+        label: COMPETITION_LABEL.ENGLAND_LEAGUE_CUP,
+        id: COMPETITION_ID.ENGLAND_LEAGUE_CUP,
+        url: COMPETITION_URL.ENGLAND_LEAGUE_CUP,
+        size: 20, // ??
+      },
       // {
       //   image: getCompetitionLogo(COMPETITION_ID.ENGLAND_EFL_TROPHY),
       //   label: COMPETITION_LABEL.ENGLAND_EFL_TROPHY,
