@@ -101,15 +101,15 @@ const analyzePerformances = async (
     const stats = await FixturesStatistics.findOne({
       'parameters.fixture': fixture.fixture.id,
     }).lean();
+    const teams = stats?.response;
+    if (!stats || teams?.length === 0) return 'NO_STATISTICS_AVAILABLE';
+
     const { status } = fixture.fixture;
     const isUpcomingMatch = status.short === 'NS' || status.short === 'TBD';
     if (isUpcomingMatch) return 'MATCH_NOT_STARTED';
 
-    const isMatchPostponed = fixture.fixture.status.short === 'PST';
+    const isMatchPostponed = status.short === 'PST';
     if (isMatchPostponed) return 'MATCH_POSTPONED';
-
-    const teams = stats.response;
-    if (teams.length === 0) return 'NO_STATISTICS_AVAILABLE';
 
     const teamIndex = teams[0].team.id === teamId ? 0 : 1;
     const statistics = teams[teamIndex] as StatisticDTO;
