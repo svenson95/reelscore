@@ -45,7 +45,6 @@ const getPlayersWithStreakForTeam = async (
   fixture: FixtureDTO,
   team: 'home' | 'away'
 ): Promise<GoalScorers> => {
-  const GAMES_SCORED_SEQUENTIALLY = 3;
   const games = await findLatestFixtures(fixture, team);
   const scorers = await getGameScorers(games, fixture.teams[team].id);
   const players = scorers.filter((scorers) => scorers.length > 0);
@@ -53,11 +52,7 @@ const getPlayersWithStreakForTeam = async (
   return [
     ...new Set(
       players
-        .flatMap((sc) =>
-          sc.flatMap((s) =>
-            checkIfPlayerScored(GAMES_SCORED_SEQUENTIALLY, scorers, s)
-          )
-        )
+        .flatMap((sc) => sc.flatMap((s) => checkIfPlayerScored(scorers, s)))
         .filter((scorer) => scorer !== null)
     ),
   ];
@@ -95,16 +90,20 @@ const getGameGoals = async (
 };
 
 const checkIfPlayerScored = (
-  amount: number,
   games: GoalScorers[],
   player: PlayerName
 ): PlayerName | null => {
-  const score = games.slice(0, amount).reduce((acc, game, idx) => {
+  const LAST_FIXTURES_AMOUNT = 5;
+  const STREAK_FAIL_AT_AMOUNT = 2;
+  let streakFail = 0;
+  const score = games.slice(0, LAST_FIXTURES_AMOUNT).reduce((acc, game) => {
     const playerScore = game.filter((scorer) => scorer === player);
-    if (playerScore.length === 0 || (idx > 0 && acc === 0)) return 0;
-    return acc + playerScore.length;
+    const playerScored = playerScore.length > 0;
+    if (!playerScored) streakFail++;
+    if (streakFail === STREAK_FAIL_AT_AMOUNT) return 0;
+    return acc + (playerScored ? 1 : 0);
   }, 0);
-  return score > 0 ? player : null;
+  return score >= 3 ? player : null;
 };
 
 const getHomeOrAwayStrong = async (
