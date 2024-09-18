@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { CompetitionRound } from '@lib/models';
-import { CompetitionRoundLabel, LabelType } from './label.model';
-import { translatedCompetitionRound } from './translate-competition-round.data';
+import { translatedCompetitionRound } from './competition-round.data';
+import { LabelType } from './label.model';
 
 @Pipe({
   name: 'competitionRound',
@@ -12,7 +12,7 @@ export class CompetitionRoundPipe implements PipeTransform {
   transform(
     value: CompetitionRound,
     type: LabelType = 'default'
-  ): CompetitionRoundLabel {
+  ): CompetitionRound {
     return translatedCompetitionRound(value, type);
   }
 }

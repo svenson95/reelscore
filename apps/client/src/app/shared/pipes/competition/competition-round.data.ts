@@ -1,9 +1,9 @@
 import { CompetitionRound } from '@lib/models';
-import { CompetitionRoundLabel, LabelType } from './label.model';
+import { LabelType } from './label.model';
 
 type CompetitionRoundType = string;
 
-const ROUND_LABEL_TYPES = [
+const ROUND_LABEL_TYPES: Array<CompetitionRoundType> = [
   'Regular Season',
   'League Stage', // UEFA Champions league group stage
   'League', // UEFA Nations League group stage
@@ -24,7 +24,7 @@ const ROUND_LABEL_TYPES = [
 export const translatedCompetitionRound = (
   value: CompetitionRound,
   labelType: LabelType
-): CompetitionRoundLabel => {
+): CompetitionRound => {
   const type = getType(value);
 
   switch (labelType) {
@@ -42,19 +42,19 @@ const getType = (value: CompetitionRound): CompetitionRoundType => {
   return type ?? '';
 };
 
-const roundString = (round: CompetitionRound): CompetitionRoundLabel => {
+const roundString = (round: CompetitionRound): CompetitionRound => {
   const idx = round.lastIndexOf('-') + 2;
   return round.slice(idx, round.length);
 };
 
-const leagueLabel = (value: CompetitionRound): CompetitionRoundLabel => {
+const leagueLabel = (value: CompetitionRound): CompetitionRound => {
   const roundIdx = value.indexOf('-') + 2;
   const round = value.slice(roundIdx, value.length);
   const group = value.slice('League'.length, roundIdx - 2);
   return `Liga ${group} - ${round}. Spieltag`;
 };
 
-const leagueStageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
+const leagueStageLabel = (value: CompetitionRound): CompetitionRound => {
   const roundIdx = value.indexOf('- ') + 1;
   const round = value.slice(roundIdx, value.length);
   return `${round} - Ligaphase`;
@@ -63,7 +63,7 @@ const leagueStageLabel = (value: CompetitionRound): CompetitionRoundLabel => {
 const translateDefault = (
   type: CompetitionRoundType,
   value: CompetitionRound
-): CompetitionRoundLabel => {
+): CompetitionRound => {
   switch (type) {
     case 'Regular Season':
       return `${roundString(value)}. Spieltag`;
@@ -103,7 +103,7 @@ const translateDefault = (
 const translateHeader = (
   type: CompetitionRoundType,
   value: CompetitionRound
-): CompetitionRoundLabel => {
+): CompetitionRound => {
   switch (type) {
     case 'Regular Season':
       return `${roundString(value)}. Spieltag`;
