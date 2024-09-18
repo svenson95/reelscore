@@ -7,6 +7,7 @@ import {
 import { RouterLink } from '@angular/router';
 
 import {
+  CompetitionLabelPipe,
   CompetitionRoundPipe,
   CompetitionWithFixtures,
   FixtureListComponent,
@@ -21,6 +22,7 @@ import {
   imports: [
     RouterLink,
     CompetitionRoundPipe,
+    CompetitionLabelPipe,
     OptimizedImageComponent,
     FixtureListComponent,
   ],
@@ -55,7 +57,9 @@ import {
         width="24"
         height="24"
       />
-      <a [routerLink]="competition().url">{{ competition().name }}</a>
+      <a [routerLink]="competition().url">
+        {{ competition().name | competitionLabel }}
+      </a>
       <div class="spacer"></div>
       <span class="gray">
         {{ round() | competitionRound : 'header' }}
