@@ -22,7 +22,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
 
   // England
   [CompetitionCode.ENGLAND_PREMIER_LEAGUE]: 'premier-league',
-  [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'en-league-cup',
+  [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'carabao-cup',
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 'efl-trophy',
   // [CompetitionCode.ENGLAND_FA_TROPHY]: 'fa-trophy',
   // [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
