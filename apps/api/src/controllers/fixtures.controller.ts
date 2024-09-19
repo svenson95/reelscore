@@ -1,11 +1,13 @@
 import {
   CompetitionId,
+  CompetitionRound,
   CompetitionRoundString,
   EventDTO,
+  EventTime,
   FixtureDTO,
+  LatestFixturesDTO,
 } from '@lib/models';
-import { COMPETITION_ROUNDS } from '../middleware';
-import { APP_DATA } from '../middleware/app.data';
+import { APP_DATA, COMPETITION_ROUNDS } from '../middleware';
 import { FixtureEvents, Fixtures } from '../models';
 
 const getFixtureHighlights = (events: EventDTO[] | undefined) => {
@@ -17,59 +19,27 @@ const getFixtureHighlights = (events: EventDTO[] | undefined) => {
     (event) => event.type === 'Card' && event.detail === 'Red Card'
   );
   return [...goals, ...redCards].sort((a, b) => {
-    const time = (t) => t.time.elapsed + (t.time.extra ?? 0);
-    return time(a) - time(b);
+    const time = (t: EventTime) => t.elapsed + (t.extra ?? 0);
+    return time(a.time) - time(b.time);
   });
 };
 
-export const getFixturesById = async (req, res, fixtureId, next) => {
+export const getFixturesById = async (fixtureId: string) => {
   const data = await Fixtures.findOne({ 'fixture.id': fixtureId }).lean();
   const eventsDoc = await FixtureEvents.findOne({
     'parameters.fixture': fixtureId,
   }).lean();
   const highlights = getFixtureHighlights(eventsDoc?.response);
-  next({ data, highlights });
-};
-
-export const getFixturesByTeamId = async (req, res, teamId, next) => {
-  const homeTeamId = { 'teams.home.id': teamId };
-  const awayTeamId = { 'teams.away.id': teamId };
-  const currentSeason = { 'league.season': APP_DATA.season };
-
-  try {
-    const docs = await Fixtures.find({
-      $or: [homeTeamId, awayTeamId],
-      $and: [currentSeason],
-    }).lean();
-    next(docs);
-  } catch (error) {
-    next({
-      status: 'error happened',
-      error,
-    });
-  }
-};
-
-export const getFixturesByRound = async (req, res, round, next) => {
-  const leagueId = req.query.league;
-  const roundString = round ? `Regular Season - ${round}` : null;
-
-  const docs = await Fixtures.find({
-    'league.id': leagueId,
-    'league.round': roundString,
-    'league.season': APP_DATA.season,
-  }).lean();
-  next(docs);
+  return { data, highlights };
 };
 
 export const getFixturesForCompetition = async (
-  id,
+  id: CompetitionId,
   type: 'last' | 'next',
-  showAll: boolean,
-  next
+  showAll: boolean
 ) => {
   const currentRound = await getCurrentRound(id);
-  if (!currentRound) return next([]);
+  if (!currentRound) return [];
 
   const rounds = Object.values(COMPETITION_ROUNDS[id]);
   const nextRound = getNextRound(rounds, currentRound);
@@ -86,23 +56,27 @@ export const getFixturesForCompetition = async (
     const mapped = fixturesRounds.map((round) =>
       fixtures.filter((f) => f.league.round === round)
     );
-    return next(mapped);
+    return mapped;
   }
 
-  next(fixturesArray);
+  return fixturesArray;
 };
 
 const getLastFixturesRound = async (
-  currentRound,
-  hasMultipleRounds,
-  rounds
+  currentRound: CompetitionRound,
+  hasMultipleRounds: boolean,
+  rounds: Array<CompetitionRound>
 ) => {
   return hasMultipleRounds
     ? getMultipleRounds(currentRound, rounds)
     : [currentRound];
 };
 
-const getNextFixturesRound = async (nextRound, hasMultipleRounds, rounds) => {
+const getNextFixturesRound = async (
+  nextRound: CompetitionRound,
+  hasMultipleRounds: boolean,
+  rounds: Array<CompetitionRound>
+) => {
   if (!nextRound) return [];
   const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
   const nextMultipleRound = nextRound.replace(
@@ -114,7 +88,10 @@ const getNextFixturesRound = async (nextRound, hasMultipleRounds, rounds) => {
     : [nextRound];
 };
 
-const isSameRoundNumber = (currentRound, nextRound) => {
+const isSameRoundNumber = (
+  currentRound: CompetitionRound,
+  nextRound: CompetitionRound | null
+) => {
   if (!nextRound) return false;
   const currentRoundNumber = Number(currentRound[currentRound.length - 1]);
   const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
@@ -126,7 +103,10 @@ const isSameRoundNumber = (currentRound, nextRound) => {
   );
 };
 
-const getMultipleRounds = (round, rounds) => {
+const getMultipleRounds = (
+  round: CompetitionRound,
+  rounds: Array<CompetitionRound>
+) => {
   const roundNumber = round[round.length - 1];
   return rounds.filter((r) => r.includes(roundNumber));
 };
@@ -182,17 +162,17 @@ const getNextRound = (
   return rounds[currentRoundIndex + 1];
 };
 
-export const getFixturesByDate = async (req, res, date, next) => {
+export const getFixturesByDate = async (date: string) => {
   const day = new Date(date);
   day.setHours(0, 0, 0, 0);
 
   const tomorrow = new Date(day);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const docs = await Fixtures.find()
+  return await Fixtures.find()
     .where('fixture.date')
-    .gte(Number(day))
-    .lt(Number(tomorrow))
+    .gte(day.getTime())
+    .lt(tomorrow.getTime())
     .sort({ 'fixture.date': 1 })
     .select({
       'fixture.date': 1,
@@ -205,13 +185,11 @@ export const getFixturesByDate = async (req, res, date, next) => {
       teams: 1,
     })
     .lean();
-  next(docs);
 };
 
 export const getLatestFixtures = async (
-  fixtureId,
-  next: (data: { home: FixtureDTO[]; away: FixtureDTO[] }) => void
-): Promise<void> => {
+  fixtureId: string
+): Promise<LatestFixturesDTO> => {
   const fixture = await Fixtures.findOne({
     'fixture.id': fixtureId,
   }).lean();
@@ -219,7 +197,7 @@ export const getLatestFixtures = async (
   const home = await findLatestFixtures(fixture, 'home');
   const away = await findLatestFixtures(fixture, 'away');
 
-  next({ home, away });
+  return { home, away };
 };
 
 export const findLatestFixtures = async (

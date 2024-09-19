@@ -18,7 +18,7 @@ export class AbstractedHttpLatestFixturesService extends HttpLatestFixturesServi
   http = inject(HttpClient);
 
   getLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
-    const params = new HttpParams().set('fixtureId', fixtureId);
+    const params = new HttpParams().set('fixture', fixtureId);
     return this.http.get<LatestFixturesDTO>(this.BASE_URL + '/get-latest', {
       params,
     });

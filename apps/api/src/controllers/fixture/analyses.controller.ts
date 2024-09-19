@@ -17,17 +17,8 @@ export const getFixtureAnalyses = async (fixtureId): Promise<AnalysesDTO> => {
     'fixture.id': fixtureId,
   }).lean();
 
-  const playersWithStreakData = await getPlayersWithStreak(fixture);
-  const playersWithStreak = {
-    home: playersWithStreakData.home,
-    away: playersWithStreakData.away,
-  };
-
-  const homeOrAwayStrongData = await getHomeOrAwayStrong(fixture);
-  const homeOrAwayStrong = {
-    home: homeOrAwayStrongData.home,
-    away: homeOrAwayStrongData.away,
-  };
+  const playersWithStreak = await getPlayersWithStreak(fixture);
+  const homeOrAwayStrong = await getHomeOrAwayStrong(fixture);
 
   return { playersWithStreak, homeOrAwayStrong };
 };

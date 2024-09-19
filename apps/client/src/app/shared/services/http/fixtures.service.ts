@@ -18,7 +18,7 @@ export class AbstractedHttpFixturesService extends HttpFixturesService {
 
   getFixtures(date: DateString): Observable<FixtureDTO[]> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<FixtureDTO[]>(this.BASE_URL + '/get', {
+    return this.http.get<FixtureDTO[]>(this.BASE_URL + '/get-by-date', {
       params,
     });
   }

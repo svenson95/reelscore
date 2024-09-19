@@ -3,61 +3,40 @@ import express from 'express';
 import {
   getFixturesByDate,
   getFixturesById,
-  getFixturesByRound,
-  getFixturesByTeamId,
   getFixturesForCompetition,
   getLatestFixtures,
 } from '../controllers';
 
 export const fixtures = express.Router();
 
-fixtures.get('/get', async (req, res) => {
-  const { fixtureId, teamId, round, date } = req.query;
+fixtures.get('/get-by-id', async (req, res) => {
+  const fixtureId = String(req.query.fixture);
+  const docs = await getFixturesById(fixtureId);
+  return res.json(docs);
+});
 
-  if (fixtureId) {
-    await getFixturesById(req, res, fixtureId, (docs) => {
-      res.json(docs);
-    });
-  }
-
-  if (teamId) {
-    await getFixturesByTeamId(req, res, teamId, (docs) => {
-      res.json(docs);
-    });
-  }
-
-  if (round) {
-    await getFixturesByRound(req, res, round, (docs) => {
-      res.json(docs);
-    });
-  }
-
-  if (date && typeof date === 'string') {
-    await getFixturesByDate(req, res, date, (docs) => {
-      res.json(docs);
-    });
-  }
+fixtures.get('/get-by-date', async (req, res) => {
+  const date = String(req.query.date);
+  const docs = await getFixturesByDate(date);
+  return res.json(docs);
 });
 
 fixtures.get('/get-latest', async (req, res) => {
-  const { fixtureId } = req.query;
-  await getLatestFixtures(fixtureId, (docs) => {
-    res.json(docs);
-  });
+  const fixtureId = String(req.query.fixture);
+  const docs = await getLatestFixtures(fixtureId);
+  res.json(docs);
 });
 
 fixtures.get('/get-last', async (req, res) => {
-  const competitionId = Number(req.query.competition);
+  const id = Number(req.query.competition);
   const showAll = req.query.showAll === 'true';
-  await getFixturesForCompetition(competitionId, 'last', showAll, (docs) => {
-    res.json(docs);
-  });
+  const docs = await getFixturesForCompetition(id, 'last', showAll);
+  res.json(docs);
 });
 
 fixtures.get('/get-next', async (req, res) => {
-  const competitionId = Number(req.query.competition);
+  const id = Number(req.query.competition);
   const showAll = req.query.showAll === 'true';
-  await getFixturesForCompetition(competitionId, 'next', showAll, (docs) => {
-    res.json(docs);
-  });
+  const docs = await getFixturesForCompetition(id, 'next', showAll);
+  res.json(docs);
 });
