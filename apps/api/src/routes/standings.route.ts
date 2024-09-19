@@ -8,20 +8,21 @@ import {
 
 export const standings = express.Router();
 
-standings.get('/get', async (req, res) => {
-  await getStandings(req, res, (docs) => {
-    const result = docs.length > 0 ? docs[0] : null;
-    res.json(result);
-  });
+standings.get('/standings-by-id', async (req, res) => {
+  const competitionId = Number(req.query.competition);
+  const queryDate = req.query?.date ? String(req.query.date) : null;
+
+  const docs = await getStandings(competitionId, queryDate);
+  res.json(docs);
 });
 
-standings.get('/get-top-five', async (req, res) => {
-  await getTopFiveStandings(req, res, (docs) => {
-    res.json(docs);
-  });
+standings.get('/start-top-five', async (req, res) => {
+  const date = String(req.query.date);
+  const docs = await getTopFiveStandings(date);
+  res.json(docs);
 });
 
-standings.get('/get-fixture', async (req, res) => {
+standings.get('/match-standings', async (req, res) => {
   const teamIds = req.query.teamIds as string; // comma separated team ids
   const competitionId = Number(req.query.competition);
   const doc = await getFixtureStandings(teamIds, competitionId);

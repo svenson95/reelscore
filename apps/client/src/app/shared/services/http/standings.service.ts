@@ -27,11 +27,10 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   ): Observable<StandingsDTO> {
     let params = new HttpParams();
     if (date) {
-      const dateString = date.substring(0, 10);
-      params = params.append('date', dateString);
+      params = params.append('date', date.split('T')[0]);
     }
-    if (id) params = params.append('league', id);
-    return this.http.get<StandingsDTO>(this.BASE_URL + '/get', {
+    if (id) params = params.append('competition', id);
+    return this.http.get<StandingsDTO>(this.BASE_URL + '/standings-by-id', {
       params,
     });
   }
@@ -39,7 +38,7 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
   getAllStandings(date: DateString): Observable<StandingsDTO[]> {
     const dateString = date.substring(0, 10);
     const params = new HttpParams().append('date', dateString);
-    return this.http.get<StandingsDTO[]>(this.BASE_URL + '/get-top-five', {
+    return this.http.get<StandingsDTO[]>(this.BASE_URL + '/start-top-five', {
       params,
     });
   }

@@ -18,7 +18,7 @@ export class AbstractedHttpNextFixturesService extends HttpNextFixturesService {
   http = inject(HttpClient);
 
   getNextFixturesForCompetition(id: CompetitionId): Observable<FixtureDTO[][]> {
-    return this.http.get<FixtureDTO[][]>(this.BASE_URL + '/get-next', {
+    return this.http.get<FixtureDTO[][]>(this.BASE_URL + '/competition-next', {
       params: new HttpParams().set('competition', id),
     });
   }

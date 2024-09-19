@@ -18,7 +18,7 @@ export class AbstractedHttpFixtureStatisticsService extends HttpFixtureStatistic
 
   getFixtureStatistics(id: FixtureId): Observable<RapidStatisticsDTO | null> {
     const params = new HttpParams().set('fixtureId', String(id));
-    return this.http.get<RapidStatisticsDTO | null>(this.BASE_URL + '/get', {
+    return this.http.get<RapidStatisticsDTO | null>(this.BASE_URL + '', {
       params,
     });
   }

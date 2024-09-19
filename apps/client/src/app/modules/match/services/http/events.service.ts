@@ -19,7 +19,7 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
   getFixtureEvents(id: FixtureId): Observable<RapidEventsDTO | undefined> {
     const params = new HttpParams().set('fixtureId', String(id));
     return this.http
-      .get<RapidEventsDTO | null>(this.BASE_URL + '/get', {
+      .get<RapidEventsDTO | null>(this.BASE_URL + '', {
         params,
       })
       .pipe(map((d) => d ?? undefined));

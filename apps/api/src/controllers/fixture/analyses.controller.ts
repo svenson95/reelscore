@@ -10,7 +10,7 @@ import {
 } from '@lib/models';
 import { APP_DATA, findDocument } from '../../middleware';
 import { FixtureEvents, Fixtures, Standings } from '../../models';
-import { findLatestFixtures } from '../fixtures.controller';
+import { findLatestFixtures } from '../fixtures';
 
 export const getFixtureAnalyses = async (fixtureId): Promise<AnalysesDTO> => {
   const fixture = await Fixtures.findOne({
@@ -43,7 +43,7 @@ const getPlayersWithStreakForTeam = async (
   return [
     ...new Set(
       players
-        .flatMap((sc) => sc.flatMap((s) => checkIfPlayerScored(scorers, s)))
+        .flatMap((sc) => sc.flatMap((s) => getPlayerWithGoalStreak(scorers, s)))
         .filter((scorer) => scorer !== null)
     ),
   ];
@@ -80,7 +80,7 @@ const getGameGoals = async (
     .map((event) => event.player.name);
 };
 
-const checkIfPlayerScored = (
+const getPlayerWithGoalStreak = (
   games: GoalScorers[],
   player: PlayerName
 ): PlayerName | null => {

@@ -1,5 +1,4 @@
 export * from './cron-logs';
-export * from './fixture/events';
-export * from './fixture/statistics';
+export * from './fixture';
 export * from './fixtures';
 export * from './standings';
