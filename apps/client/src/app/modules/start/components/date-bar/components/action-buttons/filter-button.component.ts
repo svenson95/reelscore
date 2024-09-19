@@ -68,7 +68,7 @@ import { CompetitionId } from '@lib/models';
     >
       <mat-icon>filter_list</mat-icon>
     </button>
-    <mat-menu #menu="matMenu" class="filter-menu">
+    <mat-menu #menu="matMenu" class="filter-menu" xPosition="before">
       @for (group of groups; track group.label) {
       <button mat-menu-item class="group-title" disabled>
         <span>{{ group.label }}</span>
