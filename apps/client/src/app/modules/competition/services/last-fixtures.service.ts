@@ -24,7 +24,10 @@ export class AbstractedHttpLastFixturesService extends HttpLastFixturesService {
   ): Observable<FixtureDTO[][]> {
     const options = { params: new HttpParams().set('competition', id) };
     if (showAll) options.params = options.params.set('showAll', 'true');
-    return this.http.get<FixtureDTO[][]>(this.BASE_URL + '/get-last', options);
+    return this.http.get<FixtureDTO[][]>(
+      this.BASE_URL + '/competition-last',
+      options
+    );
   }
 }
 

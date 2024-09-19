@@ -24,7 +24,7 @@ export class AbstractedHttpFixtureStandingsService extends HttpFixtureStandingsS
     const params = new HttpParams()
       .set('teamIds', teamIds)
       .set('competition', competition);
-    return this.http.get<StandingsDTO>(this.BASE_URL + '/get-fixture', {
+    return this.http.get<StandingsDTO>(this.BASE_URL + '/match-standings', {
       params,
     });
   }

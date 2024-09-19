@@ -8,7 +8,7 @@ import {
   StatisticItemType,
 } from '@lib/models';
 import { Fixtures, FixturesStatistics } from '../../models';
-import { findLatestFixtures } from '../fixtures.controller';
+import { findLatestFixtures } from '../fixtures';
 
 export const getFixtureEvaluations = async (req, res, next) => {
   const fixtureId = req.query.fixture;

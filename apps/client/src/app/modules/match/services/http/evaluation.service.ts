@@ -17,7 +17,7 @@ export class AbstractedHttpEvaluationsService extends HttpEvaluationsService {
 
   getEvaluations(fixtureId: FixtureId): Observable<EvaluationDTO> {
     const params = new HttpParams().set('fixture', fixtureId);
-    return this.http.get<EvaluationDTO>(this.BASE_URL + '/get', {
+    return this.http.get<EvaluationDTO>(this.BASE_URL + '', {
       params,
     });
   }

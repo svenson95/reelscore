@@ -19,7 +19,7 @@ export class AbstractedHttpLatestFixturesService extends HttpLatestFixturesServi
 
   getLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
     const params = new HttpParams().set('fixture', fixtureId);
-    return this.http.get<LatestFixturesDTO>(this.BASE_URL + '/get-latest', {
+    return this.http.get<LatestFixturesDTO>(this.BASE_URL + '/match-latest', {
       params,
     });
   }

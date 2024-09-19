@@ -9,32 +9,32 @@ import {
 
 export const fixtures = express.Router();
 
-fixtures.get('/get-by-id', async (req, res) => {
+fixtures.get('/by-id', async (req, res) => {
   const fixtureId = String(req.query.fixture);
   const docs = await getFixturesById(fixtureId);
   return res.json(docs);
 });
 
-fixtures.get('/get-by-date', async (req, res) => {
+fixtures.get('/by-date', async (req, res) => {
   const date = String(req.query.date);
   const docs = await getFixturesByDate(date);
   return res.json(docs);
 });
 
-fixtures.get('/get-latest', async (req, res) => {
+fixtures.get('/match-latest', async (req, res) => {
   const fixtureId = String(req.query.fixture);
   const docs = await getLatestFixtures(fixtureId);
   res.json(docs);
 });
 
-fixtures.get('/get-last', async (req, res) => {
+fixtures.get('/competition-last', async (req, res) => {
   const id = Number(req.query.competition);
   const showAll = req.query.showAll === 'true';
   const docs = await getFixturesForCompetition(id, 'last', showAll);
   res.json(docs);
 });
 
-fixtures.get('/get-next', async (req, res) => {
+fixtures.get('/competition-next', async (req, res) => {
   const id = Number(req.query.competition);
   const showAll = req.query.showAll === 'true';
   const docs = await getFixturesForCompetition(id, 'next', showAll);

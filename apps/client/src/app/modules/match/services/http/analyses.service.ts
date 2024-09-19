@@ -16,7 +16,7 @@ export class AbstractedHttpFixtureAnalysesService extends HttpFixtureAnalysesSer
 
   getFixtureAnalyses(id: FixtureId): Observable<AnalysesDTO> {
     const params = new HttpParams().set('fixture', String(id));
-    return this.http.get<AnalysesDTO>(this.BASE_URL + '/get', {
+    return this.http.get<AnalysesDTO>(this.BASE_URL + '', {
       params,
     });
   }
