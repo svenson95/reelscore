@@ -42,7 +42,7 @@ const getType = (value: CompetitionRound): CompetitionRoundType => {
   return type ?? '';
 };
 
-const roundString = (round: CompetitionRound): CompetitionRound => {
+const roundNumber = (round: CompetitionRound): CompetitionRound => {
   const idx = round.lastIndexOf('-') + 2;
   return round.slice(idx, round.length);
 };
@@ -61,7 +61,7 @@ const translateDefault = (
   switch (type) {
     case 'Regular Season':
     case 'League Stage':
-      return `${roundString(value)}. Spieltag`;
+      return `${roundNumber(value)}. Spieltag`;
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
@@ -100,7 +100,7 @@ const translateHeader = (
   switch (type) {
     case 'Regular Season':
     case 'League Stage':
-      return `${roundString(value)}. Spieltag`;
+      return `${roundNumber(value)}. Spieltag`;
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
@@ -114,7 +114,7 @@ const translateHeader = (
     case '3rd Qualifying Round':
       return 'Qualifikation #3';
     case 'League':
-      return `${roundString(value)}. Spieltag`;
+      return `${roundNumber(value)}. Spieltag`;
     case 'Preliminary Round':
       return 'Vorrunde';
     case 'Play-offs':
