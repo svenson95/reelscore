@@ -30,7 +30,7 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    main { @apply flex p-fb-padding-3; }
+    main { @apply p-fb-padding-3; }
     reelscore-logo { 
       transform: translate(-50%, -50%);
       position: absolute;
