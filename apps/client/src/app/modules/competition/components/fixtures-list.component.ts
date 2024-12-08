@@ -25,7 +25,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
     OptimizedImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col bg-white; }
+    :host { @apply flex flex-col; }
     p { @apply text-fb-font-size-body-2 font-medium; }
     section.round { 
       @apply flex items-center gap-4 p-2 border-b-[1px];

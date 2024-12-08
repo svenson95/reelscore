@@ -46,7 +46,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     mat-form-field.mat-mdc-form-field-type-mat-select {
       --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-1);
       --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
-      --mdc-filled-text-field-hover-label-text-color: var(--fb-color-white-2);
+      --mdc-filled-text-field-hover-label-text-color: var(--fb-color-text-1);
     }
 
     mat-select { 
