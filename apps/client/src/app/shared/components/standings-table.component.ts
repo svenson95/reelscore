@@ -25,14 +25,14 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
   styles: `
     :host {
       @apply flex overflow-hidden border;
-      border-color: var(--mat-standard-button-toggle-divider-color);
+      border-color: var(--mdc-outlined-button-outline-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
 
     table {
       --mat-table-header-headline-size: var(--fb-font-size-body-2);
       --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
-      --mat-table-header-container-height: 41px;
+      --mat-table-header-container-height: 42px;
       --mat-table-row-item-container-height: 33px;
     }
 
@@ -47,7 +47,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
     }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.rank-column { width: 40px; }
+      &.rank-column { width: 42px; }
 
       &.number-column {
         @apply px-1;

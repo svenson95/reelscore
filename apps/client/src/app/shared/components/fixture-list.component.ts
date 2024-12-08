@@ -28,7 +28,7 @@ import { ResultLabelComponent } from './result-label.component';
     ul { @apply w-full; }
     li { @apply bg-white; }
     li > a { @apply flex items-stretch; }
-    li { @apply border-b-[1px]; }
+    li:not(:last-child) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
     .time { 
       @apply justify-center items-center min-w-[50px] bg-fb-color-white-2 text-fb-font-size-small; 

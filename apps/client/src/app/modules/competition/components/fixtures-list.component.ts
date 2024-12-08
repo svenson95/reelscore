@@ -27,14 +27,18 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
   styles: `
     :host { @apply flex flex-col; }
     p { @apply text-fb-font-size-body-2 font-medium; }
+    section.round, .day {
+      @apply border-[1px];
+      border-color: var(--mdc-outlined-button-outline-color);
+    }
     section.round { 
-      @apply flex items-center gap-4 p-2 mb-4 border-[1px];
+      @apply flex items-center gap-4 p-2 mb-4;
       reelscore-optimized-image { min-width: 34px; min-height: 26px; }
     }
     section.days { 
       @apply flex flex-col gap-5; 
       .group-date { 
-        @apply py-2 px-4 border-[1px]; 
+        @apply py-2 px-4 border-b-[1px]; 
       }
     }
   `,
