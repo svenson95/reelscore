@@ -32,7 +32,7 @@ import {
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply w-full; }
+    :host { @apply flex flex-col w-full; }
     :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
   `,
   template: `
