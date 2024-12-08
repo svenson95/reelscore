@@ -14,7 +14,7 @@ import {
   styles: `
     :host { @apply relative; }
     reelscore-back-button { @apply absolute top-0 left-0 z-10; }
-    reelscore-optimized-image { @apply w-fit bg-white rounded-full p-8 mx-auto mb-5; }
+    reelscore-optimized-image { @apply p-8 mx-auto mb-5; }
   `,
   template: `
     <reelscore-back-button />
