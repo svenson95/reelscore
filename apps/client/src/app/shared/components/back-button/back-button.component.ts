@@ -19,14 +19,14 @@ import { MatIconModule } from '@angular/material/icon';
     }
     
     button.back-button { 
-      --mdc-outlined-button-container-height: 40px;
+      --mdc-outlined-button-container-height: 36px;
       @apply p-0 min-w-[36px]; 
       
       mat-icon { @apply text-[24px] w-[24px] h-[24px] mr-0; }
     }
   `,
   template: `
-    <button class="back-button" mat-button (click)="navigateBack()">
+    <button class="back-button" mat-stroked-button (click)="navigateBack()">
       <mat-icon>chevron_left</mat-icon>
     </button>
   `,

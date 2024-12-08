@@ -25,6 +25,7 @@ module.exports = {
         'fb-color-green-2': 'var(--fb-color-green-2)',
         'fb-color-text-1': 'var(--fb-color-text-1)',
         'fb-color-text-2': 'var(--fb-color-text-2)',
+        'fb-red': 'var(--fb-color-red)',
         'fb-win': 'var(--fb-color-win)',
         'fb-lose': 'var(--fb-color-lose)',
       },
@@ -55,7 +56,7 @@ module.exports = {
         '.fb-as-label': {
           background: 'white',
           '--mdc-outlined-button-disabled-label-text-color':
-            'var(--fb-color-text-1)',
+            'var(--fb-color-text-2)',
         },
       };
 

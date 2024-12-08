@@ -5,11 +5,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { @apply select-none text-white text-fb-font-size-body-1 tracking-normal; }
+    :host { @apply select-none text-fb-font-size-body-1 tracking-wide; }
     :host([disabled]) { @apply grayscale opacity-35; }
+    span:first-of-type { @apply text-fb-red; }
   `,
   template: `
-    <span class="font-bold">reel</span>
+    <span>reel</span>
     <span>score</span>
   `,
 })

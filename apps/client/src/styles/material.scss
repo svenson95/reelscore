@@ -38,13 +38,13 @@ $reelscore-theme: mat.m2-define-light-theme(
 @include mat.all-component-themes($reelscore-theme);
 
 :root {
-  --mat-select-enabled-trigger-text-color: var(--fb-color-white);
+  // --mat-select-enabled-trigger-text-color: var(--fb-color-white);
   --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
   --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
-  --mat-select-enabled-arrow-color: var(--fb-color-text-2);
-  --mat-select-disabled-arrow-color: var(--fb-color-text-1);
-  --mdc-filled-text-field-hover-label-text-color: var(--fb-color-white);
-  --mdc-filled-text-field-focus-label-text-color: var(--fb-color-white);
+  --mat-select-enabled-arrow-color: var(--fb-color-text-1);
+  --mat-select-disabled-arrow-color: var(--fb-color-text-2);
+  // --mdc-filled-text-field-hover-label-text-color: var(--fb-color-black);
+  // --mdc-filled-text-field-focus-label-text-color: var(--fb-color-black);
   --mat-standard-button-toggle-shape: var(--fb-size-border-radius);
   --mdc-outlined-button-container-shape: var(--fb-size-border-radius);
   --mat-outlined-button-pressed-state-layer-opacity: 0;
@@ -101,7 +101,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
   .mat-mdc-tab-header {
     --mat-tab-header-label-text-size: var(--fb-font-size-body-2);
-    @apply border-b-[1px] bg-white;
+    @apply border-b-[1px];
   }
 
   .mat-mdc-tab {

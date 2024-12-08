@@ -72,16 +72,16 @@ import {
       padding-top: 1.25rem;
       position: sticky;
       top: 0;
-      background: var(--fb-color-bg-black);
+      background: white;
       z-index: 100;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
-      --mdc-outlined-button-container-height: 40px;
+      --mdc-outlined-button-container-height: 36px;
       @apply fb-as-label; 
     }
     :host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active {
-      @apply flex flex-col gap-2 bg-white; 
+      @apply flex flex-col gap-2; 
     }
     .spacer {
       flex: 1;
@@ -96,16 +96,16 @@ import {
     <section class="header">
       <div>
         <reelscore-back-button />
-        <button mat-button disabled>
+        <button mat-stroked-button disabled>
           {{ data()!.fixture.date | date : 'dd.MM.yy' }}
         </button>
 
         <div class="spacer"></div>
 
-        <button mat-button disabled>
+        <button mat-stroked-button disabled>
           {{ data()!.fixture.date | date : 'ccc' }}
         </button>
-        <button mat-button disabled>
+        <button mat-stroked-button disabled>
           {{ data()!.fixture.date | date : 'HH:mm' }}
         </button>
       </div>
@@ -204,7 +204,7 @@ export class MatchComponent extends RouterView implements OnChanges {
   isMobile = this.breakpointObserverService.isMobile;
 
   fixtureId = input.required<FixtureId>();
-  leagueUrl = input.required<CompetitionUrl>();
+  competitionUrl = input.required<CompetitionUrl>();
 
   hasNoStandings = isCompetitionWithoutStandings;
   hasMultipleGroups = isCompetitionWithMultipleGroups;
@@ -213,7 +213,7 @@ export class MatchComponent extends RouterView implements OnChanges {
   invalidUrlEffect = effect(() => {
     const fixture = this.data();
     const league = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.url === this.leagueUrl()
+      (c) => c.url === this.competitionUrl()
     );
     if (!fixture || !league) return;
 
@@ -233,6 +233,6 @@ export class MatchComponent extends RouterView implements OnChanges {
       (c) => c.id === leagueId
     );
     if (!validLeague) throw Error('League not found');
-    this.router.navigate(['leagues', validLeague.url, 'match', fixtureId]);
+    this.router.navigate(['competition', validLeague.url, 'match', fixtureId]);
   }
 }
