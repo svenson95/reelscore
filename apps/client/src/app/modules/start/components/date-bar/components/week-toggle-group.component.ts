@@ -55,7 +55,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
       hideSingleSelectionIndicator
       [value]="selectedDay()"
     >
-      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Gestern">
+      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Vorheriger Tag">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
       @for(day of weekdays(); track day) {
@@ -67,7 +67,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
         {{ day | date : 'ccc' }}
       </mat-button-toggle>
       }
-      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Morgen">
+      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Nächster Tag">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
