@@ -22,7 +22,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       .mdc-text-field--filled .mdc-line-ripple::before { @apply border-b-0; }
     }
 
-    mat-form-field { @apply w-[220px]; }
+    mat-form-field { @apply w-[220px] bg-white; }
     ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
       @apply max-h-[70vh];
 
@@ -52,7 +52,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     mat-select { 
       --mat-select-trigger-text-size: var(--fb-font-size-body-1);
       --mat-select-enabled-arrow-color: var(--fb-color-text-2);
-      --mat-select-focused-arrow-color: var(--fb-color-white-2);
+      --mat-select-focused-arrow-color: var(--fb-color-black);
     }
 
     mat-option {
