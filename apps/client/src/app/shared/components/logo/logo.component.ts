@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styles: `
     :host { @apply select-none text-fb-font-size-body-1 tracking-wide; }
     :host([disabled]) { @apply grayscale opacity-35; }
-    span:first-of-type { @apply text-fb-red; }
   `,
   template: `
     <span>reel</span>

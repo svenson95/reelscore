@@ -14,8 +14,9 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply py-fb-padding-1 px-fb-padding-3 border-b-[1px]; }
+    :host { @apply py-fb-padding-1 px-fb-padding-3 border-b-[1px] bg-fb-red; }
     .wrapper { @apply flex items-center justify-between; }
+    a reelscore-logo { @apply text-white; }
   `,
   template: `
     <div class="wrapper">
