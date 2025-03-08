@@ -17,12 +17,14 @@ import { DateString, TODAY_ISO_STRING } from '@app/shared';
     button { 
       --mdc-outlined-button-container-height: 36px;
       --mdc-text-button-disabled-label-text-color: var(--fb-color-text-2);
+      --mdc-protected-button-container-shape: var(--fb-size-border-radius);
+      border: 1px solid var(--mdc-outlined-button-outline-color);
 
       &:disabled { @apply fb-as-label; }
     }
   `,
   template: `
-    <button mat-stroked-button (click)="setToday()" [disabled]="isToday()">
+    <button mat-button (click)="setToday()" [disabled]="isToday()">
       Heute
     </button>
   `,
