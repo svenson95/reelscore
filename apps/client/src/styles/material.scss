@@ -53,8 +53,10 @@ $reelscore-theme: mat.m2-define-light-theme(
   --mdc-filled-text-field-container-color: transparent;
   --mat-datepicker-calendar-container-shape: var(--fb-size-border-radius);
   --mdc-text-button-container-shape: var(--fb-size-border-radius);
-  --mat-datepicker-calendar-container-elevation-shadow: none;
-  --mat-select-container-elevation-shadow: none;
+  --mat-datepicker-calendar-container-elevation-shadow: var(
+    --fb-size-box-shadow
+  );
+  --mat-select-container-elevation-shadow: var(--fb-size-box-shadow);
   --mat-text-button-horizontal-padding: 14px;
   --mat-text-button-with-icon-horizontal-padding: 14px;
 
