@@ -204,6 +204,14 @@ export const longTeamName = (value: string): string => {
     case 'Inter':
       return 'Inter Mailand';
 
+    // Eredivisie
+    case 'GO Ahead Eagles':
+      return 'Go Ahead Eagles';
+    case 'Heracles':
+      return 'Heracles Almelo';
+    case 'Waalwijk':
+      return 'RKC Waalwijk';
+
     // Europa
     case 'Slavia Praha':
       return 'Slavia Prag';
