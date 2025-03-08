@@ -44,4 +44,7 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: 'Coupe de la Ligue',
   // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'Coupe de France',
   // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'Trophée des Champions',
+
+  // Niederlande
+  [CompetitionCode.EREDIVISIE]: 'Eredivisie',
 };
