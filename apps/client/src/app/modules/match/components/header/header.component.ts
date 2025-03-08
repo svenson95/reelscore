@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { getTeamLogo } from '@app/shared';
-import { FixtureDTO, FixtureHighlights, isFinished } from '@lib/models';
+import { FixtureDTO, FixtureHighlights } from '@lib/models';
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
@@ -92,7 +92,10 @@ export class MatchHeaderComponent implements OnInit {
   highlights = input.required<FixtureHighlights | undefined>();
   showHighlights = signal(false);
 
-  isFinished = computed(() => isFinished(this.data().fixture));
+  isFinished = computed(() => {
+    const finishedValues = ['FT', 'AET', 'PEN'];
+    return finishedValues.some((v) => v === this.data().fixture.status.short);
+  });
 
   isNotGoalLess = computed(() => {
     return (
