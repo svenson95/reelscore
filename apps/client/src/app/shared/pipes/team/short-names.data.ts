@@ -198,6 +198,8 @@ export const shortTeamName = (value: string): string => {
       return 'Rotterdam';
     case 'Almere City FC':
       return 'Almere';
+    case 'NEC Nijmegen':
+      return 'Nijmegen';
 
     // Europa
     case 'Slavia Praha':
