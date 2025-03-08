@@ -58,6 +58,13 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         url: COMPETITION_URL.FRANCE_LIGUE_1,
         size: 18,
       },
+      {
+        image: getCompetitionLogo(COMPETITION_ID.EREDIVISIE),
+        label: COMPETITION_LABEL.EREDIVISIE,
+        id: COMPETITION_ID.EREDIVISIE,
+        url: COMPETITION_URL.EREDIVISIE,
+        size: 18,
+      },
     ],
   },
   {

@@ -41,4 +41,7 @@ export enum CompetitionCode {
   // 'FRANCE_COUPE_DE_LA_LIGUE' = 'FRANCE_COUPE_DE_LA_LIGUE', -> wurde abgeschafft seit saison 19/20
   // 'FRANCE_COUPE_DE_FRANCE' = 'FRANCE_COUPE_DE_FRANCE',
   // 'FRANCE_TROPHEE_DES_CHAMPIONS' = 'FRANCE_TROPHEE_DES_CHAMPIONS',
+
+  // Niederlande
+  'EREDIVISIE' = 'EREDIVISIE',
 }

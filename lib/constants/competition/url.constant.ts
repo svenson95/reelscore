@@ -44,4 +44,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: '65',
   // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'coupe-de-france',
   // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'trophee-des-champions',
+
+  // Niederlande
+  [CompetitionCode.EREDIVISIE]: 'eredivisie',
 };

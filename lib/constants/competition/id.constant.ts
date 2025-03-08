@@ -44,4 +44,6 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: 65,
   // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 66,
   // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 526,
+
+  [CompetitionCode.EREDIVISIE]: 88,
 };
