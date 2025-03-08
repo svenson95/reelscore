@@ -119,7 +119,7 @@ import {
     </section>
 
     <section class="data">
-      <mat-tab-group>
+      <mat-tab-group dynamicHeight>
         <mat-tab>
           <ng-template mat-tab-label>
             @if (isMobile()) {
