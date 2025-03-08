@@ -371,4 +371,7 @@ export const COMPETITION_ROUNDS: CompetitionMatchDays = {
   // 65: FR_COUPE_DE_LA_LIGUE,
   66: FR_COUPE_DE_FRANCE,
   526: FR_TROPHEE_DES_CHAMPIONS,
+
+  // Niederlande
+  88: SMALL_LEAGUE_ROUND_STRINGS,
 };
