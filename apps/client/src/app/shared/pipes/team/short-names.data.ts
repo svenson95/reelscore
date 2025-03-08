@@ -189,6 +189,16 @@ export const shortTeamName = (value: string): string => {
     case 'Napoli':
       return 'Neapel';
 
+    // Eredivisie
+    case 'GO Ahead Eagles':
+      return 'GA Eagles';
+    case 'Fortuna Sittard':
+      return 'Sittard';
+    case 'Sparta Rotterdam':
+      return 'Rotterdam';
+    case 'Almere City FC':
+      return 'Almere';
+
     // Europa
     case 'Slavia Praha':
       return 'Prag';
