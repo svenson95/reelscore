@@ -15,24 +15,18 @@ import { Goals } from '@lib/models';
     :host { @apply flex justify-center items-center gap-[0.15rem]; }
   `,
   template: `
-    @if(isDefined()) {
-    <span>{{ result()?.home }}</span>
-    } @if (isPostponed()) {
-    <span> @if (showPostponed()) { － } </span>
-    } @else {
-    <span class="result-divider">
-      @if (isNotStarted()) { vs } @else { : }
-    </span>
-    } @if(isDefined()) {
-    <span>{{ result()?.away }}</span>
-    }
+    <span>{{ result().home }}</span>
+    @if (isPostponed()) { @if (showPostponedText()) {
+    <span class="text-fb-font-size-small"> Abgesagt </span> } @else { － } }
+    @else if (isNotStarted()) { vs } @else { : }
+    <span>{{ result().away }}</span>
   `,
 })
 export class ResultLabelComponent {
-  result = input.required<Goals | null>();
+  result = input.required<Goals>();
   status = input.required<string>();
   isNotStarted = input<boolean>();
-  showPostponed = input<boolean>(false);
+  showPostponedText = input<boolean>(false);
 
   isDefined = computed(() => this.result()?.home !== null);
   isPostponed = computed(() => this.status() === 'PST');
