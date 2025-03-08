@@ -61,7 +61,8 @@
       "options": {
         "buildTargetName": "build",
         "serveTargetName": "serve",
-        "previewTargetName": "preview"
+        "previewTargetName": "preview",
+        "generatePackageJson": true
       }
     }
   ],
