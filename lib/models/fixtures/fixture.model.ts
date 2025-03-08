@@ -4,7 +4,7 @@ import { Team } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
 import { EventDTO } from './events.model';
 
-export type StatusLong =
+type StatusLong =
   | 'Time To Be Defined'
   | 'Not Started'
   | 'First Half, Kick Off'
@@ -22,7 +22,7 @@ export type StatusLong =
   | 'Technical Loss'
   | 'WalkOver'
   | 'In Progress';
-export type StatusShort =
+type StatusShort =
   | 'TBD'
   | 'NS'
   | '1H'
@@ -48,22 +48,19 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
-export type NotStartedMatchStatus = 'TBD' | 'NS';
-export const NotStartedMatchStatusValues: NotStartedMatchStatus[] = [
-  'TBD',
-  'NS',
-];
+type NotStartedMatchStatus = 'TBD' | 'NS';
+const NotStartedMatchStatusValues: NotStartedMatchStatus[] = ['TBD', 'NS'];
+export const isNotStarted = (fixture: Fixture) =>
+  NotTypeOf(fixture, NotStartedMatchStatusValues);
 
-export function isNotStarted(fixture: Fixture) {
-  return NotStartedMatchStatusValues.some((v) => v === fixture.status.short);
+type FinishedMatchStatus = 'FT' | 'AET' | 'PEN';
+const FinishedMatchStatusValues: FinishedMatchStatus[] = ['FT', 'AET', 'PEN'];
+export const isFinished = (fixture: Fixture) =>
+  NotTypeOf(fixture, FinishedMatchStatusValues);
+
+function NotTypeOf(fixture: Fixture, types: StatusShort[]): boolean {
+  return types.some((value) => value === fixture.status.short);
 }
-
-export type FinishedMatchStatus = 'FT' | 'AET' | 'PEN';
-export const FinishedMatchStatusValues: FinishedMatchStatus[] = [
-  'FT',
-  'AET',
-  'PEN',
-];
 
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
