@@ -3,7 +3,6 @@ import {
   FixtureDTO,
   FixturePerformance,
   FixtureResult,
-  isNotStarted,
   StatisticDTO,
   StatisticItem,
   StatisticItemType,
@@ -106,7 +105,10 @@ const analyzePerformances = async (
     if (!stats || teams?.length === 0) return 'NO_STATISTICS_AVAILABLE';
 
     const { status } = fixture.fixture;
-    const isUpcomingMatch = isNotStarted(fixture.fixture);
+    const notStartedValues = ['TBD', 'NS'];
+    const isUpcomingMatch = notStartedValues.some(
+      (v) => v === fixture.fixture.status.short
+    );
     if (isUpcomingMatch) return 'MATCH_NOT_STARTED';
 
     const isMatchPostponed = status.short === 'PST';

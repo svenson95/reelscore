@@ -48,20 +48,6 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
-type NotStartedMatchStatus = 'TBD' | 'NS';
-const NotStartedMatchStatusValues: NotStartedMatchStatus[] = ['TBD', 'NS'];
-export const isNotStarted = (fixture: Fixture) =>
-  NotTypeOf(fixture, NotStartedMatchStatusValues);
-
-type FinishedMatchStatus = 'FT' | 'AET' | 'PEN';
-const FinishedMatchStatusValues: FinishedMatchStatus[] = ['FT', 'AET', 'PEN'];
-export const isFinished = (fixture: Fixture) =>
-  NotTypeOf(fixture, FinishedMatchStatusValues);
-
-function NotTypeOf(fixture: Fixture, types: StatusShort[]): boolean {
-  return types.some((value) => value === fixture.status.short);
-}
-
 export type FixtureId = number | string; // TODO: refactor to string only
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };

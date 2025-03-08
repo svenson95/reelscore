@@ -4,12 +4,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { COMPETITION_URL } from '@lib/constants';
-import {
-  CompetitionId,
-  CompetitionUrl,
-  FixtureDTO,
-  isNotStarted,
-} from '@lib/models';
+import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../constants';
 import { getTeamLogo } from '../models';
@@ -55,54 +50,48 @@ import { ResultLabelComponent } from './result-label.component';
   `,
   template: `
     <ul>
-      @for(item of fixtures(); track item.fixture.id) {
+      @for(match of fixtures(); track match.fixture.id) {
       <li>
-        <a matRipple [routerLink]="linkToMatch(item)">
-          <section
-            class="time"
-            [class.is-upcoming]="isNotStarted(item.fixture)"
-          >
+        <a matRipple [routerLink]="linkToMatch(match)">
+          <section class="time" [class.is-upcoming]="isNotStarted(match)">
             <span class="team-name-label">
-              {{ item.fixture.date | date : 'HH:mm' }}
+              {{ match.fixture.date | date : 'HH:mm' }}
             </span>
           </section>
           <section class="teams">
             <div>
               <span
                 class="team-name"
-                [class.line-through]="isTeamEliminated(item, 'home')"
+                [class.line-through]="isTeamEliminated(match, 'home')"
               >
-                {{ item.teams.home.name | teamName : 'short' }}
+                {{ match.teams.home.name | teamName : 'short' }}
               </span>
               <reelscore-optimized-image
-                [source]="getTeamLogo(item.teams.home.id)"
+                [source]="getTeamLogo(match.teams.home.id)"
                 alternate="home logo"
                 width="14"
                 height="14"
               />
             </div>
-            <div
-              class="result"
-              [class.is-upcoming]="isNotStarted(item.fixture)"
-            >
+            <div class="result" [class.is-upcoming]="isNotStarted(match)">
               <reelscore-result-label
-                [result]="item.goals"
-                [status]="item.fixture.status.short"
-                [isNotStarted]="isNotStarted(item.fixture)"
+                [result]="match.goals"
+                [status]="match.fixture.status.short"
+                [isNotStarted]="isNotStarted(match)"
               />
             </div>
             <div>
               <reelscore-optimized-image
-                [source]="getTeamLogo(item.teams.away.id)"
+                [source]="getTeamLogo(match.teams.away.id)"
                 alternate="away logo"
                 width="14"
                 height="14"
               />
               <span
                 class="team-name"
-                [class.line-through]="isTeamEliminated(item, 'away')"
+                [class.line-through]="isTeamEliminated(match, 'away')"
               >
-                {{ item.teams.away.name | teamName : 'short' }}
+                {{ match.teams.away.name | teamName : 'short' }}
               </span>
             </div>
           </section>
@@ -118,7 +107,10 @@ export class FixtureListComponent {
 
   getTeamLogo = getTeamLogo;
   linkToMatch = linkToMatch;
-  isNotStarted = isNotStarted;
+  isNotStarted = (fixture: FixtureDTO): boolean => {
+    const notStartedValues = ['TBD', 'NS'];
+    return notStartedValues.some((v) => v === fixture.fixture.status.short);
+  };
 
   isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
     const koPhaseRounds = [
