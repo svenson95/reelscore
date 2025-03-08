@@ -48,6 +48,16 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
+export type NotStartedMatchStatus = 'TBD' | 'NS';
+export const NotStartedMatchStatusValues: NotStartedMatchStatus[] = [
+  'TBD',
+  'NS',
+];
+
+export function isNotStarted(fixture: Fixture) {
+  return NotStartedMatchStatusValues.some((v) => v === fixture.status.short);
+}
+
 export type FinishedMatchStatus = 'FT' | 'AET' | 'PEN';
 export const FinishedMatchStatusValues: FinishedMatchStatus[] = [
   'FT',

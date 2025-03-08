@@ -19,10 +19,12 @@ import { Goals } from '@lib/models';
     <span>{{ result()?.home }}</span>
     } @if (isPostponed()) {
     <span class="text-fb-font-size-small">
-      @if (showPostponed()) { Abgesagt } @else { － }
+      @if (showPostponed()) { Abgesagt }
     </span>
     } @else {
-    <span class="result-divider">:</span>
+    <span class="result-divider">
+      @if (isNotStarted()) { － } @else { : }
+    </span>
     } @if(isDefined()) {
     <span>{{ result()?.away }}</span>
     }
@@ -31,6 +33,7 @@ import { Goals } from '@lib/models';
 export class ResultLabelComponent {
   result = input.required<Goals | null>();
   status = input.required<string>();
+  isNotStarted = input<boolean>();
   showPostponed = input<boolean>(false);
 
   isDefined = computed(() => this.result()?.home !== null);
