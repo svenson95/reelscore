@@ -37,7 +37,7 @@ import { FixtureDTO } from '@lib/models';
       <reelscore-result-label
         [result]="data().score.fulltime"
         [status]="data().fixture.status.short"
-        [showPostponed]="true"
+        [showPostponedText]="true"
       />
     </div>
 
