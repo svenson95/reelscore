@@ -4,7 +4,12 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { COMPETITION_URL } from '@lib/constants';
-import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionUrl,
+  FixtureDTO,
+  isNotStarted,
+} from '@lib/models';
 
 import { linkToMatch } from '../constants';
 import { getTeamLogo } from '../models';
@@ -31,16 +36,20 @@ import { ResultLabelComponent } from './result-label.component';
     li:not(:last-child) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
     .time { 
-      @apply justify-center items-center min-w-[50px] bg-fb-color-white-2 text-fb-font-size-small; 
+      @apply justify-center items-center min-w-[50px] text-fb-font-size-small; 
+
+      &.is-upcoming { @apply bg-fb-color-white-2; }
     }
     .time, .result { 
       @apply flex text-center justify-center;
     }
     .result { 
-      @apply min-w-[40px] items-center gap-[0.1rem]; 
+      @apply min-w-[40px] p-2 items-center gap-[0.1rem]; 
+
+      &:not(.is-upcoming) { @apply bg-fb-color-white-2; }
     }
-    .teams { @apply w-full flex p-2 text-fb-font-size-body-2; }
-    .teams > div:not(.result) { @apply flex flex-1 items-center gap-2; }
+    .teams { @apply w-full flex text-fb-font-size-body-2; }
+    .teams > div:not(.result) { @apply flex flex-1 p-2 gap-2 items-center; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }
   `,
@@ -49,7 +58,10 @@ import { ResultLabelComponent } from './result-label.component';
       @for(item of fixtures(); track item.fixture.id) {
       <li>
         <a matRipple [routerLink]="linkToMatch(item)">
-          <section class="time">
+          <section
+            class="time"
+            [class.is-upcoming]="isNotStarted(item.fixture)"
+          >
             <span class="team-name-label">
               {{ item.fixture.date | date : 'HH:mm' }}
             </span>
@@ -69,10 +81,14 @@ import { ResultLabelComponent } from './result-label.component';
                 height="14"
               />
             </div>
-            <div class="result">
+            <div
+              class="result"
+              [class.is-upcoming]="isNotStarted(item.fixture)"
+            >
               <reelscore-result-label
                 [result]="item.goals"
                 [status]="item.fixture.status.short"
+                [isNotStarted]="isNotStarted(item.fixture)"
               />
             </div>
             <div>
@@ -101,8 +117,8 @@ export class FixtureListComponent {
   fixtures = input.required<FixtureDTO[]>();
 
   getTeamLogo = getTeamLogo;
-
   linkToMatch = linkToMatch;
+  isNotStarted = isNotStarted;
 
   isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
     const koPhaseRounds = [
