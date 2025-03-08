@@ -18,12 +18,10 @@ import { Goals } from '@lib/models';
     @if(isDefined()) {
     <span>{{ result()?.home }}</span>
     } @if (isPostponed()) {
-    <span class="text-fb-font-size-small">
-      @if (showPostponed()) { Abgesagt }
-    </span>
+    <span> @if (showPostponed()) { － } </span>
     } @else {
     <span class="result-divider">
-      @if (isNotStarted()) { － } @else { : }
+      @if (isNotStarted()) { vs } @else { : }
     </span>
     } @if(isDefined()) {
     <span>{{ result()?.away }}</span>
