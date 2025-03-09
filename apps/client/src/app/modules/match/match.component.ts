@@ -127,16 +127,17 @@ import {
             } @else { Details }
           </ng-template>
 
+          @if (fixture()) {
           <reelscore-match-fixture-data />
-          @if (!hasNoStandings(fixture()!.data.league.id) &&
+          } @if (!hasNoStandings(fixture()!.data.league.id) &&
           !isKoPhase(fixture()!.data.league.round)) {
           <reelscore-match-fixture-standings
             [standings]="standingsStore.standings()"
           />
+          } @if (evaluations()) {
+          <reelscore-match-evaluations [evaluations]="evaluations()" />
           }
-          <reelscore-match-evaluations
-            [evaluations]="evaluationsStore.evaluations()"
-          />
+
           <reelscore-match-latest-fixtures />
         </mat-tab>
 
@@ -147,34 +148,33 @@ import {
             } @else { Analysen }
           </ng-template>
 
-          <ng-template matTabContent>
-            <reelscore-match-fixture-analyses />
-          </ng-template>
+          @if (analysesStore.analyses()) {
+          <reelscore-match-fixture-analyses />
+          }
         </mat-tab>
 
-        <mat-tab [disabled]="!eventsStore.events()">
+        <mat-tab [disabled]="!events()">
           <ng-template mat-tab-label>
             @if (isMobile()) {
             <mat-icon>article</mat-icon>
             } @else { Bericht }
           </ng-template>
 
-          <ng-template matTabContent>
-            <reelscore-match-events />
-          </ng-template>
+          @if (events()) {
+          <reelscore-match-events [data]="events()!" />
+          }
         </mat-tab>
 
-        <mat-tab [disabled]="!statisticsStore.statistics()">
+        <mat-tab [disabled]="!statistics()">
           <ng-template mat-tab-label>
             @if (isMobile()) {
             <mat-icon>assessment</mat-icon>
             } @else { Statistiken }
           </ng-template>
-          <ng-template matTabContent>
-            <reelscore-match-statistics
-              [data]="statisticsStore.statistics()!"
-            />
-          </ng-template>
+
+          @if (statistics()) {
+          <reelscore-match-statistics [data]="statistics()!" />
+          }
         </mat-tab>
       </mat-tab-group>
     </section>
