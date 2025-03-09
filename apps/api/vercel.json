@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "crons": [
-    {
-      "path": "/cron",
-      "schedule": "15 6 * * *"
-    }
-  ],
   "builds": [
     {
       "src": "src/main.ts",
