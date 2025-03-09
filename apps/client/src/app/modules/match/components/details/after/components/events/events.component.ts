@@ -3,12 +3,12 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { timeTotal } from '@lib/models';
+import { EventWithResult, timeTotal } from '@lib/models';
 import { FixtureStore } from '../../../../../store';
-import { EventsStore } from '../../../../../store/events.store';
 import { MatchEventComponent } from './components';
 
 @Component({
@@ -32,8 +32,8 @@ import { MatchEventComponent } from './components';
   `,
   template: `
     <section>
-      @for (event of events(); track $index) { @if (homeTeamId(); as homeId) {
-      @if (awayTeamId(); as awayId) {
+      @for (event of data(); track $index) { @if (homeTeamId(); as homeId) { @if
+      (awayTeamId(); as awayId) {
       <div class="event-row">
         <div class="team home">
           @if (event.team.id === homeId) {
@@ -84,8 +84,7 @@ import { MatchEventComponent } from './components';
   `,
 })
 export class MatchEventsComponent {
-  es = inject(EventsStore);
-  events = this.es.events;
+  data = input.required<EventWithResult[]>();
 
   fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
