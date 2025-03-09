@@ -9,7 +9,6 @@ import express from 'express';
 import helmet from 'helmet';
 dotenv.config();
 
-import { cron } from './controllers/cron';
 import { DBHelper } from './middleware';
 import {
   fixtureAnalyses,
@@ -21,7 +20,6 @@ import {
 } from './routes';
 
 const app = express();
-app.use('/cron', cron);
 app.use(express.json());
 app.use(
   cors({

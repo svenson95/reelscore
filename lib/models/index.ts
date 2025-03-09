@@ -1,5 +1,4 @@
 export * from './competition.model';
-export * from './cron-log.model';
 export * from './fixtures';
 export * from './mongodb.model';
 export * from './player.model';
