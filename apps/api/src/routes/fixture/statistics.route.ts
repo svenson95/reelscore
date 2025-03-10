@@ -1,11 +1,14 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
-import { getFixtureStatisticsById } from '../../controllers';
+import { FixtureId } from '@lib/models';
+
+import { FixtureStatisticsController } from '../../controllers';
 
 export const fixturesStatistics = express.Router();
 
-fixturesStatistics.get('', async (req, res) => {
-  await getFixtureStatisticsById(req, res, (docs) => {
-    res.json(docs);
-  });
+fixturesStatistics.get('', async (req: Request, res: Response) => {
+  const Controller = new FixtureStatisticsController();
+  const fixtureId: FixtureId = String(req.query.fixture);
+  const statistics = await Controller.getById(fixtureId);
+  return res.json(statistics);
 });

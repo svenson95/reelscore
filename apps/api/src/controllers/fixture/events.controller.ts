@@ -1,21 +1,20 @@
-import { EventDTO } from '@lib/models';
-import { findDocument } from '../../middleware';
-import { FixtureEvents } from '../../models';
-
-export const getFixtureEventsById = async (req, res, next) => {
-  const fixtureId = req.query.fixtureId;
-  const doc = await findDocument(
-    FixtureEvents,
-    'parameters.fixture',
-    fixtureId
-  );
-
-  if (!doc || typeof doc === 'string') {
-    next(doc);
-  } else {
-    next({ ...doc, response: sortEvents(doc.response) });
-  }
-};
+import { EventDTO, FixtureId, RapidEventsDTO } from '@lib/models';
+import { FlattenMaps } from 'mongoose';
+import { FixtureEventsService } from '../../services';
 
 const time = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);
 const sortEvents = (d: EventDTO[]) => d.sort((a, b) => time(b) - time(a));
+
+export class FixtureEventsController {
+  private eventsService = new FixtureEventsService();
+
+  async getById(fixtureId: FixtureId): Promise<FlattenMaps<RapidEventsDTO>> {
+    const events = await this.eventsService.findById(fixtureId);
+
+    if (!events || typeof events === 'string') {
+      return events;
+    } else {
+      return { ...events, response: sortEvents(events.response) };
+    }
+  }
+}
