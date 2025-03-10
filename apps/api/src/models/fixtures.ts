@@ -3,6 +3,16 @@ import mongoose from 'mongoose';
 import { FixtureDTO } from '@lib/models';
 
 const fixturesSchema = new mongoose.Schema<FixtureDTO>({
+  final: {
+    firstLegResult: {
+      type: {
+        home: Number,
+        away: Number,
+      },
+      default: null,
+    },
+    winnerOfFinal: { type: Number, default: null },
+  },
   fixture: {
     id: Number,
     referee: String,

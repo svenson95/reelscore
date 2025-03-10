@@ -1,6 +1,6 @@
 import { League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
-import { Team } from '../team.model';
+import { Team, TeamId } from '../team.model';
 import { FixturePrediction } from './evaluated-fixture.model';
 import { EventDTO } from './events.model';
 
@@ -80,6 +80,11 @@ export type Score = {
   penalty: Goals;
 };
 
+export type FixtureFinal = {
+  firstLegResult: Goals | null;
+  winnerOfFinal: TeamId | null;
+};
+
 export type FixtureDTO = {
   _id: MongoDbId;
   fixture: Fixture;
@@ -88,6 +93,7 @@ export type FixtureDTO = {
   goals: Goals;
   score: Score;
   prediction: FixturePrediction;
+  final: FixtureFinal;
 };
 
 export interface LatestFixturesDTO {
@@ -96,6 +102,7 @@ export interface LatestFixturesDTO {
 }
 
 export type FixtureHighlights = EventDTO[];
+// TODO refactor naming GetFixtureDTO -> FixtureWithHighlights
 export interface GetFixtureDTO {
   data: FixtureDTO;
   highlights: FixtureHighlights;
