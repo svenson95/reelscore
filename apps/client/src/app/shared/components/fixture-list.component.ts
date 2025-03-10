@@ -113,6 +113,10 @@ export class FixtureListComponent {
   };
 
   isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
+    // In champions league the round of 16, quarter-finals and semi-finals are two-legged ties
+    const isChampionsLeagueOrSimilar =
+      fixture.league.id === 2 || fixture.league.id === 3;
+
     const koPhaseRounds = [
       'Preliminary Round',
       'Play-offs',
@@ -125,7 +129,25 @@ export class FixtureListComponent {
       'Final',
     ];
     const isKoPhase = koPhaseRounds.some((r) => r === fixture.league.round);
-    const isEliminated = fixture.teams[team].winner === false;
-    return isKoPhase && isEliminated;
+    const isKoEliminated =
+      !isChampionsLeagueOrSimilar &&
+      isKoPhase &&
+      fixture.teams[team].winner === false;
+
+    const championsLeagueTwoLeggedFinals = [
+      'Round of 16',
+      'Quarter-finals',
+      'Semi-finals',
+    ];
+    const isTwoLeggedTie =
+      isChampionsLeagueOrSimilar &&
+      championsLeagueTwoLeggedFinals.includes(fixture.league.round);
+    const winnerTeamId = fixture?.final?.winnerOfFinal;
+    const isFinalFinished = !!winnerTeamId;
+    const isTwoLeggedEliminated =
+      isTwoLeggedTie &&
+      isFinalFinished &&
+      fixture.teams[team].id !== winnerTeamId;
+    return isKoEliminated || isTwoLeggedEliminated;
   }
 }
