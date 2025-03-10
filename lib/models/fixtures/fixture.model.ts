@@ -49,6 +49,7 @@ export type FixtureDetail =
   | 'events';
 
 export type FixtureId = number | string; // TODO: refactor to string only
+export type FixtureDateString = string;
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };
 export type FixtureStatus = {
@@ -61,7 +62,7 @@ export interface Fixture {
   id: FixtureId;
   referee: string;
   timezone: string;
-  date: string;
+  date: FixtureDateString;
   timestamp: number;
   periods: FixturePeriods;
   venue: FixtureVenue;

@@ -1,30 +1,35 @@
 import express from 'express';
 
-import {
-  getFixtureStandings,
-  getStandings,
-  getTopFiveStandings,
-} from '../controllers';
+import { CompetitionId } from '@lib/models';
+import { StandingsController } from '../controllers';
 
 export const standings = express.Router();
 
 standings.get('/standings-by-id', async (req, res) => {
-  const competitionId = Number(req.query.competition);
+  const standingsController = new StandingsController();
+  const competitionId: CompetitionId = Number(req.query.competition);
   const queryDate = req.query?.date ? String(req.query.date) : null;
-
-  const docs = await getStandings(competitionId, queryDate);
-  res.json(docs);
+  const doc = await standingsController.getByCompetitionAndDate(
+    competitionId,
+    queryDate
+  );
+  return res.json(doc);
 });
 
 standings.get('/start-top-five', async (req, res) => {
+  const standingsController = new StandingsController();
   const date = String(req.query.date);
-  const docs = await getTopFiveStandings(date);
-  res.json(docs);
+  const docs = await standingsController.getTopFive(date);
+  return res.json(docs);
 });
 
 standings.get('/match-standings', async (req, res) => {
+  const standingsController = new StandingsController();
   const teamIds = req.query.teamIds as string; // comma separated team ids
   const competitionId = Number(req.query.competition);
-  const doc = await getFixtureStandings(teamIds, competitionId);
-  res.json(doc);
+  const doc = await standingsController.getFixtureStandings(
+    teamIds,
+    competitionId
+  );
+  return res.json(doc);
 });
