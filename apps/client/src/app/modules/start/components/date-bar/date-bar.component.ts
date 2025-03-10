@@ -42,12 +42,12 @@ import {
         [selectedDay]="selectedDay()"
         (dateSelected)="selectedDay.set($event)"
       />
-      @if (isMobile()){
+      @if (isMobile()){ @if (!isToday()) {
       <reelscore-today-button
         [isToday]="isToday()"
         (onClick)="selectedDay.set($event)"
       />
-      @if (isLoading()) {
+      } @if (isLoading()) {
       <mat-spinner diameter="20"></mat-spinner>}
       <div class="spacer"></div>
       <reelscore-action-buttons />
@@ -60,12 +60,12 @@ import {
       (dateSelected)="selectedDay.set($event)"
     />
 
-    @if (!isMobile()){
+    @if (!isMobile()){ @if (!isToday()) {
     <reelscore-today-button
       [isToday]="isToday()"
       (onClick)="selectedDay.set($event)"
     />
-    @if (isLoading()) {
+    } @if (isLoading()) {
     <mat-spinner diameter="20"></mat-spinner>}
     <div class="spacer"></div>
     <reelscore-action-buttons />
