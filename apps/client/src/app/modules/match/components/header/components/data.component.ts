@@ -37,6 +37,7 @@ import { FixtureDTO } from '@lib/models';
       <reelscore-result-label
         [result]="data().score.fulltime"
         [status]="data().fixture.status.short"
+        [isNotStarted]="isNotStarted(data())"
         [showPostponedText]="true"
       />
     </div>
@@ -58,4 +59,8 @@ export class HeaderDataComponent {
   data = input.required<FixtureDTO>();
 
   getTeamLogo = getTeamLogo;
+  isNotStarted = (fixture: FixtureDTO): boolean => {
+    const notStartedValues = ['TBD', 'NS'];
+    return notStartedValues.some((v) => v === fixture.fixture.status.short);
+  };
 }
