@@ -56,7 +56,7 @@ module.exports = {
         '.fb-as-label': {
           background: 'white',
           '--mdc-outlined-button-disabled-label-text-color':
-            'var(--fb-color-text-2)',
+            'var(--fb-color-text-1)',
         },
       };
 

@@ -41,7 +41,7 @@ $reelscore-theme: mat.m2-define-light-theme(
   // --mat-select-enabled-trigger-text-color: var(--fb-color-white);
   --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
   --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
-  --mat-select-enabled-arrow-color: var(--fb-color-text-1);
+  --mat-select-enabled-arrow-color: var(--fb-color-red);
   --mat-select-disabled-arrow-color: var(--fb-color-text-2);
   // --mdc-filled-text-field-hover-label-text-color: var(--fb-color-black);
   // --mdc-filled-text-field-focus-label-text-color: var(--fb-color-black);
@@ -73,7 +73,7 @@ button.mdc-button {
 
 button.mdc-button,
 button.mdc-icon-button {
-  &:not(mat-calendar-header *) {
+  &:not(mat-calendar-header *):not(.mat-mdc-button-disabled) {
     background: var(--fb-button-bg-color);
   }
 }
@@ -97,13 +97,13 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  --mat-tab-header-inactive-ripple-color: var(--fb-color-text-2);
-  --mat-tab-header-active-ripple-color: var(--fb-color-text-2);
+  --mat-tab-header-inactive-ripple-color: var(--fb-color-red);
+  --mat-tab-header-active-ripple-color: var(--fb-color-red);
 
-  --mdc-tab-indicator-active-indicator-color: var(--fb-color-text-1);
-  --mat-tab-header-active-focus-indicator-color: var(--fb-color-text-1);
+  --mdc-tab-indicator-active-indicator-color: var(--fb-color-red);
+  --mat-tab-header-active-focus-indicator-color: var(--fb-color-red);
 
-  --mat-tab-header-active-label-text-color: var(--fb-color-text-1);
+  --mat-tab-header-active-label-text-color: var(--fb-color-text-2);
   --mat-tab-header-inactive-label-text-color: var(--fb-color-text-2);
 
   // --mat-tab-header-active-hover-label-text-color: var(--fb-color-black-2);
@@ -116,5 +116,9 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
   .mat-mdc-tab {
     @apply min-w-[50px] px-1;
+  }
+
+  .mdc-tab-indicator--active mat-icon {
+    color: var(--fb-color-red);
   }
 }
