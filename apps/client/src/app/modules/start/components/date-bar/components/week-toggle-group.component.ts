@@ -20,7 +20,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
     :host mat-button-toggle-group {
       --mat-standard-button-toggle-selected-state-text-color: white; // TODO refactor white var to -1 and -2
-      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-bg-black);
+      --mat-standard-button-toggle-selected-state-background-color: var(--fb-button-bg-color);
       --mat-standard-button-toggle-height: 34px; 
       @apply flex;
 

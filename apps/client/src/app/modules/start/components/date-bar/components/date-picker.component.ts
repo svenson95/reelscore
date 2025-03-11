@@ -14,6 +14,7 @@ import {
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -42,6 +43,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     MatInputModule,
     MatDatepickerModule,
     MatTooltipModule,
+    MatIconModule,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -50,7 +52,6 @@ class CustomDateAdapter extends NativeDateAdapter {
   styles: `
     :host {
       @apply flex;
-      --mdc-outlined-button-label-text-color: var(--fb-color-text-1);
 
       mat-form-field {
         @apply opacity-0 w-0 h-0;
@@ -66,12 +67,9 @@ class CustomDateAdapter extends NativeDateAdapter {
     }
   `,
   template: `
-    <button
-      mat-stroked-button
-      matTooltip="Datum auswählen"
-      (click)="picker.open()"
-    >
-      {{ selectedDay() | date : 'dd.MM.YY' }}
+    <button mat-button matTooltip="Datum auswählen" (click)="picker.open()">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
     </button>
     <mat-form-field>
       <input
