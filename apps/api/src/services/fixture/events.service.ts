@@ -25,7 +25,7 @@ export class FixtureEventsService {
       return type === 'Goal' && goalTypes.includes(detail);
     });
     const redCards = events.filter(
-      ({ type, detail }) => type === 'Card' && detail === 'Yellow Card'
+      ({ type, detail }) => type === 'Card' && detail === 'Red Card'
     );
     return [...goals, ...redCards].sort((event1, event2) => {
       const time = (t: EventTime) => t.elapsed + (t.extra ?? 0);
