@@ -61,13 +61,21 @@ $reelscore-theme: mat.m2-define-light-theme(
   --mat-text-button-with-icon-horizontal-padding: 14px;
 
   --mat-menu-container-shape: var(--fb-size-border-radius);
+  --mdc-text-button-label-text-color: var(--fb-button-text-color);
+  --mdc-icon-button-icon-color: var(--fb-button-text-color);
+  --mdc-outlined-button-label-text-color: var(--fb-button-text-color);
 }
 
 button.mdc-button {
-  @apply bg-white;
-
   --mdc-text-button-label-text-size: var(--fb-font-size-body-2);
   --mat-text-button-horizontal-padding: 10px;
+}
+
+button.mdc-button,
+button.mdc-icon-button {
+  &:not(mat-calendar-header *) {
+    background: var(--fb-button-bg-color);
+  }
 }
 
 .mat-datepicker-content {
