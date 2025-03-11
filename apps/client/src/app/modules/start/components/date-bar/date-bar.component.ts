@@ -32,7 +32,10 @@ import {
   ],
   styles: `
     :host { @apply w-full flex flex-wrap items-center justify-between mb-5 gap-5; }
-    mat-spinner { --mdc-circular-progress-active-indicator-color: var(--fb-color-red); }
+    mat-spinner { 
+      --mdc-circular-progress-active-indicator-color: var(--fb-color-red); 
+      @media (max-width: 400px) { @apply hidden; }
+    }
     .top { @apply flex w-full sm:w-fit items-center gap-5; }
     .spacer { @apply flex-grow; }
   `,
