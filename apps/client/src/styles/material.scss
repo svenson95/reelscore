@@ -125,3 +125,10 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     color: var(--fb-color-red);
   }
 }
+
+.mat-elevation-z8,
+.mat-mdc-elevation-specific.mat-elevation-z8 {
+  box-shadow: var(--fb-size-box-shadow);
+  border-radius: var(--fb-size-border-radius);
+  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+}
