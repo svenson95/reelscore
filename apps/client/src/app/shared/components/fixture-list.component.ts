@@ -4,7 +4,12 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { COMPETITION_URL } from '@lib/constants';
-import { CompetitionId, CompetitionUrl, FixtureDTO } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionUrl,
+  ExtendedFixtureDTO,
+  FixtureDTO,
+} from '@lib/models';
 
 import { linkToMatch } from '../constants';
 import { getTeamLogo } from '../models';
@@ -112,7 +117,10 @@ export class FixtureListComponent {
     return notStartedValues.some((v) => v === fixture.fixture.status.short);
   };
 
-  isTeamEliminated(fixture: FixtureDTO, team: 'home' | 'away'): boolean {
+  isTeamEliminated(
+    fixture: FixtureDTO | ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): boolean {
     // In champions league the round of 16, quarter-finals and semi-finals are two-legged ties
     const isChampionsLeagueOrSimilar =
       fixture.league.id === 2 || fixture.league.id === 3;
@@ -142,12 +150,18 @@ export class FixtureListComponent {
     const isTwoLeggedTie =
       isChampionsLeagueOrSimilar &&
       championsLeagueTwoLeggedFinals.includes(fixture.league.round);
-    const winnerTeamId = fixture?.final?.winnerOfFinal;
+
+    const isExtendedFixture = 'final' in fixture;
+    const winnerTeamId = isExtendedFixture
+      ? fixture?.final?.winnerOfFinal
+      : null;
     const isFinalFinished = !!winnerTeamId;
+
     const isTwoLeggedEliminated =
       isTwoLeggedTie &&
       isFinalFinished &&
       fixture.teams[team].id !== winnerTeamId;
+
     return isKoEliminated || isTwoLeggedEliminated;
   }
 }
