@@ -29,6 +29,7 @@ export class FixturesService {
       .lt(dayEnd.getTime())
       .sort({ 'fixture.date': 1 })
       .select({
+        final: 1,
         'fixture.date': 1,
         'fixture.id': 1,
         'fixture.status': 1,
