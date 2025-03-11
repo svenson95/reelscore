@@ -1,7 +1,6 @@
 import { League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
 import { Team, TeamId } from '../team.model';
-import { FixturePrediction } from './evaluated-fixture.model';
 import { EventDTO } from './events.model';
 
 type StatusLong =
@@ -92,8 +91,33 @@ export type FixtureDTO = {
   teams: MatchTeams;
   goals: Goals;
   score: Score;
-  prediction: FixturePrediction;
+};
+
+export interface ExtendedFixtureDTO extends FixtureDTO {
   final: FixtureFinal;
+  prediction?: FixturePrediction;
+  evaluation?: { home: FixtureEvaluation; away: FixtureEvaluation };
+}
+
+export type FixturePrediction = {
+  bet: string;
+  qoute: number;
+  presumption: number;
+  correct: boolean;
+};
+export type AnalysisLevel = 'GOOD' | 'BAD';
+export type AnalysisType = 'GOAL' | 'PENALTY' | 'RED_CARD' | 'INJURY';
+export type FixtureAnalysis = {
+  level: AnalysisLevel;
+  minute: number;
+  type: AnalysisType;
+  playerId: string | null;
+  comments: string;
+};
+export type EvaluationPerformance = 'LOW' | 'MIDDLE' | 'HIGH';
+export type FixtureEvaluation = {
+  performance: EvaluationPerformance;
+  analyses: FixtureAnalysis[];
 };
 
 export interface LatestFixturesDTO {

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { FixtureDTO } from '@lib/models';
+import { ExtendedFixtureDTO } from '@lib/models';
 
-const fixturesSchema = new mongoose.Schema<FixtureDTO>({
+const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
   final: {
     firstLegResult: {
       type: {
@@ -84,6 +84,32 @@ const fixturesSchema = new mongoose.Schema<FixtureDTO>({
     qoute: Number,
     presumption: Number,
     correct: Boolean,
+  },
+  evaluation: {
+    home: {
+      performance: String,
+      analyses: [
+        {
+          level: String,
+          minute: Number,
+          type: String,
+          playerId: String,
+          comments: String,
+        },
+      ],
+    },
+    away: {
+      performance: String,
+      analyses: [
+        {
+          level: String,
+          minute: Number,
+          type: String,
+          playerId: String,
+          comments: String,
+        },
+      ],
+    },
   },
 });
 
