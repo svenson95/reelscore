@@ -58,7 +58,7 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
       <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Vorheriger Tag">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
-      @for(day of weekdays(); track day) {
+      @for(day of weekdays(); track $index) {
       <mat-button-toggle
         [value]="day"
         (click)="dateSelected.emit(day)"

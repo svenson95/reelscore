@@ -10,7 +10,7 @@ import {
   BreakpointObserverService,
   DateService,
   StandingsStore,
-  TopFiveStandingsStore,
+  WeekdayStandingsStore,
 } from '@app/shared';
 import {
   ActionButtonsComponent,
@@ -85,11 +85,10 @@ export class DateBarComponent {
   calenderWeek = this.dateService.calenderWeek;
   isToday = this.dateService.isToday;
 
-  topFiveStandingsStore = inject(TopFiveStandingsStore);
+  weekStandingsStore = inject(WeekdayStandingsStore);
   standingsStore = inject(StandingsStore);
 
   isLoading = computed(
-    () =>
-      this.topFiveStandingsStore.isLoading() || this.standingsStore.isLoading()
+    () => this.weekStandingsStore.isLoading() || this.standingsStore.isLoading()
   );
 }

@@ -14,6 +14,7 @@ import {
   getCompetitionLogo,
   OptimizedImageComponent,
 } from '@app/shared';
+import { CompetitionRound } from '@lib/models';
 
 @Component({
   selector: 'reelscore-start-match-day-list',
@@ -71,7 +72,7 @@ import {
 export class MatchDayListComponent {
   competition = input.required<CompetitionWithFixtures>();
 
-  round = computed(() => {
+  round = computed<CompetitionRound>(() => {
     const fixture = this.competition().fixtures[0];
     return fixture ? fixture.league.round : '';
   });
