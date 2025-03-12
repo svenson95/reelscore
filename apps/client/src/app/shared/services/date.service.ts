@@ -6,8 +6,8 @@ import {
   WritableSignal,
   computed,
   effect,
-  inject,
   signal,
+  untracked,
 } from '@angular/core';
 
 import {
@@ -18,7 +18,6 @@ import {
   getMondayFromDate,
   moveItem,
 } from '@app/shared';
-import { FixturesStore, TopFiveStandingsStore } from '../store';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;
@@ -26,23 +25,23 @@ export abstract class DateService {
   abstract isToday: Signal<boolean>;
   abstract calenderWeek: WritableSignal<CalenderWeek>;
   abstract weekdays: Signal<DateString[]>;
+  abstract selectedTabIndex: Signal<number>;
   abstract getCalenderWeekFrom(day: DateString): CalenderWeek;
   abstract weekdaysFrom(date: Date): DateString[];
 }
 
 @Injectable()
 export class AbstractedDateService extends DateService {
-  fixturesStore = inject(FixturesStore);
-  topFiveStandingsStore = inject(TopFiveStandingsStore);
   selectedDay = signal<DateString>(TODAY_ISO_STRING);
+  selectedTabIndex = computed<number>(() => {
+    return this.weekdays().findIndex((day) => day === this.selectedDay());
+  });
 
   selectedDayEffect = effect(
     () => {
       const date = this.selectedDay();
       const weekOfDay = this.getCalenderWeekFrom(date);
-      this.topFiveStandingsStore.loadStandings(date);
-      this.fixturesStore.loadFixtures(date);
-      if (this.calenderWeek() !== weekOfDay) {
+      if (untracked(this.calenderWeek) !== weekOfDay) {
         this.calenderWeek.set(weekOfDay);
       }
     },

@@ -1,6 +1,7 @@
 import { effect, inject } from '@angular/core';
 
 import {
+  CompetitionData,
   LeagueService,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
@@ -8,18 +9,28 @@ import {
 import { CompetitionUrl } from '@lib/models';
 
 export class RouterView {
-  routeService = inject(RouteService);
   leagueService = inject(LeagueService);
+  routeService = inject(RouteService);
 
   routeEvent = effect(
     () => this.updateLeague(this.routeService.activeRoute()),
     { allowSignalWrites: true }
   );
 
-  updateLeague(route: CompetitionUrl): void {
-    const competitionData = SELECT_COMPETITION_DATA_FLAT.find(
-      (d) => d.url === route.split('/')[0]
-    );
-    this.leagueService.setSelectedLeague(competitionData);
+  private updateLeague(route: CompetitionUrl): void {
+    const leagueData = this.findLeagueData(route);
+    this.leagueService.setSelectedLeague(leagueData);
+  }
+
+  private findLeagueData(route: CompetitionUrl): CompetitionData {
+    const params = route.split('/');
+    const routePath = params[params.indexOf('leagues') + 1];
+    const dataWithUrl = (data: CompetitionData) => data.url === routePath;
+    const competitionData = SELECT_COMPETITION_DATA_FLAT.find(dataWithUrl);
+    if (!competitionData) {
+      throw new Error(`Competition data not found ('${routePath}')`);
+    }
+
+    return competitionData;
   }
 }
