@@ -13,7 +13,7 @@
           "warn",
           {
             "type": "attribute",
-            "prefix": "reelscore",
+            "prefix": "rs",
             "style": "camelCase"
           }
         ],
