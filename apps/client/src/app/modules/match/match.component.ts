@@ -46,7 +46,7 @@ import {
 } from './store';
 
 @Component({
-  selector: 'reelscore-match',
+  selector: 'reelscore-match-page',
   standalone: true,
   imports: [
     DatePipe,

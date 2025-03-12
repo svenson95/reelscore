@@ -20,7 +20,7 @@ import {
 } from './store';
 
 @Component({
-  selector: 'reelscore-competition',
+  selector: 'reelscore-competition-page',
   standalone: true,
   imports: [
     MatTabsModule,

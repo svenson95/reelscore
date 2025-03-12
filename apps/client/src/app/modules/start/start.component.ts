@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { DateBarComponent, TabGroupComponent } from './components';
 
 @Component({
-  selector: 'reelscore-league',
+  selector: 'reelscore-start-page',
   standalone: true,
   imports: [DateBarComponent, TabGroupComponent],
   styles: `
