@@ -33,7 +33,7 @@ export const WeekdayFixturesStore = signalStore(
       });
 
       http.getFixtures(date).subscribe({
-        next: (dayFixtures) => {
+        next: async (dayFixtures) => {
           const weekFixtures = initWeekDataArray<FixtureDTO>({
             dayData: dayFixtures,
             date,
@@ -48,16 +48,27 @@ export const WeekdayFixturesStore = signalStore(
             (day) => !weekFixtures.flat().some((f) => f.fixture.date === day)
           );
 
-          missingDays.forEach(async (day) => {
-            http.getFixtures(day).subscribe({
-              next: (dayFixtures) => {
-                if (!dayFixtures.length) return;
-                const idx = getWeekDayIndex(dayFixtures[0].fixture.date);
+          try {
+            const missingDaysFixtures = await Promise.all(
+              missingDays.map((day) => http.getFixtures(day).toPromise())
+            );
+
+            missingDaysFixtures.forEach((dayFixtures, index) => {
+              if (dayFixtures?.length) {
+                const idx = getWeekDayIndex(missingDays[index]);
                 weekFixtures[idx] = dayFixtures;
-                patchState(store, { weekFixtures, isPreloading: false });
-              },
+              }
             });
-          });
+
+            patchState(store, { weekFixtures, isPreloading: false });
+          } catch (error) {
+            patchState(store, {
+              weekFixtures: initialState.weekFixtures,
+              isLoading: false,
+              isPreloading: false,
+              error: String(error),
+            });
+          }
         },
         error: (error) =>
           patchState(store, {
