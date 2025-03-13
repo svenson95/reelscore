@@ -24,9 +24,11 @@ import {
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (isFiltering() && !!dayStandings()) { @if
-    (hasMultipleGroups(dayStandings()!.league.id)) { @for (multipleStanding of
-    dayStandings()!.league.standings; track $index) {
+    @if (isLoading()) {
+    <p class="no-data">Tabellen werden geladen ...</p>
+    } @else if (isFiltering() && dayStandings() !== null && dayStandings() !==
+    undefined) { @if (hasMultipleGroups(dayStandings()!.league.id)) { @for
+    (multipleStanding of dayStandings()!.league.standings; track $index) {
     <reelscore-standings-table
       [ranks]="multipleStanding"
       [league]="dayStandings()!.league"
@@ -36,6 +38,7 @@ import {
       [ranks]="dayStandings()!.league.standings![0]"
       [league]="dayStandings()!.league"
     />
+
     @if (dayStandings()!.league.standings!.length === 3) {
     <reelscore-standings-table
       [ranks]="dayStandings()!.league.standings![1]"
@@ -47,19 +50,16 @@ import {
       [league]="dayStandings()!.league"
       header="Auswärtstabelle"
     />
-    } } } @else if (weekStandings()) { @for (standings of weekStandings(); track
-    standings.league.id) {
+    } } } @else if (weekStandings().length > 0) { @for (standings of
+    weekStandings(); track standings.league.id) {
     <reelscore-standings-table
       [ranks]="standings.league.standings![0]"
       [league]="standings.league"
     />
-    } } @else {
-    <p class="no-data">
-      @if (isLoading()) { Tabellen werden geladen ... } @else { @if (error()) {
-      Fehler beim Laden der Tabellen. } @else if (weekStandings().length === 0)
-      { Keine Tabellen gefunden. } @else { Keine Tabelle für diesen Wettbewerb
-      gefunden. } }
-    </p>
+    } } @else if (error()) {
+    <p class="no-data">Fehler beim Laden der Tabellen.</p>
+    } @else if (!isLoading() && !isPreloading()) {
+    <p class="no-data">Keine Tabellen gefunden.</p>
     }
   `,
 })
@@ -67,6 +67,7 @@ export class StandingsComponent {
   standingStore = inject(StandingsStore);
   weekStandings = input.required<StandingsDTO[]>();
   isLoading = input.required<boolean>();
+  isPreloading = input.required<boolean>();
   error = input.required<string | null>();
 
   standingsStore = inject(StandingsStore);

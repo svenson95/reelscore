@@ -4,20 +4,21 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import {
   DateString,
   HttpFixturesService,
-  StateHandler,
+  WeekStateHandler,
   getMissingDays,
   getWeekDayIndex,
   initWeekDataArray,
 } from '@app/shared';
 import { FixtureDTO } from '@lib/models';
 
-type WeekdayFixturesState = StateHandler<{
+type WeekdayFixturesState = WeekStateHandler<{
   weekFixtures: FixtureDTO[][];
 }>;
 
 const initialState: WeekdayFixturesState = {
   weekFixtures: Array.from({ length: 7 }, () => []),
-  isLoading: false,
+  isLoading: true,
+  isPreloading: true,
   error: null,
 };
 
@@ -25,10 +26,6 @@ export const WeekdayFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixturesService)) => ({
     async loadWeekdayFixtures(date: DateString): Promise<void> {
-      patchState(store, {
-        isLoading: true,
-      });
-
       http.getFixtures(date).subscribe({
         next: (dayFixtures) => {
           const weekFixtures = initWeekDataArray<FixtureDTO>({
@@ -51,7 +48,7 @@ export const WeekdayFixturesStore = signalStore(
                 if (!dayFixtures.length) return;
                 const idx = getWeekDayIndex(dayFixtures[0].fixture.date);
                 weekFixtures[idx] = dayFixtures;
-                patchState(store, { weekFixtures });
+                patchState(store, { weekFixtures, isPreloading: false });
               },
             });
           });
@@ -60,6 +57,7 @@ export const WeekdayFixturesStore = signalStore(
           patchState(store, {
             weekFixtures: initialState.weekFixtures,
             isLoading: false,
+            isPreloading: false,
             error,
           }),
       });

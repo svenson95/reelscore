@@ -4,3 +4,9 @@ type StateMetadata = {
   isLoading: boolean;
   error: string | null;
 };
+
+export type WeekStateHandler<T> = StateMetadata & WeekStateMetadata & T;
+
+type WeekStateMetadata = {
+  isPreloading: boolean;
+};
