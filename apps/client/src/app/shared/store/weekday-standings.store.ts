@@ -17,8 +17,8 @@ type WeekdayStandingsState = WeekStateHandler<{
 
 const initialState: WeekdayStandingsState = {
   weekStandings: Array.from({ length: 7 }, () => []),
-  isLoading: true,
-  isPreloading: true,
+  isLoading: false,
+  isPreloading: false,
   error: null,
 };
 
@@ -26,6 +26,12 @@ export const WeekdayStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
     async loadWeekdayStandings(date: DateString): Promise<void> {
+      patchState(store, {
+        weekStandings: Array.from({ length: 7 }, () => []),
+        isLoading: true,
+        isPreloading: true,
+      });
+
       http.getAllStandings(date).subscribe({
         next: (dayStandings) => {
           const weekStandings = initWeekDataArray<StandingsDTO>({
