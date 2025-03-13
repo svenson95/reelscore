@@ -1,7 +1,14 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { DateString, HttpFixturesService, StateHandler } from '@app/shared';
+import {
+  DateString,
+  HttpFixturesService,
+  StateHandler,
+  getMissingDays,
+  getWeekDayIndex,
+  initWeekDataArray,
+} from '@app/shared';
 import { FixtureDTO } from '@lib/models';
 
 type WeekdayFixturesState = StateHandler<{
@@ -9,7 +16,7 @@ type WeekdayFixturesState = StateHandler<{
 }>;
 
 const initialState: WeekdayFixturesState = {
-  weekFixtures: Array<Array<FixtureDTO>>(7).fill([]),
+  weekFixtures: Array.from({ length: 7 }, () => []),
   isLoading: false,
   error: null,
 };
@@ -18,24 +25,23 @@ export const WeekdayFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixturesService)) => ({
     async loadWeekdayFixtures(date: DateString): Promise<void> {
-      patchState(store, { isLoading: true });
+      patchState(store, {
+        isLoading: true,
+      });
 
       http.getFixtures(date).subscribe({
         next: (dayFixtures) => {
-          const weekFixtures = createWeekFixturesArray({ dayFixtures });
+          const weekFixtures = initWeekDataArray<FixtureDTO>({
+            dayData: dayFixtures,
+            date,
+          });
 
           patchState(store, {
             weekFixtures,
             isLoading: false,
           });
 
-          const startOfWeek = new Date(date);
-          startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Start of the week (Monday)
-          const missingDays = Array.from({ length: 7 }, (_, i) => {
-            const day = new Date(startOfWeek);
-            day.setDate(startOfWeek.getDate() + i);
-            return day.toISOString().split('T')[0];
-          }).filter(
+          const missingDays = getMissingDays({ date }).filter(
             (day) => !weekFixtures.flat().some((f) => f.fixture.date === day)
           );
 
@@ -43,8 +49,7 @@ export const WeekdayFixturesStore = signalStore(
             http.getFixtures(day).subscribe({
               next: (dayFixtures) => {
                 if (!dayFixtures.length) return;
-                const i = new Date(dayFixtures[0].fixture.date).getDay() - 1;
-                const idx = i === -1 ? 6 : i;
+                const idx = getWeekDayIndex(dayFixtures[0].fixture.date);
                 weekFixtures[idx] = dayFixtures;
                 patchState(store, { weekFixtures });
               },
@@ -59,22 +64,5 @@ export const WeekdayFixturesStore = signalStore(
           }),
       });
     },
-    async resetWeekdayFixtures(): Promise<void> {
-      patchState(store, initialState);
-    },
   }))
 );
-
-const createWeekFixturesArray = ({
-  dayFixtures,
-}: {
-  dayFixtures: FixtureDTO[];
-}): FixtureDTO[][] => {
-  return dayFixtures.reduce((acc, fixture) => {
-    const weekIdx = new Date(fixture.fixture.date).getDay() - 1;
-    const weekStartsOnMonday = (i: number) => (i === -1 ? 6 : i);
-    const idx = weekStartsOnMonday(weekIdx);
-    acc[idx] = acc[idx] ? [...acc[idx], fixture] : [];
-    return acc;
-  }, Array<Array<FixtureDTO>>(7).fill([]));
-};

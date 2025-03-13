@@ -6,6 +6,7 @@ import {
   inject,
   input,
   OnChanges,
+  untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,15 +16,18 @@ import { Router } from '@angular/router';
 import {
   BackButtonComponent,
   BreakpointObserverService,
+  CompetitionData,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import { CompetitionId, CompetitionUrl, FixtureId } from '@lib/models';
+import { CompetitionUrl, FixtureId } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
   isKoPhase,
 } from '@lib/shared';
+
 import { RouterView } from '../router-view';
+
 import {
   MatchEvaluationsComponent,
   MatchEventsComponent,
@@ -212,15 +216,21 @@ export class MatchComponent extends RouterView implements OnChanges {
 
   invalidUrlEffect = effect(() => {
     const fixture = this.data();
-    const league = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.url === this.competitionUrl()
+    const activeRoute = untracked(this.competitionUrl);
+    const leagueData = SELECT_COMPETITION_DATA_FLAT.find(
+      (c) => c.url === activeRoute
     );
-    if (!fixture || !league) return;
+    if (!fixture || !leagueData) return;
 
     const fixtureLeagueId = fixture.league.id;
-    const invalidUrl = fixtureLeagueId !== league.id;
+    const invalidUrl = fixtureLeagueId !== leagueData.id;
     if (invalidUrl) {
-      this.redirectTo(fixtureLeagueId, fixture.fixture.id);
+      const fixtureId = fixture.fixture.id;
+      const league = SELECT_COMPETITION_DATA_FLAT.find(
+        (d) => d.id === fixture.league.id
+      );
+      if (!league) return;
+      this.redirectTo({ league, fixtureId });
     }
   });
 
@@ -228,11 +238,14 @@ export class MatchComponent extends RouterView implements OnChanges {
     await this.fixtureStore.loadFixture(this.fixtureId());
   }
 
-  redirectTo(leagueId: CompetitionId, fixtureId: FixtureId) {
-    const validLeague = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.id === leagueId
-    );
-    if (!validLeague) throw Error('League not found');
-    this.router.navigate(['competition', validLeague.url, 'match', fixtureId]);
+  private redirectTo({
+    league,
+    fixtureId,
+  }: {
+    league: CompetitionData;
+    fixtureId: FixtureId;
+  }) {
+    if (!league) throw Error('Unexpected League not found');
+    this.router.navigate(['leagues', league.url, 'match', fixtureId]);
   }
 }

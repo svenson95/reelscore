@@ -86,8 +86,6 @@ export class TabGroupComponent implements OnInit {
     () => {
       this.dateService.calenderWeek();
       const date = untracked(this.selectedDay).split('T')[0];
-      this.weekFixturesStore.resetWeekdayFixtures();
-      this.weekStandingsStore.resetWeekdayStandings();
       this.weekFixturesStore.loadWeekdayFixtures(date);
       this.weekStandingsStore.loadWeekdayStandings(date);
     },

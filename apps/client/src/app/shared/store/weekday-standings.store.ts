@@ -1,7 +1,14 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { DateString, HttpStandingsService, StateHandler } from '@app/shared';
+import {
+  DateString,
+  HttpStandingsService,
+  StateHandler,
+  getMissingDays,
+  getWeekDayIndex,
+  initWeekDataArray,
+} from '@app/shared';
 import { StandingsDTO } from '@lib/models';
 
 type WeekdayStandingsState = StateHandler<{
@@ -9,7 +16,7 @@ type WeekdayStandingsState = StateHandler<{
 }>;
 
 const initialState: WeekdayStandingsState = {
-  weekStandings: Array<Array<StandingsDTO>>(7).fill([]),
+  weekStandings: Array.from({ length: 7 }, () => []),
   isLoading: false,
   error: null,
 };
@@ -22,8 +29,8 @@ export const WeekdayStandingsStore = signalStore(
 
       http.getAllStandings(date).subscribe({
         next: (dayStandings) => {
-          const weekStandings = createWeekStandingsArray({
-            dayStandings,
+          const weekStandings = initWeekDataArray<StandingsDTO>({
+            dayData: dayStandings,
             date,
           });
 
@@ -32,20 +39,15 @@ export const WeekdayStandingsStore = signalStore(
             isLoading: false,
           });
 
-          const startOfWeek = new Date(date);
-          startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Start of the week (Monday)
-          const missingDays = Array.from({ length: 7 }, (_, i) => {
-            const day = new Date(startOfWeek);
-            day.setDate(startOfWeek.getDate() + i);
-            return day.toISOString().split('T')[0];
-          }).filter((day) => date !== day);
+          const missingDays = getMissingDays({ date }).filter(
+            (day) => date !== day
+          );
 
           missingDays.forEach(async (day) => {
             http.getAllStandings(day).subscribe({
               next: (dayStandings) => {
                 if (!dayStandings.length) return;
-                const i = new Date(day).getDay() - 1;
-                const idx = i === -1 ? 6 : i;
+                const idx = getWeekDayIndex(day);
                 weekStandings[idx] = dayStandings;
                 patchState(store, { weekStandings });
               },
@@ -60,24 +62,5 @@ export const WeekdayStandingsStore = signalStore(
           }),
       });
     },
-    async resetWeekdayStandings(): Promise<void> {
-      patchState(store, initialState);
-    },
   }))
 );
-
-const createWeekStandingsArray = ({
-  dayStandings,
-  date,
-}: {
-  dayStandings: StandingsDTO[];
-  date: DateString;
-}): StandingsDTO[][] => {
-  return dayStandings.reduce((acc, fixture) => {
-    const weekIdx = new Date(date).getDay() - 1;
-    const weekStartsOnMonday = (i: number) => (i === -1 ? 6 : i);
-    const idx = weekStartsOnMonday(weekIdx);
-    acc[idx] = acc[idx] ? [...acc[idx], fixture] : [];
-    return acc;
-  }, Array<Array<StandingsDTO>>(7).fill([]));
-};
