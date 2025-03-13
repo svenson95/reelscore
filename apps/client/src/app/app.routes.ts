@@ -8,7 +8,7 @@ export const routes: Routes = [
     data: { shouldReuse: true },
   },
   {
-    path: 'leagues/:leagueUrl',
+    path: 'leagues/:competitionUrl',
     children: [
       {
         path: '',
