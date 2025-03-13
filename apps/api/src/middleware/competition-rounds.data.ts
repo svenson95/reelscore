@@ -326,6 +326,10 @@ const INTERNATIONAL_UEFA_NATIONS_LEAGUE = {
   22: 'League B - 6',
   23: 'League C - 6',
   24: 'League D - 6',
+  25: 'Play-offs A/B',
+  26: 'Play-offs B/C',
+  27: 'Quarter-finals',
+  28: 'Play-offs C/D',
 };
 
 export const COMPETITION_ROUNDS: CompetitionMatchDays = {
