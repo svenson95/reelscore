@@ -37,12 +37,7 @@ import { HideHeaderDirective } from './directives';
     }
   `,
   template: `
-    <mat-tab-group
-      [selectedIndex]="tabIndex()"
-      dynamicHeight
-      rsHideHeader
-      animationDuration="200ms"
-    >
+    <mat-tab-group [selectedIndex]="tabIndex()" dynamicHeight rsHideHeader>
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
         <section>
