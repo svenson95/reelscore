@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   BreakpointObserverService,
   DateService,
-  StandingsStore,
+  WeekdayFixturesStore,
   WeekdayStandingsStore,
 } from '@app/shared';
 
@@ -83,13 +83,13 @@ export class DateBarComponent {
   dateService = inject(DateService);
   selectedDay = this.dateService.selectedDay;
   weekdays = this.dateService.weekdays;
-  calenderWeek = this.dateService.calenderWeek;
   isToday = this.dateService.isToday;
 
   weekStandingsStore = inject(WeekdayStandingsStore);
-  standingsStore = inject(StandingsStore);
+  weekFixturesStore = inject(WeekdayFixturesStore);
 
   isLoading = computed(
-    () => this.weekStandingsStore.isLoading() || this.standingsStore.isLoading()
+    () =>
+      this.weekStandingsStore.isLoading() || this.weekFixturesStore.isLoading()
   );
 }
