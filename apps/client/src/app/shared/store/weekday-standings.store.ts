@@ -33,7 +33,7 @@ export const WeekdayStandingsStore = signalStore(
       });
 
       http.getAllStandings(date).subscribe({
-        next: (dayStandings) => {
+        next: async (dayStandings) => {
           const weekStandings = initWeekDataArray<StandingsDTO>({
             dayData: dayStandings,
             date,
@@ -47,17 +47,18 @@ export const WeekdayStandingsStore = signalStore(
           const missingDays = getMissingDays({ date }).filter(
             (day) => date !== day
           );
+          const missingDaysStandings = await Promise.all(
+            missingDays.map((day) => http.getAllStandings(day).toPromise())
+          );
 
-          missingDays.forEach(async (day) => {
-            http.getAllStandings(day).subscribe({
-              next: (dayStandings) => {
-                if (!dayStandings.length) return;
-                const idx = getWeekDayIndex(day);
-                weekStandings[idx] = dayStandings;
-                patchState(store, { weekStandings, isPreloading: false });
-              },
-            });
+          missingDaysStandings.forEach((dayStandings, index) => {
+            if (dayStandings?.length) {
+              const idx = getWeekDayIndex(missingDays[index]);
+              weekStandings[idx] = dayStandings;
+            }
           });
+
+          patchState(store, { weekStandings, isPreloading: false });
         },
         error: (error) =>
           patchState(store, {
