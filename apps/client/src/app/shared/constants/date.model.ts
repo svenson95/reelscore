@@ -75,14 +75,10 @@ export const initWeekDataArray = <T>({
   dayData: T[];
   date: DateString;
 }): T[][] => {
-  return dayData.reduce(
-    (acc: T[][], standings: T) => {
-      const idx = getWeekDayIndex(date);
-      acc[idx] = acc[idx] ? [...acc[idx], standings] : [];
-      return acc;
-    },
-    Array.from({ length: 7 }, () => [])
-  );
+  const weekData: T[][] = Array.from({ length: 7 }, () => []);
+  const idx = getWeekDayIndex(date);
+  weekData[idx] = dayData;
+  return weekData;
 };
 
 export const getMissingDays = ({
