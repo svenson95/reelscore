@@ -2,29 +2,30 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { FixtureDTO } from '@lib/models';
+import { FixturesWeekData } from '@lib/models';
+
 import { environment } from '../../../../environments/environment';
 import { DateString } from '../../constants';
 
-export abstract class HttpFixturesService {
-  abstract getFixtures(date: DateString): Observable<FixtureDTO[]>;
+export abstract class HttpWeekFixturesService {
+  abstract getWeekFixtures(date: DateString): Observable<FixturesWeekData>;
 }
 
 @Injectable()
-export class AbstractedHttpFixturesService extends HttpFixturesService {
+export class AbstractedHttpWeekFixturesService extends HttpWeekFixturesService {
   BASE_URL = environment.api + 'fixtures';
 
   http = inject(HttpClient);
 
-  getFixtures(date: DateString): Observable<FixtureDTO[]> {
+  getWeekFixtures(date: DateString): Observable<FixturesWeekData> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<FixtureDTO[]>(this.BASE_URL + '/by-date', {
+    return this.http.get<FixturesWeekData>(this.BASE_URL + '/by-date', {
       params,
     });
   }
 }
 
-export const HTTP_FIXTURES_SERVICE_PROVIDER = {
-  provide: HttpFixturesService,
-  useClass: AbstractedHttpFixturesService,
+export const HTTP_WEEK_FIXTURES_SERVICE_PROVIDER = {
+  provide: HttpWeekFixturesService,
+  useClass: AbstractedHttpWeekFixturesService,
 };

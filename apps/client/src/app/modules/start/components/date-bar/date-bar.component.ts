@@ -90,9 +90,6 @@ export class DateBarComponent {
 
   isLoading = computed(
     () =>
-      this.weekStandingsStore.isLoading() ||
-      this.weekStandingsStore.isPreloading() ||
-      this.weekFixturesStore.isLoading() ||
-      this.weekFixturesStore.isPreloading()
+      this.weekStandingsStore.isLoading() || this.weekFixturesStore.isLoading()
   );
 }

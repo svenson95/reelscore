@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CompetitionId, StandingsDTO } from '@lib/models';
+import { CompetitionId, StandingsDTO, StandingsWeekData } from '@lib/models';
 import { environment } from '../../../../environments/environment';
 import { DateString } from '../../constants';
 
@@ -13,7 +13,7 @@ export abstract class HttpStandingsService {
     id: StandingsParams,
     date?: DateString
   ): Observable<StandingsDTO>;
-  abstract getAllStandings(date: DateString): Observable<StandingsDTO[]>;
+  abstract getWeekStandings(date: DateString): Observable<StandingsWeekData>;
 }
 
 @Injectable()
@@ -35,10 +35,10 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
     });
   }
 
-  getAllStandings(date: DateString): Observable<StandingsDTO[]> {
+  getWeekStandings(date: DateString): Observable<StandingsWeekData> {
     const dateString = date.substring(0, 10);
     const params = new HttpParams().append('date', dateString);
-    return this.http.get<StandingsDTO[]>(this.BASE_URL + '/start-top-five', {
+    return this.http.get<StandingsWeekData>(this.BASE_URL + '/start-top-five', {
       params,
     });
   }

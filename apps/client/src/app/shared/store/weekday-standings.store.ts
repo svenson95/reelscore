@@ -1,24 +1,16 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import {
-  DateString,
-  HttpStandingsService,
-  WeekStateHandler,
-  getMissingDays,
-  getWeekDayIndex,
-  initWeekDataArray,
-} from '@app/shared';
-import { StandingsDTO } from '@lib/models';
+import { DateString, HttpStandingsService, StateHandler } from '@app/shared';
+import { StandingsWeekData } from '@lib/models';
 
-type WeekdayStandingsState = WeekStateHandler<{
-  weekStandings: StandingsDTO[][];
+type WeekdayStandingsState = StateHandler<{
+  weekStandings: StandingsWeekData;
 }>;
 
 const initialState: WeekdayStandingsState = {
   weekStandings: Array.from({ length: 7 }, () => []),
   isLoading: false,
-  isPreloading: false,
   error: null,
 };
 
@@ -29,42 +21,19 @@ export const WeekdayStandingsStore = signalStore(
       patchState(store, {
         weekStandings: Array.from({ length: 7 }, () => []),
         isLoading: true,
-        isPreloading: true,
       });
 
-      http.getAllStandings(date).subscribe({
-        next: async (dayStandings) => {
-          const weekStandings = initWeekDataArray<StandingsDTO>({
-            dayData: dayStandings,
-            date,
-          });
-
+      http.getWeekStandings(date).subscribe({
+        next: async (weekStandings) => {
           patchState(store, {
             weekStandings,
             isLoading: false,
           });
-
-          const missingDays = getMissingDays({ date }).filter(
-            (day) => date !== day
-          );
-          const missingDaysStandings = await Promise.all(
-            missingDays.map((day) => http.getAllStandings(day).toPromise())
-          );
-
-          missingDaysStandings.forEach((dayStandings, index) => {
-            if (dayStandings?.length) {
-              const idx = getWeekDayIndex(missingDays[index]);
-              weekStandings[idx] = dayStandings;
-            }
-          });
-
-          patchState(store, { weekStandings, isPreloading: false });
         },
         error: (error) =>
           patchState(store, {
             weekStandings: initialState.weekStandings,
             isLoading: false,
-            isPreloading: false,
             error,
           }),
       });
