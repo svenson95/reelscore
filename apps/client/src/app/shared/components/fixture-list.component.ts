@@ -52,6 +52,7 @@ import { ResultLabelComponent } from './result-label.component';
     .teams > div:not(.result) { @apply flex flex-1 p-2 gap-2 items-center; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }
+    .team-logo-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
   `,
   template: `
     <ul>
@@ -71,12 +72,16 @@ import { ResultLabelComponent } from './result-label.component';
               >
                 {{ match.teams.home.name | teamName : 'short' }}
               </span>
+              <!-- @defer (on viewport) {
               <reelscore-optimized-image
                 [source]="getTeamLogo(match.teams.home.id)"
                 alternate="home logo"
                 width="14"
                 height="14"
               />
+              } @placeholder { -->
+              <div class="team-logo-placeholder"></div>
+              <!-- } -->
             </div>
             <div class="result" [class.is-upcoming]="isNotStarted(match)">
               <reelscore-result-label
@@ -86,12 +91,16 @@ import { ResultLabelComponent } from './result-label.component';
               />
             </div>
             <div>
+              @defer (on viewport) {
               <reelscore-optimized-image
                 [source]="getTeamLogo(match.teams.away.id)"
                 alternate="away logo"
                 width="14"
                 height="14"
               />
+              } @placeholder {
+              <div class="team-logo-placeholder"></div>
+              }
               <span
                 class="team-name"
                 [class.line-through]="isTeamEliminated(match, 'away')"
