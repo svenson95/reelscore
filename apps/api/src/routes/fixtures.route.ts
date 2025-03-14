@@ -1,14 +1,10 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { FlattenMaps } from 'mongoose';
 
-import {
-  CompetitionId,
-  FixtureDateString,
-  FixtureDTO,
-  FixtureId,
-} from '@lib/models';
+import { CompetitionId, FixtureDTO, FixtureId } from '@lib/models';
 
 import { FixtureController, FixturesController } from '../controllers';
+import { getWeekDatesArray } from '../middleware';
 
 export const fixtures = express.Router();
 
@@ -26,12 +22,19 @@ fixtures.get('/match-latest', async (req, res) => {
   return res.json(fixtures);
 });
 
-fixtures.get('/by-date', async (req, res) => {
-  const date: FixtureDateString = String(req.query.date);
-  const fixturesController = new FixturesController();
-  const fixture = await fixturesController.getByDate(date);
-  return res.json(fixture);
-});
+fixtures.get(
+  '/by-date',
+  async (req: Request, res: Response): Promise<Response> => {
+    const date = String(req.query.date);
+    const fixturesController = new FixturesController();
+    const weekDates = getWeekDatesArray(date);
+    const weekData = await Promise.all(
+      weekDates.map((day) => fixturesController.getByDate(day))
+    );
+
+    return res.json(weekData);
+  }
+);
 
 fixtures.get('/competition-last', async (req, res) => {
   const docs = await competitionFixtures('last', req);

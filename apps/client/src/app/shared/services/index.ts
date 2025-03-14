@@ -1,7 +1,7 @@
 import { BREAKPOINT_OBSERVER_SERVICE_PROVIDER } from './breakpoint-observer.service';
 import { DATE_SERVICE_PROVIDER } from './date.service';
 import { FILTER_SERVICE_PROVIDER } from './filter.service';
-import { HTTP_FIXTURES_SERVICE_PROVIDER } from './http/fixtures.service';
+import { HTTP_WEEK_FIXTURES_SERVICE_PROVIDER } from './http/fixtures.service';
 import { HTTP_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
 import { LEAGUE_SERVICE_PROVIDER } from './league/league.service';
 import { ROUTE_SERVICE_PROVIDER } from './route.service';
@@ -22,5 +22,5 @@ export const GLOBAL_SERVICE_PROVIDERS = [
   FILTER_SERVICE_PROVIDER,
   ROUTE_SERVICE_PROVIDER,
   HTTP_STANDINGS_SERVICE_PROVIDER,
-  HTTP_FIXTURES_SERVICE_PROVIDER,
+  HTTP_WEEK_FIXTURES_SERVICE_PROVIDER,
 ];

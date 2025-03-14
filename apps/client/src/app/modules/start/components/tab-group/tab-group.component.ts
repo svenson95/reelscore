@@ -56,7 +56,6 @@ import { HideHeaderDirective } from './directives';
           <reelscore-standings
             [weekStandings]="weekStandings()![idx]"
             [isLoading]="weekFixturesStore.isLoading()"
-            [isPreloading]="weekFixturesStore.isPreloading()"
             [error]="weekFixturesStore.error()"
           />
           }

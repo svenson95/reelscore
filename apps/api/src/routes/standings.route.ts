@@ -1,7 +1,9 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import { CompetitionId } from '@lib/models';
+
 import { StandingsController } from '../controllers';
+import { getWeekDatesArray } from '../middleware';
 
 export const standings = express.Router();
 
@@ -16,12 +18,18 @@ standings.get('/standings-by-id', async (req, res) => {
   return res.json(doc);
 });
 
-standings.get('/start-top-five', async (req, res) => {
-  const standingsController = new StandingsController();
-  const date = String(req.query.date);
-  const docs = await standingsController.getTopFive(date);
-  return res.json(docs);
-});
+standings.get(
+  '/start-top-five',
+  async (req: Request, res: Response): Promise<Response> => {
+    const date = String(req.query.date);
+    const standingsController = new StandingsController();
+    const weekDates = getWeekDatesArray(date);
+    const weekData = await Promise.all(
+      weekDates.map((day) => standingsController.getTopFive(day))
+    );
+    return res.json(weekData);
+  }
+);
 
 standings.get('/match-standings', async (req, res) => {
   const standingsController = new StandingsController();

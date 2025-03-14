@@ -58,7 +58,7 @@ import {
     />
     } } @else if (error()) {
     <p class="no-data">Fehler beim Laden der Tabellen.</p>
-    } @else if (!isLoading() && !isPreloading()) {
+    } @else if (!isLoading()) {
     <p class="no-data">Keine Tabellen gefunden.</p>
     }
   `,
@@ -67,7 +67,6 @@ export class StandingsComponent {
   standingStore = inject(StandingsStore);
   weekStandings = input.required<StandingsDTO[]>();
   isLoading = input.required<boolean>();
-  isPreloading = input.required<boolean>();
   error = input.required<string | null>();
 
   standingsStore = inject(StandingsStore);
