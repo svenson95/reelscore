@@ -3,7 +3,6 @@ import {
   Component,
   effect,
   inject,
-  OnInit,
   untracked,
 } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -65,7 +64,7 @@ import { HideHeaderDirective } from './directives';
     </mat-tab-group>
   `,
 })
-export class TabGroupComponent implements OnInit {
+export class TabGroupComponent {
   dateService = inject(DateService);
   weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
   selectedDay = this.dateService.selectedDay;
@@ -75,12 +74,6 @@ export class TabGroupComponent implements OnInit {
   weekFixtures = this.weekFixturesStore.weekFixtures;
   weekStandingsStore = inject(WeekdayStandingsStore);
   weekStandings = this.weekStandingsStore.weekStandings;
-
-  ngOnInit(): void {
-    const date = this.selectedDay().split('T')[0];
-    this.weekFixturesStore.loadWeekdayFixtures(date);
-    this.weekStandingsStore.loadWeekdayStandings(date);
-  }
 
   calenderWeekEffect = effect(
     () => {
