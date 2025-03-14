@@ -49,15 +49,20 @@ import { CompetitionRound } from '@lib/models';
       }
     }
     .spacer { @apply flex-1; }
+    .competition-logo-placeholder { @apply w-[24px] h-[24px] bg-gray-200 rounded; }
   `,
   template: `
     <div class="header">
+      @defer (on viewport) {
       <reelscore-optimized-image
         [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
         alternate=""
         width="24"
         height="24"
       />
+      } @placeholder {
+      <div class="competition-logo-placeholder"></div>
+      }
       <a [routerLink]="competition().url">
         {{ competition().name | competitionLabel }}
       </a>
