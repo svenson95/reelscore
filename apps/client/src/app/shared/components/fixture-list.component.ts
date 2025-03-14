@@ -72,16 +72,16 @@ import { ResultLabelComponent } from './result-label.component';
               >
                 {{ match.teams.home.name | teamName : 'short' }}
               </span>
-              <!-- @defer (on viewport) {
+              @defer (on viewport) {
               <reelscore-optimized-image
                 [source]="getTeamLogo(match.teams.home.id)"
                 alternate="home logo"
                 width="14"
                 height="14"
               />
-              } @placeholder { -->
+              } @placeholder {
               <div class="team-logo-placeholder"></div>
-              <!-- } -->
+              }
             </div>
             <div class="result" [class.is-upcoming]="isNotStarted(match)">
               <reelscore-result-label
