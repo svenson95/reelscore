@@ -2,10 +2,10 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { DateString, HttpWeekFixturesService, StateHandler } from '@app/shared';
-import { FixtureDTO } from '@lib/models';
+import { FixturesWeekData } from '@lib/models';
 
 type WeekdayFixturesState = StateHandler<{
-  weekFixtures: FixtureDTO[][];
+  weekFixtures: FixturesWeekData;
 }>;
 
 const initialState: WeekdayFixturesState = {
