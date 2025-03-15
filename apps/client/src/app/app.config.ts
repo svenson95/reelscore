@@ -1,5 +1,8 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import * as de from '@angular/common/locales/de';
 import {
   ApplicationConfig,
@@ -42,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       registrationStrategy: 'registerWhenStable:30000',
     }),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,
