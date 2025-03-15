@@ -39,9 +39,9 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
     }
   `,
   template: `
-    @if (isLoading() === true) {
+    @if (isRouterLoading() === true) {
     <reelscore-logo disabled />
-    } @if (!isLoading()) {
+    } @if (!isRouterLoading()) {
     <header></header>
     }
 
@@ -49,21 +49,19 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
       <router-outlet />
     </main>
 
-    @if (!isLoading()) {
+    @if (!isRouterLoading()) {
     <footer></footer>
     }
   `,
 })
 export class AppComponent implements AfterViewInit {
   private outlet = viewChild(RouterOutlet);
-
-  isLoading = signal<boolean>(true);
-
+  isRouterLoading = signal<boolean>(true);
   destroyRef = inject(DestroyRef);
 
   public ngAfterViewInit(): void {
     this.outlet()
       ?.activateEvents.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.isLoading.set(false));
+      .subscribe(() => this.isRouterLoading.set(false));
   }
 }
