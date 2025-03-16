@@ -21,7 +21,7 @@ type StatusLong =
   | 'Technical Loss'
   | 'WalkOver'
   | 'In Progress';
-type StatusShort =
+export type StatusShort =
   | 'TBD'
   | 'NS'
   | '1H'
@@ -41,6 +41,25 @@ type StatusShort =
   | 'AWD'
   | 'WO'
   | 'LIVE';
+export type StatusTypeScheduled = 'TBD' | 'NS';
+export type StatusTypeInPlay =
+  | '1H'
+  | 'HT'
+  | '2H'
+  | 'ET' // Extra time in play
+  | 'BT' // Break during extra time
+  | 'P' // Penaly played after extra time
+  | 'SUSP' // Suspended by referee's decision, may be rescheduled another day
+  | 'INT' // Interrupted by referee's decision, should resume in a few minutes
+  | 'LIVE'; // indicates a fixture in progress but the data indicating the half-time or elapsed time are not available
+export type StatusTypeFinished = 'FT' | 'AET' | 'PEN';
+export type StatusTypePostponed = 'PST';
+export type StatusTypeCancelled = 'CANC';
+export type StatusTypeAbandoned = 'ABD';
+export type StatusTypeNotPlayed =
+  | 'AWD' // Technical Loss
+  | 'WO'; // WalkOver, victory by forfeit or absence of competitor
+
 export type FixtureDetail =
   | 'lineups'
   | 'fixture-statistics'
