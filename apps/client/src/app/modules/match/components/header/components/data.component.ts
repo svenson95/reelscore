@@ -35,7 +35,7 @@ import { FixtureDTO } from '@lib/models';
 
     <div class="result-column">
       <reelscore-result-label
-        [result]="data().score.fulltime"
+        [result]="data().goals"
         [status]="data().fixture.status.short"
         [isNotStarted]="isNotStarted(data())"
         [showPostponedText]="true"

@@ -64,7 +64,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   `,
   template: `
     <reelscore-match-header-data [data]="data()" />
-    @if (highlights() && isFinished() && isNotGoalLess()) {
+    @if (highlights() && isNotGoalLess()) {
     <div
       class="toggle-highlights-row"
       [class.is-hidden]="showHighlights() === false"
@@ -92,11 +92,6 @@ export class MatchHeaderComponent implements OnInit {
   data = input.required<FixtureDTO>();
   highlights = input.required<FixtureHighlights | undefined>();
   showHighlights = signal(false);
-
-  isFinished = computed(() => {
-    const finishedValues = ['FT', 'AET', 'PEN'];
-    return finishedValues.some((v) => v === this.data().fixture.status.short);
-  });
 
   isNotGoalLess = computed(() => {
     return (
