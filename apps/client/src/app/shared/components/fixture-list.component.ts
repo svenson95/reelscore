@@ -38,6 +38,7 @@ import { ResultLabelComponent } from './result-label.component';
     li > a { @apply flex items-stretch; }
     li:not(:last-child) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
+    .time-label.is-finished { @apply line-through decoration-fb-red; }
     .time { 
       @apply justify-center items-center min-w-[50px] text-fb-font-size-small; 
 
@@ -71,7 +72,10 @@ import { ResultLabelComponent } from './result-label.component';
               (match | isStatus : halfTimeStates)
             "
           >
-            <span class="team-name-label">
+            <span
+              class="time-label"
+              [class.is-finished]="match | isStatus : finishedStates"
+            >
               @if (match | isStatus : playingStates : finishedStates) {
               {{ match.fixture.status.elapsed }}' } @else if (match | isStatus :
               halfTimeStates) { HZ } @else {
