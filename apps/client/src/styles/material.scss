@@ -70,6 +70,7 @@ $reelscore-theme: mat.m2-define-light-theme(
 button.mdc-button {
   --mdc-text-button-label-text-size: var(--fb-font-size-body-2);
   --mat-text-button-horizontal-padding: 10px;
+  border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
 
 button.mdc-button,
@@ -98,19 +99,16 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  --mat-tab-header-inactive-ripple-color: var(--fb-color-red);
-  --mat-tab-header-active-ripple-color: var(--fb-color-red);
-
-  --mdc-tab-indicator-active-indicator-color: var(--fb-color-red);
-  --mat-tab-header-active-focus-indicator-color: var(--fb-color-red);
+  // --mat-tab-header-inactive-ripple-color: var(--fb-color-red);
+  // --mat-tab-header-active-ripple-color: var(--fb-color-red);
 
   --mat-tab-header-active-label-text-color: var(--fb-color-red);
   --mat-tab-header-inactive-label-text-color: var(--fb-color-text-2);
-
-  --mat-tab-header-active-hover-indicator-color: var(--fb-color-red);
-
-  --mat-tab-header-active-hover-label-text-color: var(--fb-color-red);
   --mat-tab-header-active-focus-label-text-color: var(--fb-color-red);
+  --mat-tab-header-active-hover-label-text-color: var(--fb-color-white);
+  --mat-tab-header-active-focus-indicator-color: var(--fb-color-red);
+  --mat-tab-header-active-hover-indicator-color: var(--fb-color-white);
+  --mdc-tab-indicator-active-indicator-color: var(--fb-color-red);
 
   .mat-mdc-tab-header {
     --mat-tab-header-label-text-size: var(--fb-font-size-body-2);
@@ -121,8 +119,16 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     @apply min-w-[50px] px-1;
   }
 
-  .mdc-tab-indicator--active mat-icon {
-    color: var(--fb-color-red);
+  .mat-mdc-tab-ripple:not(.mdc-tab-indicator--active) {
+    background-color: var(--fb-color-white);
+  }
+
+  .mdc-tab-indicator--active {
+    background-color: var(--fb-color-red);
+
+    mat-icon {
+      color: var(--fb-color-red);
+    }
   }
 }
 

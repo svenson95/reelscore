@@ -25,7 +25,8 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   ],
   styles: `
     :host { 
-      @apply flex flex-col mx-auto p-5 gap-2 rounded-fb w-full max-w-fb-max-width bg-white border-[1px];
+      @apply flex flex-col mx-auto p-5 gap-2 rounded-fb w-full max-w-fb-max-width bg-white;
+      border: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
     .toggle-highlights-row { 
       @apply flex items-center gap-5;

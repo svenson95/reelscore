@@ -13,7 +13,7 @@ import { LoadingService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host { @apply select-none text-fb-font-size-body-1 tracking-wide; }
-    :host([disabled]) { @apply grayscale opacity-35; }
+    :host([disabled]) { @apply opacity-75; }
 
     :host.is-loading {
       &::after {

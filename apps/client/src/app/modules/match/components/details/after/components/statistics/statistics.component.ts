@@ -19,8 +19,8 @@ import { StatisticList } from './models';
     section > div { @apply flex; }
     div > div { @apply basis-6/12; }
     div > div > div { @apply flex gap-5 justify-center; }
-    h4, li { @apply text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
-    h4 { @apply text-fb-color-text-2 text-center mb-2; }
+    h4, li { @apply text-fb-color-text-3 text-fb-font-size-body-2 md:text-fb-font-size-body-1;}
+    h4 { @apply text-fb-color-text-3 text-center mb-2 tracking-widest font-extralight; }
   `,
   template: `
     <section>

@@ -15,7 +15,14 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   providers: [EvaluationsStore],
   styles: `
     :host { @apply flex flex-col; }
-    section { 
+    .content { 
+      @apply w-fit bg-fb-color-white py-4 px-12 my-5 mx-auto; 
+
+      border-width: 1px;
+      border-color: var(--mat-standard-button-toggle-divider-color);
+      border-radius: var(--mat-standard-button-toggle-shape);
+    }
+    .content > section { 
       @apply max-w-[300px] sm:max-w-[380px] flex flex-col gap-5 my-5 mx-auto;
 
       &:first-of-type { @apply border-b-[1px] pb-5; }
