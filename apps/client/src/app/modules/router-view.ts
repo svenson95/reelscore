@@ -22,7 +22,8 @@ export class RouterView {
     this.leagueService.setSelectedLeague(leagueData);
   }
 
-  private findLeagueData(route: CompetitionUrl): CompetitionData {
+  private findLeagueData(route: CompetitionUrl): CompetitionData | undefined {
+    if (route === '/') return undefined;
     const params = route.split('/');
     const routePath = params[params.indexOf('leagues') + 1];
     const dataWithUrl = (data: CompetitionData) => data.url === routePath;
