@@ -76,7 +76,7 @@ import {
       padding-top: 1.25rem;
       position: sticky;
       top: 0;
-      background: white;
+      background: var(--fb-color-red);
       z-index: 100;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }

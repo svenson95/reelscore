@@ -3,20 +3,21 @@
   --fb-color-black-1: #000;
   --fb-color-black-2: #111;
   --fb-color-white: #fff;
-  --fb-color-white-2: #f7f7f7;
-  --fb-color-red: #d10313;
-  --fb-color-green-1: #2e7d32;
+  --fb-color-white-2: #f3f3f3;
+  --fb-color-red: #f48c22;
+  --fb-color-green-1: #2e9133;
   --fb-color-green-2: #2c7051;
   --fb-color-green-1-light: #f9fff9;
   --fb-color-green-1-bg-light: #2e7d3212;
   --fb-color-text-1: #1d1d1f;
   --fb-color-text-2: #999999;
+  --fb-color-text-3: #fff;
   --fb-color-win: rgba(21, 103, 21, 0.15);
   --fb-color-lose: rgba(255, 0, 0, 0.1);
   --fb-color-bg-black: #111;
 
-  --fb-button-text-color: var(--fb-color-white);
-  --fb-button-bg-color: var(--fb-color-red);
+  --fb-button-text-color: var(--fb-color-red);
+  --fb-button-bg-color: var(--fb-color-white);
 
   /* Font-sizes */
   --fb-font-size-title: 24px;

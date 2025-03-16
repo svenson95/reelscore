@@ -8,7 +8,7 @@ import { AnalysesStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col py-7 px-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1; }
+    :host { @apply flex flex-col py-7 px-5 mt-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1 bg-white; }
     section { @apply w-full flex gap-5; }
     section:not(:last-of-type) { @apply border-b-[1px] pb-5; }
     .home { @apply text-end; }

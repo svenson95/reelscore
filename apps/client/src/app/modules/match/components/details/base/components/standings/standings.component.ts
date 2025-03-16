@@ -12,11 +12,8 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
   styles: `
     :host ::ng-deep reelscore-standings-table {
       @apply sm:min-w-[500px] sm:mx-auto;
-
-      border-width: 0;
-      table { th, td { border-color: transparent; } }
     }
-    section { @apply flex flex-col p-2 md:p-5 gap-5; }
+    section { @apply flex flex-col px-2 py-5 md:p-5 gap-5; }
   `,
   template: `
     <h3 class="match-section-title">TABELLEN</h3>

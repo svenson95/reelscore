@@ -24,8 +24,9 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
   imports: [RouterLink, MatTableModule, OptimizedImageComponent, TeamNamePipe],
   styles: `
     :host {
-      @apply flex overflow-hidden border;
-      border-color: var(--mdc-outlined-button-outline-color);
+      @apply flex overflow-hidden;
+      border-width: 1px;
+      border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
 

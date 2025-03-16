@@ -18,7 +18,7 @@ import { MatchEventComponent } from './components';
   imports: [MatIconModule, MatchEventComponent],
   styles: `
     :host { @apply flex flex-col; }
-    section { @apply flex flex-col my-5 gap-5; }
+    section { @apply flex flex-col my-5 gap-5 py-5 bg-white; }
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }
     .home { @apply text-right; }

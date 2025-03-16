@@ -15,7 +15,13 @@ import { MatchFixturesTableComponent } from './components';
   imports: [MatchFixturesTableComponent],
   styles: `
     :host { @apply flex flex-col; }
-    section { @apply flex flex-col md:flex-row px-5 pb-5 pt-4 gap-5; }
+    section { 
+      @apply flex flex-col md:flex-row bg-white px-5 pb-5 pt-4 mt-5 gap-5; 
+
+      border-width: 1px;
+      border-color: var(--mat-standard-button-toggle-divider-color);
+      border-radius: var(--mat-standard-button-toggle-shape);
+    }
     reelscore-match-fixtures-table:first-of-type {
       @apply pb-5 md:pb-0 md:pr-5 border-b-[1px] md:border-b-0 md:border-r-[1px]; 
     }
