@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { RouterView } from '../router-view';
+
 import { DateBarComponent, TabGroupComponent } from './components';
 
 @Component({
@@ -17,4 +19,4 @@ import { DateBarComponent, TabGroupComponent } from './components';
     <reelscore-start-tab-group />
   `,
 })
-export class StartComponent {}
+export class StartComponent extends RouterView {}
