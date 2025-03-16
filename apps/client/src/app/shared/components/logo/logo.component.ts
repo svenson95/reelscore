@@ -3,6 +3,7 @@ import {
   Component,
   HostBinding,
   inject,
+  input,
 } from '@angular/core';
 
 import { LoadingService } from '../../services';
@@ -53,9 +54,10 @@ import { LoadingService } from '../../services';
 })
 export class LogoComponent {
   isLoading = inject(LoadingService).isLoading;
+  showLoadingIndicator = input<boolean>(false);
 
   @HostBinding('class.is-loading')
   get loadingClassBinding() {
-    return this.isLoading() === true;
+    return this.showLoadingIndicator() && this.isLoading() === true;
   }
 }

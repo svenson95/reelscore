@@ -21,7 +21,7 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   template: `
     <div class="wrapper">
       <a mat-button [routerLink]="['/']">
-        <reelscore-logo />
+        <reelscore-logo [showLoadingIndicator]="true" />
       </a>
       <reelscore-league-select [selectedLeague]="selectedLeague()" />
     </div>
