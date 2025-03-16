@@ -14,16 +14,19 @@ import {
   styles: `
     :host { @apply relative; }
     reelscore-back-button { @apply absolute top-0 left-0 z-10; }
-    reelscore-optimized-image { @apply p-8 mx-auto mb-5; }
+    reelscore-optimized-image { @apply p-8; }
+    .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
   template: `
     <reelscore-back-button />
-    <reelscore-optimized-image
-      [source]="getCompetitionLogo(id()!)"
-      [alternate]="label()!"
-      width="64"
-      height="64"
-    />
+    <div class="image-wrapper">
+      <reelscore-optimized-image
+        [source]="getCompetitionLogo(id()!)"
+        [alternate]="label()!"
+        width="64"
+        height="64"
+      />
+    </div>
   `,
 })
 export class CompetitionHeaderComponent {
