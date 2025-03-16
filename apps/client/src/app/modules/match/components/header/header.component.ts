@@ -94,9 +94,12 @@ export class MatchHeaderComponent implements OnInit {
   showHighlights = signal(false);
 
   isNotGoalLess = computed(() => {
+    const { goals, fixture } = this.data();
     return (
-      (this.data().goals.home !== 0 || this.data().goals.away !== 0) &&
-      this.data().fixture.status.short !== 'PEN'
+      goals.home !== null &&
+      goals.away !== null &&
+      (goals.home > 0 || goals.away > 0) &&
+      fixture.status.short !== 'PEN'
     );
   });
 
