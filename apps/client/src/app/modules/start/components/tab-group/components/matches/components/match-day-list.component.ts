@@ -38,7 +38,6 @@ import { CompetitionRound } from '@lib/models';
     .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
     .header { 
       span, a {
-        -webkit-font-smoothing: antialiased;
         color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
         line-height: var(--mat-table-header-headline-line-height);
@@ -49,20 +48,24 @@ import { CompetitionRound } from '@lib/models';
       }
     }
     .spacer { @apply flex-1; }
-    .competition-logo-placeholder { @apply w-[24px] h-[24px] bg-gray-200 rounded; }
+    .competition-logo-placeholder { 
+      @apply w-[24px] h-[24px] bg-gray-200 rounded; 
+    }
   `,
   template: `
     <div class="header">
-      @defer (on viewport) {
-      <reelscore-optimized-image
-        [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
-        alternate=""
-        width="24"
-        height="24"
-      />
-      } @placeholder {
-      <div class="competition-logo-placeholder"></div>
-      }
+      <div class="competition-logo">
+        @defer (on viewport) {
+        <reelscore-optimized-image
+          [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
+          alternate="competition logo"
+          width="24"
+          height="24"
+        />
+        } @placeholder {
+        <div class="competition-logo-placeholder"></div>
+        }
+      </div>
       <a [routerLink]="competition().url">
         {{ competition().name | competitionLabel }}
       </a>
