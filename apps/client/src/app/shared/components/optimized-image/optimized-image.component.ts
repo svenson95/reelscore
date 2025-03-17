@@ -13,9 +13,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     <img
       [ngSrc]="source()"
       [alt]="alternate()"
-      priority
       [width]="width()"
       [height]="height()"
+      loading="lazy"
     />
   `,
 })
