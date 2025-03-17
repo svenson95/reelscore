@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
 } from '@angular/core';
@@ -58,13 +59,13 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
       <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Vorheriger Tag">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
-      @for(day of weekdays(); track day) {
+      @for(day of indexedWeekdays(); track day.index) {
       <mat-button-toggle
         [value]="day"
-        (click)="dateSelected.emit(day)"
-        [class.is-today]="isToday(day)"
+        (click)="dateSelected.emit(day.date)"
+        [class.is-today]="isToday(day.date)"
       >
-        {{ day | date : 'ccc' }}
+        {{ day.date | date : 'ccc' }}
       </mat-button-toggle>
       }
       <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Nächster Tag">
@@ -76,6 +77,9 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
 export class WeekToggleGroupComponent {
   selectedDay = input.required<DateString>();
   weekdays = input.required<DateString[]>();
+  indexedWeekdays = computed<{ date: DateString; index: number }[]>(() =>
+    this.weekdays().map((date, index) => ({ date, index }))
+  );
 
   dateSelected = output<DateString>();
 
