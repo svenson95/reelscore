@@ -98,7 +98,8 @@ export class MatchHeaderComponent implements OnInit {
             document.documentElement.scrollHeight,
             document.documentElement.offsetHeight
           );
-          this.isScrolled.set(isScrolled && maxScrollHeight > 1000);
+          const minScrollHeight = 1200;
+          this.isScrolled.set(isScrolled && maxScrollHeight > minScrollHeight);
         });
       });
     });
