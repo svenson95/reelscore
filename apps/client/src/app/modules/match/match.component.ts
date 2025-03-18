@@ -69,27 +69,34 @@ import {
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply w-full flex flex-col gap-5; }
-    .header > div { @apply flex gap-5; }
-    .match-header {
+    :host { 
+      @apply w-full flex flex-col gap-5; 
+
+      ::ng-deep {
+        .mat-mdc-tab-body.mat-mdc-tab-body-active {
+          @apply flex flex-col gap-2; 
+        }
+
+        .mat-mdc-tab-header {
+          @apply mx-5 mb-5;
+        }
+      }
+    }
+    section.header {
+      @apply p-5;
+      div { @apply flex gap-5; }
+    }
+    section.match-header {
+      @apply px-5 sticky top-0 bg-fb-red z-10;
       margin-top: -1.25rem;
-      padding-top: 1.25rem;
-      position: sticky;
-      top: 0;
-      background: var(--fb-color-red);
-      z-index: 100;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
+    .tab-content { @apply p-5; }
     button { 
       --mdc-outlined-button-container-height: 36px;
       @apply fb-as-label; 
     }
-    :host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active {
-      @apply flex flex-col gap-2; 
-    }
-    .spacer {
-      flex: 1;
-    }
+    .spacer { @apply flex-1; }
   `,
   template: `
     @if (fixtureStore.isLoading()) {
@@ -131,18 +138,20 @@ import {
             } @else { Details }
           </ng-template>
 
-          @if (fixture()) {
-          <reelscore-match-fixture-data />
-          } @if (!hasNoStandings(fixture()!.data.league.id) &&
-          !isKoPhase(fixture()!.data.league.round)) {
-          <reelscore-match-fixture-standings
-            [standings]="standingsStore.standings()"
-          />
-          } @if (evaluations()) {
-          <reelscore-match-evaluations [evaluations]="evaluations()" />
-          }
+          <div class="tab-content">
+            @if (fixture()) {
+            <reelscore-match-fixture-data />
+            } @if (!hasNoStandings(fixture()!.data.league.id) &&
+            !isKoPhase(fixture()!.data.league.round)) {
+            <reelscore-match-fixture-standings
+              [standings]="standingsStore.standings()"
+            />
+            } @if (evaluations()) {
+            <reelscore-match-evaluations [evaluations]="evaluations()" />
+            }
 
-          <reelscore-match-latest-fixtures />
+            <reelscore-match-latest-fixtures />
+          </div>
         </mat-tab>
 
         <mat-tab [disabled]="!analysesStore.analyses()">
@@ -152,9 +161,11 @@ import {
             } @else { Analysen }
           </ng-template>
 
-          @if (analysesStore.analyses()) {
-          <reelscore-match-fixture-analyses />
-          }
+          <div class="tab-content">
+            @if (analysesStore.analyses()) {
+            <reelscore-match-fixture-analyses />
+            }
+          </div>
         </mat-tab>
 
         <mat-tab [disabled]="!events()">
@@ -164,9 +175,11 @@ import {
             } @else { Bericht }
           </ng-template>
 
-          @if (events()) {
-          <reelscore-match-events [data]="events()!" />
-          }
+          <div class="tab-content">
+            @if (events()) {
+            <reelscore-match-events [data]="events()!" />
+            }
+          </div>
         </mat-tab>
 
         <mat-tab [disabled]="!statistics()">
@@ -176,9 +189,11 @@ import {
             } @else { Statistiken }
           </ng-template>
 
-          @if (statistics()) {
-          <reelscore-match-statistics [data]="statistics()!" />
-          }
+          <div class="tab-content">
+            @if (statistics()) {
+            <reelscore-match-statistics [data]="statistics()!" />
+            }
+          </div>
         </mat-tab>
       </mat-tab-group>
     </section>

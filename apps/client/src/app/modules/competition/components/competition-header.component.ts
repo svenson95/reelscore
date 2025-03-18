@@ -13,7 +13,7 @@ import {
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }
-    reelscore-back-button { @apply absolute top-0 left-0 z-10; }
+    reelscore-back-button { @apply absolute top-5 left-5 z-10; }
     reelscore-optimized-image { @apply p-8; }
     .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
