@@ -77,9 +77,7 @@ import {
           @apply flex flex-col gap-2; 
         }
 
-        .mat-mdc-tab-header {
-          @apply mx-5 mb-5;
-        }
+        .mat-mdc-tab-header { @apply mx-5; }
       }
     }
     section.header {
