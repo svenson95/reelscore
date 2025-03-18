@@ -15,7 +15,7 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
     :host { @apply p-fb-padding-3 border-b-[1px] bg-fb-red; }
-    .wrapper { @apply flex items-center justify-between px-fb-padding-3; }
+    .wrapper { @apply flex items-center justify-between lg:px-fb-padding-3; }
     a reelscore-logo { @apply text-white; }
   `,
   template: `
