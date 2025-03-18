@@ -6,10 +6,11 @@ import {
 } from '@angular/core';
 
 import { EventDTO } from '@lib/models';
+
 import {
   EventCardComponent,
   EventGoalComponent,
-  EventSubstComponent,
+  EventSubstitutionComponent,
   EventVarComponent,
 } from './types';
 
@@ -19,7 +20,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     EventGoalComponent,
-    EventSubstComponent,
+    EventSubstitutionComponent,
     EventCardComponent,
     EventVarComponent,
   ],
@@ -32,7 +33,7 @@ import {
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
     <reelscore-event-goal [event]="event" />
     } @case("subst") {
-    <reelscore-event-subst [event]="event" />
+    <reelscore-event-substitution [event]="event" />
     } @case("Card") {
     <reelscore-event-card [event]="event" />
     } @case("Var") {

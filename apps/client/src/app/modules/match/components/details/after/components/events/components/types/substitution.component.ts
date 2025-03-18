@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { EventDTO } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-event-subst',
+  selector: 'reelscore-event-substitution',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
@@ -14,11 +14,11 @@ import { EventDTO } from '@lib/models';
   `,
   template: `
     @if (event(); as event) {
-    <span>{{ event.assist.name }}</span>
     <span>{{ event.player.name }}</span>
+    <span>{{ event.assist.name }}</span>
     }
   `,
 })
-export class EventSubstComponent {
+export class EventSubstitutionComponent {
   event = input.required<EventDTO>();
 }
