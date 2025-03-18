@@ -7,15 +7,18 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventWithResult, timeTotal } from '@lib/models';
+import { EventWithResult } from '@lib/models';
+
 import { FixtureStore } from '../../../../../store';
+
 import { MatchEventComponent } from './components';
+import { TimeTotalPipe } from './pipes';
 
 @Component({
   selector: 'reelscore-match-events',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIconModule, MatchEventComponent],
+  imports: [MatIconModule, MatchEventComponent, TimeTotalPipe],
   styles: `
     :host { @apply flex flex-col; }
     section { @apply flex flex-col my-5 gap-5 py-5 bg-white; }
@@ -39,7 +42,7 @@ import { MatchEventComponent } from './components';
           @if (event.team.id === homeId) {
           <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
-          <span class="time">{{ timeTotal(event) }}'</span>
+          <span class="time">{{ event | timeTotal }}'</span>
           }
         </div>
 
@@ -75,7 +78,7 @@ import { MatchEventComponent } from './components';
           @if (event.team.id === awayId) {
           <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
-          <span class="time">{{ timeTotal(event) }}'</span>
+          <span class="time">{{ event | timeTotal }}'</span>
           }
         </div>
       </div>
@@ -87,10 +90,7 @@ export class MatchEventsComponent {
   data = input.required<EventWithResult[]>();
 
   fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
 
-  homeTeamId = computed(() => this.fixture()?.data.teams.home.id);
-  awayTeamId = computed(() => this.fixture()?.data.teams.away.id);
-
-  timeTotal = timeTotal;
+  homeTeamId = computed(() => this.fixtureStore.fixture()?.data.teams.home.id);
+  awayTeamId = computed(() => this.fixtureStore.fixture()?.data.teams.away.id);
 }

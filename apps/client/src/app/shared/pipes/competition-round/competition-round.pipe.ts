@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { CompetitionRound } from '@lib/models';
+
 import { translatedCompetitionRound } from './competition-round.data';
 import { LabelType } from './label.model';
 

@@ -1,4 +1,5 @@
 import { CompetitionRound } from '@lib/models';
+
 import { LabelType } from './label.model';
 
 type CompetitionRoundType = string;
