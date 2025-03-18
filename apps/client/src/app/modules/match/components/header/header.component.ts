@@ -26,39 +26,28 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
     .toggle-highlights-row { 
-      animation: slideUp 0.3s ease forwards;
-
-      &.is-hidden {
-        animation: slideDown 0.3s ease forwards;
-      }
-
-      &.is-hidden .divider { animation: opacityDown 0.3s ease forwards; }
+      &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
       .divider { 
         @apply w-full h-[1px] bg-[#e5e7eb]; 
-        animation: opacityUp 0.3s ease forwards;
+        animation: opacityUp 200ms ease forwards;
       }
 
-      button { @apply flex; }
-      mat-icon { @apply shrink-0; }
-      
       @keyframes opacityUp {
         0% { opacity: 0; margin-block: 0; }
-        100% { opacity: 1; margin-block: .75rem; }
+        100% { opacity: 1; margin-block: .5rem; }
       }
       @keyframes opacityDown {
-        0% { opacity: 1; margin-block: .75rem; }
+        0% { opacity: 1; margin-block: .5rem; }
         100% { opacity: 0; margin-block: 0; }
       }
+    }
 
-      $slideValue: -0.5rem;
-      @keyframes slideUp {
-        0% { margin-top: $slideValue; }
-        100% { margin-top: 0; }
-      }
-      @keyframes slideDown {
-        0% { margin-top: 0; }
-        100% { margin-top: $slideValue; }
-      }
+    .animation-wrapper {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 200ms ease-out;
+      &.is-hidden { grid-template-rows: 0fr; }
+      .match-highlights { overflow: hidden; }
     }
   `,
   template: `
@@ -67,12 +56,14 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
       <div class="divider"></div>
     </div>
-    @if (!isScrolled()) {
-    <reelscore-match-header-details
-      [data]="data()"
-      [highlights]="highlights()!"
-    />
-    } }
+    <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
+      <reelscore-match-header-details
+        class="match-highlights"
+        [data]="data()"
+        [highlights]="highlights()!"
+      />
+    </div>
+    }
   `,
 })
 export class MatchHeaderComponent implements OnInit {
