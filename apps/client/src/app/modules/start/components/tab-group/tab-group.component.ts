@@ -28,7 +28,7 @@ import { HideHeaderDirective } from './directives';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     section {
-      @apply max-w-fb-max-width inline-flex flex-wrap md:flex-nowrap w-full gap-5 mx-auto;
+      @apply max-w-fb-max-width inline-flex flex-wrap md:flex-nowrap w-full p-5 gap-5 mx-auto;
 
       reelscore-matches, reelscore-standings {
         @apply w-full min-w-[200px];

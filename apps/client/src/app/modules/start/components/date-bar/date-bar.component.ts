@@ -20,7 +20,7 @@ import {
     ActionButtonsComponent,
   ],
   styles: `
-    :host { @apply w-full flex flex-wrap items-center justify-between mb-5 gap-5; }
+    :host { @apply w-full flex flex-wrap items-center justify-between px-5 pt-5 gap-5; }
     .top { @apply flex w-full sm:w-fit items-center gap-5; }
     .spacer { @apply flex-grow; }
   `,

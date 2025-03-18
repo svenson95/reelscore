@@ -34,6 +34,7 @@ import {
   styles: `
     :host { @apply flex flex-col w-full; }
     :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
+    section.data { @apply p-5; }
   `,
   template: `
     <reelscore-competition-header />
