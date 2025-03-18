@@ -91,7 +91,7 @@ import {
       margin-top: -1.25rem;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
-    .tab-content { @apply p-5; }
+    .tab-content { @apply px-5 pb-5; }
     button { 
       --mdc-outlined-button-container-height: 36px;
       @apply fb-as-label; 
