@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, fromEvent } from 'rxjs';
+import { debounce, fromEvent, timer } from 'rxjs';
 
 import { FixtureDTO, FixtureHighlights } from '@lib/models';
 
@@ -83,7 +83,7 @@ export class MatchHeaderComponent implements OnInit {
   isScrolled = signal<boolean>(false);
   scrollEvent$ = fromEvent(window, 'scroll').pipe(
     takeUntilDestroyed(),
-    debounceTime(20)
+    debounce(() => timer(this.isScrolled() ? 20 : 0))
   );
 
   ngOnInit() {
@@ -92,7 +92,6 @@ export class MatchHeaderComponent implements OnInit {
         this.ngZone.run(() => {
           const isScrolled = window.scrollY > 40;
           this.isScrolled.set(isScrolled);
-          console.log('isScrolled', isScrolled);
         });
       });
     });
