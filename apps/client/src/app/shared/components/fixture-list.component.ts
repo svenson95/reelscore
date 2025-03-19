@@ -91,16 +91,18 @@ import { ResultLabelComponent } from './result-label.component';
               >
                 {{ match.teams.home.name | teamName : 'short' }}
               </span>
-              @defer (on viewport) {
-              <reelscore-optimized-image
-                [source]="getTeamLogo(match.teams.home.id)"
-                alternate="home logo"
-                width="14"
-                height="14"
-              />
-              } @placeholder {
-              <div class="team-logo-placeholder"></div>
-              }
+              <div class="team-logo">
+                @defer (on viewport) {
+                <reelscore-optimized-image
+                  [source]="getTeamLogo(match.teams.home.id)"
+                  alternate="home logo"
+                  width="14"
+                  height="14"
+                />
+                } @placeholder {
+                <div class="team-logo-placeholder"></div>
+                }
+              </div>
             </div>
             <div
               class="result"
@@ -113,16 +115,18 @@ import { ResultLabelComponent } from './result-label.component';
               />
             </div>
             <div>
-              @defer (on viewport) {
-              <reelscore-optimized-image
-                [source]="getTeamLogo(match.teams.away.id)"
-                alternate="away logo"
-                width="14"
-                height="14"
-              />
-              } @placeholder {
-              <div class="team-logo-placeholder"></div>
-              }
+              <div class="team-logo">
+                @defer (on viewport) {
+                <reelscore-optimized-image
+                  [source]="getTeamLogo(match.teams.away.id)"
+                  alternate="away logo"
+                  width="14"
+                  height="14"
+                />
+                } @placeholder {
+                <div class="team-logo-placeholder"></div>
+                }
+              </div>
               <span
                 class="team-name"
                 [class.line-through]="isTeamEliminated(match, 'away')"
