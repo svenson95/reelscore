@@ -220,21 +220,25 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
     label: 'International',
     competitions: [
       {
-        image: 'https://media-3.api-sports.io/flags/eu.svg',
+        image: getCompetitionLogo(COMPETITION_ID.INTERNATIONAL_WORLD_CUP),
         label: COMPETITION_LABEL.INTERNATIONAL_WORLD_CUP,
         id: COMPETITION_ID.INTERNATIONAL_WORLD_CUP,
         url: COMPETITION_URL.INTERNATIONAL_WORLD_CUP,
         size: 32,
       },
       {
-        image: 'https://media-3.api-sports.io/flags/eu.svg',
+        image: getCompetitionLogo(
+          COMPETITION_ID.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF
+        ),
         label: COMPETITION_LABEL.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF,
         id: COMPETITION_ID.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF,
         url: COMPETITION_URL.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF,
         size: 32, // TODO check real size
       },
       {
-        image: 'https://media-3.api-sports.io/flags/eu.svg',
+        image: getCompetitionLogo(
+          COMPETITION_ID.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE
+        ),
         label: COMPETITION_LABEL.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE,
         id: COMPETITION_ID.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE,
         url: COMPETITION_URL.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE,
