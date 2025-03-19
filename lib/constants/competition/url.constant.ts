@@ -10,7 +10,11 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // International
   [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'euro-championship',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: '21',
-  // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: '1',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'world-cup',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF]:
+    'world-cup-qualification-concacaf',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE]:
+    'world-cup-qualification-europe',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: '15',
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'nations-league',
 
@@ -25,14 +29,14 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'carabao-cup',
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 'efl-trophy',
   // [CompetitionCode.ENGLAND_FA_TROPHY]: 'fa-trophy',
-  // [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
+  [CompetitionCode.ENGLAND_FA_CUP]: 'fa-cup',
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 'community-shield',
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'premier-league-cup',
 
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 'la-liga',
-  // [CompetitionCode.SPAIN_SUPER_CUP]: 'es-super-cup',
-  // [CompetitionCode.SPAIN_COPA_DEL_REY]: 'copa-del-rey',
+  [CompetitionCode.SPAIN_SUPER_CUP]: 'es-super-cup',
+  [CompetitionCode.SPAIN_COPA_DEL_REY]: 'copa-del-rey',
 
   // Italien
   [CompetitionCode.ITALY_SERIE_A]: 'serie-a',
@@ -42,8 +46,8 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // Frankreich
   [CompetitionCode.FRANCE_LIGUE_1]: 'ligue-1',
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: '65',
-  // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'coupe-de-france',
-  // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'trophee-des-champions',
+  [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'coupe-de-france',
+  [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'trophee-des-champions',
 
   // Niederlande
   [CompetitionCode.EREDIVISIE]: 'eredivisie',

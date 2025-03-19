@@ -10,7 +10,11 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   // International
   [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'UEFA Europameisterschaft',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: 'Confedarations Cup',
-  // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'World Cup',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'World Cup',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF]:
+    'World Cup - Qualification CONCACAF',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE]:
+    'World Cup - Qualification Europe',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 'FIFA World Cup',
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'UEFA Nations League',
 
@@ -25,14 +29,14 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   [CompetitionCode.ENGLAND_LEAGUE_CUP]: 'Carabao Cup',
   // [CompetitionCode.ENGLAND_EFL_TROPHY]: 'EFL Trophy',
   // [CompetitionCode.ENGLAND_FA_TROPHY]: 'FA Trophy',
-  // [CompetitionCode.ENGLAND_FA_CUP]: 'FA Cup',
+  [CompetitionCode.ENGLAND_FA_CUP]: 'FA Cup',
   [CompetitionCode.ENGLAND_COMMUNITY_SHIELD]: 'Community Shield',
   // [CompetitionCode.ENGLAND_PREMIER_LEAGUE_CUP]: 'Premier League Cup',
 
   // Spanien
   [CompetitionCode.SPAIN_LA_LIGA]: 'La Liga',
-  // [CompetitionCode.SPAIN_SUPER_CUP]: 'Supercopa de España',
-  // [CompetitionCode.SPAIN_COPA_DEL_REY]: 'Copa del Rey',
+  [CompetitionCode.SPAIN_SUPER_CUP]: 'Supercopa',
+  [CompetitionCode.SPAIN_COPA_DEL_REY]: 'Copa del Rey',
 
   // Italien
   [CompetitionCode.ITALY_SERIE_A]: 'Serie A',
@@ -42,8 +46,8 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   // Frankreich
   [CompetitionCode.FRANCE_LIGUE_1]: 'Ligue 1',
   // [CompetitionCode.FRANCE_COUPE_DE_LA_LIGUE]: 'Coupe de la Ligue',
-  // [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'Coupe de France',
-  // [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'Trophée des Champions',
+  [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 'Coupe de France',
+  [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 'Trophée des Champions',
 
   // Niederlande
   [CompetitionCode.EREDIVISIE]: 'Eredivisie',
