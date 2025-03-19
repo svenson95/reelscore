@@ -12,7 +12,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: '21',
   // [CompetitionCode.INTERNATIONAL_WORLD_CUP]: '1',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: '15',
-  [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: '5',
+  [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'nations-league',
 
   // Deutschland
   [CompetitionCode.GERMANY_BUNDESLIGA]: 'bundesliga',
