@@ -71,17 +71,26 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         @apply leading-[14px];
       }
     }
+
+    .competition-logo-placeholder {  @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded; }
+    .team-logo-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
   `,
   template: `
     <table mat-table [dataSource]="ranks()">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
-          <reelscore-optimized-image
-            [source]="getCompetitionLogo(league().id)"
-            alternate="league logo"
-            width="24"
-            height="24"
-          />
+          <div class="competition-logo">
+            @defer (on viewport) {
+            <reelscore-optimized-image
+              [source]="getCompetitionLogo(league().id)"
+              alternate="league logo"
+              width="24"
+              height="24"
+            />
+            } @placeholder {
+            <div class="competition-logo-placeholder"></div>
+            }
+          </div>
         </th>
         <td mat-cell *matCellDef="let element" class="rank-column">
           {{ element.rank }}
@@ -102,12 +111,18 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
-            <reelscore-optimized-image
-              [source]="getTeamLogo(element.team.id)"
-              alternate="team logo"
-              width="14"
-              height="14"
-            />
+            <div class="team-logo">
+              @defer (on viewport) {
+              <reelscore-optimized-image
+                [source]="getTeamLogo(element.team.id)"
+                alternate="team logo"
+                width="14"
+                height="14"
+              />
+              } @placeholder {
+              <div class="team-logo-placeholder"></div>
+              }
+            </div>
             <span>{{ element.team.name | teamName : 'short' }}</span>
           </div>
         </td>
