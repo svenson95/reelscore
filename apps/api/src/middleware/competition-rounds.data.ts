@@ -276,6 +276,17 @@ const FR_TROPHEE_DES_CHAMPIONS = {
   1: 'Final',
 };
 
+const INTERNATIONAL_WORLD_CUP = {
+  1: 'Group Stage - 1',
+  2: 'Group Stage - 2',
+  3: 'Group Stage - 3',
+  4: 'Round of 16',
+  5: 'Quarter-finals',
+  6: 'Semi-finals',
+  7: '3rd Place Final',
+  8: 'Final',
+};
+
 const INTERNATIONAL_EURO_CHAMPIONSHIP = {
   1: 'Group A - 1',
   2: 'Group B - 1',
@@ -332,6 +343,42 @@ const INTERNATIONAL_UEFA_NATIONS_LEAGUE = {
   28: 'Play-offs C/D',
 };
 
+const INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF = {
+  1: '1st Round - 1',
+  2: '1st Round - 2',
+  3: '1st Round - 3',
+  4: '1st Round - 4',
+  5: '1st Round - 5',
+  6: '2nd Round',
+  7: 'Final Round - 1',
+  8: 'Final Round - 2',
+  9: 'Final Round - 3',
+  10: 'Final Round - 4',
+  11: 'Final Round - 5',
+  12: 'Final Round - 6',
+  13: 'Final Round - 7',
+  14: 'Final Round - 8',
+  15: 'Final Round - 9',
+  16: 'Final Round - 10',
+  17: 'Final Round - 11',
+  18: 'Final Round - 12',
+  19: 'Final Round - 13',
+  20: 'Final Round - 14',
+};
+
+const INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE = {
+  1: 'Group Stage - 1',
+  2: 'Group Stage - 2',
+  3: 'Group Stage - 3',
+  4: 'Group Stage - 4',
+  5: 'Group Stage - 5',
+  6: 'Group Stage - 6',
+  7: 'Group Stage - 7',
+  8: 'Group Stage - 8',
+  9: 'Group Stage - 9',
+  10: 'Group Stage - 10',
+};
+
 export const COMPETITION_ROUNDS: CompetitionMatchDays = {
   // Europa
   531: EU_UEFA_SUPER_CUP,
@@ -339,11 +386,13 @@ export const COMPETITION_ROUNDS: CompetitionMatchDays = {
   3: EU_EL_ROUNDS,
 
   // International
+  1: INTERNATIONAL_WORLD_CUP,
   4: INTERNATIONAL_EURO_CHAMPIONSHIP,
   // 21: INTERNATIONAL_CONFEDERATIONS_CUP,
-  // 1: INTERNATIONAL_WORLD_CUP,
   // 15: INTERNATIONAL_FIFA_WORLD_CUP,
   5: INTERNATIONAL_UEFA_NATIONS_LEAGUE,
+  31: INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF,
+  32: INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE,
 
   // Deutschland
   78: SMALL_LEAGUE_ROUND_STRINGS,
@@ -353,10 +402,10 @@ export const COMPETITION_ROUNDS: CompetitionMatchDays = {
 
   // England
   39: BIG_LEAGUE_ROUND_STRINGS,
-  48: EN_LEAGUE_CUP,
+  45: EN_FA_CUP,
   46: EN_EFL_TROPHY,
   47: EN_FA_TROPHY,
-  45: EN_FA_CUP,
+  48: EN_LEAGUE_CUP,
   528: EN_COMMUNITY_SHIELD,
   871: EN_PREMIER_LEAGUE_CUP,
 
