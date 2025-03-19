@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { COMPETITION_URL } from '@lib/constants';
+import { COMPETITION_ID, COMPETITION_URL } from '@lib/constants';
 import {
   CompetitionId,
   CompetitionUrl,
@@ -158,9 +158,22 @@ export class FixtureListComponent {
     fixture: FixtureDTO | ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
-    // In champions league the round of 16, quarter-finals and semi-finals are two-legged ties
-    const isChampionsLeagueOrSimilar =
-      fixture.league.id === 2 || fixture.league.id === 3;
+    const twoLeggedCompetitions: { [key: string]: string[] } = {
+      [COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE]: [
+        'Round of 16',
+        'Quarter-finals',
+        'Semi-finals',
+      ],
+      [COMPETITION_ID.EUROPA_UEFA_EURO_LEAGUE]: [
+        'Round of 16',
+        'Quarter-finals',
+        'Semi-finals',
+      ],
+      [COMPETITION_ID.ENGLAND_LEAGUE_CUP]: ['Semi-finals'],
+    };
+    const competitionTwoLeggedRounds = twoLeggedCompetitions[fixture.league.id];
+    const isCompetitionWithTwoLeggedFinals =
+      competitionTwoLeggedRounds !== undefined;
 
     const koPhaseRounds = [
       'Preliminary Round',
@@ -175,18 +188,13 @@ export class FixtureListComponent {
     ];
     const isKoPhase = koPhaseRounds.some((r) => r === fixture.league.round);
     const isKoEliminated =
-      !isChampionsLeagueOrSimilar &&
+      !isCompetitionWithTwoLeggedFinals &&
       isKoPhase &&
       fixture.teams[team].winner === false;
 
-    const championsLeagueTwoLeggedFinals = [
-      'Round of 16',
-      'Quarter-finals',
-      'Semi-finals',
-    ];
-    const isTwoLeggedTie =
-      isChampionsLeagueOrSimilar &&
-      championsLeagueTwoLeggedFinals.includes(fixture.league.round);
+    const isTwoLegged =
+      isCompetitionWithTwoLeggedFinals &&
+      competitionTwoLeggedRounds.includes(fixture.league.round);
 
     const isExtendedFixture = 'final' in fixture;
     const winnerTeamId = isExtendedFixture
@@ -195,9 +203,7 @@ export class FixtureListComponent {
     const isFinalFinished = !!winnerTeamId;
 
     const isTwoLeggedEliminated =
-      isTwoLeggedTie &&
-      isFinalFinished &&
-      fixture.teams[team].id !== winnerTeamId;
+      isTwoLegged && isFinalFinished && fixture.teams[team].id !== winnerTeamId;
 
     return isKoEliminated || isTwoLeggedEliminated;
   }
