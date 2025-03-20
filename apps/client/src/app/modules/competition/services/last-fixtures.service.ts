@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CompetitionId, FixtureDTO } from '@lib/models';
@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 export abstract class HttpLastFixturesService {
   abstract getLastFixturesForCompetition(
     id: CompetitionId,
-    showAll: boolean
+    showAll?: boolean
   ): Observable<FixtureDTO[][]>;
 }
 
@@ -22,10 +22,12 @@ export class AbstractedHttpLastFixturesService extends HttpLastFixturesService {
     id: CompetitionId,
     showAll = false
   ): Observable<FixtureDTO[][]> {
-    const options = { params: new HttpParams().set('competition', id) };
+    const options = {
+      params: new HttpParams().set('competition', id).set('type', 'last'),
+    };
     if (showAll) options.params = options.params.set('showAll', 'true');
     return this.http.get<FixtureDTO[][]>(
-      this.BASE_URL + '/competition-last',
+      this.BASE_URL + '/competition-fixtures',
       options
     );
   }

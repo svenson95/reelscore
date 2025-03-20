@@ -1,9 +1,13 @@
 import express, { Request, Response } from 'express';
-import { FlattenMaps } from 'mongoose';
 
-import { CompetitionId, FixtureDTO, FixtureId } from '@lib/models';
+import { CompetitionId, FixtureId } from '@lib/models';
 
-import { FixtureController, FixturesController } from '../controllers';
+import {
+  competitionFixtures,
+  CompetitionRequestType,
+  FixtureController,
+  FixturesController,
+} from '../controllers';
 import { getWeekDatesArray } from '../middleware';
 
 export const fixtures = express.Router();
@@ -36,27 +40,11 @@ fixtures.get(
   }
 );
 
-fixtures.get('/competition-last', async (req, res) => {
-  const docs = await competitionFixtures('last', req);
-  return res.json(docs);
-});
-
-fixtures.get('/competition-next', async (req, res) => {
-  const docs = await competitionFixtures('next', req);
-  return res.json(docs);
-});
-
-async function competitionFixtures(
-  type: 'last' | 'next',
-  req: express.Request
-): Promise<FlattenMaps<FixtureDTO[]>[]> {
+fixtures.get('/competition-fixtures', async (req: Request, res: Response) => {
   const id: CompetitionId = Number(req.query.competition);
+  const type: CompetitionRequestType = req.query.type as CompetitionRequestType;
   const showAll = req.query.showAll === 'true';
-  const fixturesController = new FixturesController();
-  const fixtures = await fixturesController.getCompetitionFixtures(
-    id,
-    type,
-    showAll
-  );
-  return fixtures;
-}
+
+  const docs = await competitionFixtures(type, id, showAll);
+  return res.json(docs);
+});

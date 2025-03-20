@@ -12,6 +12,8 @@ import { APP_DATA, COMPETITION_ROUNDS } from '../middleware';
 import { Fixtures } from '../models';
 import { FixturesService } from '../services';
 
+export type CompetitionRequestType = 'last' | 'next';
+
 export class FixturesController {
   private fixturesService = new FixturesService();
 
@@ -22,7 +24,7 @@ export class FixturesController {
 
   async getCompetitionFixtures(
     id: CompetitionId,
-    type: 'last' | 'next',
+    type: CompetitionRequestType,
     showAll: boolean
   ): Promise<FlattenMaps<FixtureDTO>[][]> {
     const currentRound = await this.getCurrentRound(id);
@@ -31,6 +33,7 @@ export class FixturesController {
     const rounds = Object.values(COMPETITION_ROUNDS[id]);
     const nextRound = this.getNextRound(rounds, currentRound);
     const hasMultipleRounds = this.isSameRoundNumber(currentRound, nextRound);
+
     const round =
       type === 'last'
         ? await this.getLastFixturesRound(
@@ -48,10 +51,9 @@ export class FixturesController {
 
     if (hasMultipleRounds || showAll) {
       const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
-      const mapped = fixturesRounds.map((round) =>
+      return fixturesRounds.map((round) =>
         fixtures.filter((f) => f.league.round === round)
       );
-      return mapped;
     }
 
     return fixturesArray;
@@ -128,4 +130,19 @@ export class FixturesController {
     if (isLastRound) return null;
     return rounds[currentRoundIndex + 1];
   };
+}
+
+export async function competitionFixtures(
+  type: CompetitionRequestType,
+  id: CompetitionId,
+  showAll: boolean
+): Promise<FlattenMaps<FixtureDTO[]>[]> {
+  const fixturesController = new FixturesController();
+  const fixtures = await fixturesController.getCompetitionFixtures(
+    id,
+    type,
+    showAll
+  );
+
+  return fixtures;
 }
