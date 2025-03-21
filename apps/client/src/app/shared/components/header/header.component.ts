@@ -16,7 +16,6 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   styles: `
     :host { @apply p-fb-padding-3 border-b-[1px] bg-fb-red; }
     .wrapper { @apply flex items-center justify-between lg:px-fb-padding-3; }
-    a reelscore-logo { @apply text-white; }
   `,
   template: `
     <div class="wrapper">
