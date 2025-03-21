@@ -1,56 +1,106 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
-import { AnalysesStore } from '../../../../../store';
+import { AnalysesStore, LatestFixturesStore } from '../../../../../store';
+
+import { MatchTeams } from '@lib/models';
+import { AnalysesLastFixturesComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-fixture-analyses',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [AnalysesLastFixturesComponent],
   styles: `
-    :host { @apply flex flex-col py-7 px-5 mt-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1 bg-white; }
-    section { @apply w-full flex gap-5; }
-    section:not(:last-of-type) { @apply border-b-[1px] pb-5; }
-    .home { @apply text-end; }
-    .home, .away { @apply flex-1; }
-    .analysis { @apply flex flex-col flex-2 text-center; }
-    .analysis span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-2; }
-    .home, .away, .analysis { @apply self-center; }
+    :host { @apply flex flex-col mt-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1; }
+
+    section.fixture-analyse { @apply bg-white p-5; }
+    section.fixture-analyse > div { 
+      @apply w-full flex flex-wrap gap-5; 
+
+      &:not(:last-of-type) { @apply border-b-[1px] pb-5; }
+      &:not(:first-of-type) { @apply pt-5; }
+
+      .home { @apply text-end; }
+      .home, .away { @apply flex-1; }
+      .analysis { @apply flex flex-col flex-2 text-center; }
+      .analysis span:nth-child(2) { @apply text-fb-font-size-small text-fb-color-text-2; }
+      .playersWithStreak, .strongAtHomeOrAway { 
+        .home, .away, .analysis { @apply self-center; }
+       }
+    }
   `,
   template: `
-    <section class="playersWithStreak">
-      <div class="home">
-        @if (analyses()!.playersWithStreak.home.length > 0) { @for (player of
-        analyses()!.playersWithStreak.home; track $index) {
-        <div class="player">{{ player }}</div>
-        } } @else { - }
+    <section class="fixture-analyse">
+      <div class="playersWithStreak">
+        <div class="home">
+          @if (analyses()!.playersWithStreak.home.length > 0) { @for (player of
+          analyses()!.playersWithStreak.home; track $index) {
+          <div class="player">{{ player }}</div>
+          } } @else { - }
+        </div>
+        <div class="analysis">
+          <span>Spieler mit Torserie</span>
+          <span>3+ Spiele in Folge getroffen</span>
+        </div>
+        <div class="away">
+          @if (analyses()!.playersWithStreak.away.length > 0) { @for (player of
+          analyses()!.playersWithStreak.away; track $index) {
+          <div class="player">{{ player }}</div>
+          } } @else { - }
+        </div>
       </div>
-      <div class="analysis">
-        <span>Spieler mit Torserie</span>
-        <span>3+ Spiele in Folge getroffen</span>
-      </div>
-      <div class="away">
-        @if (analyses()!.playersWithStreak.away.length > 0) { @for (player of
-        analyses()!.playersWithStreak.away; track $index) {
-        <div class="player">{{ player }}</div>
-        } } @else { - }
+
+      <div class="strongAtHomeOrAway">
+        <div class="home">
+          {{ analyses()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
+        </div>
+        <div class="analysis">
+          <span>Heimstark / Auswärtsstark</span>
+        </div>
+        <div class="away">
+          {{ analyses()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
+        </div>
       </div>
     </section>
 
-    <section class="strongAtHomeOrAway">
-      <div class="home">
-        {{ analyses()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
-      </div>
-      <div class="analysis">
-        <span>Heimstark / Auswärtsstark</span>
-      </div>
-      <div class="away">
-        {{ analyses()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
-      </div>
-    </section>
+    @if (hasEvaluations()) {
+    <reelscore-match-fixture-analyses-last-fixtures
+      [fixtures]="latestFixtures()!"
+      [teams]="teams()"
+    />
+    }
   `,
 })
 export class MatchFixtureAnalysesComponent {
+  latestFixturesStore = inject(LatestFixturesStore);
+  latestFixtures = this.latestFixturesStore.latestFixtures;
+
+  // TODO refactor analyses to own component reelscore-match-fixture-analyses-base
   analysesStore = inject(AnalysesStore);
   analyses = this.analysesStore.analyses;
+
+  teams = computed<MatchTeams>(() => {
+    const fixtures = this.latestFixtures();
+    if (!fixtures) throw new Error('No fixtures found');
+    return {
+      home: fixtures.home[0].teams.home,
+      away: fixtures.away[0].teams.away,
+    };
+  });
+
+  hasEvaluations = computed<boolean>(() => {
+    const evaluations = this.latestFixtures();
+    if (!evaluations) return false;
+    return evaluations.home.some((f) => {
+      const home = f.evaluations?.home;
+      const away = f.evaluations?.away;
+      if (home === undefined || away === undefined) return false;
+      return home.analyses.length > 0 || away.analyses.length > 0;
+    });
+  });
 }

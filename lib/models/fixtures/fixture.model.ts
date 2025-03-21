@@ -115,38 +115,53 @@ export type FixtureDTO = {
 export interface ExtendedFixtureDTO extends FixtureDTO {
   final: FixtureFinal;
   prediction?: FixturePrediction;
-  evaluation?: { home: FixtureEvaluation; away: FixtureEvaluation };
+  evaluations?: FixtureEvaluations;
 }
 
+export const PREDICTION_PROBABILITIES = [0.75, 0.8, 0.85, 0.9, 0.95] as const;
+export type PredictionProbability = (typeof PREDICTION_PROBABILITIES)[number];
 export type FixturePrediction = {
   bet: string;
   qoute: number;
-  presumption: number;
+  probability: PredictionProbability; // in %
   correct: boolean;
 };
-export type AnalysisLevel = 'GOOD' | 'BAD';
-export type AnalysisType = 'GOAL' | 'PENALTY' | 'RED_CARD' | 'INJURY';
-export type FixtureAnalysis = {
+export type AnalysisLevel = 'LUCKY' | 'UNLUCKY';
+export type AnalysisType =
+  | 'GOAL'
+  | 'NO_GOAL'
+  | 'LAST_MINUTE_GOAL'
+  | 'PENALTY'
+  | 'NO_PENALTY'
+  | 'RED_CARD'
+  | 'NO_RED_CARD'
+  | 'KEY_PLAYER_INJURY'
+  | 'KEY_PLAYER_YELLOW_CARD_SUSPENSION';
+export type EvaluationAnalyses = {
   level: AnalysisLevel;
-  minute: number;
   type: AnalysisType;
-  playerId: string | null;
-  comments: string;
+  minute: number | null;
+  player: string | null;
+  comments: string | null;
 };
 export type EvaluationPerformance = 'LOW' | 'MIDDLE' | 'HIGH';
 export type FixtureEvaluation = {
   performance: EvaluationPerformance;
-  analyses: FixtureAnalysis[];
+  analyses: EvaluationAnalyses[];
+};
+export type FixtureEvaluations = {
+  home: FixtureEvaluation;
+  away: FixtureEvaluation;
 };
 
 export interface LatestFixturesDTO {
-  home: FixtureDTO[];
-  away: FixtureDTO[];
+  home: ExtendedFixtureDTO[];
+  away: ExtendedFixtureDTO[];
 }
 
 export type FixtureHighlights = EventDTO[];
 // TODO refactor naming GetFixtureDTO -> FixtureWithHighlights
 export interface GetFixtureDTO {
-  data: FixtureDTO;
+  data: ExtendedFixtureDTO;
   highlights: FixtureHighlights;
 }
