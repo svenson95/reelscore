@@ -3,16 +3,6 @@ import mongoose from 'mongoose';
 import { ExtendedFixtureDTO } from '@lib/models';
 
 const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
-  final: {
-    firstLegResult: {
-      type: {
-        home: Number,
-        away: Number,
-      },
-      default: null,
-    },
-    winnerOfFinal: { type: Number, default: null },
-  },
   fixture: {
     id: Number,
     referee: String,
@@ -79,33 +69,81 @@ const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
       away: Number,
     },
   },
+  final: {
+    firstLegResult: {
+      home: Number,
+      away: Number,
+    },
+    winnerOfFinal: { type: Number, default: null },
+  },
   prediction: {
     bet: String,
     qoute: Number,
-    presumption: Number,
+    probability: {
+      type: Number,
+      enum: [0.75, 0.8, 0.85, 0.9, 0.95],
+    },
     correct: Boolean,
   },
-  evaluation: {
+  evaluations: {
     home: {
-      performance: String,
+      performance: {
+        type: String,
+        enum: ['LOW', 'MIDDLE', 'HIGH'],
+      },
       analyses: [
         {
-          level: String,
+          level: {
+            type: String,
+            enum: ['LUCKY', 'UNLUCKY'],
+          },
           minute: Number,
-          type: String,
-          playerId: String,
+          type: {
+            type: String,
+            enum: [
+              'GOAL',
+              'NO_GOAL',
+              'LAST_MINUTE_GOAL',
+              'PENALTY',
+              'NO_PENALTY',
+              'RED_CARD',
+              'NO_RED_CARD',
+              'KEY_PLAYER_INJURY',
+              'KEY_PLAYER_YELLOW_CARD_SUSPENSION',
+            ],
+          },
+          player: String,
           comments: String,
         },
       ],
     },
     away: {
-      performance: String,
+      performance: {
+        type: String,
+        enum: ['LOW', 'MIDDLE', 'HIGH'],
+      },
       analyses: [
         {
-          level: String,
+          level: {
+            type: String,
+            enum: ['LUCKY', 'UNLUCKY'],
+          },
           minute: Number,
-          type: String,
-          playerId: String,
+          type: {
+            type: String,
+            enum: [
+              'GOAL',
+              'NO_GOAL',
+              'LAST_MINUTE_GOAL',
+              'PENALTY',
+              'NO_PENALTY',
+              'RED_CARD',
+              'NO_RED_CARD',
+              'KEY_PLAYER_INJURY',
+              'KEY_PLAYER_YELLOW_CARD_SUSPENSION',
+            ],
+          },
+          player: String,
           comments: String,
         },
       ],

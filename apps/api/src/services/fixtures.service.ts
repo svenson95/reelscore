@@ -1,6 +1,7 @@
 import {
   CompetitionId,
   CompetitionRoundString,
+  ExtendedFixtureDTO,
   FixtureDateString,
   FixtureDTO,
   FixtureId,
@@ -10,7 +11,7 @@ import { APP_DATA, COMPETITION_ROUNDS } from '../middleware';
 import { Fixtures } from '../models';
 
 export class FixturesService {
-  async findById(fixtureId: FixtureId): Promise<FixtureDTO> {
+  async findById(fixtureId: FixtureId): Promise<ExtendedFixtureDTO> {
     const fixture = await Fixtures.findOne({ 'fixture.id': fixtureId }).lean();
     return fixture;
   }
@@ -71,9 +72,9 @@ export class FixturesService {
   }
 
   async findByFixtureAndTeamType(
-    fixture: FixtureDTO,
+    fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
-  ): Promise<FixtureDTO[]> {
+  ): Promise<ExtendedFixtureDTO[]> {
     const teamId = fixture.teams[team].id;
     const date = fixture.fixture.date;
 

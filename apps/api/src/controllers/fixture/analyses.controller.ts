@@ -1,5 +1,6 @@
 import {
   AnalysesDTO,
+  ExtendedFixtureDTO,
   FixtureDTO,
   FixtureHomeOrAwayStrong,
   FixtureId,
@@ -32,7 +33,7 @@ export class FixtureAnalysesController {
   }
 
   private async getPlayersWithStreak(
-    fixture: FixtureDTO
+    fixture: ExtendedFixtureDTO
   ): Promise<FixturePlayersWithStreak> {
     const home = await this.getPlayersWithStreakForTeam(fixture, 'home');
     const away = await this.getPlayersWithStreakForTeam(fixture, 'away');
@@ -41,7 +42,7 @@ export class FixtureAnalysesController {
   }
 
   private async getPlayersWithStreakForTeam(
-    fixture: FixtureDTO,
+    fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): Promise<GoalScorers> {
     const games = await this.fixturesService.findByFixtureAndTeamType(
