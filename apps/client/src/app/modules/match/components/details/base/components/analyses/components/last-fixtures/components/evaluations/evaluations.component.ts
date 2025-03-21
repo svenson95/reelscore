@@ -23,7 +23,7 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
   styles: `
     :host { @apply flex flex-col gap-6; }
     .fixture:not(:last-of-type) { @apply border-b pb-5; }
-    .date { @apply mb-2 text-center text-fb-font-size-body-2 bg-fb-color-white-2; }
+    .date { @apply py-1 mb-2 text-center text-fb-font-size-body-2 bg-fb-color-white-2; }
     .fixture-header { @apply flex gap-2 border-b; }
     .home-name, .away-name { 
       @apply flex-1 text-center pb-2; 

@@ -14,7 +14,8 @@ import { EvaluationAnalyses } from '@lib/models';
       :host-context(.home-col) & { @apply flex-row-reverse; }
 
       &.is-lucky div { @apply bg-green-100 text-green-500; }
-      &:not(.is-lucky) div { @apply bg-red-100 text-red-500; }
+      &.is-unlucky div { @apply bg-red-100 text-red-500; }
+      &:not(.is-lucky):not(.is-unlucky) div { @apply bg-gray-100 text-gray-500; }
       div { @apply text-fb-font-size-small px-2 py-1; }
     }
   `,
@@ -22,13 +23,15 @@ import { EvaluationAnalyses } from '@lib/models';
     <div
       class="analyze-element"
       [class.is-lucky]="analyzedElement().level === 'LUCKY'"
+      [class.is-unlucky]="analyzedElement().level === 'UNLUCKY'"
     >
       @if (analyzedElement().minute !== null) {
       <div class="minute">
         {{ analyzedElement().minute + "'" }}
       </div>
-      }
+      } @if (analyzedElement().level !== null) {
       <div class="level">{{ analyzedElement().level }}</div>
+      }
       <div class="type">
         @switch(analyzedElement().type) { @case('GOAL') { TOR } @case('NO_GOAL')
         { KEIN TOR } @case('LAST_MINUTE_GOAL') { LAST-MINUTE TOR }
