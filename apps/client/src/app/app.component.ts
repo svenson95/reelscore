@@ -38,23 +38,22 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
     }
   `,
   template: `
-    @if (isRouterLoading() === true) {
-    <reelscore-logo disabled />
-    } @if (!isRouterLoading()) {
+    @if(!isRouterLoading()) {
     <header></header>
     }
-
     <main>
+      @if(isRouterLoading()) {
+      <reelscore-logo disabled />
+      }
       <router-outlet />
     </main>
-
-    @if (!isRouterLoading()) {
+    @if(!isRouterLoading()) {
     <footer></footer>
     }
   `,
 })
 export class AppComponent implements AfterViewInit {
-  private outlet = viewChild(RouterOutlet);
+  private outlet = viewChild.required<RouterOutlet>(RouterOutlet);
   isRouterLoading = signal<boolean>(true);
   destroyRef = inject(DestroyRef);
 
