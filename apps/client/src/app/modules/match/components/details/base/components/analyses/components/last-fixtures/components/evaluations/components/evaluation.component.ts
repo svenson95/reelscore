@@ -30,7 +30,10 @@ import { EvaluationAnalyses } from '@lib/models';
         {{ analyzedElement().minute + "'" }}
       </div>
       } @if (analyzedElement().level !== null) {
-      <div class="level">{{ analyzedElement().level }}</div>
+      <div class="level">
+        @switch (analyzedElement().level) { @case('LUCKY') { Glück gehabt }
+        @case('UNLUCKY') { Pech gehabt } }
+      </div>
       }
       <div class="type">
         @switch(analyzedElement().type) { @case('GOAL') { TOR } @case('NO_GOAL')
