@@ -10,7 +10,7 @@ export class StandingsController {
     id: CompetitionId,
     queryDate: string | null
   ): Promise<StandingsDTO | null> {
-    const query = {
+    const filter = {
       'league.id': id,
       'league.season': APP_DATA.season,
     };
@@ -19,10 +19,10 @@ export class StandingsController {
       const [year, month, day] = queryDate.split('-').map((e) => Number(e));
       const date = new Date(Date.UTC(year, month - 1, day));
       date.setDate(date.getDate() + 1);
-      query['createdAt'] = { $lte: date };
+      filter['createdAt'] = { $lte: date };
     }
 
-    const standings = await this.standingsService.findByQuery(query);
+    const standings = await this.standingsService.findByFilter(filter);
     return standings ?? null;
   }
 
@@ -39,52 +39,48 @@ export class StandingsController {
       61, // LIGUE_1_ID,
     ];
 
-    const getStandings = async (
-      leagueId: CompetitionId
-    ): Promise<StandingsDTO> => {
-      const standings = await this.standingsService.findByQuery({
-        'league.id': leagueId,
-        $and: [{ createdAt: { $lte: tomorrow } }],
-      });
-      return standings;
+    const filter = {
+      'league.id': { $in: standingsIds },
+      $and: [{ createdAt: { $lte: tomorrow } }],
     };
-
-    // getStandings implementation doesnt work for last season, because standings were fetched after season
-    const dateFixStandings = async (
-      leagueId: CompetitionId
-    ): Promise<StandingsDTO> => {
-      const standings = await this.standingsService.findByQuery({
-        'league.id': leagueId,
-        $and: [{ 'league.season': getSeason(date) }],
-      });
-      return standings;
-    };
-
-    const topFiveStandings = standingsIds.map(async (id) => {
-      const standings = await getStandings(id);
-      return standings ?? (await dateFixStandings(id));
+    let standings = await this.standingsService.findManyByFilter({
+      filter,
+      limit: standingsIds.length,
     });
-    const data = await Promise.all(topFiveStandings);
-    return this.topFiveRanks(data);
+
+    if (standings.length !== standingsIds.length) {
+      // getStandings implementation doesnt work for season 23/24 and earlier, because standings were fetched after season
+      const fixedFilter = {
+        'league.id': { $in: standingsIds },
+        $and: [{ 'league.season': getSeason(date) }],
+      };
+      standings = await this.standingsService.findManyByFilter({
+        filter: fixedFilter,
+        limit: standingsIds.length,
+      });
+    }
+
+    return this.topFiveRanks(standings);
   }
 
   private topFiveRanks(data: StandingsDTO[]): StandingsDTO[] {
+    const baseStandings = 0; // 1 == home standings, 2 == away standings
     return data.map((d) => ({
       ...d,
       league: {
         ...d.league,
-        standings: [d.league.standings[0].slice(0, 5)],
+        standings: [d.league.standings[baseStandings].slice(0, 5)],
       },
     }));
   }
 
   async getFixtureStandings(teamIds: string, leagueId): Promise<StandingsDTO> {
     const [homeId, awayId] = teamIds.split(',').map((id) => Number(id));
-    const query = {
+    const filter = {
       'league.id': leagueId,
       'league.season': APP_DATA.season,
     };
-    const standings = await this.standingsService.findByQuery(query);
+    const standings = await this.standingsService.findByFilter(filter);
 
     if (this.isCompetitionWithMultipleGroups(standings.league.id)) {
       standings.league.standings = [

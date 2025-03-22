@@ -127,11 +127,11 @@ export class FixtureAnalysesController {
   ): Promise<boolean | null> {
     const TEAM_IS_HOME_OR_AWAY_STRONG_RANK = 5;
     const competitionId = fixture.league.id;
-    const query = {
+    const filter = {
       'league.id': competitionId,
       'league.season': APP_DATA.season,
     };
-    const data = await this.standingsService.findByQuery(query);
+    const data = await this.standingsService.findByFilter(filter);
     const teamId = fixture.teams[type].id;
     if (data.league.standings.length <= 1) return null;
     const standings = data.league.standings[type === 'home' ? 1 : 2];
