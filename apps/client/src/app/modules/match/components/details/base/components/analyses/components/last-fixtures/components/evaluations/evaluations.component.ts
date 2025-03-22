@@ -6,6 +6,7 @@ import {
   input,
 } from '@angular/core';
 
+import { TeamIsRelatedPipe } from '@app/shared';
 import {
   ExtendedFixtureDTO,
   FixtureEvaluations,
@@ -19,7 +20,7 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
   selector: 'reelscore-match-fixture-analyses-evaluations',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AnalysesEvaluationComponent, DatePipe],
+  imports: [AnalysesEvaluationComponent, DatePipe, TeamIsRelatedPipe],
   styles: `
     :host { @apply flex flex-col gap-6; }
     .fixture:not(:last-of-type) { @apply border-b pb-5; }
@@ -28,27 +29,50 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
     .home-name, .away-name { 
       @apply flex-1 text-center pb-2; 
 
-      &.is-winner { @apply decoration-green-500; }
-      &.is-loser { @apply decoration-red-500; }
+      &.is-winner { @apply underline decoration-green-500; }
+      &.is-loser { @apply underline decoration-red-500; }
+      &.is-related { @apply font-semibold; }
     }
     .evaluations { @apply flex flex-col; }
     .evaluation { @apply flex gap-2; }
     .evaluation:not(:last-of-type) { @apply border-b; }
     .home-col { @apply border-r pr-2; }
-    .home-col, .away-col { @apply min-w-[150px] sm:min-w-[200px] flex-1 py-2; }
+    .home-col, .away-col { @apply min-w-[120px] sm:min-w-[200px] flex-1 py-2; }
   `,
   template: `
     @for (fixture of fixturesWithEvaluations(); track $index) {
     <div class="fixture">
       <div class="date">{{ fixture.fixture.date | date : 'dd.MM.yyyy' }}</div>
       <div class="fixture-header">
-        <div class="home-name">
+        <div
+          class="home-name"
+          [class.is-winner]="
+            fixture.teams.home.winner === true &&
+            (fixture.teams.home | isRelated : relatedTeam())
+          "
+          [class.is-loser]="
+            fixture.teams.home.winner === false &&
+            (fixture.teams.home | isRelated : relatedTeam())
+          "
+          [class.is-related]="fixture.teams.home | isRelated : relatedTeam()"
+        >
           {{ fixture.teams.home.name }}
         </div>
         <div class="result">
           {{ fixture.goals.home }}:{{ fixture.goals.away }}
         </div>
-        <div class="away-name">
+        <div
+          class="away-name"
+          [class.is-winner]="
+            fixture.teams.away.winner === true &&
+            (fixture.teams.away | isRelated : relatedTeam())
+          "
+          [class.is-loser]="
+            fixture.teams.away.winner === false &&
+            (fixture.teams.away | isRelated : relatedTeam())
+          "
+          [class.is-related]="fixture.teams.away | isRelated : relatedTeam()"
+        >
           {{ fixture.teams.away.name }}
         </div>
       </div>
