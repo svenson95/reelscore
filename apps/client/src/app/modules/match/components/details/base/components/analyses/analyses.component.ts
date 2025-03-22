@@ -21,9 +21,9 @@ import { AnalysesLastFixturesComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesLastFixturesComponent],
   styles: `
-    :host { @apply flex flex-col mt-5 gap-5 text-fb-font-size-small sm:text-fb-font-size-body-1; }
+    :host { @apply flex flex-col mt-5 gap-5; }
 
-    section.fixture-analyse { @apply bg-white p-5; }
+    section.fixture-analyse { @apply bg-white p-5 text-fb-font-size-small sm:text-fb-font-size-body-1; }
     section.fixture-analyse > div { 
       @apply w-full flex flex-wrap gap-5; 
 

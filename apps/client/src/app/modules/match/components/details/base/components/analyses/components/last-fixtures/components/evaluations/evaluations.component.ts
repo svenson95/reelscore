@@ -6,7 +6,7 @@ import {
   input,
 } from '@angular/core';
 
-import { TeamIsRelatedPipe } from '@app/shared';
+import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
 import {
   ExtendedFixtureDTO,
   FixtureEvaluations,
@@ -20,7 +20,12 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
   selector: 'reelscore-match-fixture-analyses-evaluations',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AnalysesEvaluationComponent, DatePipe, TeamIsRelatedPipe],
+  imports: [
+    AnalysesEvaluationComponent,
+    DatePipe,
+    TeamIsRelatedPipe,
+    TeamNamePipe,
+  ],
   styles: `
     :host { @apply flex flex-col gap-6; }
     .fixture:not(:last-of-type) { @apply border-b pb-5; }
@@ -56,7 +61,7 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
           "
           [class.is-related]="fixture.teams.home | isRelated : relatedTeam()"
         >
-          {{ fixture.teams.home.name }}
+          {{ fixture.teams.home.name | teamName : 'short' }}
         </div>
         <div class="result">
           {{ fixture.goals.home }}:{{ fixture.goals.away }}
@@ -73,7 +78,7 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
           "
           [class.is-related]="fixture.teams.away | isRelated : relatedTeam()"
         >
-          {{ fixture.teams.away.name }}
+          {{ fixture.teams.away.name | teamName : 'short' }}
         </div>
       </div>
       <div class="evaluations">
