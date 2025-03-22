@@ -1,54 +1,16 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { linkToMatch, ResultLabelComponent, TeamNamePipe } from '@app/shared';
 import {
-  FixtureDTO,
-  FixtureResult,
-  FixtureTeam,
-  MatchTeams,
-} from '@lib/models';
-
-@Pipe({
-  name: 'check',
-  standalone: true,
-})
-export class CheckScorePipe implements PipeTransform {
-  transform = (
-    teams: MatchTeams,
-    relatedTeam: FixtureTeam,
-    type: FixtureResult
-  ): boolean => {
-    const { home, away } = teams;
-    const team = home.id === relatedTeam.id ? home : away;
-    switch (type) {
-      case 'WIN':
-        return team.winner === true;
-      case 'LOSS':
-        return team.winner === false;
-      default:
-        return false;
-    }
-  };
-}
-
-@Pipe({
-  name: 'isRelated',
-  standalone: true,
-})
-export class IsRelatedPipe implements PipeTransform {
-  transform = (team: FixtureTeam, relatedTeam: FixtureTeam): boolean => {
-    return team.id === relatedTeam.id;
-  };
-}
+  CheckScorePipe,
+  linkToMatch,
+  ResultLabelComponent,
+  TeamIsRelatedPipe,
+  TeamNamePipe,
+} from '@app/shared';
+import { FixtureDTO, FixtureTeam } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-fixtures-table',
@@ -60,7 +22,7 @@ export class IsRelatedPipe implements PipeTransform {
     MatRippleModule,
     TeamNamePipe,
     CheckScorePipe,
-    IsRelatedPipe,
+    TeamIsRelatedPipe,
     ResultLabelComponent,
   ],
   styles: `
@@ -80,8 +42,8 @@ export class IsRelatedPipe implements PipeTransform {
     <a
       mat-ripple
       [routerLink]="linkToMatch(match)"
-      [class.is-winner]="match.teams | check : team() : 'WIN'"
-      [class.is-loser]="match.teams | check : team() : 'LOSS'"
+      [class.is-winner]="match.teams | checkScore : team() : 'WIN'"
+      [class.is-loser]="match.teams | checkScore : team() : 'LOSS'"
     >
       <div class="date">
         <span>{{ match.fixture.date | date : 'dd.MM' }}</span>

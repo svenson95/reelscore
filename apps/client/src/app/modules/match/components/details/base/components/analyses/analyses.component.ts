@@ -5,9 +5,14 @@ import {
   inject,
 } from '@angular/core';
 
-import { AnalysesStore, LatestFixturesStore } from '../../../../../store';
-
 import { MatchTeams } from '@lib/models';
+
+import {
+  AnalysesStore,
+  FixtureStore,
+  LatestFixturesStore,
+} from '../../../../../store';
+
 import { AnalysesLastFixturesComponent } from './components';
 
 @Component({
@@ -84,12 +89,15 @@ export class MatchFixtureAnalysesComponent {
   analysesStore = inject(AnalysesStore);
   analyses = this.analysesStore.analyses;
 
+  fixtureStore = inject(FixtureStore);
+  fixture = this.fixtureStore.fixture;
+
   teams = computed<MatchTeams>(() => {
-    const fixtures = this.latestFixtures();
-    if (!fixtures) throw new Error('No fixtures found');
+    const fixture = this.fixture();
+    if (!fixture) throw new Error('No fixtures found');
     return {
-      home: fixtures.home[0].teams.home,
-      away: fixtures.away[0].teams.away,
+      home: fixture.data.teams.home,
+      away: fixture.data.teams.away,
     };
   });
 
