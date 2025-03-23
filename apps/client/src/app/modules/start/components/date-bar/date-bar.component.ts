@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { BreakpointObserverService, DateService } from '@app/shared';
+import {
+  BreakpointObserverService,
+  DateService,
+  DateString,
+} from '@app/shared';
 
 import {
   ActionButtonsComponent,
@@ -28,12 +32,12 @@ import {
     <div class="top">
       <reelscore-date-picker
         [selectedDay]="selectedDay()"
-        (dateSelected)="selectedDay.set($event)"
+        (dateSelected)="setDate($event)"
       />
       @if (isMobile()){ @if (!isToday()) {
       <reelscore-today-button
         [isToday]="isToday()"
-        (onClick)="selectedDay.set($event)"
+        (onClick)="setDate($event)"
       />
       }
       <div class="spacer"></div>
@@ -44,14 +48,11 @@ import {
     <reelscore-week-toogle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
-      (dateSelected)="selectedDay.set($event)"
+      (dateSelected)="setDate($event)"
     />
 
     @if (!isMobile()){ @if (!isToday()) {
-    <reelscore-today-button
-      [isToday]="isToday()"
-      (onClick)="selectedDay.set($event)"
-    />
+    <reelscore-today-button [isToday]="isToday()" (onClick)="setDate($event)" />
     }
     <div class="spacer"></div>
     <reelscore-action-buttons />
@@ -66,4 +67,8 @@ export class DateBarComponent {
   selectedDay = this.dateService.selectedDay;
   weekdays = this.dateService.weekdays;
   isToday = this.dateService.isToday;
+
+  setDate(day: DateString) {
+    this.dateService.setSelectedDay(day);
+  }
 }
