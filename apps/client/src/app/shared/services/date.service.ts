@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import {
   CalenderWeek,
   DateString,
-  TODAY_ISO_STRING,
+  TODAY_DATE_STRING,
   createWeekDaysArray,
   getMondayFromDate,
   moveItem,
@@ -22,7 +22,8 @@ import {
 } from '@app/shared';
 
 export abstract class DateService {
-  abstract selectedDay: WritableSignal<DateString>;
+  abstract selectedDay: Signal<DateString>;
+  abstract setSelectedDay(day: DateString): void;
   abstract isToday: Signal<boolean>;
   abstract calenderWeek: WritableSignal<CalenderWeek>;
   abstract weekdays: Signal<DateString[]>;
@@ -37,9 +38,15 @@ export class AbstractedDateService extends DateService {
 
   private urlDate = computed<string>(() => {
     const dateString = new Date(this.router.url.split('/')[1]);
-    return toIsoString(dateString);
+    const formattedDate = toIsoString(dateString);
+    return formattedDate;
   });
-  selectedDay = signal<DateString>(this.urlDate());
+
+  #selectedDaySignal = signal<DateString>(this.urlDate());
+  selectedDay = this.#selectedDaySignal.asReadonly();
+  setSelectedDay(day: DateString): void {
+    this.#selectedDaySignal.set(day);
+  }
 
   selectedTabIndex = computed<number>(() => {
     return this.weekdays().findIndex((day) => day === this.selectedDay());
@@ -52,12 +59,15 @@ export class AbstractedDateService extends DateService {
       if (untracked(this.calenderWeek) !== weekOfDay) {
         this.calenderWeek.set(weekOfDay);
       }
-      this.router.navigate([date.split('T')[0]]);
+      const dateString = date.substring(0, 10);
+      this.router.navigate([dateString]);
     },
     { allowSignalWrites: true }
   );
 
-  isToday = computed<boolean>(() => this.selectedDay() === TODAY_ISO_STRING);
+  isToday = computed<boolean>(
+    () => this.selectedDay().substring(0, 10) === TODAY_DATE_STRING
+  );
 
   calenderWeek = signal<CalenderWeek>(
     this.getCalenderWeekFrom(this.selectedDay())
