@@ -73,7 +73,8 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (result of home()!.results.reverse(); track result) {
+            @for (result of home()!.results.reverse(); track $index + '-' +
+            result) {
             <span [class]="result.toLowerCase().split('_').join('-')">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
@@ -84,7 +85,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (result of away()!.results; track result) {
+            @for (result of away()!.results; track $index + '-' + result) {
             <span [class]="result.toLowerCase().split('_').join('-')">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
@@ -105,8 +106,8 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (performance of home()!.performances.reverse(); track
-            performance) {
+            @for (performance of home()!.performances.reverse(); track $index +
+            '-' +performance) {
             <span [class]="performance.toLowerCase().split('_').join('-')">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
               @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}
@@ -119,7 +120,8 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (performance of away()!.performances; track performance) {
+            @for (performance of away()!.performances; track $index + '-' +
+            performance) {
             <span [class]="performance.toLowerCase().split('_').join('-')">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
               @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}

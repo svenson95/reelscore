@@ -53,7 +53,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
       <p>{{ round()! | competitionRound }}</p>
     </section>
     <section class="days">
-      @for (day of fixturesDays(); track $index) {
+      @for (day of fixturesDays(); track $index + '-' + day.date) {
       <div class="day">
         <p class="group-date">{{ day.date | date : 'cccc | dd.MM' }}</p>
         <reelscore-fixture-list [fixtures]="day.fixtures" />
