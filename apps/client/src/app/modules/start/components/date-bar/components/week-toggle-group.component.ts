@@ -6,6 +6,8 @@ import {
   inject,
   input,
   output,
+  Pipe,
+  PipeTransform,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,11 +21,27 @@ import {
   WeekdayStandingsStore,
 } from '@app/shared';
 
+@Pipe({
+  name: 'isToday',
+  standalone: true,
+})
+export class IsTodayPipe implements PipeTransform {
+  transform(day: DateString): boolean {
+    return day === TODAY_ISO_STRING;
+  }
+}
+
 @Component({
   selector: 'reelscore-week-toogle-group',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, MatButtonToggleModule, MatIconModule, MatTooltipModule],
+  imports: [
+    DatePipe,
+    MatButtonToggleModule,
+    MatIconModule,
+    MatTooltipModule,
+    IsTodayPipe,
+  ],
   styles: `
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
     :host mat-button-toggle-group {
@@ -77,7 +95,7 @@ import {
         [disabled]="isLoading()"
         [value]="date.day"
         (click)="dateSelected.emit(date.day)"
-        [class.is-today]="isToday(date.day)"
+        [class.is-today]="date.day | isToday"
       >
         {{ date.day | date : 'ccc' }}
       </mat-button-toggle>
@@ -106,10 +124,6 @@ export class WeekToggleGroupComponent {
   isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
   );
-
-  isToday(day: DateString): boolean {
-    return day === TODAY_ISO_STRING;
-  }
 
   setDateTo(value: number): void {
     const date = new Date(this.selectedDay());

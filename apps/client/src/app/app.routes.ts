@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TODAY_ISO_STRING } from './shared';
+import { TODAY_DATE_STRING } from './shared';
 
 export const routes: Routes = [
   {
@@ -32,6 +32,6 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/' + TODAY_ISO_STRING.split('T')[0],
+    redirectTo: TODAY_DATE_STRING,
   },
 ];
