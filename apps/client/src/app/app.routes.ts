@@ -1,29 +1,37 @@
 import { Routes } from '@angular/router';
+import { TODAY_ISO_STRING } from './shared';
 
 export const routes: Routes = [
   {
-    path: '',
-    loadComponent: () =>
-      import('./modules/start/start.component').then((m) => m.StartComponent),
-    data: { shouldReuse: true },
-  },
-  {
-    path: 'leagues/:competitionUrl',
+    path: ':date',
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./modules/competition/competition.component').then(
-            (m) => m.CompetitionComponent
+          import('./modules/start/start.component').then(
+            (m) => m.StartComponent
           ),
+        data: { shouldReuse: true },
       },
       {
-        path: 'match/:fixtureId',
+        path: ':competitionUrl/:fixtureId',
         loadComponent: () =>
           import('./modules/match/match.component').then(
             (m) => m.MatchComponent
           ),
       },
     ],
+  },
+  {
+    path: 'competition/:competitionUrl',
+    loadComponent: () =>
+      import('./modules/competition/competition.component').then(
+        (m) => m.CompetitionComponent
+      ),
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/' + TODAY_ISO_STRING.split('T')[0],
   },
 ];

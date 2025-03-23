@@ -63,7 +63,7 @@ export class MatchesComponent {
         if (!fixture || !competition) throw new Error(`Not found ('${name}')`);
         return {
           name,
-          url: ['leagues', competition.url],
+          url: ['competition', competition.url],
           id: fixture.league.id || -1,
           image: fixture.league.flag || 'error',
           fixtures: fixtures.filter((f) => f.league.name === name),

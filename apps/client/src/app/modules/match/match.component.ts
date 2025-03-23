@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -11,7 +12,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   BackButtonComponent,
@@ -52,6 +53,7 @@ import {
 @Component({
   selector: 'reelscore-match-page',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
     MatButtonModule,
@@ -200,6 +202,7 @@ import {
 })
 export class MatchComponent extends RouterView implements OnChanges {
   router = inject(Router);
+  activatedRoute = inject(ActivatedRoute);
 
   fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
@@ -259,6 +262,8 @@ export class MatchComponent extends RouterView implements OnChanges {
     fixtureId: FixtureId;
   }) {
     if (!league) throw Error('Unexpected League not found');
-    this.router.navigate(['leagues', league.url, 'match', fixtureId]);
+    this.router.navigate(['../..', league.url, fixtureId], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }

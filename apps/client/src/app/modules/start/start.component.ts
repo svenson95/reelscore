@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { RouterView } from '../router-view';
 
@@ -7,6 +7,7 @@ import { DateBarComponent, TabGroupComponent } from './components';
 @Component({
   selector: 'reelscore-start-page',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, TabGroupComponent],
   styles: `
     :host { 
