@@ -123,6 +123,7 @@ export class StandingsController {
 
   // TODO check why importing lib causes serverless function crash
   private isCompetitionWithMultipleGroups(competitionId): boolean {
-    return [4, 5].includes(competitionId);
+    const COMPETITIONS_WITH_MULTIPLE_GROUPS = [1, 4, 5, 31, 32];
+    return COMPETITIONS_WITH_MULTIPLE_GROUPS.includes(competitionId);
   }
 }
