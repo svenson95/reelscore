@@ -3,8 +3,12 @@ import {
   CompetitionRoundString,
 } from '../models/competition.model';
 
-export const isCompetitionWithMultipleGroups = (competitionId: CompetitionId) =>
-  [4, 5].includes(competitionId);
+export const isCompetitionWithMultipleGroups = (
+  competitionId: CompetitionId
+) => {
+  const COMPETITIONS_WITH_MULTIPLE_GROUPS = [1, 4, 5, 31, 32];
+  return COMPETITIONS_WITH_MULTIPLE_GROUPS.includes(competitionId);
+};
 
 export const isCompetitionWithoutStandings = (competitionId: CompetitionId) =>
   [48, 81, 137, 528, 529, 531].includes(competitionId);
