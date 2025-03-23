@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -10,7 +11,13 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
+import {
+  DateString,
+  TODAY_ISO_STRING,
+  toIsoString,
+  WeekdayFixturesStore,
+  WeekdayStandingsStore,
+} from '@app/shared';
 
 @Component({
   selector: 'reelscore-week-toogle-group',
@@ -20,8 +27,10 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
   styles: `
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
     :host mat-button-toggle-group {
-      --mat-standard-button-toggle-selected-state-text-color: white; // TODO refactor white var to -1 and -2
+      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
       --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-red);
+      --mat-standard-button-toggle-disabled-selected-state-text-color: var(--fb-color-white);
+      --mat-standard-button-toggle-disabled-selected-state-background-color: var(--fb-color-red);
       --mat-standard-button-toggle-height: 34px; 
       @apply flex;
 
@@ -56,11 +65,16 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
       hideSingleSelectionIndicator
       [value]="selectedDay()"
     >
-      <mat-button-toggle (click)="setDateTo(-1)" matTooltip="Vorheriger Tag">
+      <mat-button-toggle
+        [disabled]="isLoading()"
+        (click)="setDateTo(-1)"
+        matTooltip="Vorheriger Tag"
+      >
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
       @for(date of indexedWeekdays(); track date.index) {
       <mat-button-toggle
+        [disabled]="isLoading()"
         [value]="date.day"
         (click)="dateSelected.emit(date.day)"
         [class.is-today]="isToday(date.day)"
@@ -68,7 +82,11 @@ import { DateString, TODAY_ISO_STRING, toIsoString } from '@app/shared';
         {{ date.day | date : 'ccc' }}
       </mat-button-toggle>
       }
-      <mat-button-toggle (click)="setDateTo(+1)" matTooltip="Nächster Tag">
+      <mat-button-toggle
+        [disabled]="isLoading()"
+        (click)="setDateTo(+1)"
+        matTooltip="Nächster Tag"
+      >
         <mat-icon>keyboard_arrow_right</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
@@ -82,6 +100,12 @@ export class WeekToggleGroupComponent {
   );
 
   dateSelected = output<DateString>();
+
+  weekFixtures = inject(WeekdayFixturesStore);
+  weekStandings = inject(WeekdayStandingsStore);
+  isLoading = computed<boolean>(
+    () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
+  );
 
   isToday(day: DateString): boolean {
     return day === TODAY_ISO_STRING;

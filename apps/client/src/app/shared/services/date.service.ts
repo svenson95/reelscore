@@ -1,14 +1,15 @@
 import { DatePipe } from '@angular/common';
 import {
-  EffectRef,
   Injectable,
   Signal,
   WritableSignal,
   computed,
   effect,
+  inject,
   signal,
   untracked,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   CalenderWeek,
@@ -17,11 +18,11 @@ import {
   createWeekDaysArray,
   getMondayFromDate,
   moveItem,
+  toIsoString,
 } from '@app/shared';
 
 export abstract class DateService {
   abstract selectedDay: WritableSignal<DateString>;
-  abstract selectedDayEffect: EffectRef;
   abstract isToday: Signal<boolean>;
   abstract calenderWeek: WritableSignal<CalenderWeek>;
   abstract weekdays: Signal<DateString[]>;
@@ -32,7 +33,14 @@ export abstract class DateService {
 
 @Injectable()
 export class AbstractedDateService extends DateService {
-  selectedDay = signal<DateString>(TODAY_ISO_STRING);
+  private router = inject(Router);
+
+  private urlDate = computed<string>(() => {
+    const dateString = new Date(this.router.url.split('/')[1]);
+    return toIsoString(dateString);
+  });
+  selectedDay = signal<DateString>(this.urlDate());
+
   selectedTabIndex = computed<number>(() => {
     return this.weekdays().findIndex((day) => day === this.selectedDay());
   });
@@ -44,6 +52,7 @@ export class AbstractedDateService extends DateService {
       if (untracked(this.calenderWeek) !== weekOfDay) {
         this.calenderWeek.set(weekOfDay);
       }
+      this.router.navigate([date.split('T')[0]]);
     },
     { allowSignalWrites: true }
   );

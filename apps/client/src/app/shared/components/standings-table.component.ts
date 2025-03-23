@@ -250,7 +250,7 @@ export class StandingsTableComponent {
   competitionRouterLink(id: CompetitionId): string[] {
     const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
     if (!competition) throw new Error(`Competition not found (${id})`);
-    return ['/', 'leagues', competition.url];
+    return ['/', 'competition', competition.url];
   }
 
   hasMultipleGroups = isCompetitionWithMultipleGroups;

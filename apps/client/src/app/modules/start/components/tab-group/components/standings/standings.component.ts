@@ -51,7 +51,7 @@ import {
       header="Auswärtstabelle"
     />
     } } } @else if (weekStandings().length > 0) { @for (standings of
-    weekStandings(); track standings.league.id) {
+    weekStandings(); track $index) {
     <reelscore-standings-table
       [ranks]="standings.league.standings![0]"
       [league]="standings.league"

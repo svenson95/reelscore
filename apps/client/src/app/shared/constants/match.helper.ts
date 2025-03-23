@@ -7,5 +7,6 @@ export const linkToMatch = (data: FixtureDTO): string[] => {
   )?.url;
   if (!leagueUrl) throw new Error('Error in linkToMatch');
   const fixtureId = String(data.fixture.id);
-  return ['/', 'leagues', leagueUrl, 'match', fixtureId];
+  const date = data.fixture.date.split('T')[0];
+  return ['/', date, leagueUrl, fixtureId];
 };
