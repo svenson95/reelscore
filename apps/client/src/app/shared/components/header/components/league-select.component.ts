@@ -75,7 +75,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
         <mat-optgroup [label]="group.label">
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
-            <a [routerLink]="['leagues', c.url]">
+            <a [routerLink]="['competition', c.url]">
               <reelscore-optimized-image
                 [source]="c.image"
                 [alternate]="c.label"
