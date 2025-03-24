@@ -23,9 +23,9 @@ const translateCompetitionLabel = (
     case 'World Cup':
       return 'UEFA Weltmeisterschaft';
     case 'World Cup - Qualification Europe':
-      return 'Weltmeisterschaft - Qual. Europa';
+      return 'WM - Qualifikation Europa';
     case 'World Cup - Qualification CONCACAF':
-      return 'Weltmeisterschaft - Qual. CONCACAF';
+      return 'WM - Qualifikation CONCACAF';
     default:
       return value;
   }
