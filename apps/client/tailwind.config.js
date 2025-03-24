@@ -59,6 +59,9 @@ module.exports = {
           '--mdc-outlined-button-disabled-label-text-color':
             'var(--fb-color-text-1)',
         },
+        '.fb-bg-color': {
+          background: 'var(--fb-background-color)',
+        },
       };
 
       addUtilities(newUtitilites);

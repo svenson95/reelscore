@@ -87,7 +87,7 @@ import {
       div { @apply flex gap-5; }
     }
     section.match-header {
-      @apply px-5 sticky top-0 bg-fb-red z-10;
+      @apply px-5 sticky top-0 fb-bg-color z-10;
       margin-top: -1.25rem;
     }
     section.data { @apply max-w-fb-max-width w-full flex flex-col gap-5 mx-auto; }
