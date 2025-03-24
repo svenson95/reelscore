@@ -36,6 +36,8 @@ import { CompetitionId } from '@lib/models';
       --mat-menu-item-label-text-line-height: var(--fb-font-size-small);
       --mat-menu-item-icon-color: var(--fb-color-white-2);
       
+      @apply py-1;
+
       &:not(.group-title) { @apply min-h-[32px]; }
       &.group-title { @apply min-h-[48px]; }
 
@@ -44,16 +46,19 @@ import { CompetitionId } from '@lib/models';
         mat-icon { @apply absolute right-4; }
       }
       
-      .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
+      mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
+      .competition-logo + span { @apply leading-[1.3]; }
     }
+
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
-      @apply max-w-[218px] max-h-[70vh]; // 218px is the width of league-select menu
+      @apply max-w-[220px] max-h-[70vh]; // 218px is the width of league-select menu + 2px border
 
       .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
         @apply flex items-center gap-2;
       }
+      
+      .divider { @apply h-[1px] w-full bg-[#bababa]; }
     }
-    .divider { @apply h-[1px] w-full bg-[#bababa]; }
   `,
   template: `
     <button
@@ -78,6 +83,7 @@ import { CompetitionId } from '@lib/models';
         [class.is-filtering]="isSameId(competition.id)"
       >
         <reelscore-optimized-image
+          class="competition-logo"
           [source]="competition.image"
           [alternate]="competition.label"
           width="14"

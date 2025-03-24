@@ -60,8 +60,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       @apply min-h-[32px] p-0;
 
       a { @apply flex w-full h-full px-4 py-1 gap-2; }
-
-      .competition-logo + span { @apply leading-none content-center; }
+      .competition-logo + span { @apply leading-[1.3] content-center; }
     }
   `,
   template: `
