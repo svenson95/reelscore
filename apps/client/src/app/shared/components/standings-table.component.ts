@@ -31,8 +31,8 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
     }
 
     table {
-      --mat-table-header-headline-size: var(--fb-font-size-body-2);
-      --mat-table-row-item-label-text-size: var(--fb-font-size-body-2);
+      --mat-table-header-headline-size: var(--rs-font-size-body-2);
+      --mat-table-row-item-label-text-size: var(--rs-font-size-body-2);
       --mat-table-header-container-height: 42px;
       --mat-table-row-item-container-height: 33px;
       --mat-table-row-item-outline-color: var(--mat-standard-button-toggle-divider-color);

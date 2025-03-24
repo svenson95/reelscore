@@ -44,19 +44,19 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     }
 
     mat-form-field.mat-mdc-form-field-type-mat-select {
-      --mdc-filled-text-field-label-text-size: var(--fb-font-size-body-1);
-      --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
-      --mdc-filled-text-field-hover-label-text-color: var(--fb-color-text-1);
+      --mdc-filled-text-field-label-text-size: var(--rs-font-size-body-1);
+      --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
+      --mdc-filled-text-field-hover-label-text-color: var(--rs-color-text-1);
     }
 
     mat-select { 
-      --mat-select-trigger-text-size: var(--fb-font-size-body-1);
-      --mat-select-enabled-arrow-color: var(--fb-color-text-2);
+      --mat-select-trigger-text-size: var(--rs-font-size-body-1);
+      --mat-select-enabled-arrow-color: var(--rs-color-text-2);
       --mat-select-focused-arrow-color: var(--fb-color-black);
     }
 
     mat-option {
-      --mat-option-label-text-size: var(--fb-font-size-small);
+      --mat-option-label-text-size: var(--rs-font-size-small);
       @apply min-h-[32px] p-0;
 
       a { @apply flex w-full h-full px-4 py-1 gap-2; }

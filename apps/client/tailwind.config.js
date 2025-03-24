@@ -16,51 +16,45 @@ module.exports = {
         2: '2 2 0%',
       },
       colors: {
-        'fb-color-black-1': 'var(--fb-color-black-1)',
-        'fb-color-black-2': 'var(--fb-color-black-2)',
-        'fb-color-white': 'var(--fb-color-white)',
-        'fb-color-white-2': 'var(--fb-color-white-2)',
-        'fb-color-green-1': 'var(--fb-color-green-1)',
-        'fb-color-green-1-light': 'var(--fb-color-green-1-light)',
-        'fb-color-green-2': 'var(--fb-color-green-2)',
-        'fb-color-text-1': 'var(--fb-color-text-1)',
-        'fb-color-text-2': 'var(--fb-color-text-2)',
-        'fb-color-text-3': 'var(--fb-color-text-3)',
-        'fb-red': 'var(--fb-color-red)',
-        'fb-win': 'var(--fb-color-win)',
-        'fb-lose': 'var(--fb-color-lose)',
+        'rs-color-white': 'var(--rs-color-white)',
+        'rs-color-white-2': 'var(--rs-color-white-2)',
+        'rs-color-green-1': 'var(--rs-color-green-1)',
+        'rs-color-text-1': 'var(--rs-color-text-1)',
+        'rs-color-text-2': 'var(--rs-color-text-2)',
+        'rs-color-text-3': 'var(--rs-color-text-3)',
+        'rs-color-orange': 'var(--rs-color-orange)',
       },
       fontSize: {
-        'fb-font-size-title': 'var(--fb-font-size-title)',
-        'fb-font-size-subtitle-1': 'var(--fb-font-size-subtitle-1)',
-        'fb-font-size-subtitle-2': 'var(--fb-font-size-subtitle-2)',
-        'fb-font-size-body-1': 'var(--fb-font-size-body-1)',
-        'fb-font-size-body-2': 'var(--fb-font-size-body-2)',
-        'fb-font-size-small': 'var(--fb-font-size-small)',
+        'rs-font-size-title': 'var(--rs-font-size-title)',
+        'rs-font-size-subtitle-1': 'var(--rs-font-size-subtitle-1)',
+        'rs-font-size-subtitle-2': 'var(--rs-font-size-subtitle-2)',
+        'rs-font-size-body-1': 'var(--rs-font-size-body-1)',
+        'rs-font-size-body-2': 'var(--rs-font-size-body-2)',
+        'rs-font-size-small': 'var(--rs-font-size-small)',
       },
       spacing: {
-        'fb-padding-1': 'var(--fb-padding-1)',
-        'fb-padding-2': 'var(--fb-padding-2)',
-        'fb-padding-3': 'var(--fb-padding-3)',
+        'rs-padding-1': 'var(--rs-padding-1)',
+        'rs-padding-2': 'var(--rs-padding-2)',
+        'rs-padding-3': 'var(--rs-padding-3)',
       },
       maxWidth: {
-        'fb-max-width': 'var(--fb-size-max-width)',
+        'rs-max-width': 'var(--rs-size-max-width)',
       },
       borderRadius: {
-        fb: 'var(--fb-size-border-radius)',
+        fb: 'var(--rs-size-border-radius)',
       },
     },
   },
   plugins: [
     function ({ addUtilities }) {
       const newUtitilites = {
-        '.fb-as-label': {
+        '.rs-as-label': {
           background: 'white',
           '--mdc-outlined-button-disabled-label-text-color':
-            'var(--fb-color-text-1)',
+            'var(--rs-color-text-1)',
         },
-        '.fb-bg-color': {
-          background: 'var(--fb-background-color)',
+        '.rs-bg-color': {
+          background: 'var(--rs-background-color)',
         },
       };
 

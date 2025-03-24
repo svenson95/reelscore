@@ -41,10 +41,10 @@ import { CompetitionRound } from '@lib/models';
         color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
         line-height: var(--mat-table-header-headline-line-height);
-        font-size: var(--fb-font-size-body-2);
+        font-size: var(--rs-font-size-body-2);
         font-weight: var(--mat-table-header-headline-weight, 500);
   
-        &.gray { @apply text-fb-color-text-2 text-fb-font-size-small shrink-0; }
+        &.gray { @apply text-rs-color-text-2 text-rs-font-size-small shrink-0; }
       }
     }
     .spacer { @apply flex-1; }

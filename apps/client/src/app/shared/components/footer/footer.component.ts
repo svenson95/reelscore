@@ -8,7 +8,7 @@ import { LogoComponent } from '../logo/logo.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
   styles: `
-    :host { @apply flex justify-center px-fb-padding-3 py-20 border-t-[1px]; }
+    :host { @apply flex justify-center px-rs-padding-3 py-20 border-t-[1px]; }
   `,
   template: `
     <section>

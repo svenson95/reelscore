@@ -17,7 +17,7 @@ import { Goals } from '@lib/models';
   template: `
     <span>{{ result().home }}</span>
     @if (isPostponed()) { @if (showPostponedText()) {
-    <span class="text-fb-font-size-small"> Abgesagt </span> } @else { － } }
+    <span class="text-rs-font-size-small"> Abgesagt </span> } @else { － } }
     @else if (isNotStarted()) { vs } @else { : }
     <span>{{ result().away }}</span>
   `,

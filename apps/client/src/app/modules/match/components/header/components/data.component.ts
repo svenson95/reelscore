@@ -15,9 +15,9 @@ import { FixtureDTO } from '@lib/models';
   imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
     :host { @apply flex w-full; }
-    div { @apply flex flex-1 sm:text-fb-font-size-body-1; }
-    .team-column { @apply flex-col gap-2 text-fb-font-size-body-2; }
-    .result-column { @apply items-center justify-center gap-1 text-fb-font-size-body-1; }
+    div { @apply flex flex-1 sm:text-rs-font-size-body-1; }
+    .team-column { @apply flex-col gap-2 text-rs-font-size-body-2; }
+    .result-column { @apply items-center justify-center gap-1 text-rs-font-size-body-1; }
     .team-name { @apply leading-[16px] text-center; }
   `,
   template: `
