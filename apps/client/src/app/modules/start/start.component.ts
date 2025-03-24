@@ -15,7 +15,7 @@ import { DateBarComponent, TabGroupComponent } from './components';
     }
   `,
   template: `
-    <reelscore-date-bar />
+    <reelscore-date-bar class="animate-drop-from-top" />
 
     <reelscore-start-tab-group />
   `,
