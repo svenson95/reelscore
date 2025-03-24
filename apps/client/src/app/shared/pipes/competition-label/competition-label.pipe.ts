@@ -20,6 +20,12 @@ const translateCompetitionLabel = (
       return 'Carabao Cup';
     case 'Euro Championship':
       return 'UEFA Europameisterschaft';
+    case 'World Cup':
+      return 'UEFA Weltmeisterschaft';
+    case 'World Cup - Qualification Europe':
+      return 'Weltmeisterschaft - Qual. Europa';
+    case 'World Cup - Qualification CONCACAF':
+      return 'Weltmeisterschaft - Qual. CONCACAF';
     default:
       return value;
   }

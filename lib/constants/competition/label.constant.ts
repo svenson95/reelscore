@@ -10,11 +10,11 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
   // International
   [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'UEFA Europameisterschaft',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: 'Confedarations Cup',
-  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'World Cup',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'UEFA Weltmeisterschaft',
   [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF]:
-    'World Cup - Qualification CONCACAF',
+    'UEFA Weltmeisterschaft - Qualifikation CONCACAF',
   [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE]:
-    'World Cup - Qualification Europe',
+    'UEFA Weltmeisterschaft - Qualifikation Europa',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 'FIFA World Cup',
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'UEFA Nations League',
 
