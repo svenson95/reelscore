@@ -25,13 +25,13 @@ import { TimeTotalPipe } from './pipes';
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }
     .home { @apply text-right; }
-    .result { @apply text-fb-font-size-body-2; }
+    .result { @apply text-rs-font-size-body-2; }
     mat-icon {
       @apply align-middle;
       &.yellow-card { @apply text-yellow-500; }
       &.red-card { @apply text-red-500; }
     }
-    .time { @apply text-fb-font-size-body-2; }
+    .time { @apply text-rs-font-size-body-2; }
   `,
   template: `
     <section>

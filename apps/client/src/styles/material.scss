@@ -38,37 +38,37 @@ $reelscore-theme: mat.m2-define-light-theme(
 @include mat.all-component-themes($reelscore-theme);
 
 :root {
-  // --mat-select-enabled-trigger-text-color: var(--fb-color-white);
-  --mdc-filled-text-field-label-text-color: var(--fb-color-text-2);
-  --mdc-text-button-disabled-label-text-color: var(--fb-color-text-1);
-  --mat-select-enabled-arrow-color: var(--fb-color-red);
-  --mat-select-disabled-arrow-color: var(--fb-color-text-2);
+  // --mat-select-enabled-trigger-text-color: var(--rs-color-white);
+  --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
+  --mdc-text-button-disabled-label-text-color: var(--rs-color-text-1);
+  --mat-select-enabled-arrow-color: var(--rs-color-orange);
+  --mat-select-disabled-arrow-color: var(--rs-color-text-2);
   // --mdc-filled-text-field-hover-label-text-color: var(--fb-color-black);
   // --mdc-filled-text-field-focus-label-text-color: var(--fb-color-black);
-  --mat-standard-button-toggle-shape: var(--fb-size-border-radius);
-  --mdc-outlined-button-container-shape: var(--fb-size-border-radius);
+  --mat-standard-button-toggle-shape: var(--rs-size-border-radius);
+  --mdc-outlined-button-container-shape: var(--rs-size-border-radius);
   --mat-outlined-button-pressed-state-layer-opacity: 0;
   --mat-outlined-button-hover-state-layer-opacity: 0;
   --mat-outlined-button-focus-state-layer-opacity: 0;
   --mdc-filled-text-field-container-color: transparent;
-  --mat-datepicker-calendar-container-shape: var(--fb-size-border-radius);
-  --mdc-text-button-container-shape: var(--fb-size-border-radius);
+  --mat-datepicker-calendar-container-shape: var(--rs-size-border-radius);
+  --mdc-text-button-container-shape: var(--rs-size-border-radius);
   --mat-datepicker-calendar-container-elevation-shadow: var(
-    --fb-size-box-shadow
+    --rs-size-box-shadow
   );
-  --mat-select-container-elevation-shadow: var(--fb-size-box-shadow);
+  --mat-select-container-elevation-shadow: var(--rs-size-box-shadow);
   --mat-text-button-horizontal-padding: 14px;
   --mat-text-button-with-icon-horizontal-padding: 14px;
 
-  --mat-menu-container-shape: var(--fb-size-border-radius);
-  --mdc-text-button-label-text-color: var(--fb-button-text-color);
-  --mdc-icon-button-icon-color: var(--fb-button-text-color);
-  --mdc-outlined-button-label-text-color: var(--fb-button-text-color);
-  --mat-standard-button-toggle-state-layer-color: var(--fb-color-red);
+  --mat-menu-container-shape: var(--rs-size-border-radius);
+  --mdc-text-button-label-text-color: var(--rs-button-text-color);
+  --mdc-icon-button-icon-color: var(--rs-button-text-color);
+  --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
+  --mat-standard-button-toggle-state-layer-color: var(--rs-color-orange);
 }
 
 button.mdc-button {
-  --mdc-text-button-label-text-size: var(--fb-font-size-body-2);
+  --mdc-text-button-label-text-size: var(--rs-font-size-body-2);
   --mat-text-button-horizontal-padding: 10px;
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
@@ -76,7 +76,7 @@ button.mdc-button {
 button.mdc-button,
 button.mdc-icon-button {
   &:not(mat-calendar-header *):not(.mat-mdc-button-disabled) {
-    background: var(--fb-button-bg-color);
+    background: var(--rs-button-bg-color);
   }
 }
 
@@ -85,12 +85,12 @@ button.mdc-icon-button {
 }
 
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
-  border-radius: var(--fb-size-border-radius);
+  border-radius: var(--rs-size-border-radius);
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
 
 .mat-mdc-optgroup-label {
-  @apply text-fb-font-size-small text-fb-color-text-2;
+  @apply text-rs-font-size-small text-rs-color-text-2;
 }
 
 mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
@@ -99,19 +99,19 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  // --mat-tab-header-inactive-ripple-color: var(--fb-color-red);
-  // --mat-tab-header-active-ripple-color: var(--fb-color-red);
+  // --mat-tab-header-inactive-ripple-color: var(--rs-color-orange);
+  // --mat-tab-header-active-ripple-color: var(--rs-color-orange);
 
-  --mat-tab-header-active-label-text-color: var(--fb-color-red);
-  --mat-tab-header-inactive-label-text-color: var(--fb-color-text-2);
-  --mat-tab-header-active-focus-label-text-color: var(--fb-color-red);
-  --mat-tab-header-active-hover-label-text-color: var(--fb-color-white);
-  --mat-tab-header-active-focus-indicator-color: var(--fb-color-red);
-  --mat-tab-header-active-hover-indicator-color: var(--fb-color-white);
-  --mdc-tab-indicator-active-indicator-color: var(--fb-color-red);
+  --mat-tab-header-active-label-text-color: var(--rs-color-orange);
+  --mat-tab-header-inactive-label-text-color: var(--rs-color-text-2);
+  --mat-tab-header-active-focus-label-text-color: var(--rs-color-orange);
+  --mat-tab-header-active-hover-label-text-color: var(--rs-color-white);
+  --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
+  --mat-tab-header-active-hover-indicator-color: var(--rs-color-white);
+  --mdc-tab-indicator-active-indicator-color: var(--rs-color-orange);
 
   .mat-mdc-tab-header {
-    --mat-tab-header-label-text-size: var(--fb-font-size-body-2);
+    --mat-tab-header-label-text-size: var(--rs-font-size-body-2);
     @apply border-b-[1px];
   }
 
@@ -120,21 +120,21 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   }
 
   .mat-mdc-tab-ripple:not(.mdc-tab-indicator--active) {
-    background-color: var(--fb-color-white);
+    background-color: var(--rs-color-white);
   }
 
   .mdc-tab-indicator--active {
-    background-color: var(--fb-color-red);
+    background-color: var(--rs-color-orange);
 
     mat-icon {
-      color: var(--fb-color-red);
+      color: var(--rs-color-orange);
     }
   }
 }
 
 .mat-elevation-z8,
 .mat-mdc-elevation-specific.mat-elevation-z8 {
-  box-shadow: var(--fb-size-box-shadow);
-  border-radius: var(--fb-size-border-radius);
+  box-shadow: var(--rs-size-box-shadow);
+  border-radius: var(--rs-size-border-radius);
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }

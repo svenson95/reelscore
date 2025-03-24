@@ -26,7 +26,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
   ],
   styles: `
     :host { @apply flex flex-col; }
-    p { @apply text-fb-font-size-body-2 font-medium; }
+    p { @apply text-rs-font-size-body-2 font-medium; }
     section.round, .day {
       @apply border-[1px] bg-white;
       border-color: var(--mdc-outlined-button-outline-color);

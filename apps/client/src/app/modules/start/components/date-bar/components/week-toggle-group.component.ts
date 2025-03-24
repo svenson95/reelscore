@@ -45,18 +45,18 @@ export class IsTodayPipe implements PipeTransform {
   styles: `
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
     :host mat-button-toggle-group {
-      --mat-standard-button-toggle-selected-state-text-color: var(--fb-color-white);
-      --mat-standard-button-toggle-selected-state-background-color: var(--fb-color-red);
-      --mat-standard-button-toggle-disabled-selected-state-text-color: var(--fb-color-white);
-      --mat-standard-button-toggle-disabled-selected-state-background-color: var(--fb-color-red);
+      --mat-standard-button-toggle-selected-state-text-color: var(--rs-color-white);
+      --mat-standard-button-toggle-selected-state-background-color: var(--rs-color-orange);
+      --mat-standard-button-toggle-disabled-selected-state-text-color: var(--rs-color-white);
+      --mat-standard-button-toggle-disabled-selected-state-background-color: var(--rs-color-orange);
       --mat-standard-button-toggle-height: 34px; 
       @apply flex;
 
       mat-button-toggle.mat-button-toggle {
-        @apply flex-1 text-fb-font-size-body-2 border-l-0;
+        @apply flex-1 text-rs-font-size-body-2 border-l-0;
 
         &.is-today {
-          --mat-standard-button-toggle-background-color: var(--fb-color-white-2);
+          --mat-standard-button-toggle-background-color: var(--rs-color-white-2);
         }
 
         &.mat-button-toggle-appearance-standard ::ng-deep {

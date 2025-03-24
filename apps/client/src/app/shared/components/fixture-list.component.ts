@@ -38,12 +38,12 @@ import { ResultLabelComponent } from './result-label.component';
     li > a { @apply flex items-stretch; }
     li:not(:last-child) { @apply border-b-[1px]; }
     li > section { @apply inline-flex flex-col; }
-    .time-label.is-finished { @apply line-through decoration-fb-red; }
+    .time-label.is-finished { @apply line-through decoration-rs-color-orange; }
     .time { 
-      @apply justify-center items-center min-w-[50px] text-fb-font-size-small; 
+      @apply justify-center items-center min-w-[50px] text-rs-font-size-small; 
 
-      &.is-upcoming { @apply bg-fb-color-white-2; }
-      &.is-playing { @apply bg-fb-color-green-1 text-fb-color-text-3; }
+      &.is-upcoming { @apply bg-rs-color-white-2; }
+      &.is-playing { @apply bg-rs-color-green-1 text-rs-color-text-3; }
     }
     .time, .result { 
       @apply flex text-center justify-center;
@@ -51,9 +51,9 @@ import { ResultLabelComponent } from './result-label.component';
     .result { 
       @apply min-w-[40px] p-2 items-center gap-[0.1rem]; 
 
-      &:not(.is-upcoming) { @apply bg-fb-color-white-2; }
+      &:not(.is-upcoming) { @apply bg-rs-color-white-2; }
     }
-    .teams { @apply w-full flex text-fb-font-size-body-2; }
+    .teams { @apply w-full flex text-rs-font-size-body-2; }
     .teams > div:not(.result) { @apply flex flex-1 p-2 gap-2 items-center; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }

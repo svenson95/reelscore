@@ -30,11 +30,11 @@ import { CompetitionId } from '@lib/models';
     OptimizedImageComponent,
   ],
   styles: `
-    button[mat-icon-button].is-filtering { @apply bg-blue-500 text-fb-color-white; }
+    button[mat-icon-button].is-filtering { @apply bg-blue-500 text-rs-color-white; }
     button[mat-menu-item] { 
-      --mat-menu-item-label-text-size: var(--fb-font-size-small);
-      --mat-menu-item-label-text-line-height: var(--fb-font-size-small);
-      --mat-menu-item-icon-color: var(--fb-color-white-2);
+      --mat-menu-item-label-text-size: var(--rs-font-size-small);
+      --mat-menu-item-label-text-line-height: var(--rs-font-size-small);
+      --mat-menu-item-icon-color: var(--rs-color-white-2);
       
       @apply py-1;
 
@@ -42,7 +42,7 @@ import { CompetitionId } from '@lib/models';
       &.group-title { @apply min-h-[48px]; }
 
       &.is-filtering { 
-        @apply bg-fb-color-white-2; --mat-menu-item-icon-color: var(--fb-color-text-1);
+        @apply bg-rs-color-white-2; --mat-menu-item-icon-color: var(--rs-color-text-1);
         mat-icon { @apply absolute right-4; }
       }
       

@@ -21,11 +21,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col text-fb-font-size-small; }
+    :host { @apply flex flex-col text-rs-font-size-small; }
     .event-row { @apply flex; }
     .team-column { @apply flex-1; }
     .result-column { @apply flex w-[50px] text-center items-center justify-center; }
-    .event-time { @apply text-fb-color-text-2; }
+    .event-time { @apply text-rs-color-text-2; }
     .team-column:first-of-type { @apply text-right; }
     .red-card { @apply bg-red-500 w-2 h-3 m-auto rounded-[2px]; }
   `,

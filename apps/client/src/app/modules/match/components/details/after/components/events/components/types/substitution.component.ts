@@ -10,7 +10,7 @@ import { EventDTO } from '@lib/models';
   styles: `
     :host { @apply flex flex-col; }
     span:first-child { @apply text-green-800; }
-    span:last-child { @apply text-red-800 text-fb-font-size-small; }
+    span:last-child { @apply text-red-800 text-rs-font-size-small; }
   `,
   template: `
     @if (event(); as event) {

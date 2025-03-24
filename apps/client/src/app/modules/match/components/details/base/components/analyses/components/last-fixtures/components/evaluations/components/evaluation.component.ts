@@ -16,7 +16,7 @@ import { EvaluationAnalyses } from '@lib/models';
       &.is-lucky div { @apply bg-green-100 text-green-500; }
       &.is-unlucky div { @apply bg-red-100 text-red-500; }
       &:not(.is-lucky):not(.is-unlucky) div { @apply bg-gray-100 text-gray-500; }
-      div { @apply text-fb-font-size-small px-2 py-1; }
+      div { @apply text-rs-font-size-small px-2 py-1; }
     }
   `,
   template: `

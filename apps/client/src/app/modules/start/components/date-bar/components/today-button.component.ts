@@ -16,11 +16,11 @@ import { DateString, TODAY_ISO_STRING } from '@app/shared';
   styles: `
     button { 
       --mdc-outlined-button-container-height: 36px;
-      --mdc-text-button-disabled-label-text-color: var(--fb-color-text-2);
-      --mdc-protected-button-container-shape: var(--fb-size-border-radius);
+      --mdc-text-button-disabled-label-text-color: var(--rs-color-text-2);
+      --mdc-protected-button-container-shape: var(--rs-size-border-radius);
       border: 1px solid var(--mdc-outlined-button-outline-color);
 
-      &:disabled { @apply fb-as-label; }
+      &:disabled { @apply rs-as-label; }
     }
   `,
   template: `

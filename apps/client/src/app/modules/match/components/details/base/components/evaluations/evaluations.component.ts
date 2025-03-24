@@ -16,7 +16,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   styles: `
     :host { @apply flex flex-col; }
     .content { 
-      @apply w-fit bg-fb-color-white py-4 px-6 md:px-12 my-5 mx-auto; 
+      @apply w-fit bg-rs-color-white py-4 px-6 md:px-12 my-5 mx-auto; 
 
       border-width: 1px;
       border-color: var(--mat-standard-button-toggle-divider-color);
@@ -27,14 +27,14 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
       &:first-of-type { @apply border-b-[1px] pb-5; }
       .header { @apply w-full flex justify-between m-auto; }
-      .section-hints { @apply flex gap-3 items-center text-fb-color-text-2; }
-      .section-title { @apply text-fb-font-size-body-2 xs:text-fb-font-size-body-1; }
+      .section-hints { @apply flex gap-3 items-center text-rs-color-text-2; }
+      .section-title { @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1; }
     }
 
-    .section-hints, .today { @apply text-fb-font-size-small xs:text-fb-font-size-body-2; }
+    .section-hints, .today { @apply text-rs-font-size-small xs:text-rs-font-size-body-2; }
 
     .evaluation {
-      @apply flex gap-5 text-fb-font-size-small xs:text-fb-font-size-body-2;
+      @apply flex gap-5 text-rs-font-size-small xs:text-rs-font-size-body-2;
 
       .team { 
         @apply flex flex-1 gap-1 xs:gap-2; 

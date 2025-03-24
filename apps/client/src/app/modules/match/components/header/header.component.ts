@@ -22,7 +22,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `
     :host { 
-      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-fb-max-width bg-white;
+      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
     .toggle-highlights-row { 

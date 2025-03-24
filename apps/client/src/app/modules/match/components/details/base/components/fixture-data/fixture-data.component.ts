@@ -16,10 +16,10 @@ import { FixtureStore } from '../../../../../store';
   styles: `
       ul { @apply py-5; }
       li:not(:last-of-type) .item { @apply pb-2; }
-      .item { @apply flex justify-center px-4 gap-6 text-fb-color-text-3; }
+      .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-3; }
       .item > *:not(.key) { @apply flex-2 sm:flex-1; }
       .key { @apply text-right tracking-wider font-extralight flex-1; }
-      span { @apply text-fb-font-size-body-2;}
+      span { @apply text-rs-font-size-body-2;}
     `,
   template: `
     <ul>

@@ -1,43 +1,35 @@
 :root {
   /* Colors */
-  --fb-color-black-1: #000;
-  --fb-color-black-2: #111;
-  --fb-color-white: #fff;
-  --fb-color-white-2: #f3f3f3;
-  --fb-color-red: #f48c22;
-  --fb-color-green-1: #2e9133;
-  --fb-color-green-2: #2c7051;
-  --fb-color-green-1-light: #f9fff9;
-  --fb-color-green-1-bg-light: #2e7d3212;
-  --fb-color-text-1: #1d1d1f;
-  --fb-color-text-2: #999999;
-  --fb-color-text-3: #fff;
-  --fb-color-win: rgba(21, 103, 21, 0.15);
-  --fb-color-lose: rgba(255, 0, 0, 0.1);
-  --fb-color-bg-black: #111;
+  --rs-color-white: #fff;
+  --rs-color-white-2: #f3f3f3;
+  --rs-color-orange: #f48c22;
+  --rs-color-green-1: #2e9133;
+  --rs-color-text-1: #1d1d1f;
+  --rs-color-text-2: #999999;
+  --rs-color-text-3: #fff;
 
-  --fb-background-color: #1c1c1c;
+  --rs-background-color: #1c1c1c;
 
-  --fb-button-text-color: var(--fb-color-text-1);
-  --fb-button-bg-color: var(--fb-color-white);
+  --rs-button-text-color: var(--rs-color-text-1);
+  --rs-button-bg-color: var(--rs-color-white);
 
   /* Font-sizes */
-  --fb-font-size-title: 24px;
-  --fb-font-size-subtitle-1: 18px;
-  --fb-font-size-subtitle-2: 16px;
-  --fb-font-size-body-1: 15px;
-  --fb-font-size-body-2: 13px;
-  --fb-font-size-small: 11px;
+  --rs-font-size-title: 24px;
+  --rs-font-size-subtitle-1: 18px;
+  --rs-font-size-subtitle-2: 16px;
+  --rs-font-size-body-1: 15px;
+  --rs-font-size-body-2: 13px;
+  --rs-font-size-small: 11px;
 
-  --fb-padding-1: 10px;
-  --fb-padding-2: 16px;
-  --fb-padding-3: 20px;
+  --rs-padding-1: 10px;
+  --rs-padding-2: 16px;
+  --rs-padding-3: 20px;
 
   /* Sizes */
-  --fb-size-button-border-width: 2px;
-  --fb-size-button-shadow: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
-  --fb-size-box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-  --fb-size-league-select-height: 32px;
-  --fb-size-max-width: 1000px;
-  --fb-size-border-radius: 0px;
+  --rs-size-button-border-width: 2px;
+  --rs-size-button-shadow: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
+  --rs-size-box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  --rs-size-league-select-height: 32px;
+  --rs-size-max-width: 1000px;
+  --rs-size-border-radius: 0px;
 }

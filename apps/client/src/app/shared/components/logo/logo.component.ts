@@ -13,7 +13,7 @@ import { LoadingService } from '../../services';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { @apply select-none text-fb-font-size-body-1 tracking-wide text-white; }
+    :host { @apply select-none text-rs-font-size-body-1 tracking-wide text-white; }
     :host([disabled]) { @apply opacity-75; }
 
     :host.is-loading {
@@ -24,7 +24,7 @@ import { LoadingService } from '../../services';
         height: 2px;
         bottom: 0;
         left: 0;
-        background-color: var(--fb-color-white);
+        background-color: var(--rs-color-white);
         animation: underlineAnimation 1s infinite ease-in-out;
       }
 
