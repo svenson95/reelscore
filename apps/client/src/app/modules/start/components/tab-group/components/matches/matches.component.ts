@@ -26,7 +26,10 @@ import { MatchDayListComponent } from './components';
   template: `
     @if (competitions().length) { @for (competition of competitions(); track
     competition.name) {
-    <reelscore-start-match-day-list [competition]="competition" />
+    <reelscore-start-match-day-list
+      class="animate-fade-in"
+      [competition]="competition"
+    />
     } } @else {
     <p class="no-data">
       @if (isLoading()) { Spiele werden geladen ... } @else { @if (error()) {
