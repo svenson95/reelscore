@@ -169,7 +169,14 @@ export class FixtureListComponent {
         'Quarter-finals',
         'Semi-finals',
       ],
+      [COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: [
+        'Play-offs A/B',
+        'Play-offs B/C',
+        'Quarter-finals',
+        'Play-offs C/D',
+      ],
       [COMPETITION_ID.ENGLAND_LEAGUE_CUP]: ['Semi-finals'],
+      [COMPETITION_ID.ITALY_COPPA_ITALIA]: ['Semi-finals'],
     };
     const competitionTwoLeggedRounds = twoLeggedCompetitions[fixture.league.id];
     const isCompetitionWithTwoLeggedFinals =
