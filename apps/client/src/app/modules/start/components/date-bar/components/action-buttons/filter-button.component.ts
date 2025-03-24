@@ -35,17 +35,19 @@ import { CompetitionId } from '@lib/models';
       --mat-menu-item-label-text-size: var(--fb-font-size-small);
       --mat-menu-item-label-text-line-height: var(--fb-font-size-small);
       --mat-menu-item-icon-color: var(--fb-color-white-2);
-      @apply min-h-[32px];
-
-      .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
+      
+      &:not(.group-title) { @apply min-h-[32px]; }
+      &.group-title { @apply min-h-[48px]; }
 
       &.is-filtering { 
         @apply bg-fb-color-white-2; --mat-menu-item-icon-color: var(--fb-color-text-1);
         mat-icon { @apply absolute right-4; }
       }
+      
+      .mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
     }
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
-      @apply min-w-[220px] max-h-[70vh];
+      @apply max-w-[218px] max-h-[70vh]; // 218px is the width of league-select menu
 
       .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
         @apply flex items-center gap-2;

@@ -60,6 +60,8 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       @apply min-h-[32px] p-0;
 
       a { @apply flex w-full h-full px-4 py-1 gap-2; }
+
+      .competition-logo + span { @apply leading-none content-center; }
     }
   `,
   template: `
@@ -77,6 +79,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
           <mat-option [value]="c.url">
             <a [routerLink]="['competition', c.url]">
               <reelscore-optimized-image
+                class="competition-logo"
                 [source]="c.image"
                 [alternate]="c.label"
                 width="14"
