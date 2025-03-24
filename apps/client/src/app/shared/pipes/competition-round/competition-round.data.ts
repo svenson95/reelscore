@@ -8,6 +8,7 @@ const ROUND_LABEL_TYPES: Array<CompetitionRoundType> = [
   'Regular Season',
   'League Stage', // UEFA Champions league group stage
   'League', // UEFA Nations League group stage
+  'Group Stage', // UEFA Nations league group stage
   '1st Round',
   '2nd Round',
   '3rd Round',
@@ -63,6 +64,8 @@ const translateDefault = (
     case 'Regular Season':
     case 'League Stage':
       return `${roundNumber(value)}. Spieltag`;
+    case 'Group Stage':
+      return `Gruppenphase ${roundNumber(value)}. Spieltag`;
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
@@ -102,6 +105,8 @@ const translateHeader = (
     case 'Regular Season':
     case 'League Stage':
       return `${roundNumber(value)}. Spieltag`;
+    case 'Group Stage':
+      return `Gruppenphase #${roundNumber(value)}`;
     case '1st Round':
       return '1. Runde';
     case '2nd Round':
