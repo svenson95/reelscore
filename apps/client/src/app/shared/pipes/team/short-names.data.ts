@@ -363,7 +363,7 @@ export const shortTeamName = (value: string): string => {
     case 'Netherlands':
       return 'Niederlande';
     case 'Bosnia & Herzegovina':
-      return 'Bosnien-Herzegowina';
+      return 'Bosnien';
     case 'Germany':
       return 'Deutschland';
     case 'Hungary':
