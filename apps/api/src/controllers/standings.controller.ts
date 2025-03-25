@@ -27,10 +27,6 @@ export class StandingsController {
   }
 
   async getTopFive(date: string): Promise<StandingsDTO[]> {
-    const [year, month, day] = date.split('-').map(Number);
-    const tomorrow = new Date(Date.UTC(year, month - 1, day));
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
     const standingsIds = [
       78, // BUNDESLIGA_ID,
       39, // PREMIER_LEAGUE_ID,
@@ -38,32 +34,45 @@ export class StandingsController {
       135, // SERIE_A_ID,
       61, // LIGUE_1_ID,
     ];
-
-    const filter = {
-      'league.id': { $in: standingsIds },
-      $and: [{ createdAt: { $lte: tomorrow } }],
-    };
-    let standings = await this.standingsService.findManyByFilter({
-      filter,
-      limit: standingsIds.length,
-    });
-
-    if (standings.length !== standingsIds.length) {
-      // getStandings implementation doesnt work for season 23/24 and earlier, because standings were fetched after season
-      const fixedFilter = {
-        'league.id': { $in: standingsIds },
-        $and: [{ 'league.season': getSeason(date) }],
-      };
-      standings = await this.standingsService.findManyByFilter({
-        filter: fixedFilter,
-        limit: standingsIds.length,
-      });
-    }
-
-    return this.topFiveRanks(standings);
+    const standings = await this.loadStandings(standingsIds, date);
+    return this.mapToOnlyTopFiveRankings(standings);
   }
 
-  private topFiveRanks(data: StandingsDTO[]): StandingsDTO[] {
+  private async loadStandings(
+    standingsIds: number[],
+    date: string
+  ): Promise<StandingsDTO[]> {
+    const [year, month, day] = date.split('-').map(Number);
+    const tomorrow = new Date(Date.UTC(year, month - 1, day));
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const standings: StandingsDTO[] = [];
+
+    for (const standingsId of standingsIds) {
+      const leagueStandings = await this.standingsService.findByFilter({
+        'league.id': standingsId,
+        $and: [{ createdAt: { $lte: tomorrow } }],
+      });
+
+      // getStandings implementation doesnt work for season 23/24 and earlier, because standings were fetched after season
+      if (!leagueStandings) {
+        const fixedFilter = {
+          'league.id': { $in: standingsIds },
+          $and: [{ 'league.season': getSeason(date) }],
+        };
+        const fixedStandings = await this.standingsService.findByFilter({
+          filter: fixedFilter,
+        });
+        standings.push(fixedStandings);
+      } else {
+        standings.push(leagueStandings);
+      }
+    }
+
+    return standings;
+  }
+
+  private mapToOnlyTopFiveRankings(data: StandingsDTO[]): StandingsDTO[] {
     const baseStandings = 0; // 1 == home standings, 2 == away standings
     return data.map((d) => ({
       ...d,
