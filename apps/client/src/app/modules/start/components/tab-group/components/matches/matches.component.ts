@@ -4,14 +4,16 @@ import {
   computed,
   inject,
   input,
+  untracked,
 } from '@angular/core';
 
 import {
+  COMPETITIONS_ORDER,
   CompetitionWithFixtures,
   FilterService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import { FixtureDTO } from '@lib/models';
+import { CompetitionLabel, FixtureDTO } from '@lib/models';
 
 import { MatchDayListComponent } from './components';
 
@@ -42,40 +44,47 @@ import { MatchDayListComponent } from './components';
   `,
 })
 export class MatchesComponent {
-  filterService = inject(FilterService);
+  private filterService = inject(FilterService);
   dayFixtures = input.required<FixtureDTO[]>();
   isLoading = input.required<boolean>();
   error = input.required<string | null>();
 
   competitions = computed<CompetitionWithFixtures[]>(() => {
     const fixtures = this.dayFixtures();
-    return this.getCompetitionWithFixtures(fixtures);
+    return this.initCompetitionsWithFixtures(fixtures);
   });
 
-  getCompetitionWithFixtures = (
+  initCompetitionsWithFixtures = (
     fixtures: Array<FixtureDTO> | null
   ): Array<CompetitionWithFixtures> => {
     if (!fixtures) return [];
     const allCompetitions = [...new Set(fixtures.map((f) => f.league.name))];
-    const competitions: Array<CompetitionWithFixtures> = allCompetitions.map(
-      (name) => {
-        const fixture = fixtures.find((f) => f.league.name === name);
-        const competition = SELECT_COMPETITION_DATA_FLAT.find(
-          (c) => c.id === fixture?.league.id
-        );
-        if (!fixture || !competition) throw new Error(`Not found ('${name}')`);
-        return {
-          name,
-          url: ['/', 'competition', competition.url],
-          id: fixture.league.id || -1,
-          image: fixture.league.flag || 'error',
-          fixtures: fixtures.filter((f) => f.league.name === name),
-        };
-      }
-    );
+    const competitions: Array<CompetitionWithFixtures> = allCompetitions
+      .map(this.groupFixturesToCompetitions)
+      .sort((a, b) => {
+        const ORDER = COMPETITIONS_ORDER;
+        const endOfList = Object.keys(ORDER).length + 1;
+        return (ORDER[a.name] || endOfList) - (ORDER[b.name] || endOfList);
+      });
 
     const filter = this.filterService.selectedCompetition();
     const filtered = competitions.filter((c) => c.id === filter);
     return filter ? filtered : competitions;
+  };
+
+  private groupFixturesToCompetitions = (name: CompetitionLabel) => {
+    const fixtures = untracked(this.dayFixtures);
+    const fixture = fixtures.find((f) => f.league.name === name);
+    const competition = SELECT_COMPETITION_DATA_FLAT.find(
+      (c) => c.id === fixture?.league.id
+    );
+    if (!fixture || !competition) throw new Error(`Not found ('${name}')`);
+    return {
+      name,
+      url: ['/', 'competition', competition.url],
+      id: fixture.league.id || -1,
+      image: fixture.league.flag || 'error',
+      fixtures: fixtures.filter((f) => f.league.name === name),
+    };
   };
 }
