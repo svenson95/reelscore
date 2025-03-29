@@ -9,12 +9,13 @@ import { LeagueSelectComponent } from './components';
 const SELECTED_LEAGUE_DEFAULT = 'start';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply p-rs-padding-3 border-b-[1px] rs-bg-color z-[10] relative; }
+    :host { @apply p-rs-padding-3 border-b-[1px] border-rs-color-orange rs-bg-color z-[10] relative; }
     .wrapper { @apply flex items-center justify-between lg:px-rs-padding-3; }
   `,
   template: `
