@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
-import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
+import { FooterComponent, HeaderComponent } from './shared';
 
 @Component({
   selector: 'reelscore-root',
@@ -22,7 +22,6 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
     MatProgressSpinnerModule,
     HeaderComponent,
     FooterComponent,
-    LogoComponent,
   ],
   styles: `
     :host {
@@ -42,14 +41,9 @@ import { FooterComponent, HeaderComponent, LogoComponent } from './shared';
     <header></header>
     }
     <main>
-      @if(isRouterLoading()) {
-      <reelscore-logo disabled />
-      }
       <router-outlet />
     </main>
-    @if(!isRouterLoading()) {
     <footer></footer>
-    }
   `,
 })
 export class AppComponent implements AfterViewInit {

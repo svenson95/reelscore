@@ -46,15 +46,15 @@ p.no-data {
 }
 
 .animate-drop-from-top {
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-in-out;
   animation-name: animate-drop-from-top;
   animation-fill-mode: backwards;
 }
 
 @keyframes animate-drop-from-top {
   0% {
-    transform: translateY(-80px);
+    transform: translateY(-150px);
   }
   100% {
     transform: translateY(0px);

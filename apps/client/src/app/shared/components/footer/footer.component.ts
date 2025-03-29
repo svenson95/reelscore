@@ -12,7 +12,7 @@ import { LogoComponent } from '../logo/logo.component';
   `,
   template: `
     <section>
-      <reelscore-logo disabled />
+      <reelscore-logo class="animate-fade-in" disabled />
     </section>
 
     <section></section>
