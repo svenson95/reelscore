@@ -12,11 +12,11 @@ import {
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import moment from 'moment';
 
 import {
   DateString,
   TODAY_ISO_STRING,
-  toIsoString,
   WeekdayFixturesStore,
   WeekdayStandingsStore,
 } from '@app/shared';
@@ -128,7 +128,7 @@ export class WeekToggleGroupComponent {
   setDateTo(value: number): void {
     const date = new Date(this.selectedDay());
     date.setDate(date.getDate() + value);
-    const formattedDate = toIsoString(date);
+    const formattedDate = moment(date).tz('Europe/Berlin').toISOString();
     this.dateSelected.emit(formattedDate);
   }
 }
