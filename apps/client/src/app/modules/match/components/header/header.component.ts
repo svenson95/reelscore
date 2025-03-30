@@ -74,14 +74,14 @@ export class MatchHeaderComponent implements OnInit {
   isScrolled = signal<boolean>(false);
   scrollEvent$ = fromEvent(window, 'scroll').pipe(
     takeUntilDestroyed(),
-    debounce(() => timer(this.isScrolled() ? 20 : 0))
+    debounce(() => timer(this.isScrolled() ? 10 : 0))
   );
 
   ngOnInit() {
     this.ngZone.runOutsideAngular(() => {
       this.scrollEvent$.subscribe(() => {
         this.ngZone.run(() => {
-          const isScrolled = window.scrollY > 40;
+          const isScrolled = window.scrollY > 60;
           const maxScrollHeight = Math.max(
             document.body.scrollHeight,
             document.body.offsetHeight,
