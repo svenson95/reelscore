@@ -25,7 +25,10 @@ export type DateString = string;
 export type CalenderWeek = number;
 
 export const TODAY_ISO_STRING = moment().tz('Europe/Berlin').toISOString();
-export const TODAY_DATE_STRING = TODAY_ISO_STRING.slice(0, 10);
+export const TODAY_DATE_STRING = moment(TODAY_ISO_STRING)
+  .clone()
+  .tz('Europe/Berlin')
+  .format('YYYY-MM-DD');
 
 export const LAST_YEAR_START = new Date(
   moment().toDate().getFullYear() - 1,
