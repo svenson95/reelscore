@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  HostListener,
   inject,
   untracked,
 } from '@angular/core';
@@ -84,4 +85,13 @@ export class TabGroupComponent {
     },
     { allowSignalWrites: true }
   );
+
+  @HostListener('document:visibilitychange', ['$event'])
+  onVisibilityChange(): void {
+    if (!document.hidden) {
+      const date = untracked(this.selectedDay).split('T')[0];
+      this.weekFixturesStore.loadWeekdayFixtures(date, true);
+      this.weekStandingsStore.loadWeekdayStandings(date, true);
+    }
+  }
 }
