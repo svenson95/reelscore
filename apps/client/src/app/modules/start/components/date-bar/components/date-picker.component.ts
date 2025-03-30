@@ -17,13 +17,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import moment from 'moment';
 
-import {
-  DateString,
-  LAST_YEAR_START,
-  NEXT_YEAR_END,
-  toIsoString,
-} from '@app/shared';
+import { DateString, LAST_YEAR_START, NEXT_YEAR_END } from '@app/shared';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -76,7 +72,7 @@ class CustomDateAdapter extends NativeDateAdapter {
         matInput
         tabindex="-1"
         [value]="selectedDay()"
-        (dateChange)="dateSelected.emit(toIsoString($event.value))"
+        (dateChange)="updateDate($event.value)"
         [min]="MIN_DATE"
         [max]="MAX_DATE"
         [matDatepicker]="picker"
@@ -92,5 +88,8 @@ export class DatePickerComponent {
   selectedDay = input.required<DateString>();
   dateSelected = output<DateString>();
 
-  toIsoString = toIsoString;
+  updateDate = (value: DateString) => {
+    const date = moment(value).tz('Europe/Berlin').toISOString();
+    this.dateSelected.emit(date);
+  };
 }

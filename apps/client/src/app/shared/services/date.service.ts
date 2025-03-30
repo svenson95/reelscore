@@ -10,15 +10,13 @@ import {
   untracked,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import moment from 'moment';
 
 import {
   CalenderWeek,
   DateString,
-  TODAY_DATE_STRING,
+  TODAY_ISO_STRING,
   createWeekDaysArray,
-  getMondayFromDate,
-  moveItem,
-  toIsoString,
 } from '@app/shared';
 
 export abstract class DateService {
@@ -29,7 +27,6 @@ export abstract class DateService {
   abstract weekdays: Signal<DateString[]>;
   abstract selectedTabIndex: Signal<number>;
   abstract getCalenderWeekFrom(day: DateString): CalenderWeek;
-  abstract weekdaysFrom(date: Date): DateString[];
 }
 
 @Injectable()
@@ -38,7 +35,7 @@ export class AbstractedDateService extends DateService {
 
   private urlDate = computed<string>(() => {
     const dateString = new Date(this.router.url.split('/')[1]);
-    const formattedDate = toIsoString(dateString);
+    const formattedDate = moment(dateString).tz('Europe/Berlin').toISOString();
     return formattedDate;
   });
 
@@ -65,9 +62,7 @@ export class AbstractedDateService extends DateService {
     { allowSignalWrites: true }
   );
 
-  isToday = computed<boolean>(
-    () => this.selectedDay().substring(0, 10) === TODAY_DATE_STRING
-  );
+  isToday = computed<boolean>(() => this.selectedDay() === TODAY_ISO_STRING);
 
   calenderWeek = signal<CalenderWeek>(
     this.getCalenderWeekFrom(this.selectedDay())
@@ -75,18 +70,12 @@ export class AbstractedDateService extends DateService {
 
   weekdays = computed<DateString[]>(() => {
     const selectedDay = new Date(this.selectedDay());
-    return this.weekdaysFrom(selectedDay);
+    return createWeekDaysArray(selectedDay);
   });
 
   getCalenderWeekFrom(day: DateString): CalenderWeek {
     const datepipe = new DatePipe('de-DE');
     return Number(datepipe.transform(day, 'w'));
-  }
-
-  weekdaysFrom(date: Date): DateString[] {
-    const monday = getMondayFromDate(date);
-    const weekdays = createWeekDaysArray(monday);
-    return moveItem(weekdays, 0, 6);
   }
 }
 

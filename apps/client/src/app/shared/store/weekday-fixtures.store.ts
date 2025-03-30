@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, untracked } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { DateString, HttpWeekFixturesService, StateHandler } from '@app/shared';
@@ -23,7 +23,7 @@ export const WeekdayFixturesStore = signalStore(
     ): Promise<void> {
       patchState(store, {
         weekFixtures: updateOnly
-          ? store.weekFixtures()
+          ? untracked(store.weekFixtures)
           : Array.from({ length: 7 }, () => []),
         isLoading: true,
       });
