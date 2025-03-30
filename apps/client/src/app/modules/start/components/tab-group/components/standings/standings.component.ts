@@ -24,9 +24,7 @@ import {
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (isLoading()) {
-    <p class="no-data">Tabellen werden geladen ...</p>
-    } @else if (isFiltering() && dayStandings() !== null && dayStandings() !==
+    @if (isFiltering() && dayStandings() !== null && dayStandings() !==
     undefined) { @if (hasMultipleGroups(dayStandings()!.league.id)) { @for
     (multipleStanding of dayStandings()!.league.standings; track $index) {
     <reelscore-standings-table
@@ -61,7 +59,9 @@ import {
       [ranks]="standings.league.standings![0]"
       [league]="standings.league"
     />
-    } } @else if (error()) {
+    } } @else if (isLoading()) {
+    <p class="no-data">Tabellen werden geladen ...</p>
+    } @else if (error()) {
     <p class="no-data">Fehler beim Laden der Tabellen.</p>
     } @else if (!isLoading()) {
     <p class="no-data">Keine Tabellen gefunden.</p>

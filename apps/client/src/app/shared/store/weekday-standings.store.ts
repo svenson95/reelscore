@@ -17,9 +17,14 @@ const initialState: WeekdayStandingsState = {
 export const WeekdayStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadWeekdayStandings(date: DateString): Promise<void> {
+    async loadWeekdayStandings(
+      date: DateString,
+      updateOnly = false
+    ): Promise<void> {
       patchState(store, {
-        weekStandings: Array.from({ length: 7 }, () => []),
+        weekStandings: updateOnly
+          ? store.weekStandings()
+          : Array.from({ length: 7 }, () => []),
         isLoading: true,
       });
 

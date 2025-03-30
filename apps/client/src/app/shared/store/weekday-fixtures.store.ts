@@ -17,9 +17,14 @@ const initialState: WeekdayFixturesState = {
 export const WeekdayFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpWeekFixturesService)) => ({
-    async loadWeekdayFixtures(date: DateString): Promise<void> {
+    async loadWeekdayFixtures(
+      date: DateString,
+      updateOnly = false
+    ): Promise<void> {
       patchState(store, {
-        weekFixtures: Array.from({ length: 7 }, () => []),
+        weekFixtures: updateOnly
+          ? store.weekFixtures()
+          : Array.from({ length: 7 }, () => []),
         isLoading: true,
       });
 
