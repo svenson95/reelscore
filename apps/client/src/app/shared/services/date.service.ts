@@ -15,7 +15,7 @@ import moment from 'moment';
 import {
   CalenderWeek,
   DateString,
-  TODAY_ISO_STRING,
+  TODAY_DATE_STRING,
   createWeekDaysArray,
 } from '@app/shared';
 
@@ -34,8 +34,10 @@ export class AbstractedDateService extends DateService {
   private router = inject(Router);
 
   private urlDate = computed<string>(() => {
-    const dateString = new Date(this.router.url.split('/')[1]);
-    const formattedDate = moment(dateString).tz('Europe/Berlin').toISOString();
+    const dateString = this.router.url.split('/')[1];
+    const formattedDate = moment(dateString)
+      .tz('Europe/Berlin')
+      .format('YYYY-MM-DD');
     return formattedDate;
   });
 
@@ -62,7 +64,7 @@ export class AbstractedDateService extends DateService {
     { allowSignalWrites: true }
   );
 
-  isToday = computed<boolean>(() => this.selectedDay() === TODAY_ISO_STRING);
+  isToday = computed<boolean>(() => this.selectedDay() === TODAY_DATE_STRING);
 
   calenderWeek = signal<CalenderWeek>(
     this.getCalenderWeekFrom(this.selectedDay())

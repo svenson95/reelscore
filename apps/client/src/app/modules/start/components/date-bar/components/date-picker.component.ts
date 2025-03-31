@@ -89,7 +89,7 @@ export class DatePickerComponent {
   dateSelected = output<DateString>();
 
   updateDate = (value: DateString) => {
-    const date = moment(value).tz('Europe/Berlin').toISOString();
+    const date = moment(value).tz('Europe/Berlin').format('YYYY-MM-DD');
     this.dateSelected.emit(date);
   };
 }

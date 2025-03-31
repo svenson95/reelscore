@@ -9,7 +9,7 @@ export const createWeekDaysArray = (date: Date): DateString[] => {
   return Array.from({ length: 7 }, (_, i) => {
     const day = new Date(startOfWeek);
     day.setDate(startOfWeek.getDate() + i);
-    return moment(day).tz('Europe/Berlin').toISOString();
+    return moment(day).tz('Europe/Berlin').format('YYYY-MM-DD');
   });
 };
 
@@ -27,7 +27,6 @@ export type CalenderWeek = number;
 export const TODAY_ISO_STRING = moment().tz('Europe/Berlin').toISOString();
 export const TODAY_DATE_STRING = moment(TODAY_ISO_STRING)
   .clone()
-  .tz('Europe/Berlin')
   .format('YYYY-MM-DD');
 
 export const LAST_YEAR_START = new Date(

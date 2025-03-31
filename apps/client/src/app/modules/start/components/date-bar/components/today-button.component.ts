@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString, TODAY_ISO_STRING } from '@app/shared';
+import { DateString, TODAY_DATE_STRING } from '@app/shared';
 
 @Component({
   selector: 'reelscore-today-button',
@@ -33,5 +33,5 @@ export class TodayButtonComponent {
   isToday = input.required<boolean>();
   onClick = output<DateString>();
 
-  setToday = () => this.onClick.emit(TODAY_ISO_STRING);
+  setToday = () => this.onClick.emit(TODAY_DATE_STRING);
 }
