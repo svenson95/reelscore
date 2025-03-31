@@ -128,7 +128,7 @@ export class WeekToggleGroupComponent {
   setDateTo(value: number): void {
     const date = new Date(this.selectedDay());
     date.setDate(date.getDate() + value);
-    const formattedDate = moment(date).tz('Europe/Berlin').toISOString();
+    const formattedDate = moment(date).tz('Europe/Berlin').format('YYYY-MM-DD');
     this.dateSelected.emit(formattedDate);
   }
 }
