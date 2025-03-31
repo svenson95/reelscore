@@ -48,7 +48,15 @@
             }
           ],
           "outputHashing": "all",
-          "serviceWorker": "apps/client/src/ngsw-config.json"
+          "serviceWorker": "apps/client/src/ngsw-config.json",
+          "optimization": true,
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true
         },
         "development": {
           "optimization": false,
