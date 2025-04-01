@@ -88,7 +88,8 @@ export class TabGroupComponent {
 
   @HostListener('document:visibilitychange', ['$event'])
   onVisibilityChange(): void {
-    if (!document.hidden) {
+    const isStartRoute = /^\/\d{4}-\d{2}-\d{2}$/.test(location.pathname);
+    if (!document.hidden && isStartRoute) {
       const date = untracked(this.selectedDay).split('T')[0];
       this.weekFixturesStore.loadWeekdayFixtures(date, true);
       this.weekStandingsStore.loadWeekdayStandings(date, true);
