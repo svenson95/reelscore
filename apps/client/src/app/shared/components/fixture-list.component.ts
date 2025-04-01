@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { COMPETITION_ID, COMPETITION_URL } from '@lib/constants';
 import {
   CompetitionId,
+  CompetitionRound,
   CompetitionUrl,
   ExtendedFixtureDTO,
   FixtureDTO,
@@ -150,35 +151,37 @@ export class FixtureListComponent {
   halfTimeStates: StatusShort[] = ['HT'];
   playingStates: StatusShort[] = ['1H', '2H', 'ET', 'P', 'BT', 'SUSP', 'INT'];
   finishedStates: StatusShort[] = ['FT', 'AET', 'PEN'];
+  twoLeggedCompetitions: { [key: CompetitionId]: CompetitionRound[] } = {
+    [COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE]: [
+      'Round of 16',
+      'Quarter-finals',
+      'Semi-finals',
+    ],
+    [COMPETITION_ID.EUROPA_UEFA_EURO_LEAGUE]: [
+      'Round of 16',
+      'Quarter-finals',
+      'Semi-finals',
+    ],
+    [COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: [
+      'Play-offs A/B',
+      'Play-offs B/C',
+      'Quarter-finals',
+      'Play-offs C/D',
+    ],
+    [COMPETITION_ID.ENGLAND_LEAGUE_CUP]: ['Semi-finals'],
+    [COMPETITION_ID.ITALY_COPPA_ITALIA]: ['Semi-finals'],
+    [COMPETITION_ID.SPAIN_COPA_DEL_REY]: ['Semi-finals'],
+  };
 
   getTeamLogo = getTeamLogo;
   linkToMatch = linkToMatch;
 
   isTeamEliminated(
-    fixture: FixtureDTO | ExtendedFixtureDTO,
+    fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
-    const twoLeggedCompetitions: { [key: string]: string[] } = {
-      [COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE]: [
-        'Round of 16',
-        'Quarter-finals',
-        'Semi-finals',
-      ],
-      [COMPETITION_ID.EUROPA_UEFA_EURO_LEAGUE]: [
-        'Round of 16',
-        'Quarter-finals',
-        'Semi-finals',
-      ],
-      [COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: [
-        'Play-offs A/B',
-        'Play-offs B/C',
-        'Quarter-finals',
-        'Play-offs C/D',
-      ],
-      [COMPETITION_ID.ENGLAND_LEAGUE_CUP]: ['Semi-finals'],
-      [COMPETITION_ID.ITALY_COPPA_ITALIA]: ['Semi-finals'],
-    };
-    const competitionTwoLeggedRounds = twoLeggedCompetitions[fixture.league.id];
+    const competitionTwoLeggedRounds =
+      this.twoLeggedCompetitions[fixture.league.id];
     const isCompetitionWithTwoLeggedFinals =
       competitionTwoLeggedRounds !== undefined;
 
