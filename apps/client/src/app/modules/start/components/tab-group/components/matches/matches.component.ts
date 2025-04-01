@@ -13,7 +13,7 @@ import {
   FilterService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import { CompetitionLabel, FixtureDTO } from '@lib/models';
+import { CompetitionLabel, ExtendedFixtureDTO } from '@lib/models';
 
 import { MatchDayListComponent } from './components';
 
@@ -45,7 +45,7 @@ import { MatchDayListComponent } from './components';
 })
 export class MatchesComponent {
   private filterService = inject(FilterService);
-  dayFixtures = input.required<FixtureDTO[]>();
+  dayFixtures = input.required<ExtendedFixtureDTO[]>();
   isLoading = input.required<boolean>();
   error = input.required<string | null>();
 
@@ -55,7 +55,7 @@ export class MatchesComponent {
   });
 
   initCompetitionsWithFixtures = (
-    fixtures: Array<FixtureDTO> | null
+    fixtures: Array<ExtendedFixtureDTO> | null
   ): Array<CompetitionWithFixtures> => {
     if (!fixtures) return [];
     const allCompetitions = [...new Set(fixtures.map((f) => f.league.name))];

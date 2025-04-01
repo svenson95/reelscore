@@ -2,10 +2,13 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { StateHandler } from '@app/shared';
-import { CompetitionId, FixtureDTO } from '@lib/models';
+import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
+
 import { HttpNextFixturesService } from '../services';
 
-type NextFixturesState = StateHandler<{ fixtures: FixtureDTO[][] | null }>;
+type NextFixturesState = StateHandler<{
+  fixtures: ExtendedFixtureDTO[][] | null;
+}>;
 
 const initialState: NextFixturesState = {
   fixtures: null,

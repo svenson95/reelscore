@@ -2,14 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CompetitionId, FixtureDTO } from '@lib/models';
+import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 import { environment } from '../../../../environments/environment';
 
 export abstract class HttpNextFixturesService {
   abstract getNextFixturesForCompetition(
     id: CompetitionId,
     showAll?: boolean
-  ): Observable<FixtureDTO[][]>;
+  ): Observable<ExtendedFixtureDTO[][]>;
 }
 
 @Injectable()
@@ -21,12 +21,12 @@ export class AbstractedHttpNextFixturesService extends HttpNextFixturesService {
   getNextFixturesForCompetition(
     id: CompetitionId,
     showAll = false
-  ): Observable<FixtureDTO[][]> {
+  ): Observable<ExtendedFixtureDTO[][]> {
     const options = {
       params: new HttpParams().set('competition', id).set('type', 'next'),
     };
     if (showAll) options.params = options.params.set('showAll', 'true');
-    return this.http.get<FixtureDTO[][]>(
+    return this.http.get<ExtendedFixtureDTO[][]>(
       this.BASE_URL + '/competition-fixtures',
       options
     );
