@@ -1,4 +1,8 @@
-import { CompetitionId, CompetitionLabel, FixtureDTO } from '@lib/models';
+import {
+  CompetitionId,
+  CompetitionLabel,
+  ExtendedFixtureDTO,
+} from '@lib/models';
 
 export interface Competition {
   id: CompetitionId;
@@ -8,7 +12,7 @@ export interface Competition {
 }
 
 export interface CompetitionWithFixtures extends Competition {
-  fixtures: FixtureDTO[];
+  fixtures: ExtendedFixtureDTO[];
 }
 
 const BASE = 'assets/images';

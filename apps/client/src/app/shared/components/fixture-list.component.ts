@@ -9,7 +9,6 @@ import {
   CompetitionRound,
   CompetitionUrl,
   ExtendedFixtureDTO,
-  FixtureDTO,
   StatusShort,
 } from '@lib/models';
 
@@ -144,7 +143,7 @@ import { ResultLabelComponent } from './result-label.component';
 })
 export class FixtureListComponent {
   routerLinks: Record<CompetitionId, CompetitionUrl> = COMPETITION_URL;
-  fixtures = input.required<FixtureDTO[]>();
+  fixtures = input.required<ExtendedFixtureDTO[]>();
 
   // TODO refactor this to lib
   notStartedStates: StatusShort[] = ['TBD', 'NS'];

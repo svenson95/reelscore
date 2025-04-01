@@ -12,7 +12,7 @@ import {
   OptimizedImageComponent,
   getCompetitionLogo,
 } from '@app/shared';
-import { CompetitionId, FixtureDTO } from '@lib/models';
+import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-competition-fixtures-list',
@@ -64,7 +64,7 @@ import { CompetitionId, FixtureDTO } from '@lib/models';
 })
 export class FixturesListComponent {
   competition = input.required<CompetitionId>();
-  fixtures = input.required<FixtureDTO[]>();
+  fixtures = input.required<ExtendedFixtureDTO[]>();
   isLoading = input.required<boolean>();
 
   getCompetitionLogo = getCompetitionLogo;
