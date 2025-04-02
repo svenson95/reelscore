@@ -179,6 +179,10 @@ export class FixtureListComponent {
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
+    const isFinished = this.finishedStates.includes(
+      fixture.fixture.status.short
+    );
+    if (isFinished) return false;
     const competitionTwoLeggedRounds =
       this.twoLeggedCompetitions[fixture.league.id];
     const isCompetitionWithTwoLeggedFinals =
