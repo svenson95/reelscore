@@ -41,6 +41,9 @@
           "codeCoverage": true
         }
       }
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": ["^build"]
     }
   },
   "plugins": [
@@ -74,5 +77,6 @@
       "unitTestRunner": "jest"
     }
   },
-  "nxCloudAccessToken": "REMOVED_NX_CLOUD_TOKEN"
+  "nxCloudAccessToken": "REMOVED_NX_CLOUD_TOKEN",
+  "useLegacyCache": true
 }

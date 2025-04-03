@@ -17,7 +17,6 @@ import { AnalysesLastFixturesComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-fixture-analyses',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesLastFixturesComponent],
   styles: `

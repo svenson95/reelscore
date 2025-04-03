@@ -14,7 +14,6 @@ import { FixtureDTO, FixtureTeam } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-fixtures-table',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,

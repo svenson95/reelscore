@@ -9,7 +9,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
 import { BreakpointObserverService } from '@app/shared';
+
 import { RouterView } from '../router-view';
+
 import {
   CompetitionHeaderComponent,
   CompetitionStandingsComponent,
@@ -26,7 +28,6 @@ import {
 
 @Component({
   selector: 'reelscore-competition-page',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatTabsModule,

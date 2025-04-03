@@ -10,7 +10,6 @@ import { FixtureStore } from '../../../../../store';
 
 @Component({
   selector: 'reelscore-match-fixture-data',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CompetitionRoundPipe],
   styles: `

@@ -15,7 +15,6 @@ import {
 
 @Component({
   selector: 'reelscore-date-bar',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePickerComponent,

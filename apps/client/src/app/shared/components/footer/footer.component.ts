@@ -5,7 +5,6 @@ import { LogoComponent } from '../logo/logo.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'footer',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
   styles: `

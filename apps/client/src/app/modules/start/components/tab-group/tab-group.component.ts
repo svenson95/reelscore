@@ -19,7 +19,6 @@ import { HideHeaderDirective } from './directives';
 
 @Component({
   selector: 'reelscore-start-tab-group',
-  standalone: true,
   imports: [
     MatTabsModule,
     HideHeaderDirective,

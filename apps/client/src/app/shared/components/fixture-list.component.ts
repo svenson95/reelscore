@@ -21,7 +21,6 @@ import { ResultLabelComponent } from './result-label.component';
 
 @Component({
   selector: 'reelscore-fixture-list',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,

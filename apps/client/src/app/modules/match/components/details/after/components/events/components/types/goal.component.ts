@@ -3,7 +3,6 @@ import { EventDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-event-goal',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

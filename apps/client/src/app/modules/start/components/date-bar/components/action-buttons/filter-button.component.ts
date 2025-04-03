@@ -20,7 +20,6 @@ import { CompetitionId } from '@lib/models';
 
 @Component({
   selector: 'reelscore-filter-button',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatButtonModule,

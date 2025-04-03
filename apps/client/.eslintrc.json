@@ -31,7 +31,8 @@
             "varsIgnorePattern": "^_",
             "argsIgnorePattern": "^_"
           }
-        ]
+        ],
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {

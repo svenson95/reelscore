@@ -17,7 +17,6 @@ import {
 
 @Component({
   selector: 'reelscore-match-header-details',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

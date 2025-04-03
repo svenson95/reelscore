@@ -18,7 +18,6 @@ import { CompetitionRound } from '@lib/models';
 
 @Component({
   selector: 'reelscore-start-match-day-list',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,

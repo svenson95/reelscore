@@ -4,7 +4,6 @@ import { EvaluationAnalyses } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-fixture-analyses-evaluation',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

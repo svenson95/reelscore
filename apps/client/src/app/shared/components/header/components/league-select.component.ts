@@ -4,11 +4,11 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { CompetitionData, SELECT_COMPETITION_DATA } from '@app/shared';
+
 import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
   selector: 'reelscore-league-select',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,

@@ -18,7 +18,6 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
 
 @Component({
   selector: 'reelscore-match-fixture-analyses-evaluations',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AnalysesEvaluationComponent,

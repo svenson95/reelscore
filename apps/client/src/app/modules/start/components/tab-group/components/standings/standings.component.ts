@@ -13,11 +13,10 @@ import {
   FilterService,
   StandingsStore,
   StandingsTableComponent,
-} from '../../../../../../shared';
+} from '@app/shared';
 
 @Component({
   selector: 'reelscore-standings',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `
