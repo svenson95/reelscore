@@ -11,9 +11,7 @@ export class RouterView {
   leagueService = inject(LeagueService);
   routeService = inject(RouteService);
 
-  routeEvent = effect(() => this.updateLeague(this.routeService.url()), {
-    allowSignalWrites: true,
-  });
+  routeEvent = effect(() => this.updateLeague(this.routeService.url()));
 
   private updateLeague(route: string | undefined): void {
     const leagueData = this.findLeagueData(route);

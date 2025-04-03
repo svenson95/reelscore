@@ -101,14 +101,11 @@ export class CompetitionComponent extends RouterView {
   nextFixturesStore = inject(NextFixturesStore);
   standingsStore = inject(CompetitionStandingsStore);
 
-  leagueEffect = effect(
-    async () => {
-      const competition = this.leagueService.selectedLeague();
-      if (!competition) return;
-      await this.lastFixturesStore.loadLastFixtures(competition.id);
-      await this.nextFixturesStore.loadNextFixtures(competition.id);
-      await this.standingsStore.loadStandings(competition.id);
-    },
-    { allowSignalWrites: true }
-  );
+  leagueEffect = effect(async () => {
+    const competition = this.leagueService.selectedLeague();
+    if (!competition) return;
+    await this.lastFixturesStore.loadLastFixtures(competition.id);
+    await this.nextFixturesStore.loadNextFixtures(competition.id);
+    await this.standingsStore.loadStandings(competition.id);
+  });
 }

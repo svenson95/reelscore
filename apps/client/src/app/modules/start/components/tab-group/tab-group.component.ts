@@ -75,15 +75,12 @@ export class TabGroupComponent {
   weekStandingsStore = inject(WeekdayStandingsStore);
   weekStandings = this.weekStandingsStore.weekStandings;
 
-  calenderWeekEffect = effect(
-    () => {
-      this.dateService.calenderWeek();
-      const date = untracked(this.selectedDay).split('T')[0];
-      this.weekFixturesStore.loadWeekdayFixtures(date);
-      this.weekStandingsStore.loadWeekdayStandings(date);
-    },
-    { allowSignalWrites: true }
-  );
+  calenderWeekEffect = effect(() => {
+    this.dateService.calenderWeek();
+    const date = untracked(this.selectedDay).split('T')[0];
+    this.weekFixturesStore.loadWeekdayFixtures(date);
+    this.weekStandingsStore.loadWeekdayStandings(date);
+  });
 
   @HostListener('document:visibilitychange', ['$event'])
   onVisibilityChange(): void {
