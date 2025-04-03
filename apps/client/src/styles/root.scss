@@ -8,10 +8,12 @@
   --rs-color-text-2: #999999;
   --rs-color-text-3: #fff;
 
-  --rs-background-color: #1c1c1c;
+  --rs-color-primary: var(--rs-color-orange);
+  --rs-color-secondary: #1c1c1c;
 
-  --rs-button-text-color: var(--rs-color-text-1);
-  --rs-button-bg-color: var(--rs-color-white);
+  --rs-button-text-color: var(--rs-color-text-3);
+  --rs-button-bg-color: var(--rs-color-orange);
+  --rs-border-color: #e5e7eb;
 
   /* Font-sizes */
   --rs-font-size-title: 24px;

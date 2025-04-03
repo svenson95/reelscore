@@ -13,6 +13,8 @@ import { DateString, TODAY_DATE_STRING } from '@app/shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `
+    @use "@angular/material" as mat;
+    
     button { 
       --mdc-outlined-button-container-height: 36px;
       --mdc-text-button-disabled-label-text-color: var(--rs-color-text-2);
@@ -20,17 +22,23 @@ import { DateString, TODAY_DATE_STRING } from '@app/shared';
       border: 1px solid var(--mdc-outlined-button-outline-color);
 
       &:disabled { @apply rs-as-label; }
+
+      @include mat.button-overrides(
+        (
+          filled-container-height: 36px,
+        )
+      );
     }
   `,
   template: `
-    <button mat-button (click)="setToday()" [disabled]="isToday()">
+    <button mat-flat-button (click)="setToday()" [disabled]="isToday()">
       Heute
     </button>
   `,
 })
 export class TodayButtonComponent {
   isToday = input.required<boolean>();
-  onClick = output<DateString>();
+  clicked = output<DateString>();
 
-  setToday = () => this.onClick.emit(TODAY_DATE_STRING);
+  setToday = () => this.clicked.emit(TODAY_DATE_STRING);
 }

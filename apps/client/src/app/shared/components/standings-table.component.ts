@@ -28,6 +28,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
       border-width: 1px;
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
+      --mat-table-background-color: var(--rs-color-white);
     }
 
     table {
