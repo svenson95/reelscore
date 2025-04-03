@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@app/shared": ["apps/client/src/app/shared/index.ts"],
-      "@lib/models": ["lib/models/index.ts"],
       "@lib/constants": ["lib/constants/index.ts"],
+      "@lib/models": ["lib/models/index.ts"],
       "@lib/shared": ["lib/shared/index.ts"]
     }
   },

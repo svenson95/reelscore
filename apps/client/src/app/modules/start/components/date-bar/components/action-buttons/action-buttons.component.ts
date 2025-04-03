@@ -7,7 +7,6 @@ import { FilterButtonComponent } from './filter-button.component';
 
 @Component({
   selector: 'reelscore-action-buttons',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatButtonModule,

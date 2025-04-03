@@ -4,7 +4,6 @@ import { EventDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-event-card',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

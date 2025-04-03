@@ -6,7 +6,6 @@ import { CompetitionStandingsStore } from '../store';
 
 @Component({
   selector: 'reelscore-competition-standings',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `

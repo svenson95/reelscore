@@ -16,7 +16,6 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-competition-fixtures-list',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,

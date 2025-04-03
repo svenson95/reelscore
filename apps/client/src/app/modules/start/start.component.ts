@@ -6,7 +6,6 @@ import { DateBarComponent, TabGroupComponent } from './components';
 
 @Component({
   selector: 'reelscore-start-page',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, TabGroupComponent],
   styles: `

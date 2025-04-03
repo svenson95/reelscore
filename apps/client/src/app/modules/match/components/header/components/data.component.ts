@@ -10,7 +10,6 @@ import { FixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'reelscore-match-header-data',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `

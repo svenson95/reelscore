@@ -6,7 +6,6 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 @Component({
   selector: 'reelscore-match-fixture-standings',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `

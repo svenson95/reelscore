@@ -14,7 +14,6 @@ import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
   selector: 'reelscore-competition-last-fixtures',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, FixturesListComponent],
   styles: `

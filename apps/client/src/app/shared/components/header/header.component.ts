@@ -3,7 +3,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 import { BreakpointObserverService, LeagueService } from '../../services';
+
 import { LogoComponent } from '../logo/logo.component';
+
 import { LeagueSelectComponent } from './components';
 
 const SELECTED_LEAGUE_DEFAULT = 'start';
@@ -11,7 +13,6 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'header',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `

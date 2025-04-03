@@ -10,7 +10,6 @@ import { DateString, TODAY_DATE_STRING } from '@app/shared';
 
 @Component({
   selector: 'reelscore-today-button',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `

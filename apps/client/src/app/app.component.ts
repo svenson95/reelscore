@@ -15,7 +15,6 @@ import { FooterComponent, HeaderComponent } from './shared';
 
 @Component({
   selector: 'reelscore-root',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,

@@ -52,7 +52,6 @@ import {
 
 @Component({
   selector: 'reelscore-match-page',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,

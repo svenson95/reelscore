@@ -15,11 +15,11 @@ import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
 import { getCompetitionLogo, getTeamLogo } from '../models';
 import { TeamNamePipe } from '../pipes';
 import { BreakpointObserverService } from '../services';
+
 import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
 
 @Component({
   selector: 'reelscore-standings-table',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatTableModule, OptimizedImageComponent, TeamNamePipe],
   styles: `

@@ -10,7 +10,6 @@ import { StatisticList } from './models';
 
 @Component({
   selector: 'reelscore-match-statistics',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

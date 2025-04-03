@@ -16,7 +16,6 @@ import { TimeTotalPipe } from './pipes';
 
 @Component({
   selector: 'reelscore-match-events',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent, TimeTotalPipe],
   styles: `

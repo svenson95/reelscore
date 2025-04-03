@@ -6,7 +6,6 @@ import { AnalysesEvaluationsComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-fixture-analyses-last-fixtures',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesEvaluationsComponent],
   styles: `

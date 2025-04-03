@@ -10,7 +10,6 @@ import { MatchFixturesTableComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-latest-fixtures',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixturesTableComponent],
   styles: `

@@ -19,7 +19,6 @@ import { MatchDayListComponent } from './components';
 
 @Component({
   selector: 'reelscore-matches',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent],
   styles: `

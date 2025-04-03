@@ -9,7 +9,6 @@ import {
 
 @Component({
   selector: 'reelscore-competition-header',
-  standalone: true,
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }

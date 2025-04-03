@@ -6,7 +6,6 @@ import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
   selector: 'reelscore-competition-next-fixtures',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FixturesListComponent],
   template: `

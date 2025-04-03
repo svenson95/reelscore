@@ -17,7 +17,6 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
   selector: 'reelscore-match-header',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `

@@ -16,7 +16,6 @@ import {
 
 @Component({
   selector: 'reelscore-match-event',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     EventGoalComponent,
