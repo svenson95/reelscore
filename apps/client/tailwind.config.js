@@ -54,7 +54,7 @@ module.exports = {
             'var(--rs-color-text-1)',
         },
         '.rs-bg-color': {
-          background: 'var(--rs-background-color)',
+          background: 'var(--mat-sys-surface)',
         },
       };
 

@@ -50,10 +50,13 @@ import { CompetitionId } from '@lib/models';
     }
 
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
-      @apply max-w-[220px] max-h-[70vh]; // 218px is the width of league-select menu + 2px border
+      @apply min-w-[220px] max-w-[220px] max-h-[70vh]; // 218px is the width of league-select menu + 2px border
 
       .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
         @apply flex items-center gap-2;
+      }
+      .mat-mdc-menu-content .mat-mdc-menu-item.group-title .mat-mdc-menu-item-text {
+        @apply font-medium;
       }
       
       .divider { @apply h-[1px] w-full bg-[#bababa]; }

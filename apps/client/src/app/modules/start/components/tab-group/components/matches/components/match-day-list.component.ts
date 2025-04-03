@@ -37,7 +37,6 @@ import { CompetitionRound } from '@lib/models';
     .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
     .header { 
       span, a {
-        color: var(--mat-table-header-headline-color, rgba(0, 0, 0, 0.87));
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
         line-height: var(--mat-table-header-headline-line-height);
         font-size: var(--rs-font-size-body-2);

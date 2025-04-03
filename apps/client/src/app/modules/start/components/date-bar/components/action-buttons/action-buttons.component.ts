@@ -19,15 +19,8 @@ import { FilterButtonComponent } from './filter-button.component';
       @apply flex gap-5;
 
       ::ng-deep .mat-mdc-icon-button { 
+        @apply bg-rs-color-orange p-[2px];
         --mdc-icon-button-state-layer-size: 36px;
-        @apply p-[2px] rounded-[0] border-[1px] border-solid;
-        border-color: var(--mdc-outlined-button-disabled-outline-color);
-        
-        .mat-icon { @apply w-[20px] h-[20px] text-[20px]; }
-
-        .mat-mdc-button-persistent-ripple { 
-          @apply rounded-[0];
-        }
       }
     }
   `,

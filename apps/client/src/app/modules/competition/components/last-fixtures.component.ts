@@ -35,8 +35,12 @@ import { FixturesListComponent } from './fixtures-list.component';
     />
     } @else if (fixtures()!.length === 0) {
     <p class="no-data">Keine vergangenen Spiele</p>
-    } @if (!isFirstRound() && !isCompetitionWithOneFixture() && !showAll()) {
-    <button mat-button (click)="loadAllLastFixtures(competition()!.id)">
+    } @if (!isFirstRound() && !isCompetitionWithOneFixture()) {
+    <button
+      mat-flat-button
+      (click)="loadAllLastFixtures(competition()!.id)"
+      [disabled]="showAll()"
+    >
       Alle anzeigen
     </button>
     } } @else if (isLoading()) {

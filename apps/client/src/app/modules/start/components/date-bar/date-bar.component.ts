@@ -36,7 +36,7 @@ import {
       @if (isMobile()){ @if (!isToday()) {
       <reelscore-today-button
         [isToday]="isToday()"
-        (onClick)="setDate($event)"
+        (clicked)="setDate($event)"
       />
       }
       <div class="spacer"></div>
@@ -51,7 +51,7 @@ import {
     />
 
     @if (!isMobile()){ @if (!isToday()) {
-    <reelscore-today-button [isToday]="isToday()" (onClick)="setDate($event)" />
+    <reelscore-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
     }
     <div class="spacer"></div>
     <reelscore-action-buttons />

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, MatIconModule],
   styles: `
+    @use '@angular/material' as mat;
     :host {
       @apply flex gap-5;
 
@@ -18,14 +19,20 @@ import { MatIconModule } from '@angular/material/icon';
     }
     
     button.back-button { 
-      --mdc-outlined-button-container-height: 36px;
-      @apply p-0 min-w-[36px]; 
-      
-      mat-icon { @apply text-[24px] w-[24px] h-[24px] mr-0; }
+      min-width: 36px;
+
+      @include mat.button-overrides(
+        (
+          filled-container-height: 36px,
+          filled-horizontal-padding: 0,
+          filled-icon-spacing: 0,
+          filled-icon-offset: 0
+        )
+      );
     }
   `,
   template: `
-    <button class="back-button" mat-stroked-button (click)="navigateBack()">
+    <button class="back-button" mat-flat-button (click)="navigateBack()">
       <mat-icon>chevron_left</mat-icon>
     </button>
   `,

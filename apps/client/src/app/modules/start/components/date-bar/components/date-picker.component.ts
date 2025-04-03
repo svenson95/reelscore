@@ -45,16 +45,20 @@ class CustomDateAdapter extends NativeDateAdapter {
     { provide: DateAdapter, useClass: CustomDateAdapter },
   ],
   styles: `
+    @use '@angular/material' as mat;
+
     :host {
       @apply flex;
 
       mat-form-field {
         @apply opacity-0 w-0 h-0;
       }
-    }
 
-    button {
-      --mdc-outlined-button-container-height: 36px;
+      @include mat.button-overrides(
+        (
+          filled-container-height: 36px,
+        )
+      );
     }
 
     ::ng-deep mat-datepicker-content {
@@ -62,7 +66,11 @@ class CustomDateAdapter extends NativeDateAdapter {
     }
   `,
   template: `
-    <button mat-button matTooltip="Datum auswählen" (click)="picker.open()">
+    <button
+      mat-flat-button
+      matTooltip="Datum auswählen"
+      (click)="picker.open()"
+    >
       <mat-icon>calendar_today</mat-icon>
       <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
     </button>
