@@ -6,7 +6,7 @@ export const findDocument = async <T extends RapidDTO<unknown>>(
   where,
   equals
 ) => {
-  const doc = await Model.findOne({ [where]: equals }).lean();
+  const doc = await Model.findOne({ [where]: equals }).lean<T>();
   const response = doc?.response;
   if (response && response.length === 0) return null;
   return doc;
