@@ -29,17 +29,18 @@
   --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
   --mat-standard-button-toggle-state-layer-color: var(--rs-color-orange);
 
-  // mat-button
-  --mdc-filled-button-container-shape: var(--rs-size-border-radius);
+  @include mat.button-overrides(
+    (
+      container-shape: var(--rs-size-border-radius),
+    )
+  );
 
-  // mat-select
   @include mat.select-overrides(
     (
       panel-background-color: var(--rs-color-white),
     )
   );
 
-  // mat-menu
   @include mat.menu-overrides(
     (
       container-color: var(--rs-color-white),
@@ -48,6 +49,26 @@
       item-label-text-weight: 400,
     )
   );
+
+  @include mat.button-toggle-overrides(
+    (
+      state-layer-color: red,
+      legacy-state-layer-color: green,
+    )
+  );
+}
+
+button {
+  &.mdc-button {
+    --mat-filled-button-horizontal-padding: 1rem;
+    --mat-filled-button-icon-offset: 0;
+    --mat-outlined-button-horizontal-padding: 1rem;
+    --mat-outlined-button-icon-offset: 0;
+  }
+
+  &.mat-mdc-icon-button {
+    border-radius: var(--rs-size-border-radius);
+  }
 }
 
 .mat-datepicker-content {
