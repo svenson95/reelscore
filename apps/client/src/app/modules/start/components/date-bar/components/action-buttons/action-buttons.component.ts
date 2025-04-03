@@ -18,9 +18,13 @@ import { FilterButtonComponent } from './filter-button.component';
     :host { 
       @apply flex gap-5;
 
-      ::ng-deep .mat-mdc-icon-button { 
-        @apply bg-rs-color-orange p-[2px];
-        --mdc-icon-button-state-layer-size: 36px;
+      ::ng-deep {
+        mat-icon { @apply w-[20px] h-[20px] text-[20px]; }
+
+        .mat-mdc-icon-button { 
+          @apply bg-rs-color-orange p-[2px];
+          --mdc-icon-button-state-layer-size: 36px;
+        }
       }
     }
   `,

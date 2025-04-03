@@ -42,15 +42,24 @@ export class IsTodayPipe implements PipeTransform {
     IsTodayPipe,
   ],
   styles: `
+    @use "@angular/material" as mat;
+
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
-    :host mat-button-toggle-group {
-      --mat-standard-button-toggle-selected-state-text-color: var(--rs-color-text-3);
-      --mat-standard-button-toggle-selected-state-background-color: var(--rs-color-orange);
-      --mat-standard-button-toggle-disabled-selected-state-text-color: var(--rs-color-text-3);
-      --mat-standard-button-toggle-disabled-selected-state-background-color: var(--rs-color-orange);
-      --mat-standard-button-toggle-height: 34px; 
-      --mat-standard-button-toggle-text-color: var(--rs-color-text-3);
-      --mat-standard-button-toggle-disabled-state-text-color: var(--rs-color-text-2);
+
+    mat-button-toggle-group {
+      @include mat.button-toggle-overrides(
+        (
+          height: 34px,
+          label-text-weight: 400,
+          background-color: var(--rs-color-white),
+          selected-state-background-color: var(--rs-color-orange),
+          selected-state-text-color: var(--rs-color-text-3),
+          disabled-state-background-color: var(--rs-color-white),
+          disabled-state-text-color: var(--rs-color-text-2),
+          disabled-selected-state-background-color: var(--rs-color-orange),
+          disabled-selected-state-text-color: var(--rs-color-text-3),
+        )
+      );
       @apply flex;
 
       mat-button-toggle.mat-button-toggle {
