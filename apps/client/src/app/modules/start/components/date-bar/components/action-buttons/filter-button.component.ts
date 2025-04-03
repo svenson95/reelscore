@@ -117,13 +117,10 @@ export class FilterButtonComponent {
     }
   }
 
-  filterEffect = effect(
-    () => {
-      const id = this.selectedCompetition();
-      if (id) this.updateStanding(id);
-    },
-    { allowSignalWrites: true }
-  );
+  filterEffect = effect(() => {
+    const id = this.selectedCompetition();
+    if (id) this.updateStanding(id);
+  });
 
   updateStanding(id: CompetitionId): void {
     const date = this.dateService.selectedDay();

@@ -51,18 +51,15 @@ export class AbstractedDateService extends DateService {
     return this.weekdays().findIndex((day) => day === this.selectedDay());
   });
 
-  selectedDayEffect = effect(
-    () => {
-      const date = this.selectedDay();
-      const weekOfDay = this.getCalenderWeekFrom(date);
-      if (untracked(this.calenderWeek) !== weekOfDay) {
-        this.calenderWeek.set(weekOfDay);
-      }
-      const dateString = date.substring(0, 10);
-      this.router.navigate([dateString]);
-    },
-    { allowSignalWrites: true }
-  );
+  selectedDayEffect = effect(() => {
+    const date = this.selectedDay();
+    const weekOfDay = this.getCalenderWeekFrom(date);
+    if (untracked(this.calenderWeek) !== weekOfDay) {
+      this.calenderWeek.set(weekOfDay);
+    }
+    const dateString = date.substring(0, 10);
+    this.router.navigate([dateString]);
+  });
 
   isToday = computed<boolean>(() => this.selectedDay() === TODAY_DATE_STRING);
 
