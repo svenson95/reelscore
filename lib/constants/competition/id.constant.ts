@@ -47,5 +47,9 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.FRANCE_COUPE_DE_FRANCE]: 66,
   [CompetitionCode.FRANCE_TROPHEE_DES_CHAMPIONS]: 526,
 
+  // Niederlande
   [CompetitionCode.EREDIVISIE]: 88,
+
+  // USA
+  [CompetitionCode.MAJOR_LEAGUE_SOCCER]: 253,
 };

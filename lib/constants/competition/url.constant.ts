@@ -51,4 +51,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
 
   // Niederlande
   [CompetitionCode.EREDIVISIE]: 'eredivisie',
+
+  // USA
+  [CompetitionCode.MAJOR_LEAGUE_SOCCER]: 'mls',
 };
