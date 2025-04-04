@@ -19,7 +19,7 @@ import { StatisticList } from './models';
     div > div { @apply basis-6/12; }
     div > div > div { @apply flex gap-5 justify-center; }
     h4, li { @apply text-rs-color-text-3 text-rs-font-size-body-2 md:text-rs-font-size-body-1;}
-    h4 { @apply text-rs-color-text-3 text-center mb-2 tracking-widest font-extralight; }
+    h4 { @apply text-rs-color-orange text-center mb-2 tracking-widest font-extralight text-rs-font-size-body-2; }
   `,
   template: `
     <section>
