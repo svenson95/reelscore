@@ -22,7 +22,7 @@ import { AnalysesLastFixturesComponent } from './components';
   styles: `
     :host { @apply flex flex-col mt-5 gap-5; }
 
-    section.fixture-analyse { @apply bg-white p-5 text-rs-font-size-small sm:text-rs-font-size-body-1; }
+    section.fixture-analyse { @apply p-5 text-rs-color-text-3 text-rs-font-size-small sm:text-rs-font-size-body-1; }
     section.fixture-analyse > div { 
       @apply w-full flex flex-wrap gap-5; 
 
@@ -33,9 +33,14 @@ import { AnalysesLastFixturesComponent } from './components';
       .home, .away { @apply flex-1; }
       .analysis { @apply flex flex-col flex-2 text-center; }
       .analysis span:nth-child(2) { @apply text-rs-font-size-small text-rs-color-text-2; }
-      .playersWithStreak, .strongAtHomeOrAway { 
-        .home, .away, .analysis { @apply self-center; }
-       }
+    }
+
+    .playersWithStreak, .strongAtHomeOrAway { 
+      .home, .away, .analysis { @apply self-center; }
+    }
+
+    .player, .strongTeam {
+      @apply text-rs-color-orange font-semibold;
     }
   `,
   template: `
@@ -61,13 +66,17 @@ import { AnalysesLastFixturesComponent } from './components';
 
       <div class="strongAtHomeOrAway">
         <div class="home">
-          {{ analyses()?.homeOrAwayStrong?.home === false ? 'Nein' : 'Ja' }}
+          @if (analyses()?.homeOrAwayStrong?.home === false) { Nein } @else if
+          (analyses()?.homeOrAwayStrong?.home === true) {
+          <span class="strongTeam">Ja</span> }
         </div>
         <div class="analysis">
           <span>Heimstark / Auswärtsstark</span>
         </div>
         <div class="away">
-          {{ analyses()?.homeOrAwayStrong?.away === false ? 'Nein' : 'Ja' }}
+          @if (analyses()?.homeOrAwayStrong?.away === false) { Nein } @else if
+          (analyses()?.homeOrAwayStrong?.away === true) {
+          <span class="strongTeam">Ja</span> }
         </div>
       </div>
     </section>
