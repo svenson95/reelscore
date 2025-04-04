@@ -205,6 +205,18 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
     ],
   },
   {
+    label: 'USA',
+    competitions: [
+      {
+        image: getCompetitionLogo(COMPETITION_ID.MAJOR_LEAGUE_SOCCER),
+        label: COMPETITION_LABEL.MAJOR_LEAGUE_SOCCER,
+        id: COMPETITION_ID.MAJOR_LEAGUE_SOCCER,
+        url: COMPETITION_URL.MAJOR_LEAGUE_SOCCER,
+        size: 30,
+      },
+    ],
+  },
+  {
     label: 'Andere',
     competitions: [
       {

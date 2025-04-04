@@ -46,4 +46,7 @@ export enum CompetitionCode {
 
   // Niederlande
   'EREDIVISIE' = 'EREDIVISIE',
+
+  // USA
+  'MAJOR_LEAGUE_SOCCER' = 'MAJOR_LEAGUE_SOCCER',
 }

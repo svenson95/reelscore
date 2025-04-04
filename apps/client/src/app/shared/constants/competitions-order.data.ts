@@ -6,4 +6,5 @@ export const COMPETITIONS_ORDER: { [key: string]: number } = {
   'Ligue 1': 5,
   '2. Bundesliga': 6,
   Eredivisie: 7,
+  'Major League Soccer': 8,
 };
