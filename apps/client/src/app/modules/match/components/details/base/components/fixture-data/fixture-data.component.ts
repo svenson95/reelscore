@@ -13,13 +13,14 @@ import { FixtureStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CompetitionRoundPipe],
   styles: `
-      ul { @apply py-5; }
-      li:not(:last-of-type) .item { @apply pb-2; }
-      .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-3; }
-      .item > *:not(.key) { @apply flex-2 sm:flex-1; }
-      .key { @apply text-rs-color-orange text-right tracking-wider font-extralight flex-1; }
-      span { @apply text-rs-font-size-body-2;}
-    `,
+    :host { @apply flex flex-col py-5; }
+    ul { @apply py-5; }
+    li:not(:last-of-type) .item { @apply pb-2; }
+    .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-3; }
+    .item > *:not(.key) { @apply flex-2 sm:flex-1; }
+    .key { @apply text-rs-color-orange text-right tracking-wider font-extralight flex-1; }
+    span { @apply text-rs-font-size-body-2;}
+  `,
   template: `
     <ul>
       <li>

@@ -13,7 +13,7 @@ import { StatisticList } from './models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
-    :host { @apply flex flex-col; }
+    :host { @apply flex flex-col py-5; }
     section { @apply flex flex-col my-5 gap-5; }
     section > div { @apply flex; }
     div > div { @apply basis-6/12; }
