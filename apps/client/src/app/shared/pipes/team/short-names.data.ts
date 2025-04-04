@@ -201,6 +201,54 @@ export const shortTeamName = (value: string): string => {
     case 'NEC Nijmegen':
       return 'Nijmegen';
 
+    // MLS
+    case 'Nashville SC':
+      return 'Nashville';
+    case 'Los Angeles Galaxy':
+      return 'LA Galaxy';
+    case 'FC Cincinnati':
+      return 'Cincinnati';
+    case 'New England Revolution':
+      return 'New England';
+    case 'Columbus Crew':
+      return 'Columbus';
+    case 'CF Montreal':
+      return 'Montreal';
+    case 'Atlanta United FC':
+      return 'Atlanta';
+    case 'FC Dallas':
+      return 'Dallas';
+    case 'New York Red Bulls':
+      return 'New York RB';
+    case 'Chigago Fire':
+      return 'Chicago';
+    case 'Philadelphia Union':
+      return 'Philadelphia';
+    case 'Orlando City SC':
+      return 'Orlando';
+    case 'Portland Timbers':
+      return 'Portland';
+    case 'Sporting Kansas City':
+      return 'Sporting KC';
+    case 'St. Louis City':
+      return 'St. Louis';
+    case 'Houston Dynamo':
+      return 'Houston';
+    case 'Los Angeles FC':
+      return 'LAFC';
+    case 'Vancouver Whitecaps':
+      return 'Whitecaps';
+    case 'Colorado Rapids':
+      return 'Rapids';
+    case 'Seattle Sounders':
+      return 'Seattle';
+    case 'New York City FC':
+      return 'New York FC';
+    case 'Minnesota United FC':
+      return 'Minnesota';
+    case 'San Jose Earthquakes':
+      return 'Earthquakes';
+
     // Europa
     case 'Slavia Praha':
       return 'Prag';

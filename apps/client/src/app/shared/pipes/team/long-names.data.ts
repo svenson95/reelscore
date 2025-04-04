@@ -212,6 +212,24 @@ export const longTeamName = (value: string): string => {
     case 'Waalwijk':
       return 'RKC Waalwijk';
 
+    // MLS
+    case 'Charlotte':
+      return 'Charlotte FC';
+    case 'Chicago Fire':
+      return 'Chicago Fire FC';
+    case 'Austin':
+      return 'Austin FC';
+    case 'St. Louis City':
+      return 'St. Louis City SC';
+    case 'Vancouver Whitecaps':
+      return 'Vancouver Whitecaps FC';
+    case 'San Diego':
+      return 'San Diego FC';
+    case 'San Jose Earthquakes':
+      return 'San José Earthquakes';
+    case 'DC United':
+      return 'Washington D.C. United';
+
     // Europa
     case 'Slavia Praha':
       return 'Slavia Prag';
