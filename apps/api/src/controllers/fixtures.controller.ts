@@ -8,7 +8,7 @@ import {
   FixtureDTO,
 } from '@lib/models';
 
-import { APP_DATA, COMPETITION_ROUNDS } from '../middleware';
+import { COMPETITION_ROUNDS, getSeason } from '../middleware';
 import { Fixtures } from '../models';
 import { FixturesService } from '../services';
 
@@ -111,7 +111,7 @@ export class FixturesController {
   private getCurrentRound = async (
     competitionId: CompetitionId
   ): Promise<string | null> => {
-    const currentSeason = { 'league.season': APP_DATA.season };
+    const currentSeason = { 'league.season': getSeason(competitionId) };
     const isMatchFinished = { 'fixture.status.long': 'Match Finished' };
     const lastMatch = await Fixtures.findOne({
       'league.id': competitionId,
