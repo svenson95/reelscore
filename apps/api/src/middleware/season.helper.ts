@@ -1,5 +1,6 @@
-import { CompetitionId } from '@lib/models';
 import moment from 'moment-timezone';
+
+import { CompetitionId } from '@lib/models';
 
 export const getSeason = (competition: CompetitionId): number => {
   const today = moment().tz('Europe/Berlin');
