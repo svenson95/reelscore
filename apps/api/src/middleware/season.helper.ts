@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 
 import { CompetitionId } from '@lib/models';
 
-export const getSeason = (competition: CompetitionId): number => {
+export const getSeason = (competition: CompetitionId = null): number => {
   const today = moment().tz('Europe/Berlin');
   const mlsId = 253;
 
