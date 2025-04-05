@@ -1,6 +1,6 @@
 import { CompetitionId, StandingsDTO, Team, TeamId } from '@lib/models';
 
-import { APP_DATA, getSeason } from '../middleware';
+import { getSeason } from '../middleware';
 import { StandingsService } from '../services';
 
 export class StandingsController {
@@ -12,7 +12,7 @@ export class StandingsController {
   ): Promise<StandingsDTO | null> {
     const filter = {
       'league.id': id,
-      'league.season': APP_DATA.season,
+      'league.season': getSeason(id),
     };
 
     if (queryDate) {
@@ -27,7 +27,7 @@ export class StandingsController {
   }
 
   async getTopFive(date: string): Promise<StandingsDTO[]> {
-    const standingsIds = [
+    const standingsIds: Array<CompetitionId> = [
       78, // BUNDESLIGA_ID,
       39, // PREMIER_LEAGUE_ID,
       140, // LA_LIGA_ID,
@@ -58,7 +58,7 @@ export class StandingsController {
       if (!leagueStandings) {
         const fixedFilter = {
           'league.id': { $in: standingsIds },
-          $and: [{ 'league.season': getSeason(date) }],
+          $and: [{ 'league.season': getSeason(standingsId) }],
         };
         const fixedStandings = await this.standingsService.findByFilter({
           filter: fixedFilter,
@@ -87,7 +87,7 @@ export class StandingsController {
     const [homeId, awayId] = teamIds.split(',').map((id) => Number(id));
     const filter = {
       'league.id': leagueId,
-      'league.season': APP_DATA.season,
+      'league.season': getSeason(leagueId),
     };
     const standings = await this.standingsService.findByFilter(filter);
 

@@ -9,7 +9,8 @@ import {
   PlayerName,
   TeamId,
 } from '@lib/models';
-import { APP_DATA } from '../../middleware';
+
+import { getSeason } from '../../middleware';
 import {
   FixtureEventsService,
   FixtureService,
@@ -129,7 +130,7 @@ export class FixtureAnalysesController {
     const competitionId = fixture.league.id;
     const filter = {
       'league.id': competitionId,
-      'league.season': APP_DATA.season,
+      'league.season': getSeason(competitionId),
     };
     const data = await this.standingsService.findByFilter(filter);
     const teamId = fixture.teams[type].id;

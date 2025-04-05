@@ -7,7 +7,7 @@ import {
   FixtureId,
 } from '@lib/models';
 
-import { APP_DATA, COMPETITION_ROUNDS } from '../middleware';
+import { COMPETITION_ROUNDS, getSeason } from '../middleware';
 import { Fixtures } from '../models';
 
 export class FixturesService {
@@ -50,7 +50,7 @@ export class FixturesService {
   ): Promise<FixtureDTO[]> {
     const query: object = {
       'league.id': competitionId,
-      'league.season': APP_DATA.season,
+      'league.season': getSeason(competitionId),
     };
 
     if (showAll) {
