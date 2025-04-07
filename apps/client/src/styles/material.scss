@@ -58,6 +58,13 @@
   );
 }
 
+button.mat-mdc-button-base,
+mat-button-toggle {
+  .mat-ripple-element {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+}
+
 button {
   &.mdc-button {
     --mat-filled-button-horizontal-padding: 1rem;
