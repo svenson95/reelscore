@@ -56,17 +56,19 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       <div class="divider"></div>
     </div>
     <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
+      @if (data()) {
       <reelscore-match-header-details
         class="match-highlights"
-        [data]="data()"
+        [data]="data()!"
         [highlights]="highlights()!"
       />
+      }
     </div>
     }
   `,
 })
 export class MatchHeaderComponent implements OnInit {
-  data = input.required<FixtureDTO>();
+  data = input.required<FixtureDTO | undefined>();
   highlights = input.required<FixtureHighlights | undefined>();
 
   ngZone = inject(NgZone);
@@ -96,7 +98,9 @@ export class MatchHeaderComponent implements OnInit {
   }
 
   isNotGoalLess = computed<boolean>(() => {
-    const { goals, fixture } = this.data();
+    const data = this.data();
+    if (!data) return false;
+    const { goals, fixture } = data;
     return (
       goals.home !== null &&
       goals.away !== null &&

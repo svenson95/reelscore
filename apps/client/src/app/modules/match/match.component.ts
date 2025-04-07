@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -46,6 +47,7 @@ import {
   EventsStore,
   FixtureStandingsStore,
   FixtureStore,
+  LatestFixturesStore,
   StatisticsStore,
   STORE_PROVIDERS,
 } from './store';
@@ -67,9 +69,12 @@ import {
     MatchStatisticsComponent,
     MatchFixtureAnalysesComponent,
     MatchFixtureStandingsComponent,
+    MatProgressSpinnerModule,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
+    @use '@angular/material' as mat;
+
     :host { 
       @apply w-full flex flex-col gap-5; 
 
@@ -96,34 +101,44 @@ import {
       @apply rs-as-label; 
     }
     .spacer { @apply flex-1; }
+    .date-placeholder {  @apply m-auto w-[36px] h-[12px] bg-gray-200 rounded; }
+    mat-spinner { 
+      @apply mx-auto my-5;
+
+      @include mat.progress-spinner-overrides((
+        active-indicator-color: var(--rs-color-primary),
+      ));
+    }
   `,
   template: `
-    @if (fixtureStore.isLoading()) {
-    <p class="no-data">Spiel wird geladen ...</p>
-    } @else if (fixtureStore.error()) {
+    @if (fixtureStore.error()) {
     <p class="no-data">Es ist ein Fehler aufgetreten.</p>
-    } @else if (fixtureStore.fixture() !== null){
+    } @else {
     <section class="header">
       <div>
         <reelscore-back-button />
         <button mat-stroked-button disabled>
-          {{ data()!.fixture.date | date : 'dd.MM.yy' }}
+          {{ routerDate() | date : 'dd.MM.yy' }}
         </button>
 
         <div class="spacer"></div>
 
         <button mat-stroked-button disabled>
-          {{ data()!.fixture.date | date : 'ccc' }}
+          {{ routerDate() | date : 'ccc' }}
         </button>
         <button mat-stroked-button disabled>
+          @if (data()?.fixture?.date) {
           {{ data()!.fixture.date | date : 'HH:mm' }}
+          } @else {
+          <div class="date-placeholder"></div>
+          }
         </button>
       </div>
     </section>
 
     <section class="match-header">
       <reelscore-match-header
-        [data]="fixture()!.data"
+        [data]="fixture()?.data"
         [highlights]="fixture()?.highlights"
       />
     </section>
@@ -138,18 +153,19 @@ import {
           </ng-template>
 
           <div class="tab-content">
-            @if (fixture()) {
             <reelscore-match-fixture-data />
-            } @if (!hasNoStandings(fixture()!.data.league.id) &&
+            @if (fixture()?.data) { @if
+            (!hasNoStandings(fixture()!.data.league.id) &&
             !isKoPhase(fixture()!.data.league.round)) {
             <reelscore-match-fixture-standings
               [standings]="standingsStore.standings()"
             />
-            } @if (evaluations()) {
-            <reelscore-match-evaluations [evaluations]="evaluations()" />
             }
-
+            <reelscore-match-evaluations [evaluations]="evaluations()" />
             <reelscore-match-latest-fixtures />
+            } @else {
+            <mat-spinner [diameter]="32"></mat-spinner>
+            }
           </div>
         </mat-tab>
 
@@ -210,6 +226,8 @@ export class MatchComponent extends RouterView implements OnChanges {
   standingsStore = inject(FixtureStandingsStore);
   analysesStore = inject(AnalysesStore);
 
+  latestFixturesStore = inject(LatestFixturesStore);
+
   eventsStore = inject(EventsStore);
   events = this.eventsStore.events;
 
@@ -228,6 +246,11 @@ export class MatchComponent extends RouterView implements OnChanges {
   hasNoStandings = isCompetitionWithoutStandings;
   hasMultipleGroups = isCompetitionWithMultipleGroups;
   isKoPhase = isKoPhase;
+
+  routerDate = computed(() => {
+    const route = this.activatedRoute.snapshot;
+    return route.params['date'];
+  });
 
   invalidUrlEffect = effect(() => {
     const fixture = this.data();
