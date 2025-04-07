@@ -98,8 +98,11 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   // --mat-tab-header-inactive-ripple-color: var(--rs-color-orange);
   // --mat-tab-header-active-ripple-color: var(--rs-color-orange);
 
+  --mat-tab-header-divider-height: 0;
   --mat-tab-header-active-label-text-color: var(--rs-color-orange);
   --mat-tab-header-inactive-label-text-color: var(--rs-color-text-2);
+  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-3);
+  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-3);
   --mat-tab-header-active-focus-label-text-color: var(--rs-color-orange);
   --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-3);
   --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
@@ -108,23 +111,10 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
   .mat-mdc-tab-header {
     --mat-tab-header-label-text-size: var(--rs-font-size-body-2);
-    @apply border-b-[1px];
   }
 
   .mat-mdc-tab {
     @apply min-w-[50px] px-1;
-  }
-
-  .mat-mdc-tab-ripple:not(.mdc-tab-indicator--active) {
-    background-color: var(--rs-color-white);
-  }
-
-  .mdc-tab-indicator--active {
-    background-color: var(--rs-color-orange);
-
-    mat-icon {
-      color: var(--rs-color-orange);
-    }
   }
 }
 
