@@ -13,7 +13,7 @@ import { LoadingService } from '../../services';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { @apply select-none text-rs-font-size-body-1 tracking-wide; }
+    :host { @apply select-none text-rs-font-size-body-1 tracking-wide font-normal; }
     :host span:first-child { @apply text-rs-color-orange; }
     :host span:last-child { @apply text-white; }
     :host([disabled]) { @apply opacity-75; }
