@@ -49,18 +49,19 @@ export class IsTodayPipe implements PipeTransform {
     mat-button-toggle-group {
       @include mat.button-toggle-overrides(
         (
-          height: 34px,
+          height: 36px,
           label-text-weight: 400,
-          background-color: var(--rs-color-white),
-          selected-state-background-color: var(--rs-color-orange),
-          selected-state-text-color: var(--rs-color-text-3),
-          disabled-state-background-color: var(--rs-color-white),
-          disabled-state-text-color: var(--rs-color-text-2),
-          disabled-selected-state-background-color: var(--rs-color-orange),
-          disabled-selected-state-text-color: var(--rs-color-text-3),
+          text-color: var(--rs-color-text-3),
+          background-color: var(--rs-color-orange),
+          selected-state-background-color: var(--rs-color-white),
+          selected-state-text-color: var(--rs-color-orange),
+          disabled-state-background-color: var(--rs-color-orange),
+          disabled-state-text-color: var(--rs-color-text-3),
+          disabled-selected-state-background-color: var(--rs-color-white),
+          disabled-selected-state-text-color: var(--rs-color-orange),
         )
       );
-      @apply flex;
+      @apply flex border-none;
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1 text-rs-font-size-body-2 border-l-0;
