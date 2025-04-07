@@ -114,7 +114,7 @@ import {
     @if (fixtureStore.error()) {
     <p class="no-data">Es ist ein Fehler aufgetreten.</p>
     } @else {
-    <section class="header">
+    <section class="header animate-drop-from-top">
       <div>
         <reelscore-back-button />
         <button mat-stroked-button disabled>
