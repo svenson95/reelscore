@@ -4,9 +4,10 @@ import { CompetitionId } from '@lib/models';
 
 export const getSeason = (competition: CompetitionId = null): number => {
   const today = moment().tz('Europe/Berlin');
+  const competitionId = Number(competition);
   const mlsId = 253;
 
-  if (competition === mlsId) {
+  if (competitionId === mlsId) {
     return today.year();
   } else {
     return calculateSeasonForRegularCompetition(today);
