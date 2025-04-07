@@ -40,15 +40,22 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
         @apply py-2 px-4 border-b-[1px]; 
       }
     }
+    .competition-logo-placeholder {  @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded-full; }
   `,
   template: `
     <section class="round">
-      <reelscore-optimized-image
-        [source]="getCompetitionLogo(competitionId())"
-        alternate="league logo"
-        width="24"
-        height="24"
-      />
+      <div class="competition-logo">
+        @defer (on viewport) {
+        <reelscore-optimized-image
+          [source]="getCompetitionLogo(competitionId())"
+          alternate="league logo"
+          width="24"
+          height="24"
+        />
+        } @placeholder {
+        <div class="competition-logo-placeholder"></div>
+        }
+      </div>
       <p>{{ round()! | competitionRound }}</p>
     </section>
     <section class="days">
