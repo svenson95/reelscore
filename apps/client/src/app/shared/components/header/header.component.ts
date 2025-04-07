@@ -16,7 +16,7 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `
-    :host { @apply p-rs-padding-3 border-b-[1px] border-rs-color-orange rs-bg-color z-[10] relative; }
+    :host { @apply p-rs-padding-3 border-b-[1px] border-rs-color-orange rs-bg-color z-[15] relative; }
     .wrapper { @apply flex items-center justify-between lg:px-rs-padding-3; }
   `,
   template: `

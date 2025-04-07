@@ -17,7 +17,7 @@ import {
     .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
   template: `
-    <reelscore-back-button />
+    <reelscore-back-button class="animate-drop-from-top" />
     <div class="image-wrapper">
       <reelscore-optimized-image
         [source]="getCompetitionLogo(id()!)"
