@@ -1,4 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
 import {
   BackButtonComponent,
@@ -9,6 +14,7 @@ import {
 
 @Component({
   selector: 'rs-competition-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }
@@ -20,8 +26,8 @@ import {
     <rs-back-button class="animate-drop-from-top" />
     <div class="image-wrapper">
       <rs-optimized-image
-        [source]="getCompetitionLogo(id()!)"
-        [alternate]="label()!"
+        [source]="competitionLogo()"
+        [alternate]="label()"
         width="64"
         height="64"
       />
@@ -30,7 +36,8 @@ import {
 })
 export class CompetitionHeaderComponent {
   leagueService = inject(LeagueService);
-  id = computed(() => this.leagueService.selectedLeague()?.id);
-  label = computed(() => this.leagueService.selectedLeague()?.label);
-  getCompetitionLogo = getCompetitionLogo;
+  selectedLeague = this.leagueService.selectedLeague;
+  id = computed(() => this.selectedLeague()?.id ?? 0);
+  label = computed(() => this.selectedLeague()?.label ?? 'unknown');
+  competitionLogo = computed(() => getCompetitionLogo(this.id()));
 }
