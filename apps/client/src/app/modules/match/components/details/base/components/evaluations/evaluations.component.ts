@@ -1,17 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { EvaluationDTO, EvaluationTeam } from '@lib/models';
-import { EvaluationsStore } from '../../../../../store/evaluations.store';
+import { EvaluationDTO } from '@lib/models';
+
+import { EvaluationsStore } from '../../../../../store';
+
+import { ToKebabCasePipe } from './pipes';
 
 @Component({
   selector: 'rs-match-evaluations',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ToKebabCasePipe],
   providers: [EvaluationsStore],
   styles: `
     :host { @apply flex flex-col; }
@@ -59,7 +57,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
   template: `
     <h3 class="match-section-title">FORM</h3>
     <div class="content">
-      @if (evaluations() === null) {
+      @let teams = evaluations()?.teams; @if (!teams) {
       <p class="no-data">Form wird geladen ...</p>
       } @else {
       <div class="teams-form results">
@@ -73,9 +71,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (result of home()!.results.reverse(); track $index + '-' +
+            @for (result of teams.home.results.reverse(); track $index + '-' +
             result) {
-            <span [class]="result.toLowerCase().split('_').join('-')">
+            <span [class]="result | rsToKebabCase">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
             </span>
@@ -85,8 +83,8 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (result of away()!.results; track $index + '-' + result) {
-            <span [class]="result.toLowerCase().split('_').join('-')">
+            @for (result of teams.away.results; track $index + '-' + result) {
+            <span [class]="result | rsToKebabCase">
               @switch(result) { @case ("LOSS") {N} @case ("DRAW") {U} @case
               ("WIN") {S} @case("NO_RESULT_AVAILABLE") {-} }
             </span>
@@ -106,9 +104,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
         </div>
         <div class="evaluation">
           <div class="team">
-            @for (performance of home()!.performances.reverse(); track $index +
-            '-' +performance) {
-            <span [class]="performance.toLowerCase().split('_').join('-')">
+            @for (performance of teams.home.performances.reverse(); track $index
+            + '-' +performance) {
+            <span [class]="performance | rsToKebabCase">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
               @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}
               @case("MATCH_POSTPONED") {-} @case("NO_STATISTICS_AVAILABLE") {-}
@@ -120,9 +118,9 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
           <div class="today">Heute</div>
 
           <div class="team">
-            @for (performance of away()!.performances; track $index + '-' +
+            @for (performance of teams.away.performances; track $index + '-' +
             performance) {
-            <span [class]="performance.toLowerCase().split('_').join('-')">
+            <span [class]="performance | rsToKebabCase">
               @switch(performance) { @case ("LOW") {S} @case ("MIDDLE") {M}
               @case ("HIGH") {G} @case("MATCH_NOT_STARTED") {?}
               @case("MATCH_POSTPONED") {-} @case("NO_STATISTICS_AVAILABLE") {-}
@@ -138,11 +136,4 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
 })
 export class MatchEvaluationsComponent {
   evaluations = input.required<EvaluationDTO | null>();
-
-  home = computed<EvaluationTeam | undefined>(
-    () => this.evaluations()?.teams.home
-  );
-  away = computed<EvaluationTeam | undefined>(
-    () => this.evaluations()?.teams.away
-  );
 }
