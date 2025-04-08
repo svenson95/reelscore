@@ -1,64 +1,63 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { CompetitionData, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
-import { FixtureId } from '@lib/models';
+import {
+  DateString,
+  RouteService,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
+import { CompetitionUrl, FixtureId } from '@lib/models';
 
-import { toSignal } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs';
 import { FixtureStore } from './store';
 
 @Injectable()
 export class MatchFacade {
-  router = inject(Router);
-  routerEvents = toSignal(
-    inject(Router).events.pipe(
-      filter((event) => event instanceof NavigationEnd)
-    )
-  );
+  private router = inject(Router);
+  private routerService = inject(RouteService);
 
-  fixtureStore = inject(FixtureStore);
+  private fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
+  error = this.fixtureStore.error;
+  loadFixture = this.fixtureStore.loadFixture;
+
   data = computed(() => this.fixtureStore.fixture()?.data);
 
   routerDate = computed(() => {
-    const route = this.routerEvents();
-    if (!route) return null;
-    return route.url.split('/')[1];
+    const url = this.routerService.url();
+    if (!url) return null;
+    return url.split('/')[1];
   });
 
-  handleInvalidUrl(activeRoute: string): void {
+  handleInvalidUrl(url: string): void {
     const fixture = this.data();
     if (!fixture) return;
-    const leagues = SELECT_COMPETITION_DATA_FLAT;
-    const fixtureId = fixture.fixture.id;
+    const data = SELECT_COMPETITION_DATA_FLAT.find((c) => c.url === url);
+    const isCompetitionParamCorrect = !!data;
+
     const fixtureDate = fixture.fixture.date.substring(0, 10);
-    const leagueId = fixture.league.id;
-    const leagueData = leagues.find((c) => c.url === activeRoute);
-
-    const isLeagueParamCorrect = !!leagueData;
     const isDateParamCorrect = this.routerDate() === fixtureDate;
-    if (isLeagueParamCorrect && isDateParamCorrect) return;
 
-    const leagueDataFromFixture = leagues.find((d) => d.id === leagueId);
-    if (!leagueDataFromFixture) return;
+    if (isCompetitionParamCorrect && isDateParamCorrect) return;
+    const id = fixture.league.id;
+    const competition = SELECT_COMPETITION_DATA_FLAT.find((d) => d.id === id);
+
+    if (!competition) return;
     this.redirectTo({
       fixtureDate,
-      league: leagueDataFromFixture,
-      fixtureId,
+      competitionUrl: competition.url,
+      fixtureId: fixture.fixture.id,
     });
   }
 
   private redirectTo({
     fixtureDate,
-    league,
+    competitionUrl,
     fixtureId,
   }: {
-    fixtureDate: string;
-    league: CompetitionData;
+    fixtureDate: DateString;
+    competitionUrl: CompetitionUrl;
     fixtureId: FixtureId;
   }) {
-    if (!league) throw Error('Unexpected League not found');
-    this.router.navigate([fixtureDate, league.url, fixtureId]);
+    this.router.navigate([fixtureDate, competitionUrl, fixtureId]);
   }
 }

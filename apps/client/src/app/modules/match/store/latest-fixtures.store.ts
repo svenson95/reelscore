@@ -3,6 +3,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { StateHandler } from '@app/shared';
 import { FixtureId, LatestFixturesDTO } from '@lib/models';
+
 import { HttpLatestFixturesService } from '../services';
 
 type LatestFixturesState = StateHandler<{
@@ -42,6 +43,9 @@ export const LatestFixturesStore = signalStore(
             error,
           }),
       });
+    },
+    async reset(): Promise<void> {
+      patchState(store, initialState);
     },
   }))
 );

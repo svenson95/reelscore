@@ -15,7 +15,7 @@ export class AbstractedRouteService extends RouteService {
     this.router.events.pipe(
       takeUntilDestroyed(),
       filter((event) => event instanceof NavigationEnd),
-      map((event) => (event as NavigationEnd).url)
+      map((event) => event.url)
     )
   );
 }

@@ -3,6 +3,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { StateHandler } from '@app/shared';
 import { FixtureId, StatisticDTO } from '@lib/models';
+
 import { HttpFixtureStatisticsService } from '../services';
 
 type StatisticsState = StateHandler<{ statistics: StatisticDTO[] | null }>;
@@ -33,6 +34,9 @@ export const StatisticsStore = signalStore(
             error,
           }),
       });
+    },
+    async reset(): Promise<void> {
+      patchState(store, initialState);
     },
   }))
 );
