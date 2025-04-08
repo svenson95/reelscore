@@ -41,8 +41,9 @@ import { FooterComponent, HeaderComponent } from './shared';
 })
 export class AppComponent implements AfterViewInit {
   private outlet = viewChild.required<RouterOutlet>(RouterOutlet);
+  private destroyRef = inject(DestroyRef);
+
   isRouterLoading = signal<boolean>(true);
-  destroyRef = inject(DestroyRef);
 
   public ngAfterViewInit(): void {
     this.outlet()

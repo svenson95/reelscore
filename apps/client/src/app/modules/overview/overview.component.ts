@@ -3,11 +3,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterView } from '../router-view';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
+import { SERVICE_PROVIDERS } from './services';
+import { STORE_PROVIDERS } from './store';
 
 @Component({
   selector: 'rs-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
+  providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { 
       @apply flex flex-col w-full; 

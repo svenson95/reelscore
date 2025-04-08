@@ -55,7 +55,7 @@ import { CompetitionRound } from '@lib/models';
       <div class="competition-logo">
         @defer (on viewport) {
         <rs-optimized-image
-          [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
+          [source]="getCompetitionLogo()"
           alternate="competition logo"
           width="24"
           height="24"
@@ -83,5 +83,8 @@ export class MatchDayListComponent {
     return fixture ? fixture.league.round : '';
   });
 
-  getCompetitionLogo = getCompetitionLogo;
+  getCompetitionLogo = computed(() => {
+    const fixture = this.competition().fixtures[0];
+    return getCompetitionLogo(fixture.league.id);
+  });
 }
