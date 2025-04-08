@@ -16,7 +16,6 @@ export * from './http/standings.service';
 export * from './league/league.service';
 export * from './loading.interceptor';
 export * from './loading.service';
-export * from './route-reuse.provider';
 export * from './route.service';
 
 export const GLOBAL_SERVICE_PROVIDERS = [
