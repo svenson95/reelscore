@@ -3,6 +3,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { StateHandler } from '@app/shared';
 import { EvaluationDTO, FixtureId } from '@lib/models';
+
 import { HttpEvaluationsService } from '../services';
 
 type EvaluationsState = StateHandler<{ evaluations: EvaluationDTO | null }>;
@@ -33,6 +34,9 @@ export const EvaluationsStore = signalStore(
             error,
           }),
       });
+    },
+    async reset(): Promise<void> {
+      patchState(store, initialState);
     },
   }))
 );

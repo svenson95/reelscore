@@ -11,6 +11,7 @@ import {
   RapidEventsDTO,
   timeTotal,
 } from '@lib/models';
+
 import { HttpFixtureEventsService } from '../services';
 
 type EventsState = StateHandler<{ events: EventWithResult[] | null }>;
@@ -50,6 +51,9 @@ export const EventsStore = signalStore(
             error,
           }),
       });
+    },
+    async reset(): Promise<void> {
+      patchState(store, initialState);
     },
   }))
 );

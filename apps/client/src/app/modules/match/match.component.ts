@@ -53,10 +53,10 @@ export class MatchComponent extends RouterView implements OnChanges {
   private facade = inject(MatchFacade);
   fixture = this.facade.fixture;
   data = this.facade.data;
-  error = this.facade.fixtureStore.error;
+  error = this.facade.error;
 
   async ngOnChanges(): Promise<void> {
-    await this.facade.fixtureStore.loadFixture(this.fixtureId());
+    await this.facade.loadFixture(this.fixtureId());
   }
 
   invalidUrlEffect = effect(() =>

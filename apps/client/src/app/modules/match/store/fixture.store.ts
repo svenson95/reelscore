@@ -7,6 +7,7 @@ import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
 } from '@lib/shared';
+
 import { HttpFixtureService } from '../services';
 
 import { AnalysesStore } from './analyses.store';
@@ -38,7 +39,11 @@ export const FixtureStore = signalStore(
       analysesStore = inject(AnalysesStore)
     ) => ({
       async loadFixture(id: FixtureId): Promise<void> {
-        patchState(store, { isLoading: true });
+        patchState(store, { ...initialState, isLoading: true });
+        evaluationsStore.reset();
+        latestFixturesStore.reset();
+        eventsStore.reset();
+        statisticsStore.reset();
 
         http.getFixture(id).subscribe({
           next: async (fixture) => {
