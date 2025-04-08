@@ -31,7 +31,7 @@
 
   @include mat.button-overrides(
     (
-      container-shape: var(--rs-size-border-radius),
+      filled-container-shape: var(--rs-size-border-radius),
     )
   );
 
