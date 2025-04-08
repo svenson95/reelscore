@@ -16,14 +16,18 @@ import { FixtureDTO, FixtureHighlights } from '@lib/models';
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
-  selector: 'rs-match-header',
+  selector: 'section[rs-match-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `
     :host { 
-      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white;
+      @apply px-5 sticky top-0 rs-bg-color z-10;
+      margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
     }
+    
+    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white; }
+    
     .toggle-highlights-row { 
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
       .divider { 
@@ -50,21 +54,23 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     }
   `,
   template: `
-    <rs-match-header-data [data]="data()" />
-    @if (highlights() && isNotGoalLess()) {
-    <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
-      <div class="divider"></div>
-    </div>
-    <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
-      @if (data()) {
-      <rs-match-header-details
-        class="match-highlights"
-        [data]="data()!"
-        [highlights]="highlights()!"
-      />
+    <div class="wrapper">
+      <rs-match-header-data [data]="data()" />
+      @if (highlights() && isNotGoalLess()) {
+      <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
+        <div class="divider"></div>
+      </div>
+      <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
+        @if (data()) {
+        <rs-match-header-details
+          class="match-highlights"
+          [data]="data()!"
+          [highlights]="highlights()!"
+        />
+        }
+      </div>
       }
     </div>
-    }
   `,
 })
 export class MatchHeaderComponent implements OnInit {
