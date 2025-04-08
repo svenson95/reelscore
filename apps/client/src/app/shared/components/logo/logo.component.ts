@@ -23,7 +23,7 @@ import { LoadingService } from '../../services';
         content: '';
         position: absolute;
         width: 100%;
-        height: 2px;
+        height: 1px;
         bottom: 0;
         left: 0;
         background-color: var(--rs-color-orange);
