@@ -3,14 +3,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
+import { FixtureDTO, FixtureTeam } from '@lib/models';
+
 import {
   CheckScorePipe,
-  linkToMatch,
   ResultLabelComponent,
   TeamIsRelatedPipe,
   TeamNamePipe,
-} from '@app/shared';
-import { FixtureDTO, FixtureTeam } from '@lib/models';
+  linkToMatch,
+} from '../../../../../../../../shared';
 
 @Component({
   selector: 'rs-match-fixtures-table',

@@ -6,9 +6,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { LeagueService } from '@app/shared';
 import { CompetitionId } from '@lib/models';
 import { isCompetitionWithOneFixture } from '@lib/shared';
+
+import { LeagueService } from '../../../shared';
 import { LastFixturesStore } from '../store';
 import { FixturesListComponent } from './fixtures-list.component';
 

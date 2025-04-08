@@ -6,12 +6,16 @@ import {
   input,
 } from '@angular/core';
 
-import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
 import {
   ExtendedFixtureDTO,
   FixtureEvaluations,
   FixtureTeam,
 } from '@lib/models';
+
+import {
+  TeamIsRelatedPipe,
+  TeamNamePipe,
+} from '../../../../../../../../../../../shared';
 
 import { AnalysesEvaluationComponent } from './components';
 import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';

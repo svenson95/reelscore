@@ -19,7 +19,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment';
 
-import { DateString, LAST_YEAR_START, NEXT_YEAR_END } from '@app/shared';
+import {
+  DateString,
+  LAST_YEAR_START,
+  NEXT_YEAR_END,
+} from '../../../../../shared';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {

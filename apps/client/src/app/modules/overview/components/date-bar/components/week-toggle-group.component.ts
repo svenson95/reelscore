@@ -14,8 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment';
 
-import { DateString, TODAY_DATE_STRING } from '@app/shared';
-
+import { DateString, TODAY_DATE_STRING } from '../../../../../shared';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
 @Pipe({ name: 'isToday' })

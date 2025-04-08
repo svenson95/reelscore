@@ -17,7 +17,7 @@ import {
   DateString,
   TODAY_DATE_STRING,
   createWeekDaysArray,
-} from '@app/shared';
+} from '../../../shared';
 
 export abstract class DateService {
   abstract selectedDay: Signal<DateString>;

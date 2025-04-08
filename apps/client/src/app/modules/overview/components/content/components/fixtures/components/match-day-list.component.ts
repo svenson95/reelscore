@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { CompetitionRound } from '@lib/models';
+
 import {
   CompetitionLabelPipe,
   CompetitionRoundPipe,
@@ -13,8 +15,7 @@ import {
   FixtureListComponent,
   getCompetitionLogo,
   OptimizedImageComponent,
-} from '@app/shared';
-import { CompetitionRound } from '@lib/models';
+} from '../../../../../../../shared';
 
 @Component({
   selector: 'rs-start-match-day-list',

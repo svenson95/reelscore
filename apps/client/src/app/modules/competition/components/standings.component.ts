@@ -5,9 +5,9 @@ import {
   inject,
 } from '@angular/core';
 
-import { StandingsTableComponent } from '@app/shared';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
+import { StandingsTableComponent } from '../../../shared';
 import { CompetitionStandingsStore } from '../store';
 
 @Component({

@@ -10,7 +10,7 @@ import {
   LeagueService,
   OptimizedImageComponent,
   getCompetitionLogo,
-} from '@app/shared';
+} from '../../../shared';
 
 @Component({
   selector: 'rs-competition-header',
