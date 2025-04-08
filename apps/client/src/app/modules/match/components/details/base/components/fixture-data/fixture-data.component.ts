@@ -5,9 +5,9 @@ import {
   inject,
 } from '@angular/core';
 
-import { CompetitionRoundPipe } from '@app/shared';
 import { ExtendedFixtureDTO } from '@lib/models';
 
+import { CompetitionRoundPipe } from '../../../../../../../shared';
 import { FixtureStore } from '../../../../../store';
 
 @Component({

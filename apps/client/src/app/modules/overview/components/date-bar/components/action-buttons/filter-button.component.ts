@@ -9,9 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { OptimizedImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
 import { CompetitionId } from '@lib/models';
 
+import {
+  OptimizedImageComponent,
+  SELECT_COMPETITION_DATA,
+} from '../../../../../../shared';
 import { DateService, FilterService } from '../../../../services';
 import { FilteredStandingsStore } from '../../../../store';
 

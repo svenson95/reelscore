@@ -2,8 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { BackButtonComponent } from '@app/shared';
-
+import { BackButtonComponent } from '../../../../shared';
 import { MatchFacade } from '../../match.facade';
 
 const ANGULAR_MODULES = [DatePipe, MatButtonModule];

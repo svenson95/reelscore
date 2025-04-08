@@ -5,13 +5,14 @@ import {
   input,
 } from '@angular/core';
 
+import { FixtureDTO } from '@lib/models';
+
 import {
   OptimizedImageComponent,
   ResultLabelComponent,
   TeamNamePipe,
   getTeamLogo,
-} from '@app/shared';
-import { FixtureDTO } from '@lib/models';
+} from '../../../../../shared';
 
 @Component({
   selector: 'rs-match-header-data',

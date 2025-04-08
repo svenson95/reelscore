@@ -1,12 +1,12 @@
 import { computed, inject, Injectable } from '@angular/core';
 
-import { BreakpointObserverService } from '@app/shared';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
   isKoPhase,
 } from '@lib/shared';
 
+import { BreakpointObserverService } from '../../../../shared';
 import {
   AnalysesStore,
   EvaluationsStore,

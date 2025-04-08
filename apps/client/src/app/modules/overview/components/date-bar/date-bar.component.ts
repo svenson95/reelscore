@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { BreakpointObserverService, DateString } from '@app/shared';
-
+import { BreakpointObserverService, DateString } from '../../../../shared';
 import { DateService } from '../../services';
 
 import {

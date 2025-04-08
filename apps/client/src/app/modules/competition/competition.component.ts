@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
-import { BreakpointObserverService } from '@app/shared';
+import { BreakpointObserverService } from '../../shared';
 
 import { RouterView } from '../router-view';
 
