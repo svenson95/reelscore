@@ -14,7 +14,7 @@ import {
 } from './components';
 
 @Component({
-  selector: 'reelscore-date-bar',
+  selector: 'rs-date-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePickerComponent,
@@ -29,32 +29,28 @@ import {
   `,
   template: `
     <div class="top">
-      <reelscore-date-picker
+      <rs-date-picker
         [selectedDay]="selectedDay()"
         (dateSelected)="setDate($event)"
       />
       @if (isMobile()){ @if (!isToday()) {
-      <reelscore-today-button
-        [isToday]="isToday()"
-        (clicked)="setDate($event)"
-      />
+      <rs-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
       }
       <div class="spacer"></div>
-      <reelscore-action-buttons />
+      <rs-action-buttons />
       }
     </div>
-
-    <reelscore-week-toogle-group
+    <rs-week-toogle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
       (dateSelected)="setDate($event)"
     />
 
     @if (!isMobile()){ @if (!isToday()) {
-    <reelscore-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
+    <rs-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
     }
     <div class="spacer"></div>
-    <reelscore-action-buttons />
+    <rs-action-buttons />
     }
   `,
 })

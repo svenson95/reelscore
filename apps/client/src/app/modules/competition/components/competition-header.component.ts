@@ -8,18 +8,18 @@ import {
 } from '@app/shared';
 
 @Component({
-  selector: 'reelscore-competition-header',
+  selector: 'rs-competition-header',
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }
-    reelscore-back-button { @apply absolute top-5 left-5 z-10; }
-    reelscore-optimized-image { @apply p-8; }
+    rs-back-button { @apply absolute top-5 left-5 z-10; }
+    rs-optimized-image { @apply p-8; }
     .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
   template: `
-    <reelscore-back-button class="animate-drop-from-top" />
+    <rs-back-button class="animate-drop-from-top" />
     <div class="image-wrapper">
-      <reelscore-optimized-image
+      <rs-optimized-image
         [source]="getCompetitionLogo(id()!)"
         [alternate]="label()!"
         width="64"

@@ -8,7 +8,7 @@ import { CompetitionData, SELECT_COMPETITION_DATA } from '@app/shared';
 import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
-  selector: 'reelscore-league-select',
+  selector: 'rs-league-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,
@@ -77,7 +77,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
             <a [routerLink]="['competition', c.url]">
-              <reelscore-optimized-image
+              <rs-optimized-image
                 class="competition-logo"
                 [source]="c.image"
                 [alternate]="c.label"

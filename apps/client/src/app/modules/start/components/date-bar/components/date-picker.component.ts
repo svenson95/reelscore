@@ -29,7 +29,7 @@ class CustomDateAdapter extends NativeDateAdapter {
 }
 
 @Component({
-  selector: 'reelscore-date-picker',
+  selector: 'rs-date-picker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,

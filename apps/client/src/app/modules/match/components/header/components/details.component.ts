@@ -16,7 +16,7 @@ import {
 } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-match-header-details',
+  selector: 'rs-match-header-details',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

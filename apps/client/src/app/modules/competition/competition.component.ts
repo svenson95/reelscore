@@ -27,7 +27,7 @@ import {
 } from './store';
 
 @Component({
-  selector: 'reelscore-competition-page',
+  selector: 'rs-competition-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatTabsModule,
@@ -44,7 +44,7 @@ import {
     section.data { @apply p-5; }
   `,
   template: `
-    <reelscore-competition-header />
+    <rs-competition-header />
     <section class="data">
       <mat-tab-group animationDuration="0">
         <mat-tab>
@@ -53,7 +53,7 @@ import {
             <mat-icon>article</mat-icon>
             } @else { Ergebnisse }
           </ng-template>
-          <reelscore-competition-last-fixtures />
+          <rs-competition-last-fixtures />
         </mat-tab>
 
         <mat-tab>
@@ -63,7 +63,7 @@ import {
             } @else { Spielplan }
           </ng-template>
           <ng-template matTabContent>
-            <reelscore-competition-next-fixtures />
+            <rs-competition-next-fixtures />
           </ng-template>
         </mat-tab>
 
@@ -74,7 +74,7 @@ import {
             } @else { Tabellen }
           </ng-template>
           <ng-template matTabContent>
-            <reelscore-competition-standings />
+            <rs-competition-standings />
           </ng-template>
         </mat-tab>
 

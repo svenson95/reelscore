@@ -5,11 +5,11 @@ import { StandingsDTO } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 @Component({
-  selector: 'reelscore-match-fixture-standings',
+  selector: 'rs-match-fixture-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `
-    :host ::ng-deep reelscore-standings-table {
+    :host ::ng-deep rs-standings-table {
       @apply sm:min-w-[500px] sm:mx-auto;
     }
     section { @apply flex flex-col px-2 py-5 md:p-5 gap-5; }
@@ -20,22 +20,22 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       @if (standings() !== null) { @if
       (hasMultipleGroups(standings()!.league.id)) { @for (multipleStanding of
       standings()!.league.standings; track $index) {
-      <reelscore-standings-table
+      <rs-standings-table
         [ranks]="multipleStanding"
         [league]="standings()!.league"
       />
       } } @else {
-      <reelscore-standings-table
+      <rs-standings-table
         [ranks]="standings()!.league.standings![0]"
         [league]="standings()!.league"
       />
       @if (standings()!.league.standings!.length === 3) {
-      <reelscore-standings-table
+      <rs-standings-table
         [ranks]="standings()!.league.standings![1]"
         [league]="standings()!.league"
         header="Heimtabelle"
       />
-      <reelscore-standings-table
+      <rs-standings-table
         [ranks]="standings()!.league.standings![2]"
         [league]="standings()!.league"
         header="Auswärtstabelle"

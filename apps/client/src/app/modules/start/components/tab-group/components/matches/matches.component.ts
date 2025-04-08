@@ -18,7 +18,7 @@ import { CompetitionLabel, ExtendedFixtureDTO } from '@lib/models';
 import { MatchDayListComponent } from './components';
 
 @Component({
-  selector: 'reelscore-matches',
+  selector: 'rs-matches',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchDayListComponent],
   styles: `
@@ -27,7 +27,7 @@ import { MatchDayListComponent } from './components';
   template: `
     @if (competitions().length) { @for (competition of competitions(); track
     competition.name) {
-    <reelscore-start-match-day-list
+    <rs-start-match-day-list
       class="animate-fade-in"
       [competition]="competition"
     />

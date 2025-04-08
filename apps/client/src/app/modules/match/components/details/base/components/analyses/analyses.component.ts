@@ -16,7 +16,7 @@ import {
 import { AnalysesLastFixturesComponent } from './components';
 
 @Component({
-  selector: 'reelscore-match-fixture-analyses',
+  selector: 'rs-match-fixture-analyses',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesLastFixturesComponent],
   styles: `
@@ -82,7 +82,7 @@ import { AnalysesLastFixturesComponent } from './components';
     </section>
 
     @if (hasEvaluations()) {
-    <reelscore-match-fixture-analyses-last-fixtures
+    <rs-match-fixture-analyses-last-fixtures
       [fixtures]="latestFixtures()!"
       [teams]="teams()"
     />
@@ -93,7 +93,7 @@ export class MatchFixtureAnalysesComponent {
   latestFixturesStore = inject(LatestFixturesStore);
   latestFixtures = this.latestFixturesStore.latestFixtures;
 
-  // TODO refactor analyses to own component reelscore-match-fixture-analyses-base
+  // TODO refactor analyses to own component rs-match-fixture-analyses-base
   analysesStore = inject(AnalysesStore);
   analyses = this.analysesStore.analyses;
 

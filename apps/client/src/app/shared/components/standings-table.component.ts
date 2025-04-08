@@ -19,7 +19,7 @@ import { BreakpointObserverService } from '../services';
 import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
 
 @Component({
-  selector: 'reelscore-standings-table',
+  selector: 'rs-standings-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatTableModule, OptimizedImageComponent, TeamNamePipe],
   styles: `
@@ -82,7 +82,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo">
             @defer (on viewport) {
-            <reelscore-optimized-image
+            <rs-optimized-image
               [source]="getCompetitionLogo(league().id)"
               alternate="league logo"
               width="24"
@@ -114,7 +114,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
           <div class="name-wrapper">
             <div class="team-logo">
               @defer (on viewport) {
-              <reelscore-optimized-image
+              <rs-optimized-image
                 [source]="getTeamLogo(element.team.id)"
                 alternate="team logo"
                 width="14"

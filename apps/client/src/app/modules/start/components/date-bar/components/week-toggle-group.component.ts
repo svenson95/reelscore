@@ -32,7 +32,7 @@ export class IsTodayPipe implements PipeTransform {
 }
 
 @Component({
-  selector: 'reelscore-week-toogle-group',
+  selector: 'rs-week-toogle-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,

@@ -14,7 +14,7 @@ import {
 import { FixtureDTO } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-match-header-data',
+  selector: 'rs-match-header-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
@@ -31,7 +31,7 @@ import { FixtureDTO } from '@lib/models';
     <div class="team-column">
       <div class="team-logo">
         @if (isLoaded()) {
-        <reelscore-optimized-image
+        <rs-optimized-image
           [source]="getTeamLogo(data()!.teams.home.id)"
           alternate="home logo"
           width="48"
@@ -52,7 +52,7 @@ import { FixtureDTO } from '@lib/models';
 
     <div class="result-column">
       @if (isLoaded()) {
-      <reelscore-result-label
+      <rs-result-label
         [result]="data()!.goals"
         [status]="data()!.fixture.status.short"
         [isNotStarted]="isNotStarted(data()!)"
@@ -64,7 +64,7 @@ import { FixtureDTO } from '@lib/models';
     <div class="team-column">
       <div class="team-logo">
         @if (isLoaded()) {
-        <reelscore-optimized-image
+        <rs-optimized-image
           [source]="getTeamLogo(data()!.teams.away.id)"
           alternate="away logo"
           width="48"

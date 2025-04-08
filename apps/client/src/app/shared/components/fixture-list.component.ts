@@ -20,7 +20,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
 import { ResultLabelComponent } from './result-label.component';
 
 @Component({
-  selector: 'reelscore-fixture-list',
+  selector: 'rs-fixture-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
@@ -92,7 +92,7 @@ import { ResultLabelComponent } from './result-label.component';
               </span>
               <div class="team-logo">
                 @defer (on viewport) {
-                <reelscore-optimized-image
+                <rs-optimized-image
                   [source]="getTeamLogo(match.teams.home.id)"
                   alternate="home logo"
                   width="14"
@@ -107,7 +107,7 @@ import { ResultLabelComponent } from './result-label.component';
               class="result"
               [class.is-upcoming]="match | isStatus : notStartedStates"
             >
-              <reelscore-result-label
+              <rs-result-label
                 [result]="match.goals"
                 [status]="match.fixture.status.short"
                 [isNotStarted]="match | isStatus : notStartedStates"
@@ -116,7 +116,7 @@ import { ResultLabelComponent } from './result-label.component';
             <div>
               <div class="team-logo">
                 @defer (on viewport) {
-                <reelscore-optimized-image
+                <rs-optimized-image
                   [source]="getTeamLogo(match.teams.away.id)"
                   alternate="away logo"
                   width="14"

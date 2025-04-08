@@ -5,7 +5,7 @@ import { RouterView } from '../router-view';
 import { DateBarComponent, TabGroupComponent } from './components';
 
 @Component({
-  selector: 'reelscore-start-page',
+  selector: 'rs-start-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, TabGroupComponent],
   styles: `
@@ -14,9 +14,9 @@ import { DateBarComponent, TabGroupComponent } from './components';
     }
   `,
   template: `
-    <reelscore-date-bar class="animate-drop-from-top" />
+    <rs-date-bar class="animate-drop-from-top" />
 
-    <reelscore-start-tab-group />
+    <rs-start-tab-group />
   `,
 })
 export class StartComponent extends RouterView {}

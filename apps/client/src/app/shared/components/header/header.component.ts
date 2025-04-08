@@ -22,9 +22,9 @@ const SELECTED_LEAGUE_DEFAULT = 'start';
   template: `
     <div class="wrapper">
       <a mat-button [routerLink]="['/']">
-        <reelscore-logo [showLoadingIndicator]="true" />
+        <rs-logo [showLoadingIndicator]="true" />
       </a>
-      <reelscore-league-select [selectedLeague]="selectedLeague()" />
+      <rs-league-select [selectedLeague]="selectedLeague()" />
     </div>
   `,
 })

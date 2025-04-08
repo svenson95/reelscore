@@ -22,7 +22,7 @@ import { STORE_PROVIDERS } from './store';
 const ANGULAR_MODULES = [DatePipe, MatButtonModule];
 
 @Component({
-  selector: 'reelscore-match-page',
+  selector: 'rs-match-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...ANGULAR_MODULES,
@@ -55,7 +55,7 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
     } @else {
     <section class="page-header animate-drop-from-top">
       <div>
-        <reelscore-back-button />
+        <rs-back-button />
         <button mat-stroked-button disabled>
           {{ routerDate() | date : 'dd.MM.yy' }}
         </button>
@@ -76,14 +76,11 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
     </section>
 
     <section class="match-header">
-      <reelscore-match-header
-        [data]="data()"
-        [highlights]="fixture()?.highlights"
-      />
+      <rs-match-header [data]="data()" [highlights]="fixture()?.highlights" />
     </section>
 
     <section class="data">
-      <reelscore-match-details />
+      <rs-match-details />
     </section>
     }
   `,

@@ -5,7 +5,7 @@ import { LatestFixturesDTO, MatchTeams } from '@lib/models';
 import { AnalysesEvaluationsComponent } from './components';
 
 @Component({
-  selector: 'reelscore-match-fixture-analyses-last-fixtures',
+  selector: 'rs-match-fixture-analyses-last-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesEvaluationsComponent],
   styles: `
@@ -16,13 +16,13 @@ import { AnalysesEvaluationsComponent } from './components';
     <h3 class="match-section-title">LETZTE SPIELE</h3>
     <section class="latest-fixtures">
       <div class="home">
-        <reelscore-match-fixture-analyses-evaluations
+        <rs-match-fixture-analyses-evaluations
           [fixtures]="fixtures().home"
           [relatedTeam]="teams().home"
         />
       </div>
       <div class="away">
-        <reelscore-match-fixture-analyses-evaluations
+        <rs-match-fixture-analyses-evaluations
           [fixtures]="fixtures().away"
           [relatedTeam]="teams().away"
         />

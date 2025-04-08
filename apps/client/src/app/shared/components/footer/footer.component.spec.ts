@@ -19,7 +19,7 @@ describe('FooterComponent', () => {
     const nativeElement = fixture.debugElement.nativeElement;
 
     // Act
-    const logo = nativeElement.querySelector('reelscore-logo');
+    const logo = nativeElement.querySelector('rs-logo');
 
     // Assert
     expect(logo).toBeTruthy();

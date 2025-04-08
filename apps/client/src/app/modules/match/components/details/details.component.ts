@@ -23,7 +23,7 @@ const ANGULAR_MODULES = [
 ];
 
 @Component({
-  selector: 'reelscore-match-details',
+  selector: 'rs-match-details',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...ANGULAR_MODULES,
@@ -57,12 +57,12 @@ const ANGULAR_MODULES = [
         </ng-template>
 
         <div class="tab-content">
-          <reelscore-match-fixture-data />
+          <rs-match-fixture-data />
           @if (fixture()?.data) { @if (!hasNoStandings() && !isKoPhase()) {
-          <reelscore-match-fixture-standings [standings]="standings()" />
+          <rs-match-fixture-standings [standings]="standings()" />
           }
-          <reelscore-match-evaluations [evaluations]="evaluations()" />
-          <reelscore-match-latest-fixtures />
+          <rs-match-evaluations [evaluations]="evaluations()" />
+          <rs-match-latest-fixtures />
           } @else {
           <mat-spinner [diameter]="32"></mat-spinner>
           }
@@ -78,7 +78,7 @@ const ANGULAR_MODULES = [
 
         <div class="tab-content">
           @if (analyses()) {
-          <reelscore-match-fixture-analyses />
+          <rs-match-fixture-analyses />
           }
         </div>
       </mat-tab>
@@ -92,7 +92,7 @@ const ANGULAR_MODULES = [
 
         <div class="tab-content">
           @if (events()) {
-          <reelscore-match-events [data]="events()!" />
+          <rs-match-events [data]="events()!" />
           }
         </div>
       </mat-tab>
@@ -106,7 +106,7 @@ const ANGULAR_MODULES = [
 
         <div class="tab-content">
           @if (statistics()) {
-          <reelscore-match-statistics [data]="statistics()!" />
+          <rs-match-statistics [data]="statistics()!" />
           }
         </div>
       </mat-tab>

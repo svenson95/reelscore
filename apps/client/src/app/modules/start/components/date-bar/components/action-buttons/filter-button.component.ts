@@ -19,7 +19,7 @@ import {
 import { CompetitionId } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-filter-button',
+  selector: 'rs-filter-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatButtonModule,
@@ -84,7 +84,7 @@ import { CompetitionId } from '@lib/models';
         (click)="setFilter(competition.id)"
         [class.is-filtering]="isSameId(competition.id)"
       >
-        <reelscore-optimized-image
+        <rs-optimized-image
           class="competition-logo"
           [source]="competition.image"
           [alternate]="competition.label"

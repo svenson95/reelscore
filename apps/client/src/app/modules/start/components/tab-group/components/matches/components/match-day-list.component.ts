@@ -17,7 +17,7 @@ import {
 import { CompetitionRound } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-start-match-day-list',
+  selector: 'rs-start-match-day-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
@@ -54,7 +54,7 @@ import { CompetitionRound } from '@lib/models';
     <div class="header">
       <div class="competition-logo">
         @defer (on viewport) {
-        <reelscore-optimized-image
+        <rs-optimized-image
           [source]="getCompetitionLogo(competition().fixtures[0].league.id)"
           alternate="competition logo"
           width="24"
@@ -72,7 +72,7 @@ import { CompetitionRound } from '@lib/models';
         {{ round() | competitionRound : 'header' }}
       </span>
     </div>
-    <reelscore-fixture-list [fixtures]="competition().fixtures" />
+    <rs-fixture-list [fixtures]="competition().fixtures" />
   `,
 })
 export class MatchDayListComponent {

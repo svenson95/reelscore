@@ -15,7 +15,7 @@ import {
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-competition-fixtures-list',
+  selector: 'rs-competition-fixtures-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
@@ -32,7 +32,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     }
     section.round { 
       @apply flex items-center gap-4 p-2 mb-4;
-      reelscore-optimized-image { min-width: 34px; min-height: 26px; }
+      rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
     section.days { 
       @apply flex flex-col gap-5; 
@@ -46,7 +46,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     <section class="round">
       <div class="competition-logo">
         @defer (on viewport) {
-        <reelscore-optimized-image
+        <rs-optimized-image
           [source]="getCompetitionLogo(competitionId())"
           alternate="league logo"
           width="24"
@@ -62,7 +62,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       @for (day of fixturesDays(); track $index + '-' + day.date) {
       <div class="day">
         <p class="group-date">{{ day.date | date : 'cccc | dd.MM' }}</p>
-        <reelscore-fixture-list [fixtures]="day.fixtures" />
+        <rs-fixture-list [fixtures]="day.fixtures" />
       </div>
       }
     </section>

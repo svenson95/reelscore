@@ -16,7 +16,7 @@ import { FixtureDTO, FixtureHighlights } from '@lib/models';
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
 @Component({
-  selector: 'reelscore-match-header',
+  selector: 'rs-match-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `
@@ -50,14 +50,14 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     }
   `,
   template: `
-    <reelscore-match-header-data [data]="data()" />
+    <rs-match-header-data [data]="data()" />
     @if (highlights() && isNotGoalLess()) {
     <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
       <div class="divider"></div>
     </div>
     <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
       @if (data()) {
-      <reelscore-match-header-details
+      <rs-match-header-details
         class="match-highlights"
         [data]="data()!"
         [highlights]="highlights()!"
