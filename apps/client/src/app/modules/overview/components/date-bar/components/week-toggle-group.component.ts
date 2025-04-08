@@ -16,19 +16,14 @@ import moment from 'moment';
 
 import {
   DateString,
-  TODAY_ISO_STRING,
+  TODAY_DATE_STRING,
   WeekdayFixturesStore,
   WeekdayStandingsStore,
 } from '@app/shared';
 
-@Pipe({
-  name: 'isToday',
-  standalone: true,
-})
+@Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
-  transform(day: DateString): boolean {
-    return day === TODAY_ISO_STRING;
-  }
+  transform = (day: DateString): boolean => day === TODAY_DATE_STRING;
 }
 
 @Component({
@@ -50,7 +45,7 @@ export class IsTodayPipe implements PipeTransform {
       @include mat.button-toggle-overrides(
         (
           height: 36px,
-          label-text-weight: 400,
+          label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-text-3),
           background-color: var(--rs-color-orange),
           selected-state-background-color: var(--rs-color-white),
@@ -64,10 +59,10 @@ export class IsTodayPipe implements PipeTransform {
       @apply flex border-none;
 
       mat-button-toggle.mat-button-toggle {
-        @apply flex-1 text-rs-font-size-body-2 border-l-0;
+        @apply flex-1 border-l-0;
 
-        &.is-today {
-          --mat-standard-button-toggle-background-color: var(--rs-color-white-2);
+        &.is-today ::ng-deep .mat-button-toggle-label-content {
+          @apply underline decoration-solid;
         }
 
         &.mat-button-toggle-appearance-standard ::ng-deep {
@@ -82,10 +77,6 @@ export class IsTodayPipe implements PipeTransform {
             }
           }
         }
-      }
-
-      .mat-button-toggle-checked {
-        @apply font-bold;
       }
     }
   `,
@@ -124,22 +115,24 @@ export class IsTodayPipe implements PipeTransform {
 export class WeekToggleGroupComponent {
   selectedDay = input.required<DateString>();
   weekdays = input.required<DateString[]>();
+  dateSelected = output<DateString>();
+
   indexedWeekdays = computed<{ day: DateString; index: number }[]>(() =>
     this.weekdays().map((day) => ({ day, index: new Date(day).getDate() }))
   );
 
-  dateSelected = output<DateString>();
-
-  weekFixtures = inject(WeekdayFixturesStore);
-  weekStandings = inject(WeekdayStandingsStore);
+  private weekFixtures = inject(WeekdayFixturesStore);
+  private weekStandings = inject(WeekdayStandingsStore);
   isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
   );
 
-  setDateTo(value: number): void {
-    const date = new Date(this.selectedDay());
-    date.setDate(date.getDate() + value);
-    const formattedDate = moment(date).tz('Europe/Berlin').format('YYYY-MM-DD');
+  setDateTo(target: number): void {
+    const targetDate = new Date(this.selectedDay());
+    targetDate.setDate(targetDate.getDate() + target);
+    const formattedDate = moment(targetDate)
+      .tz('Europe/Berlin')
+      .format('YYYY-MM-DD');
     this.dateSelected.emit(formattedDate);
   }
 }
