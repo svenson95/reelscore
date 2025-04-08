@@ -1,38 +1,30 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  HostListener,
-  inject,
-  untracked,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import {
-  DateService,
-  WeekdayFixturesStore,
-  WeekdayStandingsStore,
-} from '@app/shared';
-
-import { MatchesComponent, StandingsComponent } from './components';
+  OverviewFixturesComponent,
+  OverviewStandingsComponent,
+} from './components';
+import { OverviewContentFacade } from './content.facade';
 import { HideHeaderDirective } from './directives';
+
+const ANGULAR_MODULES = [MatTabsModule];
 
 @Component({
   selector: 'section[rs-overview-content]',
-  imports: [
-    MatTabsModule,
-    HideHeaderDirective,
-    MatchesComponent,
-    StandingsComponent,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ...ANGULAR_MODULES,
+    HideHeaderDirective,
+    OverviewFixturesComponent,
+    OverviewStandingsComponent,
+  ],
+  providers: [OverviewContentFacade],
   styles: `
     .tab-content {
       @apply max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap w-full p-5 gap-5 mx-auto;
 
-      rs-matches, rs-standings {
-        @apply w-full min-w-[200px];
-      }
+      .fixtures-container, .standings-container { @apply w-full min-w-[200px]; }
     }
   `,
   template: `
@@ -45,17 +37,20 @@ import { HideHeaderDirective } from './directives';
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
         <div class="tab-content">
-          @if (weekFixtures() && weekFixtures()![idx]) {
-          <rs-matches
-            [dayFixtures]="weekFixtures()![idx]"
-            [isLoading]="weekFixturesStore.isLoading()"
-            [error]="weekFixturesStore.error()"
+          @let fixtures = weekFixtures()[idx]; @let standings =
+          weekStandings()[idx]; @if (fixtures) {
+          <rs-overview-fixtures
+            class="fixtures-container"
+            [filteredFixtures]="fixtures"
+            [isLoading]="fixturesLoading()"
+            [error]="fixturesError()"
           />
-          } @if (weekStandings() && weekStandings()![idx]) {
-          <rs-standings
-            [weekStandings]="weekStandings()![idx]"
-            [isLoading]="weekStandingsStore.isLoading()"
-            [error]="weekStandingsStore.error()"
+          } @if (standings) {
+          <rs-overview-standings
+            class="standings-container"
+            [weekStandings]="standings"
+            [isLoading]="standingsLoading()"
+            [error]="standingsError()"
           />
           }
         </div>
@@ -65,30 +60,15 @@ import { HideHeaderDirective } from './directives';
   `,
 })
 export class OverviewContentComponent {
-  dateService = inject(DateService);
-  weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-  selectedDay = this.dateService.selectedDay;
-  tabIndex = this.dateService.selectedTabIndex;
+  facade = inject(OverviewContentFacade);
+  tabIndex = this.facade.tabIndex;
+  weekdays = this.facade.weekdays;
 
-  weekFixturesStore = inject(WeekdayFixturesStore);
-  weekFixtures = this.weekFixturesStore.weekFixtures;
-  weekStandingsStore = inject(WeekdayStandingsStore);
-  weekStandings = this.weekStandingsStore.weekStandings;
+  weekFixtures = this.facade.weekFixtures;
+  fixturesLoading = this.facade.fixturesLoading;
+  fixturesError = this.facade.fixturesError;
 
-  calenderWeekEffect = effect(() => {
-    this.dateService.calenderWeek();
-    const date = untracked(this.selectedDay).split('T')[0];
-    this.weekFixturesStore.loadWeekdayFixtures(date);
-    this.weekStandingsStore.loadWeekdayStandings(date);
-  });
-
-  @HostListener('document:visibilitychange', ['$event'])
-  onVisibilityChange(): void {
-    const isStartRoute = /^\/\d{4}-\d{2}-\d{2}$/.test(location.pathname);
-    if (!document.hidden && isStartRoute) {
-      const date = untracked(this.selectedDay).split('T')[0];
-      this.weekFixturesStore.loadWeekdayFixtures(date, true);
-      this.weekStandingsStore.loadWeekdayStandings(date, true);
-    }
-  }
+  weekStandings = this.facade.weekStandings;
+  standingsLoading = this.facade.standingsLoading;
+  standingsError = this.facade.standingsError;
 }

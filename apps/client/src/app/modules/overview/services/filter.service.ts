@@ -1,4 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
+
 import { CompetitionId } from '@lib/models';
 
 export abstract class FilterService {

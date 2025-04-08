@@ -9,14 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import {
-  DateService,
-  FilterService,
-  OptimizedImageComponent,
-  SELECT_COMPETITION_DATA,
-  StandingsStore,
-} from '@app/shared';
+import { OptimizedImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
 import { CompetitionId } from '@lib/models';
+
+import { DateService, FilterService } from '../../../../services';
+import { FilteredStandingsStore } from '../../../../store';
 
 @Component({
   selector: 'rs-filter-button',
@@ -102,7 +99,7 @@ import { CompetitionId } from '@lib/models';
 })
 export class FilterButtonComponent {
   groups = SELECT_COMPETITION_DATA;
-  standingsStore = inject(StandingsStore);
+  standingsStore = inject(FilteredStandingsStore);
   dateService = inject(DateService);
   filterService = inject(FilterService);
   selectedCompetition = this.filterService.selectedCompetition;
@@ -124,7 +121,7 @@ export class FilterButtonComponent {
 
   updateStanding(id: CompetitionId): void {
     const date = this.dateService.selectedDay();
-    this.standingsStore.loadStanding(date, id).then(() => {
+    this.standingsStore.loadFilteredStandings(date, id).then(() => {
       this.selectedCompetition.set(id);
     });
   }

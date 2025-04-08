@@ -22,7 +22,7 @@ import {
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   LOCALE_PROVIDER,
 } from './config';
-import { GLOBAL_SERVICE_PROVIDERS, GLOBAL_STORE_PROVIDERS } from './shared';
+import { GLOBAL_SERVICE_PROVIDERS } from './shared';
 
 const BASE_PROVIDERS = [
   provideExperimentalZonelessChangeDetection(),
@@ -52,6 +52,5 @@ export const appConfig: ApplicationConfig = {
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,
-    ...GLOBAL_STORE_PROVIDERS,
   ],
 };

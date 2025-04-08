@@ -6,80 +6,78 @@ import {
   input,
 } from '@angular/core';
 
+import { StandingsTableComponent } from '@app/shared';
 import { StandingsDTO } from '@lib/models';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
-import {
-  FilterService,
-  StandingsStore,
-  StandingsTableComponent,
-} from '@app/shared';
+import { OverviewStandingsFacade } from './standings.facade';
 
 @Component({
-  selector: 'rs-standings',
+  selector: 'rs-overview-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
+  providers: [OverviewStandingsFacade],
   styles: `
     :host { @apply flex flex-col gap-5; }
   `,
   template: `
-    @if (isFiltering() && dayStandings() !== null && dayStandings() !==
-    undefined) { @if (hasMultipleGroups(dayStandings()!.league.id)) { @for
-    (multipleStanding of dayStandings()!.league.standings; track $index) {
+    @let filteredStandings = dayStandings(); @let ws = weekStandings(); @if
+    (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for
+    (multipleStanding of filteredStandings.league.standings; track $index) {
     <rs-standings-table
       class="animate-fade-in"
       [ranks]="multipleStanding"
-      [league]="dayStandings()!.league"
+      [league]="filteredStandings.league"
     />
     } } @else {
     <rs-standings-table
       class="animate-fade-in"
-      [ranks]="dayStandings()!.league.standings![0]"
-      [league]="dayStandings()!.league"
+      [ranks]="filteredStandings.league.standings![0]"
+      [league]="filteredStandings.league"
     />
 
-    @if (dayStandings()!.league.standings!.length === 3) {
+    @if (showHomeAndAwayStandings()) {
     <rs-standings-table
       class="animate-fade-in"
-      [ranks]="dayStandings()!.league.standings![1]"
-      [league]="dayStandings()!.league"
+      [ranks]="filteredStandings.league.standings![1]"
+      [league]="filteredStandings.league"
       header="Heimtabelle"
     />
     <rs-standings-table
       class="animate-fade-in"
-      [ranks]="dayStandings()!.league.standings![2]"
-      [league]="dayStandings()!.league"
+      [ranks]="filteredStandings.league.standings![2]"
+      [league]="filteredStandings.league"
       header="Auswärtstabelle"
     />
-    } } } @else if (weekStandings().length > 0) { @for (standings of
-    weekStandings(); track $index) {
-    <rs-standings-table
-      class="animate-fade-in"
-      [ranks]="standings.league.standings![0]"
-      [league]="standings.league"
-    />
-    } } @else if (isLoading()) {
+    } } } @else if (isLoading()) {
     <p class="no-data">Tabellen werden geladen ...</p>
     } @else if (error()) {
     <p class="no-data">Fehler beim Laden der Tabellen.</p>
-    } @else if (!isLoading()) {
+    } @else if (showTopFive()) { @for (standing of ws; track $index) {
+    <rs-standings-table
+      class="animate-fade-in"
+      [ranks]="standing.league.standings![0]"
+      [league]="standing.league"
+    />
+    } } @else if (!isLoading()) {
     <p class="no-data">Keine Tabellen gefunden.</p>
     }
   `,
 })
-export class StandingsComponent {
-  standingStore = inject(StandingsStore);
+export class OverviewStandingsComponent {
   weekStandings = input.required<StandingsDTO[]>();
   isLoading = input.required<boolean>();
   error = input.required<string | null>();
 
-  standingsStore = inject(StandingsStore);
-  dayStandings = this.standingsStore.standings;
+  facade = inject(OverviewStandingsFacade);
+  dayStandings = this.facade.dayStandings;
+  isFiltering = this.facade.isFilwtering;
+  hasMultipleGroups = this.facade.hasMultipleGroups;
+  showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
 
-  filterService = inject(FilterService);
-  isFiltering = computed<boolean>(
-    () => this.filterService.selectedCompetition() !== null
-  );
-
-  hasMultipleGroups = isCompetitionWithMultipleGroups;
+  // TODO check if this signal can be moved to facade, depend on weekStandings is a problem (1/2)
+  showTopFive = computed<boolean>(() => {
+    const standings = this.weekStandings();
+    if (!standings) return false;
+    return standings.length === 5;
+  });
 }

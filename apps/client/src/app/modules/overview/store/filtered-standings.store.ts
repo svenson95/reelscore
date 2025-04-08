@@ -3,22 +3,25 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { CompetitionId, StandingsDTO } from '@lib/models';
 
-import { DateString } from '../constants';
-import { StateHandler } from '../models';
-import { HttpStandingsService } from '../services';
+import { DateString } from '../../../shared/constants';
+import { StateHandler } from '../../../shared/models';
+import { HttpStandingsService } from '../../../shared/services';
 
-type StandingsState = StateHandler<{ standings: StandingsDTO | null }>;
+type FilteredStandingsState = StateHandler<{ standings: StandingsDTO | null }>;
 
-const initialState: StandingsState = {
+const initialState: FilteredStandingsState = {
   isLoading: false,
   error: null,
   standings: null,
 };
 
-export const StandingsStore = signalStore(
+export const FilteredStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadStanding(date: DateString, id: CompetitionId): Promise<void> {
+    async loadFilteredStandings(
+      date: DateString,
+      id: CompetitionId
+    ): Promise<void> {
       patchState(store, { isLoading: true });
 
       http.getStandings(id, date).subscribe({
@@ -26,7 +29,7 @@ export const StandingsStore = signalStore(
           patchState(store, {
             standings,
             isLoading: false,
-            error: standings ? null : 'Standing not found',
+            error: standings ? null : 'Filtered Standings not found',
           }),
         error: (error) =>
           patchState(store, {

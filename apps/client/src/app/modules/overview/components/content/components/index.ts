@@ -1,2 +1,2 @@
-export * from './matches/matches.component';
+export * from './fixtures/fixtures.component';
 export * from './standings/standings.component';
