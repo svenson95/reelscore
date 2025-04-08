@@ -25,10 +25,6 @@ export class RouterView {
     const competitionUrl = route.split('/')[2];
     const dataWithUrl = (data: CompetitionData) => data.url === competitionUrl;
     const competitionData = SELECT_COMPETITION_DATA_FLAT.find(dataWithUrl);
-    if (!competitionData) {
-      throw new Error(`Competition data not found ('${competitionUrl}')`);
-    }
-
     return competitionData;
   }
 }

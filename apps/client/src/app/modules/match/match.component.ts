@@ -2,28 +2,22 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   input,
   OnChanges,
-  untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import {
-  BackButtonComponent,
-  CompetitionData,
-  SELECT_COMPETITION_DATA_FLAT,
-} from '@app/shared';
+import { BackButtonComponent } from '@app/shared';
 import { CompetitionUrl, FixtureId } from '@lib/models';
 
 import { RouterView } from '../router-view';
 
 import { MatchDetailsComponent, MatchHeaderComponent } from './components';
+import { MatchFacade } from './match.facade';
 import { SERVICE_PROVIDERS } from './services';
-import { FixtureStore, STORE_PROVIDERS } from './store';
+import { STORE_PROVIDERS } from './store';
 
 const ANGULAR_MODULES = [DatePipe, MatButtonModule];
 
@@ -36,7 +30,7 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
     MatchHeaderComponent,
     MatchDetailsComponent,
   ],
-  providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
+  providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply w-full flex flex-col gap-5; }
     section.page-header {
@@ -56,7 +50,7 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
     .date-placeholder {  @apply m-auto w-[36px] h-[12px] bg-gray-200 rounded; }
   `,
   template: `
-    @if (fixtureStore.error()) {
+    @if (error()) {
     <p class="no-data">Es ist ein Fehler aufgetreten.</p>
     } @else {
     <section class="page-header animate-drop-from-top">
@@ -95,55 +89,20 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
   `,
 })
 export class MatchComponent extends RouterView implements OnChanges {
-  router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
-
-  fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
-  data = computed(() => this.fixtureStore.fixture()?.data);
-
   fixtureId = input.required<FixtureId>();
   competitionUrl = input.required<CompetitionUrl>();
 
-  routerDate = computed(() => {
-    const route = this.activatedRoute.snapshot;
-    return route.params['date'];
-  });
-
-  invalidUrlEffect = effect(() => {
-    const fixture = this.data();
-    const activeRoute = untracked(this.competitionUrl);
-    const leagueData = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.url === activeRoute
-    );
-    if (!fixture || !leagueData) return;
-
-    const fixtureLeagueId = fixture.league.id;
-    const invalidUrl = fixtureLeagueId !== leagueData.id;
-    if (invalidUrl) {
-      const fixtureId = fixture.fixture.id;
-      const league = SELECT_COMPETITION_DATA_FLAT.find(
-        (d) => d.id === fixture.league.id
-      );
-      if (!league) return;
-      this.redirectTo({ league, fixtureId });
-    }
-  });
+  facade = inject(MatchFacade);
+  fixture = this.facade.fixture;
+  routerDate = this.facade.routerDate;
+  data = this.facade.data;
+  error = this.facade.fixtureStore.error;
 
   async ngOnChanges(): Promise<void> {
-    await this.fixtureStore.loadFixture(this.fixtureId());
+    await this.facade.fixtureStore.loadFixture(this.fixtureId());
   }
 
-  private redirectTo({
-    league,
-    fixtureId,
-  }: {
-    league: CompetitionData;
-    fixtureId: FixtureId;
-  }) {
-    if (!league) throw Error('Unexpected League not found');
-    this.router.navigate(['../..', league.url, fixtureId], {
-      relativeTo: this.activatedRoute,
-    });
-  }
+  invalidUrlEffect = effect(() =>
+    this.facade.handleInvalidUrl(this.competitionUrl())
+  );
 }
