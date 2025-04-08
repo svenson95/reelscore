@@ -41,7 +41,7 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
       @apply px-5 sticky top-0 rs-bg-color z-10;
       margin-top: -1.25rem;
     }
-    section.data { @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto; }
+    section.match-details { @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto; }
     button { 
       --mdc-outlined-button-container-height: 36px;
       @apply rs-as-label; 
@@ -66,9 +66,8 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
           {{ routerDate() | date : 'ccc' }}
         </button>
         <button mat-stroked-button disabled>
-          @if (data()?.fixture?.date) {
-          {{ data()!.fixture.date | date : 'HH:mm' }}
-          } @else {
+          @let fixtureDate = fixture()?.data?.fixture?.date; @if (fixtureDate) {
+          {{ fixtureDate | date : 'HH:mm' }} } @else {
           <div class="date-placeholder"></div>
           }
         </button>
@@ -79,7 +78,7 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
       <rs-match-header [data]="data()" [highlights]="fixture()?.highlights" />
     </section>
 
-    <section class="data">
+    <section class="match-details">
       <rs-match-details />
     </section>
     }
