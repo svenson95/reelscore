@@ -83,7 +83,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
           <div class="competition-logo">
             @defer (on viewport) {
             <rs-optimized-image
-              [source]="getCompetitionLogo(league().id)"
+              [source]="competitionLogo()"
               alternate="league logo"
               width="24"
               height="24"
@@ -220,8 +220,8 @@ export class StandingsTableComponent {
     }
   });
 
+  competitionLogo = computed(() => getCompetitionLogo(this.league().id));
   getTeamLogo = getTeamLogo;
-  getCompetitionLogo = getCompetitionLogo;
 
   columns = computed(() => {
     const filtered = this.DISPLAYED_COLUMNS.filter(

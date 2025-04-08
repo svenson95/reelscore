@@ -16,6 +16,7 @@ export interface CompetitionWithFixtures extends Competition {
 }
 
 const BASE = 'assets/images';
-export const getCompetitionLogo = (id: CompetitionId) =>
+export const getCompetitionLogo = (id: CompetitionId): string =>
   `${BASE}/league/${id}.png`;
-export const getTeamLogo = (id: number) => `${BASE}/team-logo/${id}.png`;
+export const getTeamLogo = (id: number): string =>
+  `${BASE}/team-logo/${id}.png`;

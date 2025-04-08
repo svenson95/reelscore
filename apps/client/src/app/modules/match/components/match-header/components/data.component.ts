@@ -28,11 +28,12 @@ import { FixtureDTO } from '@lib/models';
     .team-logo-placeholder { @apply w-[48px] h-[48px] bg-gray-200 rounded-full self-center; }
   `,
   template: `
+    @let fixture = data();
     <div class="team-column">
       <div class="team-logo">
-        @if (isLoaded()) {
+        @if (fixture) {
         <rs-optimized-image
-          [source]="getTeamLogo(data()!.teams.home.id)"
+          [source]="homeLogo()"
           alternate="home logo"
           width="48"
           height="48"
@@ -42,8 +43,8 @@ import { FixtureDTO } from '@lib/models';
         }
       </div>
       <span class="team-name">
-        @if (isLoaded()) {
-        {{ data()!.teams.home.name | teamName }}
+        @if (fixture) {
+        {{ fixture.teams.home.name | teamName }}
         } @else {
         <div class="team-name-placeholder"></div>
         }
@@ -51,11 +52,11 @@ import { FixtureDTO } from '@lib/models';
     </div>
 
     <div class="result-column">
-      @if (isLoaded()) {
+      @if (fixture) {
       <rs-result-label
-        [result]="data()!.goals"
-        [status]="data()!.fixture.status.short"
-        [isNotStarted]="isNotStarted(data()!)"
+        [result]="fixture.goals"
+        [status]="fixture.fixture.status.short"
+        [isNotStarted]="isNotStarted()"
         [showPostponedText]="true"
       />
       }
@@ -63,9 +64,9 @@ import { FixtureDTO } from '@lib/models';
 
     <div class="team-column">
       <div class="team-logo">
-        @if (isLoaded()) {
+        @if (fixture) {
         <rs-optimized-image
-          [source]="getTeamLogo(data()!.teams.away.id)"
+          [source]="awayLogo()"
           alternate="away logo"
           width="48"
           height="48"
@@ -75,8 +76,8 @@ import { FixtureDTO } from '@lib/models';
         }
       </div>
       <span class="team-name">
-        @if (isLoaded()) {
-        {{ data()!.teams.away.name | teamName }}
+        @if (fixture) {
+        {{ fixture.teams.away.name | teamName }}
         } @else {
         <div class="team-name-placeholder"></div>
         }
@@ -89,9 +90,20 @@ export class HeaderDataComponent {
 
   isLoaded = computed<boolean>(() => !!this.data());
 
-  getTeamLogo = getTeamLogo;
-  isNotStarted = (fixture: FixtureDTO): boolean => {
+  homeLogo = computed<string>(() => {
+    const id = this.data()?.teams.home.id ?? 0;
+    return getTeamLogo(id);
+  });
+  awayLogo = computed<string>(() => {
+    const id = this.data()?.teams.away.id ?? 0;
+    return getTeamLogo(id);
+  });
+
+  isNotStarted = computed<boolean>(() => {
+    const fixture = this.data();
+    if (!fixture) return false;
+
     const notStartedValues = ['TBD', 'NS'];
     return notStartedValues.some((v) => v === fixture.fixture.status.short);
-  };
+  });
 }
