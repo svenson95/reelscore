@@ -18,7 +18,7 @@ import { MatchesComponent, StandingsComponent } from './components';
 import { HideHeaderDirective } from './directives';
 
 @Component({
-  selector: 'rs-start-tab-group',
+  selector: 'section[rs-overview-content]',
   imports: [
     MatTabsModule,
     HideHeaderDirective,
@@ -27,7 +27,7 @@ import { HideHeaderDirective } from './directives';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    section {
+    .tab-content {
       @apply max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap w-full p-5 gap-5 mx-auto;
 
       rs-matches, rs-standings {
@@ -44,7 +44,7 @@ import { HideHeaderDirective } from './directives';
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
-        <section>
+        <div class="tab-content">
           @if (weekFixtures() && weekFixtures()![idx]) {
           <rs-matches
             [dayFixtures]="weekFixtures()![idx]"
@@ -58,13 +58,13 @@ import { HideHeaderDirective } from './directives';
             [error]="weekStandingsStore.error()"
           />
           }
-        </section>
+        </div>
       </mat-tab>
       }
     </mat-tab-group>
   `,
 })
-export class TabGroupComponent {
+export class OverviewContentComponent {
   dateService = inject(DateService);
   weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
   selectedDay = this.dateService.selectedDay;

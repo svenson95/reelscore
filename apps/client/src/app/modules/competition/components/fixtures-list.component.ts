@@ -26,28 +26,26 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
   styles: `
     :host { @apply flex flex-col; }
     p { @apply text-rs-font-size-body-2 font-medium; }
-    section.round, .day {
+    div.round, .day {
       @apply border-[1px] bg-white;
       border-color: var(--mdc-outlined-button-outline-color);
     }
-    section.round { 
+    div.round { 
       @apply flex items-center gap-4 p-2 mb-4;
       rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
-    section.days { 
+    div.days { 
       @apply flex flex-col gap-5; 
-      .group-date { 
-        @apply py-2 px-4 border-b-[1px]; 
-      }
+      .group-date { @apply py-2 px-4 border-b-[1px]; }
     }
     .competition-logo-placeholder {  @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded-full; }
   `,
   template: `
-    <section class="round">
+    <div class="round">
       <div class="competition-logo">
         @defer (on viewport) {
         <rs-optimized-image
-          [source]="getCompetitionLogo(competitionId())"
+          [source]="competitionLogo()"
           alternate="league logo"
           width="24"
           height="24"
@@ -57,15 +55,15 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
         }
       </div>
       <p>{{ round()! | competitionRound }}</p>
-    </section>
-    <section class="days">
+    </div>
+    <div class="days">
       @for (day of fixturesDays(); track $index + '-' + day.date) {
       <div class="day">
         <p class="group-date">{{ day.date | date : 'cccc | dd.MM' }}</p>
         <rs-fixture-list [fixtures]="day.fixtures" />
       </div>
       }
-    </section>
+    </div>
   `,
 })
 export class FixturesListComponent {
@@ -73,15 +71,16 @@ export class FixturesListComponent {
   fixtures = input.required<ExtendedFixtureDTO[]>();
   isLoading = input.required<boolean>();
 
-  getCompetitionLogo = getCompetitionLogo;
-
-  round = computed(() => this.fixtures()?.[0].league.round);
-  date = computed(() => this.fixtures()?.[0].fixture.date);
-  competitionId = computed(() => this.fixtures()?.[0].league.id);
+  firstFixture = computed<ExtendedFixtureDTO>(() => this.fixtures()?.[0]);
+  round = computed(() => this.firstFixture().league.round);
+  date = computed(() => this.firstFixture().fixture.date);
+  competitionId = computed(() => this.firstFixture().league.id);
+  competitionLogo = computed(() => getCompetitionLogo(this.competitionId()));
 
   fixturesDays = computed(() => {
     const fixtures = this.fixtures();
     if (!fixtures) return [];
+
     const days = [
       ...new Set(fixtures.map((f) => f.fixture.date.substring(0, 10))),
     ];

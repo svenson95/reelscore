@@ -14,7 +14,7 @@ import {
 } from './components';
 
 @Component({
-  selector: 'rs-date-bar',
+  selector: 'section[rs-date-bar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePickerComponent,

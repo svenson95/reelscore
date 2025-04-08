@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import { FixtureStore, LatestFixturesStore } from '../../../../../store';
+
 import { MatchFixturesTableComponent } from './components';
 
 @Component({
@@ -14,7 +15,7 @@ import { MatchFixturesTableComponent } from './components';
   imports: [MatchFixturesTableComponent],
   styles: `
     :host { @apply flex flex-col; }
-    section { 
+    .latest-fixtures-container { 
       @apply flex flex-col md:flex-row bg-white px-5 pb-5 pt-4 mt-5 gap-5; 
 
       border-width: 1px;
@@ -28,29 +29,26 @@ import { MatchFixturesTableComponent } from './components';
   `,
   template: `
     <h3 class="match-section-title">LETZTE SPIELE</h3>
-    <section>
-      @if (latestFixturesStore.isLoading()) {
+    <div class="latest-fixtures-container">
+      @let lf = latestFixtures(); @if (isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
-      } @else if (latestFixturesStore.error()) {
+      } @else if (error()) {
       <p class="no-data">Fehler beim Laden der Spiele.</p>
-      } @else if (!latestFixturesStore.latestFixtures()) {
+      } @else if (!lf) {
       <p class="no-data">Keine Spiele gefunden.</p>
-      } @else { @if (latestFixturesStore.latestFixtures()) {
-      <rs-match-fixtures-table
-        [team]="data()!.teams.home"
-        [fixtures]="latestFixturesStore.latestFixtures()!.home"
-      />
-      <rs-match-fixtures-table
-        [team]="data()!.teams.away"
-        [fixtures]="latestFixturesStore.latestFixtures()!.away"
-      />
+      } @else { @let d = data(); @if (d) {
+      <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />
+      <rs-match-fixtures-table [team]="d.teams.away" [fixtures]="lf.away" />
       } }
-    </section>
+    </div>
   `,
 })
 export class MatchLatestFixturesComponent {
-  latestFixturesStore = inject(LatestFixturesStore);
+  private latestFixturesStore = inject(LatestFixturesStore);
+  isLoading = computed(() => this.latestFixturesStore.isLoading());
+  error = computed(() => this.latestFixturesStore.error());
+  latestFixtures = computed(() => this.latestFixturesStore.latestFixtures());
 
-  fixtureStore = inject(FixtureStore);
+  private fixtureStore = inject(FixtureStore);
   data = computed(() => this.fixtureStore.fixture()?.data);
 }
