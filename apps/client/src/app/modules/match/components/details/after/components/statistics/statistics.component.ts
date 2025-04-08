@@ -9,7 +9,7 @@ import { StatisticDTO } from '@lib/models';
 import { StatisticList } from './models';
 
 @Component({
-  selector: 'reelscore-match-statistics',
+  selector: 'rs-match-statistics',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

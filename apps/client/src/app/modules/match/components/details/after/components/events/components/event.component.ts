@@ -15,7 +15,7 @@ import {
 } from './types';
 
 @Component({
-  selector: 'reelscore-match-event',
+  selector: 'rs-match-event',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     EventGoalComponent,
@@ -30,13 +30,13 @@ import {
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
-    <reelscore-event-goal [event]="event" />
+    <rs-event-goal [event]="event" />
     } @case("subst") {
-    <reelscore-event-substitution [event]="event" />
+    <rs-event-substitution [event]="event" />
     } @case("Card") {
-    <reelscore-event-card [event]="event" />
+    <rs-event-card [event]="event" />
     } @case("Var") {
-    <reelscore-event-var [event]="event" />
+    <rs-event-var [event]="event" />
     }} }
   `,
 })

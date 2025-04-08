@@ -9,7 +9,7 @@ import { EvaluationDTO, EvaluationTeam } from '@lib/models';
 import { EvaluationsStore } from '../../../../../store/evaluations.store';
 
 @Component({
-  selector: 'reelscore-match-evaluations',
+  selector: 'rs-match-evaluations',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [EvaluationsStore],

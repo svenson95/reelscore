@@ -17,7 +17,7 @@ import { AnalysesEvaluationComponent } from './components';
 import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
 
 @Component({
-  selector: 'reelscore-match-fixture-analyses-evaluations',
+  selector: 'rs-match-fixture-analyses-evaluations',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AnalysesEvaluationComponent,
@@ -85,14 +85,14 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
         <div class="evaluation">
           <div class="home-col">
             @if (evaluation.team === 'home') {
-            <reelscore-match-fixture-analyses-evaluation
+            <rs-match-fixture-analyses-evaluation
               [analyzedElement]="evaluation"
             />
             }
           </div>
           <div class="away-col">
             @if (evaluation.team === 'away') {
-            <reelscore-match-fixture-analyses-evaluation
+            <rs-match-fixture-analyses-evaluation
               [analyzedElement]="evaluation"
             />
             }

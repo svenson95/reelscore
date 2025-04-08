@@ -30,7 +30,7 @@ describe('HeaderComponent', () => {
     const debugElement = fixture.debugElement;
 
     // when
-    const logo = debugElement.query(By.css('reelscore-logo'));
+    const logo = debugElement.query(By.css('rs-logo'));
 
     // then
     expect(logo).toBeTruthy();

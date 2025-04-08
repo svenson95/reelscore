@@ -5,19 +5,19 @@ import { NextFixturesStore } from '../store';
 import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
-  selector: 'reelscore-competition-next-fixtures',
+  selector: 'rs-competition-next-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FixturesListComponent],
   template: `
     @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
     (multipleFixtures of fixtures()!; track $index) {
-    <reelscore-competition-fixtures-list
+    <rs-competition-fixtures-list
       [fixtures]="multipleFixtures"
       [competition]="competition()!.id"
       [isLoading]="isLoading()"
     />
     } } @else if (fixtures()!.length === 1) {
-    <reelscore-competition-fixtures-list
+    <rs-competition-fixtures-list
       [fixtures]="fixtures()![0]"
       [competition]="competition()!.id"
       [isLoading]="isLoading()"

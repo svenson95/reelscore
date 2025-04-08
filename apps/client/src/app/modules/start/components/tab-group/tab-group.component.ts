@@ -18,7 +18,7 @@ import { MatchesComponent, StandingsComponent } from './components';
 import { HideHeaderDirective } from './directives';
 
 @Component({
-  selector: 'reelscore-start-tab-group',
+  selector: 'rs-start-tab-group',
   imports: [
     MatTabsModule,
     HideHeaderDirective,
@@ -30,7 +30,7 @@ import { HideHeaderDirective } from './directives';
     section {
       @apply max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap w-full p-5 gap-5 mx-auto;
 
-      reelscore-matches, reelscore-standings {
+      rs-matches, rs-standings {
         @apply w-full min-w-[200px];
       }
     }
@@ -46,13 +46,13 @@ import { HideHeaderDirective } from './directives';
       <mat-tab [label]="weekday">
         <section>
           @if (weekFixtures() && weekFixtures()![idx]) {
-          <reelscore-matches
+          <rs-matches
             [dayFixtures]="weekFixtures()![idx]"
             [isLoading]="weekFixturesStore.isLoading()"
             [error]="weekFixturesStore.error()"
           />
           } @if (weekStandings() && weekStandings()![idx]) {
-          <reelscore-standings
+          <rs-standings
             [weekStandings]="weekStandings()![idx]"
             [isLoading]="weekStandingsStore.isLoading()"
             [error]="weekStandingsStore.error()"

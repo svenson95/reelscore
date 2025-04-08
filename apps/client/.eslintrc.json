@@ -21,7 +21,7 @@
           "warn",
           {
             "type": "element",
-            "prefix": "reelscore",
+            "prefix": "rs",
             "style": "kebab-case"
           }
         ],

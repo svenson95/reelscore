@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
 import { StandingsTableComponent } from '@app/shared';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
+
 import { CompetitionStandingsStore } from '../store';
 
 @Component({
-  selector: 'reelscore-competition-standings',
+  selector: 'rs-competition-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `
@@ -13,36 +19,32 @@ import { CompetitionStandingsStore } from '../store';
     .home-and-away-standings { 
       @apply flex gap-5 flex-col md:flex-row; 
 
-      > reelscore-standings-table { @apply flex-1; }
+      rs-standings-table { @apply flex-1; }
     }
   `,
   template: `
-    @if (store.standings() !== null) { @if
-    (hasMultipleGroups(standings()!.league.id)) { @for (multipleStanding of
-    standings()!.league.standings; track $index) {
-    <reelscore-standings-table
-      [ranks]="multipleStanding"
-      [league]="standings()!.league"
-    />
+    @let data = standings(); @if (data !== null) { @if (hasMultipleGroups()) {
+    @for (multipleStanding of data.league.standings; track $index) {
+    <rs-standings-table [ranks]="multipleStanding" [league]="data.league" />
     } } @else {
-    <reelscore-standings-table
-      [ranks]="standings()!.league.standings![0]"
-      [league]="standings()!.league"
+    <rs-standings-table
+      [ranks]="data.league.standings![0]"
+      [league]="data.league"
     />
-    @if (standings()!.league.standings!.length === 3) {
+    @if (showHomeAndAwayStandings()) {
     <div class="home-and-away-standings">
-      <reelscore-standings-table
-        [ranks]="standings()!.league.standings![1]"
-        [league]="standings()!.league"
+      <rs-standings-table
+        [ranks]="data.league.standings![1]"
+        [league]="data.league"
         header="Heimtabelle"
       />
-      <reelscore-standings-table
-        [ranks]="standings()!.league.standings![2]"
-        [league]="standings()!.league"
+      <rs-standings-table
+        [ranks]="data.league.standings![2]"
+        [league]="data.league"
         header="Auswärtstabelle"
       />
     </div>
-    } } } @else if (store.isLoading()) {
+    } } } @else if (isLoading()) {
     <p class="no-data">Tabelle wird geladen ...</p>
     } @else {
     <p class="no-data">Keine Tabelle vorhanden</p>
@@ -50,8 +52,19 @@ import { CompetitionStandingsStore } from '../store';
   `,
 })
 export class CompetitionStandingsComponent {
-  store = inject(CompetitionStandingsStore);
+  private store = inject(CompetitionStandingsStore);
   standings = this.store.standings;
+  isLoading = this.store.isLoading;
 
-  hasMultipleGroups = isCompetitionWithMultipleGroups;
+  hasMultipleGroups = computed<boolean>(() => {
+    const standings = this.standings();
+    if (!standings) return false;
+    return isCompetitionWithMultipleGroups(standings.league.id);
+  });
+
+  showHomeAndAwayStandings = computed<boolean>(() => {
+    const standings = this.standings();
+    if (!standings) return false;
+    return standings.league.standings?.length === 3;
+  });
 }

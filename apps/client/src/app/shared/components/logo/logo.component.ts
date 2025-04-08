@@ -9,7 +9,7 @@ import {
 import { LoadingService } from '../../services';
 
 @Component({
-  selector: 'reelscore-logo',
+  selector: 'rs-logo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `

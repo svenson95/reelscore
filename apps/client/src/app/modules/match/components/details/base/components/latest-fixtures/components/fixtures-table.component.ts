@@ -13,7 +13,7 @@ import {
 import { FixtureDTO, FixtureTeam } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-match-fixtures-table',
+  selector: 'rs-match-fixtures-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,
@@ -55,7 +55,7 @@ import { FixtureDTO, FixtureTeam } from '@lib/models';
       </div>
 
       <div class="result">
-        <reelscore-result-label
+        <rs-result-label
           [result]="match.score.fulltime"
           [status]="match.fixture.status.short"
         />

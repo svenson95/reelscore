@@ -9,7 +9,7 @@ import { FixtureStore, LatestFixturesStore } from '../../../../../store';
 import { MatchFixturesTableComponent } from './components';
 
 @Component({
-  selector: 'reelscore-match-latest-fixtures',
+  selector: 'rs-match-latest-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixturesTableComponent],
   styles: `
@@ -21,7 +21,7 @@ import { MatchFixturesTableComponent } from './components';
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
-    reelscore-match-fixtures-table:first-of-type {
+    rs-match-fixtures-table:first-of-type {
       @apply pb-5 md:pb-0 md:pr-5 border-b-[1px] md:border-b-0 md:border-r-[1px]; 
     }
     .no-data { @apply m-auto; }
@@ -36,11 +36,11 @@ import { MatchFixturesTableComponent } from './components';
       } @else if (!latestFixturesStore.latestFixtures()) {
       <p class="no-data">Keine Spiele gefunden.</p>
       } @else { @if (latestFixturesStore.latestFixtures()) {
-      <reelscore-match-fixtures-table
+      <rs-match-fixtures-table
         [team]="data()!.teams.home"
         [fixtures]="latestFixturesStore.latestFixtures()!.home"
       />
-      <reelscore-match-fixtures-table
+      <rs-match-fixtures-table
         [team]="data()!.teams.away"
         [fixtures]="latestFixturesStore.latestFixtures()!.away"
       />

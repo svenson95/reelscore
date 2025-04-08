@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { EvaluationAnalyses } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-match-fixture-analyses-evaluation',
+  selector: 'rs-match-fixture-analyses-evaluation',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `

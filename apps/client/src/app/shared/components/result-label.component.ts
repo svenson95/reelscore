@@ -8,7 +8,7 @@ import {
 import { Goals } from '@lib/models';
 
 @Component({
-  selector: 'reelscore-result-label',
+  selector: 'rs-result-label',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   styles: `

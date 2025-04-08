@@ -11,7 +11,7 @@ import { ExtendedFixtureDTO } from '@lib/models';
 import { FixtureStore } from '../../../../../store';
 
 @Component({
-  selector: 'reelscore-match-fixture-data',
+  selector: 'rs-match-fixture-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CompetitionRoundPipe],
   styles: `

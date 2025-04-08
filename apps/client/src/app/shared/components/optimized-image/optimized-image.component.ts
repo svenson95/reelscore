@@ -2,7 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'reelscore-optimized-image',
+  selector: 'rs-optimized-image',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgOptimizedImage],
   styles: `

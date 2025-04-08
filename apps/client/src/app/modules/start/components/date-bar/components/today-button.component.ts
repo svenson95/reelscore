@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DateString, TODAY_DATE_STRING } from '@app/shared';
 
 @Component({
-  selector: 'reelscore-today-button',
+  selector: 'rs-today-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
   styles: `

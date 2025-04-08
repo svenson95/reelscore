@@ -16,7 +16,7 @@ import {
 } from '@app/shared';
 
 @Component({
-  selector: 'reelscore-standings',
+  selector: 'rs-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `
@@ -26,26 +26,26 @@ import {
     @if (isFiltering() && dayStandings() !== null && dayStandings() !==
     undefined) { @if (hasMultipleGroups(dayStandings()!.league.id)) { @for
     (multipleStanding of dayStandings()!.league.standings; track $index) {
-    <reelscore-standings-table
+    <rs-standings-table
       class="animate-fade-in"
       [ranks]="multipleStanding"
       [league]="dayStandings()!.league"
     />
     } } @else {
-    <reelscore-standings-table
+    <rs-standings-table
       class="animate-fade-in"
       [ranks]="dayStandings()!.league.standings![0]"
       [league]="dayStandings()!.league"
     />
 
     @if (dayStandings()!.league.standings!.length === 3) {
-    <reelscore-standings-table
+    <rs-standings-table
       class="animate-fade-in"
       [ranks]="dayStandings()!.league.standings![1]"
       [league]="dayStandings()!.league"
       header="Heimtabelle"
     />
-    <reelscore-standings-table
+    <rs-standings-table
       class="animate-fade-in"
       [ranks]="dayStandings()!.league.standings![2]"
       [league]="dayStandings()!.league"
@@ -53,7 +53,7 @@ import {
     />
     } } } @else if (weekStandings().length > 0) { @for (standings of
     weekStandings(); track $index) {
-    <reelscore-standings-table
+    <rs-standings-table
       class="animate-fade-in"
       [ranks]="standings.league.standings![0]"
       [league]="standings.league"

@@ -15,7 +15,7 @@ import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
 
 @Component({
-  selector: 'reelscore-match-events',
+  selector: 'rs-match-events',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent, TimeTotalPipe],
   styles: `
@@ -39,7 +39,7 @@ import { TimeTotalPipe } from './pipes';
       <div class="event-row">
         <div class="team home">
           @if (event.team.id === homeId) {
-          <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
+          <rs-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
           <span class="time">{{ event | timeTotal }}'</span>
           }
@@ -75,7 +75,7 @@ import { TimeTotalPipe } from './pipes';
 
         <div class="team away">
           @if (event.team.id === awayId) {
-          <reelscore-match-event [event]="event" [homeTeamId]="homeId" />
+          <rs-match-event [event]="event" [homeTeamId]="homeId" />
           } @else {
           <span class="time">{{ event | timeTotal }}'</span>
           }

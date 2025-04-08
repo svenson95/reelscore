@@ -13,7 +13,7 @@ import { LastFixturesStore } from '../store';
 import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
-  selector: 'reelscore-competition-last-fixtures',
+  selector: 'rs-competition-last-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, FixturesListComponent],
   styles: `
@@ -22,13 +22,13 @@ import { FixturesListComponent } from './fixtures-list.component';
   template: `
     @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
     (multipleFixtures of fixtures()!; track $index) {
-    <reelscore-competition-fixtures-list
+    <rs-competition-fixtures-list
       [fixtures]="multipleFixtures"
       [competition]="competition()!.id"
       [isLoading]="isLoading()"
     />
     } } @else if (fixtures()!.length === 1) {
-    <reelscore-competition-fixtures-list
+    <rs-competition-fixtures-list
       [fixtures]="fixtures()![0]"
       [competition]="competition()!.id"
       [isLoading]="isLoading()"
