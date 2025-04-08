@@ -1,23 +1,30 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 import { CompetitionData, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
 import { FixtureId } from '@lib/models';
 
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs';
 import { FixtureStore } from './store';
 
 @Injectable()
 export class MatchFacade {
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
+  routerEvents = toSignal(
+    inject(Router).events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    )
+  );
 
   fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
   data = computed(() => this.fixtureStore.fixture()?.data);
 
   routerDate = computed(() => {
-    const route = this.activatedRoute.snapshot;
-    return route.params['date'];
+    const route = this.routerEvents();
+    if (!route) return null;
+    return route.url.split('/')[1];
   });
 
   handleInvalidUrl(activeRoute: string): void {

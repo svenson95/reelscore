@@ -31,12 +31,12 @@ import { FooterComponent, HeaderComponent } from './shared';
   `,
   template: `
     @if(!isRouterLoading()) {
-    <header></header>
+    <header rs-header-content></header>
     }
     <main>
       <router-outlet />
     </main>
-    <footer></footer>
+    <footer rs-footer-content></footer>
   `,
 })
 export class AppComponent implements AfterViewInit {

@@ -9,25 +9,26 @@ import { AnalysesEvaluationsComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesEvaluationsComponent],
   styles: `
-    section { @apply flex flex-wrap gap-5 mt-5; }
-    section div { @apply flex-1 bg-white p-5; }
+    .latest-fixtures { @apply flex flex-wrap gap-5 mt-5; }
+    .latest-fixtures div { @apply flex-1 bg-white p-5; }
   `,
   template: `
     <h3 class="match-section-title">LETZTE SPIELE</h3>
-    <section class="latest-fixtures">
+    @let f = fixtures(); @let t = teams();
+    <div class="latest-fixtures">
       <div class="home">
         <rs-match-fixture-analyses-evaluations
-          [fixtures]="fixtures().home"
-          [relatedTeam]="teams().home"
+          [fixtures]="f.home"
+          [relatedTeam]="t.home"
         />
       </div>
       <div class="away">
         <rs-match-fixture-analyses-evaluations
-          [fixtures]="fixtures().away"
-          [relatedTeam]="teams().away"
+          [fixtures]="f.away"
+          [relatedTeam]="t.away"
         />
       </div>
-    </section>
+    </div>
   `,
 })
 export class AnalysesLastFixturesComponent {

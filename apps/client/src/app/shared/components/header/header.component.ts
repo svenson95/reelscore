@@ -11,8 +11,7 @@ import { LeagueSelectComponent } from './components';
 const SELECTED_LEAGUE_DEFAULT = 'start';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'header',
+  selector: 'header[rs-header-content]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, LogoComponent, LeagueSelectComponent],
   styles: `

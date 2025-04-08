@@ -22,8 +22,8 @@ import { AnalysesLastFixturesComponent } from './components';
   styles: `
     :host { @apply flex flex-col mt-5 gap-5; }
 
-    section.fixture-analyse { @apply p-5 text-rs-color-text-3 text-rs-font-size-small sm:text-rs-font-size-body-1; }
-    section.fixture-analyse > div { 
+    .fixture-analyse { @apply p-5 text-rs-color-text-3 text-rs-font-size-small sm:text-rs-font-size-body-1; }
+    .fixture-analyse > div { 
       @apply w-full flex flex-wrap gap-5; 
 
       &:not(:last-of-type) { @apply border-b-[1px] pb-5; }
@@ -44,7 +44,7 @@ import { AnalysesLastFixturesComponent } from './components';
     }
   `,
   template: `
-    <section class="fixture-analyse">
+    <div class="fixture-analyse">
       <div class="playersWithStreak">
         <div class="home">
           @if (analyses()!.playersWithStreak.home.length > 0) { @for (player of
@@ -79,7 +79,7 @@ import { AnalysesLastFixturesComponent } from './components';
           <span class="strongTeam">Ja</span> }
         </div>
       </div>
-    </section>
+    </div>
 
     @if (hasEvaluations()) {
     <rs-match-fixture-analyses-last-fixtures

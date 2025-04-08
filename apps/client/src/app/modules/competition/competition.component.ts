@@ -41,11 +41,13 @@ import {
   styles: `
     :host { @apply flex flex-col w-full; }
     :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
-    section.data { @apply p-5; }
+    section.competition-data { @apply p-5; }
   `,
   template: `
-    <rs-competition-header />
-    <section class="data">
+    <section class="page-header">
+      <rs-competition-header />
+    </section>
+    <section class="competition-data">
       <mat-tab-group animationDuration="0">
         <mat-tab>
           <ng-template mat-tab-label>

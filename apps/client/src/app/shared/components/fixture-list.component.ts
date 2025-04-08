@@ -36,7 +36,7 @@ import { ResultLabelComponent } from './result-label.component';
     li { @apply bg-white; }
     li > a { @apply flex items-stretch; }
     li:not(:last-child) { @apply border-b-[1px]; }
-    li > section { @apply inline-flex flex-col; }
+    li > div { @apply inline-flex flex-col; }
     .time-label.is-finished { @apply line-through decoration-rs-color-orange; }
     .time { 
       @apply justify-center items-center min-w-[50px] text-rs-font-size-small; 
@@ -63,7 +63,7 @@ import { ResultLabelComponent } from './result-label.component';
       @for(match of fixtures(); track match.fixture.id) {
       <li>
         <a matRipple [routerLink]="linkToMatch(match)">
-          <section
+          <div
             class="time"
             [class.is-upcoming]="match | isStatus : notStartedStates"
             [class.is-playing]="
@@ -81,8 +81,8 @@ import { ResultLabelComponent } from './result-label.component';
               {{ match.fixture.date | date : 'HH:mm' }}
               }
             </span>
-          </section>
-          <section class="teams">
+          </div>
+          <div class="teams">
             <div>
               <span
                 class="team-name"
@@ -133,7 +133,7 @@ import { ResultLabelComponent } from './result-label.component';
                 {{ match.teams.away.name | teamName : 'short' }}
               </span>
             </div>
-          </section>
+          </div>
         </a>
       </li>
       }

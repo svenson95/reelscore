@@ -22,16 +22,16 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
-    .content > section { 
+    .content > .teams-form { 
       @apply flex flex-col gap-5 my-5 mx-auto;
 
       &:first-of-type { @apply border-b-[1px] pb-5; }
       .header { @apply w-full flex justify-between m-auto; }
-      .section-hints { @apply flex gap-3 items-center text-rs-color-text-2; }
-      .section-title { @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1; }
+      .form-hints { @apply flex gap-3 items-center text-rs-color-text-2; }
+      .form-title { @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1; }
     }
 
-    .section-hints, .today { @apply text-rs-font-size-small xs:text-rs-font-size-body-2; }
+    .form-hints, .today { @apply text-rs-font-size-small xs:text-rs-font-size-body-2; }
 
     .evaluation {
       @apply flex gap-5 text-rs-font-size-small xs:text-rs-font-size-body-2;
@@ -62,10 +62,10 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
       @if (evaluations() === null) {
       <p class="no-data">Form wird geladen ...</p>
       } @else {
-      <section>
+      <div class="teams-form results">
         <div class="header">
-          <span class="section-title">Ergebnisse</span>
-          <div class="section-hints">
+          <span class="form-title">Ergebnisse</span>
+          <div class="form-hints">
             <span>Niederlage</span>
             <span>Unentschieden</span>
             <span>Sieg</span>
@@ -93,12 +93,12 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
             }
           </div>
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div class="teams-form performance">
         <div class="header">
-          <span class="section-title">Performance</span>
-          <div class="section-hints">
+          <span class="form-title">Performance</span>
+          <div class="form-hints">
             <span>Schlecht</span>
             <span>Mittelmäßig</span>
             <span>Gut</span>
@@ -131,7 +131,7 @@ import { EvaluationsStore } from '../../../../../store/evaluations.store';
             }
           </div>
         </div>
-      </section>
+      </div>
       }
     </div>
   `,

@@ -51,7 +51,9 @@ const ANGULAR_MODULES = [DatePipe, MatButtonModule];
   `,
   template: `
     @if (error()) {
-    <p class="no-data">Es ist ein Fehler aufgetreten.</p>
+    <section class="page-error">
+      <p class="no-data">Es ist ein Fehler aufgetreten.</p>
+    </section>
     } @else {
     <section class="page-header animate-drop-from-top">
       <div>
@@ -88,7 +90,7 @@ export class MatchComponent extends RouterView implements OnChanges {
   fixtureId = input.required<FixtureId>();
   competitionUrl = input.required<CompetitionUrl>();
 
-  facade = inject(MatchFacade);
+  private facade = inject(MatchFacade);
   fixture = this.facade.fixture;
   routerDate = this.facade.routerDate;
   data = this.facade.data;

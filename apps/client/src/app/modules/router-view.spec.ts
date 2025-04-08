@@ -1,27 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { routes } from '../app.routes';
-import {
-  COMPETITION_ID,
-  COMPETITION_URL,
-  CompetitionCode,
-  SELECT_LEAGUE,
-} from '../constants';
-import { CompetitionUrl } from '../models';
+import { CompetitionUrl } from '@lib/models';
 
-import { LeagueComponent } from './start/start.component';
+import { routes } from '../app.routes';
+
+import { OverviewComponent } from './overview/overview.component';
 
 describe('RouterView', () => {
-  let fixture: ComponentFixture<LeagueComponent>;
-  let component: LeagueComponent;
+  let fixture: ComponentFixture<OverviewComponent>;
+  let component: OverviewComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeagueComponent, RouterTestingModule.withRoutes(routes)],
+      imports: [OverviewComponent, RouterTestingModule.withRoutes(routes)],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LeagueComponent);
+    fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
@@ -30,11 +25,9 @@ describe('RouterView', () => {
   describe('getLeagueByUrl', () => {
     it('should return league if input is valid', () => {
       // given
-      const validData = SELECT_LEAGUE[2];
-
+      // const validData = SELECT_LEAGUE[2];
       // when
       // const league = component.getLeagueByUrl(validData.url as CompetitionUrl);
-
       // then
       // expect(league).not.toBeUndefined();
       // if (league) expect(league.image).toBe(validData.image);
@@ -58,17 +51,15 @@ describe('RouterView', () => {
   describe('updateLeagueOnRouting', () => {
     it('should update selected league after routing', () => {
       // given
-      const mock = CompetitionCode.ENGLAND_PREMIER_LEAGUE;
-      const validRoute = COMPETITION_URL[mock] as CompetitionUrl;
-      const validMetaData = SELECT_LEAGUE.find(
-        (m) => m.id === COMPETITION_ID[mock]
-      );
+      // const mock = CompetitionCode.ENGLAND_PREMIER_LEAGUE;
+      // const validRoute = COMPETITION_URL[mock] as CompetitionUrl;
+      // const validMetaData = SELECT_LEAGUE.find(
+      //   (m) => m.id === COMPETITION_ID[mock]
+      // );
       // expect(component.selectedLeague()).toBe(undefined);
       // jest.spyOn(component, 'updateLeague');
-
       // // when
       // component.updateLeague(validRoute);
-
       // // then
       // expect(component.updateLeague).toHaveBeenCalledWith(validRoute);
       // expect(component.selectedLeague()).toBe(validMetaData);

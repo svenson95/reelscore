@@ -8,8 +8,8 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./modules/start/start.component').then(
-            (m) => m.StartComponent
+          import('./modules/overview/overview.component').then(
+            (m) => m.OverviewComponent
           ),
         data: { shouldReuse: true },
       },
