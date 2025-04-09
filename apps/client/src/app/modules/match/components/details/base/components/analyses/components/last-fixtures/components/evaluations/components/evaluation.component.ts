@@ -36,11 +36,12 @@ import { EvaluationAnalyses } from '@lib/models';
       }
       <div class="type">
         @switch(analyzedElement().type) { @case('GOAL') { TOR } @case('NO_GOAL')
-        { KEIN TOR } @case('LAST_MINUTE_GOAL') { LAST-MINUTE TOR }
-        @case('PENALTY') { ELFMETER } @case('RED_CARD') { ROTE KARTE }
-        @case('NO_RED_CARD') { KEINE ROTE KARTE } @case('KEY_PLAYER_INJURY') {
-        STAMMSPIELER VERLETZT } @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') {
-        STAMMSPIELER NÄCHSTES SPIEL GESPERRT } }
+        { KEIN TOR } @case('NO_FOUL') { KEIN FOUL } @case('LAST_MINUTE_GOAL') {
+        LAST-MINUTE TOR } @case('PENALTY') { ELFMETER } @case('RED_CARD') { ROTE
+        KARTE } @case('NO_RED_CARD') { KEINE ROTE KARTE }
+        @case('KEY_PLAYER_INJURY') { STAMMSPIELER VERLETZT }
+        @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') { STAMMSPIELER NÄCHSTES SPIEL
+        GESPERRT } }
       </div>
       @if (analyzedElement().player !== null) {
       <div class="player">

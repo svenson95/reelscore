@@ -131,6 +131,7 @@ export type AnalysisType =
   | 'GOAL'
   | 'NO_GOAL'
   | 'LAST_MINUTE_GOAL'
+  | 'NO_FOUL'
   | 'PENALTY'
   | 'NO_PENALTY'
   | 'RED_CARD'
