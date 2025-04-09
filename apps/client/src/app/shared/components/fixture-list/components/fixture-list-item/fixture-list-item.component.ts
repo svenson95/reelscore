@@ -83,7 +83,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
             {{ match.teams.home.name | teamName : 'short' }}
           </span>
           <div class="team-logo">
-            @defer (on viewport) {
+            @defer {
             <rs-optimized-image
               [source]="homeLogo()"
               alternate="home logo"
@@ -104,7 +104,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
         </div>
         <div>
           <div class="team-logo">
-            @defer (on viewport) {
+            @defer {
             <rs-optimized-image
               [source]="awayLogo()"
               alternate="away logo"

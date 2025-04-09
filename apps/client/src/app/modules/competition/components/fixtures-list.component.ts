@@ -44,7 +44,7 @@ import {
   template: `
     <div class="round">
       <div class="competition-logo">
-        @defer (on viewport) {
+        @defer {
         <rs-optimized-image
           [source]="competitionLogo()"
           alternate="league logo"
