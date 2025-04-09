@@ -81,7 +81,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo">
-            @defer (on viewport) {
+            @defer {
             <rs-optimized-image
               [source]="competitionLogo()"
               alternate="league logo"
@@ -113,7 +113,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
             <div class="team-logo">
-              @defer (on viewport) {
+              @defer {
               <rs-optimized-image
                 [source]="getTeamLogo(element.team.id)"
                 alternate="team logo"

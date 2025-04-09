@@ -54,7 +54,7 @@ import {
   template: `
     <div class="header">
       <div class="competition-logo">
-        @defer (on viewport) {
+        @defer {
         <rs-optimized-image
           [source]="getCompetitionLogo()"
           alternate="competition logo"
