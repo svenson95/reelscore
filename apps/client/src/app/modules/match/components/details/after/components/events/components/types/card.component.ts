@@ -14,12 +14,12 @@ import { EventDTO } from '@lib/models';
     @if (event(); as event) {
     <span>{{ event.player.name }}</span>
     <span>
-      @switch (event.detail) { @case('Tripping') { Gelbe Karte }
-      @case('Roughing') { Rote Karte } @case("Argument") { Auseinandersetzung}
-      @case("Holding") { Festhalten} @case("Delay of game") { Zeitspiel }
+      @switch (event.detail) { @case('Tripping') { Foul durch Beinstellen }
+      @case('Roughing') { Grobes Foul } @case("Argument") { Auseinandersetzung }
+      @case("Holding") { Festhalten } @case("Delay of game") { Zeitspiel }
       @case("Elbowing") { Ellbogenstoß } @case("Unsportsmanlike conduct") {
       Unsportliches Verhalten } @case("Serious foul") { Schweres Foul }
-      @case("Diving") { Schwalbe } }
+      @case("Diving") { Schwalbe } @default { {{ event.detail }} } }
     </span>
     }
   `,
