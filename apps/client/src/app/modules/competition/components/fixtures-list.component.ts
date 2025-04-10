@@ -39,12 +39,18 @@ import {
       @apply flex flex-col gap-5; 
       .group-date { @apply py-2 px-4 border-b-[1px]; }
     }
-    .competition-logo-placeholder {  @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded-full; }
+    .competition-logo {
+      @apply w-[24px] h-[24px];
+
+      &-placeholder {
+        @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded;
+      }
+    }
   `,
   template: `
     <div class="round">
       <div class="competition-logo">
-        @defer {
+        @defer (on viewport) {
         <rs-optimized-image
           [source]="competitionLogo()"
           alternate="league logo"

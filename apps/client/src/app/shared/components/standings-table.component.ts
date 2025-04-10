@@ -73,15 +73,23 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
       }
     }
 
-    .competition-logo-placeholder {  @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded; }
-    .team-logo-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
+    .competition-logo { 
+      @apply w-[24px] h-[24px];
+
+      &-placeholder { @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded; }
+    }
+    .team-logo { 
+      @apply w-[14px] h-[14px];
+
+      &-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
+    }
   `,
   template: `
     <table mat-table [dataSource]="ranks()">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo">
-            @defer {
+            @defer (on viewport) {
             <rs-optimized-image
               [source]="competitionLogo()"
               alternate="league logo"
@@ -113,7 +121,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
             <div class="team-logo">
-              @defer {
+              @defer (on viewport) {
               <rs-optimized-image
                 [source]="getTeamLogo(element.team.id)"
                 alternate="team logo"
