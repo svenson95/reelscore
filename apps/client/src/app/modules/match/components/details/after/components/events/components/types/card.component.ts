@@ -19,7 +19,7 @@ import { EventDTO } from '@lib/models';
       @case("Holding") { Festhalten } @case("Delay of game") { Zeitspiel }
       @case("Elbowing") { Ellbogenstoß } @case("Unsportsmanlike conduct") {
       Unsportliches Verhalten } @case("Serious foul") { Schweres Foul }
-      @case("Diving") { Schwalbe } @default { {{ event.detail }} } }
+      @case("Diving") { Schwalbe } @default { {{ event.comments }} } }
     </span>
     }
   `,
