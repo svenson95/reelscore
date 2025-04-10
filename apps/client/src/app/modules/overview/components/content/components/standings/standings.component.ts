@@ -49,17 +49,17 @@ import { OverviewStandingsFacade } from './standings.facade';
       [league]="filteredStandings.league"
       header="Auswärtstabelle"
     />
-    } } } @else if (isLoading()) {
-    <p class="no-data">Tabellen werden geladen ...</p>
-    } @else if (error()) {
-    <p class="no-data">Fehler beim Laden der Tabellen.</p>
-    } @else if (showTopFive()) { @for (standing of ws; track $index) {
+    } } } @else if (showTopFive()) { @for (standing of ws; track $index) {
     <rs-standings-table
       class="animate-fade-in"
       [ranks]="standing.league.standings![0]"
       [league]="standing.league"
     />
-    } } @else if (!isLoading()) {
+    } } @else if (isLoading()) {
+    <p class="no-data">Tabellen werden geladen ...</p>
+    } @else if (error()) {
+    <p class="no-data">Fehler beim Laden der Tabellen.</p>
+    } @else if (!isLoading()) {
     <p class="no-data">Keine Tabellen gefunden.</p>
     }
   `,
