@@ -13,7 +13,14 @@ import { EventDTO } from '@lib/models';
   template: `
     @if (event(); as event) {
     <span>{{ event.player.name }}</span>
-    <span>{{ event.comments }}</span>
+    <span>
+      @switch (event.detail) { @case('Tripping') { Gelbe Karte }
+      @case('Roughing') { Rote Karte } @case("Argument") { Auseinandersetzung}
+      @case("Holding") { Festhalten} @case("Delay of game") { Zeitspiel }
+      @case("Elbowing") { Ellbogenstoß } @case("Unsportsmanlike conduct") {
+      Unsportliches Verhalten } @case("Serious foul") { Schweres Foul }
+      @case("Diving") { Schwalbe } }
+    </span>
     }
   `,
 })

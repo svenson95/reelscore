@@ -13,11 +13,15 @@ import { EventDTO } from '@lib/models';
   template: `
     @if (event(); as event) {
     <span>VAR</span>
-    @if (event.detail === 'Goal cancelled') {
-    <span>Tor aberkannt</span>
-    } @else if (event.detail === 'Penalty confirmed') {
+    @switch(event.detail) { @case('Goal cancelled') {
+    <span>Tor aberkannt </span>
+    } @case("Penalty confirmed") {
     <span>Elfmeter bestätigt</span>
-    } }
+    } @case("Goal Disallowed - handball") {
+    <span>Tor aberkannt - Handspiel</span>
+    } @case("Goal Disallowed - offside") {
+    <span>Tor aberkannt - Abseits</span>
+    } } }
   `,
 })
 export class EventVarComponent {
