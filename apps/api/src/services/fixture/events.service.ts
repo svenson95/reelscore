@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
 
-import { EventDTO, EventTime, FixtureId, RapidEventsDTO } from '@lib/models';
+import {
+  EventDTO,
+  EventTime,
+  FixtureIdParameter,
+  RapidEventsDTO,
+} from '@lib/models';
 
 import { findDocument } from '../../middleware';
 import { FixtureEvents } from '../../models';
 
 export class FixtureEventsService {
   async findById(
-    fixtureId: FixtureId
+    fixtureId: FixtureIdParameter
   ): Promise<mongoose.FlattenMaps<RapidEventsDTO>> {
     const events = await findDocument(
       FixtureEvents,

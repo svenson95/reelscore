@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { FixtureId, GetFixtureDTO } from '@lib/models';
+import { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
@@ -60,10 +60,15 @@ export const FixtureStore = signalStore(
               }
             }
 
+            const fixtureIdParameter: FixtureIdParameter =
+              fixture.data.fixture.id.toString();
             evaluationsStore.loadEvaluations(fixtureId);
             latestFixturesStore.loadLatestFixtures(fixtureId);
-            eventsStore.loadEvents(fixtureId, fixture.data.teams);
-            statisticsStore.loadStatistics(fixtureId);
+            eventsStore.loadEvents({
+              fixtureId: fixtureIdParameter,
+              teams: fixture.data.teams,
+            });
+            statisticsStore.loadStatistics(fixtureIdParameter);
 
             return patchState(store, {
               fixture,

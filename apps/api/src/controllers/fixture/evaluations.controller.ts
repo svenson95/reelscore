@@ -3,6 +3,7 @@ import {
   EvaluationTeam,
   FixtureDTO,
   FixtureId,
+  FixtureIdParameter,
   FixturePerformance,
   FixtureResult,
   StatisticDTO,
@@ -115,7 +116,8 @@ export class FixtureEvaluationsController {
     fixtures: FixtureDTO[]
   ): Promise<FixturePerformance[]> | null => {
     const performances = fixtures.map(async (fixture) => {
-      const stats = await this.statisticsService.findById(fixture.fixture.id);
+      const fixtureId: FixtureIdParameter = fixture.fixture.id.toString();
+      const stats = await this.statisticsService.findById(fixtureId);
       const teams = stats?.response;
       if (!stats || teams?.length === 0) return 'NO_STATISTICS_AVAILABLE';
 

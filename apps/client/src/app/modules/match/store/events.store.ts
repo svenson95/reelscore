@@ -5,7 +5,7 @@ import {
   EventDTO,
   EventResult,
   EventWithResult,
-  FixtureId,
+  FixtureIdParameter,
   MatchTeams,
   RapidEventsDTO,
   timeTotal,
@@ -25,7 +25,13 @@ const initialState: EventsState = {
 export const EventsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixtureEventsService)) => ({
-    async loadEvents(fixtureId: FixtureId, teams: MatchTeams): Promise<void> {
+    async loadEvents({
+      fixtureId,
+      teams,
+    }: {
+      fixtureId: FixtureIdParameter;
+      teams: MatchTeams;
+    }): Promise<void> {
       patchState(store, { isLoading: true });
 
       http.getFixtureEvents(fixtureId).subscribe({

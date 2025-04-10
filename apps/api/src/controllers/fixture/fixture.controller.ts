@@ -1,4 +1,9 @@
-import { FixtureId, GetFixtureDTO, LatestFixturesDTO } from '@lib/models';
+import {
+  FixtureId,
+  FixtureIdParameter,
+  GetFixtureDTO,
+  LatestFixturesDTO,
+} from '@lib/models';
 
 import {
   FixtureEventsService,
@@ -13,7 +18,8 @@ export class FixtureController {
 
   async getByIdWithHighlights(fixtureId: FixtureId): Promise<GetFixtureDTO> {
     const data = await this.fixturesService.findById(fixtureId);
-    const eventsDoc = await this.eventsService.findById(fixtureId);
+    const fixtureIdParameter: FixtureIdParameter = fixtureId.toString();
+    const eventsDoc = await this.eventsService.findById(fixtureIdParameter);
 
     const highlights = this.eventsService.filterHighlights(eventsDoc?.response);
     return { data, highlights };

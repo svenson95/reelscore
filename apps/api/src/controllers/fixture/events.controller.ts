@@ -1,4 +1,4 @@
-import { EventDTO, FixtureId, RapidEventsDTO } from '@lib/models';
+import { EventDTO, FixtureIdParameter, RapidEventsDTO } from '@lib/models';
 import { FlattenMaps } from 'mongoose';
 import { FixtureEventsService } from '../../services';
 
@@ -8,7 +8,9 @@ const sortEvents = (d: EventDTO[]) => d.sort((a, b) => time(b) - time(a));
 export class FixtureEventsController {
   private eventsService = new FixtureEventsService();
 
-  async getById(fixtureId: FixtureId): Promise<FlattenMaps<RapidEventsDTO>> {
+  async getById(
+    fixtureId: FixtureIdParameter
+  ): Promise<FlattenMaps<RapidEventsDTO>> {
     const events = await this.eventsService.findById(fixtureId);
 
     if (!events || typeof events === 'string') {

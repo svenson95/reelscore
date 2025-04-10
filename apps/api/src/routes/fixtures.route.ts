@@ -13,17 +13,23 @@ import { getWeekDatesArray } from '../middleware';
 export const fixtures = express.Router();
 
 fixtures.get('/by-id', async (req, res) => {
-  const fixtureId: FixtureId = String(req.query.fixture);
+  const fixture = req.query.fixture;
+  if (typeof fixture !== 'string') return;
+  const fixtureId: FixtureId = Number(fixture);
   const fixtureController = new FixtureController();
-  const fixture = await fixtureController.getByIdWithHighlights(fixtureId);
-  return res.json(fixture);
+  const fixtureWithHighlights = await fixtureController.getByIdWithHighlights(
+    fixtureId
+  );
+  return res.json(fixtureWithHighlights);
 });
 
 fixtures.get('/match-latest', async (req, res) => {
-  const fixtureId: FixtureId = String(req.query.fixture);
+  const fixture = req.query.fixture;
+  if (typeof fixture !== 'string') return;
+  const fixtureId: FixtureId = Number(fixture);
   const fixtureController = new FixtureController();
-  const fixtures = await fixtureController.getLatest(fixtureId);
-  return res.json(fixtures);
+  const latestFixtures = await fixtureController.getLatest(fixtureId);
+  return res.json(latestFixtures);
 });
 
 fixtures.get(
@@ -32,11 +38,11 @@ fixtures.get(
     const date = String(req.query.date);
     const fixturesController = new FixturesController();
     const weekDates = getWeekDatesArray(date);
-    const weekData = await Promise.all(
+    const weekFixtures = await Promise.all(
       weekDates.map((day) => fixturesController.getByDate(day))
     );
 
-    return res.json(weekData);
+    return res.json(weekFixtures);
   }
 );
 
