@@ -4,6 +4,7 @@ import {
   FixtureDTO,
   FixtureHomeOrAwayStrong,
   FixtureId,
+  FixtureIdParameter,
   FixturePlayersWithStreak,
   GoalScorers,
   PlayerName,
@@ -67,7 +68,7 @@ export class FixtureAnalysesController {
   }
 
   private async getGameScorers(
-    games: FixtureDTO[],
+    games: ExtendedFixtureDTO[],
     team: TeamId
   ): Promise<GoalScorers[]> {
     return Promise.all(
@@ -83,7 +84,8 @@ export class FixtureAnalysesController {
     fixtureId: FixtureId,
     teamId: TeamId
   ): Promise<GoalScorers> {
-    const events = await this.eventsService.findById(fixtureId);
+    const id: FixtureIdParameter = fixtureId.toString();
+    const events = await this.eventsService.findById(id);
     if (!events) return [];
 
     return events.response

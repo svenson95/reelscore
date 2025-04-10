@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { FixtureId, StatisticDTO } from '@lib/models';
+import { FixtureIdParameter, StatisticDTO } from '@lib/models';
 
 import { StateHandler } from '../../../shared';
 import { HttpFixtureStatisticsService } from '../services';
@@ -17,7 +17,7 @@ const initialState: StatisticsState = {
 export const StatisticsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixtureStatisticsService)) => ({
-    async loadStatistics(id: FixtureId): Promise<void> {
+    async loadStatistics(id: FixtureIdParameter): Promise<void> {
       patchState(store, { isLoading: true });
 
       http.getFixtureStatistics(id).subscribe({

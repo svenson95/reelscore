@@ -66,7 +66,8 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
-export type FixtureId = number | string; // TODO: refactor to string only
+export type FixtureId = number;
+export type FixtureIdParameter = string;
 export type FixtureDateString = string;
 export type FixturePeriods = { first: number; second: number };
 export type FixtureVenue = { id: number | null; name: string; city: string };
