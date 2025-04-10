@@ -47,14 +47,18 @@ import {
       }
     }
     .spacer { @apply flex-1; }
-    .competition-logo-placeholder { 
-      @apply w-[24px] h-[24px] bg-gray-200 rounded; 
+    .competition-logo { 
+      @apply w-[24px] h-[24px]; 
+
+      &-placeholder { 
+        @apply w-[24px] h-[24px] bg-gray-200 rounded; 
+      }
     }
   `,
   template: `
     <div class="header">
       <div class="competition-logo">
-        @defer {
+        @defer (on viewport) {
         <rs-optimized-image
           [source]="getCompetitionLogo()"
           alternate="competition logo"
