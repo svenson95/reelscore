@@ -112,7 +112,7 @@ export class FixtureListItemFacade {
   private getTwoLeggedRounds = (
     fixture: ExtendedFixtureDTO
   ): CompetitionRound[] => {
-    return this.twoLeggedCompetitions[fixture.league.id];
+    return this.twoLeggedCompetitions[fixture.league.id] || [];
   };
 
   private isTwoLeggedCompetition = (fixture: ExtendedFixtureDTO): boolean => {
