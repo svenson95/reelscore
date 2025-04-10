@@ -45,47 +45,77 @@ export class FixtureListItemFacade {
       [COMPETITION_ID.SPAIN_COPA_DEL_REY]: ['Semi-finals'],
     };
 
+  readonly koRounds = [
+    'Preliminary Round',
+    'Play-offs',
+    '1st Round',
+    '2nd Round',
+    '3rd Round',
+    'Round of 16',
+    'Quarter-finals',
+    'Semi-finals',
+    'Final',
+  ];
+
   isTeamEliminated(
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
     const isFinished = this.finished.includes(fixture.fixture.status.short);
     if (!isFinished) return false;
-    const competitionTwoLeggedRounds =
-      this.twoLeggedCompetitions[fixture.league.id];
-    const isCompetitionWithTwoLeggedFinals =
-      competitionTwoLeggedRounds !== undefined;
 
-    const koPhaseRounds = [
-      'Preliminary Round',
-      'Play-offs',
-      '1st Round',
-      '2nd Round',
-      '3rd Round',
-      'Round of 16',
-      'Quarter-finals',
-      'Semi-finals',
-      'Final',
-    ];
-    const isKoPhase = koPhaseRounds.some((r) => r === fixture.league.round);
-    const isKoEliminated =
-      !isCompetitionWithTwoLeggedFinals &&
-      isKoPhase &&
-      fixture.teams[team].winner === false;
-
-    const isTwoLegged =
-      isCompetitionWithTwoLeggedFinals &&
-      competitionTwoLeggedRounds.includes(fixture.league.round);
-
-    const isExtendedFixture = 'final' in fixture;
-    const winnerTeamId = isExtendedFixture
-      ? fixture?.final?.winnerOfFinal
-      : null;
-    const isFinalFinished = !!winnerTeamId;
-
-    const isTwoLeggedEliminated =
-      isTwoLegged && isFinalFinished && fixture.teams[team].id !== winnerTeamId;
+    const isKoEliminated = this.isKoEliminated(fixture, team);
+    const isTwoLeggedEliminated = this.isTwoLeggedEliminated(fixture, team);
 
     return isKoEliminated || isTwoLeggedEliminated;
   }
+
+  private isKoEliminated = (
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ) => {
+    const round = fixture.league.round;
+    const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
+    const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
+    const isTwoLeggedKoRound = isTwoLeggedCompetition && !isTwoLeggedRound;
+
+    const isKoRound = this.koRounds.some((r) => r === round);
+    return (
+      (!isTwoLeggedCompetition || isTwoLeggedKoRound) &&
+      isKoRound &&
+      fixture.teams[team].winner === false
+    );
+  };
+
+  private isTwoLeggedEliminated = (
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): boolean => {
+    const round = fixture.league.round;
+    const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
+    const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
+
+    const hasFinalData = 'final' in fixture;
+    const winnerOfFinal = fixture?.final?.winnerOfFinal;
+    const winnerTeamId = hasFinalData ? winnerOfFinal : null;
+    const isFinalFinished = !!winnerTeamId;
+    const relatedTeam = fixture.teams[team].id;
+
+    return (
+      isTwoLeggedCompetition &&
+      isTwoLeggedRound &&
+      isFinalFinished &&
+      relatedTeam !== winnerTeamId
+    );
+  };
+
+  private getTwoLeggedRounds = (
+    fixture: ExtendedFixtureDTO
+  ): CompetitionRound[] => {
+    return this.twoLeggedCompetitions[fixture.league.id];
+  };
+
+  private isTwoLeggedCompetition = (fixture: ExtendedFixtureDTO): boolean => {
+    return fixture.league.id in this.twoLeggedCompetitions;
+  };
 }
