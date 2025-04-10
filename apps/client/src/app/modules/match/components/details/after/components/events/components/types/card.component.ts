@@ -14,7 +14,7 @@ import { EventDTO } from '@lib/models';
     @if (event(); as event) {
     <span>{{ event.player.name }}</span>
     <span>
-      @switch (event.detail) { @case('Tripping') { Foul durch Beinstellen }
+      @switch (event.comments) { @case('Tripping') { Foul durch Beinstellen }
       @case('Roughing') { Grobes Foul } @case("Argument") { Auseinandersetzung }
       @case("Holding") { Festhalten } @case("Delay of game") { Zeitspiel }
       @case("Elbowing") { Ellbogenstoß } @case("Unsportsmanlike conduct") {
