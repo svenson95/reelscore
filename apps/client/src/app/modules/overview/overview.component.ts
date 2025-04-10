@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 
 import { RouterView } from '../router-view';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
-import { SERVICE_PROVIDERS } from './services';
+import { SERVICE_PROVIDERS, VisibilityObserverService } from './services';
 import { STORE_PROVIDERS } from './store';
 
 @Component({
@@ -21,4 +26,10 @@ import { STORE_PROVIDERS } from './store';
     <section class="overview-content" rs-overview-content></section>
   `,
 })
-export class OverviewComponent extends RouterView {}
+export class OverviewComponent extends RouterView implements OnInit {
+  visibilityObserverService = inject(VisibilityObserverService);
+
+  ngOnInit(): void {
+    this.visibilityObserverService.init();
+  }
+}
