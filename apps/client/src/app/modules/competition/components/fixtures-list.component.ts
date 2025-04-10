@@ -40,7 +40,7 @@ import {
       .group-date { @apply py-2 px-4 border-b-[1px]; }
     }
     .competition-logo {
-      @apply w-[24px] h-[24px];
+      @apply w-[24px] h-[24px] justify-self-center;
 
       &-placeholder {
         @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded;
