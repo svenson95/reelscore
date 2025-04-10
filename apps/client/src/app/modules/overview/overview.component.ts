@@ -12,7 +12,7 @@ import { SERVICE_PROVIDERS, VisibilityObserverService } from './services';
 import { STORE_PROVIDERS } from './store';
 
 @Component({
-  selector: 'rs-index-page',
+  selector: 'rs-overview-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
