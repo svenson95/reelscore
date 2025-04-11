@@ -5,6 +5,7 @@ import {
   computed,
   input,
 } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import {
   ExtendedFixtureDTO,
@@ -20,22 +21,40 @@ import {
 import { AnalysesEvaluationComponent } from './components';
 import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
 
+const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
+
 @Component({
   selector: 'rs-match-fixture-analyses-evaluations',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ...ANGULAR_MODULES,
     AnalysesEvaluationComponent,
-    DatePipe,
     TeamIsRelatedPipe,
     TeamNamePipe,
   ],
   styles: `
-    :host { @apply flex flex-col gap-6; }
-    .fixture:not(:last-of-type) { @apply border-b pb-5; }
-    .date { @apply py-1 mb-2 text-center text-rs-font-size-body-2 bg-rs-color-white-2; }
-    .fixture-header { @apply flex gap-2 border-b; }
+    @use '@angular/material' as mat;
+
+    :host { 
+      @apply flex flex-col; 
+
+      ::ng-deep {
+        .mat-expansion-panel:not([class*=mat-elevation-z]) { box-shadow: none; }
+        .mat-expansion-panel-header { @apply px-3 sm:px-[initial]; }
+        .mat-expansion-panel-header-title { @apply flex-grow-0; }
+      }
+    }
+
+    mat-expansion-panel {
+      @include mat.expansion-overrides((
+        container-background-color: var(--rs-color-white),
+        header-text-size: var(--rs-font-size-body-2),
+      ));
+    }
+
+    .fixture-header { @apply flex gap-2; }
     .home-name, .away-name { 
-      @apply flex-1 text-center pb-2; 
+      @apply flex-1 text-center leading-none content-center; 
 
       &.is-winner { @apply underline decoration-green-500; }
       &.is-loser { @apply underline decoration-red-500; }
@@ -49,41 +68,52 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
   `,
   template: `
     @for (fixture of fixturesWithEvaluations(); track $index) {
-    <div class="fixture">
-      <div class="date">{{ fixture.fixture.date | date : 'dd.MM.yyyy' }}</div>
-      <div class="fixture-header">
-        <div
-          class="home-name"
-          [class.is-winner]="
-            fixture.teams.home.winner === true &&
-            (fixture.teams.home | isRelated : relatedTeam())
-          "
-          [class.is-loser]="
-            fixture.teams.home.winner === false &&
-            (fixture.teams.home | isRelated : relatedTeam())
-          "
-          [class.is-related]="fixture.teams.home | isRelated : relatedTeam()"
-        >
-          {{ fixture.teams.home.name | teamName : 'short' }}
-        </div>
-        <div class="result">
-          {{ fixture.goals.home }}:{{ fixture.goals.away }}
-        </div>
-        <div
-          class="away-name"
-          [class.is-winner]="
-            fixture.teams.away.winner === true &&
-            (fixture.teams.away | isRelated : relatedTeam())
-          "
-          [class.is-loser]="
-            fixture.teams.away.winner === false &&
-            (fixture.teams.away | isRelated : relatedTeam())
-          "
-          [class.is-related]="fixture.teams.away | isRelated : relatedTeam()"
-        >
-          {{ fixture.teams.away.name | teamName : 'short' }}
-        </div>
-      </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ fixture.fixture.date | date : 'dd.MM' }}
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="fixture-header">
+            <div
+              class="home-name"
+              [class.is-winner]="
+                fixture.teams.home.winner === true &&
+                (fixture.teams.home | isRelated : relatedTeam())
+              "
+              [class.is-loser]="
+                fixture.teams.home.winner === false &&
+                (fixture.teams.home | isRelated : relatedTeam())
+              "
+              [class.is-related]="
+                fixture.teams.home | isRelated : relatedTeam()
+              "
+            >
+              {{ fixture.teams.home.name | teamName : 'short' }}
+            </div>
+            <div class="result">
+              {{ fixture.goals.home }}:{{ fixture.goals.away }}
+            </div>
+            <div
+              class="away-name"
+              [class.is-winner]="
+                fixture.teams.away.winner === true &&
+                (fixture.teams.away | isRelated : relatedTeam())
+              "
+              [class.is-loser]="
+                fixture.teams.away.winner === false &&
+                (fixture.teams.away | isRelated : relatedTeam())
+              "
+              [class.is-related]="
+                fixture.teams.away | isRelated : relatedTeam()
+              "
+            >
+              {{ fixture.teams.away.name | teamName : 'short' }}
+            </div>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
       <div class="evaluations">
         @for (evaluation of fixture.flatEvaluations; track $index) {
         <div class="evaluation">
@@ -104,7 +134,7 @@ import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
         </div>
         }
       </div>
-    </div>
+    </mat-expansion-panel>
     }
   `,
 })
