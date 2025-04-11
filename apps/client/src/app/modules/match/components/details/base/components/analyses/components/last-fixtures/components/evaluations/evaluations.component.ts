@@ -39,11 +39,7 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
       @apply flex flex-col; 
 
       ::ng-deep {
-        .mat-expansion-panel:not([class*=mat-elevation-z]) { 
-          @apply shadow-none; 
-
-          &:not(:last-of-type) { @apply border-b; }
-        }
+        .mat-expansion-panel:not([class*=mat-elevation-z]) { @apply shadow-none; }
         mat-expansion-panel-header.mat-expansion-panel-header, 
         mat-expansion-panel-header.mat-expansion-panel-header:not([aria-disabled=true]):hover {
           background-color: var(--rs-color-white);
@@ -74,7 +70,7 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
       &.is-loser { @apply underline decoration-red-500; }
       &.is-related { @apply font-semibold; }
     }
-    .evaluations { @apply flex flex-col; }
+    .evaluations { @apply flex flex-col pt-4; }
     .evaluation { @apply flex gap-2; }
     .evaluation.is-away { 
       @apply flex-row-reverse; 
