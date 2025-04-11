@@ -44,7 +44,8 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
 
           &:not(:last-of-type) { @apply border-b; }
         }
-        mat-expansion-panel-header.mat-expansion-panel-header {
+        mat-expansion-panel-header.mat-expansion-panel-header, 
+        mat-expansion-panel-header.mat-expansion-panel-header:not([aria-disabled=true]):hover {
           background-color: var(--rs-color-white);
         }
         .mat-expansion-panel-header-title { @apply flex-grow-0; }
