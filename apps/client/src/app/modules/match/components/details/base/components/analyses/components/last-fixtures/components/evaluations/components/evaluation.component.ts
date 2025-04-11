@@ -43,11 +43,13 @@ import { EvaluationAnalyses } from '@lib/models';
         @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') { STAMMSPIELER NÄCHSTES SPIEL
         GESPERRT } }
       </div>
-      } @if (analyzedElement().comments !== null) {
+      } @if (analyzedElement().comments !== null && analyzedElement().comments
+      !== '') {
       <div class="comments">
         {{ analyzedElement().comments }}
       </div>
-      } @if (analyzedElement().player !== null) {
+      } @if (analyzedElement().player !== null && analyzedElement().player !==
+      '') {
       <div class="player">
         {{ analyzedElement().player }}
       </div>
