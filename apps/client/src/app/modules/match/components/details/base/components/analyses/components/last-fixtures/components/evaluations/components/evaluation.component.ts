@@ -28,20 +28,20 @@ import { EvaluationAnalyses } from '@lib/models';
       <div class="minute">
         {{ analyzedElement().minute + "'" }}
       </div>
+      } @if (analyzedElement().type !== null) {
+      <div class="type">
+        @switch(analyzedElement().type) { @case('GOAL') { ⚽ } @case('NO_GOAL')
+        { KEIN TOR } @case('NO_FOUL') { KEIN FOUL } @case('LAST_MINUTE_GOAL') {
+        LAST-MINUTE ⚽ } @case('PENALTY') { ELFMETER ⚽ } @case('RED_CARD') { 🟥
+        KARTE } @case('NO_RED_CARD') { KEINE 🟥 KARTE }
+        @case('KEY_PLAYER_INJURY') { STAMMSPIELER VERLETZT }
+        @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') { STAMMSPIELER NÄCHSTES SPIEL
+        🟨 GESPERRT } }
+      </div>
       } @if (analyzedElement().level !== null) {
       <div class="level">
         @switch (analyzedElement().level) { @case('LUCKY') { Glück gehabt }
         @case('UNLUCKY') { Pech gehabt } }
-      </div>
-      } @if (analyzedElement().type !== null) {
-      <div class="type">
-        @switch(analyzedElement().type) { @case('GOAL') { TOR } @case('NO_GOAL')
-        { KEIN TOR } @case('NO_FOUL') { KEIN FOUL } @case('LAST_MINUTE_GOAL') {
-        LAST-MINUTE TOR } @case('PENALTY') { ELFMETER } @case('RED_CARD') { ROTE
-        KARTE } @case('NO_RED_CARD') { KEINE ROTE KARTE }
-        @case('KEY_PLAYER_INJURY') { STAMMSPIELER VERLETZT }
-        @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') { STAMMSPIELER NÄCHSTES SPIEL
-        GESPERRT } }
       </div>
       } @if (analyzedElement().comments !== null && analyzedElement().comments
       !== '') {
