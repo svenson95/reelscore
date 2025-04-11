@@ -44,6 +44,9 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
 
           &:not(:last-of-type) { @apply border-b; }
         }
+        mat-expansion-panel-header.mat-expansion-panel-header {
+          background-color: var(--rs-color-white);
+        }
         .mat-expansion-panel-header-title { @apply flex-grow-0; }
       }
     }
@@ -54,8 +57,8 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
         container-shape: var(--rs-size-border-radius),
         header-text-size: var(--rs-font-size-body-2),
         header-text-weight: 400,
-        header-text-color: var(--rs-color-text-3),
-        header-description-color: var(--rs-color-text-3),
+        header-text-color: var(--rs-color-text-2),
+        header-description-color: var(--rs-color-text-1),
         header-indicator-color: var(--rs-color-primary)
       ));
     }
