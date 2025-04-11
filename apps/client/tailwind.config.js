@@ -23,6 +23,8 @@ module.exports = {
         'rs-color-text-2': 'var(--rs-color-text-2)',
         'rs-color-text-3': 'var(--rs-color-text-3)',
         'rs-color-orange': 'var(--rs-color-orange)',
+        'rs-border-color-1': 'var(--rs-border-color-1)',
+        'rs-border-color-2': 'var(--rs-border-color-2)',
       },
       fontSize: {
         'rs-font-size-title': 'var(--rs-font-size-title)',
