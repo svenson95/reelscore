@@ -42,7 +42,7 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
         .mat-expansion-panel:not([class*=mat-elevation-z]) { 
           @apply shadow-none;
 
-          mat-expansion-panel-header.fixture-expansion-header {
+          mat-expansion-panel-header.mat-expansion-panel-header.fixture-expansion-header {
             background-color: var(--rs-color-white);
           }
         }
