@@ -30,8 +30,8 @@ import { AnalysesLastFixturesComponent } from './components';
       &:not(:first-of-type) { @apply pt-5; }
 
       .home { @apply text-end; }
-      .home, .away { @apply flex-1; }
-      .analysis { @apply flex flex-col flex-2 text-center; }
+      .home, .away, .analysis { @apply flex-1; }
+      .analysis { @apply flex flex-col text-center; }
       .analysis span:nth-child(2) { @apply text-rs-font-size-small text-rs-color-text-2; }
     }
 
