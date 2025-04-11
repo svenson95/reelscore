@@ -12,10 +12,10 @@ import { EvaluationAnalyses } from '@lib/models';
     .analyze-element { 
       @apply flex flex-wrap gap-1;
 
-      &:not(.is-lucky):not(.is-unlucky) div { @apply bg-gray-100 text-rs-color-text-1; }
-      &.is-lucky div { @apply bg-[#0db500] text-rs-color-text-3; }
-      &.is-unlucky div { @apply bg-[#ff0000] text-rs-color-text-3; }
-      div { @apply text-rs-font-size-small p-2 leading-[1]; }
+      &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-gray-100 text-rs-color-text-1; }
+      &.is-lucky .level { @apply bg-[#0db500]; }
+      &.is-unlucky .level { @apply bg-[#ff0000]; }
+      div { @apply text-rs-color-text-3 text-rs-font-size-small p-2 leading-[1]; }
     }
   `,
   template: `
