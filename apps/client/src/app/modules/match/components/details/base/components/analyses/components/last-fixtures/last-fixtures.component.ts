@@ -11,7 +11,7 @@ import { AnalysesEvaluationsComponent } from './components';
   styles: `
     .latest-fixtures { @apply flex flex-wrap gap-5 mt-5; }
     .latest-fixtures div { 
-      @apply flex-1 bg-white p-5 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)]; 
+      @apply flex-1 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)]; 
     }
   `,
   template: `

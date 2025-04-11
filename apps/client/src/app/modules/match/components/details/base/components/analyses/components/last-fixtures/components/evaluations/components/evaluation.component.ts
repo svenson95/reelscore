@@ -8,14 +8,14 @@ import { EvaluationAnalyses } from '@lib/models';
   imports: [],
   styles: `
     :host { @apply flex flex-col gap-1 text-left; }
+    :host-context(.is-away) .analyze-element { @apply flex-row-reverse; }
     .analyze-element { 
       @apply flex flex-wrap gap-1;
-      :host-context(.home-col) & { @apply flex-row-reverse; }
 
-      &.is-lucky div { @apply bg-green-100 text-green-500; }
-      &.is-unlucky div { @apply bg-red-100 text-red-500; }
+      &.is-lucky div { @apply bg-[#12ff007d] text-rs-color-text-3; }
+      &.is-unlucky div { @apply bg-[#ff00007d] text-rs-color-text-3; }
       &:not(.is-lucky):not(.is-unlucky) div { @apply bg-gray-100 text-gray-500; }
-      div { @apply text-rs-font-size-small px-2 py-1; }
+      div { @apply text-rs-font-size-small p-2 leading-[1]; }
     }
   `,
   template: `
@@ -33,7 +33,7 @@ import { EvaluationAnalyses } from '@lib/models';
         @switch (analyzedElement().level) { @case('LUCKY') { Glück gehabt }
         @case('UNLUCKY') { Pech gehabt } }
       </div>
-      }
+      } @if (analyzedElement().type !== null) {
       <div class="type">
         @switch(analyzedElement().type) { @case('GOAL') { TOR } @case('NO_GOAL')
         { KEIN TOR } @case('NO_FOUL') { KEIN FOUL } @case('LAST_MINUTE_GOAL') {
@@ -43,13 +43,13 @@ import { EvaluationAnalyses } from '@lib/models';
         @case('KEY_PLAYER_YELLOW_CARD_SUSPENSION') { STAMMSPIELER NÄCHSTES SPIEL
         GESPERRT } }
       </div>
-      @if (analyzedElement().player !== null) {
-      <div class="player">
-        {{ analyzedElement().player }}
-      </div>
       } @if (analyzedElement().comments !== null) {
       <div class="comments">
         {{ analyzedElement().comments }}
+      </div>
+      } @if (analyzedElement().player !== null) {
+      <div class="player">
+        {{ analyzedElement().player }}
       </div>
       }
     </div>
