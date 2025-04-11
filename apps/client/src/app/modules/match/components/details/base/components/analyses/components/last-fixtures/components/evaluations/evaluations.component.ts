@@ -39,25 +39,27 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
       @apply flex flex-col; 
 
       ::ng-deep {
-        .mat-expansion-panel:not([class*=mat-elevation-z]) { @apply shadow-none; }
-        mat-expansion-panel-header.mat-expansion-panel-header, 
-        mat-expansion-panel-header.mat-expansion-panel-header:not([aria-disabled=true]):hover {
-          background-color: var(--rs-color-white);
+        .mat-expansion-panel:not([class*=mat-elevation-z]) { 
+          @apply shadow-none;
+
+          mat-expansion-panel-header.fixture-expansion-header {
+            background-color: var(--rs-color-white);
+          }
         }
         .mat-expansion-panel-header-title { @apply flex-grow-0; }
       }
-    }
 
-    mat-expansion-panel {
-      @include mat.expansion-overrides((
-        container-background-color: var(--rs-color-secondary),
-        container-shape: var(--rs-size-border-radius),
-        header-text-size: var(--rs-font-size-body-2),
-        header-text-weight: 400,
-        header-text-color: var(--rs-color-text-2),
-        header-description-color: var(--rs-color-text-1),
-        header-indicator-color: var(--rs-color-primary)
-      ));
+      mat-expansion-panel {
+        @include mat.expansion-overrides((
+          container-background-color: var(--rs-color-secondary),
+          container-shape: var(--rs-size-border-radius),
+          header-text-size: var(--rs-font-size-body-2),
+          header-text-weight: 400,
+          header-text-color: var(--rs-color-text-1),
+          header-description-color: var(--rs-color-text-1),
+          header-indicator-color: var(--rs-color-primary)
+        ));
+      }
     }
 
     .fixture-header { @apply flex gap-2 w-full; }
@@ -83,7 +85,7 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
     <mat-accordion>
       @for (fixture of fixturesWithEvaluations(); track $index) {
       <mat-expansion-panel>
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header class="fixture-expansion-header">
           <mat-panel-title>
             {{ fixture.fixture.date | date : 'dd.MM' }}
           </mat-panel-title>
