@@ -3,7 +3,6 @@ import { FlattenMaps } from 'mongoose';
 import {
   CompetitionId,
   CompetitionRound,
-  CompetitionRoundString,
   FixtureDateString,
   FixtureDTO,
 } from '@lib/models';
@@ -122,8 +121,8 @@ export class FixturesController {
   };
 
   private getNextRound = (
-    rounds: Array<CompetitionRoundString>,
-    currentRound: CompetitionRoundString
+    rounds: Array<CompetitionRound>,
+    currentRound: CompetitionRound
   ): string | null => {
     const currentRoundIndex = rounds.indexOf(currentRound);
     const isLastRound = rounds.length - 1 === currentRoundIndex;

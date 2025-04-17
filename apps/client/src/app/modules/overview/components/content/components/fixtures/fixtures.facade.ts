@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { CompetitionLabel, ExtendedFixtureDTO } from '@lib/models';
+import { CompetitionName, ExtendedFixtureDTO } from '@lib/models';
 
 import {
   COMPETITIONS_ORDER,
@@ -33,7 +33,7 @@ export class OverviewFixturesFacade {
 
   private groupFixturesToCompetitions = (
     filteredFixtures: ExtendedFixtureDTO[],
-    name: CompetitionLabel
+    name: CompetitionName
   ) => {
     const fixture = filteredFixtures.find((f) => f.league.name === name);
     const competition = SELECT_COMPETITION_DATA_FLAT.find(

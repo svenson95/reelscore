@@ -1,4 +1,4 @@
-import { CompetitionMatchDays } from '@lib/models';
+import { CompetitionRoundsData } from '@lib/models';
 
 export const replaceWhitespaces = (str: string): string => {
   return str.replace(/\s/g, '%20');
@@ -434,7 +434,7 @@ const INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE = {
   10: 'Group Stage - 10',
 };
 
-export const COMPETITION_ROUNDS: CompetitionMatchDays = {
+export const COMPETITION_ROUNDS: CompetitionRoundsData = {
   // Europa
   531: EU_UEFA_SUPER_CUP,
   2: EU_CL_ROUNDS,

@@ -9,9 +9,9 @@ import {
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 import {
-  CompetitionRoundPipe,
   FixtureListComponent,
   OptimizedImageComponent,
+  RoundLabelPipe,
   getCompetitionLogo,
 } from '../../../shared';
 
@@ -21,7 +21,7 @@ import {
   imports: [
     DatePipe,
     FixtureListComponent,
-    CompetitionRoundPipe,
+    RoundLabelPipe,
     OptimizedImageComponent,
   ],
   styles: `
@@ -61,7 +61,7 @@ import {
         <div class="competition-logo-placeholder"></div>
         }
       </div>
-      <p>{{ round()! | competitionRound }}</p>
+      <p>{{ round()! | roundLabel }}</p>
     </div>
     <div class="days">
       @for (day of fixturesDays(); track $index + '-' + day.date) {
