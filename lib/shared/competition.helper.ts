@@ -1,7 +1,4 @@
-import {
-  CompetitionId,
-  CompetitionRoundString,
-} from '../models/competition.model';
+import { CompetitionId, CompetitionRound } from '../models';
 
 export const isCompetitionWithMultipleGroups = (
   competitionId: CompetitionId
@@ -16,5 +13,5 @@ export const isCompetitionWithoutStandings = (competitionId: CompetitionId) =>
 export const isCompetitionWithOneFixture = (competitionId: CompetitionId) =>
   [528, 529, 531].includes(competitionId);
 
-export const isKoPhase = (round: CompetitionRoundString) =>
+export const isKoPhase = (round: CompetitionRound) =>
   ['Round of 16', 'Quarter-finals', 'Final', 'Semi-finals'].includes(round);

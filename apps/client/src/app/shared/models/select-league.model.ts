@@ -1,8 +1,8 @@
-import { CompetitionId, CompetitionLabel, CompetitionUrl } from '@lib/models';
+import { CompetitionId, CompetitionName, CompetitionUrl } from '@lib/models';
 
 export type CompetitionData = {
   image: string;
-  label: CompetitionLabel;
+  label: CompetitionName;
   id: CompetitionId;
   url: CompetitionUrl;
   size: number;

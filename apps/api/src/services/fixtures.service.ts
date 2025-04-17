@@ -1,6 +1,6 @@
 import {
   CompetitionId,
-  CompetitionRoundString,
+  CompetitionRound,
   ExtendedFixtureDTO,
   FixtureDateString,
   FixtureDTO,
@@ -45,7 +45,7 @@ export class FixturesService {
 
   async findByCompetitionAndRounds(
     competitionId: CompetitionId,
-    rounds: CompetitionRoundString[],
+    rounds: CompetitionRound[],
     showAll: boolean
   ): Promise<FixtureDTO[]> {
     const query: object = {

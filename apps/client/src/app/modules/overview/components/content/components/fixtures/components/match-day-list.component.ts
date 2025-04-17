@@ -9,12 +9,12 @@ import { RouterLink } from '@angular/router';
 import { CompetitionRound } from '@lib/models';
 
 import {
-  CompetitionLabelPipe,
-  CompetitionRoundPipe,
   CompetitionWithFixtures,
   FixtureListComponent,
   getCompetitionLogo,
+  NameLabelPipe,
   OptimizedImageComponent,
+  RoundLabelPipe,
 } from '../../../../../../../shared';
 
 @Component({
@@ -22,8 +22,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
-    CompetitionRoundPipe,
-    CompetitionLabelPipe,
+    RoundLabelPipe,
+    NameLabelPipe,
     OptimizedImageComponent,
     FixtureListComponent,
   ],
@@ -70,12 +70,10 @@ import {
         }
       </div>
       <a [routerLink]="competition().url">
-        {{ competition().name | competitionLabel }}
+        {{ competition().name | nameLabel }}
       </a>
       <div class="spacer"></div>
-      <span class="gray">
-        {{ round() | competitionRound : 'header' }}
-      </span>
+      <span class="gray">{{ round() | roundLabel : 'header' }}</span>
     </div>
     <rs-fixture-list [fixtures]="competition().fixtures" />
   `,

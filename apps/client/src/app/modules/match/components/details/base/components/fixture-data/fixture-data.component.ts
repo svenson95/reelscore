@@ -7,13 +7,13 @@ import {
 
 import { ExtendedFixtureDTO } from '@lib/models';
 
-import { CompetitionRoundPipe } from '../../../../../../../shared';
+import { RoundLabelPipe } from '../../../../../../../shared';
 import { FixtureStore } from '../../../../../store';
 
 @Component({
   selector: 'rs-match-fixture-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CompetitionRoundPipe],
+  imports: [RoundLabelPipe],
   styles: `
     :host { @apply flex flex-col py-5; }
     ul { @apply py-5; }
@@ -32,7 +32,7 @@ import { FixtureStore } from '../../../../../store';
           <span class="key">Spieltag</span>
           <div class="value">
             @if (isLoaded()) {
-            <span>{{ data()!.league.round | competitionRound }}</span>
+            <span>{{ data()!.league.round | roundLabel }}</span>
             } @else {
             <div class="list-item-placeholder"></div>
             }

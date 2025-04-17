@@ -1,12 +1,12 @@
 import {
   CompetitionId,
-  CompetitionLabel,
+  CompetitionName,
   ExtendedFixtureDTO,
 } from '@lib/models';
 
 export interface Competition {
   id: CompetitionId;
-  name: CompetitionLabel;
+  name: CompetitionName;
   image: string;
   url: string[];
 }

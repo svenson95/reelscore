@@ -1,7 +1,7 @@
-import { CompetitionLabel } from '../../models';
+import { CompetitionName } from '../../models';
 import { CompetitionCode } from './code.constant';
 
-export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionLabel> = {
+export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionName> = {
   // Europa
   [CompetitionCode.EUROPA_UEFA_CHAMPIONS_LEAGUE]: 'Champions League',
   [CompetitionCode.EUROPA_UEFA_EURO_LEAGUE]: 'Europa League',

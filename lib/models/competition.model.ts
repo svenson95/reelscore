@@ -27,7 +27,7 @@ export type StandingRanks = {
 export type LeagueType = 'League' | 'Cup' | 'Friendly' | 'International';
 export type League = {
   id: CompetitionId;
-  name: CompetitionLabel;
+  name: CompetitionName;
   country: string;
   logo: string;
   flag: string;
@@ -38,16 +38,14 @@ export type League = {
 
 export type CompetitionUrl = string;
 export type CompetitionId = number;
-export type CompetitionLabel = string;
-export type CompetitionRound = string;
+export type CompetitionName = string;
+export type CompetitionNameTranslated = string;
 
-export type CompetitionRoundString = string;
-export type CompetitionRounds = Record<CompetitionId, CompetitionRoundString>;
-export type CompetitionMatchDayIndex = number;
-export type CompetitionMatchDays = Record<
-  CompetitionMatchDayIndex,
-  CompetitionRounds
->;
+export type CompetitionRound = string;
+export type CompetitionRoundTranslated = string;
+export type CompetitionRoundIndex = number;
+export type CompetitionRounds = Record<CompetitionRoundIndex, CompetitionRound>;
+export type CompetitionRoundsData = Record<CompetitionId, CompetitionRounds>;
 
 export type Competition = {
   id: CompetitionId;
