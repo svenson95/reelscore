@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-import { TODAY_DATE_STRING } from './shared';
+import moment from 'moment-timezone';
+
+const TODAY_DATE_STRING = moment.tz('Europe/Berlin').format('YYYY-MM-DD');
 
 export const routes: Routes = [
   {

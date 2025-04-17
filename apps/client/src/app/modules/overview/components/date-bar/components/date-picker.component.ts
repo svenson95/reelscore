@@ -17,13 +17,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
-import {
-  DateString,
-  LAST_YEAR_START,
-  NEXT_YEAR_END,
-} from '../../../../../shared';
+import { DateString } from '../../../../../shared';
+
+const LAST_YEAR_START = new Date(moment().toDate().getFullYear() - 1, 0, 1);
+const NEXT_YEAR_END = new Date(moment().toDate().getFullYear() + 1, 11, 31);
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {

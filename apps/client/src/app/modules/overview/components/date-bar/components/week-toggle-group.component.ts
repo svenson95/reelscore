@@ -15,16 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment';
 
-import {
-  CalendarWeek,
-  DateString,
-  TODAY_DATE_STRING,
-} from '../../../../../shared';
+import { CalendarWeek, DateString } from '../../../../../shared';
+import { DateService } from '../../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
-  transform = (day: DateString): boolean => day === TODAY_DATE_STRING;
+  dateService = inject(DateService);
+  transform = (day: DateString): boolean => day === this.dateService.today();
 }
 
 @Component({

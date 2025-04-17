@@ -36,11 +36,7 @@ export class AbstractedVisibilityObserverService {
     const date = untracked(this.selectedDateService.selectedDay).split('T')[0];
     this.dateService.resetToday();
 
-    const dateCalendarWeek = this.dateService.getCalendarWeekFrom(date);
-    const calendarWeek = untracked(this.dateService.calendarWeek);
-    const isDifferentWeek = dateCalendarWeek !== calendarWeek;
-
-    if (this.isNotLoading() && isDifferentWeek) {
+    if (this.isNotLoading()) {
       this.weekFixturesStore.loadWeekdayFixtures(date, true);
       this.weekStandingsStore.loadWeekdayStandings(date, true);
     }

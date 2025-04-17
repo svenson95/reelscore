@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString, TODAY_DATE_STRING } from '../../../../../shared';
+import { DateString } from '../../../../../shared';
 
 @Component({
   selector: 'rs-today-button',
@@ -37,8 +37,9 @@ import { DateString, TODAY_DATE_STRING } from '../../../../../shared';
   `,
 })
 export class TodayButtonComponent {
+  today = input.required<DateString>();
   isToday = input.required<boolean>();
   clicked = output<DateString>();
 
-  setToday = () => this.clicked.emit(TODAY_DATE_STRING);
+  setToday = () => this.clicked.emit(this.today());
 }

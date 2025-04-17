@@ -31,7 +31,11 @@ import {
         (dateSelected)="setDate($event)"
       />
       @if (isMobile()){ @if (!isToday()) {
-      <rs-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
+      <rs-today-button
+        [today]="today()"
+        [isToday]="isToday()"
+        (clicked)="setDate($event)"
+      />
       }
       <div class="spacer"></div>
       <rs-action-buttons />
@@ -45,7 +49,11 @@ import {
     />
 
     @if (!isMobile()){ @if (!isToday()) {
-    <rs-today-button [isToday]="isToday()" (clicked)="setDate($event)" />
+    <rs-today-button
+      [today]="today()"
+      [isToday]="isToday()"
+      (clicked)="setDate($event)"
+    />
     }
     <div class="spacer"></div>
     <rs-action-buttons />
@@ -60,6 +68,7 @@ export class DateBarComponent {
   private selectedDateService = inject(SelectedDateService);
   selectedDay = this.selectedDateService.selectedDay;
   weekdays = this.dateService.weekdays;
+  today = this.dateService.today;
   isToday = this.dateService.isToday;
   calendarWeek = this.dateService.calendarWeek;
 
