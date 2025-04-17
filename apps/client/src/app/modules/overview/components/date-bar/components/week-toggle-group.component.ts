@@ -8,13 +8,18 @@ import {
   output,
   Pipe,
   PipeTransform,
+  untracked,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment';
 
-import { DateString, TODAY_DATE_STRING } from '../../../../../shared';
+import {
+  CalendarWeek,
+  DateString,
+  TODAY_DATE_STRING,
+} from '../../../../../shared';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
 @Pipe({ name: 'isToday' })
@@ -110,12 +115,17 @@ export class IsTodayPipe implements PipeTransform {
 })
 export class WeekToggleGroupComponent {
   selectedDay = input.required<DateString>();
+  calendarWeek = input.required<CalendarWeek>();
   weekdays = input.required<DateString[]>();
   dateSelected = output<DateString>();
 
-  indexedWeekdays = computed<{ day: DateString; index: number }[]>(() =>
-    this.weekdays().map((day) => ({ day, index: new Date(day).getDate() }))
-  );
+  indexedWeekdays = computed<{ day: DateString; index: number }[]>(() => {
+    void this.calendarWeek(); // trigger recompute
+    return untracked(this.weekdays).map((day) => ({
+      day,
+      index: new Date(day).getDate(),
+    }));
+  });
 
   private weekFixtures = inject(WeekdayFixturesStore);
   private weekStandings = inject(WeekdayStandingsStore);

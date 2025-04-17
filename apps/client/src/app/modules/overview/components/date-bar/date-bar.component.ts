@@ -40,6 +40,7 @@ import {
     <rs-week-toogle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
+      [calendarWeek]="calendarWeek()"
       (dateSelected)="setDate($event)"
     />
 
@@ -59,6 +60,7 @@ export class DateBarComponent {
   selectedDay = this.dateService.selectedDay;
   weekdays = this.dateService.weekdays;
   isToday = this.dateService.isToday;
+  calendarWeek = this.dateService.calendarWeek;
 
   setDate(day: DateString) {
     this.dateService.setSelectedDay(day);
