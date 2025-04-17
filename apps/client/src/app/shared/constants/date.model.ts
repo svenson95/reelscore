@@ -22,7 +22,7 @@ export const isSameDay = (a: Date, b: Date): boolean => {
 };
 
 export type DateString = string;
-export type CalenderWeek = number;
+export type CalendarWeek = number;
 
 export const TODAY_ISO_STRING = moment().tz('Europe/Berlin').toISOString();
 export const TODAY_DATE_STRING = moment(TODAY_ISO_STRING)
