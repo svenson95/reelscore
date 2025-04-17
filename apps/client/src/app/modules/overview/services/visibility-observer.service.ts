@@ -6,6 +6,7 @@ import { filter, tap } from 'rxjs/operators';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../store';
 
 import { DateService } from './date.service';
+import { SelectedDateService } from './selected-date.service';
 
 export abstract class VisibilityObserverService {
   abstract init(): void;
@@ -16,6 +17,7 @@ export class AbstractedVisibilityObserverService {
   private destroyRef = inject(DestroyRef);
 
   private dateService = inject(DateService);
+  private selectedDateService = inject(SelectedDateService);
   private weekFixturesStore = inject(WeekdayFixturesStore);
   private weekStandingsStore = inject(WeekdayStandingsStore);
 
@@ -23,19 +25,29 @@ export class AbstractedVisibilityObserverService {
     fromEvent(document, 'visibilitychange')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        filter(() => !document.hidden),
+        filter(() => this.isDocumentVisibleAgain()),
         filter((event) => this.isOverviewRoute(event)),
-        filter(() => this.isNotLoading()),
-        tap(() => this.reloadFixturesAndStandings())
+        tap(() => this.reloadData())
       )
       .subscribe();
   }
 
-  private reloadFixturesAndStandings(): void {
-    const date = untracked(this.dateService.selectedDay).split('T')[0];
-    this.weekFixturesStore.loadWeekdayFixtures(date, true);
-    this.weekStandingsStore.loadWeekdayStandings(date, true);
-    // TODO reset TODAY value
+  private reloadData(): void {
+    const date = untracked(this.selectedDateService.selectedDay).split('T')[0];
+    this.dateService.resetToday();
+
+    const dateCalendarWeek = this.dateService.getCalendarWeekFrom(date);
+    const calendarWeek = untracked(this.dateService.calendarWeek);
+    const isDifferentWeek = dateCalendarWeek !== calendarWeek;
+
+    if (this.isNotLoading() && isDifferentWeek) {
+      this.weekFixturesStore.loadWeekdayFixtures(date, true);
+      this.weekStandingsStore.loadWeekdayStandings(date, true);
+    }
+  }
+
+  private isDocumentVisibleAgain(): boolean {
+    return !document.hidden;
   }
 
   private isOverviewRoute(event: Event): boolean {
