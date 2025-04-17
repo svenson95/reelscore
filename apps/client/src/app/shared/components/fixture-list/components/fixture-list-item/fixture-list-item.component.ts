@@ -5,6 +5,7 @@ import {
   computed,
   inject,
   input,
+  untracked,
 } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
@@ -130,20 +131,24 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
 export class FixtureListItemComponent {
   fixture = input.required<ExtendedFixtureDTO>();
 
-  facade = inject(FixtureListItemFacade);
+  private facade = inject(FixtureListItemFacade);
   notStarted = this.facade.notStarted;
   playing = this.facade.playing;
   finished = this.facade.finished;
   halfTime = this.facade.halfTime;
 
   isHomeEliminated = computed(() =>
-    this.facade.isTeamEliminated(this.fixture(), 'home')
+    this.facade.isTeamEliminated(untracked(this.fixture), 'home')
   );
   isAwayEliminated = computed(() =>
-    this.facade.isTeamEliminated(this.fixture(), 'away')
+    this.facade.isTeamEliminated(untracked(this.fixture), 'away')
   );
 
-  homeLogo = computed<string>(() => getTeamLogo(this.fixture().teams.home.id));
-  awayLogo = computed<string>(() => getTeamLogo(this.fixture().teams.away.id));
-  fixtureLink = computed<string[]>(() => linkToMatch(this.fixture()));
+  homeLogo = computed<string>(() =>
+    getTeamLogo(untracked(this.fixture).teams.home.id)
+  );
+  awayLogo = computed<string>(() =>
+    getTeamLogo(untracked(this.fixture).teams.away.id)
+  );
+  fixtureLink = computed<string[]>(() => linkToMatch(untracked(this.fixture)));
 }

@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   input,
+  untracked,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -80,14 +81,15 @@ import {
 })
 export class MatchDayListComponent {
   competition = input.required<CompetitionWithFixtures>();
+  firstFixture = computed(() => untracked(this.competition).fixtures[0]);
 
   round = computed<CompetitionRound>(() => {
-    const fixture = this.competition().fixtures[0];
+    const fixture = untracked(this.firstFixture);
     return fixture ? fixture.league.round : '';
   });
 
   getCompetitionLogo = computed(() => {
-    const fixture = this.competition().fixtures[0];
+    const fixture = untracked(this.firstFixture);
     return getCompetitionLogo(fixture.league.id);
   });
 }

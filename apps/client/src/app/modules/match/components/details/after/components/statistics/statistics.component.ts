@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   input,
+  untracked,
 } from '@angular/core';
 
 import { StatisticDTO } from '@lib/models';
@@ -164,5 +165,5 @@ import { StatisticList } from './models';
 })
 export class MatchStatisticsComponent {
   data = input.required<StatisticDTO[]>();
-  stats = computed(() => StatisticList.init(this.data()));
+  stats = computed(() => StatisticList.init(untracked(this.data)));
 }

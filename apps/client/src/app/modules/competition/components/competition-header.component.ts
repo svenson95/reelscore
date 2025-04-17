@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  untracked,
 } from '@angular/core';
 
 import {
@@ -35,9 +36,10 @@ import {
   `,
 })
 export class CompetitionHeaderComponent {
-  leagueService = inject(LeagueService);
-  selectedLeague = this.leagueService.selectedLeague;
-  id = computed(() => this.selectedLeague()?.id ?? 0);
-  label = computed(() => this.selectedLeague()?.label ?? 'unknown');
-  competitionLogo = computed(() => getCompetitionLogo(this.id()));
+  private leagueService = inject(LeagueService);
+  private selectedLeague = computed(() => this.leagueService.selectedLeague());
+
+  id = computed(() => untracked(this.selectedLeague)?.id ?? 0);
+  label = computed(() => untracked(this.selectedLeague)?.label ?? 'unknown');
+  competitionLogo = computed(() => getCompetitionLogo(untracked(this.id)));
 }

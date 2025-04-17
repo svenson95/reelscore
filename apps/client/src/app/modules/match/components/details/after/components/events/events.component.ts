@@ -4,6 +4,7 @@ import {
   computed,
   inject,
   input,
+  untracked,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -83,10 +84,10 @@ import { TimeTotalPipe } from './pipes';
   `,
 })
 export class MatchEventsComponent {
+  private fixtureStore = inject(FixtureStore);
   data = input.required<EventWithResult[]>();
 
-  fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
-  homeTeamId = computed(() => this.fixture()?.data.teams.home.id);
-  awayTeamId = computed(() => this.fixture()?.data.teams.away.id);
+  fixture = computed(() => this.fixtureStore.fixture());
+  homeTeamId = computed(() => untracked(this.fixture)?.data.teams.home.id);
+  awayTeamId = computed(() => untracked(this.fixture)?.data.teams.away.id);
 }
