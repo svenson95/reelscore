@@ -3,11 +3,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { CompetitionData, SELECT_COMPETITION_DATA } from '../../../../shared';
+import { SELECT_COMPETITION_DATA } from '../../../constants';
+import { CompetitionData } from '../../../models';
 import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
-  selector: 'rs-league-select',
+  selector: 'nav[rs-competition-select]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,
@@ -22,7 +23,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     }
 
     mat-form-field { @apply w-[220px] bg-white; }
-    ::ng-deep div.leagueSelectMenu.mat-mdc-select-panel {
+    ::ng-deep div.competitionSelectMenu.mat-mdc-select-panel {
       @apply max-h-[70vh];
 
       mat-option .mdc-list-item__primary-text { @apply w-full; }
@@ -63,13 +64,12 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     }
   `,
   template: `
-    <mat-form-field [class.is-selected]="!!selectedLeague()">
+    <mat-form-field [class.is-selected]="!!selectedCompetition()">
       <mat-label>Wettbewerb</mat-label>
       <mat-select
-        aria-label="Competition-Select Navigation"
         hideSingleSelectionIndicator
-        panelClass="leagueSelectMenu"
-        [value]="selectedLeague()?.url ?? null"
+        panelClass="competitionSelectMenu"
+        [value]="selectedCompetition()?.url ?? null"
         (selectionChange)="removeFocus($event)"
       >
         @for (group of groups; track group.label) {
@@ -94,8 +94,8 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     </mat-form-field>
   `,
 })
-export class LeagueSelectComponent {
+export class CompetitionSelectComponent {
   groups = SELECT_COMPETITION_DATA;
-  selectedLeague = input.required<CompetitionData | undefined>();
+  selectedCompetition = input.required<CompetitionData | undefined>();
   removeFocus = (e: MatSelectChange) => e.source.close();
 }

@@ -1,1 +1,1 @@
-export * from './league-select.component';
+export * from './competition-select.component';
