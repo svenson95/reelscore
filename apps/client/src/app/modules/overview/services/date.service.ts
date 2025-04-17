@@ -10,13 +10,14 @@ import {
   untracked,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
-import { CalendarWeek, DateString, createWeekDaysArray } from '../../../shared';
+import { CalendarWeek, DateString } from '../../../shared';
 import { SelectedDateService } from './selected-date.service';
 
 export abstract class DateService {
   abstract selectedTabIndex: Signal<number>;
+  abstract today: Signal<DateString>;
   abstract isToday: Signal<boolean>;
   abstract resetToday(): void;
   abstract calendarWeek: WritableSignal<CalendarWeek>;
@@ -46,7 +47,7 @@ export class AbstractedDateService extends DateService {
     this.updateRoute(date);
   });
 
-  private today = signal<DateString>(this.getToday());
+  today = signal<DateString>(this.getToday());
   isToday = computed<boolean>(
     () => this.selectedDateService.selectedDay() === this.today()
   );
@@ -79,8 +80,26 @@ export class AbstractedDateService extends DateService {
     void this.calendarWeek(); // trigger recompute
     const selectedDay = untracked(this.selectedDateService.selectedDay);
     const selectedDate = new Date(selectedDay);
-    return createWeekDaysArray(selectedDate);
+    return this.createWeekDaysArray(selectedDate);
   });
+
+  private getStartOfWeek = (date: Date): Date => {
+    const startOfWeek = new Date(date);
+    const dayOfWeek = startOfWeek.getDay();
+    const correctedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() - correctedDayOfWeek + 1);
+    return startOfWeek;
+  };
+
+  private createWeekDaysArray = (date: Date): DateString[] => {
+    const startOfWeek = this.getStartOfWeek(date);
+
+    return Array.from({ length: 7 }, (_, i) => {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + i);
+      return moment(day).tz('Europe/Berlin').format('YYYY-MM-DD');
+    });
+  };
 
   getCalendarWeekFrom(day: DateString): CalendarWeek {
     try {

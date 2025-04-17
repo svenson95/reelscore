@@ -1,5 +1,5 @@
 import { Injectable, Signal, signal } from '@angular/core';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { DateString } from '../../../shared';
 
