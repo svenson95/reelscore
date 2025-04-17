@@ -4,6 +4,9 @@ import {
   computed,
   inject,
   input,
+  Pipe,
+  PipeTransform,
+  untracked,
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -18,10 +21,32 @@ import { BreakpointObserverService } from '../services';
 
 import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
 
+const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
+
+@Pipe({ name: 'getTeamLogo' })
+export class GetTeamLogoPipe implements PipeTransform {
+  transform(id: number): string {
+    return getTeamLogo(id);
+  }
+}
+
+@Pipe({ name: 'hasMultipleGroups' })
+export class HasMultipleGroupsPipe implements PipeTransform {
+  transform(id: CompetitionId): boolean {
+    return isCompetitionWithMultipleGroups(id);
+  }
+}
+
 @Component({
   selector: 'rs-standings-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, MatTableModule, OptimizedImageComponent, TeamNamePipe],
+  imports: [
+    ...EXTERNAL_IMPORTS,
+    OptimizedImageComponent,
+    TeamNamePipe,
+    GetTeamLogoPipe,
+    HasMultipleGroupsPipe,
+  ],
   styles: `
     :host {
       @apply flex overflow-hidden;
@@ -109,7 +134,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
           <a [routerLink]="competitionRouterLink(league().id)">
-            @if (hasMultipleGroups(league().id)) {
+            @if (league().id | hasMultipleGroups) {
             {{ roundLabel() }}
             } @else if (header()) {
             {{ header() }}
@@ -123,7 +148,7 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
             <div class="team-logo">
               @defer (on viewport) {
               <rs-optimized-image
-                [source]="getTeamLogo(element.team.id)"
+                [source]="element.team.id | getTeamLogo"
                 alternate="team logo"
                 width="14"
                 height="14"
@@ -193,8 +218,9 @@ import { OptimizedImageComponent } from './optimized-image/optimized-image.compo
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="columns()"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns()"></tr>
+      @let columns = this.columns();
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
     </table>
   `,
 })
@@ -228,8 +254,9 @@ export class StandingsTableComponent {
     }
   });
 
-  competitionLogo = computed(() => getCompetitionLogo(this.league().id));
-  getTeamLogo = getTeamLogo;
+  competitionLogo = computed(() =>
+    getCompetitionLogo(untracked(this.league).id)
+  );
 
   columns = computed(() => {
     const filtered = this.DISPLAYED_COLUMNS.filter(
@@ -261,6 +288,4 @@ export class StandingsTableComponent {
     if (!competition) throw new Error(`Competition not found (${id})`);
     return ['/', 'competition', competition.url];
   }
-
-  hasMultipleGroups = isCompetitionWithMultipleGroups;
 }

@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   input,
+  untracked,
 } from '@angular/core';
 
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
@@ -78,11 +79,15 @@ export class FixturesListComponent {
   fixtures = input.required<ExtendedFixtureDTO[]>();
   isLoading = input.required<boolean>();
 
-  firstFixture = computed<ExtendedFixtureDTO>(() => this.fixtures()?.[0]);
-  round = computed(() => this.firstFixture().league.round);
-  date = computed(() => this.firstFixture().fixture.date);
-  competitionId = computed(() => this.firstFixture().league.id);
-  competitionLogo = computed(() => getCompetitionLogo(this.competitionId()));
+  firstFixture = computed<ExtendedFixtureDTO>(
+    () => untracked(this.fixtures)?.[0]
+  );
+  round = computed(() => untracked(this.firstFixture).league.round);
+  date = computed(() => untracked(this.firstFixture).fixture.date);
+  competitionId = computed(() => untracked(this.firstFixture).league.id);
+  competitionLogo = computed(() =>
+    getCompetitionLogo(untracked(this.competitionId))
+  );
 
   fixturesDays = computed(() => {
     const fixtures = this.fixtures();

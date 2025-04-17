@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   input,
+  untracked,
 } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -158,7 +159,7 @@ export class AnalysesEvaluationsComponent {
 
   isRelatedTeam = computed(
     () => (fixture: ExtendedFixtureDTO, team: AnalysesTeamType) =>
-      fixture.teams[team].id === this.relatedTeam().id
+      fixture.teams[team].id === untracked(this.relatedTeam).id
   );
 
   fixturesWithEvaluations = computed<FixtureWithEvaluations[]>(() => {

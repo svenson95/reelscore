@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   input,
+  untracked,
 } from '@angular/core';
 
 import {
@@ -64,11 +65,13 @@ export class HeaderDetailsComponent {
   highlights = input.required<FixtureHighlights>();
 
   events = computed(() => {
-    return mappedEvents(this.highlights(), this.data().teams);
+    const highlights = untracked(this.highlights);
+    const teams = untracked(this.data).teams;
+    return mappedEvents(highlights, teams);
   });
 
-  isHomeEvent = (event: EventDTO) =>
-    event.team.id === this.data().teams.home.id;
+  private homeTeamId = computed(() => untracked(this.data).teams.home.id);
+  isHomeEvent = (event: EventDTO) => event.team.id === this.homeTeamId();
 }
 
 // TODO refactor this functions copied from events.store.ts

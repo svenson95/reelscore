@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  untracked,
 } from '@angular/core';
 
 import { FixtureStore, LatestFixturesStore } from '../../../../../store';
@@ -50,5 +51,6 @@ export class MatchLatestFixturesComponent {
   latestFixtures = computed(() => this.latestFixturesStore.latestFixtures());
 
   private fixtureStore = inject(FixtureStore);
-  data = computed(() => this.fixtureStore.fixture()?.data);
+  private fixture = computed(() => this.fixtureStore.fixture());
+  data = computed(() => untracked(this.fixture)?.data);
 }
