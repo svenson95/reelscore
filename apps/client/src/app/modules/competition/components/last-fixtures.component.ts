@@ -3,14 +3,16 @@ import {
   Component,
   computed,
   inject,
+  untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { CompetitionId } from '@lib/models';
 import { isCompetitionWithOneFixture } from '@lib/shared';
 
-import { LeagueService } from '../../../shared';
+import { FIRST_ROUNDS, LeagueService } from '../../../shared';
 import { LastFixturesStore } from '../store';
+
 import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({
@@ -50,40 +52,26 @@ import { FixturesListComponent } from './fixtures-list.component';
   `,
 })
 export class LastFixturesComponent {
-  store = inject(LastFixturesStore);
+  private store = inject(LastFixturesStore);
   fixtures = this.store.fixtures;
   isLoading = this.store.isLoading;
+  showAll = this.store.showAll;
 
-  leagueService = inject(LeagueService);
-  competition = this.leagueService.selectedLeague;
+  private leagueService = inject(LeagueService);
+  competition = computed(() => this.leagueService.selectedLeague());
 
   isFirstRound = computed<boolean>(() => {
-    const fixtures = this.fixtures();
-    const competition = this.competition();
+    const fixtures = untracked(this.fixtures);
+    const competition = untracked(this.competition);
     if (!fixtures || !competition) return false;
     const round = fixtures[0][0].league.round;
-    const firstRounds = [
-      'Regular Season - 1',
-      '1st Round',
-      'Preliminary Round',
-      'League A - 1',
-      'League B - 1',
-      'League C - 1',
-      'League D - 1',
-      'Group A - 1',
-      'Group B - 1',
-      'Group D - 1',
-      'Group C - 1',
-      'Group E - 1',
-      'Group F - 1',
-    ];
-    return firstRounds.includes(round);
+    return FIRST_ROUNDS.includes(round);
   });
+
   isCompetitionWithOneFixture = computed(() => {
-    const id = this.competition()?.id;
+    const id = untracked(this.competition)?.id;
     return !id ? false : isCompetitionWithOneFixture(id);
   });
-  showAll = this.store.showAll;
 
   loadAllLastFixtures(id: CompetitionId): void {
     this.store.loadLastFixtures(id, true);

@@ -124,3 +124,19 @@ export const HEADER_TRANSLATIONS = (round: CompetitionRound) =>
 export const ROUND_LABEL_TYPES: CompetitionRoundType[] = Object.keys(
   COMPETITION_ROUND_MAP
 ) as CompetitionRoundType[];
+
+export const FIRST_ROUNDS: CompetitionRoundType[] = [
+  'Regular Season - 1',
+  '1st Round',
+  'Preliminary Round',
+  'League A - 1',
+  'League B - 1',
+  'League C - 1',
+  'League D - 1',
+  'Group A - 1',
+  'Group B - 1',
+  'Group D - 1',
+  'Group C - 1',
+  'Group E - 1',
+  'Group F - 1',
+];
