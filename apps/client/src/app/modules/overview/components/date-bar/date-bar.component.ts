@@ -41,12 +41,14 @@ import {
       <rs-action-buttons />
       }
     </div>
-    <rs-week-toogle-group
+    <nav
+      aria-label="Week Navigation"
+      rs-week-toggle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
       [calendarWeek]="calendarWeek()"
       (dateSelected)="setDate($event)"
-    />
+    ></nav>
 
     @if (!isMobile()){ @if (!isToday()) {
     <rs-today-button
