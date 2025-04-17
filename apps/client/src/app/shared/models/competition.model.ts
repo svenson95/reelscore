@@ -2,6 +2,7 @@ import {
   CompetitionId,
   CompetitionName,
   ExtendedFixtureDTO,
+  TeamId,
 } from '@lib/models';
 
 export interface Competition {
@@ -16,7 +17,19 @@ export interface CompetitionWithFixtures extends Competition {
 }
 
 const BASE = 'assets/images';
-export const getCompetitionLogo = (id: CompetitionId): string =>
-  `${BASE}/league/${id}.png`;
-export const getTeamLogo = (id: number): string =>
-  `${BASE}/team-logo/${id}.png`;
+
+const competitionCache: Record<CompetitionId, string> = {};
+export const getCompetitionLogo = (id: CompetitionId): string => {
+  if (!competitionCache[id]) {
+    competitionCache[id] = `${BASE}/league/${id}.png`;
+  }
+  return competitionCache[id];
+};
+
+const teamCache: Record<TeamId, string> = {};
+export const getTeamLogo = (id: number): string => {
+  if (!teamCache[id]) {
+    teamCache[id] = `${BASE}/team-logo/${id}.png`;
+  }
+  return teamCache[id];
+};
