@@ -1,8 +1,13 @@
 import { EvaluationAnalyses, ExtendedFixtureDTO } from '@lib/models';
 
-export type AnalysesTeam = 'home' | 'away';
+export const AnalysesTeam = {
+  HOME: 'home',
+  AWAY: 'away',
+} as const;
+
+export type AnalysesTeamType = (typeof AnalysesTeam)[keyof typeof AnalysesTeam];
 export interface ExtendedEvaluationAnalyses extends EvaluationAnalyses {
-  team: AnalysesTeam;
+  team: AnalysesTeamType;
 }
 
 export interface FixtureWithEvaluations extends ExtendedFixtureDTO {

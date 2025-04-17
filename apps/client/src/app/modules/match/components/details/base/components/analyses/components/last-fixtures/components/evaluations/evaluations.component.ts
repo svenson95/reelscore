@@ -19,7 +19,12 @@ import {
 } from '../../../../../../../../../../../shared';
 
 import { AnalysesEvaluationComponent } from './components';
-import { ExtendedEvaluationAnalyses, FixtureWithEvaluations } from './models';
+import {
+  AnalysesTeam,
+  AnalysesTeamType,
+  ExtendedEvaluationAnalyses,
+  FixtureWithEvaluations,
+} from './models';
 
 const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
 
@@ -135,7 +140,8 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
           <rs-match-fixture-analyses-evaluation
             class="evaluation"
             [analyzedElement]="evaluation"
-            [class.is-away]="evaluation.team === 'away'"
+            [class.is-away]="evaluation.team === AnalysesTeam.AWAY"
+            [class.is-related-team]="isRelatedTeam()(fixture, evaluation.team)"
           />
           }
         </div>
@@ -145,8 +151,15 @@ const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
   `,
 })
 export class AnalysesEvaluationsComponent {
+  readonly AnalysesTeam = AnalysesTeam;
+
   fixtures = input.required<ExtendedFixtureDTO[] | undefined>();
   relatedTeam = input.required<FixtureTeam>();
+
+  isRelatedTeam = computed(
+    () => (fixture: ExtendedFixtureDTO, team: AnalysesTeamType) =>
+      fixture.teams[team].id === this.relatedTeam().id
+  );
 
   fixturesWithEvaluations = computed<FixtureWithEvaluations[]>(() => {
     const fixtures = this.fixtures() || [];
@@ -174,16 +187,16 @@ export class AnalysesEvaluationsComponent {
   private analysesWithTeam = (
     evaluations: FixtureEvaluations
   ): ExtendedEvaluationAnalyses[] => {
-    const home: ExtendedEvaluationAnalyses[] = evaluations?.home.analyses.map(
+    const home: ExtendedEvaluationAnalyses[] = evaluations.home.analyses.map(
       (a) => ({
         ...a,
-        team: 'home',
+        team: AnalysesTeam.HOME,
       })
     );
-    const away: ExtendedEvaluationAnalyses[] = evaluations?.away.analyses.map(
+    const away: ExtendedEvaluationAnalyses[] = evaluations.away.analyses.map(
       (a) => ({
         ...a,
-        team: 'away',
+        team: AnalysesTeam.AWAY,
       })
     );
     return [...home, ...away].sort((a, b) => {

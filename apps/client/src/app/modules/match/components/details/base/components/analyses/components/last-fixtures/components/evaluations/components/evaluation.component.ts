@@ -8,9 +8,10 @@ import { EvaluationAnalyses } from '@lib/models';
   imports: [],
   styles: `
     :host { @apply flex flex-col gap-1 text-left; }
+    :host-context(.is-related-team) .analyze-element { @apply opacity-100; }
     :host-context(.is-away) .analyze-element { @apply flex-row-reverse; }
     .analyze-element { 
-      @apply flex flex-wrap gap-1;
+      @apply flex flex-wrap gap-1 opacity-50;
 
       &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-gray-100 text-rs-color-text-1; }
       &.is-lucky .level { @apply bg-[#0db500]; }
