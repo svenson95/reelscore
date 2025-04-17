@@ -66,6 +66,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     <mat-form-field [class.is-selected]="!!selectedLeague()">
       <mat-label>Wettbewerb</mat-label>
       <mat-select
+        aria-label="Competition-Select Navigation"
         hideSingleSelectionIndicator
         panelClass="leagueSelectMenu"
         [value]="selectedLeague()?.url ?? null"
