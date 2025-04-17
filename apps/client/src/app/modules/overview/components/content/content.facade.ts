@@ -21,9 +21,8 @@ export class OverviewContentFacade {
   standingsLoading = this.weekStandingsStore.isLoading;
   standingsError = this.weekStandingsStore.error;
 
-  calenderWeekEffect = effect(() => {
-    // TODO refactor this to use calenderWeek as param in loadWeekdayData, backend needs to be changed
-    this.dateService.calenderWeek();
+  calendarWeekEffect = effect(() => {
+    void this.dateService.calendarWeek(); // trigger recompute
     const date = untracked(this.selectedDay).split('T')[0];
     this.weekFixturesStore.loadWeekdayFixtures(date);
     this.weekStandingsStore.loadWeekdayStandings(date);
