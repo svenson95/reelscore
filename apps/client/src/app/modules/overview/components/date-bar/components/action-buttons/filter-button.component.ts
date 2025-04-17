@@ -15,7 +15,7 @@ import {
   OptimizedImageComponent,
   SELECT_COMPETITION_DATA,
 } from '../../../../../../shared';
-import { DateService, FilterService } from '../../../../services';
+import { FilterService, SelectedDateService } from '../../../../services';
 import { FilteredStandingsStore } from '../../../../store';
 
 @Component({
@@ -103,7 +103,7 @@ import { FilteredStandingsStore } from '../../../../store';
 export class FilterButtonComponent {
   groups = SELECT_COMPETITION_DATA;
   standingsStore = inject(FilteredStandingsStore);
-  dateService = inject(DateService);
+  selectedDateService = inject(SelectedDateService);
   filterService = inject(FilterService);
   selectedCompetition = this.filterService.selectedCompetition;
 
@@ -123,7 +123,7 @@ export class FilterButtonComponent {
   });
 
   updateStanding(id: CompetitionId): void {
-    const date = this.dateService.selectedDay();
+    const date = this.selectedDateService.selectedDay();
     this.standingsStore.loadFilteredStandings(date, id).then(() => {
       this.selectedCompetition.set(id);
     });

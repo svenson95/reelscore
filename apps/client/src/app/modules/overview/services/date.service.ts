@@ -12,69 +12,93 @@ import {
 import { Router } from '@angular/router';
 import moment from 'moment';
 
-import {
-  CalendarWeek,
-  DateString,
-  TODAY_DATE_STRING,
-  createWeekDaysArray,
-} from '../../../shared';
+import { CalendarWeek, DateString, createWeekDaysArray } from '../../../shared';
+import { SelectedDateService } from './selected-date.service';
 
 export abstract class DateService {
-  abstract selectedDay: Signal<DateString>;
-  abstract setSelectedDay(day: DateString): void;
+  abstract selectedTabIndex: Signal<number>;
   abstract isToday: Signal<boolean>;
+  abstract resetToday(): void;
   abstract calendarWeek: WritableSignal<CalendarWeek>;
   abstract weekdays: Signal<DateString[]>;
-  abstract selectedTabIndex: Signal<number>;
   abstract getCalendarWeekFrom(day: DateString): CalendarWeek;
 }
 
 @Injectable()
 export class AbstractedDateService extends DateService {
   private router = inject(Router);
-
-  private urlDate = computed<string>(() => {
-    const dateString = this.router.url.split('/')[1];
-    const formattedDate = moment(dateString)
-      .tz('Europe/Berlin')
-      .format('YYYY-MM-DD');
-    return formattedDate;
-  });
-
-  #selectedDaySignal = signal<DateString>(this.urlDate());
-  selectedDay = this.#selectedDaySignal.asReadonly();
-  setSelectedDay(day: DateString): void {
-    this.#selectedDaySignal.set(day);
-  }
+  private selectedDateService = inject(SelectedDateService);
 
   selectedTabIndex = computed<number>(() => {
-    return this.weekdays().findIndex((day) => day === this.selectedDay());
+    return this.weekdays().findIndex(
+      (day) => day === this.selectedDateService.selectedDay()
+    );
   });
 
   selectedDayEffect = effect(() => {
-    const date = this.selectedDay();
+    const date = this.selectedDateService.selectedDay();
+    const calendarWeek = this.calendarWeek;
     const weekOfDay = this.getCalendarWeekFrom(date);
-    if (untracked(this.calendarWeek) !== weekOfDay) {
-      this.calendarWeek.set(weekOfDay);
+    if (untracked(calendarWeek) !== weekOfDay) {
+      calendarWeek.set(weekOfDay);
     }
-    const dateString = date.substring(0, 10);
-    this.router.navigate([dateString]);
+
+    this.updateRoute(date);
   });
 
-  isToday = computed<boolean>(() => this.selectedDay() === TODAY_DATE_STRING);
+  private today = signal<DateString>(this.getToday());
+  isToday = computed<boolean>(
+    () => this.selectedDateService.selectedDay() === this.today()
+  );
+
+  resetToday(): void {
+    const todayDate = this.getToday();
+    this.today.set(todayDate);
+
+    this.updateRoute(todayDate);
+  }
+
+  private updateRoute(date: DateString): void {
+    const currentRoute = this.router.url.split('/')[1];
+    const dateRoute = date.substring(0, 10);
+
+    if (currentRoute !== dateRoute) {
+      this.router.navigate([dateRoute]);
+    }
+  }
+
+  private getToday(): DateString {
+    return moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+  }
 
   calendarWeek = signal<CalendarWeek>(
-    this.getCalendarWeekFrom(this.selectedDay())
+    this.getCalendarWeekFrom(this.selectedDateService.selectedDay())
   );
 
   weekdays = computed<DateString[]>(() => {
-    const selectedDay = new Date(this.selectedDay());
-    return createWeekDaysArray(selectedDay);
+    void this.calendarWeek(); // trigger recompute
+    const selectedDay = untracked(this.selectedDateService.selectedDay);
+    const selectedDate = new Date(selectedDay);
+    return createWeekDaysArray(selectedDate);
   });
 
   getCalendarWeekFrom(day: DateString): CalendarWeek {
-    const datepipe = new DatePipe('de-DE');
-    return Number(datepipe.transform(day, 'w'));
+    try {
+      const datepipe = new DatePipe('de-DE');
+      const week = datepipe.transform(day, 'w');
+      if (!week) {
+        throw new Error(
+          `Invalid date: getCalendarWeekFrom(day: DateString): CalendarWeek | ${day}`
+        );
+      }
+      return Number(week);
+    } catch (error) {
+      console.error(
+        'Error calculating calendar week: getCalendarWeekFrom(day: DateString): CalendarWeek',
+        error
+      );
+      return 0;
+    }
   }
 }
 

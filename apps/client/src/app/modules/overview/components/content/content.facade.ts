@@ -1,6 +1,6 @@
 import { effect, inject, Injectable, untracked } from '@angular/core';
 
-import { DateService } from '../../services';
+import { DateService, SelectedDateService } from '../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
 
 @Injectable()
@@ -8,7 +8,8 @@ export class OverviewContentFacade {
   readonly weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 
   private dateService = inject(DateService);
-  private selectedDay = this.dateService.selectedDay;
+  private selectedDateService = inject(SelectedDateService);
+  private selectedDay = this.selectedDateService.selectedDay;
   tabIndex = this.dateService.selectedTabIndex;
 
   private weekFixturesStore = inject(WeekdayFixturesStore);
