@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { BreakpointObserverService, DateString } from '../../../../shared';
-import { DateService } from '../../services';
+import { DateService, SelectedDateService } from '../../services';
 
 import {
   ActionButtonsComponent,
@@ -53,16 +53,17 @@ import {
   `,
 })
 export class DateBarComponent {
-  breakpointObserverService = inject(BreakpointObserverService);
+  private breakpointObserverService = inject(BreakpointObserverService);
   isMobile = this.breakpointObserverService.isMobile;
 
-  dateService = inject(DateService);
-  selectedDay = this.dateService.selectedDay;
+  private dateService = inject(DateService);
+  private selectedDateService = inject(SelectedDateService);
+  selectedDay = this.selectedDateService.selectedDay;
   weekdays = this.dateService.weekdays;
   isToday = this.dateService.isToday;
   calendarWeek = this.dateService.calendarWeek;
 
-  setDate(day: DateString) {
-    this.dateService.setSelectedDay(day);
+  setDate(day: DateString): void {
+    this.selectedDateService.setSelectedDay(day);
   }
 }
