@@ -34,7 +34,11 @@ import { STORE_PROVIDERS } from './store';
       <p class="no-data">Es ist ein Fehler aufgetreten.</p>
     </section>
     } @else {
-    <section rs-page-header class="animate-drop-from-top"></section>
+    <nav
+      aria-label="Page-Header Navigation"
+      rs-page-header
+      class="animate-drop-from-top"
+    ></nav>
 
     <section
       rs-match-header

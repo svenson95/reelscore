@@ -8,7 +8,7 @@ import { MatchFacade } from '../../match.facade';
 const ANGULAR_MODULES = [DatePipe, MatButtonModule];
 
 @Component({
-  selector: 'section[rs-page-header]',
+  selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...ANGULAR_MODULES, BackButtonComponent],
   styles: `

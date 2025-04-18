@@ -11,7 +11,7 @@ import {
 } from './components';
 
 @Component({
-  selector: 'section[rs-date-bar]',
+  selector: 'nav[rs-date-bar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePickerComponent,
@@ -41,14 +41,13 @@ import {
       <rs-action-buttons />
       }
     </div>
-    <nav
-      aria-label="Week Navigation"
-      rs-week-toggle-group
+
+    <rs-week-toggle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
       [calendarWeek]="calendarWeek()"
       (dateSelected)="setDate($event)"
-    ></nav>
+    ></rs-week-toggle-group>
 
     @if (!isMobile()){ @if (!isToday()) {
     <rs-today-button

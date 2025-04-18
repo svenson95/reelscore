@@ -14,7 +14,7 @@ import {
 } from '../../../shared';
 
 @Component({
-  selector: 'rs-competition-header',
+  selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
@@ -35,7 +35,7 @@ import {
     </div>
   `,
 })
-export class CompetitionHeaderComponent {
+export class PageHeaderComponent {
   private leagueService = inject(LeagueService);
   private selectedLeague = computed(() => this.leagueService.selectedLeague());
 

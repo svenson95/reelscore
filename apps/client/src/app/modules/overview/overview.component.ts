@@ -17,12 +17,14 @@ import { STORE_PROVIDERS } from './store';
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { 
-      @apply flex flex-col w-full; 
-    }
+    :host { @apply flex flex-col w-full; }
   `,
   template: `
-    <section class="page-header animate-drop-from-top" rs-date-bar></section>
+    <nav
+      aria-label="Date-Bar Navigation"
+      rs-date-bar
+      class="animate-drop-from-top"
+    ></nav>
     <section class="overview-content" rs-overview-content></section>
   `,
 })
