@@ -86,7 +86,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
             @defer (on viewport) {
             <rs-optimized-image
               [source]="homeLogo()"
-              alternate="home logo"
+              altText="home logo"
               width="14"
               height="14"
             />
@@ -107,7 +107,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
             @defer (on viewport) {
             <rs-optimized-image
               [source]="awayLogo()"
-              alternate="away logo"
+              altText="away logo"
               width="14"
               height="14"
             />

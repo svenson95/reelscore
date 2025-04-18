@@ -87,7 +87,7 @@ import { FilteredStandingsStore } from '../../../../store';
         <rs-optimized-image
           class="competition-logo"
           [source]="competition.image"
-          [alternate]="competition.label"
+          [altText]="competition.label"
           width="14"
           height="14"
         />

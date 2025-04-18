@@ -35,7 +35,7 @@ import {
         @if (fixture) {
         <rs-optimized-image
           [source]="homeLogo()"
-          alternate="home logo"
+          altText="home logo"
           width="48"
           height="48"
         />
@@ -68,7 +68,7 @@ import {
         @if (fixture) {
         <rs-optimized-image
           [source]="awayLogo()"
-          alternate="away logo"
+          altText="away logo"
           width="48"
           height="48"
         />

@@ -106,7 +106,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
             @defer (on viewport) {
             <rs-optimized-image
               [source]="competitionLogo()"
-              alternate="league logo"
+              altText="league logo"
               width="24"
               height="24"
             />
@@ -138,7 +138,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
               @defer (on viewport) {
               <rs-optimized-image
                 [source]="element.team.id | getTeamLogo"
-                alternate="team logo"
+                altText="team logo"
                 width="14"
                 height="14"
               />
