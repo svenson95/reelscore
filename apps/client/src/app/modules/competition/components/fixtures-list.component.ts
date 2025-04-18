@@ -36,21 +36,15 @@ import {
       @apply flex items-center gap-4 p-2 mb-4;
       rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
+    div.competition-logo { @apply ml-1; }
     div.days { 
       @apply flex flex-col gap-5; 
       .group-date { @apply py-2 px-4 border-b-[1px]; }
     }
-    .competition-logo {
-      @apply w-[24px] h-[24px] justify-self-center;
-
-      &-placeholder {
-        @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded;
-      }
-    }
   `,
   template: `
     <div class="round">
-      <div class="competition-logo">
+      <div class="competition-logo-small">
         @defer (on viewport) {
         <rs-optimized-image
           [source]="competitionLogo()"
@@ -59,7 +53,7 @@ import {
           height="24"
         />
         } @placeholder {
-        <div class="competition-logo-placeholder"></div>
+        <div class="competition-logo-small-placeholder"></div>
         }
       </div>
       <p>{{ round()! | roundLabel }}</p>

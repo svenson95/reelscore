@@ -48,17 +48,10 @@ import {
       }
     }
     .spacer { @apply flex-1; }
-    .competition-logo { 
-      @apply w-[24px] h-[24px]; 
-
-      &-placeholder { 
-        @apply w-[24px] h-[24px] bg-gray-200 rounded; 
-      }
-    }
   `,
   template: `
     <div class="header">
-      <div class="competition-logo">
+      <div class="competition-logo-small">
         @defer (on viewport) {
         <rs-optimized-image
           [source]="getCompetitionLogo()"
@@ -67,7 +60,7 @@ import {
           height="24"
         />
         } @placeholder {
-        <div class="competition-logo-placeholder"></div>
+        <div class="competition-logo-small-placeholder"></div>
         }
       </div>
       <a [routerLink]="competition().url">

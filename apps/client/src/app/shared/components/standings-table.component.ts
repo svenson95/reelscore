@@ -70,7 +70,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
       @apply leading-[14px];
 
       &:first-of-type {
-        @apply pr-0 pl-2 text-center;
+        @apply pr-0 pl-2 text-center justify-items-center;
       } 
     }
 
@@ -97,23 +97,12 @@ export class HasMultipleGroupsPipe implements PipeTransform {
         @apply leading-[14px];
       }
     }
-
-    .competition-logo { 
-      @apply w-[24px] h-[24px];
-
-      &-placeholder { @apply m-auto w-[24px] h-[24px] bg-gray-200 rounded; }
-    }
-    .team-logo { 
-      @apply w-[14px] h-[14px];
-
-      &-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
-    }
   `,
   template: `
     <table mat-table [dataSource]="ranks()">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
-          <div class="competition-logo">
+          <div class="competition-logo-small">
             @defer (on viewport) {
             <rs-optimized-image
               [source]="competitionLogo()"
@@ -122,7 +111,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
               height="24"
             />
             } @placeholder {
-            <div class="competition-logo-placeholder"></div>
+            <div class="competition-logo-small-placeholder"></div>
             }
           </div>
         </th>
@@ -145,7 +134,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
-            <div class="team-logo">
+            <div class="team-logo-small">
               @defer (on viewport) {
               <rs-optimized-image
                 [source]="element.team.id | getTeamLogo"
@@ -154,7 +143,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
                 height="14"
               />
               } @placeholder {
-              <div class="team-logo-placeholder"></div>
+              <div class="team-logo-small-placeholder"></div>
               }
             </div>
             <span>{{ element.team.name | teamName : 'short' }}</span>
