@@ -50,6 +50,19 @@ p.no-data {
   @apply text-rs-font-size-body-1 text-rs-color-text-3 text-center py-10;
 }
 
+.competition-logo-small {
+  @apply w-[24px] h-[24px];
+  &-placeholder {
+    @apply w-[24px] h-[24px] bg-gray-200 rounded-full;
+  }
+}
+.team-logo-small {
+  @apply w-[14px] h-[14px];
+  &-placeholder {
+    @apply w-[14px] h-[14px] bg-gray-200 rounded-full;
+  }
+}
+
 .animate-fade-in {
   animation-duration: 0.2s;
   animation-name: animate-fade-in;

@@ -54,11 +54,6 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
     .teams > div:not(.result) { @apply flex flex-1 p-2 gap-2 items-center; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 14px; text-wrap: balance; }
-    .team-logo { 
-      @apply w-[14px] h-[14px]; 
-
-      &-placeholder { @apply w-[14px] h-[14px] bg-gray-200 rounded; }
-    }
   `,
   template: `
     @let match = fixture();
@@ -87,7 +82,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
           <span class="team-name" [class.line-through]="isHomeEliminated()">
             {{ match.teams.home.name | teamName : 'short' }}
           </span>
-          <div class="team-logo">
+          <div class="team-logo-small">
             @defer (on viewport) {
             <rs-optimized-image
               [source]="homeLogo()"
@@ -96,7 +91,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
               height="14"
             />
             } @placeholder {
-            <div class="team-logo-placeholder"></div>
+            <div class="team-logo-small-placeholder"></div>
             }
           </div>
         </div>
@@ -108,7 +103,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
           />
         </div>
         <div>
-          <div class="team-logo">
+          <div class="team-logo-small">
             @defer (on viewport) {
             <rs-optimized-image
               [source]="awayLogo()"
@@ -117,7 +112,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
               height="14"
             />
             } @placeholder {
-            <div class="team-logo-placeholder"></div>
+            <div class="team-logo-small-placeholder"></div>
             }
           </div>
           <span class="team-name" [class.line-through]="isAwayEliminated()">
