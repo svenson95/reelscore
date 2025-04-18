@@ -9,14 +9,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
 import { BreakpointObserverService } from '../../shared';
-
 import { RouterView } from '../router-view';
 
 import {
-  CompetitionHeaderComponent,
   CompetitionStandingsComponent,
   LastFixturesComponent,
   NextFixturesComponent,
+  PageHeaderComponent,
 } from './components';
 import { SERVICE_PROVIDERS } from './services';
 import {
@@ -35,7 +34,7 @@ import {
     LastFixturesComponent,
     NextFixturesComponent,
     CompetitionStandingsComponent,
-    CompetitionHeaderComponent,
+    PageHeaderComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
@@ -44,9 +43,7 @@ import {
     section.competition-data { @apply p-5; }
   `,
   template: `
-    <section class="page-header">
-      <rs-competition-header />
-    </section>
+    <nav aria-label="Page-Header Navigation" rs-page-header></nav>
     <section class="competition-data">
       <mat-tab-group animationDuration="0">
         <mat-tab>

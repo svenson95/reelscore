@@ -26,7 +26,7 @@ export class IsTodayPipe implements PipeTransform {
 }
 
 @Component({
-  selector: 'nav[rs-week-toggle-group]',
+  selector: 'rs-week-toggle-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
