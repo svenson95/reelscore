@@ -55,7 +55,7 @@ import {
         @defer (on viewport) {
         <rs-optimized-image
           [source]="getCompetitionLogo()"
-          alternate="competition logo"
+          altText="competition logo"
           width="24"
           height="24"
         />

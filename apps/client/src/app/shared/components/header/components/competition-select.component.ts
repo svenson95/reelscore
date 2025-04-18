@@ -80,7 +80,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
               <rs-optimized-image
                 class="competition-logo"
                 [source]="c.image"
-                [alternate]="c.label"
+                [altText]="c.label"
                 width="14"
                 height="14"
               />

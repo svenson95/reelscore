@@ -28,7 +28,7 @@ import {
     <div class="image-wrapper">
       <rs-optimized-image
         [source]="competitionLogo()"
-        [alternate]="label()"
+        [altText]="label()"
         width="64"
         height="64"
       />

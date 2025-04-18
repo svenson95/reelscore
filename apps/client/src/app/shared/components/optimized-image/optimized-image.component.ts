@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   template: `
     <img
       [ngSrc]="source()"
-      [alt]="alternate()"
+      [alt]="altText()"
       [width]="width()"
       [height]="height()"
       loading="lazy"
@@ -17,8 +17,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class OptimizedImageComponent {
   source = input.required<string>();
-  alternate = input.required<string>();
+  altText = input.required<string>();
 
-  width = input<string>();
-  height = input<string>();
+  width = input.required<string>();
+  height = input.required<string>();
 }
