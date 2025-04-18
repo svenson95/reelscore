@@ -41,8 +41,8 @@ import { EvaluationAnalyses } from '@lib/models';
       </div>
       } @if (analyzedElement().level !== null) {
       <div class="level">
-        @switch (analyzedElement().level) { @case('LUCKY') { Glück gehabt }
-        @case('UNLUCKY') { Pech gehabt } }
+        @switch (analyzedElement().level) { @case('LUCKY') { Glück }
+        @case('UNLUCKY') { Pech } }
       </div>
       } @if (analyzedElement().comments !== null && analyzedElement().comments
       !== '') {
