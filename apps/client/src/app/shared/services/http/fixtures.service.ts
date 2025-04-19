@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { FixturesWeekData } from '@lib/models';
 
@@ -19,9 +19,11 @@ export class AbstractedHttpWeekFixturesService extends HttpWeekFixturesService {
 
   getWeekFixtures(date: DateString): Observable<FixturesWeekData> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<FixturesWeekData>(this.BASE_URL + '/by-date', {
-      params,
-    });
+    return this.http
+      .get<FixturesWeekData>(this.BASE_URL + '/by-date', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 

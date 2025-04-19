@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { FixtureIdParameter, RapidStatisticsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
@@ -20,9 +20,11 @@ export class AbstractedHttpFixtureStatisticsService extends HttpFixtureStatistic
     id: FixtureIdParameter
   ): Observable<RapidStatisticsDTO | null> {
     const params = new HttpParams().set('fixture', id);
-    return this.http.get<RapidStatisticsDTO | null>(this.BASE_URL + '', {
-      params,
-    });
+    return this.http
+      .get<RapidStatisticsDTO | null>(this.BASE_URL + '', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { FixtureId, LatestFixturesDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
@@ -19,9 +19,11 @@ export class AbstractedHttpLatestFixturesService extends HttpLatestFixturesServi
 
   getLatestFixtures(fixtureId: FixtureId): Observable<LatestFixturesDTO> {
     const params = new HttpParams().set('fixture', fixtureId);
-    return this.http.get<LatestFixturesDTO>(this.BASE_URL + '/match-latest', {
-      params,
-    });
+    return this.http
+      .get<LatestFixturesDTO>(this.BASE_URL + '/match-latest', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 
