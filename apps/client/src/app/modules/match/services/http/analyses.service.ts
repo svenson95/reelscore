@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { AnalysesDTO, FixtureId } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
@@ -16,9 +16,11 @@ export class AbstractedHttpFixtureAnalysesService extends HttpFixtureAnalysesSer
 
   getFixtureAnalyses(id: FixtureId): Observable<AnalysesDTO> {
     const params = new HttpParams().set('fixture', String(id));
-    return this.http.get<AnalysesDTO>(this.BASE_URL + '', {
-      params,
-    });
+    return this.http
+      .get<AnalysesDTO>(this.BASE_URL + '', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 

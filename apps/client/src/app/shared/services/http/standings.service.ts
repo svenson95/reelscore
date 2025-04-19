@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { CompetitionId, StandingsDTO, StandingsWeekData } from '@lib/models';
 import { environment } from '../../../../environments/environment';
@@ -30,17 +30,21 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
       params = params.append('date', date.split('T')[0]);
     }
     if (id) params = params.append('competition', id);
-    return this.http.get<StandingsDTO>(this.BASE_URL + '/standings-by-id', {
-      params,
-    });
+    return this.http
+      .get<StandingsDTO>(this.BASE_URL + '/standings-by-id', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   getWeekStandings(date: DateString): Observable<StandingsWeekData> {
     const dateString = date.substring(0, 10);
     const params = new HttpParams().append('date', dateString);
-    return this.http.get<StandingsWeekData>(this.BASE_URL + '/start-top-five', {
-      params,
-    });
+    return this.http
+      .get<StandingsWeekData>(this.BASE_URL + '/start-top-five', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 

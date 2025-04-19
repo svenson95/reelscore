@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 import { environment } from '../../../../environments/environment';
@@ -26,10 +26,12 @@ export class AbstractedHttpNextFixturesService extends HttpNextFixturesService {
       params: new HttpParams().set('competition', id).set('type', 'next'),
     };
     if (showAll) options.params = options.params.set('showAll', 'true');
-    return this.http.get<ExtendedFixtureDTO[][]>(
-      this.BASE_URL + '/competition-fixtures',
-      options
-    );
+    return this.http
+      .get<ExtendedFixtureDTO[][]>(
+        this.BASE_URL + '/competition-fixtures',
+        options
+      )
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 

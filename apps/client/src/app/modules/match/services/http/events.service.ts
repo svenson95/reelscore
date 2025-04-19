@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import { FixtureIdParameter, RapidEventsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
@@ -22,7 +22,10 @@ export class AbstractedHttpFixtureEventsService extends HttpFixtureEventsService
     const params = new HttpParams().set('fixture', id);
     return this.http
       .get<RapidEventsDTO | null>(this.BASE_URL + '', { params })
-      .pipe(map((d) => d ?? undefined));
+      .pipe(
+        shareReplay({ bufferSize: 1, refCount: true }),
+        map((d) => d ?? undefined)
+      );
   }
 }
 

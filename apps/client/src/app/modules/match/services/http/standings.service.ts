@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { CompetitionId, StandingsDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
@@ -24,9 +24,11 @@ export class AbstractedHttpFixtureStandingsService extends HttpFixtureStandingsS
     const params = new HttpParams()
       .set('teamIds', teamIds)
       .set('competition', competition);
-    return this.http.get<StandingsDTO>(this.BASE_URL + '/match-standings', {
-      params,
-    });
+    return this.http
+      .get<StandingsDTO>(this.BASE_URL + '/match-standings', {
+        params,
+      })
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
 
