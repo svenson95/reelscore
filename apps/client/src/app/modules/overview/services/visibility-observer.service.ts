@@ -1,5 +1,6 @@
 import { DestroyRef, inject, Injectable, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import moment from 'moment';
 import { fromEvent } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -33,12 +34,15 @@ export class AbstractedVisibilityObserverService {
   }
 
   private reloadData(): void {
-    const date = untracked(this.selectedDateService.selectedDay).split('T')[0];
-    this.dateService.resetToday();
-
     if (this.isNotLoading()) {
+      const date = untracked(this.selectedDateService.selectedDay);
       this.weekFixturesStore.loadWeekdayFixtures(date, true);
       this.weekStandingsStore.loadWeekdayStandings(date, true);
+    }
+
+    const now = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    if (this.dateService.today() !== now) {
+      this.dateService.resetToday();
     }
   }
 

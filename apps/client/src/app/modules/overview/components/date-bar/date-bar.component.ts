@@ -74,6 +74,11 @@ export class DateBarComponent {
   calendarWeek = this.dateService.calendarWeek;
 
   setDate(day: DateString): void {
-    this.selectedDateService.setSelectedDay(day);
+    if (day.includes('T')) {
+      const formattedDate = day.split('T')[0];
+      this.selectedDateService.setSelectedDay(formattedDate);
+    } else {
+      this.selectedDateService.setSelectedDay(day);
+    }
   }
 }
