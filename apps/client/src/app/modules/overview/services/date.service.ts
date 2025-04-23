@@ -47,16 +47,15 @@ export class AbstractedDateService extends DateService {
     this.updateRoute(date);
   });
 
-  today = signal<DateString>(this.getToday());
+  #today = signal<DateString>(this.getToday());
+  today = this.#today.asReadonly();
   isToday = computed<boolean>(
     () => this.selectedDateService.selectedDay() === this.today()
   );
 
   resetToday(): void {
     const todayDate = this.getToday();
-    this.today.set(todayDate);
-
-    this.updateRoute(todayDate);
+    this.#today.set(todayDate);
   }
 
   private updateRoute(date: DateString): void {
