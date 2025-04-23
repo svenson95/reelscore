@@ -2,63 +2,7 @@ import { League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
 import { Team, TeamId } from '../team.model';
 import { EventDTO } from './events.model';
-
-type StatusLong =
-  | 'Time To Be Defined'
-  | 'Not Started'
-  | 'First Half, Kick Off'
-  | 'Halftime'
-  | 'Second Half, 2nd Half Started'
-  | 'Extra Time'
-  | 'Break Time'
-  | 'Penalty in Progress'
-  | 'Match Suspended'
-  | 'Match Interrupted'
-  | 'Match Finished'
-  | 'Match Postponed'
-  | 'Match Cancelled'
-  | 'Match Abandoned'
-  | 'Technical Loss'
-  | 'WalkOver'
-  | 'In Progress';
-export type StatusShort =
-  | 'TBD'
-  | 'NS'
-  | '1H'
-  | 'HT'
-  | '2H'
-  | 'ET'
-  | 'BT'
-  | 'P'
-  | 'SUSP'
-  | 'INT'
-  | 'FT'
-  | 'AET'
-  | 'PEN'
-  | 'PST'
-  | 'CANC'
-  | 'ABD'
-  | 'AWD'
-  | 'WO'
-  | 'LIVE';
-export type StatusTypeScheduled = 'TBD' | 'NS';
-export type StatusTypeInPlay =
-  | '1H'
-  | 'HT'
-  | '2H'
-  | 'ET' // Extra time in play
-  | 'BT' // Break during extra time
-  | 'P' // Penaly played after extra time
-  | 'SUSP' // Suspended by referee's decision, may be rescheduled another day
-  | 'INT' // Interrupted by referee's decision, should resume in a few minutes
-  | 'LIVE'; // indicates a fixture in progress but the data indicating the half-time or elapsed time are not available
-export type StatusTypeFinished = 'FT' | 'AET' | 'PEN';
-export type StatusTypePostponed = 'PST';
-export type StatusTypeCancelled = 'CANC';
-export type StatusTypeAbandoned = 'ABD';
-export type StatusTypeNotPlayed =
-  | 'AWD' // Technical Loss
-  | 'WO'; // WalkOver, victory by forfeit or absence of competitor
+import { StatusLong, StatusShort } from './status.model';
 
 export type FixtureDetail =
   | 'lineups'
