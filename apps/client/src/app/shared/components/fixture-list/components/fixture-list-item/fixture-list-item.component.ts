@@ -17,15 +17,16 @@ import { getTeamLogo } from '../../../../models';
 import { IsStatusPipe, TeamNamePipe } from '../../../../pipes';
 import { OptimizedImageComponent } from '../../../optimized-image/optimized-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
+
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
-const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
+const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
 
 @Component({
   selector: 'rs-fixture-list-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...ANGULAR_MODULES,
+    ...EXTERNAL_MODULES,
     OptimizedImageComponent,
     TeamNamePipe,
     IsStatusPipe,
@@ -60,7 +61,7 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
     <a matRipple [routerLink]="fixtureLink()">
       <div
         class="time"
-        [class.is-upcoming]="match | isStatus : notStarted"
+        [class.is-upcoming]="match | isStatus : scheduled"
         [class.is-playing]="
           (match | isStatus : playing : finished) ||
           (match | isStatus : halfTime)
@@ -95,11 +96,11 @@ const ANGULAR_MODULES = [MatRippleModule, DatePipe, RouterModule];
             }
           </div>
         </div>
-        <div class="result" [class.is-upcoming]="match | isStatus : notStarted">
+        <div class="result" [class.is-upcoming]="match | isStatus : scheduled">
           <rs-result-label
             [result]="match.goals"
             [status]="match.fixture.status.short"
-            [isNotStarted]="match | isStatus : notStarted"
+            [isScheduled]="match | isStatus : scheduled"
           />
         </div>
         <div>
@@ -127,7 +128,7 @@ export class FixtureListItemComponent {
   fixture = input.required<ExtendedFixtureDTO>();
 
   private facade = inject(FixtureListItemFacade);
-  notStarted = this.facade.notStarted;
+  scheduled = this.facade.scheduled;
   playing = this.facade.playing;
   finished = this.facade.finished;
   halfTime = this.facade.halfTime;

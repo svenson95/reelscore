@@ -18,14 +18,14 @@ import { Goals } from '@lib/models';
     <span>{{ result().home }}</span>
     @if (isPostponed()) { @if (showPostponedText()) {
     <span class="text-rs-font-size-small"> Abgesagt </span> } @else { － } }
-    @else if (isNotStarted()) { vs } @else { : }
+    @else if (isScheduled()) { vs } @else { : }
     <span>{{ result().away }}</span>
   `,
 })
 export class ResultLabelComponent {
   result = input.required<Goals>();
   status = input.required<string>();
-  isNotStarted = input<boolean>();
+  isScheduled = input<boolean>();
   showPostponedText = input<boolean>(false);
 
   isDefined = computed(() => this.result()?.home !== null);
