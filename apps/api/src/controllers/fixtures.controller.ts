@@ -5,6 +5,7 @@ import {
   CompetitionRound,
   FixtureDateString,
   FixtureDTO,
+  STATUS_TYPES_FINISHED,
 } from '@lib/models';
 
 import { COMPETITION_ROUNDS, getSeason } from '../middleware';
@@ -111,7 +112,7 @@ export class FixturesController {
     competitionId: CompetitionId
   ): Promise<string | null> => {
     const currentSeason = { 'league.season': getSeason(competitionId) };
-    const isMatchFinished = { 'fixture.status.long': 'Match Finished' };
+    const isMatchFinished = { 'fixture.status.short': STATUS_TYPES_FINISHED };
     const lastMatch = await Fixtures.findOne({
       'league.id': competitionId,
       $and: [currentSeason, isMatchFinished],
