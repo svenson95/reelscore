@@ -5,23 +5,19 @@ import {
   CompetitionId,
   CompetitionRound,
   ExtendedFixtureDTO,
-  StatusShort,
+  STATUS_TYPES_FINISHED,
+  STATUS_TYPES_PLAYING,
+  STATUS_TYPES_SCHEDULED,
+  STATUS_VALUE_HALFTIME,
 } from '@lib/models';
 
 @Injectable()
 export class FixtureListItemFacade {
-  readonly notStarted: StatusShort[] = ['TBD', 'NS'];
-  readonly halfTime: StatusShort[] = ['HT'];
-  readonly playing: StatusShort[] = [
-    '1H',
-    '2H',
-    'ET',
-    'P',
-    'BT',
-    'SUSP',
-    'INT',
-  ];
-  readonly finished: StatusShort[] = ['FT', 'AET', 'PEN'];
+  readonly scheduled = [...STATUS_TYPES_SCHEDULED];
+  readonly halfTime = [...STATUS_VALUE_HALFTIME];
+  readonly playing = [...STATUS_TYPES_PLAYING];
+  readonly finished = [...STATUS_TYPES_FINISHED];
+
   readonly twoLeggedCompetitions: { [key: CompetitionId]: CompetitionRound[] } =
     {
       [COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE]: [
@@ -61,7 +57,9 @@ export class FixtureListItemFacade {
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
-    const isFinished = this.finished.includes(fixture.fixture.status.short);
+    const isFinished = this.finished.some(
+      (status) => status === fixture.fixture.status.short
+    );
     if (!isFinished) return false;
 
     const isKoEliminated = this.isKoEliminated(fixture, team);
