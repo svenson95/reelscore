@@ -18,9 +18,9 @@ import {
 } from '../../services';
 
 export class FixtureEvaluationsController {
-  private fixtureService = new FixtureService();
-  private fixturesService = new FixturesService();
-  private statisticsService = new FixtureStatisticsService();
+  private readonly fixtureService = new FixtureService();
+  private readonly fixturesService = new FixturesService();
+  private readonly statisticsService = new FixtureStatisticsService();
 
   async getEvaluations(fixtureId: FixtureId): Promise<EvaluationDTO> {
     const fixture = await this.fixtureService.findById(fixtureId);
@@ -47,7 +47,7 @@ export class FixtureEvaluationsController {
     };
   }
 
-  private analyzedFixtures = async (
+  private readonly analyzedFixtures = async (
     teamId: number,
     fixtures: FixtureDTO[]
   ): Promise<EvaluationTeam> => {
@@ -60,7 +60,7 @@ export class FixtureEvaluationsController {
     };
   };
 
-  private analyzeTeamPerformance = (
+  private readonly analyzeTeamPerformance = (
     data: StatisticDTO,
     fixture: FixtureDTO
   ): FixturePerformance => {
@@ -111,7 +111,7 @@ export class FixtureEvaluationsController {
     }
   };
 
-  private analyzePerformances = async (
+  private readonly analyzePerformances = async (
     teamId: number,
     fixtures: FixtureDTO[]
   ): Promise<FixturePerformance[]> | null => {
@@ -141,7 +141,7 @@ export class FixtureEvaluationsController {
     return Promise.all(performances);
   };
 
-  private analyzeResults = async (
+  private readonly analyzeResults = async (
     teamId: number,
     fixtures: FixtureDTO[]
   ): Promise<FixtureResult[]> => {
@@ -154,7 +154,7 @@ export class FixtureEvaluationsController {
     return Promise.all(mapped);
   };
 
-  private analyzeTeamResult = (
+  private readonly analyzeTeamResult = (
     teamId: number,
     fixture: FixtureDTO
   ): FixtureResult => {
@@ -163,6 +163,14 @@ export class FixtureEvaluationsController {
         ? fixture.teams.home
         : fixture.teams.away;
     const isWinner = team.winner;
-    return isWinner === true ? 'WIN' : isWinner === false ? 'LOSS' : 'DRAW';
+
+    switch (isWinner) {
+      case true:
+        return 'WIN';
+      case false:
+        return 'LOSS';
+      case null:
+        return 'DRAW';
+    }
   };
 }

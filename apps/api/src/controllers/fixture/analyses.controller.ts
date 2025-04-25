@@ -20,10 +20,10 @@ import {
 } from '../../services';
 
 export class FixtureAnalysesController {
-  private fixtureService = new FixtureService();
-  private fixturesService = new FixturesService();
-  private standingsService = new StandingsService();
-  private eventsService = new FixtureEventsService();
+  private readonly fixtureService = new FixtureService();
+  private readonly fixturesService = new FixturesService();
+  private readonly standingsService = new StandingsService();
+  private readonly eventsService = new FixtureEventsService();
 
   async getAnalyses(fixtureId: FixtureId): Promise<AnalysesDTO> {
     const fixture = await this.fixtureService.findById(fixtureId);
