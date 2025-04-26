@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { LeagueService } from '../../../shared';
+import { LeagueService } from '@app/shared';
+
 import { NextFixturesStore } from '../store';
+
 import { FixturesListComponent } from './fixtures-list.component';
 
 @Component({

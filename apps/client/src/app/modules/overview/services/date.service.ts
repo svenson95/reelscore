@@ -12,7 +12,8 @@ import {
 import { Router } from '@angular/router';
 import moment from 'moment-timezone';
 
-import { CalendarWeek, DateString } from '../../../shared';
+import { CalendarWeek, DateString } from '@app/shared';
+
 import { SelectedDateService } from './selected-date.service';
 
 export abstract class DateService {

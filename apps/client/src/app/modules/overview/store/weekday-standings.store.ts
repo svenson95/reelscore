@@ -1,13 +1,8 @@
 import { inject, untracked } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { DateString, HttpStandingsService, StateHandler } from '@app/shared';
 import { StandingsWeekData } from '@lib/models';
-
-import {
-  DateString,
-  HttpStandingsService,
-  StateHandler,
-} from '../../../shared';
 
 type WeekdayStandingsState = StateHandler<{
   weekStandings: StandingsWeekData;

@@ -19,10 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment-timezone';
 
-import { DateString } from '../../../../../shared';
-
-const LAST_YEAR_START = new Date(moment().toDate().getFullYear() - 1, 0, 1);
-const NEXT_YEAR_END = new Date(moment().toDate().getFullYear() + 1, 11, 31);
+import { DateString } from '@app/shared';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -30,6 +27,11 @@ class CustomDateAdapter extends NativeDateAdapter {
     return 1;
   }
 }
+
+const DATE_PICKER_PROVIDERS = [
+  provideNativeDateAdapter(),
+  { provide: DateAdapter, useClass: CustomDateAdapter },
+];
 
 @Component({
   selector: 'rs-date-picker',
@@ -43,10 +45,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     MatTooltipModule,
     MatIconModule,
   ],
-  providers: [
-    provideNativeDateAdapter(),
-    { provide: DateAdapter, useClass: CustomDateAdapter },
-  ],
+  providers: [...DATE_PICKER_PROVIDERS],
   styles: `
     @use '@angular/material' as mat;
 
@@ -92,14 +91,14 @@ class CustomDateAdapter extends NativeDateAdapter {
   `,
 })
 export class DatePickerComponent {
-  readonly MIN_DATE = LAST_YEAR_START;
-  readonly MAX_DATE = NEXT_YEAR_END;
+  readonly MIN_DATE = new Date(moment().toDate().getFullYear() - 1, 0, 1);
+  readonly MAX_DATE = new Date(moment().toDate().getFullYear() + 1, 11, 31);
 
   selectedDay = input.required<DateString>();
   dateSelected = output<DateString>();
 
-  updateDate = (value: DateString) => {
+  updateDate(value: DateString): void {
     const date = moment(value).tz('Europe/Berlin').format('YYYY-MM-DD');
     this.dateSelected.emit(date);
-  };
+  }
 }

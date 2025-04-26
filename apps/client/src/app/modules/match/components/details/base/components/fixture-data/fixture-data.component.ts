@@ -5,9 +5,9 @@ import {
   inject,
 } from '@angular/core';
 
+import { RoundLabelPipe } from '@app/shared';
 import { ExtendedFixtureDTO } from '@lib/models';
 
-import { RoundLabelPipe } from '../../../../../../../shared';
 import { FixtureStore } from '../../../../../store';
 
 @Component({

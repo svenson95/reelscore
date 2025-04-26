@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { StateHandler } from '@app/shared';
 import { CompetitionId, StandingsDTO } from '@lib/models';
 
-import { StateHandler } from '../../../shared';
 import { HttpFixtureStandingsService } from '../services';
 
 type FixtureStandingsState = StateHandler<{ standings: StandingsDTO | null }>;

@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 
-import { CompetitionName, ExtendedFixtureDTO } from '@lib/models';
-
 import {
   COMPETITIONS_ORDER,
   CompetitionWithFixtures,
   SELECT_COMPETITION_DATA_FLAT,
-} from '../../../../../../shared';
+} from '@app/shared';
+import { CompetitionName, ExtendedFixtureDTO } from '@lib/models';
+
 import { FilterService } from '../../../../services';
 
 @Injectable()

@@ -5,10 +5,9 @@ import {
   input,
 } from '@angular/core';
 
+import { StandingsTableComponent } from '@app/shared';
 import { StandingsDTO } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
-
-import { StandingsTableComponent } from '../../../../../../../shared';
 
 @Component({
   selector: 'rs-match-fixture-standings',

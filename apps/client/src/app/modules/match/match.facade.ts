@@ -1,13 +1,13 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CompetitionUrl, FixtureId } from '@lib/models';
-
 import {
   DateString,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
-} from '../../shared';
+} from '@app/shared';
+import { CompetitionUrl, FixtureId } from '@lib/models';
+
 import { FixtureStore } from './store';
 
 @Injectable()

@@ -5,7 +5,7 @@ import {
   LeagueService,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
-} from '../shared';
+} from '@app/shared';
 
 export class RouterView {
   leagueService = inject(LeagueService);
