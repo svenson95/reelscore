@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { StateHandler } from '@app/shared';
 import { EvaluationDTO, FixtureId } from '@lib/models';
 
-import { StateHandler } from '../../../shared';
 import { HttpEvaluationsService } from '../services';
 
 type EvaluationsState = StateHandler<{ evaluations: EvaluationDTO | null }>;

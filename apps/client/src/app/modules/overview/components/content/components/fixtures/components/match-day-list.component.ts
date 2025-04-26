@@ -7,8 +7,6 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { CompetitionRound } from '@lib/models';
-
 import {
   CompetitionWithFixtures,
   FixtureListComponent,
@@ -16,13 +14,16 @@ import {
   NameLabelPipe,
   OptimizedImageComponent,
   RoundLabelPipe,
-} from '../../../../../../../shared';
+} from '@app/shared';
+import { CompetitionRound } from '@lib/models';
+
+const EXTERNAL_MODULES = [RouterLink];
 
 @Component({
   selector: 'rs-start-match-day-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    RouterLink,
+    ...EXTERNAL_MODULES,
     RoundLabelPipe,
     NameLabelPipe,
     OptimizedImageComponent,

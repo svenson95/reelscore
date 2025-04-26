@@ -8,16 +8,12 @@ import {
 } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 
+import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
 import {
   ExtendedFixtureDTO,
   FixtureEvaluations,
   FixtureTeam,
 } from '@lib/models';
-
-import {
-  TeamIsRelatedPipe,
-  TeamNamePipe,
-} from '../../../../../../../../../../../shared';
 
 import { AnalysesEvaluationComponent } from './components';
 import {
@@ -27,13 +23,13 @@ import {
   FixtureWithEvaluations,
 } from './models';
 
-const ANGULAR_MODULES = [DatePipe, MatExpansionModule];
+const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
 
 @Component({
   selector: 'rs-match-fixture-analyses-evaluations',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...ANGULAR_MODULES,
+    ...EXTERNAL_MODULES,
     AnalysesEvaluationComponent,
     TeamIsRelatedPipe,
     TeamNamePipe,

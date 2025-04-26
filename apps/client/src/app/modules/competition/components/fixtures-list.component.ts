@@ -7,14 +7,13 @@ import {
   untracked,
 } from '@angular/core';
 
-import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
-
 import {
   FixtureListComponent,
   OptimizedImageComponent,
   RoundLabelPipe,
   getCompetitionLogo,
-} from '../../../shared';
+} from '@app/shared';
+import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'rs-competition-fixtures-list',

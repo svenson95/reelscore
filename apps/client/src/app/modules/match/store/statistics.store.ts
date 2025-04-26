@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { StateHandler } from '@app/shared';
 import { FixtureIdParameter, StatisticDTO } from '@lib/models';
 
-import { StateHandler } from '../../../shared';
 import { HttpFixtureStatisticsService } from '../services';
 
 type StatisticsState = StateHandler<{ statistics: StatisticDTO[] | null }>;

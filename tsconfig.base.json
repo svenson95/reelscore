@@ -17,7 +17,8 @@
     "paths": {
       "@lib/constants": ["lib/constants/index.ts"],
       "@lib/models": ["lib/models/index.ts"],
-      "@lib/shared": ["lib/shared/index.ts"]
+      "@lib/shared": ["lib/shared/index.ts"],
+      "@app/shared": ["apps/client/src/app/shared/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

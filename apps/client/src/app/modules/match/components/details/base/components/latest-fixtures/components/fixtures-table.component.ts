@@ -3,23 +3,22 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { FixtureDTO, FixtureTeam } from '@lib/models';
-
 import {
   CheckScorePipe,
   ResultLabelComponent,
   TeamIsRelatedPipe,
   TeamNamePipe,
   linkToMatch,
-} from '../../../../../../../../shared';
+} from '@app/shared';
+import { FixtureDTO, FixtureTeam } from '@lib/models';
+
+const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
 @Component({
   selector: 'rs-match-fixtures-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    RouterModule,
-    DatePipe,
-    MatRippleModule,
+    ...EXTERNAL_MODULES,
     TeamNamePipe,
     CheckScorePipe,
     TeamIsRelatedPipe,

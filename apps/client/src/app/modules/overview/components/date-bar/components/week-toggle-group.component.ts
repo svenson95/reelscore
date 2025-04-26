@@ -15,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import moment from 'moment';
 
-import { CalendarWeek, DateString } from '../../../../../shared';
+import { CalendarWeek, DateString } from '@app/shared';
+
 import { DateService } from '../../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
@@ -25,16 +26,17 @@ export class IsTodayPipe implements PipeTransform {
   transform = (day: DateString): boolean => day === this.dateService.today();
 }
 
+const EXTERNAL_MODULES = [
+  DatePipe,
+  MatButtonToggleModule,
+  MatIconModule,
+  MatTooltipModule,
+];
+
 @Component({
   selector: 'rs-week-toggle-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DatePipe,
-    MatButtonToggleModule,
-    MatIconModule,
-    MatTooltipModule,
-    IsTodayPipe,
-  ],
+  imports: [...EXTERNAL_MODULES, IsTodayPipe],
   styles: `
     @use "@angular/material" as mat;
 

@@ -1,13 +1,8 @@
 import { inject, untracked } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { DateString, HttpWeekFixturesService, StateHandler } from '@app/shared';
 import { FixturesWeekData } from '@lib/models';
-
-import {
-  DateString,
-  HttpWeekFixturesService,
-  StateHandler,
-} from '../../../shared';
 
 type WeekdayFixturesState = StateHandler<{
   weekFixtures: FixturesWeekData;

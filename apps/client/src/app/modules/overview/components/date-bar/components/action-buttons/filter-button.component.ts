@@ -9,25 +9,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { OptimizedImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
 import { CompetitionId } from '@lib/models';
 
-import {
-  OptimizedImageComponent,
-  SELECT_COMPETITION_DATA,
-} from '../../../../../../shared';
 import { FilterService, SelectedDateService } from '../../../../services';
 import { FilteredStandingsStore } from '../../../../store';
+
+const EXTERNAL_MODULES = [
+  MatButtonModule,
+  MatIconModule,
+  MatTooltipModule,
+  MatMenuModule,
+];
 
 @Component({
   selector: 'rs-filter-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatMenuModule,
-    OptimizedImageComponent,
-  ],
+  imports: [...EXTERNAL_MODULES, OptimizedImageComponent],
   styles: `
     button[mat-icon-button].is-filtering { @apply bg-blue-500 text-rs-color-white; }
     button[mat-menu-item] { 

@@ -1,7 +1,7 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import moment from 'moment-timezone';
 
-import { DateString } from '../../../shared';
+import { DateString } from '@app/shared';
 
 export abstract class SelectedDateService {
   abstract selectedDay: Signal<DateString>;

@@ -11,7 +11,7 @@ import {
   LeagueService,
   OptimizedImageComponent,
   getCompetitionLogo,
-} from '../../../shared';
+} from '@app/shared';
 
 @Component({
   selector: 'nav[rs-page-header]',
@@ -37,9 +37,12 @@ import {
 })
 export class PageHeaderComponent {
   private leagueService = inject(LeagueService);
-  private selectedLeague = computed(() => this.leagueService.selectedLeague());
+  private selectedLeague = this.leagueService.selectedLeague;
 
-  id = computed(() => untracked(this.selectedLeague)?.id ?? 0);
   label = computed(() => untracked(this.selectedLeague)?.label ?? 'unknown');
-  competitionLogo = computed(() => getCompetitionLogo(untracked(this.id)));
+  competitionLogo = computed<string>(() => {
+    const id = untracked(this.selectedLeague)?.id;
+    if (!id) throw new Error('Selected league is undefined');
+    return getCompetitionLogo(id);
+  });
 }

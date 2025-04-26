@@ -2,15 +2,16 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { BackButtonComponent } from '../../../../shared';
+import { BackButtonComponent } from '@app/shared';
+
 import { MatchFacade } from '../../match.facade';
 
-const ANGULAR_MODULES = [DatePipe, MatButtonModule];
+const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
 
 @Component({
   selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...ANGULAR_MODULES, BackButtonComponent],
+  imports: [...EXTERNAL_MODULES, BackButtonComponent],
   styles: `
     :host { @apply flex gap-5 p-5; }
     button { 

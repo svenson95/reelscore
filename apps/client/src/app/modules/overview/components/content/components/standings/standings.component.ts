@@ -6,9 +6,8 @@ import {
   input,
 } from '@angular/core';
 
+import { StandingsTableComponent } from '@app/shared';
 import { StandingsDTO } from '@lib/models';
-
-import { StandingsTableComponent } from '../../../../../../shared';
 
 import { OverviewStandingsFacade } from './standings.facade';
 

@@ -6,18 +6,17 @@ import {
 } from '@angular/core';
 
 import {
+  OptimizedImageComponent,
+  ResultLabelComponent,
+  TeamNamePipe,
+  getTeamLogo,
+} from '@app/shared';
+import {
   FixtureDTO,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,
 } from '@lib/models';
-
-import {
-  OptimizedImageComponent,
-  ResultLabelComponent,
-  TeamNamePipe,
-  getTeamLogo,
-} from '../../../../../shared';
 
 @Component({
   selector: 'rs-match-header-data',

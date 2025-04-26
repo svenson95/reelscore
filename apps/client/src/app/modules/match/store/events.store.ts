@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+import { StateHandler } from '@app/shared';
 import {
   EventDTO,
   EventResult,
@@ -11,7 +12,6 @@ import {
   timeTotal,
 } from '@lib/models';
 
-import { StateHandler } from '../../../shared';
 import { HttpFixtureEventsService } from '../services';
 
 type EventsState = StateHandler<{ events: EventWithResult[] | null }>;
