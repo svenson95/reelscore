@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   inject,
-  untracked,
 } from '@angular/core';
 
 import {
@@ -39,9 +38,9 @@ export class PageHeaderComponent {
   private leagueService = inject(LeagueService);
   private selectedLeague = this.leagueService.selectedLeague;
 
-  label = computed(() => untracked(this.selectedLeague)?.label ?? 'unknown');
+  label = computed(() => this.selectedLeague()?.label ?? 'unknown');
   competitionLogo = computed<string>(() => {
-    const id = untracked(this.selectedLeague)?.id;
+    const id = this.selectedLeague()?.id;
     if (!id) throw new Error('Selected league is undefined');
     return getCompetitionLogo(id);
   });

@@ -4,7 +4,6 @@ import {
   Component,
   computed,
   input,
-  untracked,
 } from '@angular/core';
 
 import {
@@ -31,13 +30,13 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       @apply border-[1px] bg-white;
       border-color: var(--mdc-outlined-button-outline-color);
     }
-    div.round { 
+    div.round {
       @apply flex items-center gap-4 p-2 mb-4;
       rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
     div.competition-logo { @apply ml-1; }
-    div.days { 
-      @apply flex flex-col gap-5; 
+    div.days {
+      @apply flex flex-col gap-5;
       .group-date { @apply py-2 px-4 border-b-[1px]; }
     }
   `,
@@ -72,15 +71,11 @@ export class FixturesListComponent {
   fixtures = input.required<ExtendedFixtureDTO[]>();
   isLoading = input.required<boolean>();
 
-  firstFixture = computed<ExtendedFixtureDTO>(
-    () => untracked(this.fixtures)?.[0]
-  );
-  round = computed(() => untracked(this.firstFixture).league.round);
-  date = computed(() => untracked(this.firstFixture).fixture.date);
-  competitionId = computed(() => untracked(this.firstFixture).league.id);
-  competitionLogo = computed(() =>
-    getCompetitionLogo(untracked(this.competitionId))
-  );
+  firstFixture = computed<ExtendedFixtureDTO>(() => this.fixtures()?.[0]);
+  round = computed(() => this.firstFixture().league.round);
+  date = computed(() => this.firstFixture().fixture.date);
+  competitionId = computed(() => this.firstFixture().league.id);
+  competitionLogo = computed(() => getCompetitionLogo(this.competitionId()));
 
   fixturesDays = computed(() => {
     const fixtures = this.fixtures();
