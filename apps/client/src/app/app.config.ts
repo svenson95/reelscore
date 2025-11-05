@@ -4,7 +4,6 @@ import {
 } from '@angular/common/http';
 import {
   ApplicationConfig,
-  isDevMode,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -15,12 +14,12 @@ import {
   withInMemoryScrolling,
   withPreloading,
 } from '@angular/router';
-import { provideServiceWorker } from '@angular/service-worker';
 
 import { routes } from './app.routes';
 import {
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   LOCALE_PROVIDER,
+  PWA_PROVIDER,
 } from './config';
 import { GLOBAL_SERVICE_PROVIDERS } from './shared';
 
@@ -38,17 +37,10 @@ const BASE_PROVIDERS = [
   provideHttpClient(withInterceptorsFromDi()),
 ];
 
-const PWA_PROVIDERS = [
-  provideServiceWorker('ngsw-worker.js', {
-    enabled: !isDevMode(),
-    registrationStrategy: 'registerWhenStable:30000',
-  }),
-];
-
 export const appConfig: ApplicationConfig = {
   providers: [
     ...BASE_PROVIDERS,
-    ...PWA_PROVIDERS,
+    PWA_PROVIDER,
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,
