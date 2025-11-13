@@ -5,13 +5,13 @@ import { CompetitionId } from '@lib/models';
 export const getSeason = (competition: CompetitionId = null): number => {
   const today = moment().tz('Europe/Berlin');
   const competitionId = Number(competition);
-  const mlsId = 253;
 
-  if (competitionId === mlsId) {
-    return today.year();
-  } else {
-    return calculateSeasonForRegularCompetition(today);
-  }
+  const mlsId = 253;
+  if (competitionId === mlsId) return today.year();
+  const wcqeId = 32; // World Cup Qualifiers Europe
+  if (competitionId === wcqeId) return 2024; // Fixed season for World Cup Qualifiers
+
+  return calculateSeasonForRegularCompetition(today);
 };
 
 const calculateSeasonForRegularCompetition = (today: moment.Moment): number => {
