@@ -1,11 +1,8 @@
 @use '@angular/material' as mat;
 
 :root {
-  // --mat-select-enabled-trigger-text-color: var(--rs-color-white);
   --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
   --mdc-text-button-disabled-label-text-color: var(--rs-color-text-1);
-  --mat-select-enabled-arrow-color: var(--rs-color-orange);
-  --mat-select-disabled-arrow-color: var(--rs-color-text-2);
   // --mdc-filled-text-field-hover-label-text-color: var(--fb-color-black);
   // --mdc-filled-text-field-focus-label-text-color: var(--fb-color-black);
   --mat-standard-button-toggle-shape: var(--rs-size-border-radius);
@@ -34,6 +31,7 @@
 
   // mat-form-field
   --mdc-filled-text-field-container-color: var(--rs-button-bg-color);
+  --mat-select-enabled-trigger-text-color: var(--rs-color-white);
 
   @include mat.button-overrides(
     (

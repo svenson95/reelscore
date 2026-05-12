@@ -50,7 +50,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     }
 
     mat-select {
-      --mat-select-trigger-text-size: var(--rs-font-size-body-1);
+      --mat-select-trigger-text-size: var(--rs-font-size-body-3);
       --mat-select-enabled-arrow-color: var(--rs-color-text-2);
       --mat-select-focused-arrow-color: var(--fb-color-black);
     }

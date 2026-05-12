@@ -41,7 +41,7 @@ import {
   styles: `
     :host { @apply flex flex-col w-full; }
     :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
-    section.competition-data { @apply p-5; }
+    section.competition-data { @apply p-3; }
   `,
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
