@@ -22,7 +22,8 @@ import {
   ],
   styles: `
     :host { @apply w-full flex flex-wrap items-center justify-between px-3 pt-3 sm:px-4 sm:pt-4 gap-2 sm:gap-4; }
-    .top { @apply flex w-full sm:w-fit items-center gap-3 sm:gap-4; }
+    .top { @apply flex w-full sm:w-fit items-center; }
+    .top > *:not(:first-child) { border-left: 1px solid var(--mat-sys-surface); }
     .spacer { @apply flex-grow; }
   `,
   template: `
