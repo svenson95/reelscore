@@ -16,7 +16,11 @@ import { FilterButtonComponent } from './filter-button.component';
   ],
   styles: `
     :host {
-      @apply flex gap-3 sm:gap-4;
+      @apply flex;
+
+      > *:not(:first-child) {
+        border-left: 1px solid var(--mat-sys-surface);
+      }
 
       ::ng-deep {
         .mat-mdc-icon-button {
