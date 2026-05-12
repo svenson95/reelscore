@@ -81,6 +81,46 @@ const BIG_LEAGUE_ROUND_STRINGS = {
   37: `${REGULAR_SEASON_STR}37`,
   38: `${REGULAR_SEASON_STR}38`,
 };
+const LA_LIGA_2026_FIX = {
+  1: 'Regular Season - 1',
+  2: 'Regular Season - 2',
+  3: 'Regular Season - 6',
+  4: 'Regular Season - 3',
+  5: 'Regular Season - 4',
+  6: 'Regular Season - 5',
+  7: 'Regular Season - 7',
+  8: 'Regular Season - 8',
+  9: 'Regular Season - 9',
+  10: 'Regular Season - 10',
+  11: 'Regular Season - 11',
+  12: 'Regular Season - 12',
+  13: 'Regular Season - 13',
+  14: 'Regular Season - 14',
+  15: 'Regular Season - 19',
+  16: 'Regular Season - 15',
+  17: 'Regular Season - 16',
+  18: 'Regular Season - 17',
+  19: 'Regular Season - 18',
+  20: 'Regular Season - 20',
+  21: 'Regular Season - 21',
+  22: 'Regular Season - 22',
+  23: 'Regular Season - 23',
+  24: 'Regular Season - 24',
+  25: 'Regular Season - 25',
+  26: 'Regular Season - 26',
+  27: 'Regular Season - 27',
+  28: 'Regular Season - 28',
+  29: 'Regular Season - 29',
+  30: 'Regular Season - 30',
+  31: 'Regular Season - 31',
+  32: 'Regular Season - 33',
+  33: 'Regular Season - 32',
+  34: 'Regular Season - 34',
+  35: 'Regular Season - 35',
+  36: 'Regular Season - 36',
+  37: 'Regular Season - 37',
+  38: 'Regular Season - 38',
+};
 
 const MLS_LEAGUE_ROUND_STRINGS = {
   1: `${REGULAR_SEASON_STR}1`,
@@ -117,28 +157,11 @@ const MLS_LEAGUE_ROUND_STRINGS = {
   32: `${REGULAR_SEASON_STR}32`,
   33: `${REGULAR_SEASON_STR}33`,
   34: `${REGULAR_SEASON_STR}34`,
-  35: `${REGULAR_SEASON_STR}35`,
-  36: `${REGULAR_SEASON_STR}36`,
-  37: `${REGULAR_SEASON_STR}37`,
-  38: `${REGULAR_SEASON_STR}38`,
-  39: `${REGULAR_SEASON_STR}39`,
-  40: `${REGULAR_SEASON_STR}40`,
-  41: `${REGULAR_SEASON_STR}41`,
-  42: `${REGULAR_SEASON_STR}42`,
-  43: `${REGULAR_SEASON_STR}43`,
-  44: `${REGULAR_SEASON_STR}44`,
-  45: `${REGULAR_SEASON_STR}45`,
-  46: `${REGULAR_SEASON_STR}46`,
-  47: `${REGULAR_SEASON_STR}47`,
-  48: `${REGULAR_SEASON_STR}48`,
-  49: `${REGULAR_SEASON_STR}49`,
-  50: `${REGULAR_SEASON_STR}50`,
-  51: `${REGULAR_SEASON_STR}51`,
-  52: 'MLS Cup - Play-In Round',
-  53: 'MLS Cup - Round 1',
-  54: 'MLS Cup - Conference Semi-finals',
-  55: 'MLS Cup - Conference Finals',
-  56: 'MLS Cup - Final',
+  35: 'Round of 32',
+  36: 'Round of 16',
+  37: 'Quarter-finals',
+  38: 'Semi-finals',
+  39: 'Final',
 };
 
 const QUALIFY_STR = 'Qualifying Round';
@@ -180,11 +203,10 @@ const EU_EL_ROUNDS = {
   10: `${EU_CL_GROUP_STAGE_STR}6`,
   11: `${EU_CL_GROUP_STAGE_STR}7`,
   12: `${EU_CL_GROUP_STAGE_STR}8`,
-  13: 'Knockout Round Play-offs',
-  14: 'Round of 16',
-  15: 'Quarter-finals',
-  16: 'Semi-finals',
-  17: 'Final',
+  13: 'Round of 16',
+  14: 'Quarter-finals',
+  15: 'Semi-finals',
+  16: 'Final',
 };
 const EU_UEFA_SUPER_CUP = {
   1: 'Final',
@@ -210,6 +232,8 @@ const EN_LEAGUE_CUP = {
   3: '3rd Round',
   4: '4th Round',
   5: 'Quarter-finals',
+  6: 'Semi-finals',
+  7: 'Final',
 };
 const EN_EFL_TROPHY = {
   1: `${GROUP_STAGE_STR}1`,
@@ -255,6 +279,12 @@ const EN_FA_CUP = {
   9: '3rd Round Qualifying',
   10: '1/128-finals',
   11: 'Round of 128',
+  12: 'Round of 64',
+  13: 'Round of 32',
+  14: 'Round of 16',
+  15: 'Quarter-finals',
+  16: 'Semi-finals',
+  17: 'Final',
 };
 const EN_COMMUNITY_SHIELD = { 1: 'Final' };
 const EN_PREMIER_LEAGUE_CUP = {
@@ -283,6 +313,11 @@ const ES_COPA_DEL_REY = {
   1: '1/128-finals',
   2: 'Round of 128',
   3: 'Round of 64',
+  4: 'Round of 32',
+  5: 'Round of 16',
+  6: 'Quarter-finals',
+  7: 'Semi-finals',
+  8: 'Final',
 };
 
 // Italien
@@ -295,12 +330,21 @@ const IT_COPPA_ITALIA = {
   1: '1st Round',
   2: '2nd Round',
   3: '3rd Round',
+  4: 'Quarter-finals',
+  5: 'Semi-finals',
+  6: 'Final',
 };
 
 // Frankreich
 const FR_COUPE_DE_FRANCE = {
   1: '1/128-finals',
   2: 'Round of 128',
+  3: 'Round of 64',
+  4: 'Round of 32',
+  5: 'Round of 16',
+  6: 'Quarter-finals',
+  7: 'Semi-finals',
+  8: 'Final',
 };
 const FR_TROPHEE_DES_CHAMPIONS = {
   1: 'Final',
@@ -374,26 +418,18 @@ const INTERNATIONAL_UEFA_NATIONS_LEAGUE = {
 };
 
 const INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF = {
-  1: '1st Round - 1',
-  2: '1st Round - 2',
-  3: '1st Round - 3',
-  4: '1st Round - 4',
-  5: '1st Round - 5',
-  6: '2nd Round',
+  1: '1st Round',
+  2: '2nd Round - 1',
+  3: '2nd Round - 2',
+  4: '2nd Round - 3',
+  5: '2nd Round - 4',
+  6: '2nd Round - 5',
   7: 'Final Round - 1',
   8: 'Final Round - 2',
   9: 'Final Round - 3',
   10: 'Final Round - 4',
   11: 'Final Round - 5',
   12: 'Final Round - 6',
-  13: 'Final Round - 7',
-  14: 'Final Round - 8',
-  15: 'Final Round - 9',
-  16: 'Final Round - 10',
-  17: 'Final Round - 11',
-  18: 'Final Round - 12',
-  19: 'Final Round - 13',
-  20: 'Final Round - 14',
 };
 
 const INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE = {
@@ -440,7 +476,7 @@ export const COMPETITION_ROUNDS: CompetitionRoundsData = {
   871: EN_PREMIER_LEAGUE_CUP,
 
   // Spanien
-  140: BIG_LEAGUE_ROUND_STRINGS,
+  140: LA_LIGA_2026_FIX,
   556: ES_SUPER_CUP,
   143: ES_COPA_DEL_REY,
 
