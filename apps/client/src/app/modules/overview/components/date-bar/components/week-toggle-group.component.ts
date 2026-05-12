@@ -59,7 +59,8 @@ const EXTERNAL_MODULES = [
       @apply flex border-none;
 
       mat-button-toggle.mat-button-toggle {
-        @apply flex-1 border-l-0;
+        @apply flex-1;
+        --mat-standard-button-toggle-divider-color: var(--mat-sys-surface);
 
         &.is-today ::ng-deep .mat-button-toggle-label-content {
           @apply underline decoration-solid;
