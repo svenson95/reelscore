@@ -20,7 +20,7 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
   `,
   template: `
     <div class="wrapper">
-      <a mat-button [routerLink]="['/']">
+      <a mat-flat-button [routerLink]="['/']">
         <rs-logo [showLoadingIndicator]="true" />
       </a>
       <nav

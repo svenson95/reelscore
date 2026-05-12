@@ -28,21 +28,21 @@ const EXTERNAL_MODULES = [
   imports: [...EXTERNAL_MODULES, OptimizedImageComponent],
   styles: `
     button[mat-icon-button].is-filtering { @apply bg-blue-500 text-rs-color-white; }
-    button[mat-menu-item] { 
+    button[mat-menu-item] {
       --mat-menu-item-label-text-size: var(--rs-font-size-small);
       --mat-menu-item-label-text-line-height: var(--rs-font-size-small);
       --mat-menu-item-icon-color: var(--rs-color-white-2);
-      
+
       @apply py-1;
 
       &:not(.group-title) { @apply min-h-[32px]; }
       &.group-title { @apply min-h-[48px]; }
 
-      &.is-filtering { 
+      &.is-filtering {
         @apply bg-rs-color-white-2; --mat-menu-item-icon-color: var(--rs-color-text-1);
         mat-icon { @apply absolute right-4; }
       }
-      
+
       mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
       .competition-logo + span { @apply leading-[1.3]; }
     }
@@ -50,13 +50,13 @@ const EXTERNAL_MODULES = [
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
       @apply min-w-[220px] max-w-[220px] max-h-[70vh]; // 218px is the width of league-select menu + 2px border
 
-      .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text { 
+      .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
         @apply flex items-center gap-2;
       }
       .mat-mdc-menu-content .mat-mdc-menu-item.group-title .mat-mdc-menu-item-text {
         @apply font-medium;
       }
-      
+
       .divider { @apply h-[1px] w-full bg-[#bababa]; }
     }
   `,

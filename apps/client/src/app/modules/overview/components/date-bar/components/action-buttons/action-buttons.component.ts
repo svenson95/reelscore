@@ -15,16 +15,16 @@ import { FilterButtonComponent } from './filter-button.component';
     FilterButtonComponent,
   ],
   styles: `
-    :host { 
+    :host {
       @apply flex gap-5;
 
       ::ng-deep {
-        mat-icon { @apply w-[20px] h-[20px] text-[20px]; }
-
-        .mat-mdc-icon-button { 
-          @apply bg-rs-color-orange p-[2px];
+        .mat-mdc-icon-button {
+          --mat-icon-button-state-layer-color: white;
           --mdc-icon-button-state-layer-size: 36px;
         }
+
+        mat-icon { @apply w-[20px] h-[20px] text-[20px] align-text-top; }
       }
     }
   `,

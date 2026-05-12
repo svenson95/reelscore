@@ -28,6 +28,7 @@
   --mdc-icon-button-icon-color: var(--rs-button-text-color);
   --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
   --mat-standard-button-toggle-state-layer-color: var(--rs-color-orange);
+  --mdc-filled-button-container-color: transparent;
 
   @include mat.button-overrides(
     (
@@ -52,30 +53,40 @@
 
   @include mat.button-toggle-overrides(
     (
-      state-layer-color: red,
-      legacy-state-layer-color: green,
-      label-text-weight: 500,
+      state-layer-color: white,
     )
   );
 }
 
-button.mat-mdc-button-base,
 mat-button-toggle {
-  .mat-ripple-element {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+  --mat-standard-button-toggle-text-color: var(--rs-color-orange);
+  --mat-standard-button-toggle-background-color: transparent;
+  --mat-ripple-color: var(--rs-color-ripple);
+  border-radius: var(--rs-size-border-radius);
+
+  .mat-button-toggle-ripple {
+    border-radius: var(--rs-size-border-radius);
   }
 }
 
 button {
+  --mat-icon-color: var(--rs-color-orange);
+  --mat-icon-button-ripple-color: var(--rs-color-ripple);
+
   &.mdc-button {
     --mat-filled-button-horizontal-padding: 1rem;
     --mat-filled-button-icon-offset: 0;
     --mat-outlined-button-horizontal-padding: 1rem;
     --mat-outlined-button-icon-offset: 0;
+    --mdc-filled-button-label-text-color: var(--rs-color-orange);
   }
 
   &.mat-mdc-icon-button {
     border-radius: var(--rs-size-border-radius);
+
+    .mat-mdc-button-persistent-ripple {
+      border-radius: var(--rs-size-border-radius);
+    }
   }
 }
 
@@ -131,4 +142,9 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   box-shadow: var(--rs-size-box-shadow);
   border-radius: var(--rs-size-border-radius);
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
+}
+
+// Mat Form Field
+.mat-mdc-form-field {
+  border-radius: var(--rs-size-border-radius);
 }

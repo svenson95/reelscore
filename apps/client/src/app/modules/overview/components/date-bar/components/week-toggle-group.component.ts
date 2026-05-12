@@ -48,13 +48,11 @@ const EXTERNAL_MODULES = [
           height: 36px,
           label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-text-3),
-          background-color: var(--rs-color-orange),
           selected-state-background-color: var(--rs-color-white),
-          selected-state-text-color: var(--rs-color-orange),
-          disabled-state-background-color: var(--rs-color-orange),
-          disabled-state-text-color: var(--rs-color-text-3),
+          selected-state-text-color: var(--rs-color-text-1),
+          disabled-state-text-color: var(--rs-color-text-2),
           disabled-selected-state-background-color: var(--rs-color-white),
-          disabled-selected-state-text-color: var(--rs-color-orange),
+          disabled-selected-state-text-color: var(--rs-color-text-1),
         )
       );
       @apply flex border-none;
@@ -77,6 +75,10 @@ const EXTERNAL_MODULES = [
               padding: 0 2px;
             }
           }
+        }
+
+        .mat-icon {
+          color: inherit;
         }
       }
     }
