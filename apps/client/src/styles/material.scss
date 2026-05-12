@@ -13,7 +13,6 @@
   --mat-outlined-button-pressed-state-layer-opacity: 0;
   --mat-outlined-button-hover-state-layer-opacity: 0;
   --mat-outlined-button-focus-state-layer-opacity: 0;
-  --mdc-filled-text-field-container-color: white;
   --mat-datepicker-calendar-container-shape: var(--rs-size-border-radius);
   --mdc-text-button-container-shape: var(--rs-size-border-radius);
   --mat-datepicker-calendar-container-elevation-shadow: var(
@@ -28,8 +27,13 @@
   --mdc-icon-button-icon-color: var(--rs-button-text-color);
   --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
   --mat-standard-button-toggle-state-layer-color: var(--rs-color-orange);
+
+  // mat-button
   --mdc-filled-button-container-color: var(--rs-button-bg-color);
   --mat-filled-button-horizontal-padding: 1rem;
+
+  // mat-form-field
+  --mdc-filled-text-field-container-color: var(--rs-button-bg-color);
 
   @include mat.button-overrides(
     (
@@ -96,11 +100,19 @@ button {
 
 .mat-mdc-button-persistent-ripple::before,
 .mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
-  transition: var(--rs-button-transition);
+  transition: opacity var(--rs-button-transition);
 }
 
 .mat-button-toggle-appearance-standard:hover .mat-button-toggle-focus-overlay {
-  transition: var(--rs-button-transition);
+  transition: opacity var(--rs-button-transition);
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  transition: background-color var(--rs-button-transition);
+}
+
+.mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+  transition: background-color var(--rs-button-transition);
 }
 
 .mat-datepicker-content {
@@ -157,7 +169,17 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
 }
 
-// Mat Form Field
+// mat-form-field
 .mat-mdc-form-field {
   border-radius: var(--rs-size-border-radius);
+  --mdc-filled-text-field-hover-label-text-color: red;
+
+  .mat-mdc-text-field-wrapper {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
