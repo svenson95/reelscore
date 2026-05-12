@@ -21,8 +21,8 @@ import {
     ActionButtonsComponent,
   ],
   styles: `
-    :host { @apply w-full flex flex-wrap items-center justify-between px-5 pt-5 gap-5; }
-    .top { @apply flex w-full sm:w-fit items-center gap-5; }
+    :host { @apply w-full flex flex-wrap items-center justify-between px-2 pt-2 sm:px-4 sm:pt-4 gap-2 sm:gap-4; }
+    .top { @apply flex w-full sm:w-fit items-center gap-2 sm:gap-4; }
     .spacer { @apply flex-grow; }
   `,
   template: `
