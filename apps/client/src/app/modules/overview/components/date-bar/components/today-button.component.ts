@@ -14,20 +14,22 @@ import { DateString } from '@app/shared';
   imports: [MatButtonModule],
   styles: `
     @use "@angular/material" as mat;
-    
-    button { 
+
+    button {
       --mdc-outlined-button-container-height: 36px;
       --mdc-text-button-disabled-label-text-color: var(--rs-color-text-2);
       --mdc-protected-button-container-shape: var(--rs-size-border-radius);
       border: 1px solid var(--mdc-outlined-button-outline-color);
-
-      &:disabled { @apply rs-as-label; }
 
       @include mat.button-overrides(
         (
           filled-container-height: 36px,
         )
       );
+    }
+
+    ::ng-deep rs-today-button .mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+        border-radius: 0;
     }
   `,
   template: `
