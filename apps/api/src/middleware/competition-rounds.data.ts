@@ -208,10 +208,8 @@ const EN_LEAGUE_CUP = {
   1: '1st Round',
   2: '2nd Round',
   3: '3rd Round',
-  4: 'Round of 16',
+  4: '4th Round',
   5: 'Quarter-finals',
-  6: 'Semi-finals',
-  7: 'Final',
 };
 const EN_EFL_TROPHY = {
   1: `${GROUP_STAGE_STR}1`,
@@ -255,17 +253,8 @@ const EN_FA_CUP = {
   7: '2nd Round Qualifying',
   8: '2nd Round Qualifying Replays',
   9: '3rd Round Qualifying',
-  10: '3rd Round Qualifying Replays',
-  11: '4th Round Qualifying',
-  12: '4th Round Qualifying Replays',
-  13: '1st Round',
-  14: '2nd Round',
-  15: '3rd Round',
-  16: '4th Round',
-  17: '5th Round',
-  18: 'Quarter-finals',
-  19: 'Semi-finals',
-  20: 'Final',
+  10: '1/128-finals',
+  11: 'Round of 128',
 };
 const EN_COMMUNITY_SHIELD = { 1: 'Final' };
 const EN_PREMIER_LEAGUE_CUP = {
@@ -291,14 +280,9 @@ const ES_SUPER_CUP = {
   2: 'Final',
 };
 const ES_COPA_DEL_REY = {
-  1: 'Preliminary Round',
-  2: '1st Round',
-  3: '2nd Round',
-  4: 'Round of 32',
-  5: 'Round of 16',
-  6: 'Quarter-finals',
-  7: 'Semi-finals',
-  8: 'Final',
+  1: '1/128-finals',
+  2: 'Round of 128',
+  3: 'Round of 64',
 };
 
 // Italien
@@ -310,22 +294,13 @@ const IT_COPPA_ITALIA = {
   0: 'Preliminary Round',
   1: '1st Round',
   2: '2nd Round',
-  3: 'Round of 16',
-  4: 'Quarter-finals',
-  5: 'Semi-finals',
-  6: 'Final',
+  3: '3rd Round',
 };
 
 // Frankreich
 const FR_COUPE_DE_FRANCE = {
-  1: '7th Round',
-  2: '8th Round',
-  3: 'Round of 64',
-  4: 'Round of 32',
-  5: 'Round of 16',
-  6: 'Quarter-finals',
-  7: 'Semi-finals',
-  8: 'Final',
+  1: '1/128-finals',
+  2: 'Round of 128',
 };
 const FR_TROPHEE_DES_CHAMPIONS = {
   1: 'Final',
