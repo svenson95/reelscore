@@ -22,7 +22,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       .mdc-text-field--filled .mdc-line-ripple::before { @apply border-b-0; }
     }
 
-    mat-form-field { @apply w-[220px] bg-white; }
+    mat-form-field { @apply w-[220px]; }
     ::ng-deep div.competitionSelectMenu.mat-mdc-select-panel {
       @apply max-h-[70vh];
 
@@ -46,10 +46,10 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     mat-form-field.mat-mdc-form-field-type-mat-select {
       --mdc-filled-text-field-label-text-size: var(--rs-font-size-body-1);
       --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
-      --mdc-filled-text-field-hover-label-text-color: var(--rs-color-text-1);
+      --mdc-filled-text-field-hover-label-text-color: var(--rs-color-text-3);
     }
 
-    mat-select { 
+    mat-select {
       --mat-select-trigger-text-size: var(--rs-font-size-body-1);
       --mat-select-enabled-arrow-color: var(--rs-color-text-2);
       --mat-select-focused-arrow-color: var(--fb-color-black);

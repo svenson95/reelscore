@@ -37,18 +37,17 @@ const ANGULAR_MODULES = [
   ],
   providers: [MatchDetailsFacade],
   styles: `
-    :host { 
+    :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
 
       ::ng-deep {
         .mat-mdc-tab-body.mat-mdc-tab-body-active {
-          @apply flex flex-col gap-2; 
+          @apply flex flex-col gap-2;
         }
 
         .mat-mdc-tab-header { @apply mx-5; }
       }
 
-      .tab-content { @apply px-5 pb-5; }
       mat-spinner { @apply mx-auto my-5; }
     }
   `,
