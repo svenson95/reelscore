@@ -13,10 +13,10 @@ const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...EXTERNAL_MODULES, BackButtonComponent],
   styles: `
-    :host { @apply flex gap-5 p-5; }
-    button { 
+    :host { @apply flex gap-3 p-3; }
+    button {
       --mdc-outlined-button-container-height: 36px;
-      @apply rs-as-label; 
+      @apply rs-as-label;
     }
     .spacer { @apply flex-1; }
     .date-placeholder {  @apply m-auto w-[36px] h-[12px] bg-gray-200 rounded; }

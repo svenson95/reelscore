@@ -18,7 +18,7 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
       rs-standings-table {
         @apply sm:min-w-[500px] sm:mx-auto;
       }
-      .standings-container { @apply flex flex-col px-2 py-5 md:p-5 gap-5; }
+      .standings-container { @apply flex flex-col px-3 py-5 gap-5; }
     }
   `,
   template: `

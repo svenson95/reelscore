@@ -18,7 +18,7 @@ import {
   imports: [OptimizedImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }
-    rs-back-button { @apply absolute top-5 left-5 z-10; }
+    rs-back-button { @apply absolute top-3 left-3 z-10; }
     rs-optimized-image { @apply p-8; }
     .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
