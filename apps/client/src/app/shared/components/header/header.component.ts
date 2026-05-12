@@ -17,6 +17,7 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
   styles: `
     :host { @apply p-rs-padding-3 border-b-[1px] border-rs-color-orange rs-bg-color z-[15] relative; }
     .wrapper { @apply flex items-center justify-between lg:px-rs-padding-3; }
+    a { --mdc-filled-button-container-color: transparent; }
   `,
   template: `
     <div class="wrapper">
