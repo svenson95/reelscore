@@ -51,9 +51,9 @@ module.exports = {
     function ({ addUtilities }) {
       const newUtitilites = {
         '.rs-as-label': {
-          background: 'white',
+          background: 'var(--rs-button-bg-color)',
           '--mdc-outlined-button-disabled-label-text-color':
-            'var(--rs-color-text-1)',
+            'var(--rs-color-text-3)',
         },
         '.rs-bg-color': {
           background: 'var(--mat-sys-surface)',
