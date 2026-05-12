@@ -90,6 +90,15 @@ button {
   }
 }
 
+.mat-mdc-button-persistent-ripple::before,
+.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+  transition: var(--rs-button-transition);
+}
+
+.mat-button-toggle-appearance-standard:hover .mat-button-toggle-focus-overlay {
+  transition: var(--rs-button-transition);
+}
+
 .mat-datepicker-content {
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
   --mat-datepicker-calendar-container-background-color: var(--rs-color-white);
