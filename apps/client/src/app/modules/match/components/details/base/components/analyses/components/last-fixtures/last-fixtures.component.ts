@@ -9,9 +9,9 @@ import { AnalysesEvaluationsComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesEvaluationsComponent],
   styles: `
-    .latest-fixtures { @apply flex flex-wrap gap-5 mt-5; }
-    .latest-fixtures div { 
-      @apply flex-1 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)]; 
+    .latest-fixtures { @apply flex flex-wrap gap-3 my-5 mx-3; }
+    .latest-fixtures div {
+      @apply flex-1 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)];
     }
   `,
   template: `

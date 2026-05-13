@@ -23,10 +23,13 @@ import { AnalysesLastFixturesComponent } from './components';
     :host { @apply flex flex-col mt-5 gap-5; }
 
     .fixture-analyse { @apply p-5 text-rs-color-text-3 text-rs-font-size-small sm:text-rs-font-size-body-1; }
-    .fixture-analyse > div { 
-      @apply w-full flex flex-wrap gap-5; 
+    .fixture-analyse > div {
+      @apply w-full flex flex-wrap gap-5;
 
-      &:not(:last-of-type) { @apply border-b-[1px] pb-5; }
+      &:not(:last-of-type) {
+        @apply border-b-[1px] pb-5;
+        border-color: var(--rs-border-color-2);
+      }
       &:not(:first-of-type) { @apply pt-5; }
 
       .home { @apply text-end; }
@@ -35,7 +38,7 @@ import { AnalysesLastFixturesComponent } from './components';
       .analysis span:nth-child(2) { @apply text-rs-font-size-small text-rs-color-text-2; }
     }
 
-    .playersWithStreak, .strongAtHomeOrAway { 
+    .playersWithStreak, .strongAtHomeOrAway {
       .home, .away, .analysis { @apply self-center; }
     }
 

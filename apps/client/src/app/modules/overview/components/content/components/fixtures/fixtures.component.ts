@@ -18,7 +18,7 @@ import { OverviewFixturesFacade } from './fixtures.facade';
   imports: [MatchDayListComponent],
   providers: [OverviewFixturesFacade],
   styles: `
-    :host { @apply flex flex-col gap-5; }
+    :host { @apply flex flex-col gap-3; }
   `,
   template: `
     @let comps = competitions(); @let fixtures = filteredFixtures(); @if (comps

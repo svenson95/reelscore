@@ -88,7 +88,7 @@ export class MatchHeaderComponent implements OnInit {
     this.ngZone.runOutsideAngular(() => {
       this.scrollEvent$.subscribe(() => {
         this.ngZone.run(() => {
-          const isScrolled = window.scrollY > 60;
+          const isScrolled = window.scrollY > 80;
           const maxScrollHeight = Math.max(
             document.body.scrollHeight,
             document.body.offsetHeight,
