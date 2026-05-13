@@ -26,7 +26,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
 
-      &.is-hidden { padding-top: env(safe-area-inset-top); }
+      &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
 
     .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white; }
