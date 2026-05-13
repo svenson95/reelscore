@@ -17,7 +17,7 @@ import { MatchFixturesTableComponent } from './components';
   styles: `
     :host { @apply flex flex-col; }
     .latest-fixtures-container {
-      @apply flex flex-col md:flex-row px-3 pb-5 pt-4 mt-5 gap-10;
+      @apply flex flex-col md:flex-row px-3 pb-3 mt-3 gap-3;
 
       border-width: 1px;
       border-color: var(--mat-standard-button-toggle-divider-color);

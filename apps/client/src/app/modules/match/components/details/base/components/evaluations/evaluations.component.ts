@@ -13,14 +13,14 @@ import { ToKebabCasePipe } from './pipes';
   providers: [EvaluationsStore],
   styles: `
     :host { @apply flex flex-col; }
-    .content { 
-      @apply flex flex-col gap-10 w-fit py-4 my-5 mx-auto; 
+    .content {
+      @apply flex flex-col gap-10 w-fit my-5 mx-auto;
 
       border-width: 1px;
       border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
-    .content > .teams-form { 
+    .content > .teams-form {
       @apply flex flex-col gap-5 mx-auto;
 
       .header { @apply w-full flex justify-between m-auto; }
@@ -33,8 +33,8 @@ import { ToKebabCasePipe } from './pipes';
     .evaluation {
       @apply flex gap-5 text-rs-font-size-small xs:text-rs-font-size-body-2;
 
-      .team { 
-        @apply flex flex-1 gap-1 xs:gap-2; 
+      .team {
+        @apply flex flex-1 gap-1 xs:gap-2;
 
         &:first-of-type { @apply justify-end; }
       }
@@ -50,8 +50,8 @@ import { ToKebabCasePipe } from './pipes';
         &.loss, &.low { @apply bg-red-500 text-white; }
         &.draw, &.middle { @apply bg-gray-200; }
         &.win, &.high { @apply bg-green-500 text-white; }
-        &.match-postponed, &.match-not-started, &.no-statistics-available, &.no-result-available { 
-          @apply bg-gray-500 text-white font-bold; 
+        &.match-postponed, &.match-not-started, &.no-statistics-available, &.no-result-available {
+          @apply bg-gray-500 text-white font-bold;
         }
       }
     }
