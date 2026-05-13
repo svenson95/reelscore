@@ -21,7 +21,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `
     :host {
-      @apply px-3 sticky top-0 rs-bg-color z-10;
+      @apply px-3 sticky rs-bg-color z-10;
       margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
       top: 0 + env(safe-area-inset-top);
