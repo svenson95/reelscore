@@ -17,7 +17,7 @@ import { OverviewStandingsFacade } from './standings.facade';
   imports: [StandingsTableComponent],
   providers: [OverviewStandingsFacade],
   styles: `
-    :host { @apply flex flex-col gap-5; }
+    :host { @apply flex flex-col gap-3; }
   `,
   template: `
     @let filteredStandings = dayStandings(); @let ws = weekStandings(); @if
