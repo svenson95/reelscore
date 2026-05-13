@@ -40,7 +40,7 @@ import {
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply flex flex-col w-full; }
-    :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-5; }
+    :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-3; }
     section.competition-data { @apply p-3; }
   `,
   template: `
