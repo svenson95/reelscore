@@ -17,17 +17,17 @@ export class FixturesService {
   }
 
   async findByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
-    const dayStart = new Date(date);
-    dayStart.setHours(0, 0, 0, 0);
+    const [year, month, day] = date.split('-').map(Number);
 
-    const dayEnd = new Date(dayStart);
-    dayEnd.setHours(23);
-    dayEnd.setMinutes(59);
+    // Lokale Zeit erzeugen
+    const dayStart = new Date(year, month - 1, day, 0, 0, 0, 0);
+
+    const dayEnd = new Date(year, month - 1, day, 23, 59, 59, 999);
 
     return await Fixtures.find()
       .where('fixture.date')
       .gte(dayStart.getTime())
-      .lt(dayEnd.getTime())
+      .lte(dayEnd.getTime())
       .sort({ 'fixture.date': 1 })
       .select({
         final: 1,
