@@ -45,7 +45,7 @@ const ANGULAR_MODULES = [
           @apply flex flex-col gap-2;
         }
 
-        .mat-mdc-tab-header { @apply mx-5; }
+        .mat-mdc-tab-header { @apply mx-3; }
       }
 
       mat-spinner { @apply mx-auto my-5; }
