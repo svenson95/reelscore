@@ -19,9 +19,7 @@ export class FixturesService {
   async findByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
     const [year, month, day] = date.split('-').map(Number);
 
-    // Lokale Zeit erzeugen
     const dayStart = new Date(year, month - 1, day, 0, 0, 0, 0);
-
     const dayEnd = new Date(year, month - 1, day, 23, 59, 59, 999);
 
     return await Fixtures.find()
