@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  HostBinding,
   inject,
   input,
   NgZone,
@@ -24,10 +25,11 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       @apply px-3 sticky top-0 rs-bg-color z-10;
       margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
+
+      &.is-hidden { padding-top: env(safe-area-inset-top); }
     }
 
     .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white; }
-    .wrapper.is-hidden { padding-top: env(safe-area-inset-top); }
 
     .toggle-highlights-row {
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
@@ -55,7 +57,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     }
   `,
   template: `
-    <div class="wrapper" [class.is-hidden]="isScrolled()">
+    <div class="wrapper">
       <rs-match-header-data [data]="data()" />
       @if (highlights() && isNotGoalLess()) {
       <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
@@ -84,6 +86,9 @@ export class MatchHeaderComponent implements OnInit {
     takeUntilDestroyed(),
     debounce(() => timer(this.isScrolled() ? 10 : 0))
   );
+
+  @HostBinding('class.is-scrolled')
+  isScrolledBinding = this.isScrolled();
 
   ngOnInit() {
     this.ngZone.runOutsideAngular(() => {
