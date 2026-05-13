@@ -24,6 +24,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       @apply px-3 sticky top-0 rs-bg-color z-10;
       margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
+      top: 0 + env(safe-area-inset-top);
     }
 
     .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white; }
