@@ -15,7 +15,7 @@ import { CompetitionId, League, StandingRanks } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
-import { getCompetitionLogo, getTeamLogo } from '../models';
+import { getCompetitionLogo24, getTeamLogo14 } from '../models';
 import { TeamNamePipe } from '../pipes';
 import { BreakpointObserverService } from '../services';
 
@@ -26,7 +26,7 @@ const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
 @Pipe({ name: 'getTeamLogo' })
 export class GetTeamLogoPipe implements PipeTransform {
   transform(id: number): string {
-    return getTeamLogo(id);
+    return getTeamLogo14(id);
   }
 }
 
@@ -66,12 +66,12 @@ export class HasMultipleGroupsPipe implements PipeTransform {
 
     td { @apply py-[4px]; }
 
-    td, th { 
+    td, th {
       @apply leading-[14px];
 
       &:first-of-type {
         @apply pr-0 pl-2 text-center justify-items-center;
-      } 
+      }
     }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
@@ -244,7 +244,7 @@ export class StandingsTableComponent {
   });
 
   competitionLogo = computed(() =>
-    getCompetitionLogo(untracked(this.league).id)
+    getCompetitionLogo24(untracked(this.league).id)
   );
 
   columns = computed(() => {

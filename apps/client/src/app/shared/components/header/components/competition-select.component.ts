@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { SELECT_COMPETITION_DATA } from '../../../constants';
-import { CompetitionData } from '../../../models';
+import { CompetitionData, getCompetitionLogo24 } from '../../../models';
 import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
@@ -72,7 +77,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
         [value]="selectedCompetition()?.url ?? null"
         (selectionChange)="removeFocus($event)"
       >
-        @for (group of groups; track group.label) {
+        @for (group of groups(); track group.label) {
         <mat-optgroup [label]="group.label">
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
@@ -95,7 +100,16 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
   `,
 })
 export class CompetitionSelectComponent {
-  groups = SELECT_COMPETITION_DATA;
   selectedCompetition = input.required<CompetitionData | undefined>();
   removeFocus = (e: MatSelectChange) => e.source.close();
+
+  groups = computed(() =>
+    SELECT_COMPETITION_DATA.map((group) => ({
+      ...group,
+      competitions: group.competitions.map((c) => ({
+        ...c,
+        image: getCompetitionLogo24(c.id),
+      })),
+    }))
+  );
 }

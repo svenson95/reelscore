@@ -10,7 +10,7 @@ import {
   FixtureListComponent,
   OptimizedImageComponent,
   RoundLabelPipe,
-  getCompetitionLogo,
+  getCompetitionLogo24,
 } from '@app/shared';
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
@@ -74,7 +74,7 @@ export class FixturesListComponent {
   round = computed(() => this.firstFixture().league.round);
   date = computed(() => this.firstFixture().fixture.date);
   competitionId = computed(() => this.firstFixture().league.id);
-  competitionLogo = computed(() => getCompetitionLogo(this.competitionId()));
+  competitionLogo = computed(() => getCompetitionLogo24(this.competitionId()));
 
   fixturesDays = computed(() => {
     const fixtures = this.fixtures();

@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 import { ExtendedFixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../../../../constants';
-import { getTeamLogo } from '../../../../models';
+import { getTeamLogo14 } from '../../../../models';
 import { IsStatusPipe, TeamNamePipe } from '../../../../pipes';
 import { OptimizedImageComponent } from '../../../optimized-image/optimized-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
@@ -37,17 +37,17 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     a { @apply flex items-stretch; }
     :host > div { @apply inline-flex flex-col; }
     .time-label.is-finished { @apply line-through decoration-rs-color-orange; }
-    .time { 
-      @apply justify-center items-center min-w-[50px] text-rs-font-size-small; 
+    .time {
+      @apply justify-center items-center min-w-[50px] text-rs-font-size-small;
 
       &.is-upcoming { @apply bg-rs-color-white-2; }
       &.is-playing { @apply bg-rs-color-green-1 text-rs-color-text-3; }
     }
-    .time, .result { 
+    .time, .result {
       @apply flex text-center justify-center;
     }
-    .result { 
-      @apply min-w-[40px] p-2 items-center gap-[0.1rem]; 
+    .result {
+      @apply min-w-[40px] p-2 items-center gap-[0.1rem];
 
       &:not(.is-upcoming) { @apply bg-rs-color-white-2; }
     }
@@ -141,10 +141,10 @@ export class FixtureListItemComponent {
   );
 
   homeLogo = computed<string>(() =>
-    getTeamLogo(untracked(this.fixture).teams.home.id)
+    getTeamLogo14(untracked(this.fixture).teams.home.id)
   );
   awayLogo = computed<string>(() =>
-    getTeamLogo(untracked(this.fixture).teams.away.id)
+    getTeamLogo14(untracked(this.fixture).teams.away.id)
   );
   fixtureLink = computed<string[]>(() => linkToMatch(untracked(this.fixture)));
 }
