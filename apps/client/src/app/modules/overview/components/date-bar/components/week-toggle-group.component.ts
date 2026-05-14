@@ -48,7 +48,7 @@ const EXTERNAL_MODULES = [
           height: 36px,
           label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-text-3),
-          selected-state-background-color: var(--rs-color-white),
+          selected-state-background-color: var(--rs-color-orange),
           selected-state-text-color: var(--rs-color-text-1),
           disabled-state-text-color: var(--rs-color-text-2),
           disabled-state-background-color: var(--rs-button-bg-color),

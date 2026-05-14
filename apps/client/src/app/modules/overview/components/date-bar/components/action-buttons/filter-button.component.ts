@@ -27,7 +27,10 @@ const EXTERNAL_MODULES = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...EXTERNAL_MODULES, OptimizedImageComponent],
   styles: `
-    button[mat-icon-button].is-filtering { @apply bg-blue-500 text-rs-color-white; }
+    button[mat-icon-button].is-filtering {
+      @apply bg-rs-color-orange;
+      .mat-icon { @apply text-rs-color-text-1; }
+    }
     button[mat-menu-item] {
       --mat-menu-item-label-text-size: var(--rs-font-size-small);
       --mat-menu-item-label-text-line-height: var(--rs-font-size-small);
