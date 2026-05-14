@@ -25,11 +25,13 @@ export const getCompetitionLogo = (id: CompetitionId): string => {
   }
   return competitionCache[id];
 };
+
+const competitionCache24: Record<CompetitionId, string> = {};
 export const getCompetitionLogo24 = (id: CompetitionId): string => {
-  if (!competitionCache[id]) {
-    competitionCache[id] = `${BASE}/league-24x24/${id}.png`;
+  if (!competitionCache24[id]) {
+    competitionCache24[id] = `${BASE}/league-24x24/${id}.png`;
   }
-  return competitionCache[id];
+  return competitionCache24[id];
 };
 
 const teamCache: Record<TeamId, string> = {};
@@ -40,9 +42,10 @@ export const getTeamLogo = (id: number): string => {
   return teamCache[id];
 };
 
+const teamCache14: Record<TeamId, string> = {};
 export const getTeamLogo14 = (id: number): string => {
-  if (!teamCache[id]) {
-    teamCache[id] = `${BASE}/team-logo-14x14/${id}.png`;
+  if (!teamCache14[id]) {
+    teamCache14[id] = `${BASE}/team-logo-14x14/${id}.png`;
   }
-  return teamCache[id];
+  return teamCache14[id];
 };
