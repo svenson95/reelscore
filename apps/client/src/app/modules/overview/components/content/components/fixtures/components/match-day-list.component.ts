@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import {
   CompetitionWithFixtures,
   FixtureListComponent,
-  getCompetitionLogo,
+  getCompetitionLogo24,
   NameLabelPipe,
   OptimizedImageComponent,
   RoundLabelPipe,
@@ -38,13 +38,13 @@ const EXTERNAL_MODULES = [RouterLink];
       --mat-table-header-headline-line-height: 14px;
     }
     .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
-    .header { 
+    .header {
       span, a {
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
         line-height: var(--mat-table-header-headline-line-height);
         font-size: var(--rs-font-size-body-2);
         font-weight: var(--mat-table-header-headline-weight, 500);
-  
+
         &.gray { @apply text-rs-color-text-2 text-rs-font-size-small shrink-0; }
       }
     }
@@ -84,6 +84,6 @@ export class MatchDayListComponent {
 
   getCompetitionLogo = computed(() => {
     const fixture = untracked(this.firstFixture);
-    return getCompetitionLogo(fixture.league.id);
+    return getCompetitionLogo24(fixture.league.id);
   });
 }
