@@ -35,6 +35,7 @@
     "ngx-skeleton-loader": "^9.0.0",
     "node-fetch": "^3.3.2",
     "rxjs": "~7.8.0",
+    "sharp": "^0.34.5",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
