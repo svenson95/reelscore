@@ -18,14 +18,30 @@ export class FixturesService {
 
   async findByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
     const [year, month, day] = date.split('-').map(Number);
-
-    const dayStart = new Date(year, month - 1, day, 0, 0, 0, 0);
-    const dayEnd = new Date(year, month - 1, day, 23, 59, 59, 999);
+    const berlinOffsetHours = this.isDstInBerlin(year, month, day) ? 2 : 1;
+    const dayStart = Date.UTC(
+      year,
+      month - 1,
+      day,
+      -berlinOffsetHours,
+      0,
+      0,
+      0
+    );
+    const dayEnd = Date.UTC(
+      year,
+      month - 1,
+      day,
+      23 - berlinOffsetHours,
+      59,
+      59,
+      999
+    );
 
     return await Fixtures.find()
       .where('fixture.date')
-      .gte(dayStart.getTime())
-      .lte(dayEnd.getTime())
+      .gte(dayStart)
+      .lte(dayEnd)
       .sort({ 'fixture.date': 1 })
       .select({
         final: 1,
@@ -83,5 +99,12 @@ export class FixturesService {
       .limit(5)
       .sort({ 'fixture.date': -1 })
       .lean();
+  }
+
+  isDstInBerlin(year: number, month: number, day: number): boolean {
+    const date = new Date(Date.UTC(year, month - 1, day));
+    const jan = new Date(Date.UTC(year, 0, 1)).getTimezoneOffset();
+    const jul = new Date(Date.UTC(year, 6, 1)).getTimezoneOffset();
+    return Math.min(jan, jul) !== date.getTimezoneOffset();
   }
 }
