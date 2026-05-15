@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const inputDir = './league';
-const outputDir = './league-24x24';
+const inputDir = './team-logo';
+const outputDir = './team-logo-14x14';
 
 async function processImages() {
   fs.mkdirSync(outputDir, { recursive: true });
@@ -21,7 +21,7 @@ async function processImages() {
 
     try {
       await sharp(inputPath)
-        .resize(48, 48, {
+        .resize(28, 28, {
           fit: 'contain',
           background: { r: 0, g: 0, b: 0, alpha: 0 },
           kernel: sharp.kernel.lanczos3,
