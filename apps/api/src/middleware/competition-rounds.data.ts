@@ -156,7 +156,8 @@ const LIGUE_1_2026_FIX = {
   32: `${REGULAR_SEASON_STR}32`,
   33: `${REGULAR_SEASON_STR}33`,
   34: 'Relegation round - Quarter-finals',
-  35: `${REGULAR_SEASON_STR}34`,
+  35: 'Semi-finals',
+  36: `${REGULAR_SEASON_STR}34`,
 };
 
 const MLS_LEAGUE_ROUND_STRINGS = {
