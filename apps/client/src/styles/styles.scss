@@ -52,7 +52,7 @@ p.no-data {
 }
 
 .competition-logo-small {
-  @apply w-[24px] h-[24px];
+  @apply w-[24px] h-[24px] m-auto;
   &-placeholder {
     @apply w-[24px] h-[24px] bg-gray-200 rounded-full;
   }
