@@ -33,6 +33,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       @apply flex items-center gap-4 p-2 border-b-[1px];
       rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
+    div.logo-wrapper { width: 32px; }
     div.competition-logo { @apply ml-1; }
     div.days {
       @apply flex flex-col;
@@ -41,17 +42,19 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
   `,
   template: `
     <div class="round">
-      <div class="competition-logo-small">
-        @defer (on viewport) {
-        <rs-optimized-image
-          [source]="competitionLogo()"
-          altText="league logo"
-          width="24"
-          height="24"
-        />
-        } @placeholder {
-        <div class="competition-logo-small-placeholder"></div>
-        }
+      <div class="logo-wrapper">
+        <div class="competition-logo-small">
+          @defer (on viewport) {
+          <rs-optimized-image
+            [source]="competitionLogo()"
+            altText="league logo"
+            width="24"
+            height="24"
+          />
+          } @placeholder {
+          <div class="competition-logo-small-placeholder"></div>
+          }
+        </div>
       </div>
       <p>{{ round()! | roundLabel }}</p>
     </div>
