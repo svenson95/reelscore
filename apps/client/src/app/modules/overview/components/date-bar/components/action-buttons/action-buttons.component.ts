@@ -16,7 +16,7 @@ import { FilterButtonComponent } from './filter-button.component';
   ],
   styles: `
     :host {
-      @apply flex;
+      @apply flex shadow-rs3;
 
       > *:not(:first-child) {
         border-left: 1px solid var(--mat-sys-surface);

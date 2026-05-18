@@ -56,7 +56,7 @@ const EXTERNAL_MODULES = [
           disabled-selected-state-background-color: var(--rs-color-orange),
         )
       );
-      @apply flex border-none shadow-rs;
+      @apply flex border-none shadow-rs3;
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;

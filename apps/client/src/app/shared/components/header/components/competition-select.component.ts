@@ -52,7 +52,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       --mdc-filled-text-field-label-text-size: var(--rs-font-size-body-1);
       --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
       --mdc-filled-text-field-hover-label-text-color: var(--rs-color-text-3);
-      @apply shadow-rs;
+      @apply shadow-rs3;
     }
 
     mat-select {
