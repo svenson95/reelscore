@@ -49,7 +49,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
   ],
   styles: `
     :host {
-      @apply flex overflow-hidden;
+      @apply flex overflow-hidden shadow-rs2;
       border-radius: var(--mat-standard-button-toggle-shape);
       --mat-table-background-color: var(--rs-color-white);
     }

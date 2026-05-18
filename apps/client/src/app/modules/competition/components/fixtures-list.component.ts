@@ -24,7 +24,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     OptimizedImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col; }
+    :host { @apply flex flex-col shadow-rs2; }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
       @apply bg-white;

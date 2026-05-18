@@ -29,7 +29,7 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
 
-    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white; }
+    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white shadow-rs2; }
 
     .toggle-highlights-row {
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
