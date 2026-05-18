@@ -45,6 +45,10 @@ module.exports = {
       borderRadius: {
         fb: 'var(--rs-size-border-radius)',
       },
+      boxShadow: {
+        rs: 'var(--rs-size-box-shadow)',
+        rs2: 'var(--rs-size-box-shadow-2)',
+      },
     },
   },
   plugins: [

@@ -33,6 +33,9 @@
   --mdc-filled-text-field-container-color: var(--rs-button-bg-color);
   --mat-select-enabled-trigger-text-color: var(--rs-color-white);
 
+  // mat-menu
+  --mat-menu-container-elevation-shadow: var(--rs-size-box-shadow);
+
   @include mat.button-overrides(
     (
       filled-container-shape: var(--rs-size-border-radius),
@@ -85,6 +88,7 @@ button {
     --mat-outlined-button-horizontal-padding: 1rem;
     --mat-outlined-button-icon-offset: 0;
     --mdc-filled-button-label-text-color: var(--rs-color-orange);
+    box-shadow: var(--rs-size-box-shadow);
   }
 
   &.mat-mdc-icon-button {

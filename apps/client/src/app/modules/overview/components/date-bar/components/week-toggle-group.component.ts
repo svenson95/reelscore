@@ -42,7 +42,7 @@ const EXTERNAL_MODULES = [
 
     :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
 
-    mat-button-toggle-group {
+    mat-button-toggle-group.mat-button-toggle-group {
       @include mat.button-toggle-overrides(
         (
           height: 36px,
@@ -56,7 +56,7 @@ const EXTERNAL_MODULES = [
           disabled-selected-state-background-color: var(--rs-color-orange),
         )
       );
-      @apply flex border-none;
+      @apply flex border-none shadow-rs;
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;
