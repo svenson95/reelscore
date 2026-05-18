@@ -50,8 +50,6 @@ export class HasMultipleGroupsPipe implements PipeTransform {
   styles: `
     :host {
       @apply flex overflow-hidden;
-      border-width: 1px;
-      border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
       --mat-table-background-color: var(--rs-color-white);
     }
