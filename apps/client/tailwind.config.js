@@ -48,6 +48,7 @@ module.exports = {
       boxShadow: {
         rs: 'var(--rs-size-box-shadow)',
         rs2: 'var(--rs-size-box-shadow-2)',
+        rs3: 'var(--rs-size-box-shadow-3)',
       },
     },
   },

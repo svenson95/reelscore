@@ -40,8 +40,12 @@ import {
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply flex flex-col w-full; }
-    :host ::ng-deep .mat-mdc-tab-body-wrapper { @apply mt-3; }
-    section.competition-data { @apply p-3 pb-8; }
+    :host ::ng-deep {
+      .mat-mdc-tab-body-wrapper { @apply mt-3; }
+      mat-tab-header { @apply px-3; }
+      .mat-mdc-tab-body-content > * { @apply flex flex-col p-3; }
+    }
+    section.competition-data { @apply pb-8; }
   `,
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
