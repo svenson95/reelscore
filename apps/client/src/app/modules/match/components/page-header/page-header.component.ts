@@ -17,8 +17,6 @@ const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
     button {
       --mdc-outlined-button-container-height: 36px;
       @apply rs-as-label;
-
-      &:nth-child(2), &:nth-child(5) { border-left: 1px solid var(--mat-sys-surface); }
     }
     .spacer { @apply flex-1; }
     .date-placeholder {  @apply m-auto w-[36px] h-[12px] bg-gray-200 rounded; }

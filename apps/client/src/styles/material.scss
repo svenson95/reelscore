@@ -186,6 +186,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
       &.mdc-tab--active {
         background-color: var(--rs-button-bg-color);
+        border: 1px solid var(--rs-border-color-1);
       }
 
       &.mdc-tab--active,

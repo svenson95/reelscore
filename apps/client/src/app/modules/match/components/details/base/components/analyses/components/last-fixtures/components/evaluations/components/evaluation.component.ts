@@ -10,13 +10,13 @@ import { EvaluationAnalyses } from '@lib/models';
     :host { @apply flex flex-col gap-1 text-left; }
     :host-context(.is-related-team) .analyze-element { @apply opacity-100; }
     :host-context(.is-away) .analyze-element { @apply flex-row-reverse; }
-    .analyze-element { 
+    .analyze-element {
       @apply flex flex-wrap gap-1 opacity-50;
 
-      &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-gray-100 text-rs-color-text-1; }
-      &.is-lucky .level { @apply bg-[#0db500]; }
-      &.is-unlucky .level { @apply bg-[#ff0000]; }
-      div { @apply text-rs-color-text-3 text-rs-font-size-small p-2 leading-[1]; }
+      &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-rs-alt-bg; }
+      &.is-lucky .level { @apply bg-[#0db500] text-white; }
+      &.is-unlucky .level { @apply bg-[#ff0000] text-white; }
+      div { @apply text-rs-color-text-1 text-rs-font-size-small p-2 leading-[1]; }
     }
   `,
   template: `

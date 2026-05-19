@@ -10,15 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
   styles: `
     @use '@angular/material' as mat;
     :host {
-      @apply flex gap-5;
+      @apply flex gap-5 mr-[1px];
 
       ::ng-deep .mat-mdc-outlined-button>.mat-icon {
         margin-left: 0;
         margin-right: 0;
       }
     }
-    
-    button.back-button { 
+
+    button.back-button {
       min-width: 36px;
 
       @include mat.button-overrides(

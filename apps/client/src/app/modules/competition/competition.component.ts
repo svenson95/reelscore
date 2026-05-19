@@ -39,7 +39,7 @@ import {
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply flex flex-col w-full; }
+    :host { @apply flex flex-col w-full overflow-hidden; }
     :host ::ng-deep {
       mat-tab-header { @apply mx-3; }
       .mat-mdc-tab-body-content > * { @apply flex flex-col p-3; }

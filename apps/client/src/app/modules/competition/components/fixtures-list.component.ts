@@ -24,21 +24,26 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     OptimizedImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col shadow-rs2; }
+    :host { @apply flex flex-col shadow-rs2; border: 1px solid var(--rs-border-color-1); }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
       @apply bg-rs-alt-bg;
     }
     div.round {
-      @apply flex items-center gap-4 p-2 border-b-[1px];
-      border-color: var(--rs-border-color-1);
-      rs-optimized-image { min-width: 34px; min-height: 26px; }
+      @apply w-full flex items-center gap-4;
     }
-    div.logo-wrapper { width: 32px; }
+    div.logo-wrapper {
+      min-width: 40px;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border-bottom-width: 1px;
+      border-bottom-color: var(--rs-border-color-1);
+    }
     div.competition-logo { @apply ml-1; }
     div.days {
       @apply flex flex-col;
-      .group-date { @apply py-2 px-4 border-b-[1px] leading-[16px]; border-color: var(--rs-border-color-1); }
+      .group-date { @apply py-2 px-4 border-y-[1px] leading-[16px]; border-color: var(--rs-border-color-1); }
     }
   `,
   template: `
@@ -47,6 +52,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
         <div class="competition-logo-small">
           @defer (on viewport) {
           <rs-optimized-image
+            class="competition-corner"
             [source]="competitionLogo()"
             altText="league logo"
             width="24"

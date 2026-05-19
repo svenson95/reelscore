@@ -38,7 +38,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     :host > div { @apply inline-flex flex-col; }
     .time-label.is-finished { @apply line-through decoration-rs-color-orange; }
     .time {
-      @apply justify-center items-center min-w-[50px] text-rs-font-size-small;
+      @apply justify-center items-center min-w-[45px] text-rs-font-size-small;
 
       &.is-playing { @apply bg-rs-color-green-1 text-rs-color-text-3; }
     }

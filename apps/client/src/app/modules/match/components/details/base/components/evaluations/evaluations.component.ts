@@ -36,16 +36,17 @@ import { ToKebabCasePipe } from './pipes';
         &:first-of-type { @apply justify-end; }
       }
 
-      .today { @apply self-center text-rs-color-text-3; }
+      .today { @apply self-center text-rs-color-text-1; }
 
       span, .evaluation-placeholder {
-        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px];
+        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px] shadow-rs2;
+        border: 1px solid var(--rs-border-color-2);
       }
       .evaluation-placeholder { @apply bg-gray-200; }
 
       span {
         &.loss, &.low { @apply bg-red-500 text-white; }
-        &.draw, &.middle { @apply bg-gray-200; }
+        &.draw, &.middle { @apply bg-gray-200 text-black; }
         &.win, &.high { @apply bg-green-500 text-white; }
         &.match-postponed, &.match-not-started, &.no-statistics-available, &.no-result-available {
           @apply bg-gray-500 text-white font-bold;

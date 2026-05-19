@@ -24,12 +24,14 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
     :host {
       @apply px-3 sticky top-0 z-10;
       margin-top: -1.25rem;
-      border: 1px solid var(--mat-standard-button-toggle-divider-color);
 
       &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
 
-    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg; }
+    .wrapper {
+      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg;
+      border: 1px solid var(--rs-border-color-1);
+    }
 
     .toggle-highlights-row {
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }

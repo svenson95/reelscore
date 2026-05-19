@@ -5,8 +5,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   selector: 'rs-optimized-image',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgOptimizedImage],
+  styles: `
+    :host { @apply flex flex-col items-center; }
+  `,
   template: `
     <img
+      class="optimized-image"
       [ngSrc]="source()"
       [alt]="altText()"
       [width]="width()"

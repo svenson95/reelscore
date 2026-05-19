@@ -26,10 +26,10 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
   ],
   styles: `
     :host {
-      @apply flex-1 text-rs-font-size-body-2 bg-rs-alt-bg shadow-rs2;
+      @apply flex-1 text-rs-font-size-body-2 shadow-rs2;
     }
-    a { @apply flex items-center p-2 gap-2; }
-    a:not(:last-of-type) { @apply border-b-[1px]; }
+    a { @apply bg-rs-alt-bg flex items-center p-2 gap-2 border-[1px]; border-color: var(--rs-border-color-1); }
+    a + a { margin-top: 1px; }
     .date { @apply w-[40px] text-rs-font-size-small text-center; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
