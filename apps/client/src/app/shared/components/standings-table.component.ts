@@ -51,7 +51,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
     :host {
       @apply flex overflow-hidden shadow-rs2;
       border-radius: var(--mat-standard-button-toggle-shape);
-      --mat-table-background-color: var(--rs-color-white);
+      --mat-table-background-color: var(--rs-color-text-3);
     }
 
     table {

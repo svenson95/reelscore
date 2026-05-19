@@ -39,12 +39,15 @@
   @include mat.button-overrides(
     (
       filled-container-shape: var(--rs-size-border-radius),
+      filled-state-layer-color: var(--rs-button-bg-color),
+      filled-ripple-color: var(--rs-button-bg-color),
     )
   );
 
   @include mat.select-overrides(
     (
       panel-background-color: var(--rs-color-white),
+      enabled-trigger-text-color: var(--rs-color-text-1),
     )
   );
 
@@ -73,6 +76,10 @@ mat-button-toggle {
   .mat-button-toggle-ripple {
     border-radius: var(--rs-size-border-radius);
   }
+
+  &.mat-button-toggle + mat-button-toggle.mat-button-toggle {
+    margin-left: 1px;
+  }
 }
 
 .mat-mdc-icon-button.mat-mdc-button-base {
@@ -82,13 +89,26 @@ mat-button-toggle {
 button {
   --mat-icon-color: var(--rs-color-orange);
   --mat-icon-button-ripple-color: var(--rs-color-ripple);
+  border: 1px solid var(--rs-button-border-color);
+  background-color: var(--rs-button-bg-color);
 
   &.mdc-button {
     --mat-filled-button-icon-offset: 0;
     --mat-outlined-button-horizontal-padding: 1rem;
     --mat-outlined-button-icon-offset: 0;
+  }
+
+  &.mdc-button,
+  &.mat-mdc-icon-button {
     --mdc-filled-button-label-text-color: var(--rs-color-orange);
     box-shadow: var(--rs-size-box-shadow-3);
+    border: 1px solid var(--rs-button-border-color);
+    background-color: var(--rs-button-bg-color);
+
+    & + button.mdc-button,
+    & + button.mat-mdc-icon-button {
+      margin-left: 1px;
+    }
   }
 
   &.mat-mdc-icon-button {
@@ -122,7 +142,6 @@ button {
 .mat-datepicker-content {
   border: 1px solid var(--mat-standard-button-toggle-divider-color);
   --mat-datepicker-calendar-container-background-color: var(--rs-color-white);
-  --mat-datepicker-calendar-date-text-color: var(--rs-color-text-1);
   --mat-datepicker-calendar-date-disabled-state-text-color: var(
     --rs-color-text-2
   );
@@ -149,12 +168,12 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   --mat-tab-header-divider-height: 0;
   --mat-tab-header-inactive-ripple-color: white;
   --mat-tab-header-inactive-label-text-color: var(--rs-color-text-2);
-  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-3);
-  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-3);
+  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-2);
+  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-2);
   --mat-tab-header-active-ripple-color: white;
-  --mat-tab-header-active-label-text-color: var(--rs-color-text-3);
-  --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-3);
-  --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-3);
+  --mat-tab-header-active-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
   --mat-tab-header-active-hover-indicator-color: var(--rs-color-text-3);
   --mdc-tab-indicator-active-indicator-color: var(--rs-color-orange);
@@ -192,6 +211,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   .mat-mdc-text-field-wrapper {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    border: 1px solid var(--rs-button-border-color);
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);

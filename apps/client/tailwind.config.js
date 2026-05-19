@@ -23,6 +23,7 @@ module.exports = {
         'rs-color-text-2': 'var(--rs-color-text-2)',
         'rs-color-text-3': 'var(--rs-color-text-3)',
         'rs-color-orange': 'var(--rs-color-orange)',
+        'rs-alt-bg': 'var(--rs-color-text-3)',
         'rs-border-color-1': 'var(--rs-border-color-1)',
         'rs-border-color-2': 'var(--rs-border-color-2)',
       },
@@ -58,10 +59,7 @@ module.exports = {
         '.rs-as-label': {
           background: 'var(--rs-button-bg-color)',
           '--mdc-outlined-button-disabled-label-text-color':
-            'var(--rs-color-text-3)',
-        },
-        '.rs-bg-color': {
-          background: 'var(--mat-sys-surface)',
+            'var(--rs-color-text-1)',
         },
       };
 

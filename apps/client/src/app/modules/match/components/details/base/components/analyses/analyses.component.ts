@@ -22,7 +22,7 @@ import { AnalysesLastFixturesComponent } from './components';
   styles: `
     :host { @apply flex flex-col mt-5 gap-5; }
 
-    .fixture-analyse { @apply p-5 text-rs-color-text-3 text-rs-font-size-small sm:text-rs-font-size-body-1; }
+    .fixture-analyse { @apply p-5 text-rs-color-text-1 text-rs-font-size-small sm:text-rs-font-size-body-1; }
     .fixture-analyse > div {
       @apply w-full flex flex-wrap gap-5;
 

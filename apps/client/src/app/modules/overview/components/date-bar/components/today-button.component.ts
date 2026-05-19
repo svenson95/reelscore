@@ -19,7 +19,7 @@ import { DateString } from '@app/shared';
       --mdc-outlined-button-container-height: 36px;
       --mdc-text-button-disabled-label-text-color: var(--rs-color-text-2);
       --mdc-protected-button-container-shape: var(--rs-size-border-radius);
-      border: 1px solid var(--mdc-outlined-button-outline-color);
+      border: 1px solid var(--rs-button-border-color);
 
       @include mat.button-overrides(
         (

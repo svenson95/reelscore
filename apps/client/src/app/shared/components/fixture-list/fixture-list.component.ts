@@ -10,7 +10,7 @@ import { FixtureListItemComponent } from './components';
   imports: [FixtureListItemComponent],
   styles: `
     ul { @apply w-full; }
-    li { @apply bg-white border-b-[1px]; }
+    li { @apply border-b-[1px]; border-bottom-color: var(--rs-border-color-1); }
   `,
   template: `
     <ul>

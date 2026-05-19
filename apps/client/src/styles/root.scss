@@ -1,25 +1,13 @@
 :root {
-  /* Colors */
-  --rs-color-white: #fff;
-  --rs-color-white-2: #f3f3f3;
+  /* Brand / primitive colors */
   --rs-color-orange: #f48c22;
   --rs-color-green-1: #2e9133;
-  --rs-color-text-1: #1d1d1f;
-  --rs-color-text-2: #999999;
-  --rs-color-text-3: #fff;
 
+  /* Shared */
   --rs-color-primary: var(--rs-color-orange);
-  --rs-color-secondary: #1c1c1c;
-
-  --rs-button-text-color: var(--rs-color-text-3);
-  --rs-button-bg-color: rgba(255, 255, 255, 0.1);
-  --rs-border-color-1: #e5e7eb;
-  --rs-border-color-2: var(--rs-color-text-2);
-
-  --rs-color-ripple: rgba(255, 255, 255, 0.2);
   --rs-button-transition: 200ms ease-in-out;
 
-  /* Font-sizes */
+  /* Font sizes */
   --rs-font-size-title: 24px;
   --rs-font-size-subtitle-1: 18px;
   --rs-font-size-subtitle-2: 16px;
@@ -31,13 +19,65 @@
   --rs-padding-2: 16px;
   --rs-padding-3: 20px;
 
-  /* Sizes */
   --rs-size-button-border-width: 2px;
-  --rs-size-button-shadow: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
-  --rs-size-box-shadow: rgba(17, 12, 46, 0.35) 0px 28px 40px 0px;
-  --rs-size-box-shadow-2: 0 6px 6px rgba(0, 0, 0, 0.48);
-  --rs-size-box-shadow-3: 0 6px 6px rgba(0, 0, 0, 0.15);
   --rs-size-league-select-height: 32px;
   --rs-size-max-width: 1000px;
   --rs-size-border-radius: 0px;
+}
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --rs-color-bg: #f0f0f0;
+  --rs-color-surface: #ffffff;
+  --rs-color-surface-2: #f3f3f3;
+
+  --rs-color-text-1: #1d1d1f;
+  --rs-color-text-muted: #666666;
+  --rs-color-text-inverse: #ffffff;
+  --rs-color-text-2: #999999;
+  --rs-color-text-3: #fff;
+
+  --rs-border-color-1: #e5e7eb;
+  --rs-border-color-2: #999999;
+
+  --rs-button-text-color: var(--rs-color-text-inverse);
+  --rs-button-bg-color: rgba(255, 255, 255, 1);
+  --rs-button-border-color: color-mix(in srgb, black 12%, transparent);
+
+  --rs-color-ripple: rgba(0, 0, 0, 0.12);
+
+  --rs-size-box-shadow: rgba(17, 12, 46, 0.15) 0px 28px 40px 0px;
+  --rs-size-box-shadow-2: 0 6px 6px rgba(0, 0, 0, 0.06);
+  --rs-size-box-shadow-3: 0 6px 6px rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --rs-color-bg: #202020;
+    --rs-color-surface: #131313;
+    --rs-color-surface-2: #202020;
+
+    --rs-color-text-1: #ffffff;
+    --rs-color-text-muted: #999999;
+    --rs-color-text-inverse: #1d1d1f;
+    --rs-color-text-2: #777;
+    --rs-color-text-3: #000;
+
+    --rs-border-color-1: #333333;
+    --rs-border-color-2: #555555;
+
+    --rs-button-text-color: #ffffff;
+    --rs-button-bg-color: rgba(255, 255, 255, 0.1);
+    --rs-button-border-color: color-mix(in srgb, white 12%, transparent);
+
+    --rs-color-ripple: rgba(255, 255, 255, 0.2);
+
+    --rs-size-box-shadow: rgba(0, 0, 0, 0.6) 0px 28px 40px 0px;
+    --rs-size-box-shadow-2: 0 6px 6px rgba(0, 0, 0, 0.48);
+    --rs-size-box-shadow-3: 0 6px 6px rgba(0, 0, 0, 0.25);
+  }
 }

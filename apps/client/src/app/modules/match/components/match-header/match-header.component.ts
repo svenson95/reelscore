@@ -22,19 +22,20 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   imports: [HeaderDataComponent, HeaderDetailsComponent],
   styles: `
     :host {
-      @apply px-3 sticky top-0 rs-bg-color z-10;
+      @apply px-3 sticky top-0 z-10;
       margin-top: -1.25rem;
       border: 1px solid var(--mat-standard-button-toggle-divider-color);
 
       &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
 
-    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width bg-white shadow-rs2; }
+    .wrapper { @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg; }
 
     .toggle-highlights-row {
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
       .divider {
-        @apply w-full h-[1px] bg-[#e5e7eb];
+        @apply w-full h-[1px];
+        background-color: var(--rs-border-color-1);
         animation: opacityUp 200ms ease forwards;
       }
 

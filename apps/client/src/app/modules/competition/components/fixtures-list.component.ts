@@ -27,17 +27,18 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     :host { @apply flex flex-col shadow-rs2; }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
-      @apply bg-white;
+      @apply bg-rs-alt-bg;
     }
     div.round {
       @apply flex items-center gap-4 p-2 border-b-[1px];
+      border-color: var(--rs-border-color-1);
       rs-optimized-image { min-width: 34px; min-height: 26px; }
     }
     div.logo-wrapper { width: 32px; }
     div.competition-logo { @apply ml-1; }
     div.days {
       @apply flex flex-col;
-      .group-date { @apply py-2 px-4 border-b-[1px] leading-[16px]; }
+      .group-date { @apply py-2 px-4 border-b-[1px] leading-[16px]; border-color: var(--rs-border-color-1); }
     }
   `,
   template: `

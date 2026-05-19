@@ -15,7 +15,7 @@ import { LoadingService } from '../../services';
   styles: `
     :host { @apply select-none text-rs-font-size-body-1 tracking-wide font-normal; }
     :host span:first-child { @apply text-rs-color-orange; }
-    :host span:last-child { @apply text-white; }
+    :host span:last-child { @apply text-rs-color-text-1; }
     :host([disabled]) { @apply opacity-75; }
 
     :host.is-loading {

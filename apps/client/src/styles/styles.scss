@@ -14,7 +14,7 @@ html {
   @include mat.theme(
     (
       color: (
-        theme-type: light,
+        theme-type: color-scheme,
         primary: themeColors.$primary-palette,
         tertiary: themeColors.$tertiary-palette,
       ),
@@ -23,9 +23,13 @@ html {
     ),
     $overrides: (
       primary: var(--rs-color-primary),
-      surface: var(--rs-color-secondary),
+      surface: var(--rs-color-bg),
+      surface-container: var(--rs-color-surface),
+      surface-container-high: var(--rs-color-surface-2),
       on-surface: var(--rs-color-text-1),
-      outline: var(--rs-border-color-1)
+      on-surface-variant: var(--rs-color-text-muted),
+      outline: var(--rs-border-color-1),
+      outline-variant: var(--rs-border-color-2)
     )
   );
 }
@@ -34,7 +38,7 @@ body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   padding-top: env(safe-area-inset-top);
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
 }
 
 main > *,
@@ -44,12 +48,11 @@ header .wrapper {
 }
 
 h3.match-section-title {
-  // TODO refactor border-b-[1px] pb-2 mb-2 to a utility class
-  @apply py-3 mx-3 border-b-[1px] border-rs-color-orange text-center text-rs-color-text-3 tracking-widest;
+  @apply py-3 mx-3 border-b-[1px] border-rs-color-orange text-center text-rs-color-text-1 tracking-widest;
 }
 
 p.no-data {
-  @apply text-rs-font-size-body-1 text-rs-color-text-3 text-center py-10;
+  @apply text-rs-font-size-body-1 text-rs-color-text-1 text-center py-10;
 }
 
 .competition-logo-small {
