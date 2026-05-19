@@ -41,7 +41,6 @@ import {
   styles: `
     :host { @apply flex flex-col w-full; }
     :host ::ng-deep {
-      .mat-mdc-tab-body-wrapper { @apply mt-3; }
       mat-tab-header { @apply px-3; }
       .mat-mdc-tab-body-content > * { @apply flex flex-col p-3; }
     }
