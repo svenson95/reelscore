@@ -31,12 +31,12 @@ const EXTERNAL_MODULES = [RouterLink];
   ],
   styles: `
     :host {
-      @apply flex flex-col overflow-hidden shadow-rs2;
+      @apply flex flex-col overflow-hidden bg-rs-alt-bg shadow-rs2;
       border-radius: var(--mat-standard-button-toggle-shape);
 
       --mat-table-header-headline-line-height: 14px;
     }
-    .header { @apply flex px-3 py-2 gap-5 bg-white border-b-[1px] items-center; }
+    .header { @apply flex px-3 py-2 gap-5 border-b-[1px] items-center; border-bottom-color: var(--rs-border-color-1); }
     .header {
       span, a {
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);

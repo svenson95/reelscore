@@ -37,11 +37,11 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
   styles: `
     @use '@angular/material' as mat;
 
-    :host { 
-      @apply flex flex-col; 
+    :host {
+      @apply flex flex-col;
 
       ::ng-deep {
-        .mat-expansion-panel:not([class*=mat-elevation-z]) { 
+        .mat-expansion-panel:not([class*=mat-elevation-z]) {
           @apply shadow-none;
 
           mat-expansion-panel-header.mat-expansion-panel-header.fixture-expansion-header {
@@ -67,17 +67,17 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
     .fixture-header { @apply flex gap-2 w-full; }
     .fixture-header > div { @apply leading-none;}
     .home-name { @apply text-right; }
-    .home-name, .away-name { 
-      @apply flex-1 content-center; 
-      
+    .home-name, .away-name {
+      @apply flex-1 content-center;
+
       &.is-winner { @apply underline decoration-green-500; }
       &.is-loser { @apply underline decoration-red-500; }
       &.is-related { @apply font-semibold; }
     }
     .evaluations { @apply flex flex-col pt-4; }
     .evaluation { @apply flex gap-2; }
-    .evaluation.is-away { 
-      @apply flex-row-reverse; 
+    .evaluation.is-away {
+      @apply flex-row-reverse;
     }
     .evaluation:not(:last-of-type) { @apply border-b border-rs-border-color-2 pb-2 mb-2; }
     .home-col { @apply border-r pr-2; }

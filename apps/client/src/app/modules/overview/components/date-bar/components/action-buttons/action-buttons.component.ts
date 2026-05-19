@@ -16,16 +16,14 @@ import { FilterButtonComponent } from './filter-button.component';
   ],
   styles: `
     :host {
-      @apply flex shadow-rs3;
-
-      > *:not(:first-child) {
-        border-left: 1px solid var(--mat-sys-surface);
-      }
+      @apply flex;
 
       ::ng-deep {
         .mat-mdc-icon-button {
           --mat-icon-button-state-layer-color: white;
           --mdc-icon-button-state-layer-size: 36px;
+          border: 1px solid var(--rs-button-border-color);
+          margin-left: 1px;
         }
 
         mat-icon { @apply w-[20px] h-[20px] text-[20px] align-text-top; }

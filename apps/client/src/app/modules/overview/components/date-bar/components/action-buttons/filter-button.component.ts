@@ -60,7 +60,7 @@ const EXTERNAL_MODULES = [
         @apply font-medium;
       }
 
-      .divider { @apply h-[1px] w-full bg-[#bababa]; }
+      .divider { @apply h-[1px] w-full; background-color: var(--rs-border-color-1); }
     }
   `,
   template: `

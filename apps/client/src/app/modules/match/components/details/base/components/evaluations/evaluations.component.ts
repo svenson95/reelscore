@@ -15,9 +15,6 @@ import { ToKebabCasePipe } from './pipes';
     :host { @apply flex flex-col; }
     .content {
       @apply flex flex-col gap-10 w-fit my-5 mx-auto;
-
-      border-width: 1px;
-      border-color: var(--mat-standard-button-toggle-divider-color);
       border-radius: var(--mat-standard-button-toggle-shape);
     }
     .content > .teams-form {
@@ -25,7 +22,7 @@ import { ToKebabCasePipe } from './pipes';
 
       .header { @apply w-full flex justify-between m-auto; }
       .form-hints { @apply flex gap-3 items-center text-rs-color-text-2; }
-      .form-title { @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1 text-rs-color-text-3; }
+      .form-title { @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1 text-rs-color-text-1; }
     }
 
     .form-hints, .today { @apply text-rs-font-size-small xs:text-rs-font-size-body-2; }

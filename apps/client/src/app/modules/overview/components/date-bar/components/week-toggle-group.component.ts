@@ -45,10 +45,10 @@ const EXTERNAL_MODULES = [
     mat-button-toggle-group.mat-button-toggle-group {
       @include mat.button-toggle-overrides(
         (
-          height: 36px,
+          height: 34px,
           label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-text-3),
-          selected-state-text-color: var(--rs-color-text-1),
+          selected-state-text-color: var(--rs-color-text-3),
           disabled-state-text-color: var(--rs-color-text-2),
           disabled-selected-state-text-color: var(--rs-color-text-1),
           selected-state-background-color: var(--rs-color-orange),
@@ -60,6 +60,7 @@ const EXTERNAL_MODULES = [
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;
+        border: 1px solid var(--rs-button-border-color);
         --mat-standard-button-toggle-divider-color: var(--mat-sys-surface);
 
         &.is-today ::ng-deep .mat-button-toggle-label-content {
