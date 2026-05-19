@@ -30,14 +30,14 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 
     .wrapper {
       @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg;
-      border: 1px solid var(--rs-border-color-1);
+      border: 1px solid var(--rs-button-border-color);
     }
 
     .toggle-highlights-row {
       &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
       .divider {
         @apply w-full h-[1px];
-        background-color: var(--rs-border-color-1);
+        background-color: var(--rs-button-border-color);
         animation: opacityUp 200ms ease forwards;
       }
 
