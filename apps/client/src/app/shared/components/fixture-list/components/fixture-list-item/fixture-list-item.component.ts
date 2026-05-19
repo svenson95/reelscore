@@ -38,7 +38,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     :host > div { @apply inline-flex flex-col; }
     .time-label.is-finished { @apply line-through decoration-rs-color-orange; }
     .time {
-      @apply justify-center items-center min-w-[45px] text-rs-font-size-small;
+      @apply justify-center items-center min-w-[40px] text-rs-font-size-small;
 
       &.is-playing { @apply bg-rs-color-green-1 text-rs-color-text-3; }
     }
@@ -46,9 +46,10 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
       @apply flex text-center justify-center;
     }
     .result {
-      @apply min-w-[40px] px-2 py-1 items-center gap-[0.1rem];
-
-      &:not(.is-upcoming) { @apply bg-rs-color-white-2; }
+      @apply h-full min-w-[40px] px-2 items-center gap-[0.1rem];
+    }
+    .result:not(.is-upcoming),  .time.is-upcoming {
+      background-color: var(--rs-color-surface-2);
     }
     .teams { @apply w-full flex items-center text-rs-font-size-body-2; }
     .teams > div:not(.result) { @apply flex flex-1 px-2 py-1 gap-2 items-center h-fit; }

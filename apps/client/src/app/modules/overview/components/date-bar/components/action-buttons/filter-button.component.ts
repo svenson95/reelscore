@@ -29,12 +29,12 @@ const EXTERNAL_MODULES = [
   styles: `
     button[mat-icon-button].is-filtering {
       @apply bg-rs-color-orange;
-      .mat-icon { @apply text-rs-color-text-1; }
+      .mat-icon { @apply text-rs-color-text-3; }
     }
     button[mat-menu-item] {
       --mat-menu-item-label-text-size: var(--rs-font-size-small);
       --mat-menu-item-label-text-line-height: var(--rs-font-size-small);
-      --mat-menu-item-icon-color: var(--rs-color-white-2);
+      --mat-menu-item-icon-color: var(--rs-color-text-muted);
 
       @apply py-1;
 
@@ -42,7 +42,8 @@ const EXTERNAL_MODULES = [
       &.group-title { @apply min-h-[48px]; }
 
       &.is-filtering {
-        @apply bg-rs-color-white-2; --mat-menu-item-icon-color: var(--rs-color-text-1);
+        background-color: var(--rs-color-surface-2);
+        --mat-menu-item-icon-color: var(--rs-color-text-1);
         mat-icon { @apply absolute right-4; }
       }
 
