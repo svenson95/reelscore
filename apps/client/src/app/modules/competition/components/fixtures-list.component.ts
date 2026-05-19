@@ -24,7 +24,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     OptimizedImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col shadow-rs2; border: 1px solid var(--rs-border-color-1); }
+    :host { @apply flex flex-col shadow-rs2; border: 1px solid var(--rs-button-border-color); }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
       @apply bg-rs-alt-bg;
@@ -38,12 +38,12 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       align-items: center;
       gap: 1.25rem;
       border-bottom-width: 1px;
-      border-bottom-color: var(--rs-border-color-1);
+      border-bottom-color: var(--rs-button-border-color);
     }
     div.competition-logo { @apply ml-1; }
     div.days {
       @apply flex flex-col;
-      .group-date { @apply py-2 px-4 border-y-[1px] leading-[16px]; border-color: var(--rs-border-color-1); }
+      .group-date { @apply py-2 px-4 border-y-[1px] leading-[16px]; border-color: var(--rs-button-border-color); }
     }
   `,
   template: `

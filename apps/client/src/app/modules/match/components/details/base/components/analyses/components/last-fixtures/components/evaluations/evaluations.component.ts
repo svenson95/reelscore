@@ -46,7 +46,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
 
           mat-expansion-panel-header.mat-expansion-panel-header.fixture-expansion-header {
             background-color: var(--rs-color-text-3);
-            border: 1px solid var(--rs-border-color-1);
+            border: 1px solid var(--rs-button-border-color);
           }
         }
         .mat-expansion-panel-header-title { @apply flex-grow-0; }

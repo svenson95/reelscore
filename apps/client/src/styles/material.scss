@@ -186,12 +186,21 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
       &.mdc-tab--active {
         background-color: var(--rs-button-bg-color);
-        border: 1px solid var(--rs-border-color-1);
+        border: 1px solid var(--rs-button-border-color);
       }
 
       &.mdc-tab--active,
       .mdc-tab__content {
         pointer-events: none;
+      }
+
+      &:not(.mat-mdc-tab-disabled) .mat-icon {
+        @apply w-[36px] h-[36px] content-center;
+        text-shadow: 1px 1px 1px rgba(150, 150, 150, 0.45);
+
+        @media (prefers-color-scheme: dark) {
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
+        }
       }
     }
   }
