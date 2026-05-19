@@ -37,7 +37,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     div.competition-logo { @apply ml-1; }
     div.days {
       @apply flex flex-col;
-      .group-date { @apply py-2 px-4 border-b-[1px]; }
+      .group-date { @apply py-2 px-4 border-b-[1px] leading-[16px]; }
     }
   `,
   template: `

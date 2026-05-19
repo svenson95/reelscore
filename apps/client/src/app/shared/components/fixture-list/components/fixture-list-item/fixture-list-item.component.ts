@@ -47,14 +47,14 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
       @apply flex text-center justify-center;
     }
     .result {
-      @apply min-w-[40px] p-2 items-center gap-[0.1rem];
+      @apply min-w-[40px] px-2 py-1 items-center gap-[0.1rem];
 
       &:not(.is-upcoming) { @apply bg-rs-color-white-2; }
     }
-    .teams { @apply w-full flex text-rs-font-size-body-2; }
-    .teams > div:not(.result) { @apply flex flex-1 p-2 gap-2 items-center; }
+    .teams { @apply w-full flex items-center text-rs-font-size-body-2; }
+    .teams > div:not(.result) { @apply flex flex-1 px-2 py-1 gap-2 items-center h-fit; }
     .teams > div:first-of-type { @apply justify-end text-end; }
-    .team-name { line-height: 14px; text-wrap: balance; }
+    .team-name { line-height: 24px; text-wrap: balance; }
   `,
   template: `
     @let match = fixture();
