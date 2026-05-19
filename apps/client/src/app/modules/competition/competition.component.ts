@@ -41,8 +41,9 @@ import {
   styles: `
     :host { @apply flex flex-col w-full; }
     :host ::ng-deep {
-      mat-tab-header { @apply px-3; }
+      mat-tab-header { @apply mx-3 shadow-rs3; }
       .mat-mdc-tab-body-content > * { @apply flex flex-col p-3; }
+      .mat-icon { @apply w-[36px] h-[36px] content-center; text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.45); }
     }
     section.competition-data { @apply pb-8; }
   `,
