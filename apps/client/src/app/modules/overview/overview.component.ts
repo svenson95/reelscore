@@ -17,7 +17,7 @@ import { STORE_PROVIDERS } from './store';
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply flex flex-col w-full; }
+    :host { @apply flex flex-col w-full overflow-hidden; }
   `,
   template: `
     <nav

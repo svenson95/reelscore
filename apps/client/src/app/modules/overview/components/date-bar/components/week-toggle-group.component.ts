@@ -50,7 +50,7 @@ const EXTERNAL_MODULES = [
           text-color: var(--rs-color-text-3),
           selected-state-text-color: var(--rs-color-text-3),
           disabled-state-text-color: var(--rs-color-text-2),
-          disabled-selected-state-text-color: var(--rs-color-text-1),
+          disabled-selected-state-text-color: var(--rs-color-text-3),
           selected-state-background-color: var(--rs-color-orange),
           disabled-state-background-color: var(--rs-button-bg-color),
           disabled-selected-state-background-color: var(--rs-color-orange),

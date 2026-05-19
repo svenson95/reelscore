@@ -50,6 +50,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
   styles: `
     :host {
       @apply flex overflow-hidden shadow-rs2;
+      border: 1px solid var(--rs-button-border-color);
       border-radius: var(--mat-standard-button-toggle-shape);
       --mat-table-background-color: var(--rs-color-text-3);
     }
@@ -64,16 +65,18 @@ export class HasMultipleGroupsPipe implements PipeTransform {
 
     td { @apply py-[4px]; }
 
+    th:first-of-type { @apply bg-white; }
+
     td, th {
       @apply leading-[14px];
 
       &:first-of-type {
-        @apply pr-0 pl-2 text-center justify-items-center;
+        @apply text-center justify-items-center;
       }
     }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.rank-column { width: 42px; }
+      &.rank-column { width: 40px; padding-inline: 8px; }
 
       &.number-column {
         @apply px-1;

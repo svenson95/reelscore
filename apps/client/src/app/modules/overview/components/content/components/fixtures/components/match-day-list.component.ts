@@ -32,11 +32,12 @@ const EXTERNAL_MODULES = [RouterLink];
   styles: `
     :host {
       @apply flex flex-col overflow-hidden bg-rs-alt-bg shadow-rs2;
+      border: 1px solid var(--rs-border-color-1);
       border-radius: var(--mat-standard-button-toggle-shape);
 
       --mat-table-header-headline-line-height: 14px;
     }
-    .header { @apply flex px-3 py-2 gap-5 border-b-[1px] items-center; border-bottom-color: var(--rs-border-color-1); }
+    .header { @apply flex gap-4 pr-2 border-b-[1px] items-center; border-bottom-color: var(--rs-border-color-1); }
     .header {
       span, a {
         font-family: var(--mat-table-header-headline-font, Roboto, sans-serif);
@@ -54,6 +55,7 @@ const EXTERNAL_MODULES = [RouterLink];
       <div class="competition-logo-small">
         @defer (on viewport) {
         <rs-optimized-image
+          class="competition-corner"
           [source]="getCompetitionLogo()"
           altText="competition logo"
           width="24"

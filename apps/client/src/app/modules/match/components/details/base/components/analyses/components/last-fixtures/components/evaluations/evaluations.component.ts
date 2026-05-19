@@ -45,13 +45,16 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
           @apply shadow-none;
 
           mat-expansion-panel-header.mat-expansion-panel-header.fixture-expansion-header {
-            background-color: var(--rs-color-white);
+            background-color: var(--rs-color-text-3);
+            border: 1px solid var(--rs-border-color-1);
           }
         }
         .mat-expansion-panel-header-title { @apply flex-grow-0; }
       }
 
       mat-expansion-panel {
+        margin-bottom: 1px;
+
         @include mat.expansion-overrides((
           container-background-color: var(--rs-color-secondary),
           container-shape: var(--rs-size-border-radius),

@@ -26,7 +26,7 @@ import { STORE_PROVIDERS } from './store';
   imports: [PageHeaderComponent, MatchHeaderComponent, MatchDetailsComponent],
   providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply w-full flex flex-col gap-5; }
+    :host { @apply w-full flex flex-col gap-5 overflow-hidden; }
   `,
   template: `
     @if (error()) {
