@@ -40,7 +40,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     .time {
       @apply justify-center items-center min-w-[40px] text-rs-font-size-small;
 
-      &.is-playing { @apply bg-rs-color-green-1 text-rs-color-text-3; }
+      &.is-playing { @apply bg-rs-color-green-1 text-white; }
     }
     .time, .result {
       @apply flex text-center justify-center;
