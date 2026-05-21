@@ -58,7 +58,7 @@ const EXTERNAL_MODULES = [
       border-color: var(--rs-button-border-color);
 
       .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
-        @apply flex items-center gap-2;
+        @apply flex items-center gap-4;
       }
       .mat-mdc-menu-content .mat-mdc-menu-item.group-title .mat-mdc-menu-item-text {
         @apply font-medium;
