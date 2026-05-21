@@ -167,13 +167,13 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
   --mat-tab-header-divider-height: 0;
   --mat-tab-header-inactive-ripple-color: white;
-  --mat-tab-header-inactive-label-text-color: var(--rs-color-text-2);
-  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-2);
-  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-2);
+  --mat-tab-header-inactive-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-primary);
   --mat-tab-header-active-ripple-color: white;
-  --mat-tab-header-active-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-active-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-active-focus-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-active-hover-label-text-color: var(--rs-color-primary);
   --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
   --mat-tab-header-active-hover-indicator-color: var(--rs-color-text-3);
   --mdc-tab-indicator-active-indicator-color: var(--rs-color-orange);
