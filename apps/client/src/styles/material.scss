@@ -1,57 +1,55 @@
 @use '@angular/material' as mat;
 
 :root {
-  --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
-  --mdc-text-button-disabled-label-text-color: var(--rs-color-text-1);
-  // --mdc-filled-text-field-hover-label-text-color: var(--fb-color-black);
-  // --mdc-filled-text-field-focus-label-text-color: var(--fb-color-black);
+  // Global / shared
   --mat-standard-button-toggle-shape: var(--rs-size-border-radius);
+
+  // mat-button
+  --mdc-text-button-disabled-label-text-color: var(--rs-color-text-1);
   --mdc-outlined-button-container-shape: var(--rs-size-border-radius);
   --mat-outlined-button-pressed-state-layer-opacity: 0;
   --mat-outlined-button-hover-state-layer-opacity: 0;
   --mat-outlined-button-focus-state-layer-opacity: 0;
-  --mat-datepicker-calendar-container-shape: var(--rs-size-border-radius);
   --mdc-text-button-container-shape: var(--rs-size-border-radius);
-  --mat-datepicker-calendar-container-elevation-shadow: var(
-    --rs-size-box-shadow
-  );
-  --mat-select-container-elevation-shadow: var(--rs-size-box-shadow);
   --mat-text-button-horizontal-padding: 14px;
   --mat-text-button-with-icon-horizontal-padding: 14px;
-
-  --mat-menu-container-shape: var(--rs-size-border-radius);
   --mdc-text-button-label-text-color: var(--rs-button-text-color);
   --mdc-icon-button-icon-color: var(--rs-button-text-color);
   --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
-  --mat-standard-button-toggle-state-layer-color: var(--rs-color-orange);
-
-  // mat-button
   --mdc-filled-button-container-color: var(--rs-button-bg-color);
   --mat-filled-button-horizontal-padding: 1rem;
   --mdc-outlined-button-disabled-outline-color: var(--rs-button-border-color);
 
-  // mat-form-field
-  --mdc-filled-text-field-container-color: var(--rs-button-bg-color);
-  --mat-select-enabled-trigger-text-color: var(--rs-color-white);
+  @include mat.datepicker-overrides(
+    (
+      calendar-container-shape: var(--rs-size-border-radius),
+      calendar-container-elevation-shadow: var(--rs-size-box-shadow),
+      calendar-container-background-color: var(--rs-color-white),
+      calendar-date-disabled-state-text-color: var(--rs-color-text-2),
+      calendar-period-button-text-color: var(--rs-color-text-1),
+      calendar-navigation-button-icon-color: var(--rs-color-text-1),
+    )
+  );
 
-  // mat-menu
-  --mat-menu-container-elevation-shadow: var(--rs-size-box-shadow);
-
-  // mat-select
-  --mat-form-field-hover-state-layer-opacity: 0;
+  @include mat.menu-overrides(
+    (
+      container-shape: var(--rs-size-border-radius),
+      container-elevation-shadow: var(--rs-size-box-shadow),
+    )
+  );
 
   @include mat.button-overrides(
     (
       filled-container-shape: var(--rs-size-border-radius),
-      filled-state-layer-color: var(--rs-button-bg-color),
-      filled-ripple-color: var(--rs-button-bg-color),
+      filled-state-layer-color: var(--rs-color-ripple),
+      filled-ripple-color: var(--rs-color-ripple),
     )
   );
 
-  @include mat.select-overrides(
+  @include mat.button-toggle-overrides(
     (
-      panel-background-color: var(--rs-color-white),
-      enabled-trigger-text-color: var(--rs-color-text-1),
+      state-layer-color: var(--rs-color-ripple),
+      background-color: var(--rs-button-bg-color),
     )
   );
 
@@ -64,21 +62,42 @@
     )
   );
 
-  @include mat.button-toggle-overrides(
+  @include mat.select-overrides(
     (
-      state-layer-color: white,
+      panel-background-color: var(--rs-color-white),
+      enabled-trigger-text-color: var(--rs-color-text-1),
+      container-elevation-shadow: var(--rs-size-box-shadow),
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      filled-label-text-color: var(--rs-color-text-2),
+      filled-hover-label-text-color: var(--fb-color-black),
+      filled-focus-label-text-color: var(--fb-color-black),
+      filled-container-color: var(--rs-button-bg-color),
+      state-layer-color: var(--rs-color-ripple),
+      focus-state-layer-opacity: 1,
+    )
+  );
+
+  @include mat.ripple-overrides(
+    (
+      color: var(--rs-color-ripple),
     )
   );
 }
 
+// mat-button-toggle
 mat-button-toggle {
-  --mat-standard-button-toggle-text-color: var(--rs-color-orange);
-  --mat-standard-button-toggle-background-color: var(--rs-button-bg-color);
-  --mat-ripple-color: var(--rs-color-ripple);
   border-radius: var(--rs-size-border-radius);
+  --mat-standard-button-toggle-text-color: var(--rs-color-orange);
 
-  .mat-button-toggle-ripple {
-    border-radius: var(--rs-size-border-radius);
+  .mat-button-toggle-label-content {
+    z-index: 10;
+  }
+  .mat-ripple.mat-button-toggle-ripple {
+    z-index: 5;
   }
 
   &.mat-button-toggle + mat-button-toggle.mat-button-toggle {
@@ -86,6 +105,7 @@ mat-button-toggle {
   }
 }
 
+// mat-button
 .mat-mdc-icon-button.mat-mdc-button-base {
   background-color: var(--rs-button-bg-color);
 }
@@ -124,42 +144,16 @@ button {
   }
 }
 
-.mat-mdc-button-persistent-ripple::before,
-.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
-.mat-mdc-tab .mdc-tab__ripple::before {
-  transition: opacity var(--rs-button-transition);
-}
-
-.mat-button-toggle-appearance-standard:hover .mat-button-toggle-focus-overlay,
-.mat-mdc-tab:hover .mdc-tab__ripple::before {
-  transition: opacity var(--rs-button-transition);
-}
-
-.mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  transition: background-color var(--rs-button-transition);
-}
-
-.mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
-  transition: background-color var(--rs-button-transition);
-}
-
+// mat-datepicker
 .mat-datepicker-content {
   touch-action: pan-x pan-y;
   border: 1px solid var(--rs-button-border-color);
-  --mat-datepicker-calendar-container-background-color: var(--rs-color-white);
-  --mat-datepicker-calendar-date-disabled-state-text-color: var(
-    --rs-color-text-2
-  );
-  --mat-datepicker-calendar-period-button-text-color: var(--rs-color-text-1);
-  --mat-datepicker-calendar-navigation-button-icon-color: var(
-    --rs-color-text-1
-  );
 
   mat-calendar.mat-calendar {
     height: 368px;
 
-    --mat-text-button-state-layer-color: var(--rs-button-bg-color);
-    --mat-text-button-ripple-color: var(--rs-button-bg-color);
+    --mat-text-button-state-layer-color: var(--rs-color-ripple);
+    --mat-text-button-ripple-color: var(--rs-color-ripple);
   }
 
   .mat-calendar-header {
@@ -177,6 +171,11 @@ button {
 
     button.mdc-button {
       --mat-outlined-button-horizontal-padding: 0;
+
+      svg {
+        z-index: 1;
+        position: relative;
+      }
     }
 
     .mat-calendar-period-button {
@@ -185,6 +184,26 @@ button {
   }
 }
 
+// mat-form-field
+.mat-mdc-form-field {
+  border-radius: var(--rs-size-border-radius);
+
+  .mat-mdc-text-field-wrapper {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: 1px solid var(--rs-button-border-color);
+  }
+}
+
+// mat-menu / elevation
+.mat-elevation-z8,
+.mat-mdc-elevation-specific.mat-elevation-z8 {
+  box-shadow: var(--rs-size-box-shadow);
+  border-radius: var(--rs-size-border-radius);
+  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+}
+
+// mat-select
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
   border-radius: var(--rs-size-border-radius);
   border: 1px solid var(--rs-button-border-color);
@@ -198,17 +217,15 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   padding-left: 0;
 }
 
+// mat-tabs
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  // --mat-tab-header-inactive-ripple-color: var(--rs-color-orange);
-  // --mat-tab-header-active-ripple-color: var(--rs-color-orange);
-
   --mat-tab-header-divider-height: 0;
-  --mat-tab-header-inactive-ripple-color: white;
+  --mat-tab-header-inactive-ripple-color: var(--rs-color-ripple);
   --mat-tab-header-inactive-label-text-color: var(--rs-color-primary);
   --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-ripple-color: white;
+  --mat-tab-header-active-ripple-color: var(--rs-color-ripple);
   --mat-tab-header-active-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-1);
@@ -222,6 +239,10 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     .mat-mdc-tab {
       @apply min-w-[50px] px-1;
 
+      &:hover .mdc-tab__ripple::before {
+        opacity: 1;
+      }
+
       &.mdc-tab--active,
       .mdc-tab__content {
         pointer-events: none;
@@ -230,21 +251,22 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   }
 }
 
-.mat-elevation-z8,
-.mat-mdc-elevation-specific.mat-elevation-z8 {
-  box-shadow: var(--rs-size-box-shadow);
-  border-radius: var(--rs-size-border-radius);
-  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+// shared transitions
+.mat-mdc-button-persistent-ripple::before,
+.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
+.mat-mdc-tab .mdc-tab__ripple::before {
+  transition: opacity var(--rs-button-transition);
 }
 
-// mat-form-field
-.mat-mdc-form-field {
-  border-radius: var(--rs-size-border-radius);
-  --mdc-filled-text-field-hover-label-text-color: red;
+.mat-button-toggle-appearance-standard:hover .mat-button-toggle-focus-overlay,
+.mat-mdc-tab:hover .mdc-tab__ripple::before {
+  transition: opacity var(--rs-button-transition);
+}
 
-  .mat-mdc-text-field-wrapper {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border: 1px solid var(--rs-button-border-color);
-  }
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  transition: background-color var(--rs-button-transition);
+}
+
+.mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+  transition: background-color var(--rs-button-transition);
 }
