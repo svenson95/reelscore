@@ -20,7 +20,6 @@ import { FilterButtonComponent } from './filter-button.component';
 
       ::ng-deep {
         .mat-mdc-icon-button {
-          --mat-icon-button-state-layer-color: white;
           --mdc-icon-button-state-layer-size: 36px;
           border: 1px solid var(--rs-button-border-color);
           margin-left: 1px;

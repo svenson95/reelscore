@@ -49,16 +49,11 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     }
 
     mat-form-field.mat-mdc-form-field-type-mat-select {
-      --mdc-filled-text-field-label-text-size: var(--rs-font-size-body-1);
-      --mdc-filled-text-field-label-text-color: var(--rs-color-text-2);
-      --mdc-filled-text-field-hover-label-text-color: var(--rs-color-text-1);
       @apply shadow-rs3;
     }
 
     mat-select {
-      --mat-select-trigger-text-size: var(--rs-font-size-body-3);
-      --mat-select-enabled-arrow-color: var(--rs-color-text-2);
-      --mat-select-focused-arrow-color: var(--fb-color-black);
+      --mat-select-trigger-text-size: var(--rs-font-size-body-2);
     }
 
     mat-option {
