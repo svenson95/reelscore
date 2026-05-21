@@ -47,6 +47,8 @@ const EXTERNAL_MODULES = [RouterLink];
 
         &.gray { @apply text-rs-color-text-2 text-rs-font-size-small shrink-0; }
       }
+
+      .competition-logo-small { border-bottom: 0.5px solid transparent; }
     }
     .spacer { @apply flex-1; }
   `,
