@@ -30,9 +30,8 @@ const ANGULAR_MODULES = [MatTabsModule];
   template: `
     <mat-tab-group
       [selectedIndex]="tabIndex()"
-      dynamicHeight
+      animationDuration="150ms"
       rsHideHeader
-      animationDuration="280ms"
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">

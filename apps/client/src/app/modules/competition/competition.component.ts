@@ -49,7 +49,7 @@ import {
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
     <section class="competition-data">
-      <mat-tab-group animationDuration="0">
+      <mat-tab-group animationDuration="150ms">
         <mat-tab>
           <ng-template mat-tab-label>
             @if (isMobile()) {

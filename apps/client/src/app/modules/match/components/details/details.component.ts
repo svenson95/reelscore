@@ -52,7 +52,7 @@ const ANGULAR_MODULES = [
     }
   `,
   template: `
-    <mat-tab-group dynamicHeight>
+    <mat-tab-group animationDuration="150ms">
       <mat-tab>
         <ng-template mat-tab-label>
           @if (isMobile()) {
