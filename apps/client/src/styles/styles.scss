@@ -18,7 +18,7 @@ html {
         primary: themeColors.$primary-palette,
         tertiary: themeColors.$tertiary-palette,
       ),
-      typography: Roboto,
+      typography: var(--rs-font-family),
       density: 0,
     ),
     $overrides: (
@@ -38,7 +38,6 @@ body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   padding-top: env(safe-area-inset-top);
-  font-family: Roboto, sans-serif;
 }
 
 html,
