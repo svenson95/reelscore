@@ -13,13 +13,6 @@ import { FooterComponent, HeaderComponent } from './shared';
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-
-    rs-logo {
-      transform: translate(-50%, -50%);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-    }
   `,
   template: `
     <header rs-header-content></header>
