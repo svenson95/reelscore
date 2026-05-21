@@ -37,6 +37,9 @@
   // mat-menu
   --mat-menu-container-elevation-shadow: var(--rs-size-box-shadow);
 
+  // mat-select
+  --mat-form-field-hover-state-layer-opacity: 0;
+
   @include mat.button-overrides(
     (
       filled-container-shape: var(--rs-size-border-radius),
@@ -223,9 +226,5 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border: 1px solid var(--rs-button-border-color);
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
   }
 }
