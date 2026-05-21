@@ -4,7 +4,6 @@ import {
   effect,
   inject,
   input,
-  OnChanges,
 } from '@angular/core';
 
 import { CompetitionUrl, FixtureId } from '@lib/models';
@@ -50,7 +49,7 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent extends RouterView implements OnChanges {
+export class MatchComponent extends RouterView {
   fixtureId = input.required<FixtureId>();
   competitionUrl = input.required<CompetitionUrl>();
 
@@ -59,9 +58,10 @@ export class MatchComponent extends RouterView implements OnChanges {
   data = this.facade.data;
   error = this.facade.error;
 
-  async ngOnChanges(): Promise<void> {
-    await this.facade.loadFixture(this.fixtureId());
-  }
+  loadFixtureEffect = effect(() => {
+    const fixtureId = this.fixtureId();
+    this.facade.loadFixture(fixtureId);
+  });
 
   invalidUrlEffect = effect(() =>
     this.facade.handleInvalidUrl(this.competitionUrl())
