@@ -11,6 +11,7 @@ import { FixtureListItemComponent } from './components';
   styles: `
     ul { @apply w-full; }
     li:not(:last-child) { @apply border-b-[1px]; border-bottom-color: var(--rs-button-border-color); }
+    li:last-child { border-bottom: 0.5px solid transparent; }
   `,
   template: `
     <ul>
