@@ -158,6 +158,7 @@ const LIGUE_1_2025_FIX = {
   34: 'Relegation round - Quarter-finals',
   35: 'Semi-finals',
   36: `${REGULAR_SEASON_STR}34`,
+  37: 'Final',
 };
 const BUNDESLIGA_2025_FIX = {
   1: `${REGULAR_SEASON_STR}1`,
@@ -574,7 +575,7 @@ export const COMPETITION_ROUNDS: CompetitionRoundsData = {
 
   // Deutschland
   78: BUNDESLIGA_2025_FIX,
-  79: SMALL_LEAGUE_ROUND_STRINGS,
+  79: BUNDESLIGA_2025_FIX,
   529: DE_SUPER_CUP,
   81: DE_DFB_POKAL,
 
