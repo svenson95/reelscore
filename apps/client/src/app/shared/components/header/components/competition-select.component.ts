@@ -65,7 +65,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
       --mat-option-label-text-size: var(--rs-font-size-body-3);
       @apply min-h-[32px] p-0;
 
-      a { @apply flex w-full h-full px-4 py-1 gap-2; }
+      a { @apply flex w-full h-full px-4 py-1 gap-4; }
       .competition-logo + span { @apply leading-[1.3] content-center; }
     }
   `,
