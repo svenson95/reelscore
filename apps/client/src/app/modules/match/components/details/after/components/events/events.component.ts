@@ -20,7 +20,7 @@ import { TimeTotalPipe } from './pipes';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent, TimeTotalPipe],
   styles: `
-    :host { @apply flex flex-col m-3 gap-3 py-5 bg-rs-alt-bg rounded-fb shadow-rs2; }
+    :host { @apply flex flex-col m-3 gap-3 py-5 bg-rs-alt-bg rounded-fb shadow-rs2 border; }
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team {  @apply flex-1; }
     .home { @apply text-right; }

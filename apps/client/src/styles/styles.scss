@@ -41,6 +41,13 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+*,
+::before,
+::after {
+  border-color: var(--rs-button-border-color);
+  -webkit-font-smoothing: antialiased;
+}
+
 main > *,
 header .wrapper {
   max-width: var(--rs-size-max-width);
@@ -53,6 +60,10 @@ h3.match-section-title {
 
 p.no-data {
   @apply text-rs-font-size-body-1 text-rs-color-text-1 text-center py-10;
+}
+
+router-outlet + * {
+  @apply flex flex-col w-full overflow-hidden mb-20;
 }
 
 .competition-logo-small {

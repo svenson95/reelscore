@@ -37,8 +37,6 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       display: flex;
       align-items: center;
       gap: 1.25rem;
-      border-bottom-width: 1px;
-      border-bottom-color: var(--rs-button-border-color);
     }
     div.competition-logo { @apply ml-1; }
     div.days {
