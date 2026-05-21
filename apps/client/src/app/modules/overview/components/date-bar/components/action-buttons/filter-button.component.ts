@@ -32,8 +32,8 @@ const EXTERNAL_MODULES = [
       .mat-icon { @apply text-rs-color-text-3; }
     }
     button[mat-menu-item] {
-      --mat-menu-item-label-text-size: var(--rs-font-size-small);
-      --mat-menu-item-label-text-line-height: var(--rs-font-size-small);
+      --mat-menu-item-label-text-size: var(--rs-font-size-body-3);
+      --mat-menu-item-label-text-line-height: var(--rs-font-size-body-3);
       --mat-menu-item-icon-color: var(--rs-color-text-muted);
 
       @apply py-1;
