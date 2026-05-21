@@ -16,9 +16,6 @@ import { STORE_PROVIDERS } from './store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
-  styles: `
-    :host { @apply flex flex-col w-full overflow-hidden; }
-  `,
   template: `
     <nav
       aria-label="Date-Bar Navigation"

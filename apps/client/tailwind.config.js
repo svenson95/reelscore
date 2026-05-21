@@ -32,6 +32,7 @@ module.exports = {
         'rs-font-size-subtitle-2': 'var(--rs-font-size-subtitle-2)',
         'rs-font-size-body-1': 'var(--rs-font-size-body-1)',
         'rs-font-size-body-2': 'var(--rs-font-size-body-2)',
+        'rs-font-size-body-3': 'var(--rs-font-size-body-3)',
         'rs-font-size-small': 'var(--rs-font-size-small)',
       },
       spacing: {

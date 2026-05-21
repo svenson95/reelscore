@@ -17,6 +17,7 @@ import {
   LastFixturesComponent,
   NextFixturesComponent,
   PageHeaderComponent,
+  PlayerStatsComponent,
 } from './components';
 import { SERVICE_PROVIDERS } from './services';
 import {
@@ -32,19 +33,18 @@ import {
   imports: [
     MatTabsModule,
     MatIconModule,
+    CompetitionStandingsComponent,
     LastFixturesComponent,
     NextFixturesComponent,
-    CompetitionStandingsComponent,
     PageHeaderComponent,
+    PlayerStatsComponent,
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply flex flex-col w-full overflow-hidden; }
     :host ::ng-deep {
       mat-tab-header { @apply mx-3; }
       .mat-mdc-tab-body-content > * { @apply flex flex-col p-3; }
     }
-    section.competition-data { @apply pb-8; }
   `,
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
@@ -88,7 +88,7 @@ import {
             } @else { Statistiken }
           </ng-template>
           <ng-template matTabContent>
-            <p class="no-data">Torschützen & Vorlagen Tabellen</p>
+            <rs-competition-player-stats />
           </ng-template>
         </mat-tab>
       </mat-tab-group>

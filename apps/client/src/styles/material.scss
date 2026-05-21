@@ -150,13 +150,26 @@ button {
   --mat-datepicker-calendar-date-disabled-state-text-color: var(
     --rs-color-text-2
   );
+  --mat-datepicker-calendar-period-button-text-color: var(--rs-color-text-1);
+  --mat-datepicker-calendar-navigation-button-icon-color: var(
+    --rs-color-text-1
+  );
 
   mat-calendar.mat-calendar {
-    height: 330px;
+    height: 368px;
+
+    --mat-text-button-state-layer-color: var(--rs-button-bg-color);
+    --mat-text-button-ripple-color: var(--rs-button-bg-color);
   }
 
   .mat-calendar-header {
     padding: 8px 1rem 0 1rem;
+  }
+
+  mat-multi-year-view {
+    .mat-calendar-table {
+      margin-top: -1rem;
+    }
   }
 
   .mat-calendar-controls {
@@ -178,7 +191,7 @@ button {
 }
 
 .mat-mdc-optgroup-label {
-  @apply text-rs-font-size-small text-rs-color-text-2;
+  @apply text-rs-font-size-body-3 text-rs-color-text-2;
 }
 
 mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
@@ -192,13 +205,13 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
   --mat-tab-header-divider-height: 0;
   --mat-tab-header-inactive-ripple-color: white;
-  --mat-tab-header-inactive-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-primary);
-  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-inactive-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-active-ripple-color: white;
-  --mat-tab-header-active-label-text-color: var(--rs-color-primary);
-  --mat-tab-header-active-focus-label-text-color: var(--rs-color-primary);
-  --mat-tab-header-active-hover-label-text-color: var(--rs-color-primary);
+  --mat-tab-header-active-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-1);
+  --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-1);
   --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
   --mat-tab-header-active-hover-indicator-color: var(--rs-color-text-3);
   --mdc-tab-indicator-active-indicator-color: var(--rs-color-orange);
@@ -208,11 +221,6 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 
     .mat-mdc-tab {
       @apply min-w-[50px] px-1;
-
-      &.mdc-tab--active {
-        background-color: var(--rs-button-bg-color);
-        border: 1px solid var(--rs-button-border-color);
-      }
 
       &.mdc-tab--active,
       .mdc-tab__content {
