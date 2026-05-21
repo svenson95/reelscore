@@ -100,7 +100,7 @@ const EXTERNAL_MODULES = [
       </mat-button-toggle>
       @for(date of indexedWeekdays(); track date.index) {
       <mat-button-toggle
-        [disabled]="isLoading()"
+        [disabled]="isLoading() || isSelected(date.day)"
         [value]="date.day"
         (click)="dateSelected.emit(date.day)"
         [class.is-today]="date.day | isToday"
@@ -131,6 +131,15 @@ export class WeekToggleGroupComponent {
       index: new Date(day).getDate(),
     }));
   });
+
+  isSelected = (date: DateString): boolean => {
+    const selected = this.selectedDay();
+    if (!selected) {
+      return false;
+    }
+
+    return selected === date;
+  };
 
   private weekFixtures = inject(WeekdayFixturesStore);
   private weekStandings = inject(WeekdayStandingsStore);
