@@ -62,10 +62,6 @@ const DATE_PICKER_PROVIDERS = [
         )
       );
     }
-
-    ::ng-deep mat-datepicker-content {
-      touch-action: pan-x pan-y;
-    }
   `,
   template: `
     <button

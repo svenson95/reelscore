@@ -144,16 +144,37 @@ button {
 }
 
 .mat-datepicker-content {
-  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+  touch-action: pan-x pan-y;
+  border: 1px solid var(--rs-button-border-color);
   --mat-datepicker-calendar-container-background-color: var(--rs-color-white);
   --mat-datepicker-calendar-date-disabled-state-text-color: var(
     --rs-color-text-2
   );
+
+  mat-calendar.mat-calendar {
+    height: 330px;
+  }
+
+  .mat-calendar-header {
+    padding: 8px 1rem 0 1rem;
+  }
+
+  .mat-calendar-controls {
+    margin: 0.5rem 0 2rem;
+
+    button.mdc-button {
+      --mat-outlined-button-horizontal-padding: 0;
+    }
+
+    .mat-calendar-period-button {
+      margin-left: 0;
+    }
+  }
 }
 
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
   border-radius: var(--rs-size-border-radius);
-  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+  border: 1px solid var(--rs-button-border-color);
 }
 
 .mat-mdc-optgroup-label {
