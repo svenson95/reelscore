@@ -27,9 +27,9 @@ import {
     div { @apply flex flex-1 sm:text-rs-font-size-body-1; }
     .team-column { @apply flex-col gap-2 text-rs-font-size-body-2; }
     .result-column { @apply relative items-center justify-center gap-1 text-rs-font-size-body-1; }
-    .status { @apply absolute top-0 py-[.15rem] px-2 text-rs-font-size-small font-mono border border-solid; }
-    .status.is-playing { @apply bg-green-600 text-white; }
-    .status.is-finished { @apply bg-gray-600 text-white; }
+    .status { @apply absolute top-0 py-[.15rem] px-2 text-rs-font-size-small; }
+    .status.is-playing { @apply bg-green-600 text-white border border-solid; }
+    .status.is-finished { @apply bg-gray-600 text-white border border-solid; }
     .team-name { @apply leading-[16px] text-center; }
     .team-logo { @apply m-auto; }
     .team-name-placeholder { @apply w-[100px] h-[16px] bg-gray-200 rounded m-auto; }
