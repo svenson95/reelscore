@@ -41,6 +41,32 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+html,
+body {
+  font-family: var(--rs-font-family);
+}
+
+.mat-mdc-button,
+.mat-mdc-card,
+.mat-mdc-table,
+.mat-mdc-list-item,
+.mat-mdc-tab,
+.mat-mdc-form-field,
+.mat-mdc-menu-item {
+  font-family: var(--rs-font-family);
+}
+
+rs-standings-table .mat-mdc-table .mat-mdc-row .rank-column,
+rs-standings-table .mat-mdc-table .mat-mdc-row .number-column,
+rs-result-label span,
+rs-fixture-list div.time,
+rs-date-picker .mdc-button__label,
+rs-match-header-details .result-column .status.is-playing,
+rs-match-header-details .event-time {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
 *,
 ::before,
 ::after {
