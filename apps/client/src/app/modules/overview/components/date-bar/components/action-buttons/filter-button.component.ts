@@ -35,6 +35,8 @@ const EXTERNAL_MODULES = [
       --mat-menu-item-label-text-size: var(--rs-font-size-body-3);
       --mat-menu-item-label-text-line-height: var(--rs-font-size-body-3);
       --mat-menu-item-icon-color: var(--rs-color-text-muted);
+      --mat-menu-item-with-icon-leading-spacing: 16px;
+      --mat-menu-item-with-icon-trailing-spacing: 16px;
 
       @apply py-1;
 
@@ -52,7 +54,8 @@ const EXTERNAL_MODULES = [
     }
 
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
-      @apply min-w-[220px] max-w-[220px] max-h-[70vh]; // 218px is the width of league-select menu + 2px border
+      @apply min-w-[220px] max-w-[220px] max-h-[70vh] border; // 218px is the width of league-select menu + 2px border
+      border-color: var(--rs-button-border-color);
 
       .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
         @apply flex items-center gap-2;
