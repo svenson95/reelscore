@@ -23,14 +23,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
-    :host { @apply flex w-full; }
+    :host { @apply flex w-full [text-shadow:0_0_4px_var(--rs-color-text-3)]; }
     div { @apply flex flex-1 sm:text-rs-font-size-body-1; }
     .team-column { @apply flex-col gap-2 text-rs-font-size-body-2; }
     .result-column { @apply relative items-center justify-center gap-1 text-rs-font-size-body-1; }
     .status { @apply absolute top-0 py-[.15rem] px-2 text-rs-font-size-small; }
     .status.is-playing { @apply bg-green-600 text-white border border-solid; }
     .status.is-finished { @apply bg-gray-600 text-white border border-solid; }
-    .team-name { @apply leading-[16px] text-center flex-1 [text-shadow:0_0_4px_var(--rs-color-text-3)]; }
+    .team-name { @apply leading-[16px] text-center flex-1; }
     .team-logo { @apply m-auto; }
     .team-name-placeholder { @apply w-[100px] h-[16px] bg-gray-200 rounded m-auto; }
     .team-logo-placeholder { @apply w-[48px] h-[48px] bg-gray-200 rounded-full self-center; }
