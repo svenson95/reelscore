@@ -73,7 +73,7 @@ import { VENUE_IDS } from './venue-ids.data';
       position: absolute;
       top: 0;
       left: 0;
-      transition: opacity 300ms ease-in-out;
+      transition: opacity 200ms ease-in-out;
 
       &--loaded {
         opacity: 0.3;
