@@ -76,7 +76,7 @@ const ALLIANZ_ARENA_ID = 20732;
       transition: opacity 150ms ease-in-out;
 
       &--loaded {
-        opacity: 0.3;
+        opacity: 0.4;
       }
     }
   `,
