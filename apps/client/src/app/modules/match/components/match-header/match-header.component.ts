@@ -63,7 +63,10 @@ const ALLIANZ_ARENA_ID = 20732;
       .match-highlights { overflow: hidden; }
     }
 
-    .wrapper { position: relative; }
+    .wrapper {
+      position: relative;
+      & > *:not(.background-wrapper) { z-index: 3; }
+    }
     .background-wrapper {
       @apply bg-center opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
 
