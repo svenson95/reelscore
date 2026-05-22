@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
 } from '@angular/core';
@@ -9,11 +10,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { OptimizedImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
+import {
+  OptimizedImageComponent,
+  SELECT_COMPETITION_DATA,
+  SelectCompetitionGroup,
+} from '@app/shared';
 import { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../../services';
-import { FilteredStandingsStore } from '../../../../store';
+import {
+  FilteredStandingsStore,
+  WeekdayFixturesStore,
+} from '../../../../store';
 
 const EXTERNAL_MODULES = [
   MatButtonModule,
@@ -74,14 +82,15 @@ const EXTERNAL_MODULES = [
       matTooltip="Filtern"
       [class.is-filtering]="!!selectedCompetition()"
       [matMenuTriggerFor]="menu"
+      [disabled]="!hasFilterOptions()"
     >
       <mat-icon>filter_list</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="filter-menu" xPosition="before">
-      @for (group of groups; track group.label) {
+      @for (group of filteredGroups(); track group.label) {
       <button mat-menu-item class="group-title" disabled>
         <span>{{ group.label }}</span>
-        <div class="divider"></div>
+        <span class="divider"></span>
       </button>
       @for (competition of group.competitions; track competition.id) {
       <button
@@ -106,31 +115,52 @@ const EXTERNAL_MODULES = [
   `,
 })
 export class FilterButtonComponent {
-  groups = SELECT_COMPETITION_DATA;
-  standingsStore = inject(FilteredStandingsStore);
-  selectedDateService = inject(SelectedDateService);
-  filterService = inject(FilterService);
-  selectedCompetition = this.filterService.selectedCompetition;
+  private readonly facade = inject(WeekdayFixturesStore);
+  private readonly standingsStore = inject(FilteredStandingsStore);
+  private readonly selectedDateService = inject(SelectedDateService);
+  private readonly filterService = inject(FilterService);
+  readonly selectedCompetition = this.filterService.selectedCompetition;
 
-  isSameId = (id: CompetitionId) => this.selectedCompetition() === id;
+  readonly filteredGroups = computed<Array<SelectCompetitionGroup>>(() => {
+    const selectedDate = this.selectedDateService.selectedDay();
+    const fixtures = this.facade
+      .weekFixtures()
+      .flat()
+      .filter((f) => f.fixture.date.substring(0, 10) === selectedDate);
 
-  setFilter(id: CompetitionId) {
-    const isSameId = this.isSameId(id);
-    this.selectedCompetition.set(isSameId ? null : id);
-    if (isSameId) {
-      this.standingsStore.reset();
-    }
-  }
+    const selectableCompetitions = new Set(fixtures.map((f) => f.league.id));
+    const filteredCompetitions = SELECT_COMPETITION_DATA.map((group) => ({
+      ...group,
+      competitions: group.competitions.filter((competition) =>
+        selectableCompetitions.has(competition.id)
+      ),
+    }));
+
+    return filteredCompetitions.filter(
+      (group) => group.competitions.length > 0
+    );
+  });
+
+  readonly hasFilterOptions = computed(() => this.filteredGroups().length > 0);
 
   filterEffect = effect(() => {
     const id = this.selectedCompetition();
-    if (id) this.updateStanding(id);
-  });
-
-  updateStanding(id: CompetitionId): void {
+    if (!id) return;
     const date = this.selectedDateService.selectedDay();
     this.standingsStore.loadFilteredStandings(date, id).then(() => {
       this.selectedCompetition.set(id);
     });
+  });
+
+  isSameId = (id: CompetitionId) => this.selectedCompetition() === id;
+
+  setFilter(id: CompetitionId): void {
+    if (this.selectedCompetition() === id) {
+      this.selectedCompetition.set(null);
+      this.standingsStore.reset();
+      return;
+    }
+
+    this.selectedCompetition.set(id);
   }
 }
