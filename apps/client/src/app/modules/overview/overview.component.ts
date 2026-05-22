@@ -16,6 +16,9 @@ import { STORE_PROVIDERS } from './store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
+  styles: `
+    :host ::ng-deep h2 { margin-left: 1rem; }
+  `,
   template: `
     <nav
       aria-label="Date-Bar Navigation"
