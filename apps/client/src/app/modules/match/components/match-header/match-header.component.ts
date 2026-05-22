@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   HostBinding,
   inject,
   input,
@@ -15,6 +16,7 @@ import { debounce, fromEvent, timer } from 'rxjs';
 import { FixtureDTO, FixtureHighlights } from '@lib/models';
 
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
+import { VENUE_IDS } from './venue-ids.data';
 
 @Component({
   selector: 'section[rs-match-header]',
@@ -58,9 +60,33 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
       &.is-hidden { grid-template-rows: 0fr; }
       .match-highlights { overflow: hidden; }
     }
+
+    .wrapper { position: relative; }
+    .background-wrapper {
+      z-index: 1;
+      opacity: 0;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 300ms ease-in-out;
+
+      &--loaded {
+        opacity: 0.3;
+      }
+    }
   `,
   template: `
     <div class="wrapper">
+      <div
+        class="background-wrapper"
+        [class.background-wrapper--loaded]="venueBackgroundLoaded()"
+        [style.background-image]="venueBackgroundImage()"
+      ></div>
       <rs-match-header-data [data]="data()" />
       @if (highlights() && isNotGoalLess()) {
       <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
@@ -80,18 +106,42 @@ import { HeaderDataComponent, HeaderDetailsComponent } from './components';
   `,
 })
 export class MatchHeaderComponent implements OnInit {
-  data = input.required<FixtureDTO | undefined>();
-  highlights = input.required<FixtureHighlights | undefined>();
+  readonly data = input.required<FixtureDTO | undefined>();
+  readonly highlights = input.required<FixtureHighlights | undefined>();
 
-  ngZone = inject(NgZone);
-  isScrolled = signal<boolean>(false);
-  scrollEvent$ = fromEvent(window, 'scroll').pipe(
+  readonly isScrolled = signal<boolean>(false);
+
+  private readonly ngZone = inject(NgZone);
+  private readonly scrollEvent$ = fromEvent(window, 'scroll').pipe(
     takeUntilDestroyed(),
     debounce(() => timer(this.isScrolled() ? 10 : 0))
   );
 
   @HostBinding('class.is-scrolled')
   isScrolledBinding = this.isScrolled();
+
+  readonly venueBackgroundLoaded = signal<boolean>(false);
+  readonly venueIdBackground = computed<string | undefined>(() => {
+    const fixture = this.data();
+    if (!fixture) return undefined;
+    const venueId = VENUE_IDS[fixture.teams.home.id] ?? 20733;
+    return `https://media.api-sports.io/football/venues/${venueId}.png`;
+  });
+
+  readonly venueBackgroundImage = computed<string | undefined>(() => {
+    const imageUrl = this.venueIdBackground();
+    return imageUrl ? `url("${imageUrl}")` : undefined;
+  });
+
+  venueEffect = effect(() => {
+    const imageUrl = this.venueIdBackground();
+    this.venueBackgroundLoaded.set(false);
+    if (!imageUrl) return;
+    const img = new Image();
+    img.onload = () => this.venueBackgroundLoaded.set(true);
+    img.onerror = () => this.venueBackgroundLoaded.set(true);
+    img.src = imageUrl;
+  });
 
   ngOnInit() {
     this.ngZone.runOutsideAngular(() => {
