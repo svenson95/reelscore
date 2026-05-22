@@ -63,13 +63,8 @@ import { VENUE_IDS } from './venue-ids.data';
 
     .wrapper { position: relative; }
     .background-wrapper {
-      z-index: 1;
-      opacity: 0;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      width: 100%;
-      height: 100%;
+      @apply bg-center opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
+
       position: absolute;
       top: 0;
       left: 0;
