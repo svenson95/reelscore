@@ -36,9 +36,8 @@ module.exports = {
         'rs-font-size-small': 'var(--rs-font-size-small)',
       },
       spacing: {
-        'rs-padding-1': 'var(--rs-padding-1)',
-        'rs-padding-2': 'var(--rs-padding-2)',
-        'rs-padding-3': 'var(--rs-padding-3)',
+        rs1: 'var(--rs-box-spacing-1)',
+        rs2: 'var(--rs-box-spacing-2)',
       },
       maxWidth: {
         'rs-max-width': 'var(--rs-size-max-width)',

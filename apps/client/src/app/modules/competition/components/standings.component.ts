@@ -15,9 +15,9 @@ import { CompetitionStandingsStore } from '../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent],
   styles: `
-    :host { @apply gap-5; }
+    :host { @apply gap-rs2; }
     .home-and-away-standings {
-      @apply flex gap-5 flex-col md:flex-row;
+      @apply flex gap-rs2 flex-col md:flex-row;
 
       rs-standings-table { @apply flex-1; }
     }

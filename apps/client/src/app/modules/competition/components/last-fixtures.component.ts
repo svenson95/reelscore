@@ -20,7 +20,7 @@ import { FixturesListComponent } from './fixtures-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, FixturesListComponent],
   styles: `
-    :host { @apply gap-5 overflow-hidden; }
+    :host { @apply gap-rs2 overflow-hidden; }
   `,
   template: `
     @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
