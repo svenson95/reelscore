@@ -68,7 +68,7 @@ const ALLIANZ_ARENA_ID = 20732;
       & > *:not(.background-wrapper) { z-index: 3; }
     }
     .background-wrapper {
-      @apply bg-center opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
+      @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
 
       position: absolute;
       top: 0;

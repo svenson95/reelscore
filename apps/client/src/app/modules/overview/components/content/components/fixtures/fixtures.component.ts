@@ -32,8 +32,7 @@ import { OverviewFixturesFacade } from './fixtures.facade';
     <p class="no-data">
       @if (isLoading()) { Spiele werden geladen ... } @else { @if (error()) {
       Fehler beim Laden der Spiele. } @else if (fixtures.length === 0) { Es
-      finden keine Spiele statt. } @else if (comps.length === 0) { Keine Spiele
-      für diesen Wettbewerb gefunden. } }
+      finden keine Spiele statt. } }
     </p>
     }
   `,
