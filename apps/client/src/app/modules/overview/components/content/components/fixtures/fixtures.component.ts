@@ -21,6 +21,7 @@ import { OverviewFixturesFacade } from './fixtures.facade';
     :host { @apply flex flex-col gap-rs1; }
   `,
   template: `
+    <h2>Partien</h2>
     @let comps = competitions(); @let fixtures = filteredFixtures(); @if (comps
     && comps.length > 0) { @for (competition of comps; track competition.name) {
     <rs-start-match-day-list

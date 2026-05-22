@@ -55,6 +55,11 @@ body {
   font-family: var(--rs-font-family);
 }
 
+h2 {
+  line-height: 40px;
+  margin-left: 1rem;
+}
+
 rs-standings-table .mat-mdc-table .mat-mdc-row .rank-column,
 rs-standings-table .mat-mdc-table .mat-mdc-row .number-column,
 rs-result-label span,
