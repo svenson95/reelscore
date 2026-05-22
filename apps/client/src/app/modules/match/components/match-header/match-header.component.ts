@@ -18,6 +18,8 @@ import { FixtureDTO, FixtureHighlights } from '@lib/models';
 import { HeaderDataComponent, HeaderDetailsComponent } from './components';
 import { VENUE_IDS } from './venue-ids.data';
 
+const ALLIANZ_ARENA_ID = 20732;
+
 @Component({
   selector: 'section[rs-match-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -68,7 +70,7 @@ import { VENUE_IDS } from './venue-ids.data';
       position: absolute;
       top: 0;
       left: 0;
-      transition: opacity 200ms ease-in-out;
+      transition: opacity 150ms ease-in-out;
 
       &--loaded {
         opacity: 0.3;
@@ -79,7 +81,9 @@ import { VENUE_IDS } from './venue-ids.data';
     <div class="wrapper">
       <div
         class="background-wrapper"
-        [class.background-wrapper--loaded]="venueBackgroundLoaded()"
+        [class.background-wrapper--loaded]="
+          venueBackgroundLoaded() && hasValidVenueBackground()
+        "
         [style.background-image]="venueBackgroundImage()"
       ></div>
       <rs-match-header-data [data]="data()" />
@@ -115,27 +119,65 @@ export class MatchHeaderComponent implements OnInit {
   @HostBinding('class.is-scrolled')
   isScrolledBinding = this.isScrolled();
 
+  private activeVenueImageUrl = signal<string | undefined>(undefined);
+  readonly hasValidVenueBackground = signal<boolean>(false);
   readonly venueBackgroundLoaded = signal<boolean>(false);
-  readonly venueIdBackground = computed<string | undefined>(() => {
+
+  readonly venueImageUrl = computed(() => {
     const fixture = this.data();
     if (!fixture) return undefined;
-    const venueId = VENUE_IDS[fixture.teams.home.id] ?? 20733;
+    const venueId = VENUE_IDS[fixture.teams.home.id] ?? ALLIANZ_ARENA_ID;
     return `https://media.api-sports.io/football/venues/${venueId}.png`;
   });
 
-  readonly venueBackgroundImage = computed<string | undefined>(() => {
-    const imageUrl = this.venueIdBackground();
-    return imageUrl ? `url("${imageUrl}")` : undefined;
+  readonly venueBackgroundImage = computed(() => {
+    const imageUrl = this.activeVenueImageUrl();
+    if (!imageUrl || !this.hasValidVenueBackground()) return undefined;
+    return `url("${imageUrl}")`;
   });
 
-  venueEffect = effect(() => {
-    const imageUrl = this.venueIdBackground();
+  private getVenueImageUrl(venueId: number): string {
+    return `https://media.api-sports.io/football/venues/${venueId}.png`;
+  }
+
+  private preloadVenueImage(imageUrl: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const img = new Image();
+
+      img.onload = () => {
+        const isPlaceholder =
+          img.naturalWidth <= 200 || img.naturalHeight <= 200;
+        resolve(!isPlaceholder);
+      };
+      img.onerror = () => {
+        resolve(false);
+      };
+
+      img.src = imageUrl;
+    });
+  }
+
+  venueEffect = effect(async () => {
+    const imageUrl = this.venueImageUrl();
     this.venueBackgroundLoaded.set(false);
+    this.hasValidVenueBackground.set(false);
+    this.activeVenueImageUrl.set(undefined);
     if (!imageUrl) return;
-    const img = new Image();
-    img.onload = () => this.venueBackgroundLoaded.set(true);
-    img.onerror = () => this.venueBackgroundLoaded.set(true);
-    img.src = imageUrl;
+
+    const isValidImage = await this.preloadVenueImage(imageUrl);
+    if (isValidImage) {
+      this.activeVenueImageUrl.set(imageUrl);
+      this.hasValidVenueBackground.set(true);
+      this.venueBackgroundLoaded.set(true);
+      return;
+    }
+
+    const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
+    const isValidFallbackImage = await this.preloadVenueImage(fallbackImageUrl);
+
+    this.activeVenueImageUrl.set(fallbackImageUrl);
+    this.hasValidVenueBackground.set(isValidFallbackImage);
+    this.venueBackgroundLoaded.set(true);
   });
 
   ngOnInit() {
