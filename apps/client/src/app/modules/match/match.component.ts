@@ -26,6 +26,7 @@ import { STORE_PROVIDERS } from './store';
   providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply gap-5; }
+    :host ::ng-deep h2 { text-align: center; }
   `,
   template: `
     @if (error()) {

@@ -15,7 +15,7 @@ import { AnalysesEvaluationsComponent } from './components';
     }
   `,
   template: `
-    <h3 class="match-section-title">LETZTE SPIELE</h3>
+    <h2>Letzte Partien</h2>
     @let f = fixtures(); @let t = teams();
     <div class="latest-fixtures">
       <div class="home">

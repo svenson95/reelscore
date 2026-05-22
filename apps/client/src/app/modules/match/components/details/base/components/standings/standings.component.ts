@@ -22,7 +22,7 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
     }
   `,
   template: `
-    <h3 class="match-section-title">TABELLEN</h3>
+    <h2>Tabellen</h2>
     <div class="standings-container">
       @let data = standings(); @if (data !== null) { @if (hasMultipleGroups()) {
       @for (multipleStanding of data.league.standings; track $index) {

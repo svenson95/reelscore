@@ -14,7 +14,7 @@ import { ToKebabCasePipe } from './pipes';
   styles: `
     :host { @apply flex flex-col; }
     .content {
-      @apply flex flex-col gap-10 w-fit my-5 mx-auto;
+      @apply flex flex-col gap-10 w-fit mt-2 mb-5 mx-auto;
       border-radius: var(--mat-standard-button-toggle-shape);
     }
     .content > .teams-form {
@@ -55,7 +55,7 @@ import { ToKebabCasePipe } from './pipes';
     }
   `,
   template: `
-    <h3 class="match-section-title">FORM</h3>
+    <h2>Aktuelle Form</h2>
     <div class="content">
       @let teams = evaluations()?.teams;
 
