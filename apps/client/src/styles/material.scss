@@ -1,48 +1,20 @@
 @use '@angular/material' as mat;
 
 :root {
-  // Global / shared
-  --mat-standard-button-toggle-shape: var(--rs-size-border-radius);
-
-  // mat-button
-  --mdc-text-button-disabled-label-text-color: var(--rs-color-text-1);
-  --mdc-outlined-button-container-shape: var(--rs-size-border-radius);
-  --mat-outlined-button-pressed-state-layer-opacity: 0;
-  --mat-outlined-button-hover-state-layer-opacity: 0;
-  --mat-outlined-button-focus-state-layer-opacity: 0;
-  --mdc-text-button-container-shape: var(--rs-size-border-radius);
-  --mat-text-button-horizontal-padding: 14px;
-  --mat-text-button-with-icon-horizontal-padding: 14px;
-  --mdc-text-button-label-text-color: var(--rs-button-text-color);
-  --mdc-icon-button-icon-color: var(--rs-color-primary);
-  --mdc-outlined-button-label-text-color: var(--rs-button-text-color);
-  --mdc-filled-button-container-color: var(--rs-button-bg-color);
-  --mat-filled-button-horizontal-padding: 1rem;
-  --mdc-outlined-button-disabled-outline-color: var(--rs-button-border-color);
-
-  @include mat.datepicker-overrides(
+  @include mat.icon-overrides(
     (
-      calendar-container-shape: var(--rs-size-border-radius),
-      calendar-container-elevation-shadow: var(--rs-size-box-shadow),
-      calendar-container-background-color: var(--rs-color-white),
-      calendar-date-disabled-state-text-color: var(--rs-color-text-2),
-      calendar-period-button-text-color: var(--rs-color-text-1),
-      calendar-navigation-button-icon-color: var(--rs-color-text-1),
-    )
-  );
-
-  @include mat.menu-overrides(
-    (
-      container-shape: var(--rs-size-border-radius),
-      container-elevation-shadow: var(--rs-size-box-shadow),
+      color: var(--rs-color-primary),
     )
   );
 
   @include mat.button-overrides(
     (
+      container-shape: var(--rs-size-border-radius),
       filled-container-shape: var(--rs-size-border-radius),
+      filled-container-color: var(--rs-button-bg-color),
       filled-state-layer-color: var(--rs-color-ripple),
       filled-ripple-color: var(--rs-color-ripple),
+      filled-horizontal-padding: 1rem,
     )
   );
 
@@ -50,11 +22,31 @@
     (
       state-layer-color: var(--rs-color-ripple),
       background-color: var(--rs-button-bg-color),
+      shape: var(--rs-size-border-radius),
+    )
+  );
+
+  @include mat.ripple-overrides(
+    (
+      color: var(--rs-color-ripple),
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      filled-label-text-color: var(--rs-color-text-2),
+      filled-hover-label-text-color: var(--fb-color-black),
+      filled-focus-label-text-color: var(--fb-color-black),
+      filled-container-color: var(--rs-button-bg-color),
+      state-layer-color: var(--rs-color-ripple),
+      focus-state-layer-opacity: 1,
     )
   );
 
   @include mat.menu-overrides(
     (
+      container-shape: var(--rs-size-border-radius),
+      container-elevation-shadow: var(--rs-size-box-shadow),
       container-color: var(--rs-color-white),
       item-leading-spacing: 16px,
       item-trailing-spacing: 16px,
@@ -70,39 +62,16 @@
     )
   );
 
-  @include mat.form-field-overrides(
+  @include mat.datepicker-overrides(
     (
-      filled-label-text-color: var(--rs-color-text-2),
-      filled-hover-label-text-color: var(--fb-color-black),
-      filled-focus-label-text-color: var(--fb-color-black),
-      filled-container-color: var(--rs-button-bg-color),
-      state-layer-color: var(--rs-color-ripple),
-      focus-state-layer-opacity: 1,
+      calendar-container-shape: var(--rs-size-border-radius),
+      calendar-container-elevation-shadow: var(--rs-size-box-shadow),
+      calendar-container-background-color: var(--rs-color-white),
+      calendar-date-disabled-state-text-color: var(--rs-color-text-2),
+      calendar-period-button-text-color: var(--rs-color-primary),
+      calendar-navigation-button-icon-color: var(--rs-color-primary),
     )
   );
-
-  @include mat.ripple-overrides(
-    (
-      color: var(--rs-color-ripple),
-    )
-  );
-}
-
-// mat-button-toggle
-mat-button-toggle {
-  border-radius: var(--rs-size-border-radius);
-  --mat-standard-button-toggle-text-color: var(--rs-color-orange);
-
-  .mat-button-toggle-label-content {
-    z-index: 10;
-  }
-  .mat-ripple.mat-button-toggle-ripple {
-    z-index: 5;
-  }
-
-  &.mat-button-toggle + mat-button-toggle.mat-button-toggle {
-    margin-left: 1px;
-  }
 }
 
 // mat-button
@@ -143,43 +112,19 @@ button {
   }
 }
 
-// mat-datepicker
-.mat-datepicker-content {
-  touch-action: pan-x pan-y;
-  border: 1px solid var(--rs-button-border-color);
+// mat-button-toggle
+mat-button-toggle {
+  border-radius: var(--rs-size-border-radius);
 
-  mat-calendar.mat-calendar {
-    height: 368px;
-
-    --mat-text-button-state-layer-color: var(--rs-color-ripple);
-    --mat-text-button-ripple-color: var(--rs-color-ripple);
+  .mat-button-toggle-label-content {
+    z-index: 10;
+  }
+  .mat-ripple.mat-button-toggle-ripple {
+    z-index: 5;
   }
 
-  .mat-calendar-header {
-    padding: 8px 1rem 0 1rem;
-  }
-
-  mat-multi-year-view {
-    .mat-calendar-table {
-      margin-top: -1rem;
-    }
-  }
-
-  .mat-calendar-controls {
-    margin: 0.5rem 0 2rem;
-
-    button.mdc-button {
-      --mat-outlined-button-horizontal-padding: 0;
-
-      svg {
-        z-index: 1;
-        position: relative;
-      }
-    }
-
-    .mat-calendar-period-button {
-      margin-left: 0;
-    }
+  &.mat-button-toggle + mat-button-toggle.mat-button-toggle {
+    margin-left: 1px;
   }
 }
 
@@ -242,10 +187,54 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
         opacity: 1;
       }
 
+      &.mat-mdc-tab-disabled .mdc-tab__text-label {
+        color: var(--rs-color-text-2);
+      }
+
       &.mdc-tab--active,
       .mdc-tab__content {
         pointer-events: none;
       }
+    }
+  }
+}
+
+// mat-datepicker
+.mat-datepicker-content {
+  touch-action: pan-x pan-y;
+  border: 1px solid var(--rs-button-border-color);
+
+  mat-calendar.mat-calendar {
+    height: 368px;
+
+    --mat-text-button-state-layer-color: var(--rs-color-ripple);
+    --mat-text-button-ripple-color: var(--rs-color-ripple);
+  }
+
+  .mat-calendar-header {
+    padding: 8px 1rem 0 1rem;
+  }
+
+  mat-multi-year-view {
+    .mat-calendar-table {
+      margin-top: -1rem;
+    }
+  }
+
+  .mat-calendar-controls {
+    margin: 0.5rem 0 2rem;
+
+    button.mdc-button {
+      --mat-outlined-button-horizontal-padding: 0;
+
+      svg {
+        z-index: 1;
+        position: relative;
+      }
+    }
+
+    .mat-calendar-period-button {
+      margin-left: 0;
     }
   }
 }
