@@ -28,6 +28,7 @@ const ALLIANZ_ARENA_ID = 20732;
     :host {
       @apply px-3 sticky top-0 z-10;
       margin-top: -1.25rem;
+      text-shadow: 0 0 4px var(--rs-color-text-3);
 
       &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
@@ -76,7 +77,7 @@ const ALLIANZ_ARENA_ID = 20732;
       transition: opacity 150ms ease-in-out;
 
       &--loaded {
-        opacity: 0.4;
+        opacity: 0.3;
       }
     }
   `,

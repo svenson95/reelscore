@@ -23,7 +23,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
-    :host { @apply flex w-full [text-shadow:0_0_4px_var(--rs-color-text-3)]; }
+    :host { @apply flex w-full; }
     div { @apply flex flex-1 sm:text-rs-font-size-body-1; }
     .team-column { @apply flex-col gap-2 text-rs-font-size-body-2; }
     .result-column { @apply relative items-center justify-center gap-1 text-rs-font-size-body-1; }
