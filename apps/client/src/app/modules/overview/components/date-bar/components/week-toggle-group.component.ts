@@ -47,7 +47,7 @@ const EXTERNAL_MODULES = [
         (
           height: 34px,
           label-text-size: var(--rs-font-size-body-2),
-          text-color: var(--rs-color-text-3),
+          text-color: var(--rs-color-primary),
           selected-state-text-color: var(--rs-color-text-3),
           disabled-state-text-color: var(--rs-color-text-2),
           disabled-selected-state-text-color: var(--rs-color-text-3),
@@ -61,7 +61,6 @@ const EXTERNAL_MODULES = [
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;
         border: 1px solid var(--rs-button-border-color);
-        --mat-standard-button-toggle-divider-color: var(--mat-sys-surface);
 
         &.is-today ::ng-deep .mat-button-toggle-label-content {
           @apply underline decoration-solid;
