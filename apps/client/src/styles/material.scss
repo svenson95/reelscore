@@ -1,20 +1,26 @@
 @use '@angular/material' as mat;
 
 :root {
-  @include mat.icon-overrides(
-    (
-      color: var(--rs-color-primary),
-    )
-  );
-
   @include mat.button-overrides(
     (
-      container-shape: var(--rs-size-border-radius),
+      text-container-shape: 0,
+      text-hover-state-layer-opacity: var(--rs-button-hover-opacity),
+      outlined-container-shape: var(--rs-size-border-radius),
       filled-container-shape: var(--rs-size-border-radius),
       filled-container-color: var(--rs-button-bg-color),
       filled-state-layer-color: var(--rs-color-ripple),
       filled-ripple-color: var(--rs-color-ripple),
       filled-horizontal-padding: 1rem,
+      filled-hover-state-layer-opacity: var(--rs-button-hover-opacity),
+      filled-focus-state-layer-opacity: var(--rs-button-hover-opacity),
+    )
+  );
+
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--rs-color-primary),
+      hover-state-layer-opacity: var(--rs-button-hover-opacity),
+      state-layer-color: var(--rs-color-ripple),
     )
   );
 
@@ -23,6 +29,7 @@
       state-layer-color: var(--rs-color-ripple),
       background-color: var(--rs-button-bg-color),
       shape: var(--rs-size-border-radius),
+      hover-state-layer-opacity: var(--rs-button-hover-opacity),
     )
   );
 
@@ -39,7 +46,8 @@
       filled-focus-label-text-color: var(--fb-color-black),
       filled-container-color: var(--rs-button-bg-color),
       state-layer-color: var(--rs-color-ripple),
-      focus-state-layer-opacity: 1,
+      focus-state-layer-opacity: var(--rs-button-hover-opacity),
+      hover-state-layer-opacity: var(--rs-button-hover-opacity),
     )
   );
 
@@ -59,6 +67,17 @@
       panel-background-color: var(--rs-color-white),
       enabled-trigger-text-color: var(--rs-color-text-1),
       container-elevation-shadow: var(--rs-size-box-shadow),
+    )
+  );
+
+  @include mat.tabs-overrides(
+    (
+      divider-height: 0,
+      inactive-ripple-color: var(--rs-color-ripple),
+      active-ripple-color: var(--rs-color-ripple),
+      active-label-text-color: var(--rs-color-text-1),
+      inactive-label-text-color: var(--rs-color-primary),
+      label-text-size: var(--rs-font-size-body-2),
     )
   );
 
@@ -164,27 +183,12 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 // mat-tabs
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  --mat-tab-header-divider-height: 0;
-  --mat-tab-header-inactive-ripple-color: var(--rs-color-ripple);
-  --mat-tab-header-inactive-label-text-color: var(--rs-color-primary);
-  --mat-tab-header-inactive-hover-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-inactive-focus-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-ripple-color: var(--rs-color-ripple);
-  --mat-tab-header-active-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-focus-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-hover-label-text-color: var(--rs-color-text-1);
-  --mat-tab-header-active-focus-indicator-color: var(--rs-color-orange);
-  --mat-tab-header-active-hover-indicator-color: var(--rs-color-text-3);
-  --mdc-tab-indicator-active-indicator-color: var(--rs-color-orange);
-
   .mat-mdc-tab-header {
-    --mat-tab-header-label-text-size: var(--rs-font-size-body-2);
-
     .mat-mdc-tab {
       @apply min-w-[50px] px-1;
 
       &:hover .mdc-tab__ripple::before {
-        opacity: 1;
+        opacity: var(--rs-button-hover-opacity);
       }
 
       &.mat-mdc-tab-disabled .mdc-tab__text-label {
@@ -225,8 +229,6 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     margin: 0.5rem 0 2rem;
 
     button.mdc-button {
-      --mat-outlined-button-horizontal-padding: 0;
-
       svg {
         z-index: 1;
         position: relative;
@@ -242,19 +244,17 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 // shared transitions
 .mat-mdc-button-persistent-ripple::before,
 .mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
-.mat-mdc-tab .mdc-tab__ripple::before {
+.mat-mdc-tab .mdc-tab__ripple::before,
+.mat-mdc-form-field:hover
+  .mat-mdc-text-field-wrapper
+  .mat-mdc-form-field-focus-overlay {
   transition: opacity var(--rs-button-transition);
 }
 
 .mat-button-toggle-appearance-standard:hover .mat-button-toggle-focus-overlay,
-.mat-mdc-tab:hover .mdc-tab__ripple::before {
+.mat-mdc-tab:hover .mdc-tab__ripple::before,
+.mat-mdc-form-field
+  .mat-mdc-text-field-wrapper
+  .mat-mdc-form-field-focus-overlay {
   transition: opacity var(--rs-button-transition);
-}
-
-.mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  transition: background-color var(--rs-button-transition);
-}
-
-.mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
-  transition: background-color var(--rs-button-transition);
 }
