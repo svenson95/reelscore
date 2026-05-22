@@ -9,19 +9,14 @@ import {
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
+import { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
 import {
-  ExtendedFixtureDTO,
-  FixtureEvaluations,
-  FixtureTeam,
-} from '@lib/models';
+  ANALYSES_TEAM,
+  AnalysesTeamType,
+  FixtureWithEvaluations,
+} from '../../models';
 
 import { AnalysesEvaluationComponent } from './components';
-import {
-  AnalysesTeam,
-  AnalysesTeamType,
-  ExtendedEvaluationAnalyses,
-  FixtureWithEvaluations,
-} from './models';
 
 const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
 
@@ -88,7 +83,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
   `,
   template: `
     <mat-accordion>
-      @for (fixture of fixturesWithEvaluations(); track $index) {
+      @for (fixture of fixtures(); track $index) {
       <mat-expansion-panel>
         <mat-expansion-panel-header class="fixture-expansion-header">
           <mat-panel-title>
@@ -140,7 +135,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
           <rs-match-fixture-analyses-evaluation
             class="evaluation"
             [analyzedElement]="evaluation"
-            [class.is-away]="evaluation.team === AnalysesTeam.AWAY"
+            [class.is-away]="evaluation.team === ANALYSES_TEAM.AWAY"
             [class.is-related-team]="isRelatedTeam()(fixture, evaluation.team)"
           />
           }
@@ -151,57 +146,13 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
   `,
 })
 export class AnalysesEvaluationsComponent {
-  readonly AnalysesTeam = AnalysesTeam;
+  readonly ANALYSES_TEAM = ANALYSES_TEAM;
 
-  fixtures = input.required<ExtendedFixtureDTO[] | undefined>();
-  relatedTeam = input.required<FixtureTeam>();
+  readonly fixtures = input.required<FixtureWithEvaluations[]>();
+  readonly relatedTeam = input.required<FixtureTeam>();
 
-  isRelatedTeam = computed(
+  readonly isRelatedTeam = computed(
     () => (fixture: ExtendedFixtureDTO, team: AnalysesTeamType) =>
       fixture.teams[team].id === untracked(this.relatedTeam).id
   );
-
-  fixturesWithEvaluations = computed<FixtureWithEvaluations[]>(() => {
-    const fixtures = this.fixtures() || [];
-
-    const fixturesWithAnalyses = (f: ExtendedFixtureDTO): boolean => {
-      const home = f.evaluations?.home.analyses;
-      const away = f.evaluations?.away.analyses;
-      if (!home || !away) return false;
-      return home.length > 0 || away.length > 0;
-    };
-    const fixturesWithFlatEvaluations = (
-      f: ExtendedFixtureDTO
-    ): FixtureWithEvaluations => ({
-      ...f,
-      flatEvaluations: f.evaluations
-        ? this.analysesWithTeam(f.evaluations)
-        : [],
-    });
-
-    return fixtures
-      .filter(fixturesWithAnalyses)
-      .map(fixturesWithFlatEvaluations);
-  });
-
-  private analysesWithTeam = (
-    evaluations: FixtureEvaluations
-  ): ExtendedEvaluationAnalyses[] => {
-    const home: ExtendedEvaluationAnalyses[] = evaluations.home.analyses.map(
-      (a) => ({
-        ...a,
-        team: AnalysesTeam.HOME,
-      })
-    );
-    const away: ExtendedEvaluationAnalyses[] = evaluations.away.analyses.map(
-      (a) => ({
-        ...a,
-        team: AnalysesTeam.AWAY,
-      })
-    );
-    return [...home, ...away].sort((a, b) => {
-      if (a.minute === null || b.minute === null) return 0;
-      return a.minute - b.minute;
-    });
-  };
 }
