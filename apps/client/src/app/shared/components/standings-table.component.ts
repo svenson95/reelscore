@@ -6,7 +6,6 @@ import {
   input,
   Pipe,
   PipeTransform,
-  untracked,
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -36,6 +35,17 @@ export class HasMultipleGroupsPipe implements PipeTransform {
     return isCompetitionWithMultipleGroups(id);
   }
 }
+
+const DISPLAYED_COLUMNS: string[] = [
+  'rank',
+  'team',
+  'played',
+  'win',
+  'draw',
+  'lost',
+  'goalDifference',
+  'points',
+] as const;
 
 @Component({
   selector: 'rs-standings-table',
@@ -107,7 +117,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
             @defer (on viewport) {
             <rs-optimized-image
               [source]="competitionLogo()"
-              altText="league logo"
+              altText=""
               width="24"
               height="24"
             />
@@ -123,7 +133,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
-          <a [routerLink]="competitionRouterLink(league().id)">
+          <a [routerLink]="competitionLink()">
             @if (league().id | hasMultipleGroups) {
             {{ roundLabel() }}
             } @else if (header()) {
@@ -139,7 +149,7 @@ export class HasMultipleGroupsPipe implements PipeTransform {
               @defer (on viewport) {
               <rs-optimized-image
                 [source]="element.team.id | getTeamLogo"
-                altText="team logo"
+                altText=""
                 width="14"
                 height="14"
               />
@@ -184,11 +194,11 @@ export class HasMultipleGroupsPipe implements PipeTransform {
       <ng-container matColumnDef="goalDifference">
         <th mat-header-cell *matHeaderCellDef class="number-column">TD</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          @switch(header()) { @case ('Heimtabelle') {
+          @switch(type()) { @case ('home') {
           {{ element.home.goals.for - element.home.goals.against }}
-          } @case ('Auswärtstabelle') {
+          } @case ('away') {
           {{ element.away.goals.for - element.away.goals.against }}
-          } @case (undefined) {
+          } @default {
           {{ element.goalsDiff }}
           } }
         </td>
@@ -198,11 +208,11 @@ export class HasMultipleGroupsPipe implements PipeTransform {
       <ng-container matColumnDef="points">
         <th mat-header-cell *matHeaderCellDef class="points-column">Pkt</th>
         <td mat-cell *matCellDef="let element" class="points-column">
-          @switch(header()) { @case ('Heimtabelle') {
+          @switch(type()) { @case ('home') {
           {{ element.home.win * 3 + element.home.draw }}
-          } @case ('Auswärtstabelle') {
+          } @case ('away') {
           {{ element.away.win * 3 + element.away.draw }}
-          } @case (undefined) {
+          } @default {
           {{ element.points }}
           } }
         </td>
@@ -215,25 +225,14 @@ export class HasMultipleGroupsPipe implements PipeTransform {
   `,
 })
 export class StandingsTableComponent {
-  readonly DISPLAYED_COLUMNS: string[] = [
-    'rank',
-    'team',
-    'played',
-    'win',
-    'draw',
-    'lost',
-    'goalDifference',
-    'points',
-  ];
+  readonly ranks = input.required<StandingRanks[]>();
+  readonly league = input.required<League>();
+  readonly header = input<string>();
 
-  ranks = input.required<StandingRanks[]>();
-  league = input.required<League>();
-  header = input<string>();
+  private readonly breakpoint = inject(BreakpointObserverService);
+  readonly isMobile = this.breakpoint.isMobile;
 
-  breakpoint = inject(BreakpointObserverService);
-  isMobile = this.breakpoint.isMobile;
-
-  type = computed<'all' | 'home' | 'away'>(() => {
+  readonly type = computed<'all' | 'home' | 'away'>(() => {
     switch (this.header()) {
       case 'Heimtabelle':
         return 'home';
@@ -244,38 +243,46 @@ export class StandingsTableComponent {
     }
   });
 
-  competitionLogo = computed(() =>
-    getCompetitionLogo24(untracked(this.league).id)
+  readonly competitionLogo = computed(() =>
+    getCompetitionLogo24(this.league().id)
   );
-
-  columns = computed(() => {
-    const filtered = this.DISPLAYED_COLUMNS.filter(
-      (column) => column !== 'goalDifference'
-    );
-    return this.isMobile() ? filtered : this.DISPLAYED_COLUMNS;
+  readonly competitionLink = computed(() => {
+    const id = this.league().id;
+    const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
+    return competition ? ['/', 'competition', competition.url] : ['/'];
   });
 
-  roundLabel = computed(() => {
-    const round = this.ranks()[0].group;
+  readonly columns = computed(() => {
+    const filtered = DISPLAYED_COLUMNS.filter((c) => c !== 'goalDifference');
+    return this.isMobile() ? filtered : DISPLAYED_COLUMNS;
+  });
+
+  readonly roundLabel = computed(() => {
+    const firstRank = this.ranks()[0];
+
+    if (!firstRank?.group) {
+      return this.header() ?? this.league().name;
+    }
+
+    const round = firstRank.group;
     const isGroupCompetition = round.includes('Group');
     const isLeagueCompetition = round.includes('League');
 
     if (isLeagueCompetition && isGroupCompetition) {
       const [leaguePart, groupPart] = round.split(',');
-      const league = leaguePart.replace('League', 'Liga');
-      const group = groupPart.replace('Group', 'Gruppe');
+      const league = leaguePart.trim().replace('League', 'Liga');
+      const group = groupPart.trim().replace('Group', 'Gruppe');
       return `${league} ${group}`;
-    } else if (isGroupCompetition) {
-      return `${round.replace('Group', 'Gruppe')}`;
-    } else if (round === 'Ranking of third-placed teams') {
+    }
+
+    if (isGroupCompetition) {
+      return round.replace('Group', 'Gruppe');
+    }
+
+    if (round === 'Ranking of third-placed teams') {
       return 'Rangliste der Drittplatzierten';
     }
-    return `${round}`;
-  });
 
-  competitionRouterLink(id: CompetitionId): string[] {
-    const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
-    if (!competition) throw new Error(`Competition not found (${id})`);
-    return ['/', 'competition', competition.url];
-  }
+    return round;
+  });
 }
