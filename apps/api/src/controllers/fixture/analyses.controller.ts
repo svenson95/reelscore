@@ -136,9 +136,11 @@ export class FixtureAnalysesController {
     };
     const data = await this.standingsService.findByFilter(filter);
     const teamId = fixture.teams[type].id;
-    if (data.league.standings.length <= 1) return null;
-    const standings = data.league.standings[type === 'home' ? 1 : 2];
-    const team = standings.find((r) => r.team.id === teamId);
+    const standings = data?.league?.standings;
+    if ((standings && standings.length <= 1) || !standings) return null;
+    const teamData = standings[type === 'home' ? 1 : 2];
+    const team = teamData.find((r) => r.team.id === teamId);
+    if (!team) return null;
     return team.rank <= TEAM_IS_HOME_OR_AWAY_STRONG_RANK;
   }
 }

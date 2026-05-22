@@ -90,6 +90,8 @@ export class StandingsController {
       'league.season': getSeason(leagueId),
     };
     const standings = await this.standingsService.findByFilter(filter);
+    // TODO: check and refactor, sometimes standings.league is null
+    if (!standings) return [] as unknown as StandingsDTO;
 
     if (this.isCompetitionWithMultipleGroups(standings.league.id)) {
       standings.league.standings = [
