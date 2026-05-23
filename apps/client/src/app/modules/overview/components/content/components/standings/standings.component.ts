@@ -20,7 +20,7 @@ import { OverviewStandingsFacade } from './standings.facade';
     :host { @apply flex flex-col gap-rs1; }
   `,
   template: `
-    <h2>Top 5 aus Europa</h2>
+    <h2>Tabellen<span> @if (!isFiltering()) { Top 5 }</span></h2>
     @let filteredStandings = dayStandings(); @let ws = weekStandings(); @if
     (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for
     (multipleStanding of filteredStandings.league.standings; track $index) {
@@ -71,7 +71,7 @@ export class OverviewStandingsComponent {
 
   facade = inject(OverviewStandingsFacade);
   dayStandings = this.facade.dayStandings;
-  isFiltering = this.facade.isFilwtering;
+  isFiltering = this.facade.isFiltering;
   hasMultipleGroups = this.facade.hasMultipleGroups;
   showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
 

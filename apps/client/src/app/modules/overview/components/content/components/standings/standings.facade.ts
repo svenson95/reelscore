@@ -2,8 +2,8 @@ import { computed, inject, Injectable } from '@angular/core';
 
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
-import { FilteredStandingsStore } from '../../../../store';
 import { FilterService } from '../../../../services';
+import { FilteredStandingsStore } from '../../../../store';
 
 @Injectable()
 export class OverviewStandingsFacade {
@@ -11,7 +11,7 @@ export class OverviewStandingsFacade {
   dayStandings = this.standingsStore.standings;
 
   filterService = inject(FilterService);
-  isFilwtering = computed<boolean>(
+  isFiltering = computed<boolean>(
     () =>
       this.filterService.selectedCompetition() !== null &&
       this.dayStandings() !== null
