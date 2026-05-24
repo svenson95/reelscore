@@ -31,7 +31,12 @@ import { FilterButtonComponent } from './filter-button.component';
   `,
   template: `
     <rs-filter-button />
-    <button mat-icon-button aria-label="Search button" matTooltip="Suche">
+    <button
+      mat-icon-button
+      aria-label="Search button"
+      matTooltip="Suche"
+      disabled
+    >
       <mat-icon>search</mat-icon>
     </button>
   `,
