@@ -1,7 +1,9 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import moment from 'moment-timezone';
 
 import { DateString } from '@app/shared';
+
+import { FilterService } from './filter.service';
 
 export abstract class SelectedDateService {
   abstract selectedDay: Signal<DateString>;
@@ -10,9 +12,13 @@ export abstract class SelectedDateService {
 
 @Injectable()
 export class AbstractedSelectedDateService extends SelectedDateService {
-  private selectedDaySignal = signal<DateString>(this.initialDate);
-  selectedDay = this.selectedDaySignal.asReadonly();
+  private readonly filterService = inject(FilterService);
+
+  private readonly selectedDaySignal = signal<DateString>(this.initialDate);
+  readonly selectedDay = this.selectedDaySignal.asReadonly();
+
   setSelectedDay(day: DateString): void {
+    this.filterService.selectedCompetition.set(null);
     this.selectedDaySignal.set(day);
   }
 
