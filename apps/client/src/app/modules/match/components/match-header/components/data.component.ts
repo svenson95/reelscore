@@ -6,10 +6,11 @@ import {
 } from '@angular/core';
 
 import {
-  OptimizedImageComponent,
+  ResponsiveImageComponent,
   ResultLabelComponent,
   TeamNamePipe,
-  getTeamLogo,
+  getTeamLogo14,
+  getTeamLogoSrcSet,
 } from '@app/shared';
 import {
   FixtureDTO,
@@ -21,7 +22,7 @@ import {
 @Component({
   selector: 'rs-match-header-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, TeamNamePipe, ResultLabelComponent],
+  imports: [ResponsiveImageComponent, TeamNamePipe, ResultLabelComponent],
   styles: `
     :host { @apply flex w-full; }
     div { @apply flex flex-1 sm:text-rs-font-size-body-1; }
@@ -40,11 +41,12 @@ import {
     <div class="team-column">
       <div class="team-logo">
         @if (fixture) {
-        <rs-optimized-image
+        <rs-responsive-image
           [source]="homeLogo()"
+          [sourceSet]="homeLogoSet()"
           altText="home logo"
-          width="48"
-          height="48"
+          [width]="48"
+          [height]="48"
         />
         } @else {
         <div class="team-logo-placeholder"></div>
@@ -81,11 +83,12 @@ import {
     <div class="team-column">
       <div class="team-logo">
         @if (fixture) {
-        <rs-optimized-image
+        <rs-responsive-image
           [source]="awayLogo()"
+          [sourceSet]="awayLogoSet()"
           altText="away logo"
-          width="48"
-          height="48"
+          [width]="48"
+          [height]="48"
         />
         } @else {
         <div class="team-logo-placeholder"></div>
@@ -108,11 +111,19 @@ export class HeaderDataComponent {
 
   homeLogo = computed<string>(() => {
     const id = this.data()?.teams.home.id ?? 0;
-    return getTeamLogo(id);
+    return getTeamLogo14(id);
+  });
+  homeLogoSet = computed<string>(() => {
+    const id = this.data()?.teams.home.id ?? 0;
+    return getTeamLogoSrcSet(id);
   });
   awayLogo = computed<string>(() => {
     const id = this.data()?.teams.away.id ?? 0;
-    return getTeamLogo(id);
+    return getTeamLogo14(id);
+  });
+  awayLogoSet = computed<string>(() => {
+    const id = this.data()?.teams.away.id ?? 0;
+    return getTeamLogoSrcSet(id);
   });
 
   isScheduled = computed<boolean>(() => {

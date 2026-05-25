@@ -13,9 +13,9 @@ import { RouterModule } from '@angular/router';
 import { ExtendedFixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../../../../constants';
-import { getTeamLogo14 } from '../../../../models';
+import { getTeamLogo14, getTeamLogoSrcSet } from '../../../../models';
 import { IsStatusPipe, TeamNamePipe } from '../../../../pipes';
-import { OptimizedImageComponent } from '../../../optimized-image/optimized-image.component';
+import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 
 import { FixtureListItemFacade } from './fixture-list-item.facade';
@@ -27,7 +27,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...EXTERNAL_MODULES,
-    OptimizedImageComponent,
+    ResponsiveImageComponent,
     TeamNamePipe,
     IsStatusPipe,
     ResultLabelComponent,
@@ -85,11 +85,12 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
           </span>
           <div class="team-logo-small">
             @defer (on viewport) {
-            <rs-optimized-image
+            <rs-responsive-image
               [source]="homeLogo()"
+              [sourceSet]="homeLogoSrcSet()"
               altText="home logo"
-              width="14"
-              height="14"
+              [width]="14"
+              [height]="14"
             />
             } @placeholder {
             <div class="team-logo-small-placeholder"></div>
@@ -106,11 +107,12 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
         <div>
           <div class="team-logo-small">
             @defer (on viewport) {
-            <rs-optimized-image
+            <rs-responsive-image
               [source]="awayLogo()"
+              [sourceSet]="awayLogoSrcSet()"
               altText="away logo"
-              width="14"
-              height="14"
+              [width]="14"
+              [height]="14"
             />
             } @placeholder {
             <div class="team-logo-small-placeholder"></div>
@@ -143,8 +145,14 @@ export class FixtureListItemComponent {
   homeLogo = computed<string>(() =>
     getTeamLogo14(untracked(this.fixture).teams.home.id)
   );
+  homeLogoSrcSet = computed<string>(() =>
+    getTeamLogoSrcSet(untracked(this.fixture).teams.home.id)
+  );
   awayLogo = computed<string>(() =>
     getTeamLogo14(untracked(this.fixture).teams.away.id)
+  );
+  awayLogoSrcSet = computed<string>(() =>
+    getTeamLogoSrcSet(untracked(this.fixture).teams.away.id)
   );
   fixtureLink = computed<string[]>(() => linkToMatch(untracked(this.fixture)));
 }

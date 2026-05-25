@@ -18,34 +18,35 @@ export interface CompetitionWithFixtures extends Competition {
 
 const BASE = 'assets/images';
 
-const competitionCache: Record<CompetitionId, string> = {};
-export const getCompetitionLogo = (id: CompetitionId): string => {
-  if (!competitionCache[id]) {
-    competitionCache[id] = `${BASE}/league/${id}.png`;
+const cache: Record<string, string> = {};
+
+const getCachedImagePath = (key: string, path: string): string => {
+  if (!cache[key]) {
+    cache[key] = path;
   }
-  return competitionCache[id];
+
+  return cache[key];
 };
 
-const competitionCache24: Record<CompetitionId, string> = {};
-export const getCompetitionLogo24 = (id: CompetitionId): string => {
-  if (!competitionCache24[id]) {
-    competitionCache24[id] = `${BASE}/league-24x24/${id}.png`;
-  }
-  return competitionCache24[id];
-};
+export const getCompetitionLogo = (id: CompetitionId): string =>
+  getCachedImagePath(`competition-${id}`, `${BASE}/league/${id}.png`);
 
-const teamCache: Record<TeamId, string> = {};
-export const getTeamLogo = (id: number): string => {
-  if (!teamCache[id]) {
-    teamCache[id] = `${BASE}/team-logo/${id}.png`;
-  }
-  return teamCache[id];
-};
+export const getCompetitionLogo24 = (id: CompetitionId): string =>
+  getCachedImagePath(`competition-24-${id}`, `${BASE}/league-24x24/${id}.png`);
 
-const teamCache14: Record<TeamId, string> = {};
-export const getTeamLogo14 = (id: number): string => {
-  if (!teamCache14[id]) {
-    teamCache14[id] = `${BASE}/team-logo-14x14/${id}.png`;
-  }
-  return teamCache14[id];
-};
+const getTeamLogoByScale = (id: TeamId, scale: 1 | 2 | 3): string =>
+  getCachedImagePath(
+    `team-${id}@${scale}x`,
+    `${BASE}/team-logo-responsive/${id}@${scale}x.png`
+  );
+
+export const getTeamLogo14 = (id: TeamId): string => getTeamLogoByScale(id, 1);
+export const getTeamLogo28 = (id: TeamId): string => getTeamLogoByScale(id, 2);
+export const getTeamLogo42 = (id: TeamId): string => getTeamLogoByScale(id, 3);
+
+export const getTeamLogoSrcSet = (id: TeamId): string =>
+  [
+    `${getTeamLogo14(id)} 1x`,
+    `${getTeamLogo28(id)} 2x`,
+    `${getTeamLogo42(id)} 3x`,
+  ].join(', ');

@@ -8,7 +8,7 @@ import {
 
 import {
   FixtureListComponent,
-  OptimizedImageComponent,
+  ResponsiveImageComponent,
   RoundLabelPipe,
   getCompetitionLogo24,
 } from '@app/shared';
@@ -21,7 +21,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     DatePipe,
     FixtureListComponent,
     RoundLabelPipe,
-    OptimizedImageComponent,
+    ResponsiveImageComponent,
   ],
   styles: `
     :host { @apply flex flex-col shadow-rs2; border: 1px solid var(--rs-button-border-color); }
@@ -49,12 +49,12 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       <div class="logo-wrapper">
         <div class="competition-logo-small">
           @defer (on viewport) {
-          <rs-optimized-image
+          <rs-responsive-image
             class="competition-corner"
             [source]="competitionLogo()"
             altText="league logo"
-            width="24"
-            height="24"
+            [width]="24"
+            [height]="24"
           />
           } @placeholder {
           <div class="competition-logo-small-placeholder"></div>

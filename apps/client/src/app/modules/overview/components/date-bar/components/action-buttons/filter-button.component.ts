@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
-  OptimizedImageComponent,
+  ResponsiveImageComponent,
   SELECT_COMPETITION_DATA,
   SelectCompetitionGroup,
 } from '@app/shared';
@@ -33,7 +33,7 @@ const EXTERNAL_MODULES = [
 @Component({
   selector: 'rs-filter-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...EXTERNAL_MODULES, OptimizedImageComponent],
+  imports: [...EXTERNAL_MODULES, ResponsiveImageComponent],
   styles: `
     button[mat-icon-button].is-filtering {
       @apply bg-rs-color-orange;
@@ -98,12 +98,12 @@ const EXTERNAL_MODULES = [
         (click)="setFilter(competition.id)"
         [class.is-filtering]="isSameId(competition.id)"
       >
-        <rs-optimized-image
+        <rs-responsive-image
           class="competition-logo"
           [source]="competition.image"
           [altText]="competition.label"
-          width="14"
-          height="14"
+          [width]="14"
+          [height]="14"
         />
         <span>{{ competition.label }}</span>
         @if (isSameId(competition.id)) {
