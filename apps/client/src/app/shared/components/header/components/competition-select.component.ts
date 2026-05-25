@@ -8,9 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
+import { ResponsiveImageComponent } from '../../../components';
 import { SELECT_COMPETITION_DATA } from '../../../constants';
 import { CompetitionData, getCompetitionLogo24 } from '../../../models';
-import { OptimizedImageComponent } from '../../optimized-image/optimized-image.component';
 
 @Component({
   selector: 'nav[rs-competition-select]',
@@ -19,7 +19,7 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
     RouterModule,
     MatFormFieldModule,
     MatSelectModule,
-    OptimizedImageComponent,
+    ResponsiveImageComponent,
   ],
   styles: `
     :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
@@ -78,12 +78,12 @@ import { OptimizedImageComponent } from '../../optimized-image/optimized-image.c
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
             <a [routerLink]="['competition', c.url]">
-              <rs-optimized-image
+              <rs-responsive-image
                 class="competition-logo"
                 [source]="c.image"
                 [altText]="c.label"
-                width="14"
-                height="14"
+                [width]="14"
+                [height]="14"
               />
               <span>{{ c.label }}</span>
             </a>

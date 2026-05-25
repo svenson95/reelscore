@@ -8,14 +8,14 @@ import {
 import {
   BackButtonComponent,
   LeagueService,
-  OptimizedImageComponent,
+  ResponsiveImageComponent,
   getCompetitionLogo,
 } from '@app/shared';
 
 @Component({
   selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [OptimizedImageComponent, BackButtonComponent],
+  imports: [ResponsiveImageComponent, BackButtonComponent],
   styles: `
     :host { @apply relative; }
     rs-back-button { @apply absolute top-3 left-3 z-10; }
@@ -25,11 +25,11 @@ import {
   template: `
     <rs-back-button class="animate-drop-from-top" />
     <div class="image-wrapper">
-      <rs-optimized-image
+      <rs-responsive-image
         [source]="competitionLogo()"
         [altText]="label()"
-        width="64"
-        height="64"
+        [width]="64"
+        [height]="64"
       />
     </div>
   `,

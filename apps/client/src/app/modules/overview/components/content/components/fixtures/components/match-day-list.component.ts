@@ -12,7 +12,7 @@ import {
   FixtureListComponent,
   getCompetitionLogo24,
   NameLabelPipe,
-  OptimizedImageComponent,
+  ResponsiveImageComponent,
   RoundLabelPipe,
 } from '@app/shared';
 import { CompetitionRound } from '@lib/models';
@@ -26,7 +26,7 @@ const EXTERNAL_MODULES = [RouterLink];
     ...EXTERNAL_MODULES,
     RoundLabelPipe,
     NameLabelPipe,
-    OptimizedImageComponent,
+    ResponsiveImageComponent,
     FixtureListComponent,
   ],
   styles: `
@@ -56,12 +56,12 @@ const EXTERNAL_MODULES = [RouterLink];
     <div class="header">
       <div class="competition-logo-small">
         @defer (on viewport) {
-        <rs-optimized-image
+        <rs-responsive-image
           class="competition-corner"
           [source]="getCompetitionLogo()"
           altText="competition logo"
-          width="24"
-          height="24"
+          [width]="24"
+          [height]="24"
         />
         } @placeholder {
         <div class="competition-logo-small-placeholder"></div>

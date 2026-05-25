@@ -14,11 +14,15 @@ import { CompetitionId, League, StandingRanks } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
-import { getCompetitionLogo24, getTeamLogo14 } from '../models';
+import {
+  getCompetitionLogo24,
+  getTeamLogo14,
+  getTeamLogoSrcSet,
+} from '../models';
 import { TeamNamePipe } from '../pipes';
 import { BreakpointObserverService } from '../services';
 
-import { OptimizedImageComponent } from './optimized-image/optimized-image.component';
+import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';
 
 const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
 
@@ -26,6 +30,13 @@ const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
 export class GetTeamLogoPipe implements PipeTransform {
   transform(id: number): string {
     return getTeamLogo14(id);
+  }
+}
+
+@Pipe({ name: 'getTeamLogoSet' })
+export class GetTeamLogoSetPipe implements PipeTransform {
+  transform(id: number): string {
+    return getTeamLogoSrcSet(id);
   }
 }
 
@@ -52,9 +63,10 @@ const DISPLAYED_COLUMNS: string[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...EXTERNAL_IMPORTS,
-    OptimizedImageComponent,
+    ResponsiveImageComponent,
     TeamNamePipe,
     GetTeamLogoPipe,
+    GetTeamLogoSetPipe,
     HasMultipleGroupsPipe,
   ],
   styles: `
@@ -115,11 +127,11 @@ const DISPLAYED_COLUMNS: string[] = [
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo-small">
             @defer (on viewport) {
-            <rs-optimized-image
+            <rs-responsive-image
               [source]="competitionLogo()"
               altText=""
-              width="24"
-              height="24"
+              [width]="24"
+              [height]="24"
             />
             } @placeholder {
             <div class="competition-logo-small-placeholder"></div>
@@ -147,11 +159,12 @@ const DISPLAYED_COLUMNS: string[] = [
           <div class="name-wrapper">
             <div class="team-logo-small">
               @defer (on viewport) {
-              <rs-optimized-image
+              <rs-responsive-image
                 [source]="element.team.id | getTeamLogo"
+                [sourceSet]="element.team.id | getTeamLogoSet"
                 altText=""
-                width="14"
-                height="14"
+                [width]="14"
+                [height]="14"
               />
               } @placeholder {
               <div class="team-logo-small-placeholder"></div>
