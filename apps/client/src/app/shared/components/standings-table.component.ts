@@ -16,7 +16,7 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
 import {
   getCompetitionLogo24,
-  getTeamLogo14,
+  getTeamLogo,
   getTeamLogoSrcSet,
 } from '../models';
 import { TeamNamePipe } from '../pipes';
@@ -29,14 +29,14 @@ const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
 @Pipe({ name: 'getTeamLogo' })
 export class GetTeamLogoPipe implements PipeTransform {
   transform(id: number): string {
-    return getTeamLogo14(id);
+    return getTeamLogo(id, 14);
   }
 }
 
 @Pipe({ name: 'getTeamLogoSet' })
 export class GetTeamLogoSetPipe implements PipeTransform {
   transform(id: number): string {
-    return getTeamLogoSrcSet(id);
+    return getTeamLogoSrcSet(id, 14);
   }
 }
 

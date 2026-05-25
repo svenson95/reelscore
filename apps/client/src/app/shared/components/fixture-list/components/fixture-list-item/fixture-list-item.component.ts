@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 import { ExtendedFixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../../../../constants';
-import { getTeamLogo14, getTeamLogoSrcSet } from '../../../../models';
+import { getTeamLogo, getTeamLogoSrcSet } from '../../../../models';
 import { IsStatusPipe, TeamNamePipe } from '../../../../pipes';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
@@ -143,16 +143,16 @@ export class FixtureListItemComponent {
   );
 
   homeLogo = computed<string>(() =>
-    getTeamLogo14(untracked(this.fixture).teams.home.id)
+    getTeamLogo(untracked(this.fixture).teams.home.id, 14)
   );
   homeLogoSrcSet = computed<string>(() =>
-    getTeamLogoSrcSet(untracked(this.fixture).teams.home.id)
+    getTeamLogoSrcSet(untracked(this.fixture).teams.home.id, 14)
   );
   awayLogo = computed<string>(() =>
-    getTeamLogo14(untracked(this.fixture).teams.away.id)
+    getTeamLogo(untracked(this.fixture).teams.away.id, 14)
   );
   awayLogoSrcSet = computed<string>(() =>
-    getTeamLogoSrcSet(untracked(this.fixture).teams.away.id)
+    getTeamLogoSrcSet(untracked(this.fixture).teams.away.id, 14)
   );
   fixtureLink = computed<string[]>(() => linkToMatch(untracked(this.fixture)));
 }
