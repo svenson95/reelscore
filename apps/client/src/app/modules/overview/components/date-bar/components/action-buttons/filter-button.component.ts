@@ -101,6 +101,7 @@ const EXTERNAL_MODULES = [
         <rs-responsive-image
           class="competition-logo"
           [source]="competition.image"
+          [sourceSet]="competition.imageSet"
           [altText]="competition.label"
           [width]="14"
           [height]="14"

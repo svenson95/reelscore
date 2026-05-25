@@ -2,6 +2,7 @@ import { CompetitionId, CompetitionName, CompetitionUrl } from '@lib/models';
 
 export type CompetitionData = {
   image: string;
+  imageSet: string;
   label: CompetitionName;
   id: CompetitionId;
   url: CompetitionUrl;
