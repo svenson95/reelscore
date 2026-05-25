@@ -9,7 +9,7 @@ import {
   ResponsiveImageComponent,
   ResultLabelComponent,
   TeamNamePipe,
-  getTeamLogo14,
+  getTeamLogo,
   getTeamLogoSrcSet,
 } from '@app/shared';
 import {
@@ -111,19 +111,19 @@ export class HeaderDataComponent {
 
   homeLogo = computed<string>(() => {
     const id = this.data()?.teams.home.id ?? 0;
-    return getTeamLogo14(id);
+    return getTeamLogo(id, 48);
   });
   homeLogoSet = computed<string>(() => {
     const id = this.data()?.teams.home.id ?? 0;
-    return getTeamLogoSrcSet(id);
+    return getTeamLogoSrcSet(id, 48);
   });
   awayLogo = computed<string>(() => {
     const id = this.data()?.teams.away.id ?? 0;
-    return getTeamLogo14(id);
+    return getTeamLogo(id, 48);
   });
   awayLogoSet = computed<string>(() => {
     const id = this.data()?.teams.away.id ?? 0;
-    return getTeamLogoSrcSet(id);
+    return getTeamLogoSrcSet(id, 48);
   });
 
   isScheduled = computed<boolean>(() => {

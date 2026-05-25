@@ -34,19 +34,32 @@ export const getCompetitionLogo = (id: CompetitionId): string =>
 export const getCompetitionLogo24 = (id: CompetitionId): string =>
   getCachedImagePath(`competition-24-${id}`, `${BASE}/league-24x24/${id}.png`);
 
-const getTeamLogoByScale = (id: TeamId, scale: 1 | 2 | 3): string =>
+type ImageScale = 1 | 2 | 3;
+type TeamLogoSize = 14 | 48;
+
+const getTeamLogoFolder = (size: TeamLogoSize): string => `${size}x${size}`;
+
+const getTeamLogoBySizeAndScale = (
+  id: TeamId,
+  size: TeamLogoSize,
+  scale: ImageScale
+): string =>
   getCachedImagePath(
-    `team-${id}@${scale}x`,
-    `${BASE}/team-logo-responsive/${id}@${scale}x.png`
+    `team-${size}-${id}@${scale}x`,
+    `${BASE}/team-logo-responsive/${getTeamLogoFolder(
+      size
+    )}/${id}@${scale}x.png`
   );
 
-export const getTeamLogo14 = (id: TeamId): string => getTeamLogoByScale(id, 1);
-export const getTeamLogo28 = (id: TeamId): string => getTeamLogoByScale(id, 2);
-export const getTeamLogo42 = (id: TeamId): string => getTeamLogoByScale(id, 3);
+export const getTeamLogo = (
+  id: TeamId,
+  size: TeamLogoSize,
+  scale: ImageScale = 1
+): string => getTeamLogoBySizeAndScale(id, size, scale);
 
-export const getTeamLogoSrcSet = (id: TeamId): string =>
+export const getTeamLogoSrcSet = (id: TeamId, size: TeamLogoSize): string =>
   [
-    `${getTeamLogo14(id)} 1x`,
-    `${getTeamLogo28(id)} 2x`,
-    `${getTeamLogo42(id)} 3x`,
+    `${getTeamLogoBySizeAndScale(id, size, 1)} 1x`,
+    `${getTeamLogoBySizeAndScale(id, size, 2)} 2x`,
+    `${getTeamLogoBySizeAndScale(id, size, 3)} 3x`,
   ].join(', ');
