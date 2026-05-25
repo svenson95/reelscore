@@ -10,7 +10,8 @@ import {
   FixtureListComponent,
   ResponsiveImageComponent,
   RoundLabelPipe,
-  getCompetitionLogo24,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
 } from '@app/shared';
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
@@ -52,6 +53,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
           <rs-responsive-image
             class="competition-corner"
             [source]="competitionLogo()"
+            [sourceSet]="competitionLogoSet()"
             altText="league logo"
             [width]="24"
             [height]="24"
@@ -82,7 +84,12 @@ export class FixturesListComponent {
   round = computed(() => this.firstFixture().league.round);
   date = computed(() => this.firstFixture().fixture.date);
   competitionId = computed(() => this.firstFixture().league.id);
-  competitionLogo = computed(() => getCompetitionLogo24(this.competitionId()));
+  competitionLogo = computed(() =>
+    getCompetitionLogo(this.competitionId(), 24)
+  );
+  competitionLogoSet = computed(() =>
+    getCompetitionLogoSrcSet(this.competitionId(), 24)
+  );
 
   fixturesDays = computed(() => {
     const fixtures = this.fixtures();

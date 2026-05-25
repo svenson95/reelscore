@@ -15,7 +15,8 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
 import {
-  getCompetitionLogo24,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   getTeamLogo,
   getTeamLogoSrcSet,
 } from '../models';
@@ -129,6 +130,7 @@ const DISPLAYED_COLUMNS: string[] = [
             @defer (on viewport) {
             <rs-responsive-image
               [source]="competitionLogo()"
+              [sourceSet]="competitionLogoSet()"
               altText=""
               [width]="24"
               [height]="24"
@@ -257,7 +259,10 @@ export class StandingsTableComponent {
   });
 
   readonly competitionLogo = computed(() =>
-    getCompetitionLogo24(this.league().id)
+    getCompetitionLogo(this.league().id, 24)
+  );
+  readonly competitionLogoSet = computed(() =>
+    getCompetitionLogoSrcSet(this.league().id, 24)
   );
   readonly competitionLink = computed(() => {
     const id = this.league().id;

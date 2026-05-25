@@ -1,16 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { ResponsiveImageComponent } from '../../../components';
 import { SELECT_COMPETITION_DATA } from '../../../constants';
-import { CompetitionData, getCompetitionLogo24 } from '../../../models';
+import { CompetitionData } from '../../../models';
 
 @Component({
   selector: 'nav[rs-competition-select]',
@@ -73,7 +68,7 @@ import { CompetitionData, getCompetitionLogo24 } from '../../../models';
         [value]="selectedCompetition()?.url ?? null"
         (selectionChange)="removeFocus($event)"
       >
-        @for (group of groups(); track group.label) {
+        @for (group of groups; track group.label) {
         <mat-optgroup [label]="group.label">
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
@@ -81,6 +76,7 @@ import { CompetitionData, getCompetitionLogo24 } from '../../../models';
               <rs-responsive-image
                 class="competition-logo"
                 [source]="c.image"
+                [sourceSet]="c.imageSet"
                 [altText]="c.label"
                 [width]="14"
                 [height]="14"
@@ -96,16 +92,7 @@ import { CompetitionData, getCompetitionLogo24 } from '../../../models';
   `,
 })
 export class CompetitionSelectComponent {
-  selectedCompetition = input.required<CompetitionData | undefined>();
-  removeFocus = (e: MatSelectChange) => e.source.close();
-
-  groups = computed(() =>
-    SELECT_COMPETITION_DATA.map((group) => ({
-      ...group,
-      competitions: group.competitions.map((c) => ({
-        ...c,
-        image: getCompetitionLogo24(c.id),
-      })),
-    }))
-  );
+  readonly selectedCompetition = input.required<CompetitionData | undefined>();
+  readonly removeFocus = (e: MatSelectChange) => e.source.close();
+  readonly groups = SELECT_COMPETITION_DATA;
 }

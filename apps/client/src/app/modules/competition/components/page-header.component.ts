@@ -10,6 +10,7 @@ import {
   LeagueService,
   ResponsiveImageComponent,
   getCompetitionLogo,
+  getCompetitionLogoSrcSet,
 } from '@app/shared';
 
 @Component({
@@ -19,14 +20,16 @@ import {
   styles: `
     :host { @apply relative; }
     rs-back-button { @apply absolute top-3 left-3 z-10; }
-    rs-optimized-image { @apply p-8; }
+    .page-header-image { @apply p-8; }
     .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
   `,
   template: `
     <rs-back-button class="animate-drop-from-top" />
     <div class="image-wrapper">
       <rs-responsive-image
+        class="page-header-image"
         [source]="competitionLogo()"
+        [sourceSet]="competitionLogoSet()"
         [altText]="label()"
         [width]="64"
         [height]="64"
@@ -42,6 +45,11 @@ export class PageHeaderComponent {
   competitionLogo = computed<string>(() => {
     const id = this.selectedLeague()?.id;
     if (!id) throw new Error('Selected league is undefined');
-    return getCompetitionLogo(id);
+    return getCompetitionLogo(id, 64);
+  });
+  competitionLogoSet = computed<string>(() => {
+    const id = this.selectedLeague()?.id;
+    if (!id) throw new Error('Selected league is undefined');
+    return getCompetitionLogoSrcSet(id, 64);
   });
 }

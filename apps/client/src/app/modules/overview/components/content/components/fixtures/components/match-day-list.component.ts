@@ -10,7 +10,8 @@ import { RouterLink } from '@angular/router';
 import {
   CompetitionWithFixtures,
   FixtureListComponent,
-  getCompetitionLogo24,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   NameLabelPipe,
   ResponsiveImageComponent,
   RoundLabelPipe,
@@ -59,6 +60,7 @@ const EXTERNAL_MODULES = [RouterLink];
         <rs-responsive-image
           class="competition-corner"
           [source]="getCompetitionLogo()"
+          [sourceSet]="getCompetitionLogoSet()"
           altText="competition logo"
           [width]="24"
           [height]="24"
@@ -87,6 +89,10 @@ export class MatchDayListComponent {
 
   getCompetitionLogo = computed(() => {
     const fixture = untracked(this.firstFixture);
-    return getCompetitionLogo24(fixture.league.id);
+    return getCompetitionLogo(fixture.league.id, 24);
+  });
+  getCompetitionLogoSet = computed(() => {
+    const fixture = untracked(this.firstFixture);
+    return getCompetitionLogoSrcSet(fixture.league.id, 24);
   });
 }
