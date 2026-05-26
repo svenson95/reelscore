@@ -2,14 +2,16 @@ import moment from 'moment-timezone';
 
 import { CompetitionId } from '@lib/models';
 
-export const getSeason = (competition: CompetitionId = null): number => {
+export const getSeason = (competition: CompetitionId | null = null): number => {
   const today = moment().tz('Europe/Berlin');
   const competitionId = Number(competition);
 
   const mlsId = 253;
   if (competitionId === mlsId) return today.year();
   const wcqeId = 32; // World Cup Qualifiers Europe
-  if (competitionId === wcqeId) return 2024; // Fixed season for World Cup Qualifiers
+  if (competitionId === wcqeId) return 2024;
+  const wcId = 1; // World Cup
+  if (competitionId === wcId) return 2026;
 
   return calculateSeasonForRegularCompetition(today);
 };
