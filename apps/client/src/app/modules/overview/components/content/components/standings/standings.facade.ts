@@ -1,6 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core';
 
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
+import { hasMultipleGroups, showHomeAndAwayStandings } from '@app/shared';
 
 import { FilterService } from '../../../../services';
 import { FilteredStandingsStore } from '../../../../store';
@@ -17,15 +17,11 @@ export class OverviewStandingsFacade {
       this.dayStandings() !== null
   );
 
-  hasMultipleGroups = computed<boolean>(() => {
-    const standings = this.dayStandings();
-    if (!standings) return false;
-    return isCompetitionWithMultipleGroups(standings.league.id);
-  });
+  hasMultipleGroups = computed<boolean>(() =>
+    hasMultipleGroups(this.dayStandings())
+  );
 
-  showHomeAndAwayStandings = computed<boolean>(() => {
-    const standings = this.dayStandings();
-    if (!standings) return false;
-    return standings.league.standings?.length === 3;
-  });
+  showHomeAndAwayStandings = computed<boolean>(() =>
+    showHomeAndAwayStandings(this.dayStandings())
+  );
 }
