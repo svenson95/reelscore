@@ -1,2 +1,2 @@
-export * from './data.component';
-export * from './details.component';
+export * from './match-highlights.component';
+export * from './match-info/match-info.component';

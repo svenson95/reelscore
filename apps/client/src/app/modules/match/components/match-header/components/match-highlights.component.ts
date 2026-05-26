@@ -17,7 +17,7 @@ import {
 } from '@lib/models';
 
 @Component({
-  selector: 'rs-match-header-details',
+  selector: 'rs-match-highlights',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   styles: `
@@ -60,7 +60,7 @@ import {
     }
   `,
 })
-export class HeaderDetailsComponent {
+export class MatchHighlightsComponent {
   data = input.required<FixtureDTO>();
   highlights = input.required<FixtureHighlights>();
 
