@@ -13,9 +13,9 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounce, fromEvent, timer } from 'rxjs';
 
-import { FixtureDTO, FixtureHighlights } from '@lib/models';
+import type { FixtureDTO, FixtureHighlights } from '@lib/models';
 
-import { HeaderDataComponent, HeaderDetailsComponent } from './components';
+import { MatchHighlightsComponent, MatchInfoComponent } from './components';
 import { VENUE_IDS } from './venue-ids.data';
 
 const ALLIANZ_ARENA_ID = 20732;
@@ -23,7 +23,7 @@ const ALLIANZ_ARENA_ID = 20732;
 @Component({
   selector: 'section[rs-match-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HeaderDataComponent, HeaderDetailsComponent],
+  imports: [MatchInfoComponent, MatchHighlightsComponent],
   styles: `
     :host {
       @apply px-3 sticky top-0 z-10;
@@ -90,16 +90,16 @@ const ALLIANZ_ARENA_ID = 20732;
         "
         [style.background-image]="venueBackgroundImage()"
       ></div>
-      <rs-match-header-data [data]="data()" />
+      <rs-match-info [data]="data()" />
       @if (highlights() && isNotGoalLess()) {
       <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
         <div class="divider"></div>
       </div>
       <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
-        @if (data()) {
-        <rs-match-header-details
+        @if (data(); as data) {
+        <rs-match-highlights
           class="match-highlights"
-          [data]="data()!"
+          [data]="data"
           [highlights]="highlights()!"
         />
         }
