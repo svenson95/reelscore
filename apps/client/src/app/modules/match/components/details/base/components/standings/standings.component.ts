@@ -5,9 +5,13 @@ import {
   input,
 } from '@angular/core';
 
-import { StandingsTableComponent } from '@app/shared';
 import { StandingsDTO } from '@lib/models';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
+
+import {
+  StandingsTableComponent,
+  hasMultipleGroups,
+  showHomeAndAwayStandings,
+} from '@app/shared';
 
 @Component({
   selector: 'rs-match-fixture-standings',
@@ -52,15 +56,11 @@ import { isCompetitionWithMultipleGroups } from '@lib/shared';
 export class MatchFixtureStandingsComponent {
   standings = input.required<StandingsDTO | null>();
 
-  hasMultipleGroups = computed<boolean>(() => {
-    const standings = this.standings();
-    if (!standings) return false;
-    return isCompetitionWithMultipleGroups(standings.league.id);
-  });
+  hasMultipleGroups = computed<boolean>(() =>
+    hasMultipleGroups(this.standings())
+  );
 
-  showHomeAndAwayStandings = computed<boolean>(() => {
-    const standings = this.standings();
-    if (!standings) return false;
-    return standings.league.standings?.length === 3;
-  });
+  showHomeAndAwayStandings = computed<boolean>(() =>
+    showHomeAndAwayStandings(this.standings())
+  );
 }

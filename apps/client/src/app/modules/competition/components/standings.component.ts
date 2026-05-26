@@ -5,8 +5,11 @@ import {
   inject,
 } from '@angular/core';
 
-import { StandingsTableComponent } from '@app/shared';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
+import {
+  StandingsTableComponent,
+  hasMultipleGroups,
+  showHomeAndAwayStandings,
+} from '@app/shared';
 
 import { CompetitionStandingsStore } from '../store';
 
@@ -56,15 +59,11 @@ export class CompetitionStandingsComponent {
   standings = this.store.standings;
   isLoading = this.store.isLoading;
 
-  hasMultipleGroups = computed<boolean>(() => {
-    const standings = this.standings();
-    if (!standings) return false;
-    return isCompetitionWithMultipleGroups(standings.league.id);
-  });
+  hasMultipleGroups = computed<boolean>(() =>
+    hasMultipleGroups(this.standings())
+  );
 
-  showHomeAndAwayStandings = computed<boolean>(() => {
-    const standings = this.standings();
-    if (!standings) return false;
-    return standings.league.standings?.length === 3;
-  });
+  showHomeAndAwayStandings = computed<boolean>(() =>
+    showHomeAndAwayStandings(this.standings())
+  );
 }
