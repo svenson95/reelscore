@@ -59,7 +59,7 @@ export class LastFixturesComponent {
   isFirstRound = computed<boolean>(() => {
     const fixtures = untracked(this.fixtures);
     const competition = untracked(this.competition);
-    if (!fixtures || !competition) return false;
+    if (!fixtures || !competition || fixtures.length === 0) return false;
     const round = fixtures[0][0].league.round;
     return FIRST_ROUNDS.includes(round);
   });
