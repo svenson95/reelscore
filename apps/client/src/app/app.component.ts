@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { FooterComponent, HeaderComponent } from './shared';
+import { FooterComponent, HeaderComponent, StartupService } from './shared';
 
 @Component({
   selector: 'rs-root',
@@ -17,9 +17,20 @@ import { FooterComponent, HeaderComponent } from './shared';
   template: `
     <header rs-header-content></header>
     <main>
-      <router-outlet />
+      <router-outlet (activate)="onRouteActivated()" />
     </main>
     <footer rs-footer-content></footer>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  private readonly startupService = inject(StartupService);
+
+  onRouteActivated(): void {
+    if (this.startupService.routeActivated) {
+      return;
+    }
+
+    this.startupService.routeActivated = true;
+    this.startupService.hideAppInitializer();
+  }
+}
