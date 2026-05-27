@@ -9,13 +9,17 @@ export abstract class StartupService {
 @Injectable()
 export class AbstractedStartupService {
   private readonly APP_INITIALIZER_FADE_DURATION_MS = 300;
+  private readonly APP_INITIALIZER_MIN_VISIBLE_MS = 800;
   private readonly startedAt = performance.now();
 
   readonly routeActivated = false;
 
   hideAppInitializer(): void {
     const elapsed = performance.now() - this.startedAt;
-    const remaining = Math.max(0, elapsed);
+    const remaining = Math.max(
+      0,
+      this.APP_INITIALIZER_MIN_VISIBLE_MS - elapsed
+    );
 
     window.setTimeout(() => {
       requestAnimationFrame(() => {
