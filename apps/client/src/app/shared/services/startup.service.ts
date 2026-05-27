@@ -12,7 +12,7 @@ export class AbstractedStartupService {
   private readonly APP_INITIALIZER_MIN_VISIBLE_MS = 800;
   private readonly startedAt = performance.now();
 
-  readonly routeActivated = false;
+  routeActivated = false;
 
   hideAppInitializer(): void {
     const elapsed = performance.now() - this.startedAt;
