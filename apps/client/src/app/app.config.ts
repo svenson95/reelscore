@@ -17,6 +17,7 @@ import {
 
 import { routes } from './app.routes';
 import {
+  APP_INITIALIZER_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   LOCALE_PROVIDER,
   PWA_PROVIDER,
@@ -40,6 +41,7 @@ const BASE_PROVIDERS = [
 export const appConfig: ApplicationConfig = {
   providers: [
     ...BASE_PROVIDERS,
+    APP_INITIALIZER_PROVIDER,
     PWA_PROVIDER,
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
