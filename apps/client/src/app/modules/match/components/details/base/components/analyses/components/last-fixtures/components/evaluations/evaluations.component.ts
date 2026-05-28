@@ -68,8 +68,8 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
     .home-name, .away-name {
       @apply flex-1 content-center;
 
-      &.is-winner { @apply underline decoration-green-500; }
-      &.is-loser { @apply underline decoration-red-500; }
+      &.is-winner { @apply underline decoration-rs-color-green; }
+      &.is-loser { @apply underline decoration-rs-color-red; }
       &.is-related { @apply font-semibold; }
     }
     .evaluations { @apply flex flex-col pt-4; }

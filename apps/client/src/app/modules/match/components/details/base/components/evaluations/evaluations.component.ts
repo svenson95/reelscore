@@ -45,9 +45,9 @@ import { ToKebabCasePipe } from './pipes';
       .evaluation-placeholder { @apply bg-gray-200; }
 
       span {
-        &.loss, &.low { @apply bg-red-500 text-white; }
+        &.loss, &.low { @apply bg-rs-color-red text-white; }
         &.draw, &.middle { @apply bg-gray-200 text-black; }
-        &.win, &.high { @apply bg-green-500 text-white; }
+        &.win, &.high { @apply bg-rs-color-green text-white; }
         &.match-postponed, &.match-not-started, &.no-statistics-available, &.no-result-available {
           @apply bg-gray-500 text-white font-bold;
         }

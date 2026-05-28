@@ -17,7 +17,8 @@ module.exports = {
       },
       colors: {
         'rs-color-white': 'var(--rs-color-white)',
-        'rs-color-green-1': 'var(--rs-color-green-1)',
+        'rs-color-green': 'var(--rs-color-green)',
+        'rs-color-red': 'var(--rs-color-red)',
         'rs-color-text-1': 'var(--rs-color-text-1)',
         'rs-color-text-2': 'var(--rs-color-text-2)',
         'rs-color-text-3': 'var(--rs-color-text-3)',
