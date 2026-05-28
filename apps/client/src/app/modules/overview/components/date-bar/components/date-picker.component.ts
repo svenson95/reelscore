@@ -87,8 +87,8 @@ const DATE_PICKER_PROVIDERS = [
   `,
 })
 export class DatePickerComponent {
-  readonly MIN_DATE = new Date(moment().toDate().getFullYear() - 1, 0, 1);
-  readonly MAX_DATE = new Date(moment().toDate().getFullYear() + 1, 11, 31);
+  readonly MIN_DATE = new Date(2023, 7, 11);
+  readonly MAX_DATE = new Date(moment().toDate().getFullYear(), 11, 31);
 
   selectedDay = input.required<DateString>();
   dateSelected = output<DateString>();
