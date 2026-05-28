@@ -19,7 +19,7 @@ import { StatisticList } from './models';
     :host > div > div { @apply basis-6/12; }
     :host > div > div > div { @apply flex gap-5 justify-center; }
     h4, li { @apply text-rs-color-text-1 text-rs-font-size-body-2 md:text-rs-font-size-body-1;}
-    h4 { @apply text-rs-color-orange text-center mb-2 tracking-widest font-extralight text-rs-font-size-body-2; }
+    h4 { @apply text-rs-color-primary text-center mb-2 tracking-widest font-extralight text-rs-font-size-body-2; }
   `,
   template: `
     <div>

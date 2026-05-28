@@ -20,7 +20,7 @@ import { FixtureStore } from '../../../../../store';
     li:not(:last-of-type) .item { @apply pb-2; }
     .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-1; }
     .item > *:not(.key) { @apply flex-2 sm:flex-1; }
-    .key { @apply text-rs-color-orange text-right tracking-wider font-extralight flex-1; }
+    .key { @apply text-rs-color-primary text-right tracking-wider font-extralight flex-1; }
     .key, .value { @apply content-center;}
     span { @apply text-rs-font-size-body-2;}
     .list-item-placeholder {  @apply w-[100px] h-[16px] my-1 bg-gray-200 rounded; }

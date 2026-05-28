@@ -111,7 +111,7 @@ button {
 
   &.mdc-button,
   &.mat-mdc-icon-button {
-    --mdc-filled-button-label-text-color: var(--rs-color-orange);
+    --mdc-filled-button-label-text-color: var(--rs-color-primary);
     box-shadow: var(--rs-size-box-shadow-3);
     border: 1px solid var(--rs-button-border-color);
     background-color: var(--rs-button-bg-color);

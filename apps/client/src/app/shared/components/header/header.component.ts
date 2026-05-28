@@ -15,7 +15,7 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...EXTERNAL_IMPORTS, LogoComponent, CompetitionSelectComponent],
   styles: `
-    :host { @apply p-3 border-b-[1px] border-rs-color-orange z-[200] relative; }
+    :host { @apply p-3 border-b-[1px] border-rs-color-primary z-[200] relative; }
     .wrapper { @apply flex items-center justify-between lg:px-3; }
     a { --mdc-filled-button-container-color: transparent; }
   `,
