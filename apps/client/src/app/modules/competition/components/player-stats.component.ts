@@ -5,6 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
+import { TeamNamePipe } from '@app/shared';
 import { TopScorer } from '@lib/models';
 
 import { TopScorersStore } from '../store';
@@ -12,14 +13,16 @@ import { TopScorersStore } from '../store';
 @Component({
   selector: 'rs-competition-player-stats',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TeamNamePipe],
   styles: `
-    :host { @apply rs-competition-tab max-[500px]:flex-col gap-rs2 flex-wrap mx-2; }
+    :host { @apply rs-competition-tab max-[700px]:flex-col gap-rs2 flex-wrap mx-2; }
     .column { @apply flex-1; }
     h2 { @apply mb-4 border-b border-rs-color-primary; }
-    .divider { @apply self-stretch min-[500px]:w-px max-[500px]:hidden bg-rs-color-primary; }
+    .divider { @apply self-stretch min-[700px]:w-px max-[700px]:hidden bg-rs-color-primary; }
     .player-stat { @apply flex justify-between; }
     .player-stat:not(:last-child) { @apply mb-2; }
     img { @apply inline-block w-[24px] h-[24px] mr-4 rounded-full; }
+    .team-name { @apply ml-4 text-rs-color-text-2 text-rs-font-size-body-2; }
   `,
   template: `
     @if (topScorers() !== null) {
@@ -30,6 +33,9 @@ import { TopScorersStore } from '../store';
         <div class="player-name">
           <img [src]="stat.player.photo" />
           <span>{{ stat.player.name }}</span>
+          <span class="team-name">
+            {{ stat.statistics[0].team.name | teamName : 'short' }}
+          </span>
         </div>
         <span>{{ stat.statistics[0].goals.total }}</span>
       </div>
@@ -45,6 +51,9 @@ import { TopScorersStore } from '../store';
         <div class="player-name">
           <img [src]="stat.player.photo" />
           <span>{{ stat.player.name }}</span>
+          <span class="team-name">
+            {{ stat.statistics[0].team.name | teamName : 'short' }}
+          </span>
         </div>
         <span>{{ stat.statistics[0].goals.assists }}</span>
       </div>
