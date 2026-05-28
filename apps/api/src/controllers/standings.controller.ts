@@ -74,13 +74,18 @@ export class StandingsController {
 
   private mapToOnlyTopFiveRankings(data: StandingsDTO[]): StandingsDTO[] {
     const baseStandings = 0; // 1 == home standings, 2 == away standings
-    return data.map((d) => ({
-      ...d,
-      league: {
-        ...d.league,
-        standings: [d.league.standings[baseStandings].slice(0, 5)],
-      },
-    }));
+
+    return data
+      .filter((d): d is StandingsDTO =>
+        Boolean(d?.league?.standings?.[baseStandings])
+      )
+      .map((d) => ({
+        ...d,
+        league: {
+          ...d.league,
+          standings: [d.league.standings[baseStandings].slice(0, 5)],
+        },
+      }));
   }
 
   async getFixtureStandings(teamIds: string, leagueId): Promise<StandingsDTO> {
