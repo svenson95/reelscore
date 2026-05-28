@@ -43,28 +43,22 @@ export class StandingsController {
     date: string
   ): Promise<StandingsDTO[]> {
     const [year, month, day] = date.split('-').map(Number);
+
     const tomorrow = new Date(Date.UTC(year, month - 1, day));
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 
     const standings: StandingsDTO[] = [];
 
     for (const standingsId of standingsIds) {
+      const season = month >= 8 ? year : year - 1;
+
       const leagueStandings = await this.standingsService.findByFilter({
         'league.id': standingsId,
-        $and: [{ createdAt: { $lte: tomorrow } }],
+        'league.season': season,
+        createdAt: { $lte: tomorrow },
       });
 
-      // getStandings implementation doesnt work for season 23/24 and earlier, because standings were fetched after season
-      if (!leagueStandings) {
-        const fixedFilter = {
-          'league.id': { $in: standingsIds },
-          $and: [{ 'league.season': getSeason(standingsId) }],
-        };
-        const fixedStandings = await this.standingsService.findByFilter({
-          filter: fixedFilter,
-        });
-        standings.push(fixedStandings);
-      } else {
+      if (leagueStandings) {
         standings.push(leagueStandings);
       }
     }
