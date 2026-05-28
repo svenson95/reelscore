@@ -14,7 +14,7 @@ export abstract class VisibilityObserverService {
 }
 
 @Injectable()
-export class AbstractedVisibilityObserverService {
+export class AbstractedVisibilityObserverService extends VisibilityObserverService {
   private destroyRef = inject(DestroyRef);
 
   private dateService = inject(DateService);
