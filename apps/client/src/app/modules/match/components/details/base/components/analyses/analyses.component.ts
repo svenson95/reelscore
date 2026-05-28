@@ -43,7 +43,7 @@ import { AnalysesLastFixturesComponent } from './components';
     }
 
     .player, .strongTeam {
-      @apply text-rs-color-orange font-semibold;
+      @apply text-rs-color-primary font-semibold;
     }
   `,
   template: `

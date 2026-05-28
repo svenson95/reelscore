@@ -36,7 +36,7 @@ const EXTERNAL_MODULES = [
   imports: [...EXTERNAL_MODULES, ResponsiveImageComponent],
   styles: `
     button[mat-icon-button].is-filtering {
-      @apply bg-rs-color-orange;
+      @apply bg-rs-color-primary;
       .mat-icon { @apply text-rs-color-text-3; }
     }
     button[mat-menu-item] {

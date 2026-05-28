@@ -51,9 +51,9 @@ const EXTERNAL_MODULES = [
           selected-state-text-color: var(--rs-color-text-3),
           disabled-state-text-color: var(--rs-color-text-2),
           disabled-selected-state-text-color: var(--rs-color-text-3),
-          selected-state-background-color: var(--rs-color-orange),
+          selected-state-background-color: var(--rs-color-primary),
           disabled-state-background-color: var(--rs-button-bg-color),
-          disabled-selected-state-background-color: var(--rs-color-orange),
+          disabled-selected-state-background-color: var(--rs-color-primary),
         )
       );
       @apply flex border-none shadow-rs3;

@@ -7,7 +7,7 @@ import { LogoComponent } from '../logo/logo.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
   styles: `
-    :host { @apply flex justify-center px-3 py-20 border-t-[1px] border-rs-color-orange; }
+    :host { @apply flex justify-center px-3 py-20 border-t-[1px] border-rs-color-primary; }
   `,
   template: `
     <div>

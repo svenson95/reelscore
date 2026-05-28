@@ -14,7 +14,7 @@ import { LoadingService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host { @apply select-none text-rs-font-size-body-1 tracking-wide font-normal; }
-    :host span:first-child { @apply text-rs-color-orange; }
+    :host span:first-child { @apply text-rs-color-primary; }
     :host span:last-child { @apply text-rs-color-text-1; }
     :host([disabled]) { @apply opacity-75; }
 
@@ -26,7 +26,7 @@ import { LoadingService } from '../../services';
         height: 1px;
         bottom: 0;
         left: 0;
-        background-color: var(--rs-color-orange);
+        background-color: var(--rs-color-primary);
         animation: underlineAnimation 1s infinite ease-in-out;
       }
 
