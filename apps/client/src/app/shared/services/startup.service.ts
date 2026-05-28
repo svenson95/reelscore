@@ -7,7 +7,7 @@ export abstract class StartupService {
 }
 
 @Injectable()
-export class AbstractedStartupService {
+export class AbstractedStartupService extends StartupService {
   private readonly APP_INITIALIZER_FADE_DURATION_MS = 300;
   private readonly APP_INITIALIZER_MIN_VISIBLE_MS = 800;
   private readonly startedAt = performance.now();
