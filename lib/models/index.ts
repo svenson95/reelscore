@@ -5,4 +5,5 @@ export * from './player.model';
 export * from './rapid-dto.model';
 export * from './standings';
 export * from './team.model';
+export * from './top-scorers.model';
 export * from './week-data.model';

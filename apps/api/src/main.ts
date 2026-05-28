@@ -17,6 +17,7 @@ import {
   fixtures,
   fixturesStatistics,
   standings,
+  topScorers,
 } from './routes';
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(
 app.use(helmet());
 
 app.use('/standings', standings);
+app.use('/top-scorers', topScorers);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
 // app.use('/players-statisticss', playersStatistics);

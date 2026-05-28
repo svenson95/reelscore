@@ -25,6 +25,7 @@ import {
   LastFixturesStore,
   NextFixturesStore,
   STORE_PROVIDERS,
+  TopScorersStore,
 } from './store';
 
 @Component({
@@ -102,6 +103,7 @@ export class CompetitionComponent extends RouterView {
   lastFixturesStore = inject(LastFixturesStore);
   nextFixturesStore = inject(NextFixturesStore);
   standingsStore = inject(CompetitionStandingsStore);
+  topScorersStore = inject(TopScorersStore);
 
   leagueEffect = effect(async () => {
     const competition = this.leagueService.selectedLeague();
@@ -109,5 +111,6 @@ export class CompetitionComponent extends RouterView {
     await this.lastFixturesStore.loadLastFixtures(competition.id);
     await this.nextFixturesStore.loadNextFixtures(competition.id);
     await this.standingsStore.loadStandings(competition.id);
+    await this.topScorersStore.loadTopScorers(competition.id);
   });
 }
