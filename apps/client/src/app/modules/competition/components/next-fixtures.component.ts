@@ -10,6 +10,9 @@ import { FixturesListComponent } from './fixtures-list.component';
   selector: 'rs-competition-next-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FixturesListComponent],
+  styles: `
+    :host { @apply rs-competition-tab flex-col; }
+  `,
   template: `
     @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
     (multipleFixtures of fixtures()!; track $index) {
