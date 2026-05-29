@@ -29,7 +29,7 @@ import { TimeTotalPipe } from './pipes';
     mat-icon {
       @apply align-middle;
       &.yellow-card { @apply text-yellow-500; }
-      &.red-card { @apply text-red-500; }
+      &.red-card { @apply text-rs-color-red; }
     }
   `,
   template: `

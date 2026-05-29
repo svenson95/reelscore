@@ -27,7 +27,7 @@ import {
     .result-column { @apply flex w-[50px] text-center items-center justify-center; }
     .event-time { @apply text-rs-color-text-2; }
     .team-column:first-of-type { @apply text-right; }
-    .red-card { @apply bg-red-500 w-2 h-3 m-auto rounded-[2px]; }
+    .red-card { @apply bg-rs-color-red w-2 h-3 m-auto rounded-[2px]; }
   `,
   template: `
     @for (event of events(); track $index) {
