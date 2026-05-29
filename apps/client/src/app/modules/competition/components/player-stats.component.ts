@@ -15,7 +15,7 @@ import { TopScorersStore } from '../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TeamNamePipe],
   styles: `
-    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap; }
+    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
     .divider { @apply mt-3 self-stretch min-[700px]:w-px max-[700px]:hidden bg-rs-color-primary; }
