@@ -73,15 +73,41 @@ export class PlayerStatsComponent {
   readonly topScorers = this.store.topScorers;
   readonly isLoading = this.store.isLoading;
 
-  readonly goalScorer = computed(() => {
-    const data = [...(this.topScorers()?.response ?? [])];
-    const goals = (d: TopScorer) => d.statistics[0].goals.total ?? 0;
-    return data.sort((a, b) => goals(b) - goals(a));
-  });
+  readonly goalScorer = computed(() =>
+    [...(this.topScorers()?.response ?? [])].sort((a, b) => {
+      const aStats = this.getStats(a);
+      const bStats = this.getStats(b);
 
-  readonly assists = computed(() => {
-    const data = [...(this.topScorers()?.response ?? [])];
-    const assists = (d: TopScorer) => d.statistics[0].goals.assists ?? 0;
-    return data.sort((a, b) => assists(b) - assists(a));
-  });
+      return (
+        bStats.goals - aStats.goals ||
+        aStats.penaltyGoals - bStats.penaltyGoals ||
+        bStats.assists - aStats.assists ||
+        aStats.minutes - bStats.minutes
+      );
+    })
+  );
+
+  readonly assists = computed(() =>
+    [...(this.topScorers()?.response ?? [])].sort((a, b) => {
+      const aStats = this.getStats(a);
+      const bStats = this.getStats(b);
+
+      return (
+        bStats.assists - aStats.assists ||
+        bStats.goals - aStats.goals ||
+        aStats.minutes - bStats.minutes
+      );
+    })
+  );
+
+  private getStats(stat: TopScorer) {
+    const statistics = stat.statistics[0];
+
+    return {
+      goals: statistics.goals.total ?? 0,
+      penaltyGoals: statistics.penalty.scored ?? 0,
+      assists: statistics.goals.assists ?? 0,
+      minutes: statistics.games.minutes ?? 0,
+    };
+  }
 }
