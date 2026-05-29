@@ -64,7 +64,8 @@ module.exports = {
         '.rs-competition-tab': {
           display: 'flex',
           'margin-top': '0.75rem',
-          'margin-inline': '0.75rem',
+          'padding-inline': '0.75rem',
+          'padding-bottom': '1rem',
         },
       };
 
