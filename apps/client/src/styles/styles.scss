@@ -85,7 +85,7 @@ header .wrapper {
 }
 
 p.no-data {
-  @apply text-rs-font-size-body-1 text-rs-color-text-1 text-center py-10;
+  @apply text-rs-font-size-body-1 text-rs-color-text-2 text-center py-10;
 }
 
 router-outlet + * {
