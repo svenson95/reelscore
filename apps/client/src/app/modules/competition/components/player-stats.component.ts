@@ -18,12 +18,13 @@ import { TopScorersStore } from '../store';
     :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
-    .divider { @apply mt-3 self-stretch min-[700px]:w-px max-[700px]:hidden bg-rs-color-primary; }
     .player-stat { @apply flex justify-between bg-rs-alt-bg px-4 py-2 border border-rs-border-color-2; }
     .player-stat:not(:last-child) { @apply mb-px; }
-    img { @apply inline-block w-[24px] h-[24px] mr-3 rounded-full; }
-    .team-name { @apply ml-3 text-rs-color-text-2 text-rs-font-size-body-3; }
+    img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
+    .player-row { @apply flex items-center; }
+    .stat-rank { @apply text-rs-font-size-body-1 w-[20px] text-right; }
     .player-name { @apply text-rs-font-size-body-1; }
+    .team-name { @apply ml-3 text-rs-color-text-2 text-rs-font-size-body-3; }
     .stat-value { @apply text-rs-font-size-body-1 self-center; }
   `,
   template: `
@@ -33,6 +34,7 @@ import { TopScorersStore } from '../store';
       @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
       <div class="player-stat">
         <div class="player-row">
+          <span class="stat-rank">{{ idx + 1 }}.</span>
           <img [src]="stat.player.photo" />
           <span class="player-name">{{ stat.player.name }}</span>
           <span class="team-name">
@@ -44,13 +46,12 @@ import { TopScorersStore } from '../store';
       }
     </div>
 
-    <div class="divider"></div>
-
     <div class="column">
       <h2>Vorlagen</h2>
       @for (stat of assists(); track stat.player.id; let idx = $index) {
       <div class="player-stat">
         <div class="player-row">
+          <span class="stat-rank">{{ idx + 1 }}.</span>
           <img [src]="stat.player.photo" />
           <span class="player-name">{{ stat.player.name }}</span>
           <span class="team-name">
