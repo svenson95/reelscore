@@ -16,6 +16,7 @@ import { TopScorersStore } from '../store';
   imports: [TeamNamePipe],
   styles: `
     :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3 pb-4; }
+    .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
     .player-stat { @apply flex justify-between bg-rs-alt-bg px-4 py-2 border border-rs-border-color-2 shadow-rs3; }
