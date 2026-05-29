@@ -15,10 +15,10 @@ import { TopScorersStore } from '../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TeamNamePipe],
   styles: `
-    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3; }
+    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3 pb-4; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
-    .player-stat { @apply flex justify-between bg-rs-alt-bg px-4 py-2 border border-rs-border-color-2; }
+    .player-stat { @apply flex justify-between bg-rs-alt-bg px-4 py-2 border border-rs-border-color-2 shadow-rs3; }
     .player-stat:not(:last-child) { @apply mb-px; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }

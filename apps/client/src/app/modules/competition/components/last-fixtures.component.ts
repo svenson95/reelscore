@@ -21,6 +21,7 @@ import { FixturesListComponent } from './fixtures-list.component';
   imports: [MatButtonModule, FixturesListComponent],
   styles: `
     :host { @apply rs-competition-tab flex-col gap-rs2 overflow-hidden; }
+    button { @apply shadow-rs3; }
   `,
   template: `
     @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for

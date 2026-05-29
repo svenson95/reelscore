@@ -21,7 +21,7 @@ import {
     :host { @apply relative; }
     rs-back-button { @apply absolute top-3 left-3 z-10; }
     .page-header-image { @apply p-8; }
-    .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full; }
+    .image-wrapper { @apply flex w-fit bg-white mx-auto my-5 rounded-full border shadow-rs3; }
   `,
   template: `
     <rs-back-button class="animate-drop-from-top" />
