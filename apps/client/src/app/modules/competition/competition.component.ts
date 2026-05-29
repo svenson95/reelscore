@@ -42,8 +42,8 @@ import {
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    .competition-data {
-      @apply mx-3;
+    :host ::ng-deep {
+      mat-tab-header { @apply mx-3; }
     }
   `,
   template: `
