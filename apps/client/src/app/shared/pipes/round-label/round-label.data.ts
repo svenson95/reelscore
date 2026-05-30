@@ -86,6 +86,10 @@ const COMPETITION_ROUND_MAP: Record<
     default: 'Finale',
     header: 'Finale',
   }),
+  'Friendly International': () => ({
+    default: '',
+    header: '',
+  }),
 };
 
 const translationCache: Record<

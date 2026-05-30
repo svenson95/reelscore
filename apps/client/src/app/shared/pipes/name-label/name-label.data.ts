@@ -9,4 +9,5 @@ export const COMPETITION_NAME_MAP: Record<
   'World Cup': 'UEFA Weltmeisterschaft',
   'World Cup - Qualification Europe': 'WM - Qualifikation Europa',
   'World Cup - Qualification CONCACAF': 'WM - Qualifikation CONCACAF',
+  Friendlies: 'Freundschaftsspiele',
 };
