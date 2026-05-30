@@ -24,7 +24,7 @@ export type MatchHeaderTeam = {
   styles: `
     :host { @apply flex flex-1 flex-col gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1; }
     .team-logo { @apply flex m-auto; }
-    .team-name { @apply leading-[16px] text-center flex-1; }
+    .team-name { @apply leading-[16px] text-center flex-1 font-semibold; }
     .team-name-placeholder { @apply block w-[100px] h-[16px] bg-gray-200 rounded m-auto; }
     .team-logo-placeholder { @apply w-[48px] h-[48px] bg-gray-200 rounded-full self-center; }
   `,
