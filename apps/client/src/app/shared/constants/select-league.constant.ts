@@ -430,6 +430,20 @@ export const SELECT_COMPETITION_DATA: SelectCompetitionGroup[] = [
         url: COMPETITION_URL.INTERNATIONAL_EURO_CHAMPIONSHIP,
         size: 24,
       },
+      {
+        image: getCompetitionLogo(
+          COMPETITION_ID.INTERNATIONAL_FRIENDLIES,
+          IMAGE_SIZE
+        ),
+        imageSet: getCompetitionLogoSrcSet(
+          COMPETITION_ID.INTERNATIONAL_FRIENDLIES,
+          IMAGE_SIZE
+        ),
+        label: COMPETITION_LABEL.INTERNATIONAL_FRIENDLIES,
+        id: COMPETITION_ID.INTERNATIONAL_FRIENDLIES,
+        url: COMPETITION_URL.INTERNATIONAL_FRIENDLIES,
+        size: 99, // ?
+      },
     ],
   },
 ];
