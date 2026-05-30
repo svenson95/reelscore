@@ -3,26 +3,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
+  effect,
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  switchMap,
-  tap,
-} from 'rxjs';
 
 import {
   getCompetitionLogo,
@@ -53,15 +46,15 @@ const SEARCH_TYPE_LABELS: Record<SearchType, string> = {
 
 const MAT_MODULES = [
   MatButtonModule,
-  MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatMenuModule,
 ];
 
 @Component({
-  selector: 'rs-search-dialog',
+  selector: 'rs-search-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [SEARCH_SERVICE_PROVIDER, TeamNamePipe],
   imports: [
@@ -76,12 +69,8 @@ const MAT_MODULES = [
       @apply block;
     }
 
-    .search-dialog-content {
-      @apply flex flex-col w-full;
-    }
-
-    .search-controls {
-      @apply flex w-full items-start gap-rs2;
+    .search-menu-content {
+      @apply flex flex-col w-[min(420px,calc(100vw-32px))] p-rs2;
     }
 
     .search-field {
@@ -92,23 +81,8 @@ const MAT_MODULES = [
       }
     }
 
-    .close-button {
-      @apply shrink-0;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border: 0;
-    }
-
-    .close-button mat-icon {
-      width: 24px;
-      height: 24px;
-      font-size: 24px;
-      line-height: 24px;
-    }
-
     .search-results {
-      @apply mt-rs2;
+      @apply mt-rs2 max-h-[60dvh] overflow-y-auto;
     }
 
     .group {
@@ -120,7 +94,7 @@ const MAT_MODULES = [
     }
 
     .result-title {
-      @apply truncate font-medium;
+      @apply truncate font-medium text-rs-font-size-body-2;
     }
 
     .result-subtitle {
@@ -132,12 +106,33 @@ const MAT_MODULES = [
     }
 
     .empty-state {
-      @apply pt-6 text-center text-rs-color-text-2;
+      @apply py-6 text-center text-rs-color-text-2;
     }
   `,
   template: `
-    <mat-dialog-content class="search-dialog-content">
-      <div class="search-controls">
+    <button
+      class="search-button"
+      mat-icon-button
+      type="button"
+      [matMenuTriggerFor]="searchMenu"
+      #searchMenuTrigger="matMenuTrigger"
+      aria-label="Suche öffnen"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <mat-menu
+      #searchMenu="matMenu"
+      class="search-menu"
+      xPosition="before"
+      yPosition="below"
+      [overlapTrigger]="false"
+    >
+      <div
+        class="search-menu-content"
+        (click)="$event.stopPropagation()"
+        (keydown)="$event.stopPropagation()"
+      >
         <mat-form-field class="search-field">
           <input
             matInput
@@ -147,63 +142,82 @@ const MAT_MODULES = [
             [formControl]="searchControl"
           />
         </mat-form-field>
+
+        @let groups = resultGroups(); @if (isLoading()) {
+        <div class="empty-state">Suche läuft...</div>
+        } @else if (groups?.length) {
+        <div class="search-results">
+          @for (group of groups; track group.type) {
+          <section class="group">
+            <div class="group-title">{{ group.label }}</div>
+
+            <mat-nav-list>
+              @for (result of group.results; track result.id) {
+              <a
+                mat-list-item
+                [routerLink]="getRouterLink(result)"
+                (click)="searchMenuTrigger.closeMenu()"
+              >
+                <mat-icon class="result-icon" matListItemIcon>
+                  <rs-responsive-image
+                    [source]="getCompetitionLogo(result)"
+                    [sourceSet]="getCompetitionLogoSet(result)"
+                    altText="league logo"
+                    [width]="24"
+                    [height]="24"
+                  />
+                </mat-icon>
+
+                <div class="result-content flex flex-col" matListItemTitle>
+                  <div class="flex">
+                    <span class="result-title leading-normal">
+                      {{ getResultTitle(result) }}
+                    </span>
+                  </div>
+
+                  <div class="flex gap-2">
+                    <span class="result-subtitle leading-normal">
+                      {{ getResultSubtitle(result) }}
+                    </span>
+
+                    <span class="result-season leading-normal">
+                      {{ getResultSeason(result) }}
+                    </span>
+                  </div>
+                </div>
+              </a>
+              }
+            </mat-nav-list>
+          </section>
+          }
+        </div>
+        } @else if (isSearching()) {
+        <div class="empty-state">Keine Ergebnisse.</div>
+        }
       </div>
-
-      @let groups = resultGroups(); @if (isLoading()) {
-      <div class="empty-state">Suche läuft...</div>
-      } @else if (groups?.length) { @for (group of groups; track group.type) {
-      <div class="search-results">
-        <section class="group">
-          <div class="group-title">{{ group.label }}</div>
-
-          <mat-nav-list>
-            @for (result of group.results; track result.id) {
-            <a
-              mat-list-item
-              [routerLink]="getRouterLink(result)"
-              (click)="closeDialog()"
-            >
-              <mat-icon class="result-icon" matListItemIcon>
-                <rs-responsive-image
-                  [source]="getCompetitionLogo(result)"
-                  [sourceSet]="getCompetitionLogoSet(result)"
-                  altText="league logo"
-                  [width]="24"
-                  [height]="24"
-                />
-              </mat-icon>
-
-              <span class="result-content" matListItemTitle>
-                <span class="result-title">
-                  {{ getResultTitle(result) }}
-                </span>
-
-                <span class="result-subtitle">
-                  {{ getResultSubtitle(result) }}
-                </span>
-
-                <span class="result-season">
-                  {{ getResultSeason(result) }}
-                </span>
-              </span>
-            </a>
-            }
-          </mat-nav-list>
-        </section>
-      </div>
-      } } @else if (isSearching()) {
-      <div class="empty-state">Keine Ergebnisse.</div>
-      }
-    </mat-dialog-content>
+    </mat-menu>
   `,
 })
-export class SearchDialogComponent {
+export class SearchMenuComponent {
   private readonly searchService = inject(SearchService);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly teamNamePipe = inject(TeamNamePipe);
-  private readonly dialogRef = inject(MatDialogRef<SearchDialogComponent>);
 
   readonly isLoading = signal<boolean>(false);
+
+  readonly searchControl = new FormControl('', {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(15),
+      Validators.pattern(SEARCH_TERM_PATTERN),
+    ],
+  });
+
+  readonly searchTerm = toSignal(this.searchControl.valueChanges, {
+    initialValue: this.searchControl.value,
+  });
+
   readonly isSearching = computed(() => {
     const searchTerm = this.searchTerm().trim();
 
@@ -228,72 +242,61 @@ export class SearchDialogComponent {
       .filter((group) => group.results.length);
   });
 
-  readonly searchControl = new FormControl('', {
-    nonNullable: true,
-    validators: [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(15),
-      Validators.pattern(SEARCH_TERM_PATTERN),
-    ],
-  });
+  searchingEffect = effect((onCleanup) => {
+    const searchTerm = this.searchTerm().trim();
 
-  readonly searchTerm = toSignal(this.searchControl.valueChanges, {
-    initialValue: this.searchControl.value,
-  });
+    if (!searchTerm || this.searchControl.invalid) {
+      this.results.set(null);
+      this.isLoading.set(false);
+      return;
+    }
 
-  readonly searchTerm$ = this.searchControl.valueChanges.pipe(
-    debounceTime(300),
-    distinctUntilChanged(),
-    tap((searchTerm) => {
-      if (!searchTerm.trim() || this.searchControl.invalid) {
-        this.results.set(null);
-        this.isLoading.set(false);
-      }
-    }),
-    filter((searchTerm) => !!searchTerm.trim() && this.searchControl.valid),
-    tap(() => this.isLoading.set(true)),
-    switchMap((searchTerm) =>
-      this.searchService.getBySearchTerm(searchTerm.trim())
-    ),
-    takeUntilDestroyed(this.destroyRef)
-  );
+    this.isLoading.set(true);
 
-  constructor() {
-    this.searchTerm$.subscribe({
-      next: (results) => {
-        this.results.set(results);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.results.set([]);
-        this.isLoading.set(false);
-      },
+    const timeout = setTimeout(() => {
+      const subscription = this.searchService
+        .getBySearchTerm(searchTerm)
+        .subscribe({
+          next: (results) => {
+            this.results.set(results);
+            this.isLoading.set(false);
+          },
+          error: () => {
+            this.results.set([]);
+            this.isLoading.set(false);
+          },
+        });
+
+      onCleanup(() => subscription.unsubscribe());
+    }, 300);
+
+    onCleanup(() => {
+      clearTimeout(timeout);
     });
-  }
-
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
+  });
 
   getRouterLink(result: SearchResult): string[] {
     if (result.type === 'competitions') {
       const competition = SELECT_COMPETITION_DATA_FLAT.find(
         (c) => c.id === result.data.league.id
       );
+
       return competition ? ['competition', competition.url] : ['/'];
-    } else if (result.type === 'fixtures') {
+    }
+
+    if (result.type === 'fixtures') {
       return linkToMatch(result.data as FixtureDTO);
     }
+
     return ['/'];
   }
 
   getCompetitionLogo(result: SearchResult): string {
     switch (result.type) {
       case 'competitions':
-        return getCompetitionLogo(result.data.league.id, 24);
       case 'fixtures':
         return getCompetitionLogo(result.data.league.id, 24);
+
       case 'teams':
         return getTeamLogo(result.data.team.id, 48);
     }
@@ -302,9 +305,9 @@ export class SearchDialogComponent {
   getCompetitionLogoSet(result: SearchResult): string {
     switch (result.type) {
       case 'competitions':
-        return getCompetitionLogoSrcSet(result.data.league.id, 24);
       case 'fixtures':
         return getCompetitionLogoSrcSet(result.data.league.id, 24);
+
       case 'teams':
         return getTeamLogoSrcSet(result.data.team.id, 48);
     }
@@ -344,8 +347,10 @@ export class SearchDialogComponent {
   getResultSeason(result: SearchResult): string {
     if (result.type === 'fixtures') {
       const season = Number(String(result.data.league.season).substring(2, 4));
+
       return `${season}/${season + 1}`;
     }
+
     return '';
   }
 }
