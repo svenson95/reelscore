@@ -30,7 +30,7 @@ import {
     .result-column {
       @apply relative flex flex-1 items-center justify-center gap-1 text-rs-font-size-body-1 sm:text-rs-font-size-body-1;
     }
-    .status { @apply absolute top-0 py-[.15rem] px-2 text-rs-font-size-small; text-shadow: none; }
+    .status { @apply absolute top-[-5px] py-[.15rem] px-2 text-rs-font-size-small; text-shadow: none; }
     .status.is-playing { @apply bg-rs-color-green text-white border border-solid font-semibold; }
     .status.is-finished { @apply bg-gray-600 text-white border border-solid; }
   `,
