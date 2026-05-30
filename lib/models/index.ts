@@ -3,6 +3,7 @@ export * from './fixtures';
 export * from './mongodb.model';
 export * from './player.model';
 export * from './rapid-dto.model';
+export * from './search.model';
 export * from './standings';
 export * from './team.model';
 export * from './top-scorers.model';

@@ -16,6 +16,7 @@ import {
   fixtureEvents,
   fixtures,
   fixturesStatistics,
+  search,
   standings,
   topScorers,
 } from './routes';
@@ -37,6 +38,7 @@ app.use('/fixture-statistics', fixturesStatistics);
 app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
 app.use('/fixture-analyses', fixtureAnalyses);
+app.use('/search', search);
 
 DBHelper.init();
 

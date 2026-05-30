@@ -17,13 +17,13 @@ import {
 } from '@app/shared';
 import { CompetitionId } from '@lib/models';
 
-import { FilterService, SelectedDateService } from '../../../../services';
+import { FilterService, SelectedDateService } from '../../../../../services';
 import {
   FilteredStandingsStore,
   WeekdayFixturesStore,
-} from '../../../../store';
+} from '../../../../../store';
 
-const EXTERNAL_MODULES = [
+const MAT_MODULES = [
   MatButtonModule,
   MatIconModule,
   MatTooltipModule,
@@ -33,7 +33,7 @@ const EXTERNAL_MODULES = [
 @Component({
   selector: 'rs-filter-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...EXTERNAL_MODULES, ResponsiveImageComponent],
+  imports: [...MAT_MODULES, ResponsiveImageComponent],
   styles: `
     button[mat-icon-button].is-filtering {
       @apply bg-rs-color-primary;
