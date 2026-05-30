@@ -51,9 +51,8 @@ import {
       }
 
       <rs-result-label
-        [result]="fixture.goals"
+        [result]="fixture.score"
         [status]="fixture.fixture.status.short"
-        [isScheduled]="isScheduled()"
         [showPostponedText]="true"
       />
       }

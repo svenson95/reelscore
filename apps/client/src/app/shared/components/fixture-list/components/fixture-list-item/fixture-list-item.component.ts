@@ -10,7 +10,7 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../../../../constants';
 import { getTeamLogo, getTeamLogoSrcSet } from '../../../../models';
@@ -101,9 +101,8 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
         </div>
         <div class="result" [class.is-upcoming]="match | isStatus : scheduled">
           <rs-result-label
-            [result]="match.goals"
-            [status]="match.fixture.status.short"
-            [isScheduled]="match | isStatus : scheduled"
+            [result]="fixture().score"
+            [status]="fixture().fixture.status.short"
           />
         </div>
         <div>
