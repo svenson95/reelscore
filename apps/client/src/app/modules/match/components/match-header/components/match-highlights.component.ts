@@ -14,6 +14,7 @@ import {
   type FixtureHighlights,
   type Goals,
   type MatchTeams,
+  type TeamId,
   timeTotal,
 } from '@lib/models';
 
@@ -62,6 +63,10 @@ type HighlightItem = HighlightEvent | HighlightSpacer;
       @apply bg-rs-color-red w-2 h-3 m-auto rounded-[2px];
     }
 
+    .missed-penalty {
+      @apply font-bold;
+    }
+
     .highlight-spacer {
       @apply flex items-center gap-2 my-1 text-rs-color-text-2 px-12;
     }
@@ -94,7 +99,9 @@ type HighlightItem = HighlightEvent | HighlightSpacer;
       </div>
 
       <div class="result-column">
-        @if (item.type === 'Goal') {
+        @if (isMissedPenalty(item)) {
+        <span class="missed-penalty">×</span>
+        } @else if (item.type === 'Goal') {
         {{ item.result.home }} - {{ item.result.away }}
         } @else {
         <div class="red-card"></div>
@@ -115,17 +122,19 @@ type HighlightItem = HighlightEvent | HighlightSpacer;
   `,
 })
 export class MatchHighlightsComponent {
-  data = input.required<FixtureDTO>();
-  highlights = input.required<FixtureHighlights>();
+  readonly data = input.required<FixtureDTO>();
+  readonly highlights = input.required<FixtureHighlights>();
 
-  events = computed<HighlightItem[]>(() => {
+  readonly events = computed<HighlightItem[]>(() => {
     const highlights = untracked(this.highlights);
     const fixture = untracked(this.data);
 
-    return mappedEventsWithSpacers(highlights, fixture);
+    return this.mappedEventsWithSpacers(highlights, fixture);
   });
 
-  private homeTeamId = computed(() => untracked(this.data).teams.home.id);
+  private readonly homeTeamId = computed<TeamId>(
+    () => untracked(this.data).teams.home.id
+  );
 
   asSpacer = (item: HighlightItem): HighlightSpacer | null =>
     item.kind === 'spacer' ? item : null;
@@ -135,131 +144,147 @@ export class MatchHighlightsComponent {
 
   isHomeEvent = (event: HighlightEvent): boolean =>
     event.team.id === this.homeTeamId();
+
+  isMissedPenalty = (event: HighlightEvent): boolean =>
+    event.type === 'Goal' && event.detail === 'Missed Penalty';
+
+  private mappedEventsWithSpacers(
+    events: EventDTO[],
+    fixture: FixtureDTO
+  ): HighlightItem[] {
+    const mappedEvents = this.eventsWithResult(events, fixture.teams);
+    const halftime = fixture.score.halftime;
+
+    const result: HighlightItem[] = [];
+    let hasHalftimeSpacer = false;
+    let hasPenaltyShootoutSpacer = false;
+
+    for (const event of mappedEvents) {
+      if (!hasHalftimeSpacer && this.isSecondHalfEvent(event, halftime)) {
+        result.push({
+          kind: 'spacer',
+          type: 'halftime',
+          label: 'Halbzeit',
+        });
+
+        hasHalftimeSpacer = true;
+      }
+
+      if (!hasPenaltyShootoutSpacer && this.isPenaltyShootoutEvent(event)) {
+        result.push({
+          kind: 'spacer',
+          type: 'penalty-shootout',
+          label: 'Elfmeterschießen',
+        });
+
+        hasPenaltyShootoutSpacer = true;
+      }
+
+      result.push(event);
+    }
+
+    return result;
+  }
+
+  private eventsWithResult(
+    events: EventDTO[],
+    teams: MatchTeams
+  ): HighlightEvent[] {
+    return events.map((event, index) => ({
+      ...event,
+      kind: 'event',
+      result: this.getTeamGoals(events, event, teams, index),
+    }));
+  }
+
+  private isPossibleSecondHalfBoundaryEvent(event: HighlightEvent): boolean {
+    return (
+      event.type === 'Goal' &&
+      event.time.elapsed >= 35 &&
+      event.time.elapsed <= 50
+    );
+  }
+
+  private isResultAfterHalftime(result: EventResult, halftime: Goals): boolean {
+    if (halftime.home === null || halftime.away === null) return false;
+
+    return result.home > halftime.home || result.away > halftime.away;
+  }
+
+  private isSecondHalfEvent(event: HighlightEvent, halftime: Goals): boolean {
+    if (this.isPenaltyShootoutEvent(event)) return false;
+
+    if (event.time.elapsed > 45) return true;
+
+    if (!this.isPossibleSecondHalfBoundaryEvent(event)) return false;
+
+    return this.isResultAfterHalftime(event.result, halftime);
+  }
+
+  private isPenaltyShootoutEvent(event: EventDTO): boolean {
+    return (
+      event.time.elapsed >= 120 &&
+      event.type === 'Goal' &&
+      ['Penalty', 'Missed Penalty'].includes(event.detail)
+    );
+  }
+
+  private getTeamGoals(
+    events: EventDTO[],
+    event: EventDTO,
+    teams: MatchTeams,
+    eventIndex: number
+  ): EventResult {
+    if (teams === undefined) throw new Error('Teams not found in fixture');
+
+    if (this.isPenaltyShootoutEvent(event)) {
+      return this.getPenaltyShootoutGoals(events, eventIndex, teams);
+    }
+
+    return this.getRegularTeamGoals(events, event, teams);
+  }
+
+  private getRegularTeamGoals(
+    events: EventDTO[],
+    event: EventDTO,
+    teams: MatchTeams
+  ): EventResult {
+    const goals = events.filter(
+      (e) =>
+        e.type === 'Goal' &&
+        e.detail !== 'Missed Penalty' &&
+        !this.isPenaltyShootoutEvent(e)
+    );
+
+    const elapsed = goals.filter((e) => timeTotal(e) <= timeTotal(event));
+
+    const home = elapsed.filter((e) => e.team.id === teams.home.id).length;
+    const away = elapsed.filter((e) => e.team.id === teams.away.id).length;
+
+    return { home, away };
+  }
+
+  private getPenaltyShootoutGoals(
+    events: EventDTO[],
+    eventIndex: number,
+    teams: MatchTeams
+  ): EventResult {
+    const penaltyGoals = events
+      .slice(0, eventIndex + 1)
+      .filter(
+        (event) =>
+          this.isPenaltyShootoutEvent(event) &&
+          event.detail !== 'Missed Penalty'
+      );
+
+    const home = penaltyGoals.filter(
+      (event) => event.team.id === teams.home.id
+    ).length;
+
+    const away = penaltyGoals.filter(
+      (event) => event.team.id === teams.away.id
+    ).length;
+
+    return { home, away };
+  }
 }
-
-const mappedEventsWithSpacers = (
-  events: EventDTO[],
-  fixture: FixtureDTO
-): HighlightItem[] => {
-  const mappedEvents = eventsWithResult(events, fixture.teams);
-  const halftime = fixture.score.halftime;
-
-  const result: HighlightItem[] = [];
-  let hasHalftimeSpacer = false;
-  let hasPenaltyShootoutSpacer = false;
-
-  for (const event of mappedEvents) {
-    if (!hasHalftimeSpacer && isSecondHalfEvent(event, halftime)) {
-      result.push({
-        kind: 'spacer',
-        type: 'halftime',
-        label: 'Halbzeit',
-      });
-
-      hasHalftimeSpacer = true;
-    }
-
-    if (!hasPenaltyShootoutSpacer && isPenaltyShootoutEvent(event)) {
-      result.push({
-        kind: 'spacer',
-        type: 'penalty-shootout',
-        label: 'Elfmeterschießen',
-      });
-
-      hasPenaltyShootoutSpacer = true;
-    }
-
-    result.push(event);
-  }
-
-  return result;
-};
-
-const eventsWithResult = (
-  events: EventDTO[],
-  teams: MatchTeams
-): HighlightEvent[] =>
-  events.map((event) => ({
-    ...event,
-    kind: 'event',
-    result: getTeamGoals(events, event, teams),
-  }));
-
-const isPossibleSecondHalfBoundaryEvent = (event: HighlightEvent): boolean =>
-  event.type === 'Goal' && event.time.elapsed >= 35 && event.time.elapsed <= 50;
-
-const isResultAfterHalftime = (
-  result: EventResult,
-  halftime: Goals
-): boolean => {
-  if (halftime.home === null || halftime.away === null) return false;
-
-  return result.home > halftime.home || result.away > halftime.away;
-};
-
-const isSecondHalfEvent = (event: HighlightEvent, halftime: Goals): boolean => {
-  if (isPenaltyShootoutEvent(event)) return false;
-
-  if (event.time.elapsed > 45) return true;
-
-  if (!isPossibleSecondHalfBoundaryEvent(event)) return false;
-
-  return isResultAfterHalftime(event.result, halftime);
-};
-
-const isPenaltyShootoutEvent = (event: EventDTO): boolean =>
-  event.time.elapsed >= 120 &&
-  event.type === 'Goal' &&
-  ['Penalty', 'Missed Penalty'].includes(event.detail);
-
-const getTeamGoals = (
-  events: EventDTO[],
-  event: EventDTO,
-  teams: MatchTeams
-): EventResult => {
-  if (teams === undefined) throw new Error('Teams not found in fixture');
-
-  if (isPenaltyShootoutEvent(event)) {
-    return getPenaltyShootoutGoals(events, event, teams);
-  }
-
-  return getRegularTeamGoals(events, event, teams);
-};
-
-const getRegularTeamGoals = (
-  events: EventDTO[],
-  event: EventDTO,
-  teams: MatchTeams
-): EventResult => {
-  const goals = events.filter(
-    (e) =>
-      e.type === 'Goal' &&
-      e.detail !== 'Missed Penalty' &&
-      !isPenaltyShootoutEvent(e)
-  );
-
-  const elapsed = goals.filter((e) => timeTotal(e) <= timeTotal(event));
-
-  const home = elapsed.filter((e) => e.team.id === teams.home.id).length;
-  const away = elapsed.filter((e) => e.team.id === teams.away.id).length;
-
-  return { home, away };
-};
-
-const getPenaltyShootoutGoals = (
-  events: EventDTO[],
-  event: EventDTO,
-  teams: MatchTeams
-): EventResult => {
-  const penaltyGoals = events.filter(
-    (e) =>
-      isPenaltyShootoutEvent(e) &&
-      e.detail !== 'Missed Penalty' &&
-      timeTotal(e) <= timeTotal(event)
-  );
-
-  const home = penaltyGoals.filter((e) => e.team.id === teams.home.id).length;
-  const away = penaltyGoals.filter((e) => e.team.id === teams.away.id).length;
-
-  return { home, away };
-};
