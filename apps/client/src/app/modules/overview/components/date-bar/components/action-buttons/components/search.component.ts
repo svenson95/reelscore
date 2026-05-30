@@ -54,7 +54,7 @@ const MAT_MODULES = [
 ];
 
 @Component({
-  selector: 'rs-search-menu',
+  selector: 'rs-search',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [SEARCH_SERVICE_PROVIDER, TeamNamePipe],
   imports: [
@@ -199,7 +199,7 @@ const MAT_MODULES = [
     </mat-menu>
   `,
 })
-export class SearchMenuComponent {
+export class SearchComponent {
   private readonly searchService = inject(SearchService);
   private readonly teamNamePipe = inject(TeamNamePipe);
 
@@ -243,7 +243,7 @@ export class SearchMenuComponent {
       .filter((group) => group.results.length);
   });
 
-  searchingEffect = effect((onCleanup) => {
+  readonly searchingEffect = effect((onCleanup) => {
     const searchTerm = this.searchTerm().trim();
 
     if (!searchTerm || this.searchControl.invalid) {

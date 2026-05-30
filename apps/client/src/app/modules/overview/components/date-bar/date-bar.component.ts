@@ -39,7 +39,7 @@ import {
       <rs-today-button
         [today]="today()"
         [isToday]="isToday()"
-        (clicked)="setDate($event)"
+        (clicked)="resetDate()"
       />
       }
       <div class="spacer"></div>
@@ -58,7 +58,7 @@ import {
     <rs-today-button
       [today]="today()"
       [isToday]="isToday()"
-      (clicked)="setDate($event)"
+      (clicked)="resetDate()"
     />
     }
     <div class="spacer"></div>
@@ -79,11 +79,11 @@ export class DateBarComponent {
   calendarWeek = this.dateService.calendarWeek;
 
   setDate(day: DateString): void {
-    if (day.includes('T')) {
-      const formattedDate = day.split('T')[0];
-      this.selectedDateService.setSelectedDay(formattedDate);
-    } else {
-      this.selectedDateService.setSelectedDay(day);
-    }
+    const formattedDate = day.split('T')[0];
+    this.selectedDateService.setSelectedDay(formattedDate);
+  }
+
+  resetDate(): void {
+    this.dateService.resetToday();
   }
 }

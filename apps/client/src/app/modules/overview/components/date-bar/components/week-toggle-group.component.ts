@@ -8,7 +8,6 @@ import {
   output,
   Pipe,
   PipeTransform,
-  untracked,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,7 +39,14 @@ const EXTERNAL_MODULES = [
   styles: `
     @use "@angular/material" as mat;
 
-    :host { @apply w-full xs:w-fit; touch-action: pan-x pan-y; }
+    :host {
+      @apply w-full xs:w-fit;
+      touch-action: pan-x pan-y;
+    }
+
+    .week-toggle-wrapper {
+      @apply flex items-center w-full xs:w-fit shadow-rs3 rounded-full;
+    }
 
     mat-button-toggle-group.mat-button-toggle-group {
       @include mat.button-toggle-overrides(
@@ -56,7 +62,8 @@ const EXTERNAL_MODULES = [
           disabled-selected-state-background-color: var(--rs-color-primary),
         )
       );
-      @apply flex border-none shadow-rs3;
+
+      @apply flex border-none flex-1;
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;
@@ -89,60 +96,36 @@ const EXTERNAL_MODULES = [
     <mat-button-toggle-group
       hideSingleSelectionIndicator
       [value]="selectedDay()"
+      (valueChange)="toggleValueChange($event)"
     >
-      <mat-button-toggle
-        [disabled]="isLoading()"
-        (click)="setDateTo(-1)"
-        matTooltip="Vorheriger Tag"
-      >
+      <mat-button-toggle [disabled]="isLoading()" (click)="setDateTo(-1)">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
-      @for(date of indexedWeekdays(); track date.index) {
+      @for(day of weekdays(); track day) {
       <mat-button-toggle
-        [disabled]="isLoading() || isSelected(date.day)"
-        [value]="date.day"
-        (click)="dateSelected.emit(date.day)"
-        [class.is-today]="date.day | isToday"
+        [disabled]="isLoading() || selectedDay() === day"
+        [value]="day"
+        [class.is-today]="day | isToday"
       >
-        {{ date.day | date : 'ccc' }}
+        {{ day | date : 'ccc' }}
       </mat-button-toggle>
       }
-      <mat-button-toggle
-        [disabled]="isLoading()"
-        (click)="setDateTo(+1)"
-        matTooltip="Nächster Tag"
-      >
+
+      <mat-button-toggle [disabled]="isLoading()" (click)="setDateTo(+1)">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
   `,
 })
 export class WeekToggleGroupComponent {
-  selectedDay = input.required<DateString>();
-  calendarWeek = input.required<CalendarWeek>();
-  weekdays = input.required<DateString[]>();
-  dateSelected = output<DateString>();
+  readonly selectedDay = input.required<DateString>();
+  readonly calendarWeek = input.required<CalendarWeek>();
+  readonly weekdays = input.required<DateString[]>();
+  readonly dateSelected = output<DateString>();
 
-  indexedWeekdays = computed<{ day: DateString; index: number }[]>(() => {
-    void this.calendarWeek(); // trigger recompute
-    return untracked(this.weekdays).map((day) => ({
-      day,
-      index: new Date(day).getDate(),
-    }));
-  });
-
-  isSelected = (date: DateString): boolean => {
-    const selected = this.selectedDay();
-    if (!selected) {
-      return false;
-    }
-
-    return selected === date;
-  };
-
-  private weekFixtures = inject(WeekdayFixturesStore);
-  private weekStandings = inject(WeekdayStandingsStore);
-  isLoading = computed<boolean>(
+  private readonly weekFixtures = inject(WeekdayFixturesStore);
+  private readonly weekStandings = inject(WeekdayStandingsStore);
+  readonly isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
   );
 
@@ -153,5 +136,10 @@ export class WeekToggleGroupComponent {
       .tz('Europe/Berlin')
       .format('YYYY-MM-DD');
     this.dateSelected.emit(formattedDate);
+  }
+
+  toggleValueChange(value: string) {
+    if (!value) return;
+    this.dateSelected.emit(value);
   }
 }

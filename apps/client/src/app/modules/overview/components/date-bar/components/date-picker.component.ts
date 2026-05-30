@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,9 +16,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 import moment from 'moment-timezone';
 
+import { DatePipe } from '@angular/common';
 import { DateString } from '@app/shared';
+
+const MAT_MODULES = [
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatTooltipModule,
+  MatIconModule,
+];
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -36,15 +46,7 @@ const DATE_PICKER_PROVIDERS = [
 @Component({
   selector: 'rs-date-picker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatTooltipModule,
-    MatIconModule,
-  ],
+  imports: [...MAT_MODULES, DatePipe],
   providers: [...DATE_PICKER_PROVIDERS],
   styles: `
     @use '@angular/material' as mat;
@@ -66,7 +68,6 @@ const DATE_PICKER_PROVIDERS = [
   template: `
     <button
       mat-flat-button
-      matTooltip="Datum auswählen"
       (click)="picker.open()"
       [class.is-open]="picker.opened"
     >
@@ -88,11 +89,11 @@ const DATE_PICKER_PROVIDERS = [
   `,
 })
 export class DatePickerComponent {
+  readonly selectedDay = input.required<DateString>();
+  readonly dateSelected = output<DateString>();
+
   readonly MIN_DATE = new Date(2023, 7, 11);
   readonly MAX_DATE = new Date(moment().toDate().getFullYear(), 11, 31);
-
-  selectedDay = input.required<DateString>();
-  dateSelected = output<DateString>();
 
   updateDate(value: DateString): void {
     const date = moment(value).tz('Europe/Berlin').format('YYYY-MM-DD');
