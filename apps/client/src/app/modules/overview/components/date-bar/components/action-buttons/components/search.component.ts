@@ -106,7 +106,7 @@ const MAT_MODULES = [
     }
 
     .no-data {
-      @apply pt-6 pb-2 text-center text-rs-color-text-2;
+      @apply pt-8 text-center text-rs-color-text-2;
     }
   `,
   template: `
