@@ -17,6 +17,7 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionName> = {
     'WM - Qualifikation Europa',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 'FIFA World Cup',
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'UEFA Nations League',
+  [CompetitionCode.INTERNATIONAL_FRIENDLIES]: 'Freundschaftsspiele',
 
   // Deutschland
   [CompetitionCode.GERMANY_BUNDESLIGA]: 'Bundesliga',

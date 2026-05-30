@@ -15,6 +15,7 @@ export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE]: 32,
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 15,
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 5,
+  [CompetitionCode.INTERNATIONAL_FRIENDLIES]: 10,
 
   // Deutschland
   [CompetitionCode.GERMANY_BUNDESLIGA]: 78,

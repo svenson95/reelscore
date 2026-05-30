@@ -17,6 +17,7 @@ export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
     'world-cup-qualification-europe',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: '15',
   [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'nations-league',
+  [CompetitionCode.INTERNATIONAL_FRIENDLIES]: 'friendly-matches',
 
   // Deutschland
   [CompetitionCode.GERMANY_BUNDESLIGA]: 'bundesliga',

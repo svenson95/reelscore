@@ -2,25 +2,34 @@ import moment from 'moment-timezone';
 
 import { CompetitionId } from '@lib/models';
 
+const TIMEZONE = 'Europe/Berlin';
+
+const MLS_ID = 253;
+
+const FIXED_SEASON_BY_COMPETITION = new Map<number, number>([
+  [32, 2024], // World Cup Qualifiers Europe
+  [1, 2026], // World Cup
+  [10, 2026], // Friendlies
+]);
+
 export const getSeason = (competition: CompetitionId | null = null): number => {
-  const today = moment().tz('Europe/Berlin');
+  const today = moment().tz(TIMEZONE);
   const competitionId = Number(competition);
 
-  const mlsId = 253;
-  if (competitionId === mlsId) return today.year();
-  const wcqeId = 32; // World Cup Qualifiers Europe
-  if (competitionId === wcqeId) return 2024;
-  const wcId = 1; // World Cup
-  if (competitionId === wcId) return 2026;
-
-  return calculateSeasonForRegularCompetition(today);
-};
-
-const calculateSeasonForRegularCompetition = (today: moment.Moment): number => {
-  const cutoff = today.clone().month(5).date(9);
-  if (today.isSameOrBefore(cutoff)) {
-    return today.year() - 1;
-  } else {
+  if (competitionId === MLS_ID) {
     return today.year();
   }
+
+  return (
+    FIXED_SEASON_BY_COMPETITION.get(competitionId) ??
+    getRegularCompetitionSeason(today)
+  );
+};
+
+const getRegularCompetitionSeason = (today: moment.Moment): number => {
+  const seasonStartCutoff = today.clone().month(5).date(9);
+
+  return today.isSameOrBefore(seasonStartCutoff)
+    ? today.year() - 1
+    : today.year();
 };
