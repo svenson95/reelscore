@@ -117,6 +117,7 @@ const MAT_MODULES = [
       [matMenuTriggerFor]="searchMenu"
       #searchMenuTrigger="matMenuTrigger"
       aria-label="Suche öffnen"
+      [class.is-open]="searchMenuTrigger.menuOpen"
     >
       <mat-icon>search</mat-icon>
     </button>
@@ -138,7 +139,7 @@ const MAT_MODULES = [
             matInput
             cdkFocusInitial
             type="search"
-            placeholder="Team, Wettbewerb oder Spiel suchen"
+            placeholder="Team oder Wettbewerb"
             [formControl]="searchControl"
           />
         </mat-form-field>

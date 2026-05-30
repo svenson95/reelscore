@@ -21,7 +21,7 @@ import { FilterButtonComponent, SearchMenuComponent } from './components';
     }
 
     :host ::ng-deep {
-      .mat-mdc-icon-button {
+      button[mat-icon-button] {
         --mdc-icon-button-state-layer-size: 36px;
         border: 1px solid var(--rs-button-border-color);
         margin-left: 1px;

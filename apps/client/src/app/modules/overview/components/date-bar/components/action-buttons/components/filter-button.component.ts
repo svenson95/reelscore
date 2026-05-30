@@ -80,9 +80,11 @@ const MAT_MODULES = [
       mat-icon-button
       aria-label="Filter button"
       matTooltip="Filtern"
+      #menuTrigger="matMenuTrigger"
       [class.is-filtering]="!!selectedCompetition()"
       [matMenuTriggerFor]="menu"
       [disabled]="!hasFilterOptions()"
+      [class.is-open]="menuTrigger.menuOpen"
     >
       <mat-icon>filter_list</mat-icon>
     </button>

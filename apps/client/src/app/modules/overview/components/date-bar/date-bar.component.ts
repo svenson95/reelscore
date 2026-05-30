@@ -25,6 +25,9 @@ import {
     .top { @apply flex w-full sm:w-fit items-center; }
     .top > *:not(:first-child) { border-left: 1px solid var(--mat-sys-surface); }
     .spacer { @apply flex-grow; }
+    :host ::ng-deep button.is-open {
+      @apply bg-rs-color-primary text-rs-color-text-3;
+    }
   `,
   template: `
     <div class="top">
