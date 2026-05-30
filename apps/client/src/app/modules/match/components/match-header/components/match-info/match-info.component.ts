@@ -97,6 +97,12 @@ export class MatchInfoComponent {
     );
   });
 
+  readonly isPenalty = computed<boolean>(() => {
+    const status = this.data()?.fixture.status.short;
+    console.log('this.data', this.data());
+    return !!status && status === 'P';
+  });
+
   readonly isFinished = computed<boolean>(() => {
     const status = this.data()?.fixture.status.short;
     return (
@@ -105,6 +111,10 @@ export class MatchInfoComponent {
   });
 
   readonly statusLabel = computed<string | undefined>(() => {
+    if (this.isPenalty()) {
+      return 'Elfmeterschießen';
+    }
+
     if (this.isPlaying()) {
       return `${this.data()?.fixture.status.elapsed}'`;
     }
