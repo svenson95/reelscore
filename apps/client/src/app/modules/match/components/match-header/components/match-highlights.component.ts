@@ -9,28 +9,15 @@ import {
 import {
   type EventDTO,
   type EventResult,
-  type EventWithResult,
   type FixtureDTO,
   type FixtureHighlights,
   type Goals,
+  type HighlightEvent,
+  type HighlightItem,
   type MatchTeams,
   type TeamId,
   timeTotal,
 } from '@lib/models';
-
-type HighlightSpacerType = 'halftime' | 'penalty-shootout';
-
-type HighlightSpacer = {
-  kind: 'spacer';
-  type: HighlightSpacerType;
-  label: string;
-};
-
-type HighlightEvent = EventWithResult & {
-  kind: 'event';
-};
-
-type HighlightItem = HighlightEvent | HighlightSpacer;
 
 @Component({
   selector: 'rs-match-highlights',
@@ -136,17 +123,17 @@ export class MatchHighlightsComponent {
     () => untracked(this.data).teams.home.id
   );
 
-  asSpacer = (item: HighlightItem): HighlightSpacer | null =>
-    item.kind === 'spacer' ? item : null;
-
-  asEvent = (item: HighlightItem): HighlightEvent | null =>
-    item.kind === 'event' ? item : null;
-
   isHomeEvent = (event: HighlightEvent): boolean =>
     event.team.id === this.homeTeamId();
 
   isMissedPenalty = (event: HighlightEvent): boolean =>
     event.type === 'Goal' && event.detail === 'Missed Penalty';
+
+  private hasFirstHalfEvents(events: EventDTO[]): boolean {
+    return events.some(
+      (e) => e.time.elapsed <= 45 && !this.isPenaltyShootoutEvent(e)
+    );
+  }
 
   private mappedEventsWithSpacers(
     events: EventDTO[],
@@ -155,12 +142,18 @@ export class MatchHighlightsComponent {
     const mappedEvents = this.eventsWithResult(events, fixture.teams);
     const halftime = fixture.score.halftime;
 
+    const hasFirstHalfEvents = this.hasFirstHalfEvents(mappedEvents);
+
     const result: HighlightItem[] = [];
     let hasHalftimeSpacer = false;
     let hasPenaltyShootoutSpacer = false;
 
     for (const event of mappedEvents) {
-      if (!hasHalftimeSpacer && this.isSecondHalfEvent(event, halftime)) {
+      if (
+        hasFirstHalfEvents &&
+        !hasHalftimeSpacer &&
+        this.isSecondHalfEvent(event, halftime)
+      ) {
         result.push({
           kind: 'spacer',
           type: 'halftime',
