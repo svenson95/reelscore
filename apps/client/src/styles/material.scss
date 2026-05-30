@@ -62,6 +62,18 @@
     )
   );
 
+  @include mat.dialog-overrides(
+    (
+      container-shape: 0,
+    )
+  );
+
+  @include mat.list-overrides(
+    (
+      active-indicator-shape: 0,
+    )
+  );
+
   @include mat.select-overrides(
     (
       panel-background-color: var(--rs-color-white),
