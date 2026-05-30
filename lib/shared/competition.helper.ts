@@ -9,7 +9,7 @@ export const isCompetitionWithMultipleGroups = (
 
 export const isCompetitionWithoutStandings = (
   competitionId: CompetitionId
-): boolean => [48, 81, 137, 528, 529, 531].includes(competitionId);
+): boolean => [10, 48, 81, 137, 528, 529, 531].includes(competitionId);
 
 export const isCompetitionWithOneFixture = (
   competitionId: CompetitionId
