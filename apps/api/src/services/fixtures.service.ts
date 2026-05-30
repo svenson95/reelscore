@@ -43,17 +43,6 @@ export class FixturesService {
       .gte(dayStart)
       .lte(dayEnd)
       .sort({ 'fixture.date': 1 })
-      .select({
-        final: 1,
-        'fixture.date': 1,
-        'fixture.id': 1,
-        'fixture.status': 1,
-        'league.name': 1,
-        'league.id': 1,
-        'league.round': 1,
-        goals: 1,
-        teams: 1,
-      })
       .lean();
   }
 

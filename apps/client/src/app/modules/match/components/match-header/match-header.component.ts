@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   HostBinding,
   inject,
   input,
@@ -91,10 +90,11 @@ const ALLIANZ_ARENA_ID = 20732;
         [style.background-image]="venueBackgroundImage()"
       ></div>
       <rs-match-info [data]="data()" />
-      @if (highlights() && isNotGoalLess()) {
+      @if (highlights() && hasGoalsOrPenalty()) {
       <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
         <div class="divider"></div>
       </div>
+
       <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
         @if (data(); as data) {
         <rs-match-highlights
@@ -115,13 +115,16 @@ export class MatchHeaderComponent implements OnInit {
   readonly isScrolled = signal<boolean>(false);
 
   private readonly ngZone = inject(NgZone);
+
   private readonly scrollEvent$ = fromEvent(window, 'scroll').pipe(
     takeUntilDestroyed(),
     debounce(() => timer(this.isScrolled() ? 10 : 0))
   );
 
   @HostBinding('class.is-scrolled')
-  isScrolledBinding = this.isScrolled();
+  get isScrolledBinding(): boolean {
+    return this.isScrolled();
+  }
 
   private activeVenueImageUrl = signal<string | undefined>(undefined);
   readonly hasValidVenueBackground = signal<boolean>(false);
@@ -130,58 +133,37 @@ export class MatchHeaderComponent implements OnInit {
   readonly venueImageUrl = computed(() => {
     const fixture = this.data();
     if (!fixture) return undefined;
+
     const venueId = VENUE_IDS[fixture.teams.home.id] ?? ALLIANZ_ARENA_ID;
+
     return `https://media.api-sports.io/football/venues/${venueId}.png`;
   });
 
   readonly venueBackgroundImage = computed(() => {
     const imageUrl = this.activeVenueImageUrl();
+
     if (!imageUrl || !this.hasValidVenueBackground()) return undefined;
+
     return `url("${imageUrl}")`;
   });
 
-  private getVenueImageUrl(venueId: number): string {
-    return `https://media.api-sports.io/football/venues/${venueId}.png`;
-  }
+  readonly hasGoalsOrPenalty = computed<boolean>(() => {
+    const data = this.data();
+    if (!data) return false;
 
-  private preloadVenueImage(imageUrl: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      const img = new Image();
+    const { goals, score } = data;
 
-      img.onload = () => {
-        const isPlaceholder =
-          img.naturalWidth <= 200 || img.naturalHeight <= 200;
-        resolve(!isPlaceholder);
-      };
-      img.onerror = () => {
-        resolve(false);
-      };
+    const hasRegularGoals =
+      goals.home !== null &&
+      goals.away !== null &&
+      (goals.home > 0 || goals.away > 0);
 
-      img.src = imageUrl;
-    });
-  }
+    const hasPenaltyGoals =
+      score.penalty.home !== null &&
+      score.penalty.away !== null &&
+      (score.penalty.home > 0 || score.penalty.away > 0);
 
-  venueEffect = effect(async () => {
-    const imageUrl = this.venueImageUrl();
-    this.venueBackgroundLoaded.set(false);
-    this.hasValidVenueBackground.set(false);
-    this.activeVenueImageUrl.set(undefined);
-    if (!imageUrl) return;
-
-    const isValidImage = await this.preloadVenueImage(imageUrl);
-    if (isValidImage) {
-      this.activeVenueImageUrl.set(imageUrl);
-      this.hasValidVenueBackground.set(true);
-      this.venueBackgroundLoaded.set(true);
-      return;
-    }
-
-    const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
-    const isValidFallbackImage = await this.preloadVenueImage(fallbackImageUrl);
-
-    this.activeVenueImageUrl.set(fallbackImageUrl);
-    this.hasValidVenueBackground.set(isValidFallbackImage);
-    this.venueBackgroundLoaded.set(true);
+    return hasRegularGoals || hasPenaltyGoals;
   });
 
   ngOnInit() {
@@ -189,6 +171,7 @@ export class MatchHeaderComponent implements OnInit {
       this.scrollEvent$.subscribe(() => {
         this.ngZone.run(() => {
           const isScrolled = window.scrollY > 80;
+
           const maxScrollHeight = Math.max(
             document.body.scrollHeight,
             document.body.offsetHeight,
@@ -196,22 +179,12 @@ export class MatchHeaderComponent implements OnInit {
             document.documentElement.scrollHeight,
             document.documentElement.offsetHeight
           );
+
           const minScrollHeight = 1200;
+
           this.isScrolled.set(isScrolled && maxScrollHeight > minScrollHeight);
         });
       });
     });
   }
-
-  isNotGoalLess = computed<boolean>(() => {
-    const data = this.data();
-    if (!data) return false;
-    const { goals, fixture } = data;
-    return (
-      goals.home !== null &&
-      goals.away !== null &&
-      (goals.home > 0 || goals.away > 0) &&
-      fixture.status.short !== 'PEN'
-    );
-  });
 }

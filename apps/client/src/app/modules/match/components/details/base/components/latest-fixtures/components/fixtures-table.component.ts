@@ -10,7 +10,7 @@ import {
   TeamNamePipe,
   linkToMatch,
 } from '@app/shared';
-import { FixtureDTO, FixtureTeam } from '@lib/models';
+import type { FixtureDTO, FixtureTeam } from '@lib/models';
 
 const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
@@ -58,7 +58,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
       <div class="result">
         <rs-result-label
-          [result]="match.score.fulltime"
+          [result]="match.score"
           [status]="match.fixture.status.short"
         />
       </div>

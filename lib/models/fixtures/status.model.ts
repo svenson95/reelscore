@@ -28,7 +28,7 @@ export type StatusShort =
 
 export const STATUS_TYPES_SCHEDULED = ['TBD', 'NS'] as const;
 export type StatusTypeScheduled = (typeof STATUS_TYPES_SCHEDULED)[number];
-export const STATUS_VALUE_HALFTIME = ['HT'] as const;
+export const STATUS_VALUE_HALFTIME = 'HT' as const;
 export type StatusValueHalftime = (typeof STATUS_VALUE_HALFTIME)[number];
 export const STATUS_TYPES_PLAYING = [
   '1H',
@@ -43,10 +43,10 @@ export const STATUS_TYPES_PLAYING = [
 ] as const;
 export type StatusTypePlaying = (typeof STATUS_TYPES_PLAYING)[number];
 
-export const STATUS_TYPES_FINISHED = ['FT', 'AET', 'PEN'] as const;
 export type StatusTypeFinished = (typeof STATUS_TYPES_FINISHED)[number];
-
-export type StatusTypePostponed = 'PST';
+export const STATUS_TYPES_FINISHED = ['FT', 'AET', 'PEN'] as const;
+export const STATUS_VALUE_POSTPONED = 'PST' as const;
+export type StatusTypePostponed = (typeof STATUS_VALUE_POSTPONED)[number];
 export type StatusTypeCancelled = 'CANC';
 export type StatusTypeAbandoned = 'ABD';
 export const STATUS_TYPES_NOT_PLAYED = [
