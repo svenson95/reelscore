@@ -71,7 +71,9 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
           class="time-label"
           [class.is-finished]="match | isStatus : finished"
         >
-          @if (match | isStatus : playing : finished) {
+          @if (match | isStatus : ['P']) {
+          <span class="truncate text-ellipsis">Elfm.</span>
+          } @else if (match | isStatus : playing : finished) {
           {{ match.fixture.status.elapsed }}' } @else if (match | isStatus :
           halfTime) { HZ } @else {
           {{ match.fixture.date | date : 'HH:mm' }}
