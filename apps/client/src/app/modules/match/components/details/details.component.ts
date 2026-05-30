@@ -63,7 +63,10 @@ const ANGULAR_MODULES = [
         <div class="tab-content">
           <rs-match-fixture-data />
           @if (fixture()?.data) { @if (!hasNoStandings() && !isKoPhase()) {
-          <rs-match-fixture-standings [standings]="standings()" />
+          <rs-match-fixture-standings
+            [standings]="standings()"
+            [isLoading]="isLoadingStandings()"
+          />
           }
           <rs-match-evaluations [evaluations]="evaluations()" />
           <rs-match-latest-fixtures />
@@ -127,5 +130,6 @@ export class MatchDetailsComponent {
   evaluations = this.facade.evaluations;
   fixture = this.facade.fixture;
   hasNoStandings = this.facade.hasNoStandings;
+  isLoadingStandings = this.facade.standingsStore.isLoading;
   isKoPhase = this.facade.isKoPhase;
 }

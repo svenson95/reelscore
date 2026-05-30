@@ -7,21 +7,27 @@ import { FilteredStandingsStore } from '../../../../store';
 
 @Injectable()
 export class OverviewStandingsFacade {
-  standingsStore = inject(FilteredStandingsStore);
-  dayStandings = this.standingsStore.standings;
+  readonly standingsStore = inject(FilteredStandingsStore);
+  readonly dayStandings = this.standingsStore.standings;
 
-  filterService = inject(FilterService);
-  isFiltering = computed<boolean>(
+  private readonly filterService = inject(FilterService);
+  readonly isFiltering = computed<boolean>(
     () =>
       this.filterService.selectedCompetition() !== null &&
       this.dayStandings() !== null
   );
 
-  hasMultipleGroups = computed<boolean>(() =>
-    hasMultipleGroups(this.dayStandings())
-  );
+  readonly hasMultipleGroups = computed<boolean>(() => {
+    const standings = this.dayStandings();
+    if (standings === null) return false;
 
-  showHomeAndAwayStandings = computed<boolean>(() =>
-    showHomeAndAwayStandings(this.dayStandings())
-  );
+    return hasMultipleGroups(standings);
+  });
+
+  readonly showHomeAndAwayStandings = computed<boolean>(() => {
+    const standings = this.dayStandings();
+    if (standings === null) return false;
+
+    return showHomeAndAwayStandings(standings);
+  });
 }

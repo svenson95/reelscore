@@ -26,24 +26,24 @@ import { CompetitionStandingsStore } from '../store';
     }
   `,
   template: `
-    @let data = standings(); @if (data !== null) { @if (hasMultipleGroups()) {
-    @for (multipleStanding of data.league.standings; track $index) {
-    <rs-standings-table [ranks]="multipleStanding" [league]="data.league" />
+    @let leagueData = league(); @let groups = standingGroups(); @if (leagueData
+    && groups.length) { @if (hasMultipleGroups()) { @for (multipleStanding of
+    groups; track $index) {
+    <rs-standings-table [ranks]="multipleStanding" [league]="leagueData" />
     } } @else {
-    <rs-standings-table
-      [ranks]="data.league.standings![0]"
-      [league]="data.league"
-    />
+    <rs-standings-table [ranks]="groups[0]" [league]="leagueData" />
+
     @if (showHomeAndAwayStandings()) {
     <div class="home-and-away-standings">
       <rs-standings-table
-        [ranks]="data.league.standings![1]"
-        [league]="data.league"
+        [ranks]="groups[1]"
+        [league]="leagueData"
         header="Heimtabelle"
       />
+
       <rs-standings-table
-        [ranks]="data.league.standings![2]"
-        [league]="data.league"
+        [ranks]="groups[2]"
+        [league]="leagueData"
         header="Auswärtstabelle"
       />
     </div>
@@ -55,15 +55,28 @@ import { CompetitionStandingsStore } from '../store';
   `,
 })
 export class CompetitionStandingsComponent {
-  private store = inject(CompetitionStandingsStore);
-  standings = this.store.standings;
-  isLoading = this.store.isLoading;
+  private readonly store = inject(CompetitionStandingsStore);
 
-  hasMultipleGroups = computed<boolean>(() =>
-    hasMultipleGroups(this.standings())
+  private readonly standings = this.store.standings;
+  readonly isLoading = this.store.isLoading;
+
+  readonly league = computed(() => this.standings()?.league ?? null);
+
+  readonly standingGroups = computed(
+    () => this.standings()?.league.standings ?? []
   );
 
-  showHomeAndAwayStandings = computed<boolean>(() =>
-    showHomeAndAwayStandings(this.standings())
-  );
+  readonly hasMultipleGroups = computed<boolean>(() => {
+    const standings = this.standings();
+    if (standings === null) return false;
+
+    return hasMultipleGroups(standings);
+  });
+
+  readonly showHomeAndAwayStandings = computed<boolean>(() => {
+    const standings = this.standings();
+    if (standings === null) return false;
+
+    return showHomeAndAwayStandings(standings);
+  });
 }
