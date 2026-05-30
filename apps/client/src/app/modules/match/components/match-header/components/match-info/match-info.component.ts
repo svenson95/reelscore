@@ -110,7 +110,7 @@ export class MatchInfoComponent {
     }
 
     if (this.isFinished()) {
-      return 'FT';
+      return 'ENDE';
     }
 
     return undefined;
