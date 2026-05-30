@@ -2,14 +2,13 @@ import { DatePipe } from '@angular/common';
 import {
   Injectable,
   Signal,
-  WritableSignal,
   computed,
   effect,
   inject,
   signal,
-  untracked,
 } from '@angular/core';
 import { Router } from '@angular/router';
+
 import moment from 'moment-timezone';
 
 import { CalendarWeek, DateString } from '@app/shared';
@@ -21,42 +20,52 @@ export abstract class DateService {
   abstract today: Signal<DateString>;
   abstract isToday: Signal<boolean>;
   abstract resetToday(): void;
-  abstract calendarWeek: WritableSignal<CalendarWeek>;
+  abstract calendarWeek: Signal<CalendarWeek>;
+  abstract calendarWeekKey: Signal<string>;
   abstract weekdays: Signal<DateString[]>;
-  abstract getCalendarWeekFrom(day: DateString): CalendarWeek;
 }
 
 @Injectable()
 export class AbstractedDateService extends DateService {
-  private router = inject(Router);
-  private selectedDateService = inject(SelectedDateService);
+  private readonly router = inject(Router);
+  private readonly selectedDateService = inject(SelectedDateService);
 
-  selectedTabIndex = computed<number>(() => {
+  readonly selectedTabIndex = computed<number>(() => {
     return this.weekdays().findIndex(
       (day) => day === this.selectedDateService.selectedDay()
     );
   });
 
-  selectedDayEffect = effect(() => {
-    const date = this.selectedDateService.selectedDay();
-    const calendarWeek = this.calendarWeek;
-    const weekOfDay = this.getCalendarWeekFrom(date);
-    if (untracked(calendarWeek) !== weekOfDay) {
-      calendarWeek.set(weekOfDay);
-    }
-
-    this.updateRoute(date);
-  });
-
-  #today = signal<DateString>(this.getToday());
-  today = this.#today.asReadonly();
-  isToday = computed<boolean>(
+  private readonly todaySignal = signal<DateString>(this.getToday());
+  readonly today = this.todaySignal.asReadonly();
+  readonly isToday = computed<boolean>(
     () => this.selectedDateService.selectedDay() === this.today()
   );
 
+  readonly calendarWeek = computed<CalendarWeek>(() =>
+    this.getCalendarWeekFrom(this.selectedDateService.selectedDay())
+  );
+
+  readonly calendarWeekKey = computed<string>(() =>
+    this.getCalendarWeekKey(this.selectedDateService.selectedDay())
+  );
+
+  readonly weekdays = computed<DateString[]>(() => {
+    const selectedDay = this.selectedDateService.selectedDay();
+
+    return this.createWeekDaysArray(selectedDay);
+  });
+
+  readonly selectedDayEffect = effect(() => {
+    const date = this.selectedDateService.selectedDay();
+    this.updateRoute(date);
+  });
+
   resetToday(): void {
     const todayDate = this.getToday();
-    this.#today.set(todayDate);
+
+    this.todaySignal.set(todayDate);
+    this.selectedDateService.setSelectedDay(todayDate);
   }
 
   private updateRoute(date: DateString): void {
@@ -72,36 +81,23 @@ export class AbstractedDateService extends DateService {
     return moment().tz('Europe/Berlin').format('YYYY-MM-DD');
   }
 
-  calendarWeek = signal<CalendarWeek>(
-    this.getCalendarWeekFrom(this.selectedDateService.selectedDay())
-  );
+  private createWeekDaysArray(day: DateString): DateString[] {
+    const startOfWeek = moment
+      .tz(day, 'YYYY-MM-DD', 'Europe/Berlin')
+      .startOf('isoWeek');
 
-  weekdays = computed<DateString[]>(() => {
-    void this.calendarWeek(); // trigger recompute
-    const selectedDay = untracked(this.selectedDateService.selectedDay);
-    const selectedDate = new Date(selectedDay);
-    return this.createWeekDaysArray(selectedDate);
-  });
+    return Array.from({ length: 7 }, (_, index) =>
+      startOfWeek.clone().add(index, 'days').format('YYYY-MM-DD')
+    );
+  }
 
-  private getStartOfWeek = (date: Date): Date => {
-    const startOfWeek = new Date(date);
-    const dayOfWeek = startOfWeek.getDay();
-    const correctedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
-    startOfWeek.setDate(startOfWeek.getDate() - correctedDayOfWeek + 1);
-    return startOfWeek;
-  };
+  private getCalendarWeekKey(day: DateString): string {
+    const date = moment.tz(day, 'YYYY-MM-DD', 'Europe/Berlin');
 
-  private createWeekDaysArray = (date: Date): DateString[] => {
-    const startOfWeek = this.getStartOfWeek(date);
+    return `${date.isoWeekYear()}-W${date.isoWeek()}`;
+  }
 
-    return Array.from({ length: 7 }, (_, i) => {
-      const day = new Date(startOfWeek);
-      day.setDate(startOfWeek.getDate() + i);
-      return moment(day).tz('Europe/Berlin').format('YYYY-MM-DD');
-    });
-  };
-
-  getCalendarWeekFrom(day: DateString): CalendarWeek {
+  private getCalendarWeekFrom(day: DateString): CalendarWeek {
     try {
       const datepipe = new DatePipe('de-DE');
       const week = datepipe.transform(day, 'w');

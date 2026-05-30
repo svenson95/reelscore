@@ -3,18 +3,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { FilterButtonComponent, SearchMenuComponent } from './components';
+import { FilterComponent, SearchComponent } from './components';
 
+const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
 @Component({
   selector: 'rs-action-buttons',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    FilterButtonComponent,
-    SearchMenuComponent,
-  ],
+  imports: [...MAT_MODULES, FilterComponent, SearchComponent],
   styles: `
     :host {
       @apply flex;
@@ -33,9 +28,8 @@ import { FilterButtonComponent, SearchMenuComponent } from './components';
     }
   `,
   template: `
-    <rs-filter-button />
-
-    <rs-search-menu />
+    <rs-filter />
+    <rs-search />
   `,
 })
 export class ActionButtonsComponent {}

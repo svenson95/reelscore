@@ -1,2 +1,2 @@
-export * from './filter-button.component';
-export * from './search-menu.component';
+export * from './filter.component';
+export * from './search.component';

@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+
+import { DateString } from '@app/shared';
+
+import { SelectedDateService } from '../../services';
 
 import {
   OverviewFixturesComponent,
@@ -8,13 +20,13 @@ import {
 import { OverviewContentFacade } from './content.facade';
 import { HideHeaderDirective } from './directives';
 
-const ANGULAR_MODULES = [MatTabsModule];
+const MAT_MODULES = [MatTabsModule];
 
 @Component({
   selector: 'section[rs-overview-content]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...ANGULAR_MODULES,
+    ...MAT_MODULES,
     HideHeaderDirective,
     OverviewFixturesComponent,
     OverviewStandingsComponent,
@@ -59,15 +71,40 @@ const ANGULAR_MODULES = [MatTabsModule];
   `,
 })
 export class OverviewContentComponent {
-  facade = inject(OverviewContentFacade);
-  tabIndex = this.facade.tabIndex;
-  weekdays = this.facade.weekdays;
+  private readonly router = inject(Router);
+  private readonly dateService = inject(SelectedDateService);
 
-  weekFixtures = this.facade.weekFixtures;
-  fixturesLoading = this.facade.fixturesLoading;
-  fixturesError = this.facade.fixturesError;
+  private readonly facade = inject(OverviewContentFacade);
+  readonly tabIndex = this.facade.tabIndex;
+  readonly weekdays = this.facade.weekdays;
 
-  weekStandings = this.facade.weekStandings;
-  standingsLoading = this.facade.standingsLoading;
-  standingsError = this.facade.standingsError;
+  readonly weekFixtures = this.facade.weekFixtures;
+  readonly fixturesLoading = this.facade.fixturesLoading;
+  readonly fixturesError = this.facade.fixturesError;
+
+  readonly weekStandings = this.facade.weekStandings;
+  readonly standingsLoading = this.facade.standingsLoading;
+  readonly standingsError = this.facade.standingsError;
+
+  readonly routeEvent = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    )
+  );
+
+  readonly routeEffect = effect(() => {
+    this.routeEvent();
+
+    const date = this.getDateFromUrl(this.router.url);
+
+    if (!date) return;
+
+    this.dateService.setSelectedDay(date);
+  });
+
+  private getDateFromUrl(url: string): DateString | null {
+    const date = url.split('?')[0].split('/').filter(Boolean)[0];
+
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? (date as DateString) : null;
+  }
 }

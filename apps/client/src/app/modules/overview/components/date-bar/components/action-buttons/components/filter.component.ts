@@ -31,7 +31,7 @@ const MAT_MODULES = [
 ];
 
 @Component({
-  selector: 'rs-filter-button',
+  selector: 'rs-filter',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...MAT_MODULES, ResponsiveImageComponent],
   styles: `
@@ -117,7 +117,7 @@ const MAT_MODULES = [
     </mat-menu>
   `,
 })
-export class FilterButtonComponent {
+export class FilterComponent {
   private readonly facade = inject(WeekdayFixturesStore);
   private readonly standingsStore = inject(FilteredStandingsStore);
   private readonly selectedDateService = inject(SelectedDateService);
