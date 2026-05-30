@@ -99,7 +99,6 @@ export class MatchInfoComponent {
 
   readonly isPenalty = computed<boolean>(() => {
     const status = this.data()?.fixture.status.short;
-    console.log('this.data', this.data());
     return !!status && status === 'P';
   });
 

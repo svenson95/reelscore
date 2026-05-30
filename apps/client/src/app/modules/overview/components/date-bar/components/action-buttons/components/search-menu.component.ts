@@ -70,7 +70,7 @@ const MAT_MODULES = [
     }
 
     .search-menu-content {
-      @apply flex flex-col w-[min(420px,calc(100vw-32px))] p-rs2;
+      @apply flex flex-col w-[90vw] xs:w-[400px] p-rs2;
     }
 
     .search-field {
@@ -82,7 +82,7 @@ const MAT_MODULES = [
     }
 
     .search-results {
-      @apply mt-rs2 max-h-[60dvh] overflow-y-auto;
+      @apply mt-rs2 max-h-[60dvh];
     }
 
     .group {
@@ -90,7 +90,7 @@ const MAT_MODULES = [
     }
 
     .group-title {
-      @apply mb-1 text-rs-font-size-small font-semibold opacity-70;
+      @apply mb-1 text-rs-font-size-small font-semibold text-rs-color-text-2;
     }
 
     .result-title {
@@ -105,8 +105,8 @@ const MAT_MODULES = [
       @apply text-rs-font-size-small text-rs-color-text-2;
     }
 
-    .empty-state {
-      @apply py-6 text-center text-rs-color-text-2;
+    .no-data {
+      @apply pt-6 pb-2 text-center text-rs-color-text-2;
     }
   `,
   template: `
@@ -145,7 +145,7 @@ const MAT_MODULES = [
         </mat-form-field>
 
         @let groups = resultGroups(); @if (isLoading()) {
-        <div class="empty-state">Suche läuft...</div>
+        <div class="no-data">Suche läuft ...</div>
         } @else if (groups?.length) {
         <div class="search-results">
           @for (group of groups; track group.type) {
@@ -193,7 +193,7 @@ const MAT_MODULES = [
           }
         </div>
         } @else if (isSearching()) {
-        <div class="empty-state">Keine Ergebnisse.</div>
+        <div class="no-data">Keine Ergebnisse</div>
         }
       </div>
     </mat-menu>
@@ -282,7 +282,7 @@ export class SearchMenuComponent {
         (c) => c.id === result.data.league.id
       );
 
-      return competition ? ['competition', competition.url] : ['/'];
+      return competition ? ['/', 'competition', competition.url] : ['/'];
     }
 
     if (result.type === 'fixtures') {
