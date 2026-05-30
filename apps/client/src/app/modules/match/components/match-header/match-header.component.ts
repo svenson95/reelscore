@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   HostBinding,
   inject,
   input,
@@ -164,6 +165,37 @@ export class MatchHeaderComponent implements OnInit {
       (score.penalty.home > 0 || score.penalty.away > 0);
 
     return hasRegularGoals || hasPenaltyGoals;
+  });
+
+  readonly venueImageLoader = effect((onCleanup) => {
+    const imageUrl = this.venueImageUrl();
+
+    this.activeVenueImageUrl.set(undefined);
+    this.hasValidVenueBackground.set(false);
+    this.venueBackgroundLoaded.set(false);
+
+    if (!imageUrl) return;
+
+    const image = new Image();
+
+    image.onload = () => {
+      this.activeVenueImageUrl.set(imageUrl);
+      this.hasValidVenueBackground.set(true);
+      this.venueBackgroundLoaded.set(true);
+    };
+
+    image.onerror = () => {
+      this.activeVenueImageUrl.set(undefined);
+      this.hasValidVenueBackground.set(false);
+      this.venueBackgroundLoaded.set(false);
+    };
+
+    image.src = imageUrl;
+
+    onCleanup(() => {
+      image.onload = null;
+      image.onerror = null;
+    });
   });
 
   ngOnInit() {
