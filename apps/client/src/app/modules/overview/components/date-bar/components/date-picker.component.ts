@@ -68,6 +68,7 @@ const DATE_PICKER_PROVIDERS = [
       mat-flat-button
       matTooltip="Datum auswählen"
       (click)="picker.open()"
+      [class.is-open]="picker.opened"
     >
       <mat-icon>calendar_today</mat-icon>
       <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
