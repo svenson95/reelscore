@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 
 import {
+  type FixtureDTO,
   type Goals,
-  type Score,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_POSTPONED,
   type StatusTypePostponed,
@@ -34,14 +34,14 @@ import {
   `,
 })
 export class ResultLabelComponent {
-  readonly result = input.required<Score>();
+  readonly fixture = input.required<FixtureDTO>();
   readonly status = input.required<string>();
 
   readonly showPostponedText = input<boolean>(false);
 
-  readonly mainResult = computed<Goals>(() => this.result().fulltime);
+  readonly mainResult = computed<Goals>(() => this.fixture().goals);
 
-  readonly penaltyResult = computed<Goals>(() => this.result().penalty);
+  readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
 
   readonly isPostponed = computed<boolean>(() =>
     STATUS_VALUE_POSTPONED.includes(this.status() as StatusTypePostponed)

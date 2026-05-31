@@ -58,7 +58,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
       <div class="result">
         <rs-result-label
-          [result]="match.score"
+          [fixture]="match"
           [status]="match.fixture.status.short"
         />
       </div>

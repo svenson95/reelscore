@@ -101,7 +101,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
         </div>
         <div class="result" [class.is-upcoming]="match | isStatus : scheduled">
           <rs-result-label
-            [result]="fixture().score"
+            [fixture]="fixture()"
             [status]="fixture().fixture.status.short"
           />
         </div>
