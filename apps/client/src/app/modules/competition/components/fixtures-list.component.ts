@@ -13,7 +13,7 @@ import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
 } from '@app/shared';
-import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
+import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'rs-competition-fixtures-list',
@@ -63,7 +63,7 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
           }
         </div>
       </div>
-      <p>{{ round()! | roundLabel }}</p>
+      <p>{{ this.fixtures()[0].league.round! | roundLabel }}</p>
     </div>
     <div class="days">
       @for (day of fixturesDays(); track $index + '-' + day.date) {
@@ -76,35 +76,30 @@ import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
   `,
 })
 export class FixturesListComponent {
-  competition = input.required<CompetitionId>();
-  fixtures = input.required<ExtendedFixtureDTO[]>();
-  isLoading = input.required<boolean>();
+  readonly competition = input.required<CompetitionId>();
+  readonly fixtures = input.required<ExtendedFixtureDTO[]>();
+  readonly isLoading = input.required<boolean>();
 
-  firstFixture = computed<ExtendedFixtureDTO>(() => this.fixtures()?.[0]);
-  round = computed(() => this.firstFixture().league.round);
-  date = computed(() => this.firstFixture().fixture.date);
-  competitionId = computed(() => this.firstFixture().league.id);
-  competitionLogo = computed(() =>
-    getCompetitionLogo(this.competitionId(), 24)
-  );
-  competitionLogoSet = computed(() =>
-    getCompetitionLogoSrcSet(this.competitionId(), 24)
+  readonly competitionLogo = computed<string>(() =>
+    getCompetitionLogo(this.competition(), 24)
   );
 
-  fixturesDays = computed(() => {
+  readonly competitionLogoSet = computed<string>(() =>
+    getCompetitionLogoSrcSet(this.competition(), 24)
+  );
+
+  readonly fixturesDays = computed(() => {
     const fixtures = this.fixtures();
+
     if (!fixtures) return [];
 
     const days = [
       ...new Set(fixtures.map((f) => f.fixture.date.substring(0, 10))),
     ];
-    return days
-      .map((day) => ({
-        date: day,
-        fixtures: fixtures
-          .filter((f) => f.fixture.date.includes(day))
-          .sort((a, b) => a.fixture.timestamp - b.fixture.timestamp),
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+
+    return days.map((day) => ({
+      date: day,
+      fixtures: fixtures.filter((f) => f.fixture.date.startsWith(day)),
+    }));
   });
 }

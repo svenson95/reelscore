@@ -3,12 +3,15 @@ import {
   Component,
   computed,
   inject,
-  untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { FIRST_ROUNDS, LeagueService } from '@app/shared';
-import { CompetitionId } from '@lib/models';
+import {
+  FIRST_ROUNDS,
+  isReversedSingleRoundCompetition,
+  LeagueService,
+} from '@app/shared';
+import type { CompetitionId } from '@lib/models';
 import { isCompetitionWithOneFixture } from '@lib/shared';
 
 import { LastFixturesStore } from '../store';
@@ -24,23 +27,18 @@ import { FixturesListComponent } from './fixtures-list.component';
     button { @apply shadow-rs3; }
   `,
   template: `
-    @if (fixtures() !== null) { @if (fixtures()!.length > 1) { @for
-    (multipleFixtures of fixtures()!; track $index) {
+    @let fixtureGroups = fixturesData(); @if (fixtureGroups !== null) { @if
+    (fixtureGroups.length > 0) { @for (fixtureGroup of fixtureGroups; track
+    $index) {
     <rs-competition-fixtures-list
-      [fixtures]="multipleFixtures"
-      [competition]="competition()!.id"
+      [fixtures]="fixtureGroup"
+      [competition]="competitionId()"
       [isLoading]="isLoading()"
     />
-    } } @else if (fixtures()!.length === 1) {
-    <rs-competition-fixtures-list
-      [fixtures]="fixtures()![0]"
-      [competition]="competition()!.id"
-      [isLoading]="isLoading()"
-    />
-    } @else if (fixtures()!.length === 0) {
+    } } @else {
     <p class="no-data">Keine vergangenen Spiele</p>
-    } @if (!isFirstRound() && !isCompetitionWithOneFixture() && !showAll()) {
-    <button mat-flat-button (click)="loadAllLastFixtures(competition()!.id)">
+    } @if (showLoadAllButton()) {
+    <button mat-flat-button (click)="loadAllLastFixtures(competitionId())">
       Alle anzeigen
     </button>
     } } @else if (isLoading()) {
@@ -49,25 +47,47 @@ import { FixturesListComponent } from './fixtures-list.component';
   `,
 })
 export class LastFixturesComponent {
-  private store = inject(LastFixturesStore);
-  fixtures = this.store.fixtures;
-  isLoading = this.store.isLoading;
-  showAll = this.store.showAll;
+  private readonly store = inject(LastFixturesStore);
+  private readonly leagueService = inject(LeagueService);
 
-  private leagueService = inject(LeagueService);
-  competition = computed(() => this.leagueService.selectedLeague());
+  readonly fixturesData = this.store.fixtures;
 
-  isFirstRound = computed<boolean>(() => {
-    const fixtures = untracked(this.fixtures);
-    const competition = untracked(this.competition);
-    if (!fixtures || !competition || fixtures.length === 0) return false;
+  readonly isLoading = this.store.isLoading;
+  private readonly showAll = this.store.showAll;
+
+  readonly competition = this.leagueService.selectedLeague;
+
+  readonly competitionId = computed<CompetitionId>(
+    () => this.competition()?.id ?? -1
+  );
+
+  readonly isFirstRound = computed<boolean>(() => {
+    const fixtures = this.fixturesData();
+
+    if (!fixtures || fixtures.length === 0 || fixtures[0].length === 0) {
+      return false;
+    }
+
     const round = fixtures[0][0].league.round;
+
     return FIRST_ROUNDS.includes(round);
   });
 
-  isCompetitionWithOneFixture = computed(() => {
-    const id = untracked(this.competition)?.id;
-    return !id ? false : isCompetitionWithOneFixture(id);
+  readonly isCompetitionWithOneFixture = computed<boolean>(() => {
+    const id = this.competition()?.id;
+
+    return id ? isCompetitionWithOneFixture(id) : false;
+  });
+
+  readonly showLoadAllButton = computed<boolean>(() => {
+    const competitionId = this.competition()?.id;
+
+    return (
+      !this.isFirstRound() &&
+      !this.isCompetitionWithOneFixture() &&
+      !isReversedSingleRoundCompetition(competitionId) &&
+      !this.showAll()
+    );
   });
 
   loadAllLastFixtures(id: CompetitionId): void {
