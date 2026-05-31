@@ -10,7 +10,8 @@ import { EventDTO } from '@lib/models';
       :host-context(.is-home) .top { @apply flex-row-reverse; }
       :host { @apply flex flex-col; }
       .top { @apply flex flex-wrap gap-2; }
-      .bottom { @apply flex justify-end text-rs-font-size-small text-rs-color-text-2; }
+      .bottom { @apply flex text-rs-font-size-small text-rs-color-text-2; }
+      :host-context(.is-home) .bottom { @apply justify-end; }
       .assist { @apply inline-flex flex-wrap; }
     `,
   template: `
