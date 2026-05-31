@@ -85,6 +85,7 @@
   @include mat.tabs-overrides(
     (
       divider-height: 0,
+      container-height: 60px,
       inactive-ripple-color: var(--rs-color-ripple),
       active-ripple-color: var(--rs-color-ripple),
       active-label-text-color: var(--rs-color-text-1),
@@ -196,6 +197,14 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
   .mat-mdc-tab-header {
+    .tab-label-content {
+      @apply flex flex-col items-center;
+
+      .tab-label-span {
+        @apply text-rs-font-size-small xs:text-rs-font-size-body-2 py-1;
+      }
+    }
+
     .mat-mdc-tab {
       @apply min-w-[50px] px-1;
 

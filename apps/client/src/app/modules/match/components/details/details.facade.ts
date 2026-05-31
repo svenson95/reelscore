@@ -1,6 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
 
-import { BreakpointObserverService } from '@app/shared';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
@@ -19,9 +18,6 @@ import {
 
 @Injectable()
 export class MatchDetailsFacade {
-  breakpointObserverService = inject(BreakpointObserverService);
-  isMobile = this.breakpointObserverService.isMobile;
-
   standingsStore = inject(FixtureStandingsStore);
   standings = this.standingsStore.standings;
 
