@@ -24,7 +24,7 @@ const ALLIANZ_ARENA_ID = 20732;
   imports: [MatchInfoComponent, MatchHighlightsComponent],
   styles: `
     :host {
-      @apply px-3 sticky top-0 z-10;
+      @apply px-3;
       margin-top: -1.25rem;
       text-shadow: 0 0 4px var(--rs-color-text-3);
     }
@@ -85,15 +85,17 @@ const ALLIANZ_ARENA_ID = 20732;
         [style.height.px]="highlightsVisibleHeight()"
         [style.opacity]="highlightsOpacity()"
       >
-        <div class="toggle-highlights-row">
-          <div class="divider"></div>
+        <div #highlightsContent>
+          <div class="toggle-highlights-row">
+            <div class="divider"></div>
+          </div>
+
+          <rs-match-highlights
+            class="match-highlights"
+            [data]="matchInfo"
+            [highlights]="highlights()!"
+          />
         </div>
-        <rs-match-highlights
-          #matchHighlightsElement
-          class="match-highlights"
-          [data]="matchInfo"
-          [highlights]="highlights()!"
-        />
       </div>
       }
     </div>
@@ -110,18 +112,29 @@ export class MatchHeaderComponent implements OnDestroy {
   private readonly highlightsHeight = signal<number>(0);
 
   readonly highlightsVisibleHeight = computed<number>(() => {
+    const height = this.highlightsHeight();
+
+    if (height === 0) {
+      return 0;
+    }
+
     const scrolled = Math.max(0, this.scrollY() - this.initialScrollY());
-    return Math.max(0, this.highlightsHeight() - scrolled);
+
+    return Math.max(0, height - scrolled);
   });
 
   readonly highlightsOpacity = computed<string>(() => {
     const height = this.highlightsHeight();
-    if (height === 0) return '0';
+
+    if (height === 0) {
+      return '0';
+    }
+
     return `${this.highlightsVisibleHeight() / height}`;
   });
 
-  @ViewChild('matchHighlightsElement', { read: ElementRef })
-  set matchHighlightsElement(ref: ElementRef<HTMLElement> | undefined) {
+  @ViewChild('highlightsContent', { read: ElementRef })
+  set highlightsContent(ref: ElementRef<HTMLElement> | undefined) {
     this.resizeObserver?.disconnect();
 
     if (!ref) {
@@ -130,13 +143,21 @@ export class MatchHeaderComponent implements OnDestroy {
     }
 
     const element = ref.nativeElement;
-    this.highlightsHeight.set(element.scrollHeight);
+
+    const updateHeight = () => {
+      this.highlightsHeight.set(element.scrollHeight);
+    };
+
+    updateHeight();
 
     this.resizeObserver = new ResizeObserver(() => {
-      this.highlightsHeight.set(element.scrollHeight);
+      updateHeight();
     });
 
     this.resizeObserver.observe(element);
+
+    this.initialScrollY.set(window.scrollY);
+    this.scrollY.set(window.scrollY);
   }
 
   @HostListener('window:scroll')
