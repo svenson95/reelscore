@@ -137,7 +137,6 @@ export class StandingsController {
     };
 
     if (date) {
-      console.log(`${date}T23:59:59.999Z`);
       const standingsUntilDate = await this.standingsService.findByFilter(
         {
           ...baseFilter,
