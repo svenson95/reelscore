@@ -8,8 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 
-import { BreakpointObserverService } from '@app/shared';
-
 import { RouterView } from '../router-view';
 
 import {
@@ -52,18 +50,20 @@ import {
       <mat-tab-group animationDuration="150ms">
         <mat-tab>
           <ng-template mat-tab-label>
-            @if (isMobile()) {
-            <mat-icon>article</mat-icon>
-            } @else { Ergebnisse }
+            <div class="tab-label-content">
+              <mat-icon>playlist_add_check</mat-icon>
+              <span class="tab-label-span">Ergebnisse</span>
+            </div>
           </ng-template>
           <rs-competition-last-fixtures />
         </mat-tab>
 
         <mat-tab>
           <ng-template mat-tab-label>
-            @if (isMobile()) {
-            <mat-icon>calendar_month</mat-icon>
-            } @else { Spielplan }
+            <div class="tab-label-content">
+              <mat-icon>playlist_play</mat-icon>
+              <span class="tab-label-span">Spielplan</span>
+            </div>
           </ng-template>
           <ng-template matTabContent>
             <rs-competition-next-fixtures />
@@ -72,9 +72,10 @@ import {
 
         <mat-tab>
           <ng-template mat-tab-label>
-            @if (isMobile()) {
-            <mat-icon>format_list_numbered</mat-icon>
-            } @else { Tabellen }
+            <div class="tab-label-content">
+              <mat-icon>format_list_numbered</mat-icon>
+              <span class="tab-label-span">Tabellen</span>
+            </div>
           </ng-template>
           <ng-template matTabContent>
             <rs-competition-standings />
@@ -83,9 +84,10 @@ import {
 
         <mat-tab>
           <ng-template mat-tab-label>
-            @if (isMobile()) {
-            <mat-icon>assessment</mat-icon>
-            } @else { Statistiken }
+            <div class="tab-label-content">
+              <mat-icon>format_list_numbered_rtl</mat-icon>
+              <span class="tab-label-span">Statistiken</span>
+            </div>
           </ng-template>
           <ng-template matTabContent>
             <rs-competition-player-stats />
@@ -96,14 +98,12 @@ import {
   `,
 })
 export class CompetitionComponent extends RouterView {
-  bos = inject(BreakpointObserverService);
-  isMobile = this.bos.isMobile;
-  routerService = inject(Router);
+  private readonly routerService = inject(Router);
 
-  lastFixturesStore = inject(LastFixturesStore);
-  nextFixturesStore = inject(NextFixturesStore);
-  standingsStore = inject(CompetitionStandingsStore);
-  topScorersStore = inject(TopScorersStore);
+  private readonly lastFixturesStore = inject(LastFixturesStore);
+  private readonly nextFixturesStore = inject(NextFixturesStore);
+  private readonly standingsStore = inject(CompetitionStandingsStore);
+  private readonly topScorersStore = inject(TopScorersStore);
 
   leagueEffect = effect(async () => {
     const competition = this.leagueService.selectedLeague();

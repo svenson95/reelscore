@@ -55,9 +55,10 @@ const ANGULAR_MODULES = [
     <mat-tab-group animationDuration="150ms">
       <mat-tab>
         <ng-template mat-tab-label>
-          @if (isMobile()) {
-          <mat-icon>info</mat-icon>
-          } @else { Details }
+          <div class="tab-label-content">
+            <mat-icon>info</mat-icon>
+            <span class="tab-label-span">Details</span>
+          </div>
         </ng-template>
 
         <div class="tab-content">
@@ -78,9 +79,10 @@ const ANGULAR_MODULES = [
 
       <mat-tab [disabled]="!analyses()">
         <ng-template mat-tab-label>
-          @if (isMobile()) {
-          <mat-icon>pageview</mat-icon>
-          } @else { Analysen }
+          <div class="tab-label-content">
+            <mat-icon>pageview</mat-icon>
+            <span class="tab-label-span">Analysen</span>
+          </div>
         </ng-template>
 
         <div class="tab-content">
@@ -92,9 +94,10 @@ const ANGULAR_MODULES = [
 
       <mat-tab [disabled]="!events()">
         <ng-template mat-tab-label>
-          @if (isMobile()) {
-          <mat-icon>article</mat-icon>
-          } @else { Bericht }
+          <div class="tab-label-content">
+            <mat-icon>article</mat-icon>
+            <span class="tab-label-span">Bericht</span>
+          </div>
         </ng-template>
 
         <div class="tab-content">
@@ -106,9 +109,10 @@ const ANGULAR_MODULES = [
 
       <mat-tab [disabled]="!statistics()">
         <ng-template mat-tab-label>
-          @if (isMobile()) {
-          <mat-icon>assessment</mat-icon>
-          } @else { Statistiken }
+          <div class="tab-label-content">
+            <mat-icon>assessment</mat-icon>
+            <span class="tab-label-span">Statistiken</span>
+          </div>
         </ng-template>
 
         <div class="tab-content">
@@ -121,15 +125,14 @@ const ANGULAR_MODULES = [
   `,
 })
 export class MatchDetailsComponent {
-  facade = inject(MatchDetailsFacade);
-  isMobile = this.facade.isMobile;
-  standings = this.facade.standings;
-  analyses = this.facade.analyses;
-  events = this.facade.events;
-  statistics = this.facade.statistics;
-  evaluations = this.facade.evaluations;
-  fixture = this.facade.fixture;
-  hasNoStandings = this.facade.hasNoStandings;
-  isLoadingStandings = this.facade.standingsStore.isLoading;
-  isKoPhase = this.facade.isKoPhase;
+  private readonly facade = inject(MatchDetailsFacade);
+  readonly standings = this.facade.standings;
+  readonly analyses = this.facade.analyses;
+  readonly events = this.facade.events;
+  readonly statistics = this.facade.statistics;
+  readonly evaluations = this.facade.evaluations;
+  readonly fixture = this.facade.fixture;
+  readonly hasNoStandings = this.facade.hasNoStandings;
+  readonly isLoadingStandings = this.facade.standingsStore.isLoading;
+  readonly isKoPhase = this.facade.isKoPhase;
 }
