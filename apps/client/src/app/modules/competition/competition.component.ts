@@ -110,7 +110,10 @@ export class CompetitionComponent extends RouterView {
     if (!competition) return;
     await this.lastFixturesStore.loadLastFixtures(competition.id);
     await this.nextFixturesStore.loadNextFixtures(competition.id);
-    await this.standingsStore.loadStandings(competition.id);
+    await this.standingsStore.loadStandings(
+      competition.id,
+      new Date().toISOString()
+    );
     await this.topScorersStore.loadTopScorers(competition.id);
   });
 }

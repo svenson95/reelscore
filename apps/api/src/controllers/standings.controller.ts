@@ -16,73 +16,48 @@ export class StandingsController {
 
   async getByCompetitionAndDate(
     id: CompetitionId,
-    date: string | null
+    date: string
   ): Promise<StandingsDTO | null> {
-    const season = date ? getSeason(id, date) : getSeason(id);
+    const season = getSeason(id, date);
 
-    return this.findLatestStandingsBySeason(id, season, date ?? undefined);
+    return this.findLatestStandingsBySeason(id, season, date);
+  }
+
+  async getTopFiveByCompetitionAndDate(
+    id: CompetitionId,
+    date: string
+  ): Promise<StandingsDTO | null> {
+    const standings = await this.getByCompetitionAndDate(id, date);
+
+    if (!standings?.league.standings) {
+      return null;
+    }
+
+    return {
+      ...standings,
+      league: {
+        ...standings.league,
+        standings: [standings.league.standings.flat().slice(0, 5)],
+      },
+    };
   }
 
   async getTopFive(date: string): Promise<StandingsDTO[]> {
-    const standingsIds: Array<CompetitionId> = [
-      78, // BUNDESLIGA_ID,
-      39, // PREMIER_LEAGUE_ID,
-      140, // LA_LIGA_ID,
-      135, // SERIE_A_ID,
-      61, // LIGUE_1_ID,
+    const standingsIds: CompetitionId[] = [
+      78, // Bundesliga
+      39, // Premier League
+      140, // La Liga
+      135, // Serie A
+      61, // Ligue 1
     ];
-    const standings = await this.loadStandings(standingsIds, date);
-    return this.mapToOnlyTopFiveRankings(standings);
-  }
 
-  private async loadStandings(
-    standingsIds: number[],
-    date: string
-  ): Promise<StandingsDTO[]> {
-    const [year, month, day] = date.split('-').map(Number);
+    const standings = await Promise.all(
+      standingsIds.map((id) => this.getTopFiveByCompetitionAndDate(id, date))
+    );
 
-    const tomorrow = new Date(Date.UTC(year, month - 1, day));
-    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-
-    const standings: StandingsDTO[] = [];
-
-    for (const standingsId of standingsIds) {
-      const season = month >= 8 ? year : year - 1;
-
-      const leagueStandings = await this.standingsService.findByFilter({
-        'league.id': standingsId,
-        'league.season': season,
-        createdAt: { $lte: tomorrow },
-      });
-
-      if (leagueStandings) {
-        standings.push(leagueStandings);
-      }
-    }
-
-    return standings;
-  }
-
-  private mapToOnlyTopFiveRankings(data: StandingsDTO[]): StandingsDTO[] {
-    const baseStandings = 0; // 1 == home standings, 2 == away standings
-
-    return data.flatMap((d) => {
-      const standings = d.league?.standings?.[baseStandings];
-
-      if (!standings) {
-        return [];
-      }
-
-      return [
-        {
-          ...d,
-          league: {
-            ...d.league,
-            standings: [standings.slice(0, 5)],
-          },
-        },
-      ];
-    });
+    return standings.filter(
+      (standing): standing is StandingsDTO => standing !== null
+    );
   }
 
   async getFixtureStandings(

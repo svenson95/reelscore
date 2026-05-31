@@ -10,7 +10,7 @@ export const standings = express.Router();
 standings.get('/standings-by-id', async (req, res) => {
   const standingsController = new StandingsController();
   const competitionId: CompetitionId = Number(req.query.competition);
-  const queryDate = req.query.date ? String(req.query.date) : null;
+  const queryDate = String(req.query.date);
   const doc = await standingsController.getByCompetitionAndDate(
     competitionId,
     queryDate
