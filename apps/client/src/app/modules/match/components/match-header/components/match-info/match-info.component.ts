@@ -51,7 +51,7 @@ import {
       }
 
       <rs-result-label
-        [result]="fixture.score"
+        [fixture]="fixture"
         [status]="fixture.fixture.status.short"
         [showPostponedText]="true"
       />
