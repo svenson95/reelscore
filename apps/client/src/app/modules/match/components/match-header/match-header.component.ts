@@ -48,20 +48,20 @@ const ALLIANZ_ARENA_ID = 20732;
       }
     }
 
-    .toggle-highlights-row {
-      @apply flex items-center;
-      overflow: hidden;
-      will-change: height, opacity;
-    }
-
-    .toggle-highlights-row .divider {
-      @apply w-full h-[1px];
-      background-color: var(--rs-button-border-color);
-    }
-
     .animation-wrapper {
       overflow: hidden;
       will-change: height, opacity;
+    }
+
+    .toggle-highlights-row {
+      @apply flex items-center py-rs1;
+      overflow: hidden;
+      will-change: height, opacity;
+
+      .divider {
+        @apply w-full h-[1px];
+        background-color: var(--rs-button-border-color);
+      }
     }
 
     .match-highlights {
@@ -69,7 +69,6 @@ const ALLIANZ_ARENA_ID = 20732;
     }
   `,
   template: `
-    @let matchInfo = data();
     <div class="wrapper">
       <div
         class="background-wrapper"
@@ -78,29 +77,23 @@ const ALLIANZ_ARENA_ID = 20732;
         "
         [style.background-image]="venueBackgroundImage()"
       ></div>
+      @let matchInfo = data();
       <rs-match-info [data]="matchInfo" />
-      @if (highlights() && hasGoalsOrPenalty()) {
-      <div
-        class="toggle-highlights-row"
-        [style.height.px]="dividerVisibleHeight()"
-        [style.opacity]="highlightsOpacity()"
-      >
-        <div class="divider"></div>
-      </div>
-
+      @if (highlights() && hasGoalsOrPenalty() && matchInfo) {
       <div
         class="animation-wrapper"
         [style.height.px]="highlightsVisibleHeight()"
         [style.opacity]="highlightsOpacity()"
       >
-        @if (matchInfo) {
+        <div class="toggle-highlights-row">
+          <div class="divider"></div>
+        </div>
         <rs-match-highlights
           #matchHighlightsElement
           class="match-highlights"
           [data]="matchInfo"
           [highlights]="highlights()!"
         />
-        }
       </div>
       }
     </div>
