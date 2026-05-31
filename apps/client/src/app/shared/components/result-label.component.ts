@@ -8,10 +8,12 @@ import {
 import {
   type FixtureDTO,
   type Goals,
+  STATUS_TYPES_NOT_PLAYED,
   STATUS_TYPES_SCHEDULED,
+  STATUS_VALUE_ABANDONED,
+  STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
-  type StatusTypePostponed,
-  type StatusTypeScheduled,
+  StatusShort,
 } from '@lib/models';
 
 @Component({
@@ -25,7 +27,7 @@ import {
     } @else {
     <span>{{ mainResult().home }}</span>
 
-    @if (isPostponed()) { @if (showPostponedText()) {
+    @if (isNotPlayed()) { @if (showNotPlayedText()) {
     <span class="text-rs-font-size-small"> Abgesagt </span>
     } @else { － } } @else if (isScheduled()) { vs } @else { : }
 
@@ -35,20 +37,24 @@ import {
 })
 export class ResultLabelComponent {
   readonly fixture = input.required<FixtureDTO>();
-  readonly status = input.required<string>();
-
-  readonly showPostponedText = input<boolean>(false);
+  readonly status = input.required<StatusShort>();
+  readonly showNotPlayedText = input<boolean>(false);
 
   readonly mainResult = computed<Goals>(() => this.fixture().goals);
-
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
 
-  readonly isPostponed = computed<boolean>(() =>
-    STATUS_VALUE_POSTPONED.includes(this.status() as StatusTypePostponed)
-  );
+  readonly isNotPlayed = computed<boolean>(() => {
+    const status = this.status();
+    return (
+      status === STATUS_VALUE_POSTPONED ||
+      status === STATUS_VALUE_CANCELLED ||
+      status === STATUS_VALUE_ABANDONED ||
+      STATUS_TYPES_NOT_PLAYED.includes(status)
+    );
+  });
 
   readonly isScheduled = computed<boolean>(() =>
-    STATUS_TYPES_SCHEDULED.includes(this.status() as StatusTypeScheduled)
+    STATUS_TYPES_SCHEDULED.includes(this.status())
   );
 
   readonly isPenaltyShootout = computed<boolean>(() => {
