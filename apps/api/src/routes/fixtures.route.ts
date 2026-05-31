@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express';
 
-import { CompetitionId, FixtureId } from '@lib/models';
+import type { CompetitionId, FixtureId } from '@lib/models';
 
 import {
-  competitionFixtures,
   CompetitionRequestType,
   FixtureController,
   FixturesController,
@@ -36,8 +35,8 @@ fixtures.get(
   '/by-date',
   async (req: Request, res: Response): Promise<Response> => {
     const date = String(req.query.date);
-    const fixturesController = new FixturesController();
     const weekDates = getWeekDatesArray(date);
+    const fixturesController = new FixturesController();
     const weekFixtures = await Promise.all(
       weekDates.map((day) => fixturesController.getByDate(day))
     );
@@ -51,6 +50,7 @@ fixtures.get('/competition-fixtures', async (req: Request, res: Response) => {
   const type: CompetitionRequestType = req.query.type as CompetitionRequestType;
   const showAll = req.query.showAll === 'true';
 
-  const docs = await competitionFixtures(type, id, showAll);
+  const fixturesController = new FixturesController();
+  const docs = await fixturesController.competitionFixtures(type, id, showAll);
   return res.json(docs);
 });
