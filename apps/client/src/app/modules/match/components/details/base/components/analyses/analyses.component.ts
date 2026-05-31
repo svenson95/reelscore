@@ -20,9 +20,9 @@ import { AnalysesLastFixturesComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesLastFixturesComponent],
   styles: `
-    :host { @apply flex flex-col mt-rs1 gap-5; }
+    :host { @apply flex flex-col m-3 gap-5; }
 
-    .fixture-analyse { @apply p-5 mx-rs1 bg-rs-alt-bg border text-rs-color-text-1 text-rs-font-size-small sm:text-rs-font-size-body-1; }
+    .fixture-analyse { @apply p-5 bg-rs-alt-bg border shadow-rs2 text-rs-color-text-1 text-rs-font-size-small sm:text-rs-font-size-body-1; }
     .fixture-analyse > div {
       @apply w-full flex flex-wrap gap-5;
 
