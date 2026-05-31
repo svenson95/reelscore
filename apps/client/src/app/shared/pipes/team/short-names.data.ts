@@ -401,7 +401,59 @@ export const shortTeamName = (value: string): string => {
     case 'Faroe Islands':
       return 'Färöer';
     case 'FYR Macedonia':
-      return 'Nordmazedonien';
+      return 'Nordmazed.';
+    case 'Equatorial Guinea':
+      return 'Äq.-Guinea';
+    case 'Trinidad and Tobago':
+      return 'Trinidad';
+    case 'Bolivia':
+      return 'Bolivien';
+    case 'Cape Verde Islands':
+      return 'Cabo Verde';
+    case 'British Virgin Islands':
+      return 'Britische Jungferninseln';
+    case 'Dominican Republic':
+      return 'Dom. Republik';
+    case 'Central African Republic':
+      return 'C. A. Republic';
+    case 'Cayman Islands':
+      return 'Kaimaninseln';
+    case 'Ivory Coast':
+      return 'Elfenbeinküste';
+    case 'Egypt':
+      return 'Ägypten';
+    case 'Tunisia':
+      return 'Tunesien';
+    case 'Morocco':
+      return 'Marokko';
+    case 'Australia':
+      return 'Australien';
+    case 'Brazil':
+      return 'Brasilien';
+    case 'South Korea':
+      return 'Südkorea';
+    case 'Canada':
+      return 'Kanada';
+    case 'South Africa':
+      return 'Südafrika';
+    case 'Saudi Arabia':
+      return 'Saudi-Arabien';
+    case 'Argentina':
+      return 'Argentinien';
+    case 'Iraq':
+      return 'Irak';
+    case 'Philippines':
+      return 'Philippinen';
+    case 'Russia':
+      return 'Russland';
+    case 'Indonesia':
+      return 'Indonesien';
+    case 'Cambodia':
+      return 'Kambodscha';
+    case 'Colombia':
+      return 'Kolumbien';
+    case 'New Zealand':
+      return 'Neuseeland';
     case 'Armenia':
       return 'Armenien';
     case 'Latvia':
