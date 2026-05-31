@@ -25,7 +25,7 @@ export const getSeason = (
 };
 
 const getRegularCompetitionSeason = (today: moment.Moment): number => {
-  const seasonStartCutoff = today.clone().month(5).date(9);
+  const seasonStartCutoff = today.clone().month(7).date(1);
 
   return today.isSameOrBefore(seasonStartCutoff)
     ? today.year() - 1

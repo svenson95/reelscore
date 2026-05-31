@@ -2,7 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 
-import { CompetitionId, StandingsDTO, StandingsWeekData } from '@lib/models';
+import type {
+  CompetitionId,
+  StandingsDTO,
+  StandingsWeekData,
+} from '@lib/models';
+
 import { environment } from '../../../../environments/environment';
 import { DateString } from '../../constants';
 
@@ -11,7 +16,7 @@ type StandingsParams = CompetitionId | null;
 export abstract class HttpStandingsService {
   abstract getStandings(
     id: StandingsParams,
-    date?: DateString
+    date: DateString
   ): Observable<StandingsDTO>;
   abstract getWeekStandings(date: DateString): Observable<StandingsWeekData>;
 }
@@ -23,12 +28,9 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
 
   getStandings(
     id: StandingsParams,
-    date: DateString | null = null
+    date: DateString
   ): Observable<StandingsDTO> {
-    let params = new HttpParams();
-    if (date) {
-      params = params.append('date', date.split('T')[0]);
-    }
+    let params = new HttpParams().append('date', date.split('T')[0]);
     if (id) params = params.append('competition', id);
     return this.http
       .get<StandingsDTO>(this.BASE_URL + '/standings-by-id', {
