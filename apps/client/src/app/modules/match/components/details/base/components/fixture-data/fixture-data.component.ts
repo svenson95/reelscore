@@ -15,12 +15,12 @@ import { FixtureStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RoundLabelPipe],
   styles: `
-    :host { @apply flex flex-col pt-2; }
-    ul { @apply py-5; }
+    :host { @apply flex flex-col m-3 bg-rs-alt-bg shadow-rs2 border; }
+    ul { @apply py-4; }
     li:not(:last-of-type) .item { @apply pb-2; }
     .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-1; }
     .item > *:not(.key) { @apply flex-2 sm:flex-1; }
-    .key { @apply text-rs-color-primary text-right tracking-wider font-extralight flex-1; }
+    .key { @apply text-rs-color-text-2 text-right tracking-wider font-extralight flex-1; }
     .key, .value { @apply content-center;}
     span { @apply text-rs-font-size-body-2;}
     .list-item-placeholder {  @apply w-[100px] h-[16px] my-1 bg-gray-200 rounded; }

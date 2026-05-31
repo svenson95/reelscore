@@ -13,10 +13,10 @@ import { EvaluationAnalyses } from '@lib/models';
     .analyze-element {
       @apply flex flex-wrap gap-1 opacity-50;
 
-      &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-rs-alt-bg; }
+      &:not(.is-lucky):not(.is-unlucky) .comments { @apply bg-rs-border-color-1; }
       &.is-lucky .level { @apply bg-[#0db500] text-white; }
       &.is-unlucky .level { @apply bg-[#ff0000] text-white; }
-      div { @apply text-rs-color-text-1 text-rs-font-size-small p-2 leading-[1]; }
+      div { @apply font-medium text-rs-color-text-1 text-rs-font-size-small p-2 leading-[1]; }
     }
   `,
   template: `

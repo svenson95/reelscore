@@ -35,23 +35,16 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
     :host {
       @apply flex flex-col;
 
-      ::ng-deep {
-        .mat-expansion-panel:not([class*=mat-elevation-z]) {
-          @apply shadow-none;
-
-          mat-expansion-panel-header.mat-expansion-panel-header.fixture-expansion-header {
-            background-color: var(--rs-color-text-3);
-            border: 1px solid var(--rs-button-border-color);
-          }
-        }
-        .mat-expansion-panel-header-title { @apply flex-grow-0; }
-      }
-
       mat-expansion-panel {
-        margin-bottom: 1px;
+        @apply mb-px border shadow-rs2;
+
+        ::ng-deep {
+          .mat-expansion-panel-header-title { @apply flex-grow-0 text-rs-font-size-small; }
+          .mat-expansion-panel-header { @apply px-rs2; }
+        }
 
         @include mat.expansion-overrides((
-          container-background-color: var(--rs-color-secondary),
+          container-background-color: var(--rs-color-text-3),
           container-shape: var(--rs-size-border-radius),
           header-text-size: var(--rs-font-size-body-2),
           header-text-weight: 400,
