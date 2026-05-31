@@ -3,15 +3,13 @@ import {
   Component,
   computed,
   effect,
-  HostBinding,
-  inject,
+  ElementRef,
+  HostListener,
   input,
-  NgZone,
-  OnInit,
+  OnDestroy,
   signal,
+  ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounce, fromEvent, timer } from 'rxjs';
 
 import type { FixtureDTO, FixtureHighlights } from '@lib/models';
 
@@ -19,6 +17,9 @@ import { MatchHighlightsComponent, MatchInfoComponent } from './components';
 import { VENUE_IDS } from './venue-ids.data';
 
 const ALLIANZ_ARENA_ID = 20732;
+const LARGE_HIGHLIGHTS_HEIGHT = 150;
+const DEFAULT_COLLAPSE_SCROLL_FACTOR = 1.3;
+const LARGE_COLLAPSE_SCROLL_FACTOR = 0.7;
 
 @Component({
   selector: 'section[rs-match-header]',
@@ -29,8 +30,6 @@ const ALLIANZ_ARENA_ID = 20732;
       @apply px-3 sticky top-0 z-10;
       margin-top: -1.25rem;
       text-shadow: 0 0 4px var(--rs-color-text-3);
-
-      &.is-scrolled { padding-top: env(safe-area-inset-top); }
     }
 
     .wrapper {
@@ -39,29 +38,19 @@ const ALLIANZ_ARENA_ID = 20732;
     }
 
     .toggle-highlights-row {
-      &.is-hidden .divider { animation: opacityDown 200ms ease forwards; }
       .divider {
         @apply w-full h-[1px];
         background-color: var(--rs-button-border-color);
-        animation: opacityUp 200ms ease forwards;
-      }
-
-      @keyframes opacityUp {
-        0% { opacity: 0; margin-block: 0; }
-        100% { opacity: 1; margin-block: .5rem; }
-      }
-      @keyframes opacityDown {
-        0% { opacity: 1; margin-block: .5rem; }
-        100% { opacity: 0; margin-block: 0; }
+        opacity: var(--highlights-opacity);
+        margin-block: var(--divider-margin);
       }
     }
 
     .animation-wrapper {
-      display: grid;
-      grid-template-rows: 1fr;
-      transition: grid-template-rows 200ms ease-out;
-      &.is-hidden { grid-template-rows: 0fr; }
-      .match-highlights { overflow: hidden; }
+      height: var(--animation-wrapper-height);
+      opacity: var(--highlights-opacity);
+      overflow: hidden;
+      will-change: height, opacity;
     }
 
     .wrapper {
@@ -92,13 +81,22 @@ const ALLIANZ_ARENA_ID = 20732;
       ></div>
       <rs-match-info [data]="data()" />
       @if (highlights() && hasGoalsOrPenalty()) {
-      <div class="toggle-highlights-row" [class.is-hidden]="isScrolled()">
+      <div
+        class="toggle-highlights-row"
+        [style.--highlights-opacity]="highlightsOpacity()"
+        [style.--divider-margin]="dividerMargin()"
+      >
         <div class="divider"></div>
       </div>
 
-      <div class="animation-wrapper" [class.is-hidden]="isScrolled()">
+      <div
+        class="animation-wrapper"
+        [style.--animation-wrapper-height]="animationWrapperHeight()"
+        [style.--highlights-opacity]="highlightsOpacity()"
+      >
         @if (data(); as data) {
         <rs-match-highlights
+          #matchHighlightsElement
           class="match-highlights"
           [data]="data"
           [highlights]="highlights()!"
@@ -109,22 +107,54 @@ const ALLIANZ_ARENA_ID = 20732;
     </div>
   `,
 })
-export class MatchHeaderComponent implements OnInit {
+export class MatchHeaderComponent implements OnDestroy {
   readonly data = input.required<FixtureDTO | undefined>();
   readonly highlights = input.required<FixtureHighlights | undefined>();
 
-  readonly isScrolled = signal<boolean>(false);
+  private resizeObserver?: ResizeObserver;
 
-  private readonly ngZone = inject(NgZone);
+  private readonly highlightsHeight = signal<number>(0);
+  private readonly highlightsScrollProgress = signal<number>(0);
 
-  private readonly scrollEvent$ = fromEvent(window, 'scroll').pipe(
-    takeUntilDestroyed(),
-    debounce(() => timer(this.isScrolled() ? 10 : 0))
-  );
+  readonly highlightsOpacity = computed<string>(() => {
+    return `${1 - this.highlightsScrollProgress()}`;
+  });
 
-  @HostBinding('class.is-scrolled')
-  get isScrolledBinding(): boolean {
-    return this.isScrolled();
+  readonly dividerMargin = computed<string>(() => {
+    const visibleRatio = 1 - this.highlightsScrollProgress();
+    return `${0.5 * visibleRatio}rem`;
+  });
+
+  readonly animationWrapperHeight = computed<string>(() => {
+    const visibleRatio = 1 - this.highlightsScrollProgress();
+    const height = this.highlightsHeight() * visibleRatio;
+
+    return `${Math.max(0, Math.round(height))}px`;
+  });
+
+  @ViewChild('matchHighlightsElement', { read: ElementRef })
+  set matchHighlightsElement(ref: ElementRef<HTMLElement> | undefined) {
+    this.resizeObserver?.disconnect();
+
+    if (!ref) {
+      this.highlightsHeight.set(0);
+      return;
+    }
+
+    this.measureHighlightsHeight(ref.nativeElement);
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.measureHighlightsHeight(ref.nativeElement);
+    });
+
+    this.resizeObserver.observe(ref.nativeElement);
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    const collapseDistance = this.getHighlightsCollapseDistance();
+    const progress = this.clamp(window.scrollY / collapseDistance, 0, 1);
+    this.highlightsScrollProgress.set(progress);
   }
 
   private activeVenueImageUrl = signal<string | undefined>(undefined);
@@ -181,26 +211,28 @@ export class MatchHeaderComponent implements OnInit {
     });
   });
 
-  ngOnInit() {
-    this.ngZone.runOutsideAngular(() => {
-      this.scrollEvent$.subscribe(() => {
-        this.ngZone.run(() => {
-          const isScrolled = window.scrollY > 80;
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
 
-          const maxScrollHeight = Math.max(
-            document.body.scrollHeight,
-            document.body.offsetHeight,
-            document.documentElement.clientHeight,
-            document.documentElement.scrollHeight,
-            document.documentElement.offsetHeight
-          );
+  private measureHighlightsHeight(element: HTMLElement): void {
+    this.highlightsHeight.set(element.scrollHeight);
+  }
 
-          const minScrollHeight = 1200;
+  private clamp(value: number, min: number, max: number): number {
+    return Math.min(Math.max(value, min), max);
+  }
 
-          this.isScrolled.set(isScrolled && maxScrollHeight > minScrollHeight);
-        });
-      });
-    });
+  private getHighlightsCollapseDistance(): number {
+    const height = this.highlightsHeight();
+    const factor = this.getHighlightsCollapseFactor(height);
+    return Math.max(height * factor, 1);
+  }
+
+  private getHighlightsCollapseFactor(height: number): number {
+    return height > LARGE_HIGHLIGHTS_HEIGHT
+      ? LARGE_COLLAPSE_SCROLL_FACTOR
+      : DEFAULT_COLLAPSE_SCROLL_FACTOR;
   }
 
   private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
