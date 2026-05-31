@@ -48,6 +48,12 @@ const ALLIANZ_ARENA_ID = 20732;
       }
     }
 
+    .toggle-highlights-row {
+      @apply flex items-center;
+      overflow: hidden;
+      will-change: height, opacity;
+    }
+
     .toggle-highlights-row .divider {
       @apply w-full h-[1px];
       background-color: var(--rs-button-border-color);
@@ -76,7 +82,7 @@ const ALLIANZ_ARENA_ID = 20732;
       @if (highlights() && hasGoalsOrPenalty()) {
       <div
         class="toggle-highlights-row"
-        [style.margin-block]="dividerMargin()"
+        [style.height.px]="dividerVisibleHeight()"
         [style.opacity]="highlightsOpacity()"
       >
         <div class="divider"></div>
@@ -109,6 +115,7 @@ export class MatchHeaderComponent implements OnDestroy {
   private readonly scrollY = signal<number>(window.scrollY);
   private readonly initialScrollY = signal<number>(window.scrollY);
   private readonly highlightsHeight = signal<number>(0);
+  private readonly dividerHeight = 20;
 
   readonly highlightsVisibleHeight = computed<number>(() => {
     const scrolled = Math.max(0, this.scrollY() - this.initialScrollY());
@@ -121,11 +128,11 @@ export class MatchHeaderComponent implements OnDestroy {
     return `${this.highlightsVisibleHeight() / height}`;
   });
 
-  readonly dividerMargin = computed<string>(() => {
+  readonly dividerVisibleHeight = computed<number>(() => {
     const height = this.highlightsHeight();
-    if (height === 0) return '0rem';
+    if (height === 0) return 0;
     const visibleRatio = this.highlightsVisibleHeight() / height;
-    return `${0.5 * visibleRatio}rem`;
+    return this.dividerHeight * visibleRatio;
   });
 
   @ViewChild('matchHighlightsElement', { read: ElementRef })
