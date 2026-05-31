@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 
-import { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@lib/models';
 
 import { StandingsController } from '../controllers';
 import { getWeekDatesArray } from '../middleware';
@@ -10,7 +10,7 @@ export const standings = express.Router();
 standings.get('/standings-by-id', async (req, res) => {
   const standingsController = new StandingsController();
   const competitionId: CompetitionId = Number(req.query.competition);
-  const queryDate = req.query?.date ? String(req.query.date) : null;
+  const queryDate = String(req.query.date);
   const doc = await standingsController.getByCompetitionAndDate(
     competitionId,
     queryDate
@@ -33,11 +33,13 @@ standings.get(
 
 standings.get('/match-standings', async (req, res) => {
   const standingsController = new StandingsController();
-  const teamIds = req.query.teamIds as string; // comma separated team ids
+  const teamIds = String(req.query.teamIds); // comma separated team ids
   const competitionId = Number(req.query.competition);
+  const date = String(req.query.date);
   const doc = await standingsController.getFixtureStandings(
     teamIds,
-    competitionId
+    competitionId,
+    date
   );
   return res.json(doc);
 });

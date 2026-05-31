@@ -1,4 +1,6 @@
-import {
+import { FilterQuery } from 'mongoose';
+
+import type {
   CompetitionId,
   CompetitionRound,
   ExtendedFixtureDTO,
@@ -10,9 +12,19 @@ import {
 import { COMPETITION_ROUNDS, getSeason } from '../middleware';
 import { Fixtures } from '../models';
 
+type FixturesByCompetitionAndRoundsQuery = {
+  'league.id': CompetitionId;
+  'league.season': number;
+};
+
 export class FixturesService {
   async findById(fixtureId: FixtureId): Promise<ExtendedFixtureDTO> {
     const fixture = await Fixtures.findOne({ 'fixture.id': fixtureId }).lean();
+
+    if (!fixture) {
+      throw new Error(`Fixture with id ${fixtureId} not found`);
+    }
+
     return fixture;
   }
 
@@ -51,26 +63,34 @@ export class FixturesService {
     rounds: CompetitionRound[],
     showAll: boolean
   ): Promise<FixtureDTO[]> {
-    const query: object = {
+    const query: FilterQuery<FixturesByCompetitionAndRoundsQuery> = {
       'league.id': competitionId,
       'league.season': getSeason(competitionId),
     };
 
     if (showAll) {
       const allRounds = Object.values(COMPETITION_ROUNDS[competitionId]);
-      const finishedRounds = allRounds.filter((_, idx) => {
-        const firstRound = rounds[0];
-        const lastRound = rounds[rounds.length - 1];
-        const currentRound = rounds.length > 1 ? lastRound : firstRound;
-        return allRounds.findIndex((round) => round === currentRound) >= idx;
-      });
+
+      const firstRound = rounds[0];
+      const lastRound = rounds[rounds.length - 1];
+      const currentRound = rounds.length > 1 ? lastRound : firstRound;
+      const currentRoundIndex = allRounds.findIndex(
+        (round) => round === currentRound
+      );
+
+      const finishedRounds = allRounds.filter(
+        (_, index) => index <= currentRoundIndex
+      );
+
       query['league.round'] = { $in: finishedRounds };
     } else {
       query['league.round'] = { $in: rounds };
     }
+
     const fixtures = await Fixtures.find(query)
       .sort({ 'fixture.date': -1 })
       .lean();
+
     return fixtures;
   }
 
@@ -90,7 +110,7 @@ export class FixturesService {
       .lean();
   }
 
-  isDstInBerlin(year: number, month: number, day: number): boolean {
+  private isDstInBerlin(year: number, month: number, day: number): boolean {
     const date = new Date(Date.UTC(year, month - 1, day));
     const jan = new Date(Date.UTC(year, 0, 1)).getTimezoneOffset();
     const jul = new Date(Date.UTC(year, 6, 1)).getTimezoneOffset();

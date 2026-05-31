@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { StateHandler } from '@app/shared';
-import { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
+import type { StateHandler } from '@app/shared';
+import type { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
 import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
@@ -53,7 +53,8 @@ export const FixtureStore = signalStore(
               const { home, away } = fixture.data.teams;
               const teamIds = home.id + ',' + away.id;
               const competitionId = fixture.data.league.id;
-              standingsStore.loadFixtureStandings(teamIds, competitionId);
+              const date = fixture.data.fixture.date.split('T')[0];
+              standingsStore.loadFixtureStandings(teamIds, competitionId, date);
 
               if (!isCompetitionWithMultipleGroups(fixture.data.league.id)) {
                 analysesStore.loadAnalyses(fixtureId);

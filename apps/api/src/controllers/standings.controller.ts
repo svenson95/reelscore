@@ -1,4 +1,12 @@
-import { CompetitionId, StandingsDTO, Team, TeamId } from '@lib/models';
+import type { FilterQuery } from 'mongoose';
+
+import type {
+  CompetitionId,
+  StandingRanks,
+  StandingsDTO,
+  StandingsFilter,
+} from '@lib/models';
+import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { getSeason } from '../middleware';
 import { StandingsService } from '../services';
@@ -8,22 +16,11 @@ export class StandingsController {
 
   async getByCompetitionAndDate(
     id: CompetitionId,
-    queryDate: string | null
+    date: string | null
   ): Promise<StandingsDTO | null> {
-    const filter = {
-      'league.id': id,
-      'league.season': getSeason(id),
-    };
+    const season = date ? getSeason(id, date) : getSeason(id);
 
-    if (queryDate) {
-      const [year, month, day] = queryDate.split('-').map((e) => Number(e));
-      const date = new Date(Date.UTC(year, month - 1, day));
-      date.setDate(date.getDate() + 1);
-      filter['createdAt'] = { $lte: date };
-    }
-
-    const standings = await this.standingsService.findByFilter(filter);
-    return standings ?? null;
+    return this.findLatestStandingsBySeason(id, season, date ?? undefined);
   }
 
   async getTopFive(date: string): Promise<StandingsDTO[]> {
@@ -69,71 +66,146 @@ export class StandingsController {
   private mapToOnlyTopFiveRankings(data: StandingsDTO[]): StandingsDTO[] {
     const baseStandings = 0; // 1 == home standings, 2 == away standings
 
-    return data
-      .filter((d): d is StandingsDTO =>
-        Boolean(d?.league?.standings?.[baseStandings])
-      )
-      .map((d) => ({
-        ...d,
-        league: {
-          ...d.league,
-          standings: [d.league.standings[baseStandings].slice(0, 5)],
+    return data.flatMap((d) => {
+      const standings = d.league?.standings?.[baseStandings];
+
+      if (!standings) {
+        return [];
+      }
+
+      return [
+        {
+          ...d,
+          league: {
+            ...d.league,
+            standings: [standings.slice(0, 5)],
+          },
         },
-      }));
+      ];
+    });
   }
 
-  async getFixtureStandings(teamIds: string, leagueId): Promise<StandingsDTO> {
-    const [homeId, awayId] = teamIds.split(',').map((id) => Number(id));
-    const filter = {
-      'league.id': leagueId,
-      'league.season': getSeason(leagueId),
+  async getFixtureStandings(
+    teamIds: string,
+    leagueId: CompetitionId,
+    date: string
+  ): Promise<StandingsDTO | null> {
+    const [homeId, awayId] = teamIds.split(',').map(Number);
+    const season = getSeason(leagueId, date);
+
+    const standings = await this.findLatestStandingsBySeason(
+      leagueId,
+      season,
+      date
+    );
+
+    if (!standings?.league?.standings?.length) {
+      return null;
+    }
+
+    const mappedStandings = this.isCompetitionWithMultipleGroups(
+      standings.league.id
+    )
+      ? this.mapMultipleGroupStandings(
+          standings.league.standings,
+          homeId,
+          awayId
+        )
+      : this.mapLeagueStandings(standings.league.standings, homeId, awayId);
+
+    if (!mappedStandings.length) {
+      return null;
+    }
+
+    return {
+      ...standings,
+      league: {
+        ...standings.league,
+        standings: mappedStandings,
+      },
     };
-    const standings = await this.standingsService.findByFilter(filter);
-    // TODO: check and refactor, sometimes standings.league is null
-    if (!standings) return [] as unknown as StandingsDTO;
+  }
 
-    if (this.isCompetitionWithMultipleGroups(standings.league.id)) {
-      standings.league.standings = [
-        standings.league.standings.find((ranks) =>
-          ranks.find((s) => this.isHomeOrAwayTeam(s.team, homeId, awayId))
-        ),
-      ];
-      return standings;
-    } else {
-      standings.league.standings = standings.league.standings.map(
-        (standings, index) => {
-          const LEAGUE_TABLE = 0;
-          const LEAGUE_TABLE_HOME_GAMES = 1;
-          const LEAGUE_TABLE_AWAY_GAMES = 2;
+  private async findLatestStandingsBySeason(
+    leagueId: CompetitionId,
+    season: number,
+    date?: string
+  ): Promise<StandingsDTO | null> {
+    const baseFilter: FilterQuery<StandingsFilter> = {
+      'league.id': leagueId,
+      'league.season': season,
+    };
 
-          if (index === LEAGUE_TABLE) {
-            return standings.filter((s) =>
-              this.isHomeOrAwayTeam(s.team, homeId, awayId)
-            );
-          }
-
-          if (index === LEAGUE_TABLE_HOME_GAMES)
-            return standings.filter((s) => s.team.id === homeId);
-          if (index === LEAGUE_TABLE_AWAY_GAMES)
-            return standings.filter((s) => s.team.id === awayId);
+    if (date) {
+      console.log(`${date}T23:59:59.999Z`);
+      const standingsUntilDate = await this.standingsService.findByFilter(
+        {
+          ...baseFilter,
+          updatedAt: {
+            $lte: `${date}T23:59:59.999Z`,
+          },
+        },
+        {
+          sort: { updatedAt: -1 },
         }
       );
 
-      return standings;
+      if (standingsUntilDate) {
+        return standingsUntilDate;
+      }
     }
+
+    return this.standingsService.findByFilter(baseFilter, {
+      sort: { updatedAt: -1 },
+    });
   }
 
-  private isHomeOrAwayTeam(
-    team: Team,
-    homeId: TeamId,
-    awayId: TeamId
+  private mapMultipleGroupStandings(
+    standings: StandingRanks[][],
+    homeId: number,
+    awayId: number
+  ): StandingRanks[][] {
+    const groupStandings = standings.find((ranks) =>
+      ranks.some(
+        (standing) => standing.team.id === homeId || standing.team.id === awayId
+      )
+    );
+
+    return groupStandings ? [groupStandings] : [];
+  }
+
+  private mapLeagueStandings(
+    standings: StandingRanks[][],
+    homeId: number,
+    awayId: number
+  ): StandingRanks[][] {
+    const LEAGUE_TABLE = 0;
+    const LEAGUE_TABLE_HOME_GAMES = 1;
+    const LEAGUE_TABLE_AWAY_GAMES = 2;
+
+    return standings.map((standingRanks, index) => {
+      if (index === LEAGUE_TABLE) {
+        return standingRanks.filter(
+          (standing) =>
+            standing.team.id === homeId || standing.team.id === awayId
+        );
+      }
+
+      if (index === LEAGUE_TABLE_HOME_GAMES) {
+        return standingRanks.filter((standing) => standing.team.id === homeId);
+      }
+
+      if (index === LEAGUE_TABLE_AWAY_GAMES) {
+        return standingRanks.filter((standing) => standing.team.id === awayId);
+      }
+
+      return standingRanks;
+    });
+  }
+
+  private isCompetitionWithMultipleGroups(
+    competitionId: CompetitionId
   ): boolean {
-    return team.id === homeId || team.id === awayId;
-  }
-
-  // TODO check why importing lib causes serverless function crash
-  private isCompetitionWithMultipleGroups(competitionId): boolean {
-    const COMPETITIONS_WITH_MULTIPLE_GROUPS = [1, 4, 5, 31, 32];
-    return COMPETITIONS_WITH_MULTIPLE_GROUPS.includes(competitionId);
+    return isCompetitionWithMultipleGroups(competitionId);
   }
 }

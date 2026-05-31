@@ -1,24 +1,22 @@
 import moment from 'moment-timezone';
 
-import { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@lib/models';
 
 const TIMEZONE = 'Europe/Berlin';
-
-const MLS_ID = 253;
 
 const FIXED_SEASON_BY_COMPETITION = new Map<number, number>([
   [32, 2024], // World Cup Qualifiers Europe
   [1, 2026], // World Cup
   [10, 2026], // Friendlies
+  [253, 2026], // Friendlies
 ]);
 
-export const getSeason = (competition: CompetitionId | null = null): number => {
-  const today = moment().tz(TIMEZONE);
+export const getSeason = (
+  competition: CompetitionId | null = null,
+  date: string | null = null
+): number => {
+  const today = date ? moment.tz(date, TIMEZONE) : moment().tz(TIMEZONE);
   const competitionId = Number(competition);
-
-  if (competitionId === MLS_ID) {
-    return today.year();
-  }
 
   return (
     FIXED_SEASON_BY_COMPETITION.get(competitionId) ??

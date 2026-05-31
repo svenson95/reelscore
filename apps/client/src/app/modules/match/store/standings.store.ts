@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { StateHandler } from '@app/shared';
-import { CompetitionId, StandingsDTO } from '@lib/models';
+import type { DateString, StateHandler } from '@app/shared';
+import type { CompetitionId, StandingsDTO } from '@lib/models';
 
 import { HttpFixtureStandingsService } from '../services';
 
@@ -19,11 +19,12 @@ export const FixtureStandingsStore = signalStore(
   withMethods((store, http = inject(HttpFixtureStandingsService)) => ({
     async loadFixtureStandings(
       teamIds: string,
-      competition: CompetitionId
+      competition: CompetitionId,
+      date: DateString
     ): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getFixtureStandings(teamIds, competition).subscribe({
+      http.getFixtureStandings(teamIds, competition, date).subscribe({
         next: (standings) =>
           patchState(store, {
             standings,
