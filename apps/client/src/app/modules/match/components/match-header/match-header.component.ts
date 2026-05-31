@@ -30,30 +30,11 @@ const ALLIANZ_ARENA_ID = 20732;
     }
 
     .wrapper {
-      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg;
-      border: 1px solid var(--rs-button-border-color);
-    }
-
-    .toggle-highlights-row {
-      .divider {
-        @apply w-full h-[1px];
-        background-color: var(--rs-button-border-color);
-        opacity: var(--highlights-opacity);
-        margin-block: var(--divider-margin);
-      }
-    }
-
-    .animation-wrapper {
-      height: var(--animation-wrapper-height);
-      opacity: var(--highlights-opacity);
-      overflow: hidden;
-      will-change: height, opacity;
-    }
-
-    .wrapper {
+      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg border;
       position: relative;
       & > *:not(.background-wrapper) { z-index: 3; }
     }
+
     .background-wrapper {
       @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
 
@@ -66,8 +47,23 @@ const ALLIANZ_ARENA_ID = 20732;
         opacity: 0.2;
       }
     }
+
+    .toggle-highlights-row .divider {
+      @apply w-full h-[1px];
+      background-color: var(--rs-button-border-color);
+    }
+
+    .animation-wrapper {
+      overflow: hidden;
+      will-change: height, opacity;
+    }
+
+    .match-highlights {
+      display: block;
+    }
   `,
   template: `
+    @let matchInfo = data();
     <div class="wrapper">
       <div
         class="background-wrapper"
@@ -76,26 +72,26 @@ const ALLIANZ_ARENA_ID = 20732;
         "
         [style.background-image]="venueBackgroundImage()"
       ></div>
-      <rs-match-info [data]="data()" />
+      <rs-match-info [data]="matchInfo" />
       @if (highlights() && hasGoalsOrPenalty()) {
       <div
         class="toggle-highlights-row"
-        [style.--highlights-opacity]="highlightsOpacity()"
-        [style.--divider-margin]="dividerMargin()"
+        [style.margin-block]="dividerMargin()"
+        [style.opacity]="highlightsOpacity()"
       >
         <div class="divider"></div>
       </div>
 
       <div
         class="animation-wrapper"
-        [style.--animation-wrapper-height]="animationWrapperHeight()"
-        [style.--highlights-opacity]="highlightsOpacity()"
+        [style.height.px]="highlightsVisibleHeight()"
+        [style.opacity]="highlightsOpacity()"
       >
-        @if (data(); as data) {
+        @if (matchInfo) {
         <rs-match-highlights
           #matchHighlightsElement
           class="match-highlights"
-          [data]="data"
+          [data]="matchInfo"
           [highlights]="highlights()!"
         />
         }
@@ -110,39 +106,26 @@ export class MatchHeaderComponent implements OnDestroy {
 
   private resizeObserver?: ResizeObserver;
 
-  private readonly scrollY = signal<number>(0);
+  private readonly scrollY = signal<number>(window.scrollY);
+  private readonly initialScrollY = signal<number>(window.scrollY);
   private readonly highlightsHeight = signal<number>(0);
+
+  readonly highlightsVisibleHeight = computed<number>(() => {
+    const scrolled = Math.max(0, this.scrollY() - this.initialScrollY());
+    return Math.max(0, this.highlightsHeight() - scrolled);
+  });
 
   readonly highlightsOpacity = computed<string>(() => {
     const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return '0';
-    }
-
-    const visibleHeight = Math.max(0, height - this.scrollY());
-    const opacity = visibleHeight / height;
-
-    return `${opacity}`;
+    if (height === 0) return '0';
+    return `${this.highlightsVisibleHeight() / height}`;
   });
 
   readonly dividerMargin = computed<string>(() => {
     const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return '0rem';
-    }
-
-    const visibleHeight = Math.max(0, height - this.scrollY());
-    const visibleRatio = visibleHeight / height;
-
+    if (height === 0) return '0rem';
+    const visibleRatio = this.highlightsVisibleHeight() / height;
     return `${0.5 * visibleRatio}rem`;
-  });
-
-  readonly animationWrapperHeight = computed<string>(() => {
-    const height = this.highlightsHeight() - this.scrollY();
-
-    return `${Math.max(0, Math.round(height))}px`;
   });
 
   @ViewChild('matchHighlightsElement', { read: ElementRef })
@@ -154,13 +137,14 @@ export class MatchHeaderComponent implements OnDestroy {
       return;
     }
 
-    this.highlightsHeight.set(ref.nativeElement.scrollHeight);
+    const element = ref.nativeElement;
+    this.highlightsHeight.set(element.scrollHeight);
 
     this.resizeObserver = new ResizeObserver(() => {
-      this.highlightsHeight.set(ref.nativeElement.scrollHeight);
+      this.highlightsHeight.set(element.scrollHeight);
     });
 
-    this.resizeObserver.observe(ref.nativeElement);
+    this.resizeObserver.observe(element);
   }
 
   @HostListener('window:scroll')
