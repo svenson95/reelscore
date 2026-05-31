@@ -53,7 +53,7 @@ import {
       <rs-result-label
         [fixture]="fixture"
         [status]="fixture.fixture.status.short"
-        [showPostponedText]="true"
+        [showNotPlayedText]="true"
       />
       }
     </div>

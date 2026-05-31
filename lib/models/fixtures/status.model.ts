@@ -26,11 +26,11 @@ export type StatusShort =
   | StatusTypeNotPlayed
   | 'WO';
 
-export const STATUS_TYPES_SCHEDULED = ['TBD', 'NS'] as const;
+export const STATUS_TYPES_SCHEDULED: readonly string[] = ['TBD', 'NS'] as const;
 export type StatusTypeScheduled = (typeof STATUS_TYPES_SCHEDULED)[number];
 export const STATUS_VALUE_HALFTIME = 'HT' as const;
 export type StatusValueHalftime = (typeof STATUS_VALUE_HALFTIME)[number];
-export const STATUS_TYPES_PLAYING = [
+export const STATUS_TYPES_PLAYING: readonly string[] = [
   '1H',
   ...STATUS_VALUE_HALFTIME,
   '2H',
@@ -43,13 +43,19 @@ export const STATUS_TYPES_PLAYING = [
 ] as const;
 export type StatusTypePlaying = (typeof STATUS_TYPES_PLAYING)[number];
 
+export const STATUS_TYPES_FINISHED: readonly string[] = [
+  'FT',
+  'AET',
+  'PEN',
+] as const;
 export type StatusTypeFinished = (typeof STATUS_TYPES_FINISHED)[number];
-export const STATUS_TYPES_FINISHED = ['FT', 'AET', 'PEN'] as const;
 export const STATUS_VALUE_POSTPONED = 'PST' as const;
 export type StatusTypePostponed = (typeof STATUS_VALUE_POSTPONED)[number];
-export type StatusTypeCancelled = 'CANC';
-export type StatusTypeAbandoned = 'ABD';
-export const STATUS_TYPES_NOT_PLAYED = [
+export const STATUS_VALUE_CANCELLED = 'CANC' as const;
+export type StatusTypeCancelled = (typeof STATUS_VALUE_CANCELLED)[number];
+export const STATUS_VALUE_ABANDONED = 'ABD' as const;
+export type StatusTypeAbandoned = (typeof STATUS_VALUE_ABANDONED)[number];
+export const STATUS_TYPES_NOT_PLAYED: readonly string[] = [
   'AWD', // Technical Loss
   'WO', // WalkOver, victory by forfeit or absence of competitor
 ] as const;
