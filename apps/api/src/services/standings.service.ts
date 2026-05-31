@@ -1,11 +1,18 @@
 import { FilterQuery } from 'mongoose';
 
-import { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@lib/models';
 
 import { Standings } from '../models';
 
 export class StandingsService {
-  async findByFilter(filter: FilterQuery<unknown>): Promise<StandingsDTO> {
-    return Standings.findOne(filter).sort({ createdAt: -1 }).lean();
+  findByFilter(
+    filter: FilterQuery<StandingsDTO>,
+    options?: {
+      sort?: Record<string, 1 | -1>;
+    }
+  ): Promise<StandingsDTO | null> {
+    return Standings.findOne(filter)
+      .sort(options?.sort ?? {})
+      .lean();
   }
 }

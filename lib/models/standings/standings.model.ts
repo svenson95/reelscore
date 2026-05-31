@@ -1,4 +1,4 @@
-import { League } from '../competition.model';
+import { CompetitionId, League } from '../competition.model';
 import { MongoDbId } from '../mongodb.model';
 
 export interface StandingsDTO {
@@ -7,3 +7,8 @@ export interface StandingsDTO {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type StandingsFilter = {
+  'league.id': CompetitionId;
+  'league.season': number;
+};

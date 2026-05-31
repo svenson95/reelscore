@@ -2,13 +2,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 
-import { CompetitionId, StandingsDTO } from '@lib/models';
+import { DateString } from '@app/shared';
+import type { CompetitionId, StandingsDTO } from '@lib/models';
+
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureStandingsService {
   abstract getFixtureStandings(
     teamIds: string,
-    competition: CompetitionId
+    competition: CompetitionId,
+    date: DateString
   ): Observable<StandingsDTO>;
 }
 
@@ -19,11 +22,13 @@ export class AbstractedHttpFixtureStandingsService extends HttpFixtureStandingsS
 
   getFixtureStandings(
     teamIds: string,
-    competition: CompetitionId
+    competition: CompetitionId,
+    date: DateString
   ): Observable<StandingsDTO> {
     const params = new HttpParams()
       .set('teamIds', teamIds)
-      .set('competition', competition);
+      .set('competition', competition)
+      .set('date', date);
     return this.http
       .get<StandingsDTO>(this.BASE_URL + '/match-standings', {
         params,
