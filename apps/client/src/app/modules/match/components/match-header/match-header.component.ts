@@ -17,9 +17,6 @@ import { MatchHighlightsComponent, MatchInfoComponent } from './components';
 import { VENUE_IDS } from './venue-ids.data';
 
 const ALLIANZ_ARENA_ID = 20732;
-const LARGE_HIGHLIGHTS_HEIGHT = 150;
-const DEFAULT_COLLAPSE_SCROLL_FACTOR = 1.3;
-const LARGE_COLLAPSE_SCROLL_FACTOR = 0.7;
 
 @Component({
   selector: 'section[rs-match-header]',
@@ -113,21 +110,37 @@ export class MatchHeaderComponent implements OnDestroy {
 
   private resizeObserver?: ResizeObserver;
 
+  private readonly scrollY = signal<number>(0);
   private readonly highlightsHeight = signal<number>(0);
-  private readonly highlightsScrollProgress = signal<number>(0);
 
   readonly highlightsOpacity = computed<string>(() => {
-    return `${1 - this.highlightsScrollProgress()}`;
+    const height = this.highlightsHeight();
+
+    if (height === 0) {
+      return '0';
+    }
+
+    const visibleHeight = Math.max(0, height - this.scrollY());
+    const opacity = visibleHeight / height;
+
+    return `${opacity}`;
   });
 
   readonly dividerMargin = computed<string>(() => {
-    const visibleRatio = 1 - this.highlightsScrollProgress();
+    const height = this.highlightsHeight();
+
+    if (height === 0) {
+      return '0rem';
+    }
+
+    const visibleHeight = Math.max(0, height - this.scrollY());
+    const visibleRatio = visibleHeight / height;
+
     return `${0.5 * visibleRatio}rem`;
   });
 
   readonly animationWrapperHeight = computed<string>(() => {
-    const visibleRatio = 1 - this.highlightsScrollProgress();
-    const height = this.highlightsHeight() * visibleRatio;
+    const height = this.highlightsHeight() - this.scrollY();
 
     return `${Math.max(0, Math.round(height))}px`;
   });
@@ -141,10 +154,10 @@ export class MatchHeaderComponent implements OnDestroy {
       return;
     }
 
-    this.measureHighlightsHeight(ref.nativeElement);
+    this.highlightsHeight.set(ref.nativeElement.scrollHeight);
 
     this.resizeObserver = new ResizeObserver(() => {
-      this.measureHighlightsHeight(ref.nativeElement);
+      this.highlightsHeight.set(ref.nativeElement.scrollHeight);
     });
 
     this.resizeObserver.observe(ref.nativeElement);
@@ -152,9 +165,7 @@ export class MatchHeaderComponent implements OnDestroy {
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    const collapseDistance = this.getHighlightsCollapseDistance();
-    const progress = this.clamp(window.scrollY / collapseDistance, 0, 1);
-    this.highlightsScrollProgress.set(progress);
+    this.scrollY.set(window.scrollY);
   }
 
   private activeVenueImageUrl = signal<string | undefined>(undefined);
@@ -213,26 +224,6 @@ export class MatchHeaderComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
-  }
-
-  private measureHighlightsHeight(element: HTMLElement): void {
-    this.highlightsHeight.set(element.scrollHeight);
-  }
-
-  private clamp(value: number, min: number, max: number): number {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  private getHighlightsCollapseDistance(): number {
-    const height = this.highlightsHeight();
-    const factor = this.getHighlightsCollapseFactor(height);
-    return Math.max(height * factor, 1);
-  }
-
-  private getHighlightsCollapseFactor(height: number): number {
-    return height > LARGE_HIGHLIGHTS_HEIGHT
-      ? LARGE_COLLAPSE_SCROLL_FACTOR
-      : DEFAULT_COLLAPSE_SCROLL_FACTOR;
   }
 
   private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
