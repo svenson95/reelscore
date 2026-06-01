@@ -1,4 +1,4 @@
-import { inject, untracked } from '@angular/core';
+import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { DateString, HttpStandingsService, StateHandler } from '@app/shared';
@@ -6,42 +6,51 @@ import { StandingsWeekData } from '@lib/models';
 
 type WeekdayStandingsState = StateHandler<{
   weekStandings: StandingsWeekData;
+  isRefreshing: boolean;
 }>;
 
 const initialState: WeekdayStandingsState = {
-  weekStandings: Array.from({ length: 7 }, () => []),
+  weekStandings: createEmptyWeekStandings(),
   isLoading: false,
+  isRefreshing: false,
   error: null,
 };
 
 export const WeekdayStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadWeekdayStandings(
-      date: DateString,
-      updateOnly = false
-    ): Promise<void> {
+    loadWeekdayStandings(date: DateString, updateOnly = false): void {
       patchState(store, {
-        weekStandings: updateOnly
-          ? untracked(store.weekStandings)
-          : Array.from({ length: 7 }, () => []),
-        isLoading: true,
+        error: null,
+        isLoading: !updateOnly,
+        isRefreshing: updateOnly,
+        ...(updateOnly ? {} : { weekStandings: createEmptyWeekStandings() }),
       });
 
       http.getWeekStandings(date).subscribe({
-        next: async (weekStandings) => {
+        next: (weekStandings) => {
           patchState(store, {
             weekStandings,
             isLoading: false,
+            isRefreshing: false,
+            error: null,
           });
         },
-        error: (error) =>
+        error: (error) => {
           patchState(store, {
-            weekStandings: initialState.weekStandings,
             isLoading: false,
+            isRefreshing: false,
             error,
-          }),
+            ...(updateOnly
+              ? {}
+              : { weekStandings: createEmptyWeekStandings() }),
+          });
+        },
       });
     },
   }))
 );
+
+function createEmptyWeekStandings(): StandingsWeekData {
+  return Array.from({ length: 7 }, () => []);
+}

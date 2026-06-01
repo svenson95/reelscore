@@ -16,8 +16,8 @@ import moment from 'moment';
 
 import { CalendarWeek, DateString } from '@app/shared';
 
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 import { DateService } from '../../../services';
+import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
@@ -101,7 +101,7 @@ const EXTERNAL_MODULES = [
       <mat-button-toggle [disabled]="isLoading()" (click)="setDateTo(-1)">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </mat-button-toggle>
-      @for(day of weekdays(); track day) {
+      @for(day of weekdays(); track day.toString()) {
       <mat-button-toggle
         [disabled]="isLoading() || selectedDay() === day"
         [value]="day"

@@ -1,4 +1,4 @@
-import { inject, untracked } from '@angular/core';
+import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { DateString, HttpWeekFixturesService, StateHandler } from '@app/shared';
@@ -6,42 +6,49 @@ import { FixturesWeekData } from '@lib/models';
 
 type WeekdayFixturesState = StateHandler<{
   weekFixtures: FixturesWeekData;
+  isRefreshing: boolean;
 }>;
 
 const initialState: WeekdayFixturesState = {
-  weekFixtures: Array.from({ length: 7 }, () => []),
+  weekFixtures: createEmptyWeekFixtures(),
   isLoading: false,
+  isRefreshing: false,
   error: null,
 };
 
 export const WeekdayFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpWeekFixturesService)) => ({
-    async loadWeekdayFixtures(
-      date: DateString,
-      updateOnly = false
-    ): Promise<void> {
+    loadWeekdayFixtures(date: DateString, updateOnly = false): void {
       patchState(store, {
-        weekFixtures: updateOnly
-          ? untracked(store.weekFixtures)
-          : Array.from({ length: 7 }, () => []),
-        isLoading: true,
+        error: null,
+        isLoading: !updateOnly,
+        isRefreshing: updateOnly,
+        ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
       });
 
       http.getWeekFixtures(date).subscribe({
-        next: async (weekFixtures) => {
+        next: (weekFixtures) => {
           patchState(store, {
             weekFixtures,
             isLoading: false,
+            isRefreshing: false,
+            error: null,
           });
         },
-        error: (error) =>
+        error: (error) => {
           patchState(store, {
-            weekFixtures: initialState.weekFixtures,
             isLoading: false,
+            isRefreshing: false,
             error,
-          }),
+            ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
+          });
+        },
       });
     },
   }))
 );
+
+function createEmptyWeekFixtures(): FixturesWeekData {
+  return Array.from({ length: 7 }, () => []);
+}
