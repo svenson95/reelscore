@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,8 +13,12 @@ import { RouterModule } from '@angular/router';
 import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { linkToMatch } from '../../../../constants';
+import {
+  type FixtureStatusState,
+  getFixtureStatusState,
+} from '../../../../helper';
 import { getTeamLogo, getTeamLogoSrcSet } from '../../../../models';
-import { IsStatusPipe, TeamNamePipe } from '../../../../pipes';
+import { TeamNamePipe } from '../../../../pipes';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 
@@ -29,7 +33,6 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     ...EXTERNAL_MODULES,
     ResponsiveImageComponent,
     TeamNamePipe,
-    IsStatusPipe,
     ResultLabelComponent,
   ],
   providers: [FixtureListItemFacade],
@@ -61,21 +64,13 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     <a matRipple [routerLink]="fixtureLink()">
       <div
         class="time"
-        [class.is-upcoming]="match | isStatus : scheduled"
-        [class.is-playing]="
-          (match | isStatus : playing : finished) ||
-          (match | isStatus : halfTime)
-        "
+        [class.is-upcoming]="statusState().isUpcoming"
+        [class.is-playing]="statusState().isLive"
       >
-        <span
-          class="time-label"
-          [class.is-finished]="match | isStatus : finished"
-        >
-          @if (match | isStatus : ['P']) {
-          <span class="truncate text-ellipsis">Elfm.</span>
-          } @else if (match | isStatus : playing : finished) {
-          {{ match.fixture.status.elapsed }}' } @else if (match | isStatus :
-          halfTime) { HZ } @else {
+        <span class="time-label" [class.is-finished]="statusState().isFinished">
+          @if (timeLabel(); as label) {
+          <span class="truncate text-ellipsis">{{ label }}</span>
+          } @else {
           {{ match.fixture.date | date : 'HH:mm' }}
           }
         </span>
@@ -99,7 +94,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
             }
           </div>
         </div>
-        <div class="result" [class.is-upcoming]="match | isStatus : scheduled">
+        <div class="result" [class.is-upcoming]="statusState().isUpcoming">
           <rs-result-label
             [fixture]="fixture()"
             [status]="fixture().fixture.status.short"
@@ -128,32 +123,57 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
   `,
 })
 export class FixtureListItemComponent {
-  fixture = input.required<ExtendedFixtureDTO>();
+  readonly fixture = input.required<ExtendedFixtureDTO>();
 
-  private facade = inject(FixtureListItemFacade);
-  scheduled = this.facade.scheduled;
-  playing = this.facade.playing;
-  finished = this.facade.finished;
-  halfTime = this.facade.halfTime;
+  private readonly facade = inject(FixtureListItemFacade);
+  readonly scheduled = this.facade.scheduled;
+  readonly playing = this.facade.playing;
+  readonly finished = this.facade.finished;
+  readonly halfTime = this.facade.halfTime;
 
-  isHomeEliminated = computed(() =>
+  readonly statusState = computed<FixtureStatusState>(() =>
+    getFixtureStatusState(this.fixture().fixture.status.short)
+  );
+
+  readonly timeLabel = computed<string>(() => {
+    const fixture = this.fixture();
+    const state = this.statusState();
+
+    if (state.isPenalty) return 'Elfm.';
+    if (state.isHalftime) return 'HZ';
+    if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
+    if (state.isFinished) {
+      return formatDate(
+        fixture.fixture.date,
+        'HH:mm',
+        'de-DE',
+        'Europe/Berlin'
+      );
+    }
+
+    return '';
+  });
+
+  readonly isHomeEliminated = computed(() =>
     this.facade.isTeamEliminated(untracked(this.fixture), 'home')
   );
-  isAwayEliminated = computed(() =>
+  readonly isAwayEliminated = computed(() =>
     this.facade.isTeamEliminated(untracked(this.fixture), 'away')
   );
 
-  homeLogo = computed<string>(() =>
+  readonly homeLogo = computed<string>(() =>
     getTeamLogo(untracked(this.fixture).teams.home.id, 14)
   );
-  homeLogoSrcSet = computed<string>(() =>
+  readonly homeLogoSrcSet = computed<string>(() =>
     getTeamLogoSrcSet(untracked(this.fixture).teams.home.id, 14)
   );
-  awayLogo = computed<string>(() =>
+  readonly awayLogo = computed<string>(() =>
     getTeamLogo(untracked(this.fixture).teams.away.id, 14)
   );
-  awayLogoSrcSet = computed<string>(() =>
+  readonly awayLogoSrcSet = computed<string>(() =>
     getTeamLogoSrcSet(untracked(this.fixture).teams.away.id, 14)
   );
-  fixtureLink = computed<string[]>(() => linkToMatch(untracked(this.fixture)));
+  readonly fixtureLink = computed<string[]>(() =>
+    linkToMatch(untracked(this.fixture))
+  );
 }
