@@ -1,10 +1,12 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   effect,
   ElementRef,
   HostListener,
+  inject,
   input,
   OnDestroy,
   signal,
@@ -14,6 +16,7 @@ import {
 import type { FixtureDTO, FixtureHighlights } from '@lib/models';
 
 import { MatchHighlightsComponent, MatchInfoComponent } from './components';
+import { ScrollService } from './services';
 import { VENUE_IDS } from './venue-ids.data';
 
 const ALLIANZ_ARENA_ID = 20732;
@@ -22,6 +25,7 @@ const ALLIANZ_ARENA_ID = 20732;
   selector: 'section[rs-match-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchInfoComponent, MatchHighlightsComponent],
+  providers: [ScrollService],
   styles: `
     :host {
       @apply px-3;
@@ -50,7 +54,12 @@ const ALLIANZ_ARENA_ID = 20732;
 
     .animation-wrapper {
       overflow: hidden;
-      will-change: height, opacity;
+      will-change: height;
+    }
+
+    .animation-content {
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
     }
 
     .toggle-highlights-row {
@@ -84,7 +93,7 @@ const ALLIANZ_ARENA_ID = 20732;
         [style.height.px]="highlightsVisibleHeight()"
         [style.opacity]="highlightsOpacity()"
       >
-        <div #highlightsContent>
+        <div #highlightsContent class="animation-content">
           <div class="toggle-highlights-row">
             <div class="divider"></div>
           </div>
@@ -100,68 +109,29 @@ const ALLIANZ_ARENA_ID = 20732;
     </div>
   `,
 })
-export class MatchHeaderComponent implements OnDestroy {
+export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   readonly data = input.required<FixtureDTO | undefined>();
   readonly highlights = input.required<FixtureHighlights | undefined>();
 
-  private resizeObserver?: ResizeObserver;
-
-  private readonly scrollY = signal<number>(window.scrollY);
-  private readonly initialScrollY = signal<number>(window.scrollY);
-  private readonly highlightsHeight = signal<number>(0);
-
-  readonly highlightsVisibleHeight = computed<number>(() => {
-    const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return 0;
-    }
-
-    const scrolled = Math.max(0, this.scrollY() - this.initialScrollY());
-
-    return Math.max(0, height - scrolled);
-  });
-
-  readonly highlightsOpacity = computed<string>(() => {
-    const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return '0';
-    }
-
-    return `${this.highlightsVisibleHeight() / height}`;
-  });
+  private readonly scrollService = inject(ScrollService);
+  readonly highlightsVisibleHeight = this.scrollService.highlightsVisibleHeight;
+  readonly highlightsOpacity = this.scrollService.highlightsOpacity;
 
   @ViewChild('highlightsContent', { read: ElementRef })
   set highlightsContent(ref: ElementRef<HTMLElement> | undefined) {
-    this.resizeObserver?.disconnect();
-
-    if (!ref) {
-      this.highlightsHeight.set(0);
-      return;
-    }
-
-    const element = ref.nativeElement;
-
-    const updateHeight = () => {
-      this.highlightsHeight.set(element.scrollHeight);
-    };
-
-    updateHeight();
-
-    this.resizeObserver = new ResizeObserver(() => {
-      updateHeight();
-    });
-
-    this.resizeObserver.observe(element);
-
-    this.initialScrollY.set(window.scrollY);
-    this.scrollY.set(window.scrollY);
+    this.scrollService.setHighlightsContent(ref);
   }
 
   @HostListener('window:scroll')
-  onWindowScroll(): void {
-    this.scrollY.set(window.scrollY);
+  onScroll(): void {
+    if (this.scrollService.scrollFrame !== null) {
+      return;
+    }
+
+    this.scrollService.scrollFrame = requestAnimationFrame(() => {
+      this.scrollService.setScrollY(window.scrollY);
+      this.scrollService.scrollFrame = null;
+    });
   }
 
   private activeVenueImageUrl = signal<string | undefined>(undefined);
@@ -218,8 +188,33 @@ export class MatchHeaderComponent implements OnDestroy {
     });
   });
 
+  ngAfterViewInit(): void {
+    const onScroll = () => {
+      if (this.scrollService.scrollFrame !== null) {
+        return;
+      }
+
+      this.scrollService.scrollFrame = requestAnimationFrame(() => {
+        this.scrollService.setScrollY(window.scrollY);
+        this.scrollService.scrollFrame = null;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    this.scrollService.destroyScrollListener = () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }
+
   ngOnDestroy(): void {
-    this.resizeObserver?.disconnect();
+    this.scrollService.destroyScrollListener?.();
+
+    if (this.scrollService.scrollFrame !== null) {
+      cancelAnimationFrame(this.scrollService.scrollFrame);
+    }
+
+    this.scrollService.disconnectObserver();
   }
 
   private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
