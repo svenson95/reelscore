@@ -14,11 +14,15 @@ import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
 
-type FixtureState = StateHandler<{ fixture: GetFixtureDTO | null }>;
+type FixtureState = StateHandler<{
+  fixture: GetFixtureDTO | null;
+  isRefreshing: boolean;
+}>;
 
 const initialState: FixtureState = {
   fixture: null,
   isLoading: false,
+  isRefreshing: false,
   error: null,
 };
 
@@ -42,11 +46,22 @@ export const FixtureStore = signalStore(
           resetRelatedStores: boolean;
         }
       ): Promise<void> => {
-        if (options.resetFixture) {
-          patchState(store, { ...initialState, isLoading: true });
-        } else {
-          patchState(store, { isLoading: true, error: null });
-        }
+        const isRefresh = !options.resetFixture;
+
+        patchState(
+          store,
+          isRefresh
+            ? {
+                isLoading: false,
+                isRefreshing: true,
+                error: null,
+              }
+            : {
+                ...initialState,
+                isLoading: true,
+                isRefreshing: false,
+              }
+        );
 
         if (options.resetRelatedStores) {
           evaluationsStore.reset();
@@ -91,6 +106,7 @@ export const FixtureStore = signalStore(
               patchState(store, {
                 fixture,
                 isLoading: false,
+                isRefreshing: false,
                 error: fixture ? null : 'Fixture not found',
               });
 
@@ -100,6 +116,7 @@ export const FixtureStore = signalStore(
               patchState(store, {
                 fixture: options.resetFixture ? null : store.fixture(),
                 isLoading: false,
+                isRefreshing: false,
                 error,
               });
 
@@ -120,7 +137,7 @@ export const FixtureStore = signalStore(
         reloadFixture(): Promise<void> {
           const fixture = store.fixture();
 
-          if (!fixture || store.isLoading()) {
+          if (!fixture || store.isLoading() || store.isRefreshing()) {
             return Promise.resolve();
           }
 

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnDestroy,
   OnInit,
   untracked,
 } from '@angular/core';
@@ -39,7 +40,7 @@ import {
     <section class="overview-content" rs-overview-content></section>
   `,
 })
-export class OverviewComponent extends RouterView implements OnInit {
+export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   private readonly weekFixturesStore = inject(WeekdayFixturesStore);
   private readonly weekStandingsStore = inject(WeekdayStandingsStore);
 
@@ -55,6 +56,11 @@ export class OverviewComponent extends RouterView implements OnInit {
       canRefresh: () => this.isNotLoading(),
       refresh: () => this.reloadData(),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.visibilityObserverService.stop();
+    this.pageRefreshService.stop();
   }
 
   private reloadData(): void {

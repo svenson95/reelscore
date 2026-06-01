@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 
@@ -52,7 +53,7 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent extends RouterView implements OnInit {
+export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
@@ -81,5 +82,10 @@ export class MatchComponent extends RouterView implements OnInit {
       canRefresh: () => !this.facade.isLoading(),
       refresh: () => this.facade.reloadFixture(),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.visibilityObserverService.stop();
+    this.pageRefreshService.stop();
   }
 }

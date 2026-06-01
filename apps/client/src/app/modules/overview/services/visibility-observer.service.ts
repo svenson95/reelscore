@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import moment from 'moment';
@@ -12,6 +12,7 @@ import { SelectedDateService } from './selected-date.service';
 
 export abstract class VisibilityObserverService {
   abstract init(): void;
+  abstract stop(): void;
 }
 
 @Injectable()
@@ -24,14 +25,23 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   private readonly weekFixturesStore = inject(WeekdayFixturesStore);
   private readonly weekStandingsStore = inject(WeekdayStandingsStore);
 
+  private subscription?: Subscription;
+
   public init(): void {
-    fromEvent(document, 'visibilitychange')
+    this.stop();
+
+    this.subscription = fromEvent(document, 'visibilitychange')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         filter(() => this.isDocumentVisibleAgain()),
         tap(() => this.reloadData())
       )
       .subscribe();
+  }
+
+  public stop(): void {
+    this.subscription?.unsubscribe();
+    this.subscription = undefined;
   }
 
   private reloadData(): void {
@@ -42,7 +52,12 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   private reloadOverview(): void {
     const isLoading =
       this.weekFixturesStore.isLoading() || this.weekStandingsStore.isLoading();
-    if (isLoading) return;
+
+    const isRefreshing =
+      this.weekFixturesStore.isRefreshing() ||
+      this.weekStandingsStore.isRefreshing();
+
+    if (isLoading || isRefreshing) return;
 
     const date = untracked(this.selectedDateService.selectedDay);
 
