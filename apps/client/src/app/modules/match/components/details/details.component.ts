@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -52,7 +58,11 @@ const ANGULAR_MODULES = [
     }
   `,
   template: `
-    <mat-tab-group animationDuration="150ms">
+    <mat-tab-group
+      [selectedIndex]="selectedTabIndex()"
+      (selectedIndexChange)="selectedTabIndex.set($event)"
+      animationDuration="150ms"
+    >
       <mat-tab>
         <ng-template mat-tab-label>
           <div class="tab-label-content">
@@ -135,4 +145,20 @@ export class MatchDetailsComponent {
   readonly hasNoStandings = this.facade.hasNoStandings;
   readonly isLoadingStandings = this.facade.standingsStore.isLoading;
   readonly isKoPhase = this.facade.isKoPhase;
+
+  readonly selectedTabIndex = signal<number>(0);
+
+  selectedTabEffect = effect(() => {
+    const selectedIndex = this.selectedTabIndex();
+    const tabsAvailable: boolean[] = [
+      true,
+      !!this.analyses(),
+      !!this.events(),
+      !!this.statistics(),
+    ];
+
+    if (!tabsAvailable[selectedIndex]) {
+      this.selectedTabIndex.set(0);
+    }
+  });
 }
