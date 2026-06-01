@@ -49,7 +49,6 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     <div class="round">
       <div class="logo-wrapper">
         <div class="competition-logo-small">
-          @defer (on viewport) {
           <rs-responsive-image
             class="competition-corner"
             [source]="competitionLogo()"
@@ -58,9 +57,6 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
             [width]="24"
             [height]="24"
           />
-          } @placeholder {
-          <div class="competition-logo-small-placeholder"></div>
-          }
         </div>
       </div>
       <p>{{ this.fixtures()[0].league.round! | roundLabel }}</p>
