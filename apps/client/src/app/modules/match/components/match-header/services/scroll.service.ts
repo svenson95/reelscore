@@ -1,97 +1,159 @@
-import { computed, ElementRef, Injectable, signal } from '@angular/core';
+import {
+  DestroyRef,
+  ElementRef,
+  Injectable,
+  NgZone,
+  inject,
+} from '@angular/core';
 
 @Injectable()
 export class ScrollService {
-  private destroyScrollListener?: () => void;
+  private readonly ngZone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private wrapper?: HTMLElement;
+  private content?: HTMLElement;
+
   private resizeObserver?: ResizeObserver;
-  scrollFrame: number | null = null;
+  private destroyScrollListener?: () => void;
 
-  private readonly scrollY = signal<number>(window.scrollY);
-  private readonly initialScrollY = signal<number>(window.scrollY);
-  private readonly highlightsHeight = signal<number>(0);
+  private scrollFrame: number | null = null;
+  private initialScrollY = 0;
+  private highlightsHeight = 0;
 
-  private readonly scrollProgress = computed<number>(() => {
-    const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return 0;
-    }
-
-    const scrolled = Math.max(0, this.scrollY() - this.initialScrollY());
-
-    return Math.min(1, scrolled / height);
-  });
-
-  readonly highlightsVisibleHeight = computed<number>(() => {
-    const height = this.highlightsHeight();
-
-    if (height === 0) {
-      return 0;
-    }
-
-    return height * (1 - this.scrollProgress());
-  });
-
-  readonly highlightsOpacity = computed<string>(() => {
-    return `${1 - this.scrollProgress()}`;
-  });
-
-  observeScrollPosition(): void {
-    const onScroll = () => {
-      if (this.scrollFrame !== null) {
-        return;
-      }
-
-      this.scrollFrame = requestAnimationFrame(() => {
-        this.setScrollY(window.scrollY);
-        this.scrollFrame = null;
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    this.destroyScrollListener = () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }
-
-  destroy(): void {
-    this.destroyScrollListener?.();
-
-    if (this.scrollFrame !== null) {
-      cancelAnimationFrame(this.scrollFrame);
-    }
-
-    this.resizeObserver?.disconnect();
-  }
-
-  setScrollY(value: number): void {
-    this.scrollY.set(value);
+  setAnimationWrapper(ref: ElementRef<HTMLElement> | undefined): void {
+    this.wrapper = ref?.nativeElement;
+    this.updateCssVariables();
   }
 
   setHighlightsContent(ref: ElementRef<HTMLElement> | undefined): void {
     this.resizeObserver?.disconnect();
+    this.content = ref?.nativeElement;
 
-    if (!ref) {
-      this.highlightsHeight.set(0);
+    if (!this.content) {
+      this.highlightsHeight = 0;
+      this.updateCssVariables();
       return;
     }
 
-    const element = ref.nativeElement;
-
-    const updateHeight = () => {
-      this.highlightsHeight.set(element.scrollHeight);
-    };
-
-    updateHeight();
+    this.measureHeight();
 
     this.resizeObserver = new ResizeObserver(() => {
-      requestAnimationFrame(updateHeight);
+      this.requestUpdate(() => {
+        this.measureHeight();
+        this.updateProgress();
+      });
     });
 
-    this.resizeObserver.observe(element);
+    this.resizeObserver.observe(this.content);
+  }
 
-    this.initialScrollY.set(window.scrollY);
-    this.scrollY.set(window.scrollY);
+  observeScrollPosition(): void {
+    this.ngZone.runOutsideAngular(() => {
+      this.initialScrollY = this.getScrollY();
+
+      const onScroll = () => {
+        this.requestUpdate(() => {
+          this.updateProgress();
+        });
+      };
+
+      const onResize = () => {
+        this.requestUpdate(() => {
+          this.measureHeight();
+          this.updateProgress();
+        });
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
+      window.addEventListener('orientationchange', onResize, { passive: true });
+
+      window.visualViewport?.addEventListener('scroll', onScroll, {
+        passive: true,
+      });
+
+      window.visualViewport?.addEventListener('resize', onResize, {
+        passive: true,
+      });
+
+      this.destroyScrollListener = () => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+        window.removeEventListener('orientationchange', onResize);
+
+        window.visualViewport?.removeEventListener('scroll', onScroll);
+        window.visualViewport?.removeEventListener('resize', onResize);
+      };
+
+      this.destroyRef.onDestroy(() => this.destroy());
+    });
+  }
+
+  destroy(): void {
+    this.destroyScrollListener?.();
+    this.destroyScrollListener = undefined;
+
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = undefined;
+
+    if (this.scrollFrame !== null) {
+      cancelAnimationFrame(this.scrollFrame);
+      this.scrollFrame = null;
+    }
+  }
+
+  private requestUpdate(callback: () => void): void {
+    if (this.scrollFrame !== null) {
+      return;
+    }
+
+    this.scrollFrame = requestAnimationFrame(() => {
+      callback();
+      this.scrollFrame = null;
+    });
+  }
+
+  private measureHeight(): void {
+    if (!this.content) {
+      this.highlightsHeight = 0;
+      this.updateCssVariables();
+      return;
+    }
+
+    this.highlightsHeight = this.content.scrollHeight;
+    this.updateCssVariables();
+  }
+
+  private updateProgress(): void {
+    if (!this.wrapper || this.highlightsHeight <= 0) {
+      return;
+    }
+
+    const scrolled = Math.max(0, this.getScrollY() - this.initialScrollY);
+    const progress = Math.min(1, scrolled / this.highlightsHeight);
+
+    this.wrapper.style.setProperty('--highlights-progress', `${progress}`);
+  }
+
+  private updateCssVariables(): void {
+    if (!this.wrapper) {
+      return;
+    }
+
+    this.wrapper.style.setProperty(
+      '--highlights-height',
+      `${this.highlightsHeight}px`
+    );
+  }
+
+  private getScrollY(): number {
+    return (
+      window.scrollY ||
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0
+    );
   }
 }
