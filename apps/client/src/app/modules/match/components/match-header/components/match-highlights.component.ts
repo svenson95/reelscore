@@ -61,7 +61,7 @@ import {
     .highlight-spacer::before,
     .highlight-spacer::after {
       content: '';
-      @apply h-px flex-1 bg-rs-border-color-1;
+      @apply h-px flex-1 bg-rs-border-color-2;
     }
 
     .highlight-spacer-label {

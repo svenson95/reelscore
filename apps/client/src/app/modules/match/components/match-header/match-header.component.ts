@@ -59,8 +59,7 @@ const ALLIANZ_ARENA_ID = 20732;
       will-change: height, opacity;
 
       .divider {
-        @apply w-full h-[1px];
-        background-color: var(--rs-button-border-color);
+        @apply w-full h-[1px] bg-rs-border-color-2;
       }
     }
 
