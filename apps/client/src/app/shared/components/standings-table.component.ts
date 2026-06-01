@@ -127,7 +127,6 @@ const DISPLAYED_COLUMNS: string[] = [
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo-small">
-            @defer (on viewport) {
             <rs-responsive-image
               [source]="competitionLogo()"
               [sourceSet]="competitionLogoSet()"
@@ -135,9 +134,6 @@ const DISPLAYED_COLUMNS: string[] = [
               [width]="24"
               [height]="24"
             />
-            } @placeholder {
-            <div class="competition-logo-small-placeholder"></div>
-            }
           </div>
         </th>
         <td mat-cell *matCellDef="let element" class="rank-column">
@@ -160,7 +156,6 @@ const DISPLAYED_COLUMNS: string[] = [
         <td mat-cell *matCellDef="let element" class="name-column">
           <div class="name-wrapper">
             <div class="team-logo-small">
-              @defer (on viewport) {
               <rs-responsive-image
                 [source]="element.team.id | getTeamLogo"
                 [sourceSet]="element.team.id | getTeamLogoSet"
@@ -168,9 +163,6 @@ const DISPLAYED_COLUMNS: string[] = [
                 [width]="14"
                 [height]="14"
               />
-              } @placeholder {
-              <div class="team-logo-small-placeholder"></div>
-              }
             </div>
             <span>{{ element.team.name | teamName : 'short' }}</span>
           </div>

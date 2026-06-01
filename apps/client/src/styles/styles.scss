@@ -98,15 +98,9 @@ router-outlet + * {
 
 .competition-logo-small {
   @apply w-full h-full min-h-[40px] max-w-[40px] bg-white content-center;
-  &-placeholder {
-    @apply w-[24px] h-[24px] bg-gray-200 rounded-full;
-  }
 }
 .team-logo-small {
   @apply w-[14px] h-[14px];
-  &-placeholder {
-    @apply w-[14px] h-[14px] bg-gray-200 rounded-full;
-  }
 }
 
 .competition-corner {

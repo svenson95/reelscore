@@ -56,7 +56,6 @@ const EXTERNAL_MODULES = [RouterLink];
   template: `
     <div class="header">
       <div class="competition-logo-small">
-        @defer (on viewport) {
         <rs-responsive-image
           class="competition-corner"
           [source]="getCompetitionLogo()"
@@ -65,9 +64,6 @@ const EXTERNAL_MODULES = [RouterLink];
           [width]="24"
           [height]="24"
         />
-        } @placeholder {
-        <div class="competition-logo-small-placeholder"></div>
-        }
       </div>
       <a [routerLink]="competition().url">
         {{ competition().name | nameLabel }}

@@ -81,7 +81,6 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
             {{ match.teams.home.name | teamName : 'short' }}
           </span>
           <div class="team-logo-small">
-            @defer (on viewport) {
             <rs-responsive-image
               [source]="homeLogo()"
               [sourceSet]="homeLogoSrcSet()"
@@ -89,9 +88,6 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
               [width]="14"
               [height]="14"
             />
-            } @placeholder {
-            <div class="team-logo-small-placeholder"></div>
-            }
           </div>
         </div>
         <div class="result" [class.is-upcoming]="statusState().isUpcoming">
@@ -102,7 +98,6 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
         </div>
         <div>
           <div class="team-logo-small">
-            @defer (on viewport) {
             <rs-responsive-image
               [source]="awayLogo()"
               [sourceSet]="awayLogoSrcSet()"
@@ -110,9 +105,6 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
               [width]="14"
               [height]="14"
             />
-            } @placeholder {
-            <div class="team-logo-small-placeholder"></div>
-            }
           </div>
           <span class="team-name" [class.line-through]="isAwayEliminated()">
             {{ match.teams.away.name | teamName : 'short' }}
