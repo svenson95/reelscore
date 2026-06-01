@@ -73,7 +73,7 @@ import { AnalysesLastFixturesComponent } from './components';
         <div class="home">
           @if (analyses()?.homeOrAwayStrong?.home === false) { Nein } @else if
           (analyses()?.homeOrAwayStrong?.home === true) {
-          <span class="strongTeam">Ja</span> }
+          <span class="strongTeam">Ja</span> } @else { - }
         </div>
         <div class="analysis">
           <span>Heimstark / Auswärtsstark</span>
@@ -81,7 +81,7 @@ import { AnalysesLastFixturesComponent } from './components';
         <div class="away">
           @if (analyses()?.homeOrAwayStrong?.away === false) { Nein } @else if
           (analyses()?.homeOrAwayStrong?.away === true) {
-          <span class="strongTeam">Ja</span> }
+          <span class="strongTeam">Ja</span> } @else { - }
         </div>
       </div>
     </div>
@@ -95,17 +95,17 @@ import { AnalysesLastFixturesComponent } from './components';
   `,
 })
 export class MatchFixtureAnalysesComponent {
-  latestFixturesStore = inject(LatestFixturesStore);
-  latestFixtures = this.latestFixturesStore.latestFixtures;
+  private readonly fixtureStore = inject(FixtureStore);
+  private readonly latestFixturesStore = inject(LatestFixturesStore);
+  private readonly analysesStore = inject(AnalysesStore);
 
+  private readonly fixture = this.fixtureStore.fixture;
+
+  readonly latestFixtures = this.latestFixturesStore.latestFixtures;
   // TODO refactor analyses to own component rs-match-fixture-analyses-base
-  analysesStore = inject(AnalysesStore);
-  analyses = this.analysesStore.analyses;
+  readonly analyses = this.analysesStore.analyses;
 
-  fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
-
-  teams = computed<MatchTeams>(() => {
+  readonly teams = computed<MatchTeams>(() => {
     const fixture = this.fixture();
     if (!fixture) throw new Error('No fixtures found');
     return {
@@ -114,7 +114,7 @@ export class MatchFixtureAnalysesComponent {
     };
   });
 
-  hasEvaluations = computed<boolean>(() => {
+  readonly hasEvaluations = computed<boolean>(() => {
     const evaluations = this.latestFixtures();
     if (!evaluations) return false;
     return evaluations.home.some((f) => {
