@@ -1,12 +1,13 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import { FixtureStore } from '../../match/store';
 
 export abstract class VisibilityObserverService {
   abstract init(): void;
+  abstract stop(): void;
 }
 
 @Injectable()
@@ -15,8 +16,12 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
 
   private readonly fixtureStore = inject(FixtureStore);
 
+  private subscription?: Subscription;
+
   public init(): void {
-    fromEvent(document, 'visibilitychange')
+    this.stop();
+
+    this.subscription = fromEvent(document, 'visibilitychange')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         filter(() => this.isDocumentVisibleAgain()),
@@ -25,7 +30,16 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
       .subscribe();
   }
 
+  public stop(): void {
+    this.subscription?.unsubscribe();
+    this.subscription = undefined;
+  }
+
   private reloadMatch(): void {
+    const isRefreshing = this.fixtureStore.isRefreshing();
+
+    if (isRefreshing) return;
+
     this.fixtureStore.reloadFixture();
   }
 
