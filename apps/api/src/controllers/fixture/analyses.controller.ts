@@ -132,7 +132,7 @@ export class FixtureAnalysesController {
     const games = await this.fixturesService.findByFixtureAndTeamType(
       fixture,
       type,
-      20
+      40
     );
 
     const relevantGames = games.filter((game) => {
@@ -149,9 +149,11 @@ export class FixtureAnalysesController {
     ).length;
 
     const winPercentage = wins / relevantGames.length;
-    const IS_HOME_OR_AWAY_STRONG_FACTOR = 0.7;
+    const HOME_STRONG_FACTOR = 0.6;
+    const AWAY_STRONG_FACTOR = 0.4;
+    const winFactor = type === 'home' ? HOME_STRONG_FACTOR : AWAY_STRONG_FACTOR;
 
-    return winPercentage > IS_HOME_OR_AWAY_STRONG_FACTOR;
+    return winPercentage > winFactor;
   }
 
   private hasTeamWonGame(game: FixtureDTO, teamId: TeamId): boolean | null {
