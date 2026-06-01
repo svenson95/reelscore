@@ -41,12 +41,16 @@ export class VenueImageService {
   }
 
   private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
+    const fixture = this.data();
+
+    if (!fixture) {
+      this.setVenueBackground(undefined, true);
+      return;
+    }
+
     this.setVenueBackground(undefined, false);
 
-    const fixture = this.data();
-    const venueId = fixture
-      ? VENUE_IDS[fixture.teams.home.id]
-      : ALLIANZ_ARENA_ID;
+    const venueId = VENUE_IDS[fixture.teams.home.id] ?? ALLIANZ_ARENA_ID;
     const imageUrl = this.getVenueImageUrl(venueId);
     const validImageUrl = await this.getValidVenueImageUrl(imageUrl);
 
