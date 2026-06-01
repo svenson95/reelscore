@@ -5,7 +5,6 @@ import {
   computed,
   effect,
   ElementRef,
-  HostListener,
   inject,
   input,
   OnDestroy,
@@ -49,13 +48,35 @@ import { ScrollService, VenueImageService } from './services';
     }
 
     .animation-wrapper {
-      overflow: hidden;
-      will-change: height;
+      --highlights-height: 0px;
+      --highlights-progress: 0;
+
+      height: calc(
+        var(--highlights-height) * (1 - var(--highlights-progress))
+      );
+
+      opacity: calc(1 - var(--highlights-progress));
+
+      overflow: clip;
+      contain: layout paint style;
+
+      will-change: height, opacity;
+    }
+
+    @supports not (overflow: clip) {
+      .animation-wrapper {
+        overflow: hidden;
+      }
     }
 
     .animation-content {
-      will-change: transform, opacity;
-      transform: translate3d(0, 0, 0);
+      transform: translate3d(
+        0,
+        calc(var(--highlights-height) * var(--highlights-progress) * -0.15),
+        0
+      );
+
+      will-change: transform;
     }
 
     .toggle-highlights-row {
@@ -84,11 +105,7 @@ import { ScrollService, VenueImageService } from './services';
       @let matchInfo = data();
       <rs-match-info [data]="matchInfo" />
       @if (highlights() && hasGoalsOrPenalty() && matchInfo) {
-      <div
-        class="animation-wrapper"
-        [style.height.px]="highlightsVisibleHeight()"
-        [style.opacity]="highlightsOpacity()"
-      >
+      <div #animationWrapper class="animation-wrapper">
         <div #highlightsContent class="animation-content">
           <div class="toggle-highlights-row">
             <div class="divider"></div>
@@ -109,26 +126,17 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   readonly data = input.required<FixtureDTO | undefined>();
   readonly highlights = input.required<FixtureHighlights | undefined>();
 
+  @ViewChild('animationWrapper', { read: ElementRef })
+  set animationWrapper(ref: ElementRef<HTMLElement> | undefined) {
+    this.scrollService.setAnimationWrapper(ref);
+  }
+
   @ViewChild('highlightsContent', { read: ElementRef })
   set highlightsContent(ref: ElementRef<HTMLElement> | undefined) {
     this.scrollService.setHighlightsContent(ref);
   }
 
-  @HostListener('window:scroll')
-  onScroll(): void {
-    if (this.scrollService.scrollFrame !== null) {
-      return;
-    }
-
-    this.scrollService.scrollFrame = requestAnimationFrame(() => {
-      this.scrollService.setScrollY(window.scrollY);
-      this.scrollService.scrollFrame = null;
-    });
-  }
-
   private readonly scrollService = inject(ScrollService);
-  readonly highlightsVisibleHeight = this.scrollService.highlightsVisibleHeight;
-  readonly highlightsOpacity = this.scrollService.highlightsOpacity;
 
   private readonly venueImageService = inject(VenueImageService);
   readonly hasValidVenueBackground =
