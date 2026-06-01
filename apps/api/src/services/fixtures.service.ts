@@ -96,7 +96,8 @@ export class FixturesService {
 
   async findByFixtureAndTeamType(
     fixture: ExtendedFixtureDTO,
-    team: 'home' | 'away'
+    team: 'home' | 'away',
+    limit = 5
   ): Promise<ExtendedFixtureDTO[]> {
     const teamId = fixture.teams[team].id;
     const date = fixture.fixture.date;
@@ -105,7 +106,7 @@ export class FixturesService {
       .where('fixture.date')
       .lt(Number(date))
       .or([{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }])
-      .limit(5)
+      .limit(limit)
       .sort({ 'fixture.date': -1 })
       .lean();
   }

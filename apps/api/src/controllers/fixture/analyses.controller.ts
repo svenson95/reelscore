@@ -131,14 +131,15 @@ export class FixtureAnalysesController {
 
     const games = await this.fixturesService.findByFixtureAndTeamType(
       fixture,
-      type
+      type,
+      20
     );
 
     const relevantGames = games.filter((game) => {
-      const isHomeOrAwayGame = game.teams[type].id === teamId;
+      const isRelevantSideGame = game.teams[type].id === teamId;
       const hasResult = game.goals.home !== null && game.goals.away !== null;
 
-      return isHomeOrAwayGame && hasResult;
+      return isRelevantSideGame && hasResult;
     });
 
     if (relevantGames.length === 0) return null;
