@@ -28,9 +28,9 @@ import { MatchFixturesTableComponent } from './components';
       @let lf = latestFixtures(); @if (isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
       } @else if (error()) {
-      <p class="no-data">Fehler beim Laden der Spiele.</p>
+      <p class="no-data">Fehler beim Laden der Spiele</p>
       } @else if (!lf) {
-      <p class="no-data">Keine Spiele gefunden.</p>
+      <p class="no-data">Keine Spiele gefunden</p>
       } @else { @let d = data(); @if (d) {
       <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />
       <rs-match-fixtures-table [team]="d.teams.away" [fixtures]="lf.away" />
