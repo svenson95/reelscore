@@ -36,22 +36,27 @@ import {
     <h2>Spielanalysen</h2>
 
     <div class="latest-fixtures">
-      @let f = fixturesWithEvaluations(); @let homeFixtures = f.home; @let
-      awayFixtures = f.away; @let t = teams(); @if (homeFixtures.length > 0) {
+      @let fixturesData = fixturesWithEvaluations(); @let teamsData = teams();
       <div class="home">
+        @if (fixturesData.home.length > 0) {
         <rs-match-fixture-analyses-evaluations
-          [fixtures]="homeFixtures"
-          [relatedTeam]="t.home"
+          [fixtures]="fixturesData.home"
+          [relatedTeam]="teamsData.home"
         />
+        } @else {
+        <p class="no-data">Keine Daten vorhanden</p>
+        }
       </div>
-      } @if (awayFixtures.length > 0) {
       <div class="away">
+        @if (fixturesData.away.length > 0) {
         <rs-match-fixture-analyses-evaluations
-          [fixtures]="awayFixtures"
-          [relatedTeam]="t.away"
+          [fixtures]="fixturesData.away"
+          [relatedTeam]="teamsData.away"
         />
+        } @else {
+        <p class="no-data">Keine Daten vorhanden</p>
+        }
       </div>
-      }
     </div>
   `,
 })
