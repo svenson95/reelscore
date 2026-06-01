@@ -86,12 +86,10 @@ import { AnalysesLastFixturesComponent } from './components';
       </div>
     </div>
 
-    @if (hasEvaluations()) {
     <rs-match-fixture-analyses-last-fixtures
       [fixtures]="latestFixtures()!"
       [teams]="teams()"
     />
-    }
   `,
 })
 export class MatchFixtureAnalysesComponent {
@@ -99,29 +97,16 @@ export class MatchFixtureAnalysesComponent {
   private readonly latestFixturesStore = inject(LatestFixturesStore);
   private readonly analysesStore = inject(AnalysesStore);
 
-  private readonly fixture = this.fixtureStore.fixture;
-
-  readonly latestFixtures = this.latestFixturesStore.latestFixtures;
   // TODO refactor analyses to own component rs-match-fixture-analyses-base
   readonly analyses = this.analysesStore.analyses;
+  readonly latestFixtures = this.latestFixturesStore.latestFixtures;
 
   readonly teams = computed<MatchTeams>(() => {
-    const fixture = this.fixture();
+    const fixture = this.fixtureStore.fixture();
     if (!fixture) throw new Error('No fixtures found');
     return {
       home: fixture.data.teams.home,
       away: fixture.data.teams.away,
     };
-  });
-
-  readonly hasEvaluations = computed<boolean>(() => {
-    const evaluations = this.latestFixtures();
-    if (!evaluations) return false;
-    return evaluations.home.some((f) => {
-      const home = f.evaluations?.home;
-      const away = f.evaluations?.away;
-      if (home === undefined || away === undefined) return false;
-      return home.analyses.length > 0 || away.analyses.length > 0;
-    });
   });
 }
