@@ -411,7 +411,7 @@ export const shortTeamName = (value: string): string => {
     case 'Cape Verde Islands':
       return 'Cabo Verde';
     case 'British Virgin Islands':
-      return 'Britische Jungferninseln';
+      return 'Brit. J.-Inseln';
     case 'Dominican Republic':
       return 'Dom. Republik';
     case 'Central African Republic':
