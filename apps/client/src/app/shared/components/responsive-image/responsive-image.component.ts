@@ -15,7 +15,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="lazy"
+      loading="eager"
+      fetchPriority="high"
+      decoding="async"
     />
     } @else {
     <img
@@ -24,7 +26,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="lazy"
+      loading="eager"
+      fetchPriority="high"
+      decoding="async"
     />
     }
   `,
