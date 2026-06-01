@@ -110,7 +110,7 @@ const DISPLAYED_COLUMNS: string[] = [
       }
 
       &.number-column, &.points-column {
-        @apply w-[20px] lg:w-[30px] text-center;
+        @apply w-[25px] lg:w-[30px] text-center;
       }
     }
 
