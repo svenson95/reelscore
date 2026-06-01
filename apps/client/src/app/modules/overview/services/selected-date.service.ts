@@ -2,7 +2,6 @@ import { inject, Injectable, Signal, signal } from '@angular/core';
 import moment from 'moment-timezone';
 
 import { DateString } from '@app/shared';
-
 import { FilterService } from './filter.service';
 
 export abstract class SelectedDateService {

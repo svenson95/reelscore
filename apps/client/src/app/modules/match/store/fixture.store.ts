@@ -34,51 +34,102 @@ export const FixtureStore = signalStore(
       statisticsStore = inject(StatisticsStore),
       latestFixturesStore = inject(LatestFixturesStore),
       analysesStore = inject(AnalysesStore)
-    ) => ({
-      async loadFixture(id: FixtureId): Promise<void> {
-        patchState(store, { ...initialState, isLoading: true });
-        evaluationsStore.reset();
-        latestFixturesStore.reset();
-        eventsStore.reset();
-        statisticsStore.reset();
+    ) => {
+      const loadFixtureData = (
+        id: FixtureId,
+        options: {
+          resetFixture: boolean;
+          resetRelatedStores: boolean;
+        }
+      ): Promise<void> => {
+        if (options.resetFixture) {
+          patchState(store, { ...initialState, isLoading: true });
+        } else {
+          patchState(store, { isLoading: true, error: null });
+        }
 
-        http.getFixture(id).subscribe({
-          next: async (fixture) => {
-            const fixtureId = fixture.data.fixture.id;
+        if (options.resetRelatedStores) {
+          evaluationsStore.reset();
+          latestFixturesStore.reset();
+          eventsStore.reset();
+          statisticsStore.reset();
+          analysesStore.reset();
+        }
 
-            if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
-              const { home, away } = fixture.data.teams;
-              const teamIds = home.id + ',' + away.id;
-              const competitionId = fixture.data.league.id;
-              const date = fixture.data.fixture.date.split('T')[0];
-              standingsStore.loadFixtureStandings(teamIds, competitionId, date);
-            }
+        return new Promise((resolve) => {
+          http.getFixture(id).subscribe({
+            next: (fixture) => {
+              const fixtureId = fixture.data.fixture.id;
 
-            const fixtureIdParameter: FixtureIdParameter =
-              fixture.data.fixture.id.toString();
-            evaluationsStore.loadEvaluations(fixtureId);
-            latestFixturesStore.loadLatestFixtures(fixtureId);
-            analysesStore.loadAnalyses(fixtureId);
-            eventsStore.loadEvents({
-              fixtureId: fixtureIdParameter,
-              teams: fixture.data.teams,
-            });
-            statisticsStore.loadStatistics(fixtureIdParameter);
+              if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
+                const { home, away } = fixture.data.teams;
+                const teamIds = `${home.id},${away.id}`;
+                const competitionId = fixture.data.league.id;
+                const date = fixture.data.fixture.date.split('T')[0];
 
-            return patchState(store, {
-              fixture,
-              isLoading: false,
-              error: fixture ? null : 'Fixture not found',
-            });
-          },
-          error: (error) =>
-            patchState(store, {
-              fixture: null,
-              isLoading: false,
-              error,
-            }),
+                standingsStore.loadFixtureStandings(
+                  teamIds,
+                  competitionId,
+                  date
+                );
+              }
+
+              const fixtureIdParameter: FixtureIdParameter =
+                fixtureId.toString();
+
+              evaluationsStore.loadEvaluations(fixtureId);
+              latestFixturesStore.loadLatestFixtures(fixtureId);
+              analysesStore.loadAnalyses(fixtureId);
+
+              eventsStore.loadEvents({
+                fixtureId: fixtureIdParameter,
+                teams: fixture.data.teams,
+              });
+
+              statisticsStore.loadStatistics(fixtureIdParameter);
+
+              patchState(store, {
+                fixture,
+                isLoading: false,
+                error: fixture ? null : 'Fixture not found',
+              });
+
+              resolve();
+            },
+            error: (error) => {
+              patchState(store, {
+                fixture: options.resetFixture ? null : store.fixture(),
+                isLoading: false,
+                error,
+              });
+
+              resolve();
+            },
+          });
         });
-      },
-    })
+      };
+
+      return {
+        loadFixture(id: FixtureId): Promise<void> {
+          return loadFixtureData(id, {
+            resetFixture: true,
+            resetRelatedStores: true,
+          });
+        },
+
+        reloadFixture(): Promise<void> {
+          const fixture = store.fixture();
+
+          if (!fixture || store.isLoading()) {
+            return Promise.resolve();
+          }
+
+          return loadFixtureData(fixture.data.fixture.id, {
+            resetFixture: false,
+            resetRelatedStores: false,
+          });
+        },
+      };
+    }
   )
 );

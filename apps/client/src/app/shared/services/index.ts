@@ -13,6 +13,7 @@ export * from './http/standings.service';
 export * from './league/league.service';
 export * from './loading.interceptor';
 export * from './loading.service';
+export * from './page-refresh.service';
 export * from './route.service';
 export * from './startup.service';
 

@@ -16,8 +16,8 @@ import moment from 'moment';
 
 import { CalendarWeek, DateString } from '@app/shared';
 
-import { DateService } from '../../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
+import { DateService } from '../../../services';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
