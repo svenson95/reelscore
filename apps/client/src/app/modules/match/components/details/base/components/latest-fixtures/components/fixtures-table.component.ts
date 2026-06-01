@@ -37,6 +37,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
+    .no-data { @apply bg-rs-alt-bg border shadow-rs2; }
   `,
   template: `
     @for(match of fixtures(); track match.fixture.id) {
@@ -70,7 +71,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
       </div>
     </a>
     } @empty {
-    <p class="no-data">Keine Spiele gefunden.</p>
+    <p class="no-data">Keine Spiele gefunden</p>
     }
   `,
 })

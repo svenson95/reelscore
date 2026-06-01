@@ -27,10 +27,9 @@ import {
   imports: [AnalysesEvaluationsComponent],
   styles: `
     :host { @apply m-3; }
-    .latest-fixtures { @apply flex flex-wrap gap-3 mt-rs1; }
-    .latest-fixtures div {
-      @apply flex-1 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)];
-    }
+    .latest-fixtures { @apply grid grid-cols-1 md:grid-cols-2 gap-3 mt-rs1; }
+    .latest-fixtures > div { @apply min-w-0; }
+    .no-data { @apply bg-rs-alt-bg border shadow-rs2; }
   `,
   template: `
     <h2>Spielanalysen</h2>
@@ -44,7 +43,7 @@ import {
           [relatedTeam]="teamsData.home"
         />
         } @else {
-        <p class="no-data">Keine Daten vorhanden</p>
+        <p class="no-data">Keine Spiele gefunden</p>
         }
       </div>
       <div class="away">
@@ -54,7 +53,7 @@ import {
           [relatedTeam]="teamsData.away"
         />
         } @else {
-        <p class="no-data">Keine Daten vorhanden</p>
+        <p class="no-data">Keine Spiele gefunden</p>
         }
       </div>
     </div>
