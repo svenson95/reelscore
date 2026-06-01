@@ -2,17 +2,15 @@ import { computed, ElementRef, Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class ScrollService {
+  private destroyScrollListener?: () => void;
   private resizeObserver?: ResizeObserver;
+  scrollFrame: number | null = null;
 
   private readonly scrollY = signal<number>(window.scrollY);
   private readonly initialScrollY = signal<number>(window.scrollY);
+  private readonly highlightsHeight = signal<number>(0);
 
-  destroyScrollListener?: () => void;
-  scrollFrame: number | null = null;
-
-  readonly highlightsHeight = signal<number>(0);
-
-  readonly scrollProgress = computed<number>(() => {
+  private readonly scrollProgress = computed<number>(() => {
     const height = this.highlightsHeight();
 
     if (height === 0) {
@@ -38,7 +36,32 @@ export class ScrollService {
     return `${1 - this.scrollProgress()}`;
   });
 
-  disconnectObserver(): void {
+  observeScrollPosition(): void {
+    const onScroll = () => {
+      if (this.scrollFrame !== null) {
+        return;
+      }
+
+      this.scrollFrame = requestAnimationFrame(() => {
+        this.setScrollY(window.scrollY);
+        this.scrollFrame = null;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    this.destroyScrollListener = () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }
+
+  destroy(): void {
+    this.destroyScrollListener?.();
+
+    if (this.scrollFrame !== null) {
+      cancelAnimationFrame(this.scrollFrame);
+    }
+
     this.resizeObserver?.disconnect();
   }
 
