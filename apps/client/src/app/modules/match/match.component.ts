@@ -4,9 +4,11 @@ import {
   effect,
   inject,
   input,
+  OnInit,
 } from '@angular/core';
 
-import { CompetitionUrl, FixtureId } from '@lib/models';
+import { PageRefreshService } from '@app/shared';
+import type { CompetitionUrl, FixtureId } from '@lib/models';
 
 import { RouterView } from '../router-view';
 
@@ -16,7 +18,7 @@ import {
   PageHeaderComponent,
 } from './components';
 import { MatchFacade } from './match.facade';
-import { SERVICE_PROVIDERS } from './services';
+import { SERVICE_PROVIDERS, VisibilityObserverService } from './services';
 import { STORE_PROVIDERS } from './store';
 
 @Component({
@@ -50,14 +52,19 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent extends RouterView {
-  fixtureId = input.required<FixtureId>();
-  competitionUrl = input.required<CompetitionUrl>();
+export class MatchComponent extends RouterView implements OnInit {
+  readonly fixtureId = input.required<FixtureId>();
+  readonly competitionUrl = input.required<CompetitionUrl>();
 
-  private facade = inject(MatchFacade);
-  fixture = this.facade.fixture;
-  data = this.facade.data;
-  error = this.facade.error;
+  private readonly facade = inject(MatchFacade);
+  readonly fixture = this.facade.fixture;
+  readonly data = this.facade.data;
+  readonly error = this.facade.error;
+
+  private readonly pageRefreshService = inject(PageRefreshService);
+  private readonly visibilityObserverService = inject(
+    VisibilityObserverService
+  );
 
   loadFixtureEffect = effect(() => {
     const fixtureId = this.fixtureId();
@@ -67,4 +74,12 @@ export class MatchComponent extends RouterView {
   invalidUrlEffect = effect(() =>
     this.facade.handleInvalidUrl(this.competitionUrl())
   );
+
+  ngOnInit(): void {
+    this.visibilityObserverService.init();
+    this.pageRefreshService.init({
+      canRefresh: () => !this.facade.isLoading(),
+      refresh: () => this.facade.reloadFixture(),
+    });
+  }
 }

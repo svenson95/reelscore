@@ -17,8 +17,10 @@ export class MatchFacade {
 
   private fixtureStore = inject(FixtureStore);
   fixture = this.fixtureStore.fixture;
+  isLoading = this.fixtureStore.isLoading;
   error = this.fixtureStore.error;
   loadFixture = this.fixtureStore.loadFixture;
+  reloadFixture = this.fixtureStore.reloadFixture;
 
   data = computed(() => this.fixtureStore.fixture()?.data);
 

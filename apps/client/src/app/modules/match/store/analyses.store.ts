@@ -35,5 +35,8 @@ export const AnalysesStore = signalStore(
           }),
       });
     },
+    async reset(): Promise<void> {
+      patchState(store, initialState);
+    },
   }))
 );
