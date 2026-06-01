@@ -14,7 +14,7 @@ import {
 @Injectable()
 export class FixtureListItemFacade {
   readonly scheduled = [...STATUS_TYPES_SCHEDULED];
-  readonly halfTime = [...STATUS_VALUE_HALFTIME];
+  readonly halfTime = [STATUS_VALUE_HALFTIME];
   readonly playing = [...STATUS_TYPES_PLAYING];
   readonly finished = [...STATUS_TYPES_FINISHED];
 

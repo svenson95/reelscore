@@ -1,5 +1,4 @@
 export * from './check-score/check-score.pipe';
-export * from './is-status/is-status.pipe';
 export * from './name-label/name-label.data';
 export * from './name-label/name-label.pipe';
 export * from './round-label/round-label.data';

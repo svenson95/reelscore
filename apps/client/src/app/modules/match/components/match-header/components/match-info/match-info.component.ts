@@ -5,20 +5,16 @@ import {
   input,
 } from '@angular/core';
 
-import { ResultLabelComponent } from '@app/shared';
 import {
-  type FixtureDTO,
-  STATUS_TYPES_FINISHED,
-  STATUS_TYPES_PLAYING,
-  STATUS_TYPES_SCHEDULED,
-  type StatusTypeFinished,
-  type StatusTypePlaying,
-  type StatusTypeScheduled,
-} from '@lib/models';
+  FixtureStatusState,
+  getFixtureStatusState,
+  ResultLabelComponent,
+} from '@app/shared';
+import { type FixtureDTO } from '@lib/models';
 
 import {
-  type MatchHeaderTeam,
   MatchInfoTeamComponent,
+  type MatchHeaderTeam,
 } from './components/match-info-team.component';
 
 @Component({
@@ -44,8 +40,8 @@ import {
       @if (fixture) { @if (statusLabel(); as label) {
       <div
         class="status"
-        [class.is-playing]="isPlaying()"
-        [class.is-finished]="isFinished()"
+        [class.is-playing]="statusClass() === 'playing'"
+        [class.is-finished]="statusClass() === 'finished'"
       >
         {{ label }}
       </div>
@@ -66,63 +62,54 @@ import {
 export class MatchInfoComponent {
   readonly data = input.required<FixtureDTO | undefined>();
 
-  readonly homeTeam = computed<MatchHeaderTeam | undefined>(() => {
+  readonly homeTeam = computed<MatchHeaderTeam | undefined>(() =>
+    this.getTeam('home')
+  );
+  readonly awayTeam = computed<MatchHeaderTeam | undefined>(() =>
+    this.getTeam('away')
+  );
+
+  readonly statusState = computed<FixtureStatusState>(() => {
+    const status = this.data()?.fixture.status.short;
+    if (!status) throw new Error('status in match-info not defined');
+    return getFixtureStatusState(status);
+  });
+
+  readonly statusLabel = computed<string>(() => {
+    const fixture = this.data();
+    const state = this.statusState();
+
+    if (!fixture || !state) {
+      throw new Error('fixture or state in match-info not defined');
+    }
+
+    if (state.isNotPlayed) return 'Abgesagt';
+    if (state.isPenalty) return 'Elfmeterschießen';
+    if (state.isHalftime) return 'HZ';
+    if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
+    if (state.isFinished) return 'ENDE';
+    return '';
+  });
+
+  readonly statusClass = computed<'playing' | 'finished'>(() => {
+    const state = this.statusState();
+    if (!state) throw new Error('state in match-info not defined');
+
+    if (state.isPenalty || state.isHalftime || state.isPlaying) {
+      return 'playing';
+    } else {
+      return 'finished';
+    }
+  });
+
+  private getTeam(
+    type: 'home' | 'away'
+  ): { id: number; name: string } | undefined {
     const fixture = this.data();
     if (!fixture) return undefined;
     return {
-      id: fixture?.teams.home.id,
-      name: fixture?.teams.home.name,
+      id: fixture.teams[type].id,
+      name: fixture.teams[type].name,
     };
-  });
-
-  readonly awayTeam = computed<MatchHeaderTeam | undefined>(() => {
-    const fixture = this.data();
-    if (!fixture) return undefined;
-    return {
-      id: fixture.teams.away.id,
-      name: fixture.teams.away.name,
-    };
-  });
-
-  readonly isScheduled = computed<boolean>(() => {
-    const status = this.data()?.fixture.status.short;
-    return (
-      !!status && STATUS_TYPES_SCHEDULED.includes(status as StatusTypeScheduled)
-    );
-  });
-
-  readonly isPlaying = computed<boolean>(() => {
-    const status = this.data()?.fixture.status.short;
-    return (
-      !!status && STATUS_TYPES_PLAYING.includes(status as StatusTypePlaying)
-    );
-  });
-
-  readonly isPenalty = computed<boolean>(() => {
-    const status = this.data()?.fixture.status.short;
-    return !!status && status === 'P';
-  });
-
-  readonly isFinished = computed<boolean>(() => {
-    const status = this.data()?.fixture.status.short;
-    return (
-      !!status && STATUS_TYPES_FINISHED.includes(status as StatusTypeFinished)
-    );
-  });
-
-  readonly statusLabel = computed<string | undefined>(() => {
-    if (this.isPenalty()) {
-      return 'Elfmeterschießen';
-    }
-
-    if (this.isPlaying()) {
-      return `${this.data()?.fixture.status.elapsed}'`;
-    }
-
-    if (this.isFinished()) {
-      return 'ENDE';
-    }
-
-    return undefined;
-  });
+  }
 }
