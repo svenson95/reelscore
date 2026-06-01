@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { EventWithResult } from '@lib/models';
+import { type EventWithResult, STATUS_TYPES_FINISHED } from '@lib/models';
 
 import { FixtureStore } from '../../../../../store';
 
@@ -127,15 +127,20 @@ export class MatchEventsComponent {
   );
 
   readonly timeline = computed<MatchTimelineItem[]>(() => {
+    const fixture = this.fixture();
+    const fixtureStatus = fixture?.data.fixture.status.short ?? '';
+    const isFinished = STATUS_TYPES_FINISHED.includes(fixtureStatus);
+
     const events = [...this.data()].sort(
       (a, b) => this.getTotalMinute(b) - this.getTotalMinute(a)
     );
 
     const shootoutResults = this.getShootoutResults(events);
+    const items: MatchTimelineItem[] = [];
 
-    const items: MatchTimelineItem[] = [
-      { type: 'spacer', label: 'ENDE', key: 'end' },
-    ];
+    if (isFinished) {
+      items.push({ type: 'spacer', label: 'ENDE', key: 'end' });
+    }
 
     for (let index = 0; index < events.length; index++) {
       const event = events[index];
