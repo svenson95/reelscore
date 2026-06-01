@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import {
+import type {
   ExtendedFixtureDTO,
   FixtureEvaluation,
   FixtureEvaluations,
@@ -16,9 +16,9 @@ import {
 import { AnalysesEvaluationsComponent } from './components';
 import {
   ANALYSES_TEAM,
-  AnalysesTeamType,
-  ExtendedEvaluationAnalyses,
-  FixtureWithEvaluations,
+  type AnalysesTeamType,
+  type ExtendedEvaluationAnalyses,
+  type FixtureWithEvaluations,
 } from './models';
 
 @Component({
@@ -26,7 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AnalysesEvaluationsComponent],
   styles: `
-    .latest-fixtures { @apply flex flex-wrap gap-3 my-5; }
+    :host { @apply m-3; }
+    .latest-fixtures { @apply flex flex-wrap gap-3 mt-rs1; }
     .latest-fixtures div {
       @apply flex-1 min-[400px]:min-w-[400px] max-w-full min-[860px]:max-w-[calc(50%-10px)];
     }

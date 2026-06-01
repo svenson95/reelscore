@@ -15,9 +15,9 @@ import { MatchFixturesTableComponent } from './components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatchFixturesTableComponent],
   styles: `
-    :host { @apply flex flex-col; }
+    :host { @apply flex flex-col m-3; }
     .latest-fixtures-container {
-      @apply flex flex-col md:flex-row px-3 pb-3 mt-3 gap-rs2;
+      @apply flex flex-col md:flex-row mt-rs1 gap-rs2;
       border-radius: var(--mat-standard-button-toggle-shape);
     }
     .no-data { @apply m-auto; }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { EvaluationDTO } from '@lib/models';
+import type { EvaluationDTO } from '@lib/models';
 
 import { EvaluationsStore } from '../../../../../store';
 
@@ -12,10 +12,10 @@ import { ToKebabCasePipe } from './pipes';
   imports: [ToKebabCasePipe],
   providers: [EvaluationsStore],
   styles: `
-    :host { @apply flex flex-col mx-3; }
+    :host { @apply flex flex-col m-3; }
 
     .content {
-      @apply flex flex-col gap-10 mt-2 mb-5 mx-auto w-full py-rs2 border shadow-rs2 bg-rs-color-text-3;
+      @apply flex flex-col gap-10 mt-rs1 mx-auto w-full py-6 border shadow-rs2 bg-rs-color-text-3;
       border-radius: var(--mat-standard-button-toggle-shape);
     }
     .content > .teams-form {
