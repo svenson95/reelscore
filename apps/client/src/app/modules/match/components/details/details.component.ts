@@ -40,7 +40,7 @@ const ANGULAR_MODULES = [
     :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
       mat-spinner { @apply mx-auto my-5; }
-      .tab-content { @apply flex flex-col gap-10; }
+      .tab-content { @apply flex flex-col gap-rs2; }
 
       ::ng-deep {
         .mat-mdc-tab-body.mat-mdc-tab-body-active {
