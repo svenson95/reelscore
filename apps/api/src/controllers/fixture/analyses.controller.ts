@@ -1,4 +1,4 @@
-import {
+import type {
   AnalysesDTO,
   ExtendedFixtureDTO,
   FixtureDTO,
@@ -11,18 +11,15 @@ import {
   TeamId,
 } from '@lib/models';
 
-import { getSeason } from '../../middleware';
 import {
   FixtureEventsService,
   FixtureService,
   FixturesService,
-  StandingsService,
 } from '../../services';
 
 export class FixtureAnalysesController {
   private readonly fixtureService = new FixtureService();
   private readonly fixturesService = new FixturesService();
-  private readonly standingsService = new StandingsService();
   private readonly eventsService = new FixtureEventsService();
 
   async getAnalyses(fixtureId: FixtureId): Promise<AnalysesDTO> {
@@ -116,31 +113,56 @@ export class FixtureAnalysesController {
   }
 
   private async getHomeOrAwayStrong(
-    fixture: FixtureDTO
-  ): Promise<FixtureHomeOrAwayStrong> {
+    fixture: ExtendedFixtureDTO
+  ): Promise<FixtureHomeOrAwayStrong | null> {
     const home = await this.getHomeOrAwayStrongForTeam('home', fixture);
     const away = await this.getHomeOrAwayStrongForTeam('away', fixture);
+
+    if (home === null || away === null) return null;
 
     return { home, away };
   }
 
   private async getHomeOrAwayStrongForTeam(
     type: 'home' | 'away',
-    fixture: FixtureDTO
+    fixture: ExtendedFixtureDTO
   ): Promise<boolean | null> {
-    const TEAM_IS_HOME_OR_AWAY_STRONG_RANK = 5;
-    const competitionId = fixture.league.id;
-    const filter = {
-      'league.id': competitionId,
-      'league.season': getSeason(competitionId),
-    };
-    const data = await this.standingsService.findByFilter(filter);
     const teamId = fixture.teams[type].id;
-    const standings = data?.league?.standings;
-    if ((standings && standings.length <= 1) || !standings) return null;
-    const teamData = standings[type === 'home' ? 1 : 2];
-    const team = teamData.find((r) => r.team.id === teamId);
-    if (!team) return null;
-    return team.rank <= TEAM_IS_HOME_OR_AWAY_STRONG_RANK;
+
+    const games = await this.fixturesService.findByFixtureAndTeamType(
+      fixture,
+      type
+    );
+
+    const relevantGames = games.filter((game) => {
+      const isHomeOrAwayGame = game.teams[type].id === teamId;
+      const hasResult = game.goals.home !== null && game.goals.away !== null;
+
+      return isHomeOrAwayGame && hasResult;
+    });
+
+    if (relevantGames.length === 0) return null;
+
+    const wins = relevantGames.filter((game) =>
+      this.hasTeamWonGame(game, teamId)
+    ).length;
+
+    const winPercentage = wins / relevantGames.length;
+    const IS_HOME_OR_AWAY_STRONG_FACTOR = 0.7;
+
+    return winPercentage > IS_HOME_OR_AWAY_STRONG_FACTOR;
+  }
+
+  private hasTeamWonGame(game: FixtureDTO, teamId: TeamId): boolean | null {
+    const { home, away } = game.teams;
+    const { home: homeGoals, away: awayGoals } = game.goals;
+    if (homeGoals === null || awayGoals === null) {
+      throw new Error('fixture should have goals');
+    }
+
+    if (home.id === teamId) return homeGoals > awayGoals;
+    if (away.id === teamId) return awayGoals > homeGoals;
+
+    return null;
   }
 }

@@ -10,5 +10,5 @@ export type FixtureHomeOrAwayStrong = {
 };
 export interface AnalysesDTO {
   playersWithStreak: FixturePlayersWithStreak;
-  homeOrAwayStrong: FixtureHomeOrAwayStrong;
+  homeOrAwayStrong: FixtureHomeOrAwayStrong | null;
 }
