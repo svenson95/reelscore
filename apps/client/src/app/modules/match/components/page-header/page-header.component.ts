@@ -1,8 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { BackButtonComponent } from '@app/shared';
+import { BackButtonComponent, type DateString } from '@app/shared';
 
 import { MatchFacade } from '../../match.facade';
 
@@ -33,7 +38,7 @@ const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
       {{ routerDate() | date : 'ccc' }}
     </button>
     <button mat-stroked-button disabled>
-      @let fixtureDate = fixture()?.data?.fixture?.date; @if (fixtureDate) {
+      @if (fixtureData(); as fixtureDate) {
       {{ fixtureDate | date : 'HH:mm' }} } @else {
       <div class="date-placeholder"></div>
       }
@@ -41,7 +46,11 @@ const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
   `,
 })
 export class PageHeaderComponent {
-  private facade = inject(MatchFacade);
-  fixture = this.facade.fixture;
-  routerDate = this.facade.routerDate;
+  private readonly facade = inject(MatchFacade);
+
+  readonly routerDate = this.facade.routerDate;
+
+  readonly fixtureData = computed<DateString | null>(
+    () => this.facade.fixture()?.data?.fixture?.date ?? null
+  );
 }
