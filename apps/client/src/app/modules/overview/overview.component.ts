@@ -7,6 +7,8 @@ import {
   untracked,
 } from '@angular/core';
 
+import moment from 'moment';
+
 import { PageRefreshService } from '@app/shared';
 
 import { RouterView } from '../router-view';
@@ -53,8 +55,8 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.visibilityObserverService.init();
     this.pageRefreshService.init({
-      canRefresh: () => this.isNotLoading(),
-      refresh: () => this.reloadData(),
+      canRefresh: () => this.canRefresh(),
+      refresh: () => this.refresh(),
     });
   }
 
@@ -63,7 +65,13 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
     this.pageRefreshService.stop();
   }
 
-  private reloadData(): void {
+  private canRefresh() {
+    const today = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    const selectedDay = this.selectedDateService.selectedDay();
+    return today === selectedDay && this.isNotLoading();
+  }
+
+  private refresh(): void {
     const date = untracked(this.selectedDateService.selectedDay);
     this.weekFixturesStore.loadWeekdayFixtures(date, true);
     this.weekStandingsStore.loadWeekdayStandings(date, true);

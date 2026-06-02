@@ -8,6 +8,8 @@ import {
   OnInit,
 } from '@angular/core';
 
+import moment from 'moment';
+
 import { PageRefreshService } from '@app/shared';
 import type { CompetitionUrl, FixtureId } from '@lib/models';
 
@@ -79,13 +81,23 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.visibilityObserverService.init();
     this.pageRefreshService.init({
-      canRefresh: () => !this.facade.isLoading(),
-      refresh: () => this.facade.reloadFixture(),
+      canRefresh: () => this.canRefresh(),
+      refresh: () => this.refresh(),
     });
   }
 
   ngOnDestroy(): void {
     this.visibilityObserverService.stop();
     this.pageRefreshService.stop();
+  }
+
+  private canRefresh(): boolean {
+    const today = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    const hasTodayValue = this.fixture()?.data.fixture.date.substring(0, 10);
+    return today === hasTodayValue && !this.facade.isLoading();
+  }
+
+  private refresh(): void {
+    this.facade.reloadFixture();
   }
 }

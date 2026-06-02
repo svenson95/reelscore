@@ -4,6 +4,7 @@ import { HTTP_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
 import { LEAGUE_SERVICE_PROVIDER } from './league/league.service';
 import { HTTP_INTERCEPTOR_PROVIDER } from './loading.interceptor';
 import { LOADING_SERVICE_PROVIDER } from './loading.service';
+import { PAGE_REFRESH_SERVICE_PROVIDER } from './page-refresh.service';
 import { ROUTE_SERVICE_PROVIDER } from './route.service';
 import { STARTUP_SERVICE_PROVIDER } from './startup.service';
 
@@ -26,4 +27,5 @@ export const GLOBAL_SERVICE_PROVIDERS = [
   LOADING_SERVICE_PROVIDER,
   ROUTE_SERVICE_PROVIDER,
   STARTUP_SERVICE_PROVIDER,
+  PAGE_REFRESH_SERVICE_PROVIDER,
 ];

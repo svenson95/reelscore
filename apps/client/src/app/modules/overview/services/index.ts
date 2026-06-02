@@ -1,4 +1,3 @@
-import { PAGE_REFRESH_SERVICE_PROVIDER } from '@app/shared';
 import { DATE_SERVICE_PROVIDER } from './date.service';
 import { FILTER_SERVICE_PROVIDER } from './filter.service';
 import { SELECTED_DATE_SERVICE_PROVIDER } from './selected-date.service';
@@ -14,5 +13,4 @@ export const SERVICE_PROVIDERS = [
   FILTER_SERVICE_PROVIDER,
   SELECTED_DATE_SERVICE_PROVIDER,
   VISIBILITY_OBSERVER_SERVICE_PROVIDER,
-  PAGE_REFRESH_SERVICE_PROVIDER,
 ];
