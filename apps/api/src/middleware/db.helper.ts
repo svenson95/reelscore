@@ -22,10 +22,9 @@ export class DBHelper {
 
     this.connectionPromise = mongoose
       .connect(uri, {
-        maxPoolSize: 5,
-        minPoolSize: 0,
-        maxIdleTimeMS: 30_000,
-        serverSelectionTimeoutMS: 10_000,
+        maxPoolSize: 10,
+        minPoolSize: 2,
+        serverSelectionTimeoutMS: 5_000,
       })
       .catch((error) => {
         this.connectionPromise = null;
