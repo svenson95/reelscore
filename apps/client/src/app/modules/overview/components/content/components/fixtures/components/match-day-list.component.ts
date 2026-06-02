@@ -54,6 +54,7 @@ const EXTERNAL_MODULES = [RouterLink];
     .spacer { @apply flex-1; }
   `,
   template: `
+    @let comp = competition();
     <div class="header">
       <div class="competition-logo-small">
         <rs-responsive-image
@@ -65,13 +66,20 @@ const EXTERNAL_MODULES = [RouterLink];
           [height]="24"
         />
       </div>
-      <a [routerLink]="competition().url">
-        {{ competition().name | nameLabel }}
+      <a [routerLink]="comp.url">
+        {{ comp.name | nameLabel }}
       </a>
       <div class="spacer"></div>
-      <span class="gray">{{ round() | roundLabel : 'header' }}</span>
+      <span class="gray">
+        {{
+          round()
+            | roundLabel
+              : 'header'
+              : { id: comp.id, season: comp.fixtures[0].league.season }
+        }}
+      </span>
     </div>
-    <rs-fixture-list [fixtures]="competition().fixtures" />
+    <rs-fixture-list [fixtures]="comp.fixtures" />
   `,
 })
 export class MatchDayListComponent {

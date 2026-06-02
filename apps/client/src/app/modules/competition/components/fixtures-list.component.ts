@@ -59,7 +59,14 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
           />
         </div>
       </div>
-      <p>{{ this.fixtures()[0].league.round! | roundLabel }}</p>
+      <p>
+        @if (this.fixtures()[0].league; as league) {
+        {{
+          league.round
+            | roundLabel : 'default' : { id: league.id, season: league.season }
+        }}
+        }
+      </p>
     </div>
     <div class="days">
       @for (day of fixturesDays(); track $index + '-' + day.date) {
