@@ -1,6 +1,6 @@
 import { effect, inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { type NavigationStart, Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { filter, interval, Subscription, tap } from 'rxjs';
 
 type PageRefreshOptions = {
@@ -32,18 +32,13 @@ export class AbstractedPageRefreshService {
 
   stopOnNavigation = effect(() => {
     const event = this.navigationStart();
-
     if (!event) return;
-
     this.stop();
   });
 
   init(options: PageRefreshOptions): void {
     if (this.refreshSubscription) this.stop();
-
-    if (DEBUGGER === true) {
-      console.log('page-refresh init | ', new Date().toLocaleTimeString());
-    }
+    this.debug('init');
 
     const REFRESH_INTERVAL = 5_000;
 
@@ -51,10 +46,7 @@ export class AbstractedPageRefreshService {
       .pipe(
         filter(() => options.canRefresh()),
         tap(() => {
-          if (DEBUGGER === true) {
-            console.log('page-refresh log | ', new Date().toLocaleTimeString());
-          }
-
+          this.debug('log');
           options.refresh();
         })
       )
@@ -64,9 +56,15 @@ export class AbstractedPageRefreshService {
   stop(): void {
     this.refreshSubscription?.unsubscribe();
     this.refreshSubscription = undefined;
+    this.debug('stop');
+  }
 
-    if (DEBUGGER === true) {
-      console.log('page-refresh stop | ', new Date().toLocaleTimeString());
+  private debug(message: string): void {
+    if (DEBUGGER) {
+      console.log(
+        `page-refresh ${message} | `,
+        new Date().toLocaleTimeString()
+      );
     }
   }
 }
