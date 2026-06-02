@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import {
   type DateString,
+  formatBerlinDateParam,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
@@ -30,7 +31,7 @@ export class MatchFacade {
     () => this.fixtureStore.fixture()?.data ?? null
   );
 
-  private readonly routerDate = computed<DateString | null>(() => {
+  readonly routerDate = computed<DateString | null>(() => {
     const url = this.routerService.url();
     if (!url) return null;
     return url.split('/')[1];
@@ -42,7 +43,7 @@ export class MatchFacade {
     const data = SELECT_COMPETITION_DATA_FLAT.find((c) => c.url === url);
     const isCompetitionParamCorrect = !!data;
 
-    const fixtureDate = fixture.fixture.date.substring(0, 10);
+    const fixtureDate = formatBerlinDateParam(fixture.fixture.date);
     const isDateParamCorrect = this.routerDate() === fixtureDate;
 
     if (isCompetitionParamCorrect && isDateParamCorrect) return;
