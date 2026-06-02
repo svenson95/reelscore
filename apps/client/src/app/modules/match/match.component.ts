@@ -8,9 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 
-import moment from 'moment';
-
-import { PageRefreshService } from '@app/shared';
+import { formatBerlinDateString, PageRefreshService } from '@app/shared';
 import type { CompetitionUrl, FixtureId } from '@lib/models';
 
 import { RouterView } from '../router-view';
@@ -92,7 +90,7 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh(): boolean {
-    const today = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    const today = formatBerlinDateString(new Date());
     const hasTodayValue = this.fixture()?.data.fixture.date.substring(0, 10);
     return today === hasTodayValue && !this.facade.isLoading();
   }

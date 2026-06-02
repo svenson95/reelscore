@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 
 import type { ExtendedFixtureDTO } from '@lib/models';
 
-import { linkToMatch } from '../../../../constants';
+import { APP_TIMEZONE, linkToMatch } from '../../../../constants';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
@@ -135,12 +135,7 @@ export class FixtureListItemComponent {
     if (state.isHalftime) return 'HZ';
     if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
     if (state.isFinished) {
-      return formatDate(
-        fixture.fixture.date,
-        'HH:mm',
-        'de-DE',
-        'Europe/Berlin'
-      );
+      return formatDate(fixture.fixture.date, 'HH:mm', 'de-DE', APP_TIMEZONE);
     }
 
     return '';

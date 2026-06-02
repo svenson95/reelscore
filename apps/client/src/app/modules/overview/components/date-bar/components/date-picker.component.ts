@@ -17,10 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import moment from 'moment-timezone';
-
 import { DatePipe } from '@angular/common';
-import { DateString } from '@app/shared';
+import { DateString, formatBerlinDateString } from '@app/shared';
 
 const MAT_MODULES = [
   MatButtonModule,
@@ -92,11 +90,13 @@ export class DatePickerComponent {
   readonly selectedDay = input.required<DateString>();
   readonly dateSelected = output<DateString>();
 
-  readonly MIN_DATE = new Date(2023, 7, 11);
-  readonly MAX_DATE = new Date(moment().toDate().getFullYear(), 11, 31);
+  readonly MIN_DATE = formatBerlinDateString(new Date(2023, 7, 11));
+  readonly MAX_DATE = formatBerlinDateString(
+    new Date(new Date().getFullYear(), 11, 31)
+  );
 
   updateDate(value: DateString): void {
-    const date = moment(value).tz('Europe/Berlin').format('YYYY-MM-DD');
+    const date = formatBerlinDateString(value);
     this.dateSelected.emit(date);
   }
 }

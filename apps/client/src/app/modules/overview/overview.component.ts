@@ -7,16 +7,9 @@ import {
   untracked,
 } from '@angular/core';
 
-import moment from 'moment';
-
-import { PageRefreshService } from '@app/shared';
+import { formatBerlinDateString, PageRefreshService } from '@app/shared';
 
 import { RouterView } from '../router-view';
-import {
-  STORE_PROVIDERS,
-  WeekdayFixturesStore,
-  WeekdayStandingsStore,
-} from './store';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
 import {
@@ -24,6 +17,11 @@ import {
   SERVICE_PROVIDERS,
   VisibilityObserverService,
 } from './services';
+import {
+  STORE_PROVIDERS,
+  WeekdayFixturesStore,
+  WeekdayStandingsStore,
+} from './store';
 
 @Component({
   selector: 'rs-overview-page',
@@ -66,7 +64,7 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh() {
-    const today = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    const today = formatBerlinDateString(new Date());
     const selectedDay = this.selectedDateService.selectedDay();
     return today === selectedDay && this.isNotLoading();
   }

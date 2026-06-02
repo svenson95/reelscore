@@ -11,7 +11,13 @@ import { Router } from '@angular/router';
 
 import moment from 'moment-timezone';
 
-import { CalendarWeek, DateString } from '@app/shared';
+import {
+  APP_TIMEZONE,
+  CalendarWeek,
+  DateString,
+  formatBerlinDateString,
+  formatCalendarWeekKey,
+} from '@app/shared';
 
 import { SelectedDateService } from './selected-date.service';
 
@@ -47,7 +53,7 @@ export class AbstractedDateService extends DateService {
   );
 
   readonly calendarWeekKey = computed<string>(() =>
-    this.getCalendarWeekKey(this.selectedDateService.selectedDay())
+    formatCalendarWeekKey(this.selectedDateService.selectedDay())
   );
 
   readonly weekdays = computed<DateString[]>(() => {
@@ -78,23 +84,17 @@ export class AbstractedDateService extends DateService {
   }
 
   private getToday(): DateString {
-    return moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    return formatBerlinDateString(new Date());
   }
 
   private createWeekDaysArray(day: DateString): DateString[] {
     const startOfWeek = moment
-      .tz(day, 'YYYY-MM-DD', 'Europe/Berlin')
+      .tz(day, 'YYYY-MM-DD', APP_TIMEZONE)
       .startOf('isoWeek');
 
     return Array.from({ length: 7 }, (_, index) =>
       startOfWeek.clone().add(index, 'days').format('YYYY-MM-DD')
     );
-  }
-
-  private getCalendarWeekKey(day: DateString): string {
-    const date = moment.tz(day, 'YYYY-MM-DD', 'Europe/Berlin');
-
-    return `${date.isoWeekYear()}-W${date.isoWeek()}`;
   }
 
   private getCalendarWeekFrom(day: DateString): CalendarWeek {

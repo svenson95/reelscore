@@ -1,7 +1,6 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
-import moment from 'moment-timezone';
 
-import { DateString } from '@app/shared';
+import { DateString, formatBerlinDateString } from '@app/shared';
 import { FilterService } from './filter.service';
 
 export abstract class SelectedDateService {
@@ -31,7 +30,7 @@ export class AbstractedSelectedDateService extends SelectedDateService {
     const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(dateString);
     if (!isValidDate) {
       console.warn(`Invalid or missing date in URL: ${dateString}`);
-      return moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+      return formatBerlinDateString(new Date());
     }
     return dateString;
   }
