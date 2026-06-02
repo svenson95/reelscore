@@ -15,8 +15,8 @@ import {
   APP_TIMEZONE,
   CalendarWeek,
   DateString,
-  formatBerlinDateString,
   formatCalendarWeekKey,
+  getTodayDateString,
 } from '@app/shared';
 
 import { SelectedDateService } from './selected-date.service';
@@ -42,7 +42,7 @@ export class AbstractedDateService extends DateService {
     );
   });
 
-  private readonly todaySignal = signal<DateString>(this.getToday());
+  private readonly todaySignal = signal<DateString>(getTodayDateString());
   readonly today = this.todaySignal.asReadonly();
   readonly isToday = computed<boolean>(
     () => this.selectedDateService.selectedDay() === this.today()
@@ -68,7 +68,7 @@ export class AbstractedDateService extends DateService {
   });
 
   resetToday(): void {
-    const todayDate = this.getToday();
+    const todayDate = getTodayDateString();
 
     this.todaySignal.set(todayDate);
     this.selectedDateService.setSelectedDay(todayDate);
@@ -81,10 +81,6 @@ export class AbstractedDateService extends DateService {
     if (currentRoute !== dateRoute) {
       this.router.navigate([dateRoute]);
     }
-  }
-
-  private getToday(): DateString {
-    return formatBerlinDateString(new Date());
   }
 
   private createWeekDaysArray(day: DateString): DateString[] {

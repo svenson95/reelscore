@@ -7,7 +7,7 @@ import {
   untracked,
 } from '@angular/core';
 
-import { formatBerlinDateString, PageRefreshService } from '@app/shared';
+import { getTodayDateString, PageRefreshService } from '@app/shared';
 
 import { RouterView } from '../router-view';
 
@@ -64,7 +64,7 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh() {
-    const today = formatBerlinDateString(new Date());
+    const today = getTodayDateString();
     const selectedDay = this.selectedDateService.selectedDay();
     return today === selectedDay && this.isNotLoading();
   }
