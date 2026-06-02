@@ -1,5 +1,6 @@
-import { DestroyRef, inject, Injectable } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { effect, inject, Injectable } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { type NavigationStart, Router } from '@angular/router';
 import { filter, interval, Subscription, tap } from 'rxjs';
 
 type PageRefreshOptions = {
@@ -7,32 +8,66 @@ type PageRefreshOptions = {
   refresh: () => void;
 };
 
+const DEBUGGER = false;
+
 export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
   abstract stop(): void;
 }
 
 @Injectable()
-export class AbstractedPageRefreshService extends PageRefreshService {
-  private readonly destroyRef = inject(DestroyRef);
-  private subscription?: Subscription;
+export class AbstractedPageRefreshService {
+  private readonly router = inject(Router);
+
+  private refreshSubscription?: Subscription;
+
+  private readonly navigationStart = toSignal<NavigationStart | null>(
+    this.router.events.pipe(
+      filter(
+        (event): event is NavigationStart => event instanceof NavigationStart
+      )
+    ),
+    { initialValue: null }
+  );
+
+  stopOnNavigation = effect(() => {
+    const event = this.navigationStart();
+
+    if (!event) return;
+
+    this.stop();
+  });
 
   init(options: PageRefreshOptions): void {
-    this.stop();
-    const REFRESH_INTERVAL = 30_000;
+    if (this.refreshSubscription) this.stop();
 
-    this.subscription = interval(REFRESH_INTERVAL)
+    if (DEBUGGER === true) {
+      console.log('page-refresh init | ', new Date().toLocaleTimeString());
+    }
+
+    const REFRESH_INTERVAL = 5_000;
+
+    this.refreshSubscription = interval(REFRESH_INTERVAL)
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
         filter(() => options.canRefresh()),
-        tap(() => options.refresh())
+        tap(() => {
+          if (DEBUGGER === true) {
+            console.log('page-refresh log | ', new Date().toLocaleTimeString());
+          }
+
+          options.refresh();
+        })
       )
       .subscribe();
   }
 
   stop(): void {
-    this.subscription?.unsubscribe();
-    this.subscription = undefined;
+    this.refreshSubscription?.unsubscribe();
+    this.refreshSubscription = undefined;
+
+    if (DEBUGGER === true) {
+      console.log('page-refresh stop | ', new Date().toLocaleTimeString());
+    }
   }
 }
 
