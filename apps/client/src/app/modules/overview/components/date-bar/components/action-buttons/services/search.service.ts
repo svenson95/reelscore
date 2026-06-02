@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
-import { SearchResult } from '@lib/models';
+import type { SearchResult } from '@lib/models';
 
+import { errorHandler } from '@app/shared';
 import { environment } from '../../../../../../../../environments/environment';
 
 export abstract class SearchService {
@@ -18,7 +19,9 @@ export class AbstractedSearchService {
   getBySearchTerm(searchTerm: string): Observable<SearchResult[]> {
     const params = new HttpParams().set('searchTerm', searchTerm);
 
-    return this.http.get<SearchResult[]>(this.BASE_URL + '/', { params });
+    return this.http
+      .get<SearchResult[]>(this.BASE_URL + '/', { params })
+      .pipe(retry(errorHandler));
   }
 }
 

@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import type { DateString, StateHandler } from '@app/shared';
+import { errorHandler, type DateString, type StateHandler } from '@app/shared';
 import type { CompetitionId, StandingsDTO } from '@lib/models';
 
 import { HttpFixtureStandingsService } from '../services';
@@ -24,20 +25,23 @@ export const FixtureStandingsStore = signalStore(
     ): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getFixtureStandings(teamIds, competition, date).subscribe({
-        next: (standings) =>
-          patchState(store, {
-            standings,
-            isLoading: false,
-            error: standings ? null : 'Fixture Standings not found',
-          }),
-        error: (error) =>
-          patchState(store, {
-            standings: null,
-            isLoading: false,
-            error,
-          }),
-      });
+      http
+        .getFixtureStandings(teamIds, competition, date)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (standings) =>
+            patchState(store, {
+              standings,
+              isLoading: false,
+              error: standings ? null : 'Fixture Standings not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              standings: null,
+              isLoading: false,
+              error,
+            }),
+        });
     },
   }))
 );

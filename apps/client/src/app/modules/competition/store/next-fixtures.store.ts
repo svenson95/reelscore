@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { StateHandler } from '@app/shared';
+import { errorHandler, StateHandler } from '@app/shared';
 import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 import { HttpNextFixturesService } from '../services';
@@ -22,20 +23,23 @@ export const NextFixturesStore = signalStore(
     async loadNextFixtures(id: CompetitionId): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getNextFixturesForCompetition(id).subscribe({
-        next: (fixtures) =>
-          patchState(store, {
-            fixtures,
-            isLoading: false,
-            error: fixtures ? null : 'Next Fixtures not found',
-          }),
-        error: (error) =>
-          patchState(store, {
-            fixtures: null,
-            isLoading: false,
-            error,
-          }),
-      });
+      http
+        .getNextFixturesForCompetition(id)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (fixtures) =>
+            patchState(store, {
+              fixtures,
+              isLoading: false,
+              error: fixtures ? null : 'Next Fixtures not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              fixtures: null,
+              isLoading: false,
+              error,
+            }),
+        });
     },
   }))
 );

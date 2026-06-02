@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { StateHandler } from '@app/shared';
+import { errorHandler, StateHandler } from '@app/shared';
 import {
   EventDTO,
   EventResult,
@@ -34,29 +35,32 @@ export const EventsStore = signalStore(
     }): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getFixtureEvents(fixtureId).subscribe({
-        next: (events) => {
-          if (!events || !teams) {
-            return patchState(store, {
+      http
+        .getFixtureEvents(fixtureId)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (events) => {
+            if (!events || !teams) {
+              return patchState(store, {
+                events: null,
+                isLoading: false,
+                error: 'Events not found',
+              });
+            }
+
+            patchState(store, {
+              events: mappedEvents(events, teams),
+              isLoading: false,
+              error: events ? null : 'Events not found',
+            });
+          },
+          error: (error) =>
+            patchState(store, {
               events: null,
               isLoading: false,
-              error: 'Events not found',
-            });
-          }
-
-          patchState(store, {
-            events: mappedEvents(events, teams),
-            isLoading: false,
-            error: events ? null : 'Events not found',
-          });
-        },
-        error: (error) =>
-          patchState(store, {
-            events: null,
-            isLoading: false,
-            error,
-          }),
-      });
+              error,
+            }),
+        });
     },
     async reset(): Promise<void> {
       patchState(store, initialState);

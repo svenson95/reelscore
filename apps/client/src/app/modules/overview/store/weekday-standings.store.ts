@@ -1,7 +1,13 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { DateString, HttpStandingsService, StateHandler } from '@app/shared';
+import {
+  type DateString,
+  errorHandler,
+  HttpStandingsService,
+  type StateHandler,
+} from '@app/shared';
 import { StandingsWeekData } from '@lib/models';
 
 type WeekdayStandingsState = StateHandler<{
@@ -27,26 +33,29 @@ export const WeekdayStandingsStore = signalStore(
         ...(updateOnly ? {} : { weekStandings: createEmptyWeekStandings() }),
       });
 
-      http.getWeekStandings(date).subscribe({
-        next: (weekStandings) => {
-          patchState(store, {
-            weekStandings,
-            isLoading: false,
-            isRefreshing: false,
-            error: null,
-          });
-        },
-        error: (error) => {
-          patchState(store, {
-            isLoading: false,
-            isRefreshing: false,
-            error,
-            ...(updateOnly
-              ? {}
-              : { weekStandings: createEmptyWeekStandings() }),
-          });
-        },
-      });
+      http
+        .getWeekStandings(date)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (weekStandings) => {
+            patchState(store, {
+              weekStandings,
+              isLoading: false,
+              isRefreshing: false,
+              error: null,
+            });
+          },
+          error: (error) => {
+            patchState(store, {
+              isLoading: false,
+              isRefreshing: false,
+              error,
+              ...(updateOnly
+                ? {}
+                : { weekStandings: createEmptyWeekStandings() }),
+            });
+          },
+        });
     },
   }))
 );

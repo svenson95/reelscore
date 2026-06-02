@@ -1,8 +1,10 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
 import {
   type DateString,
+  errorHandler,
   HttpStandingsService,
   type StateHandler,
 } from '@app/shared';
@@ -24,20 +26,23 @@ export const CompetitionStandingsStore = signalStore(
     async loadStandings(id: CompetitionId, date: DateString): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getStandings(id, date).subscribe({
-        next: (standings) =>
-          patchState(store, {
-            standings,
-            isLoading: false,
-            error: standings ? null : 'CompetitionStandings not found',
-          }),
-        error: (error) =>
-          patchState(store, {
-            standings: null,
-            isLoading: false,
-            error,
-          }),
-      });
+      http
+        .getStandings(id, date)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (standings) =>
+            patchState(store, {
+              standings,
+              isLoading: false,
+              error: standings ? null : 'CompetitionStandings not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              standings: null,
+              isLoading: false,
+              error,
+            }),
+        });
     },
   }))
 );
