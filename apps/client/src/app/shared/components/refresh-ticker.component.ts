@@ -35,6 +35,8 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
     diameter="22"
     strokeWidth="2.5"
     matTooltip="Nächste Aktualisierung"
+    #tooltip="matTooltip"
+    (click)="tooltip.toggle()"
   /> `,
 })
 export class RefreshTickerComponent {
