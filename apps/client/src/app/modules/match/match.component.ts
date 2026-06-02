@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   input,
@@ -9,11 +10,7 @@ import {
 } from '@angular/core';
 
 import { PageRefreshService } from '@app/shared';
-import {
-  STATUS_TYPES_PLAYING,
-  type CompetitionUrl,
-  type FixtureId,
-} from '@lib/models';
+import { type CompetitionUrl, type FixtureId } from '@lib/models';
 
 import { RouterView } from '../router-view';
 
@@ -71,6 +68,12 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
     VisibilityObserverService
   );
 
+  private readonly hasPlayingFixtures = computed<boolean>(() => {
+    const status = this.fixture()?.data.fixture.status.short;
+    if (!status) return false;
+    return this.pageRefreshService.hasPlayingState([status]);
+  });
+
   loadFixtureEffect = effect(() => {
     const fixtureId = this.fixtureId();
     this.facade.loadFixture(fixtureId);
@@ -83,6 +86,7 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.visibilityObserverService.init();
     this.pageRefreshService.init({
+      isPlaying: this.hasPlayingFixtures(),
       canRefresh: () => this.canRefresh(),
       refresh: () => this.refresh(),
     });
@@ -94,10 +98,7 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh(): boolean {
-    const status = this.fixture()?.data.fixture.status.short;
-    if (!status) return false;
-    const isPlaying = STATUS_TYPES_PLAYING.includes(status);
-    return isPlaying && !this.facade.isLoading();
+    return !this.facade.isLoading();
   }
 
   private refresh(): void {
