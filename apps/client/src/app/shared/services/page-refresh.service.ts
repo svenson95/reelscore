@@ -1,4 +1,4 @@
-import { effect, inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, interval, Subscription, tap } from 'rxjs';
@@ -13,15 +13,19 @@ type PageRefreshOptions = {
 const DEBUGGER = false;
 
 const REFRESH_INTERVAL = 20_000;
+export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 
 export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
   abstract stop(): void;
+  abstract timer: Signal<number>;
 }
 
 @Injectable()
-export class AbstractedPageRefreshService {
+export class AbstractedPageRefreshService implements PageRefreshService {
   private readonly router = inject(Router);
+
+  readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
 
   private refreshSubscription?: Subscription;
   private options?: PageRefreshOptions;
@@ -46,8 +50,10 @@ export class AbstractedPageRefreshService {
 
   init(options: PageRefreshOptions): void {
     this.options = options;
+
     const event = this.navigationEnd();
     const isToday = event && this.isTodayRoute(event.urlAfterRedirects);
+
     if (isToday) {
       this.start();
     }
@@ -56,6 +62,7 @@ export class AbstractedPageRefreshService {
   stop(): void {
     this.refreshSubscription?.unsubscribe();
     this.refreshSubscription = undefined;
+    this.timer.set(REFRESH_INTERVAL_SECONDS);
     this.debug('stop');
   }
 
@@ -64,14 +71,25 @@ export class AbstractedPageRefreshService {
 
     if (this.refreshSubscription) this.stop();
 
-    this.debug('init');
+    this.timer.set(REFRESH_INTERVAL_SECONDS);
+    this.debug('start');
 
-    this.refreshSubscription = interval(REFRESH_INTERVAL)
+    this.refreshSubscription = interval(1000)
       .pipe(
-        filter(() => this.options?.canRefresh() ?? false),
         tap(() => {
-          this.debug('log');
-          this.options?.refresh();
+          const nextTimerValue = this.timer() - 1;
+
+          if (nextTimerValue > 0) {
+            this.timer.set(nextTimerValue);
+            return;
+          }
+
+          this.timer.set(REFRESH_INTERVAL_SECONDS);
+
+          if (this.options?.canRefresh()) {
+            this.debug('refresh');
+            this.options.refresh();
+          }
         })
       )
       .subscribe();
