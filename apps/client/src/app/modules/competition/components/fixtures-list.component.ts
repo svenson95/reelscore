@@ -62,8 +62,7 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
       <p>
         @if (this.fixtures()[0].league; as league) {
         {{
-          league.round
-            | roundLabel : 'default' : { id: league.id, season: league.season }
+          league.round | roundLabel : { id: league.id, season: league.season }
         }}
         }
       </p>

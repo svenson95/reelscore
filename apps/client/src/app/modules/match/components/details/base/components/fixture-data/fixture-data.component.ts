@@ -31,8 +31,12 @@ import { FixtureStore } from '../../../../../store';
         <div class="item">
           <span class="key">Spieltag</span>
           <div class="value">
-            @if (isLoaded()) {
-            <span>{{ data()!.league.round | roundLabel }}</span>
+            @if (isLoaded()) { @let comp = data()!.league;
+            <span>
+              {{
+                comp.round | roundLabel : { id: comp.id, season: comp.season }
+              }}
+            </span>
             } @else {
             <div class="list-item-placeholder"></div>
             }
