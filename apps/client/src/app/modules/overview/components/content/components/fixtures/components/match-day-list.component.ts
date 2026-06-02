@@ -74,8 +74,11 @@ const EXTERNAL_MODULES = [RouterLink];
         {{
           round()
             | roundLabel
-              : 'header'
-              : { id: comp.id, season: comp.fixtures[0].league.season }
+              : {
+                  type: 'header',
+                  id: comp.id,
+                  season: comp.fixtures[0].league.season
+                }
         }}
       </span>
     </div>

@@ -10,8 +10,9 @@ import {
 export type LabelType = 'default' | 'header';
 
 export type RoundLabelContext = {
-  id?: number;
-  season?: number;
+  type?: LabelType;
+  id: number;
+  season: number;
 };
 
 type RoundLabelTranslation = {
@@ -25,6 +26,7 @@ type RoundMap = Record<CompetitionRound, RoundLabelFactory>;
 export type RoundMapOverride = Partial<RoundMap>;
 
 type RoundMapRule = {
+  type?: LabelType;
   id: number;
   fromSeason: number;
   map: RoundMapOverride;
@@ -65,9 +67,9 @@ const ROUND_MAP_RULES: RoundMapRule[] = [
 ];
 
 const getBestRoundMapRule = (
-  context?: RoundLabelContext
+  context: RoundLabelContext
 ): RoundMapRule | undefined => {
-  if (!context?.id || typeof context.season !== 'number') {
+  if (!context.id || typeof context.season !== 'number') {
     return undefined;
   }
 
@@ -87,7 +89,7 @@ const getBestRoundMapRule = (
   return bestRule;
 };
 
-const getRoundMap = (context?: RoundLabelContext): RoundMap => {
+const getRoundMap = (context: RoundLabelContext): RoundMap => {
   const rule = getBestRoundMapRule(context);
 
   if (!rule) {
@@ -117,13 +119,12 @@ const getType = (
 
 export const getCompetitionRoundLabel = (
   round: CompetitionRound,
-  labelType: LabelType = 'default',
   context: RoundLabelContext
 ): CompetitionRound => {
   const roundMap = getRoundMap(context);
+  const labelType = context.type ?? 'default';
   const type = getType(round, roundMap);
-  const translation = roundMap[type]?.(round);
-
+  const translation = roundMap[type](round);
   return translation?.[labelType] ?? round;
 };
 
@@ -152,7 +153,7 @@ export const groupLabel = (value: CompetitionRound): CompetitionRound => {
 // comp helper
 export const isFirstCompetitionRound = (
   round: CompetitionRound,
-  context?: RoundLabelContext
+  context: RoundLabelContext
 ): boolean => {
   const roundMap = getRoundMap(context);
   const type = getType(round, roundMap);
