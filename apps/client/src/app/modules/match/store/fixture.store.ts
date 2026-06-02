@@ -42,11 +42,10 @@ export const FixtureStore = signalStore(
       const loadFixtureData = (
         id: FixtureId,
         options: {
-          resetFixture: boolean;
-          resetRelatedStores: boolean;
+          isRefresh: boolean;
         }
       ): Promise<void> => {
-        const isRefresh = !options.resetFixture;
+        const isRefresh = options.isRefresh;
 
         patchState(
           store,
@@ -63,18 +62,17 @@ export const FixtureStore = signalStore(
               }
         );
 
-        if (options.resetRelatedStores) {
-          evaluationsStore.reset();
-          latestFixturesStore.reset();
-          eventsStore.reset();
-          statisticsStore.reset();
-          analysesStore.reset();
-        }
-
         return new Promise((resolve) => {
           http.getFixture(id).subscribe({
             next: (fixture) => {
               const fixtureId = fixture.data.fixture.id;
+
+              patchState(store, {
+                fixture,
+                isLoading: false,
+                isRefreshing: false,
+                error: null,
+              });
 
               if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
                 const { home, away } = fixture.data.teams;
@@ -103,18 +101,11 @@ export const FixtureStore = signalStore(
 
               statisticsStore.loadStatistics(fixtureIdParameter);
 
-              patchState(store, {
-                fixture,
-                isLoading: false,
-                isRefreshing: false,
-                error: fixture ? null : 'Fixture not found',
-              });
-
               resolve();
             },
             error: (error) => {
               patchState(store, {
-                fixture: options.resetFixture ? null : store.fixture(),
+                fixture: isRefresh ? store.fixture() : null,
                 isLoading: false,
                 isRefreshing: false,
                 error,
@@ -129,8 +120,7 @@ export const FixtureStore = signalStore(
       return {
         loadFixture(id: FixtureId): Promise<void> {
           return loadFixtureData(id, {
-            resetFixture: true,
-            resetRelatedStores: true,
+            isRefresh: false,
           });
         },
 
@@ -142,8 +132,7 @@ export const FixtureStore = signalStore(
           }
 
           return loadFixtureData(fixture.data.fixture.id, {
-            resetFixture: false,
-            resetRelatedStores: false,
+            isRefresh: true,
           });
         },
       };

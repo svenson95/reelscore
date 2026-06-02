@@ -1,7 +1,9 @@
 import { effect, inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter, interval, Subscription, tap } from 'rxjs';
+
+import { getTodayDateString } from '../constants';
 
 type PageRefreshOptions = {
   canRefresh: () => boolean;
@@ -9,6 +11,8 @@ type PageRefreshOptions = {
 };
 
 const DEBUGGER = false;
+
+const REFRESH_INTERVAL = 20_000;
 
 export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
@@ -20,43 +24,62 @@ export class AbstractedPageRefreshService {
   private readonly router = inject(Router);
 
   private refreshSubscription?: Subscription;
+  private options?: PageRefreshOptions;
 
-  private readonly navigationStart = toSignal<NavigationStart | null>(
+  private readonly navigationEnd = toSignal<NavigationEnd | null>(
     this.router.events.pipe(
-      filter(
-        (event): event is NavigationStart => event instanceof NavigationStart
-      )
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ),
     { initialValue: null }
   );
 
   stopOnNavigation = effect(() => {
-    const event = this.navigationStart();
+    const event = this.navigationEnd();
     if (!event) return;
-    this.stop();
+
+    if (this.refreshSubscription) this.stop();
+
+    if (this.isTodayRoute(event.urlAfterRedirects)) {
+      this.start();
+    }
   });
 
   init(options: PageRefreshOptions): void {
-    if (this.refreshSubscription) this.stop();
-    this.debug('init');
-
-    const REFRESH_INTERVAL = 20_000;
-
-    this.refreshSubscription = interval(REFRESH_INTERVAL)
-      .pipe(
-        filter(() => options.canRefresh()),
-        tap(() => {
-          this.debug('log');
-          options.refresh();
-        })
-      )
-      .subscribe();
+    this.options = options;
+    const event = this.navigationEnd();
+    const isToday = event && this.isTodayRoute(event.urlAfterRedirects);
+    if (isToday) {
+      this.start();
+    }
   }
 
   stop(): void {
     this.refreshSubscription?.unsubscribe();
     this.refreshSubscription = undefined;
     this.debug('stop');
+  }
+
+  private start(): void {
+    if (!this.options) return;
+
+    if (this.refreshSubscription) this.stop();
+
+    this.debug('init');
+
+    this.refreshSubscription = interval(REFRESH_INTERVAL)
+      .pipe(
+        filter(() => this.options?.canRefresh() ?? false),
+        tap(() => {
+          this.debug('log');
+          this.options?.refresh();
+        })
+      )
+      .subscribe();
+  }
+
+  private isTodayRoute(url: string): boolean {
+    const todayRoute = '/' + getTodayDateString();
+    return url.includes(todayRoute);
   }
 
   private debug(message: string): void {

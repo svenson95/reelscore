@@ -28,7 +28,7 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   private subscription?: Subscription;
 
   public init(): void {
-    this.stop();
+    if (this.subscription) this.stop();
 
     this.subscription = fromEvent(document, 'visibilitychange')
       .pipe(

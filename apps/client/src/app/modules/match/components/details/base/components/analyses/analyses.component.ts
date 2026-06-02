@@ -86,10 +86,12 @@ import { AnalysesLastFixturesComponent } from './components';
       </div>
     </div>
 
+    @if (teams(); as data) {
     <rs-match-fixture-analyses-last-fixtures
       [fixtures]="latestFixtures()!"
-      [teams]="teams()"
+      [teams]="data"
     />
+    }
   `,
 })
 export class MatchFixtureAnalysesComponent {
@@ -101,9 +103,9 @@ export class MatchFixtureAnalysesComponent {
   readonly analyses = this.analysesStore.analyses;
   readonly latestFixtures = this.latestFixturesStore.latestFixtures;
 
-  readonly teams = computed<MatchTeams>(() => {
+  readonly teams = computed<MatchTeams | null>(() => {
     const fixture = this.fixtureStore.fixture();
-    if (!fixture) throw new Error('No fixtures found');
+    if (!fixture) return null;
     return {
       home: fixture.data.teams.home,
       away: fixture.data.teams.away,
