@@ -1,589 +1,313 @@
-export const abbreviationTeamName = (value: string): string => {
-  switch (value) {
-    // Bundesliga
-    case 'Borussia Mönchengladbach':
-    case 'Borussia Monchengladbach':
-      return 'BMG';
-    case 'SV Darmstadt 98':
-      return 'D98';
-    case 'Bayern München':
-    case 'Bayern Munich':
-      return 'FCB';
-    case 'VfL Bochum':
-    case 'Vfl Bochum':
-      return 'BOC';
-    case 'Eintracht Frankfurt':
-      return 'SGE';
-    case 'FC Koln':
-    case '1.FC Köln':
-    case '1. FC Köln':
-      return 'KOE';
-    case 'Bayer Leverkusen':
-      return 'B04';
-    case 'Union Berlin':
-      return 'FCU';
-    case '1899 Hoffenheim':
-      return 'TSG';
-    case '1. FC Heidenheim':
-    case 'FC Heidenheim':
-      return 'HDH';
-    case 'Borussia Dortmund':
-      return 'BVB';
-    case 'VfL Wolfsburg':
-      return 'WOB';
-    case 'SC Freiburg':
-      return 'SCF';
-    case 'FSV Mainz 05':
-      return 'M05';
-    case 'FC Augsburg':
-      return 'FCA';
-    case 'VfB Stuttgart':
-      return 'VFB';
-    case 'Werder Bremen':
-      return 'SVW';
-    case 'FC St. Pauli':
-      return 'STP';
-    case 'Holstein Kiel':
-      return 'KIE';
-    case 'RB Leipzig':
-      return 'RBL';
+export const ABBREVIATION_TEAM_NAMES: Readonly<Record<string, string>> = {
+  // Bundesliga
+  'Borussia Mönchengladbach': 'BMG',
+  'Borussia Monchengladbach': 'BMG',
+  'SV Darmstadt 98': 'D98',
+  'Bayern München': 'FCB',
+  'Bayern Munich': 'FCB',
+  'VfL Bochum': 'BOC',
+  'Vfl Bochum': 'BOC',
+  'Eintracht Frankfurt': 'SGE',
+  'FC Koln': 'KOE',
+  '1.FC Köln': 'KOE',
+  '1. FC Köln': 'KOE',
+  'Bayer Leverkusen': 'B04',
+  'Union Berlin': 'FCU',
+  '1899 Hoffenheim': 'TSG',
+  '1. FC Heidenheim': 'HDH',
+  'FC Heidenheim': 'HDH',
+  'Borussia Dortmund': 'BVB',
+  'VfL Wolfsburg': 'WOB',
+  'SC Freiburg': 'SCF',
+  'FSV Mainz 05': 'M05',
+  'FC Augsburg': 'FCA',
+  'VfB Stuttgart': 'VFB',
+  'Werder Bremen': 'SVW',
+  'FC St. Pauli': 'STP',
+  'Holstein Kiel': 'KIE',
+  'RB Leipzig': 'RBL',
 
-    // 2. Bundesliga
-    case 'SC Paderborn 07':
-      return 'SCP';
-    case 'SSV Ulm 1846':
-    case 'SSV ULM 1846':
-      return 'ULM';
-    case 'FC Schalke 04':
-      return 'S04';
-    case 'Karlsruher SC':
-      return 'KSC';
-    case 'Hamburger SV':
-      return 'HSV';
-    case 'Preußen Münster':
-    case 'Preussen Münster':
-    case 'Preussen Munster':
-      return 'SCP';
-    case '1. FC Nürnberg':
-    case 'FC Nurnberg':
-      return 'FCN';
-    case '1. FC Magdeburg':
-    case 'FC Magdeburg':
-      return 'FCM';
-    case 'SV Elversberg':
-      return 'SVE';
-    case '1. FC Kaiserslautern':
-    case 'FC Kaiserslautern':
-      return 'FCK';
-    case 'Hertha BSC':
-      return 'BSC';
-    case 'Fortuna Dusseldorf':
-    case 'Fortuna Düsseldorf':
-      return 'F95';
-    case 'Hannover 96':
-      return 'H96';
-    case 'Jahn Regensburg':
-    case 'SSV Jahn Regensburg':
-      return 'SSV';
-    case 'SpVgg Greuther Fürth':
-    case 'SpVgg Greuther Furth':
-      return 'SGF';
-    case 'FC Saarbrücken':
-      return 'FCS';
-    case 'Eintracht Braunschweig':
-      return 'EBS';
-    case 'SV Sandhausen':
-      return 'SVS';
-    case 'Hansa Rostock':
-      return 'HRO';
-    case 'VfR Aalen':
-      return 'VFR';
-    case 'Dynamo Dresden':
-      return 'SGD';
-    case 'Arminia Bielefeld':
-      return 'DSC';
+  // 2. Bundesliga
+  'SC Paderborn 07': 'SCP',
+  'SSV Ulm 1846': 'ULM',
+  'SSV ULM 1846': 'ULM',
+  'FC Schalke 04': 'S04',
+  'Karlsruher SC': 'KSC',
+  'Hamburger SV': 'HSV',
+  'Preußen Münster': 'SCP',
+  'Preussen Münster': 'SCP',
+  'Preussen Munster': 'SCP',
+  '1. FC Nürnberg': 'FCN',
+  'FC Nurnberg': 'FCN',
+  '1. FC Magdeburg': 'FCM',
+  'FC Magdeburg': 'FCM',
+  'SV Elversberg': 'SVE',
+  '1. FC Kaiserslautern': 'FCK',
+  'FC Kaiserslautern': 'FCK',
+  'Hertha BSC': 'BSC',
+  'Fortuna Dusseldorf': 'F95',
+  'Fortuna Düsseldorf': 'F95',
+  'Hannover 96': 'H96',
+  'Jahn Regensburg': 'SSV',
+  'SSV Jahn Regensburg': 'SSV',
+  'SpVgg Greuther Fürth': 'SGF',
+  'SpVgg Greuther Furth': 'SGF',
+  'FC Saarbrücken': 'FCS',
+  'Eintracht Braunschweig': 'EBS',
+  'SV Sandhausen': 'SVS',
+  'Hansa Rostock': 'HRO',
+  'VfR Aalen': 'VFR',
+  'Dynamo Dresden': 'SGD',
+  'Arminia Bielefeld': 'DSC',
 
-    // 3. Liga
-    case 'Kickers Offenbach':
-      return 'OFC';
-    case 'FC Ingolstadt 04':
-      return 'FCI';
-    case 'Borussia Hildesheim':
-      return 'BHI';
-    case 'Würzburger Kickers':
-      return 'FWK';
-    case 'Rot-Weiß Essen':
-      return 'RWE';
-    case 'TuS Koblenz':
-      return 'KOB';
-    case 'Sportfreunde Lotte':
-      return 'SFL';
-    case 'SV Meppen':
-      return 'MEP';
-    case 'Teutonia Ottensen':
-      return 'FCT';
-    case 'Greifswalder FC':
-      return 'GFC';
+  // 3. Liga
+  'Kickers Offenbach': 'OFC',
+  'FC Ingolstadt 04': 'FCI',
+  'Borussia Hildesheim': 'BHI',
+  'Würzburger Kickers': 'FWK',
+  'Rot-Weiß Essen': 'RWE',
+  'TuS Koblenz': 'KOB',
+  'Sportfreunde Lotte': 'SFL',
+  'SV Meppen': 'MEP',
+  'Teutonia Ottensen': 'FCT',
+  'Greifswalder FC': 'GFC',
 
-    // Premiere League
-    case 'Nottingham Forest':
-      return 'NFC';
-    case 'Manchester United':
-      return 'MUN';
-    case 'Manchester City':
-      return 'MCI';
-    case 'Tottenham':
-      return 'TOT';
-    case 'Crystal Palace':
-      return 'CRY';
-    case 'Aston Villa':
-      return 'AVL';
-    case 'Liverpool':
-      return 'LIV';
-    case 'Chelsea':
-      return 'CHE';
-    case 'Arsenal':
-      return 'ARS';
-    case 'Leeds United':
-      return 'LEE';
-    case 'Southampton':
-      return 'SOU';
-    case 'West Ham':
-      return 'WHU';
-    case 'Wolves':
-      return 'WOL';
-    case 'Brighton':
-      return 'BHA';
-    case 'Burnley':
-      return 'BUR';
-    case 'Fulham':
-      return 'FUL';
-    case 'Sheffield Utd':
-      return 'SHU';
-    case 'Luton':
-      return 'LUT';
-    case 'Newcastle':
-      return 'NEW';
-    case 'Bournemouth':
-      return 'BOU';
-    case 'Brentford':
-      return 'BRE';
-    case 'Everton':
-      return 'EVE';
-    case 'Leicester':
-      return 'LEI';
-    case 'Ipswich':
-      return 'IPS';
+  // Premiere League
+  'Nottingham Forest': 'NFC',
+  'Manchester United': 'MUN',
+  'Manchester City': 'MCI',
+  Tottenham: 'TOT',
+  'Crystal Palace': 'CRY',
+  'Aston Villa': 'AVL',
+  Liverpool: 'LIV',
+  Chelsea: 'CHE',
+  Arsenal: 'ARS',
+  'Leeds United': 'LEE',
+  Southampton: 'SOU',
+  'West Ham': 'WHU',
+  Wolves: 'WOL',
+  Brighton: 'BHA',
+  Burnley: 'BUR',
+  Fulham: 'FUL',
+  'Sheffield Utd': 'SHU',
+  Luton: 'LUT',
+  Newcastle: 'NEW',
+  Bournemouth: 'BOU',
+  Brentford: 'BRE',
+  Everton: 'EVE',
+  Leicester: 'LEI',
+  Ipswich: 'IPS',
 
-    // Ligue 1
-    case 'Paris Saint Germain':
-      return 'PSG';
-    case 'Stade Brestois 29':
-      return 'B29';
-    case 'LE Havre':
-      return 'HAV';
-    case 'Lens':
-      return 'RCL';
-    case 'Saint-Etienne':
-    case 'Saint Etienne':
-      return 'STE';
-    case 'Clermont Foot':
-      return 'CF63';
-    case 'Lyon':
-      return 'OLY';
-    case 'Marseille':
-      return 'OMA';
-    case 'Monaco':
-      return 'ASM';
-    case 'Nantes':
-      return 'NAN';
-    case 'Lille':
-      return 'OSC';
-    case 'Montpellier':
-      return 'HSC';
-    case 'Angers':
-      return 'ANG';
-    case 'Nice':
-      return 'NIC';
-    case 'Auxerre':
-      return 'AJA';
-    case 'Reims':
-      return 'REI';
-    case 'Rennes':
-      return 'REN';
-    case 'Toulouse':
-      return 'TOU';
-    case 'Strasbourg':
-      return 'RCS';
+  // Ligue 1
+  'Paris Saint Germain': 'PSG',
+  'Stade Brestois 29': 'B29',
+  'LE Havre': 'HAV',
+  Lens: 'RCL',
+  'Saint-Etienne': 'STE',
+  'Saint Etienne': 'STE',
+  'Clermont Foot': 'CF63',
+  Lyon: 'OLY',
+  Marseille: 'OMA',
+  Monaco: 'ASM',
+  Nantes: 'NAN',
+  Lille: 'OSC',
+  Montpellier: 'HSC',
+  Angers: 'ANG',
+  Nice: 'NIC',
+  Auxerre: 'AJA',
+  Reims: 'REI',
+  Rennes: 'REN',
+  Toulouse: 'TOU',
+  Strasbourg: 'RCS',
 
-    // La Liga
-    case 'Athletic Club':
-      return 'ATH';
-    case 'Atletico Madrid':
-      return 'ATM';
-    case 'Cadiz':
-      return 'CAD';
-    case 'Almeria':
-      return 'ALM';
-    case 'Granada CF':
-      return 'GCF';
-    case 'Rayo Vallecano':
-      return 'RVM';
-    case 'Real Sociedad':
-      return 'RSO';
-    case 'Leganes':
-      return 'LEG';
-    case 'Real Madrid':
-      return 'RMA';
-    case 'Barcelona':
-      return 'FCB';
-    case 'Girona':
-      return 'GIR';
-    case 'Getafe':
-      return 'GET';
-    case 'Espanyol':
-      return 'ESP';
-    case 'Valladolid':
-      return 'RVL';
-    case 'Real Betis':
-      return 'RBT';
-    case 'Sevilla':
-      return 'SEV';
-    case 'Alaves':
-      return 'ALA';
-    case 'Las Palmas':
-      return 'LPA';
-    case 'Osasuna':
-      return 'OSA';
-    case 'Celta Vigo':
-      return 'CEL';
-    case 'Villarreal':
-      return 'VIL';
-    case 'Valencia':
-      return 'VAL';
-    case 'Mallorca':
-      return 'MLL';
+  // La Liga
+  'Athletic Club': 'ATH',
+  'Atletico Madrid': 'ATM',
+  Cadiz: 'CAD',
+  Almeria: 'ALM',
+  'Granada CF': 'GCF',
+  'Rayo Vallecano': 'RVM',
+  'Real Sociedad': 'RSO',
+  Leganes: 'LEG',
+  'Real Madrid': 'RMA',
+  Barcelona: 'FCB',
+  Girona: 'GIR',
+  Getafe: 'GET',
+  Espanyol: 'ESP',
+  Valladolid: 'RVL',
+  'Real Betis': 'RBT',
+  Sevilla: 'SEV',
+  Alaves: 'ALA',
+  'Las Palmas': 'LPA',
+  Osasuna: 'OSA',
+  'Celta Vigo': 'CEL',
+  Villarreal: 'VIL',
+  Valencia: 'VAL',
+  Mallorca: 'MLL',
 
-    // Serie A
-    case 'AC Milan':
-      return 'ACM';
-    case 'AS Roma':
-      return 'ASR';
-    case 'Fiorentina':
-    case 'AC Florenz':
-      return 'FIO';
-    case 'Genoa':
-      return 'GEN';
-    case 'Venezia':
-      return 'VEN';
-    case 'Torino':
-      return 'TOR';
-    case 'Napoli':
-      return 'NAP';
-    case 'Juventus':
-      return 'JUV';
-    case 'Bologna':
-      return 'BOL';
-    case 'Empoli':
-      return 'EMP';
-    case 'Lazio':
-      return 'LAZ';
-    case 'Sassuolo':
-      return 'SAS';
-    case 'Spezia':
-      return 'SPE';
-    case 'Udinese':
-      return 'UDI';
-    case 'Atalanta':
-      return 'ATA';
-    case 'Inter':
-      return 'INT';
-    case 'Salernitana':
-      return 'SAL';
-    case 'Verona':
-      return 'VER';
-    case 'Monza':
-      return 'MON';
-    case 'Como':
-      return 'COM';
-    case 'Cagliari':
-      return 'CAG';
-    case 'Parma':
-      return 'PAR';
-    case 'Lecce':
-      return 'LEC';
+  // Serie A
+  'AC Milan': 'ACM',
+  'AS Roma': 'ASR',
+  Fiorentina: 'FIO',
+  'AC Florenz': 'FIO',
+  Genoa: 'GEN',
+  Venezia: 'VEN',
+  Torino: 'TOR',
+  Napoli: 'NAP',
+  Juventus: 'JUV',
+  Bologna: 'BOL',
+  Empoli: 'EMP',
+  Lazio: 'LAZ',
+  Sassuolo: 'SAS',
+  Spezia: 'SPE',
+  Udinese: 'UDI',
+  Atalanta: 'ATA',
+  Inter: 'INT',
+  Salernitana: 'SAL',
+  Verona: 'VER',
+  Monza: 'MON',
+  Como: 'COM',
+  Cagliari: 'CAG',
+  Parma: 'PAR',
+  Lecce: 'LEC',
 
-    // Europa
-    case 'Slavia Praha':
-      return 'SLP';
-    case 'Dinamo Minsk':
-      return 'DIN';
-    case 'Heart Of Midlothian':
-      return 'HOM';
-    case 'TSC Backa Topola':
-      return 'TBT';
-    case 'Maccabi Tel Aviv':
-      return 'MTA';
-    case 'Apoel Nicosia':
-      return 'APO';
-    case 'Rapid Vienna':
-      return 'SCR';
-    case 'Borac Banja Luka':
-      return 'BBL';
-    case 'Ferencvarosi TC':
-      return 'FTC';
-    case 'Plzen':
-      return 'PLZ';
-    case 'Ajax':
-      return 'AJX';
-    case 'FC Carl Zeiss Jena':
-      return 'JEN';
-    case 'FC Midtjylland':
-      return 'MID';
-    case 'Slovan Bratislava':
-      return 'SLO';
-    case 'FK Crvena Zvezda':
-      return 'RSB';
-    case 'Bodo/Glimt':
-      return 'BOD';
-    case 'Red Bull Salzburg':
-      return 'RBS';
-    case 'BSC Young Boys':
-      return 'YBB';
-    case 'IF elfsborg':
-      return 'ELF';
-    case 'Malmo FF':
-      return 'MAL';
-    case 'Sparta Praha':
-      return 'SPR';
-    case 'Dynamo Kyiv':
-      return 'DKY';
-    case 'PSV Eindhoven':
-      return 'PSV';
-    case 'Sporting CP':
-      return 'SPO';
-    case 'Shakhtar Donetsk':
-      return 'SHA';
-    case 'Club Brugge KV':
-      return 'BRU';
-    case 'Benfica':
-      return 'BEN';
-    case 'Dinamo Zagreb':
-      return 'DZA';
-    case 'Feyenoord':
-      return 'FEY';
-    case 'Sturm Graz':
-      return 'STG';
-    case 'Celtic':
-      return 'CEL';
-    case 'Anderlecht':
-      return 'AND';
-    case 'Union St. Gilloise':
-      return 'STG';
-    case 'Twente':
-      return 'TWE';
-    case 'AZ Alkmaar':
-      return 'ALK';
-    case 'FC Porto':
-      return 'POR';
-    case 'Olympiakos Piraeus':
-      return 'OLY';
-    case 'SC Braga':
-      return 'BRA';
-    case 'Rangers':
-      return 'RAN';
-    case 'Galatasaray':
-      return 'GAL';
-    case 'Fenerbahce':
-      return 'FEN';
-    case 'Besiktas':
-      return 'BES';
-    case 'Qarabag':
-      return 'QAR';
-    case 'Ludogorets':
-      return 'LUD';
-    case 'Rīgas FS':
-      return 'RFS';
-    case 'Panevėžys':
-      return 'PAN';
-    case 'HJK helsinki':
-      return 'HJK';
-    case 'Hamrun Spartans':
-      return 'HAM';
-    case 'Lincoln Red Imps FC':
-      return 'LIN';
-    case 'The New Saints':
-      return 'TNS';
-    case 'Dečić':
-      return 'DEC';
-    case 'UE Santa Coloma':
-      return 'SAC';
-    case 'Ballkani':
-      return 'BAL';
-    case 'Vikingur Reykjavik':
-      return 'VIK';
-    case 'Shamrock Rovers':
-      return 'SHA';
-    case 'Virtus':
-      return 'VIR';
-    case 'FCSB':
-      return 'BUK';
-    case 'Ordabasy':
-      return 'ORD';
-    case 'FC Petrocub-Hîncesti':
-      return 'PET';
-    case 'Flora Tallinn':
-      return 'FLT';
-    case 'Celje':
-      return 'CEL';
-    case 'Struga':
-      return 'STR';
-    case 'Larne':
-      return 'LAR';
-    case 'KI Klaksvik':
-      return 'KIK';
-    case 'FC Differdange 03':
-      return 'DIF';
-    case 'Dinamo Batumi':
-      return 'DIN';
-    case 'Pyunik Yerevan':
-      return 'PYU';
-    case 'Egnatia Rrogozhinë':
-      return 'EGR';
-    case 'Pafos':
-      return 'PAF';
-    case 'Sheriff Tiraspol':
-      return 'SHE';
-    case 'Zira':
-      return 'ZIR';
-    case 'Ružomberok':
-      return 'RUZ';
-    case 'FK Tobol Kostanay':
-      return 'TOB';
-    case 'Paks':
-      return 'PAK';
-    case 'Corvinul Hunedoara':
-      return 'COR';
-    case 'Botev Plovdiv':
-      return 'BOT';
-    case 'Maribor':
-      return 'MAR';
-    case 'Wisla Krakow':
-      return 'WIS';
-    case 'Llapi':
-      return 'LLA';
+  // Europa
+  'Slavia Praha': 'SLP',
+  'Dinamo Minsk': 'DIN',
+  'Heart Of Midlothian': 'HOM',
+  'TSC Backa Topola': 'TBT',
+  'Maccabi Tel Aviv': 'MTA',
+  'Apoel Nicosia': 'APO',
+  'Rapid Vienna': 'SCR',
+  'Borac Banja Luka': 'BBL',
+  'Ferencvarosi TC': 'FTC',
+  Plzen: 'PLZ',
+  Ajax: 'AJX',
+  'FC Carl Zeiss Jena': 'JEN',
+  'FC Midtjylland': 'MID',
+  'Slovan Bratislava': 'SLO',
+  'FK Crvena Zvezda': 'RSB',
+  'Bodo/Glimt': 'BOD',
+  'Red Bull Salzburg': 'RBS',
+  'BSC Young Boys': 'YBB',
+  'IF elfsborg': 'ELF',
+  'Malmo FF': 'MAL',
+  'Sparta Praha': 'SPR',
+  'Dynamo Kyiv': 'DKY',
+  'PSV Eindhoven': 'PSV',
+  'Sporting CP': 'SPO',
+  'Shakhtar Donetsk': 'SHA',
+  'Club Brugge KV': 'BRU',
+  Benfica: 'BEN',
+  'Dinamo Zagreb': 'DZA',
+  Feyenoord: 'FEY',
+  'Sturm Graz': 'STG',
+  Celtic: 'CEL',
+  Anderlecht: 'AND',
+  'Union St. Gilloise': 'STG',
+  Twente: 'TWE',
+  'AZ Alkmaar': 'ALK',
+  'FC Porto': 'POR',
+  'Olympiakos Piraeus': 'OLY',
+  'SC Braga': 'BRA',
+  Rangers: 'RAN',
+  Galatasaray: 'GAL',
+  Fenerbahce: 'FEN',
+  Besiktas: 'BES',
+  Qarabag: 'QAR',
+  Ludogorets: 'LUD',
+  'Rīgas FS': 'RFS',
+  Panevėžys: 'PAN',
+  'HJK helsinki': 'HJK',
+  'Hamrun Spartans': 'HAM',
+  'Lincoln Red Imps FC': 'LIN',
+  'The New Saints': 'TNS',
+  Dečić: 'DEC',
+  'UE Santa Coloma': 'SAC',
+  Ballkani: 'BAL',
+  'Vikingur Reykjavik': 'VIK',
+  'Shamrock Rovers': 'SHA',
+  Virtus: 'VIR',
+  FCSB: 'BUK',
+  Ordabasy: 'ORD',
+  'FC Petrocub-Hîncesti': 'PET',
+  'Flora Tallinn': 'FLT',
+  Celje: 'CEL',
+  Struga: 'STR',
+  Larne: 'LAR',
+  'KI Klaksvik': 'KIK',
+  'FC Differdange 03': 'DIF',
+  'Dinamo Batumi': 'DIN',
+  'Pyunik Yerevan': 'PYU',
+  'Egnatia Rrogozhinë': 'EGR',
+  Pafos: 'PAF',
+  'Sheriff Tiraspol': 'SHE',
+  Zira: 'ZIR',
+  Ružomberok: 'RUZ',
+  'FK Tobol Kostanay': 'TOB',
+  Paks: 'PAK',
+  'Corvinul Hunedoara': 'COR',
+  'Botev Plovdiv': 'BOT',
+  Maribor: 'MAR',
+  'Wisla Krakow': 'WIS',
+  Llapi: 'LLA',
 
-    // International
-    case 'Northern Ireland':
-      return 'NIR';
-    case 'Rep. Of Ireland':
-      return 'IRL';
-    case 'Azerbaijan':
-      return 'AZE';
-    case 'Sweden':
-      return 'SWE';
-    case 'Croatia':
-      return 'CRO';
-    case 'Denmark':
-      return 'DEN';
-    case 'Switzerland':
-      return 'SUI';
-    case 'Scotland':
-      return 'SCO';
-    case 'Poland':
-      return 'POL';
-    case 'Serbia':
-      return 'SRB';
-    case 'Spain':
-      return 'ESP';
-    case 'Bulgaria':
-      return 'BUL';
-    case 'Estonia':
-      return 'EST';
-    case 'Slovakia':
-      return 'SVK';
-    case 'Luxembourg':
-      return 'LUX';
-    case 'Lithuania':
-      return 'LTU';
-    case 'Cyprus':
-      return 'CYP';
-    case 'France':
-      return 'FRA';
-    case 'Italy':
-      return 'ITA';
-    case 'Belgium':
-      return 'BEL';
-    case 'Romania':
-      return 'ROU';
-    case 'Faroe Islands':
-      return 'FRO';
-    case 'FYR Macedonia':
-      return 'MKD';
-    case 'Armenia':
-      return 'ARM';
-    case 'Latvia':
-      return 'LVA';
-    case 'Moldova':
-      return 'MDA';
-    case 'Netherlands':
-      return 'NED';
-    case 'Bosnia & Herzegovina':
-      return 'BIH';
-    case 'Germany':
-      return 'GER';
-    case 'Hungary':
-      return 'HUN';
-    case 'Kazakhstan':
-      return 'KAZ';
-    case 'Norway':
-      return 'NOR';
-    case 'Iceland':
-      return 'ISL';
-    case 'Slovenia':
-      return 'SVN';
-    case 'Austria':
-      return 'AUT';
-    case 'Türkiye':
-      return 'TUR';
-    case 'Georgia':
-      return 'GEO';
-    case 'Czech Republic':
-      return 'CZE';
-    case 'Greece':
-      return 'GRE';
-    case 'Finland':
-      return 'FIN';
-    case 'Albania':
-      return 'ALB';
-    case 'Montenegro':
-      return 'MNE';
-    case 'Israel':
-      return 'ISR';
-    case 'Kosovo':
-      return 'KOS';
-    case 'Liechtenstein':
-      return 'LIE';
-    case 'San Marino':
-      return 'SMR';
-    case 'Belarus':
-      return 'BLR';
-    case 'Portugal':
-      return 'POR';
-    case 'England':
-      return 'ENG';
-    case 'Ukraine':
-      return 'UKR';
-    case 'Malta':
-      return 'MLT';
-    case 'Gibraltar':
-      return 'GIB';
-    case 'Wales':
-      return 'WAL';
-    case 'Andorra':
-      return 'AND';
-
-    default:
-      return value;
-  }
+  // International
+  'Northern Ireland': 'NIR',
+  'Rep. Of Ireland': 'IRL',
+  Azerbaijan: 'AZE',
+  Sweden: 'SWE',
+  Croatia: 'CRO',
+  Denmark: 'DEN',
+  Switzerland: 'SUI',
+  Scotland: 'SCO',
+  Poland: 'POL',
+  Serbia: 'SRB',
+  Spain: 'ESP',
+  Bulgaria: 'BUL',
+  Estonia: 'EST',
+  Slovakia: 'SVK',
+  Luxembourg: 'LUX',
+  Lithuania: 'LTU',
+  Cyprus: 'CYP',
+  France: 'FRA',
+  Italy: 'ITA',
+  Belgium: 'BEL',
+  Romania: 'ROU',
+  'Faroe Islands': 'FRO',
+  'FYR Macedonia': 'MKD',
+  Armenia: 'ARM',
+  Latvia: 'LVA',
+  Moldova: 'MDA',
+  Netherlands: 'NED',
+  'Bosnia & Herzegovina': 'BIH',
+  Germany: 'GER',
+  Hungary: 'HUN',
+  Kazakhstan: 'KAZ',
+  Norway: 'NOR',
+  Iceland: 'ISL',
+  Slovenia: 'SVN',
+  Austria: 'AUT',
+  Türkiye: 'TUR',
+  Georgia: 'GEO',
+  'Czech Republic': 'CZE',
+  Greece: 'GRE',
+  Finland: 'FIN',
+  Albania: 'ALB',
+  Montenegro: 'MNE',
+  Israel: 'ISR',
+  Kosovo: 'KOS',
+  Liechtenstein: 'LIE',
+  'San Marino': 'SMR',
+  Belarus: 'BLR',
+  Portugal: 'POR',
+  England: 'ENG',
+  Ukraine: 'UKR',
+  Malta: 'MLT',
+  Gibraltar: 'GIB',
+  Wales: 'WAL',
+  Andorra: 'AND',
 };
+
+export const abbreviationTeamName = (value: string): string =>
+  ABBREVIATION_TEAM_NAMES[value] ?? value;
