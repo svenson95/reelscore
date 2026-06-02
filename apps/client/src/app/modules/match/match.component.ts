@@ -48,7 +48,7 @@ import { STORE_PROVIDERS } from './store';
     <section
       rs-match-header
       [data]="data()"
-      [highlights]="fixture()?.highlights"
+      [highlights]="fixture()?.highlights ?? null"
     ></section>
 
     <section rs-match-details></section>

@@ -53,7 +53,7 @@ export type MatchHeaderTeam = {
   `,
 })
 export class MatchInfoTeamComponent {
-  readonly team = input<MatchHeaderTeam | undefined>();
+  readonly team = input<MatchHeaderTeam | null>();
 
   readonly logo = computed(() => {
     const id = this.team()?.id ?? 0;
