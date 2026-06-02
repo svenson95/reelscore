@@ -1,8 +1,6 @@
 import { computed, effect, inject, Injectable } from '@angular/core';
 
-import moment from 'moment';
-
-import { DateString } from '@app/shared';
+import { type DateString, formatCalendarWeekKey } from '@app/shared';
 
 import { DateService, SelectedDateService } from '../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
@@ -26,18 +24,19 @@ export class OverviewContentFacade {
   readonly standingsLoading = this.weekStandingsStore.isLoading;
   readonly standingsError = this.weekStandingsStore.error;
 
-  readonly weekKey = computed(() => {
-    const date = this.selectedDay().split('T')[0] as DateString;
-    const momentDate = moment.tz(date, 'YYYY-MM-DD', 'Europe/Berlin');
+  private readonly selectedDateString = computed<DateString>(
+    () => this.selectedDay().split('T')[0]
+  );
 
-    return `${momentDate.isoWeekYear()}-W${momentDate.isoWeek()}`;
+  private readonly weekKey = computed(() => {
+    const date: DateString = this.selectedDateString();
+    return formatCalendarWeekKey(date);
   });
 
   private previousWeekKey: string | null = null;
 
   readonly calendarWeekEffect = effect(() => {
-    const date = this.selectedDay().split('T')[0] as DateString;
-    const weekKey = this.getCalendarWeekKey(date);
+    const weekKey = this.weekKey();
 
     if (this.previousWeekKey === weekKey) {
       return;
@@ -45,13 +44,8 @@ export class OverviewContentFacade {
 
     this.previousWeekKey = weekKey;
 
+    const date: DateString = this.selectedDateString();
     this.weekFixturesStore.loadWeekdayFixtures(date);
     this.weekStandingsStore.loadWeekdayStandings(date);
   });
-
-  private getCalendarWeekKey(day: DateString): string {
-    const date = moment.tz(day, 'YYYY-MM-DD', 'Europe/Berlin');
-
-    return `${date.isoWeekYear()}-W${date.isoWeek()}`;
-  }
 }

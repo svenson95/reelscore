@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import moment from 'moment';
+import { formatBerlinDateString } from '@app/shared';
 
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../store';
 
@@ -66,7 +66,7 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   }
 
   private updateTodayIfNeeded(): void {
-    const now = moment().tz('Europe/Berlin').format('YYYY-MM-DD');
+    const now = formatBerlinDateString(new Date());
 
     if (this.dateService.today() !== now) {
       this.dateService.resetToday();

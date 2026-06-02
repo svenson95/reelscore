@@ -12,9 +12,8 @@ import {
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import moment from 'moment';
 
-import { CalendarWeek, DateString } from '@app/shared';
+import { CalendarWeek, DateString, formatBerlinDateString } from '@app/shared';
 
 import { DateService } from '../../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
@@ -132,9 +131,7 @@ export class WeekToggleGroupComponent {
   setDateTo(target: number): void {
     const targetDate = new Date(this.selectedDay());
     targetDate.setDate(targetDate.getDate() + target);
-    const formattedDate = moment(targetDate)
-      .tz('Europe/Berlin')
-      .format('YYYY-MM-DD');
+    const formattedDate = formatBerlinDateString(targetDate);
     this.dateSelected.emit(formattedDate);
   }
 
