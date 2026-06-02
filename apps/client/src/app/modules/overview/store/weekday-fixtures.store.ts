@@ -1,7 +1,13 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { DateString, HttpWeekFixturesService, StateHandler } from '@app/shared';
+import {
+  type DateString,
+  errorHandler,
+  HttpWeekFixturesService,
+  type StateHandler,
+} from '@app/shared';
 import { FixturesWeekData } from '@lib/models';
 
 type WeekdayFixturesState = StateHandler<{
@@ -27,24 +33,29 @@ export const WeekdayFixturesStore = signalStore(
         ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
       });
 
-      http.getWeekFixtures(date).subscribe({
-        next: (weekFixtures) => {
-          patchState(store, {
-            weekFixtures,
-            isLoading: false,
-            isRefreshing: false,
-            error: null,
-          });
-        },
-        error: (error) => {
-          patchState(store, {
-            isLoading: false,
-            isRefreshing: false,
-            error,
-            ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
-          });
-        },
-      });
+      http
+        .getWeekFixtures(date)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (weekFixtures) => {
+            patchState(store, {
+              weekFixtures,
+              isLoading: false,
+              isRefreshing: false,
+              error: null,
+            });
+          },
+          error: (error) => {
+            patchState(store, {
+              isLoading: false,
+              isRefreshing: false,
+              error,
+              ...(updateOnly
+                ? {}
+                : { weekFixtures: createEmptyWeekFixtures() }),
+            });
+          },
+        });
     },
   }))
 );

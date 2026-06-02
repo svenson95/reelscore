@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { StateHandler } from '@app/shared';
+import { errorHandler, StateHandler } from '@app/shared';
 import { CompetitionId, TopScorersDTO } from '@lib/models';
 
 import { HttpTopScorersService } from '../services';
@@ -22,20 +23,23 @@ export const TopScorersStore = signalStore(
     async loadTopScorers(id: CompetitionId): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getTopScorersForCompetition(id).subscribe({
-        next: (topScorers) =>
-          patchState(store, {
-            topScorers,
-            isLoading: false,
-            error: topScorers ? null : 'TopScorers not found',
-          }),
-        error: (error) =>
-          patchState(store, {
-            topScorers: null,
-            isLoading: false,
-            error,
-          }),
-      });
+      http
+        .getTopScorersForCompetition(id)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (topScorers) =>
+            patchState(store, {
+              topScorers,
+              isLoading: false,
+              error: topScorers ? null : 'TopScorers not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              topScorers: null,
+              isLoading: false,
+              error,
+            }),
+        });
     },
   }))
 );

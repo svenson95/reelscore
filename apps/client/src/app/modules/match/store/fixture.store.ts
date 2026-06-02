@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 import type { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
 import { isCompetitionWithoutStandings } from '@lib/shared';
 
@@ -63,57 +64,60 @@ export const FixtureStore = signalStore(
         );
 
         return new Promise((resolve) => {
-          http.getFixture(id).subscribe({
-            next: (fixture) => {
-              const fixtureId = fixture.data.fixture.id;
+          http
+            .getFixture(id)
+            .pipe(retry(errorHandler))
+            .subscribe({
+              next: (fixture) => {
+                const fixtureId = fixture.data.fixture.id;
 
-              patchState(store, {
-                fixture,
-                isLoading: false,
-                isRefreshing: false,
-                error: null,
-              });
+                patchState(store, {
+                  fixture,
+                  isLoading: false,
+                  isRefreshing: false,
+                  error: null,
+                });
 
-              if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
-                const { home, away } = fixture.data.teams;
-                const teamIds = `${home.id},${away.id}`;
-                const competitionId = fixture.data.league.id;
-                const date = fixture.data.fixture.date.split('T')[0];
+                if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
+                  const { home, away } = fixture.data.teams;
+                  const teamIds = `${home.id},${away.id}`;
+                  const competitionId = fixture.data.league.id;
+                  const date = fixture.data.fixture.date.split('T')[0];
 
-                standingsStore.loadFixtureStandings(
-                  teamIds,
-                  competitionId,
-                  date
-                );
-              }
+                  standingsStore.loadFixtureStandings(
+                    teamIds,
+                    competitionId,
+                    date
+                  );
+                }
 
-              const fixtureIdParameter: FixtureIdParameter =
-                fixtureId.toString();
+                const fixtureIdParameter: FixtureIdParameter =
+                  fixtureId.toString();
 
-              evaluationsStore.loadEvaluations(fixtureId);
-              latestFixturesStore.loadLatestFixtures(fixtureId);
-              analysesStore.loadAnalyses(fixtureId);
+                evaluationsStore.loadEvaluations(fixtureId);
+                latestFixturesStore.loadLatestFixtures(fixtureId);
+                analysesStore.loadAnalyses(fixtureId);
 
-              eventsStore.loadEvents({
-                fixtureId: fixtureIdParameter,
-                teams: fixture.data.teams,
-              });
+                eventsStore.loadEvents({
+                  fixtureId: fixtureIdParameter,
+                  teams: fixture.data.teams,
+                });
 
-              statisticsStore.loadStatistics(fixtureIdParameter);
+                statisticsStore.loadStatistics(fixtureIdParameter);
 
-              resolve();
-            },
-            error: (error) => {
-              patchState(store, {
-                fixture: isRefresh ? store.fixture() : null,
-                isLoading: false,
-                isRefreshing: false,
-                error,
-              });
+                resolve();
+              },
+              error: (error) => {
+                patchState(store, {
+                  fixture: isRefresh ? store.fixture() : null,
+                  isLoading: false,
+                  isRefreshing: false,
+                  error,
+                });
 
-              resolve();
-            },
-          });
+                resolve();
+              },
+            });
         });
       };
 

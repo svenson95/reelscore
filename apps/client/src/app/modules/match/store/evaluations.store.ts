@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { retry } from 'rxjs';
 
-import { StateHandler } from '@app/shared';
+import { errorHandler, StateHandler } from '@app/shared';
 import { EvaluationDTO, FixtureId } from '@lib/models';
 
 import { HttpEvaluationsService } from '../services';
@@ -20,20 +21,23 @@ export const EvaluationsStore = signalStore(
     async loadEvaluations(fixtureId: FixtureId): Promise<void> {
       patchState(store, { isLoading: true });
 
-      http.getEvaluations(fixtureId).subscribe({
-        next: (evaluations) =>
-          patchState(store, {
-            evaluations,
-            isLoading: false,
-            error: evaluations ? null : 'Evaluations not found',
-          }),
-        error: (error) =>
-          patchState(store, {
-            evaluations: null,
-            isLoading: false,
-            error,
-          }),
-      });
+      http
+        .getEvaluations(fixtureId)
+        .pipe(retry(errorHandler))
+        .subscribe({
+          next: (evaluations) =>
+            patchState(store, {
+              evaluations,
+              isLoading: false,
+              error: evaluations ? null : 'Evaluations not found',
+            }),
+          error: (error) =>
+            patchState(store, {
+              evaluations: null,
+              isLoading: false,
+              error,
+            }),
+        });
     },
     async reset(): Promise<void> {
       patchState(store, initialState);
