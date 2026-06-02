@@ -7,7 +7,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 
 import {
-  FIRST_ROUNDS,
+  isFirstCompetitionRound,
   isReversedSingleRoundCompetition,
   LeagueService,
 } from '@app/shared';
@@ -62,15 +62,13 @@ export class LastFixturesComponent {
   );
 
   readonly isFirstRound = computed<boolean>(() => {
-    const fixtures = this.fixturesData();
+    const firstFixture = this.fixturesData()?.[0]?.[0];
+    if (!firstFixture) return false;
 
-    if (!fixtures || fixtures.length === 0 || fixtures[0].length === 0) {
-      return false;
-    }
-
-    const round = fixtures[0][0].league.round;
-
-    return FIRST_ROUNDS.includes(round);
+    return isFirstCompetitionRound(firstFixture.league.round, {
+      id: firstFixture.league.id,
+      season: firstFixture.league.season,
+    });
   });
 
   readonly isCompetitionWithOneFixture = computed<boolean>(() => {
