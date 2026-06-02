@@ -40,7 +40,7 @@ export class AbstractedPageRefreshService {
     if (this.refreshSubscription) this.stop();
     this.debug('init');
 
-    const REFRESH_INTERVAL = 5_000;
+    const REFRESH_INTERVAL = 20_000;
 
     this.refreshSubscription = interval(REFRESH_INTERVAL)
       .pipe(
