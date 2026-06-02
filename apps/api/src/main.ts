@@ -1,13 +1,8 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import cors from 'cors';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import express from 'express';
+
+import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
-dotenv.config();
 
 import { DBHelper } from './middleware';
 import {
@@ -22,13 +17,36 @@ import {
 } from './routes';
 
 const app = express();
-app.use(express.json());
-app.use(
-  cors({
-    origin: ['http://localhost:4200', 'https://reelscore.vercel.app'],
-  })
-);
+
+const port = Number(process.env.PORT) || 3003;
+
+const allowedOrigins = [
+  'http://localhost:4200',
+  'https://reelscore.vercel.app',
+].filter((origin): origin is string => Boolean(origin));
+
+const corsOptions: CorsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+};
+
+app.use(cors(corsOptions));
+
 app.use(helmet());
+
+app.use(express.json({ limit: '2mb' }));
+
+app.get('/', (req: express.Request, res: express.Response) => {
+  return res.json({
+    status: 'ok',
+    service: 'reelscore API',
+  });
+});
 
 app.use('/standings', standings);
 app.use('/top-scorers', topScorers);
@@ -40,7 +58,27 @@ app.use('/fixture-evaluations', fixtureEvaluations);
 app.use('/fixture-analyses', fixtureAnalyses);
 app.use('/search', search);
 
-const port = process.env.PORT;
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
+  });
+});
+
+app.use(
+  (
+    error: unknown,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('[server]: Unhandled error', error);
+
+    res.status(500).json({
+      message: 'Internal server error',
+      error,
+    });
+  }
+);
 
 DBHelper.init()
   .then(() => {
