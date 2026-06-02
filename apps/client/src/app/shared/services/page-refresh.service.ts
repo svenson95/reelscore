@@ -19,6 +19,7 @@ export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
   abstract stop(): void;
   abstract timer: Signal<number>;
+  abstract isRunning: Signal<boolean>;
 }
 
 @Injectable()
@@ -26,6 +27,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
   private readonly router = inject(Router);
 
   readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
+  readonly isRunning = signal<boolean>(false);
 
   private refreshSubscription?: Subscription;
   private options?: PageRefreshOptions;
@@ -63,7 +65,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
     this.refreshSubscription?.unsubscribe();
     this.refreshSubscription = undefined;
     this.timer.set(REFRESH_INTERVAL_SECONDS);
-    this.debug('stop');
+    this.isRunning.set(false);
   }
 
   private start(): void {
@@ -72,7 +74,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
     if (this.refreshSubscription) this.stop();
 
     this.timer.set(REFRESH_INTERVAL_SECONDS);
-    this.debug('start');
+    this.isRunning.set(true);
 
     this.refreshSubscription = interval(1000)
       .pipe(
@@ -87,7 +89,6 @@ export class AbstractedPageRefreshService implements PageRefreshService {
           this.timer.set(REFRESH_INTERVAL_SECONDS);
 
           if (this.options?.canRefresh()) {
-            this.debug('refresh');
             this.options.refresh();
           }
         })
