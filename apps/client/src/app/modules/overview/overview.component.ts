@@ -6,7 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 
-import { getTodayDateString, PageRefreshService } from '@app/shared';
+import { getWeekdayIndex, PageRefreshService } from '@app/shared';
+import { STATUS_TYPES_PLAYING } from '@lib/models';
 
 import { RouterView } from '../router-view';
 
@@ -63,9 +64,12 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh() {
-    const today = getTodayDateString();
-    const selectedDay = this.selectedDateService.selectedDay();
-    return today === selectedDay && this.isNotLoading();
+    const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
+    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex];
+    const isPlaying = fixtures.some((f) =>
+      STATUS_TYPES_PLAYING.includes(f.fixture.status.short)
+    );
+    return isPlaying && this.isNotLoading();
   }
 
   private refresh(): void {

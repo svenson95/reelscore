@@ -8,8 +8,12 @@ import {
   OnInit,
 } from '@angular/core';
 
-import { getTodayDateString, PageRefreshService } from '@app/shared';
-import type { CompetitionUrl, FixtureId } from '@lib/models';
+import { PageRefreshService } from '@app/shared';
+import {
+  STATUS_TYPES_PLAYING,
+  type CompetitionUrl,
+  type FixtureId,
+} from '@lib/models';
 
 import { RouterView } from '../router-view';
 
@@ -90,9 +94,10 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private canRefresh(): boolean {
-    const today = getTodayDateString();
-    const hasTodayValue = this.fixture()?.data.fixture.date.substring(0, 10);
-    return today === hasTodayValue && !this.facade.isLoading();
+    const status = this.fixture()?.data.fixture.status.short;
+    if (!status) return false;
+    const isPlaying = STATUS_TYPES_PLAYING.includes(status);
+    return isPlaying && !this.facade.isLoading();
   }
 
   private refresh(): void {

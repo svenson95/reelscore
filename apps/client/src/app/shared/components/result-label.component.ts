@@ -7,13 +7,13 @@ import {
 
 import {
   type FixtureDTO,
+  type FixtureStatus,
   type Goals,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
-  StatusShort,
 } from '@lib/models';
 
 @Component({
@@ -37,14 +37,16 @@ import {
 })
 export class ResultLabelComponent {
   readonly fixture = input.required<FixtureDTO>();
-  readonly status = input.required<StatusShort>();
   readonly showNotPlayedText = input<boolean>(false);
 
   readonly mainResult = computed<Goals>(() => this.fixture().goals);
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
+  readonly status = computed<FixtureStatus>(
+    () => this.fixture().fixture.status
+  );
 
   readonly isNotPlayed = computed<boolean>(() => {
-    const status = this.status();
+    const status = this.status().short;
     return (
       status === STATUS_VALUE_POSTPONED ||
       status === STATUS_VALUE_CANCELLED ||
@@ -54,18 +56,10 @@ export class ResultLabelComponent {
   });
 
   readonly isScheduled = computed<boolean>(() =>
-    STATUS_TYPES_SCHEDULED.includes(this.status())
+    STATUS_TYPES_SCHEDULED.includes(this.status().short)
   );
 
   readonly isPenaltyShootout = computed<boolean>(() => {
-    const penalty = this.penaltyResult();
-
-    return (
-      this.status() === 'PEN' &&
-      penalty.home !== null &&
-      penalty.away !== null &&
-      penalty.home !== undefined &&
-      penalty.away !== undefined
-    );
+    return this.status().short === 'P';
   });
 }

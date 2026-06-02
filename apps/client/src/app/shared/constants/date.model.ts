@@ -33,3 +33,11 @@ export const formatCalendarWeekKey = (value: string | Date): string => {
 
   return `${date.isoWeekYear()}-W${week}`;
 };
+
+export const getWeekdayIndex = (dateString: string): number => {
+  const [year, month, day] = dateString.split('-').map(Number);
+
+  const date = new Date(year, month - 1, day);
+
+  return (date.getDay() + 6) % 7;
+};

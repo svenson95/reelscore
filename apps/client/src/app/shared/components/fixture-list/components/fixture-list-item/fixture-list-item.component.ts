@@ -91,10 +91,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
           </div>
         </div>
         <div class="result" [class.is-upcoming]="statusState().isUpcoming">
-          <rs-result-label
-            [fixture]="fixture()"
-            [status]="fixture().fixture.status.short"
-          />
+          <rs-result-label [fixture]="fixture()" />
         </div>
         <div>
           <div class="team-logo-small">

@@ -14,9 +14,21 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatProgressSpinner, MatTooltip],
+  host: {
+    '[class.is-active]': 'isActive()',
+  },
   styles: `
-    :host { @apply flex h-fit p-[0.38rem] bg-rs-color-primary border shadow-rs2 text-red-100; }
-    mat-progress-spinner { --mdc-circular-progress-active-indicator-color: var(--rs-color-text-3); }
+    :host { @apply flex h-fit p-[0.38rem] border shadow-rs2; }
+
+    :host-context(.is-active) { @apply bg-rs-color-primary; }
+    :host-context:not(.is-active) { @apply bg-[var(--rs-button-bg-color)]; }
+
+    :host-context(.is-active) mat-progress-spinner {
+      --mdc-circular-progress-active-indicator-color: var(--rs-color-text-3);
+    }
+    :host-context:not(.is-active) mat-progress-spinner {
+      --mdc-circular-progress-active-indicator-color: var(--rs-border-color-1);
+    }
   `,
   template: `<mat-progress-spinner
     [value]="value()"
@@ -27,6 +39,9 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 })
 export class RefreshTickerComponent {
   private readonly pageRefreshService = inject(PageRefreshService);
+
+  readonly isActive = this.pageRefreshService.isRunning;
+
   readonly value = computed<number>(() => {
     return (this.pageRefreshService.timer() / REFRESH_INTERVAL_SECONDS) * 100;
   });

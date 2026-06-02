@@ -50,7 +50,6 @@ import {
       <rs-result-label
         class="result-label"
         [fixture]="fixture"
-        [status]="fixture.fixture.status.short"
         [showNotPlayedText]="true"
       />
       }
