@@ -4,7 +4,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  untracked,
 } from '@angular/core';
 
 import { getTodayDateString, PageRefreshService } from '@app/shared';
@@ -70,7 +69,7 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
   }
 
   private refresh(): void {
-    const date = untracked(this.selectedDateService.selectedDay);
+    const date = this.selectedDateService.selectedDay();
     this.weekFixturesStore.loadWeekdayFixtures(date, true);
     this.weekStandingsStore.loadWeekdayStandings(date, true);
   }

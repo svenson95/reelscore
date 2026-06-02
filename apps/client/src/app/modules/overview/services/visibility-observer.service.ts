@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable, untracked } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -59,7 +59,7 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
 
     if (isLoading || isRefreshing) return;
 
-    const date = untracked(this.selectedDateService.selectedDay);
+    const date = this.selectedDateService.selectedDay();
 
     this.weekFixturesStore.loadWeekdayFixtures(date, true);
     this.weekStandingsStore.loadWeekdayStandings(date, true);
