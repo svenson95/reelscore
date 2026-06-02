@@ -3,9 +3,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, interval, Subscription, tap } from 'rxjs';
 
+import { STATUS_TYPES_PLAYING, type StatusShort } from '@lib/models';
+
 import { getTodayDateString } from '../constants';
 
 type PageRefreshOptions = {
+  isPlaying: boolean;
   canRefresh: () => boolean;
   refresh: () => void;
 };
@@ -18,6 +21,7 @@ export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
   abstract stop(): void;
+  abstract hasPlayingState(states: StatusShort[]): boolean;
   abstract timer: Signal<number>;
   abstract isRunning: Signal<boolean>;
 }
@@ -51,12 +55,8 @@ export class AbstractedPageRefreshService implements PageRefreshService {
   });
 
   init(options: PageRefreshOptions): void {
-    this.options = options;
-
-    const event = this.navigationEnd();
-    const isToday = event && this.isTodayRoute(event.urlAfterRedirects);
-
-    if (isToday) {
+    if (options.isPlaying) {
+      this.options = options;
       this.start();
     }
   }
@@ -66,6 +66,10 @@ export class AbstractedPageRefreshService implements PageRefreshService {
     this.refreshSubscription = undefined;
     this.timer.set(REFRESH_INTERVAL_SECONDS);
     this.isRunning.set(false);
+  }
+
+  hasPlayingState(states: StatusShort[]): boolean {
+    return states.some((status) => STATUS_TYPES_PLAYING.includes(status));
   }
 
   private start(): void {

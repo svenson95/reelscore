@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 
 import { getWeekdayIndex, PageRefreshService } from '@app/shared';
-import { STATUS_TYPES_PLAYING } from '@lib/models';
 
 import { RouterView } from '../router-view';
 
@@ -50,12 +50,23 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
     VisibilityObserverService
   );
 
+  private readonly hasPlayingFixtures = computed<boolean>(() => {
+    const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
+    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex];
+    const states = fixtures.map((f) => f.fixture.status.short);
+    return this.pageRefreshService.hasPlayingState(states);
+  });
+
   ngOnInit(): void {
     this.visibilityObserverService.init();
-    this.pageRefreshService.init({
-      canRefresh: () => this.canRefresh(),
-      refresh: () => this.refresh(),
-    });
+
+    if (this.hasPlayingFixtures()) {
+      this.pageRefreshService.init({
+        isPlaying: this.hasPlayingFixtures(),
+        canRefresh: () => this.canRefresh(),
+        refresh: () => this.refresh(),
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -63,13 +74,8 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
     this.pageRefreshService.stop();
   }
 
-  private canRefresh() {
-    const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
-    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex];
-    const isPlaying = fixtures.some((f) =>
-      STATUS_TYPES_PLAYING.includes(f.fixture.status.short)
-    );
-    return isPlaying && this.isNotLoading();
+  private canRefresh(): boolean {
+    return this.isNotLoading();
   }
 
   private refresh(): void {
