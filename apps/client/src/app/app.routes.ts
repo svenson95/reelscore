@@ -1,9 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { DateString, formatBerlinDateString } from './shared';
-
-export const getTodayDateString = (): DateString =>
-  formatBerlinDateString(new Date());
+import { getTodayDateString } from './shared';
 
 export const routes: Routes = [
   {
