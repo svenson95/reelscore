@@ -34,7 +34,9 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
     [value]="value()"
     diameter="22"
     strokeWidth="2.5"
-    matTooltip="Nächste Aktualisierung"
+    [matTooltip]="
+      isActive() ? 'Automatische Updates aktiv' : 'Automatische Updates inaktiv'
+    "
     #tooltip="matTooltip"
     (click)="tooltip.toggle()"
   /> `,
