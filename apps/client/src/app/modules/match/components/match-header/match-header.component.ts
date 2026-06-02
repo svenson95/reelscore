@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import type { FixtureDTO, FixtureHighlights } from '@lib/models';
+import type { ExtendedFixtureDTO, FixtureHighlights } from '@lib/models';
 
 import { MatchHighlightsComponent, MatchInfoComponent } from './components';
 import { ScrollService, VenueImageService } from './services';
@@ -123,16 +123,16 @@ import { ScrollService, VenueImageService } from './services';
   `,
 })
 export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
-  readonly data = input.required<FixtureDTO | undefined>();
-  readonly highlights = input.required<FixtureHighlights | undefined>();
+  readonly data = input.required<ExtendedFixtureDTO | null>();
+  readonly highlights = input.required<FixtureHighlights | null>();
 
   @ViewChild('animationWrapper', { read: ElementRef })
-  set animationWrapper(ref: ElementRef<HTMLElement> | undefined) {
+  set animationWrapper(ref: ElementRef<HTMLElement> | null) {
     this.scrollService.setAnimationWrapper(ref);
   }
 
   @ViewChild('highlightsContent', { read: ElementRef })
-  set highlightsContent(ref: ElementRef<HTMLElement> | undefined) {
+  set highlightsContent(ref: ElementRef<HTMLElement> | null) {
     this.scrollService.setHighlightsContent(ref);
   }
 

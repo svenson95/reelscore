@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 
 import {
-  FixtureStatusState,
   getFixtureStatusState,
   ResultLabelComponent,
+  type FixtureStatusState,
 } from '@app/shared';
-import { type FixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import {
   MatchInfoTeamComponent,
@@ -60,12 +60,12 @@ import {
   `,
 })
 export class MatchInfoComponent {
-  readonly data = input.required<FixtureDTO | undefined>();
+  readonly data = input.required<ExtendedFixtureDTO | null>();
 
-  readonly homeTeam = computed<MatchHeaderTeam | undefined>(() =>
+  readonly homeTeam = computed<MatchHeaderTeam | null>(() =>
     this.getTeam('home')
   );
-  readonly awayTeam = computed<MatchHeaderTeam | undefined>(() =>
+  readonly awayTeam = computed<MatchHeaderTeam | null>(() =>
     this.getTeam('away')
   );
 
@@ -102,11 +102,9 @@ export class MatchInfoComponent {
     }
   });
 
-  private getTeam(
-    type: 'home' | 'away'
-  ): { id: number; name: string } | undefined {
+  private getTeam(type: 'home' | 'away'): { id: number; name: string } | null {
     const fixture = this.data();
-    if (!fixture) return undefined;
+    if (!fixture) return null;
     return {
       id: fixture.teams[type].id,
       name: fixture.teams[type].name,

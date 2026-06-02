@@ -21,12 +21,12 @@ export class ScrollService {
   private initialScrollY = 0;
   private highlightsHeight = 0;
 
-  setAnimationWrapper(ref: ElementRef<HTMLElement> | undefined): void {
+  setAnimationWrapper(ref: ElementRef<HTMLElement> | null): void {
     this.wrapper = ref?.nativeElement;
     this.updateCssVariables();
   }
 
-  setHighlightsContent(ref: ElementRef<HTMLElement> | undefined): void {
+  setHighlightsContent(ref: ElementRef<HTMLElement> | null): void {
     this.resizeObserver?.disconnect();
     this.content = ref?.nativeElement;
 

@@ -2,29 +2,35 @@ import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
-  DateString,
+  type DateString,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import { CompetitionUrl, FixtureId } from '@lib/models';
+import type {
+  CompetitionUrl,
+  ExtendedFixtureDTO,
+  FixtureId,
+} from '@lib/models';
 
 import { FixtureStore } from './store';
 
 @Injectable()
 export class MatchFacade {
-  private router = inject(Router);
-  private routerService = inject(RouteService);
+  private readonly router = inject(Router);
+  private readonly routerService = inject(RouteService);
 
-  private fixtureStore = inject(FixtureStore);
-  fixture = this.fixtureStore.fixture;
-  isLoading = this.fixtureStore.isLoading;
-  error = this.fixtureStore.error;
+  private readonly fixtureStore = inject(FixtureStore);
+  readonly fixture = this.fixtureStore.fixture;
+  readonly isLoading = this.fixtureStore.isLoading;
+  readonly error = this.fixtureStore.error;
   loadFixture = this.fixtureStore.loadFixture;
   reloadFixture = this.fixtureStore.reloadFixture;
 
-  data = computed(() => this.fixtureStore.fixture()?.data);
+  readonly data = computed<ExtendedFixtureDTO | null>(
+    () => this.fixtureStore.fixture()?.data ?? null
+  );
 
-  routerDate = computed(() => {
+  private readonly routerDate = computed<DateString | null>(() => {
     const url = this.routerService.url();
     if (!url) return null;
     return url.split('/')[1];

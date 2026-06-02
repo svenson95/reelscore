@@ -1,6 +1,6 @@
 import { computed, effect, Injectable, signal } from '@angular/core';
 
-import type { FixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { VENUE_IDS } from '../venue-ids.data';
 
@@ -9,7 +9,7 @@ const ALLIANZ_ARENA_ID = 20732;
 @Injectable()
 export class VenueImageService {
   private readonly activeVenueImageUrl = signal<string | undefined>(undefined);
-  private readonly data = signal<FixtureDTO | undefined>(undefined);
+  private readonly data = signal<ExtendedFixtureDTO | null>(null);
 
   readonly hasValidVenueBackground = signal<boolean>(false);
   readonly venueBackgroundLoaded = signal<boolean>(false);
@@ -36,7 +36,7 @@ export class VenueImageService {
     });
   });
 
-  setData(fixture: FixtureDTO | undefined): void {
+  setData(fixture: ExtendedFixtureDTO | null): void {
     this.data.set(fixture);
   }
 
