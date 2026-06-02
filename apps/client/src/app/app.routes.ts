@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
-import moment from 'moment-timezone';
 
-const TODAY_DATE_STRING = moment.tz('Europe/Berlin').format('YYYY-MM-DD');
+import { DateString, formatBerlinDateString } from './shared';
+
+export const getTodayDateString = (): DateString =>
+  formatBerlinDateString(new Date());
 
 export const routes: Routes = [
   {
@@ -34,6 +36,6 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: TODAY_DATE_STRING,
+    redirectTo: getTodayDateString(),
   },
 ];
