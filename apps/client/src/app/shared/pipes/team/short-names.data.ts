@@ -1,499 +1,268 @@
-export const shortTeamName = (value: string): string => {
-  switch (value) {
-    // Bundesliga
-    case 'Borussia Mönchengladbach':
-    case 'Borussia Monchengladbach':
-      return "M'Gladbach";
-    case 'SV Darmstadt 98':
-      return 'Darmstadt';
-    case 'Bayern München':
-    case 'Bayern Munich':
-      return 'Bayern';
-    case 'VfL Bochum':
-    case 'Vfl Bochum':
-      return 'Bochum';
-    case 'Eintracht Frankfurt':
-      return 'Frankfurt';
-    case 'FC Koln':
-    case '1.FC Köln':
-    case '1. FC Köln':
-      return 'Köln';
-    case 'Bayer Leverkusen':
-      return 'Leverkusen';
-    case 'Union Berlin':
-      return 'Union';
-    case '1899 Hoffenheim':
-      return 'Hoffenheim';
-    case '1. FC Heidenheim':
-    case 'FC Heidenheim':
-      return 'Heidenheim';
-    case 'Borussia Dortmund':
-      return 'Dortmund';
-    case 'VfL Wolfsburg':
-      return 'Wolfsburg';
-    case 'SC Freiburg':
-      return 'Freiburg';
-    case 'FSV Mainz 05':
-      return 'Mainz';
-    case 'FC Augsburg':
-      return 'Augsburg';
-    case 'VfB Stuttgart':
-      return 'Stuttgart';
-    case 'Werder Bremen':
-      return 'Bremen';
-    case 'FC St. Pauli':
-      return 'St. Pauli';
-    case 'Holstein Kiel':
-      return 'Kiel';
+export const SHORT_TEAM_NAMES: Readonly<Record<string, string>> = {
+  // Bundesliga
+  'Borussia Mönchengladbach': "M'Gladbach",
+  'Borussia Monchengladbach': "M'Gladbach",
+  'SV Darmstadt 98': 'Darmstadt',
+  'Bayern München': 'Bayern',
+  'Bayern Munich': 'Bayern',
+  'VfL Bochum': 'Bochum',
+  'Vfl Bochum': 'Bochum',
+  'Eintracht Frankfurt': 'Frankfurt',
+  'FC Koln': 'Köln',
+  '1.FC Köln': 'Köln',
+  '1. FC Köln': 'Köln',
+  'Bayer Leverkusen': 'Leverkusen',
+  'Union Berlin': 'Union',
+  '1899 Hoffenheim': 'Hoffenheim',
+  '1. FC Heidenheim': 'Heidenheim',
+  'FC Heidenheim': 'Heidenheim',
+  'Borussia Dortmund': 'Dortmund',
+  'VfL Wolfsburg': 'Wolfsburg',
+  'SC Freiburg': 'Freiburg',
+  'FSV Mainz 05': 'Mainz',
+  'FC Augsburg': 'Augsburg',
+  'VfB Stuttgart': 'Stuttgart',
+  'Werder Bremen': 'Bremen',
+  'FC St. Pauli': 'St. Pauli',
+  'Holstein Kiel': 'Kiel',
 
-    // 2. Bundesliga
-    case 'SC Paderborn 07':
-      return 'Paderborn';
-    case 'SSV Ulm 1846':
-      return 'Ulm';
-    case 'SSV ULM 1846':
-      return 'Ulm';
-    case 'FC Schalke 04':
-      return 'Schalke';
-    case 'Karlsruher SC':
-      return 'Karlsruhe';
-    case 'Hamburger SV':
-      return 'Hamburg';
-    case 'Preußen Münster':
-    case 'Preussen Münster':
-    case 'Preussen Munster':
-      return 'Münster';
-    case '1. FC Nürnberg':
-      return 'Nürnberg';
-    case 'FC Nurnberg':
-      return 'Nürnberg';
-    case '1. FC Magdeburg':
-    case 'FC Magdeburg':
-      return 'Magdeburg';
-    case 'SV Elversberg':
-      return 'Elversberg';
-    case '1. FC Kaiserslautern':
-    case 'FC Kaiserslautern':
-      return 'Kaiserslautern';
-    case 'Hertha BSC':
-      return 'Hertha';
-    case 'Fortuna Dusseldorf':
-    case 'Fortuna Düsseldorf':
-      return 'Düsseldorf';
-    case 'Hannover 96':
-      return 'Hannover';
-    case 'Jahn Regensburg':
-      return 'Regensburg';
-    case 'SSV Jahn Regensburg':
-      return 'Regensburg';
-    case 'SpVgg Greuther Fürth':
-    case 'SpVgg Greuther Furth':
-      return 'Fürth';
-    case 'FC Saarbrücken':
-      return 'Saarbrücken';
-    case 'Eintracht Braunschweig':
-      return 'Braunschweig';
-    case 'SV Sandhausen':
-      return 'Sandhausen';
-    case 'Hansa Rostock':
-      return 'Rostock';
-    case 'VfR Aalen':
-      return 'Aalen';
-    case 'Dynamo Dresden':
-      return 'Dresden';
-    case 'Arminia Bielefeld':
-      return 'Bielefeld';
+  // 2. Bundesliga
+  'SC Paderborn 07': 'Paderborn',
+  'SSV Ulm 1846': 'Ulm',
+  'SSV ULM 1846': 'Ulm',
+  'FC Schalke 04': 'Schalke',
+  'Karlsruher SC': 'Karlsruhe',
+  'Hamburger SV': 'Hamburg',
+  'Preußen Münster': 'Münster',
+  'Preussen Münster': 'Münster',
+  'Preussen Munster': 'Münster',
+  '1. FC Nürnberg': 'Nürnberg',
+  'FC Nurnberg': 'Nürnberg',
+  '1. FC Magdeburg': 'Magdeburg',
+  'FC Magdeburg': 'Magdeburg',
+  'SV Elversberg': 'Elversberg',
+  '1. FC Kaiserslautern': 'Kaiserslautern',
+  'FC Kaiserslautern': 'Kaiserslautern',
+  'Hertha BSC': 'Hertha',
+  'Fortuna Dusseldorf': 'Düsseldorf',
+  'Fortuna Düsseldorf': 'Düsseldorf',
+  'Hannover 96': 'Hannover',
+  'Jahn Regensburg': 'Regensburg',
+  'SSV Jahn Regensburg': 'Regensburg',
+  'SpVgg Greuther Fürth': 'Fürth',
+  'SpVgg Greuther Furth': 'Fürth',
+  'FC Saarbrücken': 'Saarbrücken',
+  'Eintracht Braunschweig': 'Braunschweig',
+  'SV Sandhausen': 'Sandhausen',
+  'Hansa Rostock': 'Rostock',
+  'VfR Aalen': 'Aalen',
+  'Dynamo Dresden': 'Dresden',
+  'Arminia Bielefeld': 'Bielefeld',
 
-    // 3. Liga
-    case 'Kickers Offenbach':
-      return 'Offenbach';
-    case 'FC Ingolstadt 04':
-      return 'Ingolstadt';
-    case 'Borussia Hildesheim':
-      return 'Hildesheim';
-    case 'Würzburger Kickers':
-      return 'Würzburger K.';
-    case 'Rot-Weiß Essen':
-      return 'RW Essen';
-    case 'TuS Koblenz':
-      return 'Koblenz';
-    case 'Sportfreunde Lotte':
-      return 'Lotte';
-    case 'SV Meppen':
-      return 'Meppen';
-    case 'Teutonia Ottensen':
-      return 'Ottensen';
-    case 'Greifswalder FC':
-      return 'Greifswald';
+  // 3. Liga
+  'Kickers Offenbach': 'Offenbach',
+  'FC Ingolstadt 04': 'Ingolstadt',
+  'Borussia Hildesheim': 'Hildesheim',
+  'Würzburger Kickers': 'Würzburger K.',
+  'Rot-Weiß Essen': 'RW Essen',
+  'TuS Koblenz': 'Koblenz',
+  'Sportfreunde Lotte': 'Lotte',
+  'SV Meppen': 'Meppen',
+  'Teutonia Ottensen': 'Ottensen',
+  'Greifswalder FC': 'Greifswald',
 
-    // Premiere League
-    case 'Nottingham Forest':
-      return 'Nottingham';
-    case 'Manchester United':
-      return 'Man United';
-    case 'Manchester City':
-      return 'Man City';
-    case 'Tottenham':
-      return 'Spurs';
-    case 'Crystal Palace':
-      return 'Crystal';
+  // Premiere League
+  'Nottingham Forest': 'Nottingham',
+  'Manchester United': 'Man United',
+  'Manchester City': 'Man City',
+  Tottenham: 'Spurs',
+  'Crystal Palace': 'Crystal',
 
-    // Ligue 1
-    case 'Paris Saint Germain':
-      return 'Paris SG';
-    case 'Stade Brestois 29':
-      return 'Brest';
-    case 'LE Havre':
-      return 'Le Havre';
-    case 'Lens':
-      return 'RC Lens';
-    case 'Saint-Etienne':
-      return 'St-Étienne';
-    case 'Saint Etienne':
-      return 'St-Étienne';
-    case 'Clermont Foot':
-      return 'Clermont';
+  // Ligue 1
+  'Paris Saint Germain': 'Paris SG',
+  'Stade Brestois 29': 'Brest',
+  'LE Havre': 'Le Havre',
+  Lens: 'RC Lens',
+  'Saint-Etienne': 'St-Étienne',
+  'Saint Etienne': 'St-Étienne',
+  'Clermont Foot': 'Clermont',
 
-    // La Liga
-    case 'Athletic Club':
-      return 'Bilbao';
-    case 'Atletico Madrid':
-      return 'Atlético';
-    case 'Cadiz':
-      return 'Cádiz';
-    case 'Almeria':
-      return 'Almería';
-    case 'Granada CF':
-      return 'Granada';
-    case 'Rayo Vallecano':
-      return 'Vallecano';
-    case 'Real Sociedad':
-      return 'Sociedad';
-    case 'Leganes':
-      return 'Leganés';
+  // La Liga
+  'Athletic Club': 'Bilbao',
+  'Atletico Madrid': 'Atlético',
+  Cadiz: 'Cádiz',
+  Almeria: 'Almería',
+  'Granada CF': 'Granada',
+  'Rayo Vallecano': 'Vallecano',
+  'Real Sociedad': 'Sociedad',
+  Leganes: 'Leganés',
 
-    // Serie A
-    case 'AC Milan':
-      return 'Milan';
-    case 'AS Roma':
-      return 'AS Rom';
-    case 'Fiorentina':
-    case 'AC Florenz':
-      return 'Florenz';
-    case 'Genoa':
-      return 'Genua';
-    case 'Venezia':
-      return 'Venedig';
-    case 'Torino':
-      return 'Turin';
-    case 'Napoli':
-      return 'Neapel';
+  // Serie A
+  'AC Milan': 'Milan',
+  'AS Roma': 'AS Rom',
+  Fiorentina: 'Florenz',
+  'AC Florenz': 'Florenz',
+  Genoa: 'Genua',
+  Venezia: 'Venedig',
+  Torino: 'Turin',
+  Napoli: 'Neapel',
 
-    // Eredivisie
-    case 'GO Ahead Eagles':
-      return 'GA Eagles';
-    case 'Fortuna Sittard':
-      return 'Sittard';
-    case 'Sparta Rotterdam':
-      return 'Rotterdam';
-    case 'Almere City FC':
-      return 'Almere';
-    case 'NEC Nijmegen':
-      return 'Nijmegen';
+  // Eredivisie
+  'GO Ahead Eagles': 'GA Eagles',
+  'Fortuna Sittard': 'Sittard',
+  'Sparta Rotterdam': 'Rotterdam',
+  'Almere City FC': 'Almere',
+  'NEC Nijmegen': 'Nijmegen',
 
-    // MLS
-    case 'Nashville SC':
-      return 'Nashville';
-    case 'Los Angeles Galaxy':
-      return 'LA Galaxy';
-    case 'FC Cincinnati':
-      return 'Cincinnati';
-    case 'New England Revolution':
-      return 'New England';
-    case 'Columbus Crew':
-      return 'Columbus';
-    case 'CF Montreal':
-      return 'Montreal';
-    case 'Atlanta United FC':
-      return 'Atlanta';
-    case 'FC Dallas':
-      return 'Dallas';
-    case 'New York Red Bulls':
-      return 'New York RB';
-    case 'Chigago Fire':
-      return 'Chicago';
-    case 'Philadelphia Union':
-      return 'Philadelphia';
-    case 'Orlando City SC':
-      return 'Orlando';
-    case 'Portland Timbers':
-      return 'Portland';
-    case 'Sporting Kansas City':
-      return 'Sporting KC';
-    case 'St. Louis City':
-      return 'St. Louis';
-    case 'Houston Dynamo':
-      return 'Houston';
-    case 'Los Angeles FC':
-      return 'LAFC';
-    case 'Vancouver Whitecaps':
-      return 'Whitecaps';
-    case 'Colorado Rapids':
-      return 'Rapids';
-    case 'Seattle Sounders':
-      return 'Seattle';
-    case 'New York City FC':
-      return 'New York FC';
-    case 'Minnesota United FC':
-      return 'Minnesota';
-    case 'San Jose Earthquakes':
-      return 'Earthquakes';
+  // MLS
+  'Nashville SC': 'Nashville',
+  'Los Angeles Galaxy': 'LA Galaxy',
+  'FC Cincinnati': 'Cincinnati',
+  'New England Revolution': 'New England',
+  'Columbus Crew': 'Columbus',
+  'CF Montreal': 'Montreal',
+  'Atlanta United FC': 'Atlanta',
+  'FC Dallas': 'Dallas',
+  'New York Red Bulls': 'New York RB',
+  'Chigago Fire': 'Chicago',
+  'Philadelphia Union': 'Philadelphia',
+  'Orlando City SC': 'Orlando',
+  'Portland Timbers': 'Portland',
+  'Sporting Kansas City': 'Sporting KC',
+  'St. Louis City': 'St. Louis',
+  'Houston Dynamo': 'Houston',
+  'Los Angeles FC': 'LAFC',
+  'Vancouver Whitecaps': 'Whitecaps',
+  'Colorado Rapids': 'Rapids',
+  'Seattle Sounders': 'Seattle',
+  'New York City FC': 'New York FC',
+  'Minnesota United FC': 'Minnesota',
+  'San Jose Earthquakes': 'Earthquakes',
 
-    // Europa
-    case 'Slavia Praha':
-      return 'Prag';
-    case 'Dinamo Minsk':
-      return 'Minsk';
-    case 'Heart Of Midlothian':
-      return 'Hearts';
-    case 'TSC Backa Topola':
-      return 'Backa Topola';
-    case 'Maccabi Tel Aviv':
-      return 'Maccabi';
-    case 'Apoel Nicosia':
-      return 'APOEL';
-    case 'Rapid Vienna':
-      return 'SK Rapid';
-    case 'Borac Banja Luka':
-      return 'Borac';
-    case 'Ferencvarosi TC':
-      return 'Ferencvárosi';
-    case 'Plzen':
-      return 'Viktoria Pilsen';
-    case 'Ajax':
-      return 'Ajax';
-    case 'FC Carl Zeiss Jena':
-      return 'CZ Jena';
-    case 'FC Midtjylland':
-      return 'Midtjylland';
-    case 'Slovan Bratislava':
-      return 'Bratislava';
-    case 'FK Crvena Zvezda':
-      return 'Roter Stern';
-    case 'Bodo/Glimt':
-      return 'Bodø/Glimt';
-    case 'Red Bull Salzburg':
-      return 'RB Salzburg';
-    case 'BSC Young Boys':
-      return 'Young Boys';
-    case 'IF elfsborg':
-      return 'Elfsborg';
-    case 'Malmo FF':
-      return 'Malmö';
-    case 'Sparta Praha':
-      return 'Prag';
-    case 'Dynamo Kyiv':
-      return 'Dynamo Kiew';
-    case 'PSV Eindhoven':
-      return 'Eindhoven';
-    case 'Sporting CP':
-      return 'Sporting';
-    case 'Shakhtar Donetsk':
-      return 'Shakhtar';
-    case 'Club Brugge KV':
-      return 'Brügge';
-    case 'Benfica':
-      return 'Benfica';
-    case 'Union St. Gilloise':
-      return 'St. Gilloise';
-    case 'AZ Alkmaar':
-      return 'Alkmaar';
-    case 'Olympiakos Piraeus':
-      return 'Olympiakos';
-    case 'FC Porto':
-      return 'Porto';
-    case 'SC Braga':
-      return 'Braga';
-    case 'Rīgas FS':
-      return 'Rīgas';
-    case 'HJK helsinki':
-      return 'Helsinki';
-    case 'Hamrun Spartans':
-      return 'Ħamrun';
-    case 'Lincoln Red Imps FC':
-      return 'Lincoln';
-    case 'The New Saints':
-      return 'Saints';
-    case 'UE Santa Coloma':
-      return 'Coloma';
-    case 'Vikingur Reykjavik':
-      return 'Víkingur';
-    case 'Shamrock Rovers':
-      return 'Shamrock';
-    case 'Ordabasy':
-      return 'Ordabassy';
-    case 'Flora Tallinn':
-      return 'Flora';
-    case 'KI Klaksvik':
-      return 'Klaksvík';
-    case 'FC Differdange 03':
-      return 'Differdange';
-    case 'Dinamo Batumi':
-      return 'Batumi';
-    case 'Pyunik Yerevan':
-      return 'Pyunik';
-    case 'Egnatia Rrogozhinë':
-      return 'Egnatia';
-    case 'Sheriff Tiraspol':
-      return 'Sheriff';
-    case 'Zira':
-      return 'Zirə';
-    case 'FK Tobol Kostanay':
-      return 'Tobol';
-    case 'Corvinul Hunedoara':
-      return 'Corvinul';
-    case 'Botev Plovdiv':
-      return 'Botev';
-    case 'Wisla Krakow':
-      return 'Wisła';
+  // Europa
+  'Slavia Praha': 'Prag',
+  'Dinamo Minsk': 'Minsk',
+  'Heart Of Midlothian': 'Hearts',
+  'TSC Backa Topola': 'Backa Topola',
+  'Maccabi Tel Aviv': 'Maccabi',
+  'Apoel Nicosia': 'APOEL',
+  'Rapid Vienna': 'SK Rapid',
+  'Borac Banja Luka': 'Borac',
+  'Ferencvarosi TC': 'Ferencvárosi',
+  Plzen: 'Viktoria Pilsen',
+  Ajax: 'Ajax',
+  'FC Carl Zeiss Jena': 'CZ Jena',
+  'FC Midtjylland': 'Midtjylland',
+  'Slovan Bratislava': 'Bratislava',
+  'FK Crvena Zvezda': 'Roter Stern',
+  'Bodo/Glimt': 'Bodø/Glimt',
+  'Red Bull Salzburg': 'RB Salzburg',
+  'BSC Young Boys': 'Young Boys',
+  'IF elfsborg': 'Elfsborg',
+  'Malmo FF': 'Malmö',
+  'Sparta Praha': 'Prag',
+  'Dynamo Kyiv': 'Dynamo Kiew',
+  'PSV Eindhoven': 'Eindhoven',
+  'Sporting CP': 'Sporting',
+  'Shakhtar Donetsk': 'Shakhtar',
+  'Club Brugge KV': 'Brügge',
+  Benfica: 'Benfica',
+  'Union St. Gilloise': 'St. Gilloise',
+  'AZ Alkmaar': 'Alkmaar',
+  'Olympiakos Piraeus': 'Olympiakos',
+  'FC Porto': 'Porto',
+  'SC Braga': 'Braga',
+  'Rīgas FS': 'Rīgas',
+  'HJK helsinki': 'Helsinki',
+  'Hamrun Spartans': 'Ħamrun',
+  'Lincoln Red Imps FC': 'Lincoln',
+  'The New Saints': 'Saints',
+  'UE Santa Coloma': 'Coloma',
+  'Vikingur Reykjavik': 'Víkingur',
+  'Shamrock Rovers': 'Shamrock',
+  Ordabasy: 'Ordabassy',
+  'Flora Tallinn': 'Flora',
+  'KI Klaksvik': 'Klaksvík',
+  'FC Differdange 03': 'Differdange',
+  'Dinamo Batumi': 'Batumi',
+  'Pyunik Yerevan': 'Pyunik',
+  'Egnatia Rrogozhinë': 'Egnatia',
+  'Sheriff Tiraspol': 'Sheriff',
+  Zira: 'Zirə',
+  'FK Tobol Kostanay': 'Tobol',
+  'Corvinul Hunedoara': 'Corvinul',
+  'Botev Plovdiv': 'Botev',
+  'Wisla Krakow': 'Wisła',
 
-    // International
-    case 'Northern Ireland':
-      return 'Nordirland';
-    case 'Azerbaijan':
-      return 'Aserbaidschan';
-    case 'Sweden':
-      return 'Schweden';
-    case 'Croatia':
-      return 'Kroatien';
-    case 'Denmark':
-      return 'Dänemark';
-    case 'Switzerland':
-      return 'Schweiz';
-    case 'Scotland':
-      return 'Schottland';
-    case 'Poland':
-      return 'Polen';
-    case 'Serbia':
-      return 'Serbien';
-    case 'Spain':
-      return 'Spanien';
-    case 'Bulgaria':
-      return 'Bulgarien';
-    case 'Estonia':
-      return 'Estland';
-    case 'Slovakia':
-      return 'Slowakei';
-    case 'Luxembourg':
-      return 'Luxemburg';
-    case 'Lithuania':
-      return 'Litauen';
-    case 'Cyprus':
-      return 'Zypern';
-    case 'France':
-      return 'Frankreich';
-    case 'Italy':
-      return 'Italien';
-    case 'Belgium':
-      return 'Belgien';
-    case 'Romania':
-      return 'Rumänien';
-    case 'Faroe Islands':
-      return 'Färöer';
-    case 'FYR Macedonia':
-      return 'Nordmazed.';
-    case 'Equatorial Guinea':
-      return 'Äq.-Guinea';
-    case 'Trinidad and Tobago':
-      return 'Trinidad';
-    case 'Bolivia':
-      return 'Bolivien';
-    case 'Cape Verde Islands':
-      return 'Cabo Verde';
-    case 'British Virgin Islands':
-      return 'Brit. J.-Inseln';
-    case 'Dominican Republic':
-      return 'Dom. Republik';
-    case 'Central African Republic':
-      return 'C. A. Republic';
-    case 'Cayman Islands':
-      return 'Kaimaninseln';
-    case 'Ivory Coast':
-      return 'Elfenbeinküste';
-    case 'Egypt':
-      return 'Ägypten';
-    case 'Tunisia':
-      return 'Tunesien';
-    case 'Morocco':
-      return 'Marokko';
-    case 'Australia':
-      return 'Australien';
-    case 'Brazil':
-      return 'Brasilien';
-    case 'South Korea':
-      return 'Südkorea';
-    case 'Canada':
-      return 'Kanada';
-    case 'South Africa':
-      return 'Südafrika';
-    case 'Saudi Arabia':
-      return 'Saudi-Arabien';
-    case 'Argentina':
-      return 'Argentinien';
-    case 'Iraq':
-      return 'Irak';
-    case 'Philippines':
-      return 'Philippinen';
-    case 'Russia':
-      return 'Russland';
-    case 'Indonesia':
-      return 'Indonesien';
-    case 'Cambodia':
-      return 'Kambodscha';
-    case 'Colombia':
-      return 'Kolumbien';
-    case 'New Zealand':
-      return 'Neuseeland';
-    case 'Armenia':
-      return 'Armenien';
-    case 'Latvia':
-      return 'Lettland';
-    case 'Moldova':
-      return 'Moldawien';
-    case 'Netherlands':
-      return 'Niederlande';
-    case 'Bosnia & Herzegovina':
-      return 'Bosnien';
-    case 'Germany':
-      return 'Deutschland';
-    case 'Hungary':
-      return 'Ungarn';
-    case 'Kazakhstan':
-      return 'Kasachstan';
-    case 'Norway':
-      return 'Norwegen';
-    case 'Iceland':
-      return 'Island';
-    case 'Slovenia':
-      return 'Slowenien';
-    case 'Austria':
-      return 'Österreich';
-    case 'Türkiye':
-      return 'Türkei';
-    case 'Georgia':
-      return 'Georgien';
-    case 'Czech Republic':
-      return 'Tschechien';
-    case 'Rep. Of Ireland':
-      return 'Irland';
-    case 'Greece':
-      return 'Griechenland';
-    case 'Finland':
-      return 'Finnland';
-    case 'Albania':
-      return 'Albanien';
-
-    default:
-      return value;
-  }
+  // International
+  'Northern Ireland': 'Nordirland',
+  Azerbaijan: 'Aserbaidschan',
+  Sweden: 'Schweden',
+  Croatia: 'Kroatien',
+  Denmark: 'Dänemark',
+  Switzerland: 'Schweiz',
+  Scotland: 'Schottland',
+  Poland: 'Polen',
+  Serbia: 'Serbien',
+  Spain: 'Spanien',
+  Bulgaria: 'Bulgarien',
+  Estonia: 'Estland',
+  Slovakia: 'Slowakei',
+  Luxembourg: 'Luxemburg',
+  Lithuania: 'Litauen',
+  Cyprus: 'Zypern',
+  France: 'Frankreich',
+  Italy: 'Italien',
+  Belgium: 'Belgien',
+  Romania: 'Rumänien',
+  'Faroe Islands': 'Färöer',
+  'FYR Macedonia': 'Nordmazed.',
+  'Equatorial Guinea': 'Äq.-Guinea',
+  'Trinidad and Tobago': 'Trinidad',
+  Bolivia: 'Bolivien',
+  'Cape Verde Islands': 'Cabo Verde',
+  'British Virgin Islands': 'Brit. J.-Inseln',
+  'Dominican Republic': 'Dom. Republik',
+  'Central African Republic': 'C. A. Republic',
+  'Cayman Islands': 'Kaimaninseln',
+  'Ivory Coast': 'Elfenbeinküste',
+  Egypt: 'Ägypten',
+  Tunisia: 'Tunesien',
+  Morocco: 'Marokko',
+  Australia: 'Australien',
+  Brazil: 'Brasilien',
+  'South Korea': 'Südkorea',
+  Canada: 'Kanada',
+  'South Africa': 'Südafrika',
+  'Saudi Arabia': 'Saudi-Arabien',
+  Argentina: 'Argentinien',
+  Iraq: 'Irak',
+  Philippines: 'Philippinen',
+  Russia: 'Russland',
+  Indonesia: 'Indonesien',
+  Cambodia: 'Kambodscha',
+  Colombia: 'Kolumbien',
+  'New Zealand': 'Neuseeland',
+  Armenia: 'Armenien',
+  Latvia: 'Lettland',
+  Moldova: 'Moldawien',
+  Netherlands: 'Niederlande',
+  'Bosnia & Herzegovina': 'Bosnien',
+  Germany: 'Deutschland',
+  Hungary: 'Ungarn',
+  Kazakhstan: 'Kasachstan',
+  Norway: 'Norwegen',
+  Iceland: 'Island',
+  Slovenia: 'Slowenien',
+  Austria: 'Österreich',
+  Türkiye: 'Türkei',
+  Georgia: 'Georgien',
+  'Czech Republic': 'Tschechien',
+  'Rep. Of Ireland': 'Irland',
+  Greece: 'Griechenland',
+  Finland: 'Finnland',
+  Albania: 'Albanien',
 };
+
+export const shortTeamName = (value: string): string =>
+  SHORT_TEAM_NAMES[value] ?? value;
