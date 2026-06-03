@@ -44,8 +44,8 @@ export type CompetitionNameTranslated = string;
 export type CompetitionRound = string;
 export type CompetitionRoundTranslated = string;
 export type CompetitionRoundIndex = number;
-export type CompetitionRounds = Record<CompetitionRoundIndex, CompetitionRound>;
 export type CompetitionRoundsData = Record<CompetitionId, CompetitionRounds>;
+export type CompetitionRounds = Record<CompetitionRoundIndex, CompetitionRound>;
 
 export type Competition = {
   id: CompetitionId;
