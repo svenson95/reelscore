@@ -49,7 +49,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
       @apply flex text-center justify-center;
     }
     .result {
-      @apply h-full min-w-[40px] px-2 items-center gap-[0.1rem];
+      @apply h-full min-w-[42px] px-2 items-center gap-[0.1rem];
     }
     .result:not(.is-upcoming),  .time.is-upcoming {
       background-color: var(--rs-color-surface-2);
