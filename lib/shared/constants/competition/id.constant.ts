@@ -1,4 +1,4 @@
-import type { CompetitionId } from '../../../models';
+import type { CompetitionId } from '../../../models/competition.model';
 
 import { CompetitionCode } from './code.constant';
 

@@ -1,4 +1,4 @@
-import type { ExtendedFixtureDTO } from './fixtures';
+import type { ExtendedFixtureDTO } from './fixtures/fixture.model';
 import type { StandingsDTO } from './standings/standings.model';
 
 type WeekData<T> = T[][];
