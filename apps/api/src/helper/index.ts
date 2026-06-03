@@ -1,1 +1,1 @@
-export * from './competition.helper';
+export * from './lib.helper';
