@@ -33,7 +33,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .date { @apply w-[40px] text-rs-font-size-small text-center; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
-    .result { @apply text-center w-[40px]; }
+    .result { @apply text-center w-[42px]; }
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
