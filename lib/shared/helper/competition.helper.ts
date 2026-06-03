@@ -1,4 +1,4 @@
-import { CompetitionId, CompetitionRound } from '../models';
+import type { CompetitionId, CompetitionRound } from '../../models';
 
 export const isCompetitionWithMultipleGroups = (
   competitionId: CompetitionId

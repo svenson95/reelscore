@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { COMPETITION_ID } from '@lib/constants';
-import {
+import type {
   CompetitionId,
   CompetitionRound,
   ExtendedFixtureDTO,
+} from '@lib/models';
+import {
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_HALFTIME,
 } from '@lib/models';
+import { COMPETITION_ID } from '@lib/shared';
 
 @Injectable()
 export class FixtureListItemFacade {

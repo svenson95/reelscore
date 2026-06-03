@@ -1,3 +1,4 @@
+import type { PipeTransform } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,12 +6,11 @@ import {
   inject,
   input,
   Pipe,
-  PipeTransform,
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
-import { CompetitionId, League, StandingRanks } from '@lib/models';
+import type { CompetitionId, League, StandingRanks } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';

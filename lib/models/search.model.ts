@@ -1,5 +1,5 @@
-import { FixtureDTO } from './fixtures';
-import { TeamDTO } from './team.model';
+import type { FixtureDTO } from './fixtures';
+import type { TeamDTO } from './team.model';
 
 export type SearchType = 'fixtures' | 'competitions' | 'teams';
 

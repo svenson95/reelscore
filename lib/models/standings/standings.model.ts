@@ -1,5 +1,5 @@
-import { CompetitionId, League } from '../competition.model';
-import { MongoDbId } from '../mongodb.model';
+import type { CompetitionId, League } from '../competition.model';
+import type { MongoDbId } from '../mongodb.model';
 
 export interface StandingsDTO {
   _id: MongoDbId;

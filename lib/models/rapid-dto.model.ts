@@ -1,6 +1,6 @@
-import { EventDTO } from './fixtures/events.model';
-import { FixtureId } from './fixtures/fixture.model';
-import { StatisticDTO } from './fixtures/statistics.model';
+import type { EventDTO } from './fixtures/events.model';
+import type { FixtureId } from './fixtures/fixture.model';
+import type { StatisticDTO } from './fixtures/statistics.model';
 
 export type BaseParameters = { fixture: FixtureId };
 export type BasePaging = { current: number; total: number };

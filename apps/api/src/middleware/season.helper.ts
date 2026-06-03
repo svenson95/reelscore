@@ -11,6 +11,7 @@ const FIXED_SEASON_BY_COMPETITION = new Map<number, number>([
   [253, 2026], // Friendlies
 ]);
 
+// TODO refactor to lib
 export const getSeason = (
   competition: CompetitionId | null = null,
   date: string | null = null

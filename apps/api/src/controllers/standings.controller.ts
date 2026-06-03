@@ -6,8 +6,8 @@ import type {
   StandingsDTO,
   StandingsFilter,
 } from '@lib/models';
+import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
-import { isCompetitionWithMultipleGroups } from '../helper';
 import { getSeason } from '../middleware';
 import { StandingsService } from '../services';
 

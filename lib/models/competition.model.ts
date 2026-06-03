@@ -1,5 +1,5 @@
-import { MongoDbId } from './mongodb.model';
-import { Team } from './team.model';
+import type { MongoDbId } from './mongodb.model';
+import type { Team } from './team.model';
 
 export type StandingsPlayed = {
   played: number;
