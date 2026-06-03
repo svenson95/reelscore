@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npx nx build api",
+  "buildCommand": "npx nx run api:build-serverless",
   "rewrites": [
     {
       "source": "/(.*)",

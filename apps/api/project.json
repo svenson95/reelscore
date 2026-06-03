@@ -29,6 +29,30 @@
         }
       }
     },
+    "build-serverless": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/api",
+        "format": ["cjs"],
+        "bundle": true,
+        "main": "apps/api/src/serverless.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "assets": ["apps/api/src/assets"]
+      },
+      "configurations": {
+        "development": {
+          "bundle": true,
+          "sourcemap": true
+        },
+        "production": {
+          "bundle": true,
+          "sourcemap": false
+        }
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
