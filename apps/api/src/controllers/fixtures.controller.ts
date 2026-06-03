@@ -1,10 +1,15 @@
 import { FlattenMaps } from 'mongoose';
 
-import type {
-  CompetitionId,
-  CompetitionRound,
-  FixtureDateString,
-  FixtureDTO,
+import {
+  STATUS_TYPES_FINISHED,
+  STATUS_TYPES_NOT_PLAYED,
+  STATUS_VALUE_ABANDONED,
+  STATUS_VALUE_CANCELLED,
+  STATUS_VALUE_POSTPONED,
+  type CompetitionId,
+  type CompetitionRound,
+  type FixtureDateString,
+  type FixtureDTO,
 } from '@lib/models';
 
 import { COMPETITION_ROUNDS, getSeason } from '../middleware';
@@ -14,14 +19,13 @@ import { FixturesService } from '../services';
 export type CompetitionRequestType = 'last' | 'next';
 
 const ONE_ROUND_REVERSED_COMPETITION = 10 as CompetitionId;
-const FINISHED_STATES = ['FT', 'AET', 'PEN'];
+const FINISHED_STATES = STATUS_TYPES_FINISHED;
 const NON_UPCOMING_STATES = [
   ...FINISHED_STATES,
-  'CANC',
-  'PST',
-  'ABD',
-  'AWD',
-  'WO',
+  STATUS_VALUE_CANCELLED,
+  STATUS_VALUE_POSTPONED,
+  STATUS_VALUE_ABANDONED,
+  ...STATUS_TYPES_NOT_PLAYED,
 ];
 
 export class FixturesController {
@@ -214,7 +218,7 @@ export class FixturesController {
     competitionId: CompetitionId
   ): Promise<CompetitionRound | null> => {
     const currentSeason = { 'league.season': getSeason(competitionId) };
-    const finishedStates = ['FT', 'AET', 'PEN'];
+    const finishedStates = STATUS_TYPES_FINISHED;
     const isMatchFinished = { 'fixture.status.short': finishedStates };
 
     const lastMatch = await Fixtures.findOne({
