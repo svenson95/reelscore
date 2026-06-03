@@ -1,16 +1,19 @@
 import { FlattenMaps } from 'mongoose';
 
 import {
-  STATUS_TYPES_FINISHED,
-  STATUS_TYPES_NOT_PLAYED,
-  STATUS_VALUE_ABANDONED,
-  STATUS_VALUE_CANCELLED,
-  STATUS_VALUE_POSTPONED,
   type CompetitionId,
   type CompetitionRound,
   type FixtureDateString,
   type FixtureDTO,
 } from '@lib/models';
+
+import {
+  STATUS_TYPES_FINISHED,
+  STATUS_TYPES_NOT_PLAYED,
+  STATUS_VALUE_ABANDONED,
+  STATUS_VALUE_CANCELLED,
+  STATUS_VALUE_POSTPONED,
+} from '../helper';
 
 import { COMPETITION_ROUNDS, getSeason } from '../middleware';
 import { Fixtures } from '../models';
