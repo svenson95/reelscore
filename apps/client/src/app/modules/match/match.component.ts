@@ -1,3 +1,4 @@
+import type { OnDestroy, OnInit } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,8 +6,6 @@ import {
   effect,
   inject,
   input,
-  OnDestroy,
-  OnInit,
 } from '@angular/core';
 
 import { PageRefreshService } from '@app/shared';
@@ -86,7 +85,7 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.visibilityObserverService.init();
     this.pageRefreshService.init({
-      isPlaying: this.hasPlayingFixtures(),
+      isPlaying: () => this.hasPlayingFixtures(),
       canRefresh: () => this.canRefresh(),
       refresh: () => this.refresh(),
     });

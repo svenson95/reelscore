@@ -1,10 +1,9 @@
+import type { OnDestroy, OnInit } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
-  OnDestroy,
-  OnInit,
 } from '@angular/core';
 
 import { getWeekdayIndex, PageRefreshService } from '@app/shared';
@@ -62,7 +61,7 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
 
     if (this.hasPlayingFixtures()) {
       this.pageRefreshService.init({
-        isPlaying: this.hasPlayingFixtures(),
+        isPlaying: () => this.hasPlayingFixtures(),
         canRefresh: () => this.canRefresh(),
         refresh: () => this.refresh(),
       });
