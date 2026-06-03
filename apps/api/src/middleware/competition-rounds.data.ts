@@ -573,19 +573,16 @@ const INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE_2024 = {
 const INTERNATIONAL_FRIENDLIES_2026 = {
   1: 'Friendly International',
 };
-const INTERNATIONAL_FRIENDLIES_2025 = {
-  1: 'Friendlies 1',
-  2: 'Friendlies 3',
-  3: 'Friendlies 2',
-  4: 'World: Friendly International',
-  5: 'Friendly International',
-  6: 'Friendlies',
-};
 const INTERNATIONAL_FRIENDLIES_2024 = {
   1: 'Friendlies 1',
   2: 'Friendlies 3',
   3: 'Friendlies 2',
   4: 'World: Friendly International',
+};
+const INTERNATIONAL_FRIENDLIES_2025 = {
+  ...INTERNATIONAL_FRIENDLIES_2024,
+  5: 'Friendly International',
+  6: 'Friendlies',
 };
 const INTERNATIONAL_FRIENDLIES_2023 = {
   1: 'Friendlies 3',
