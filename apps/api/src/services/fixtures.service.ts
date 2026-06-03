@@ -1,4 +1,4 @@
-import { FilterQuery } from 'mongoose';
+import type { FilterQuery } from 'mongoose';
 
 import type {
   CompetitionId,
@@ -8,8 +8,9 @@ import type {
   FixtureDTO,
   FixtureId,
 } from '@lib/models';
+import { COMPETITION_ROUNDS } from '@lib/shared';
 
-import { COMPETITION_ROUNDS, getSeason } from '../middleware';
+import { getSeason } from '../middleware';
 import { Fixtures } from '../models';
 
 type FixturesByCompetitionAndRoundsQuery = {

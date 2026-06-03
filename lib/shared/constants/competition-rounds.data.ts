@@ -1,4 +1,4 @@
-import { CompetitionRoundsData } from '@lib/models';
+import type { CompetitionRoundsData } from '../../models';
 
 export const replaceWhitespaces = (str: string): string => {
   return str.replace(/\s/g, '%20');

@@ -1,5 +1,5 @@
-import { COMPETITION_ID } from '@lib/constants';
 import type { CompetitionRound } from '@lib/models';
+import { COMPETITION_ID } from '@lib/shared';
 
 import {
   CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,

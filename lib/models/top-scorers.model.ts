@@ -1,4 +1,4 @@
-import { MongoDbId } from './mongodb.model';
+import type { MongoDbId } from './mongodb.model';
 
 export interface PlayerBirth {
   date: string;

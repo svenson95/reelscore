@@ -1,4 +1,4 @@
-import { FixtureId, FixtureResult } from './fixture.model';
+import type { FixtureId, FixtureResult } from './fixture.model';
 
 export type FixturePerformance =
   | 'MATCH_NOT_STARTED'

@@ -2,12 +2,10 @@ import {
   COMPETITION_ID,
   COMPETITION_LABEL,
   COMPETITION_URL,
-} from '@lib/constants';
-import {
-  getCompetitionLogo,
-  getCompetitionLogoSrcSet,
-  SelectCompetitionGroup,
-} from '../models';
+} from '@lib/shared';
+
+import type { SelectCompetitionGroup } from '../models';
+import { getCompetitionLogo, getCompetitionLogoSrcSet } from '../models';
 
 const IMAGE_SIZE = 24;
 

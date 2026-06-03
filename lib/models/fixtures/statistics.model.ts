@@ -1,4 +1,4 @@
-import { TeamId, TeamLogo, TeamName } from '../team.model';
+import type { TeamId, TeamLogo, TeamName } from '../team.model';
 
 export type StatisticsTeamDetails = {
   id: TeamId;

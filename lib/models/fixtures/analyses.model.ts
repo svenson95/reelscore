@@ -1,4 +1,4 @@
-import { GoalScorers } from '../player.model';
+import type { GoalScorers } from '../player.model';
 
 export type FixturePlayersWithStreak = {
   home: GoalScorers;

@@ -1,4 +1,4 @@
-import { PlayerId, PlayerName } from '../player.model';
+import type { PlayerId, PlayerName } from '../player.model';
 
 export type EventTime = { elapsed: number; extra: null | number };
 export const timeTotal = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);

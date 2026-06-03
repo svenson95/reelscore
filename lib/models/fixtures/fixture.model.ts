@@ -1,8 +1,8 @@
-import { League } from '../competition.model';
-import { MongoDbId } from '../mongodb.model';
-import { Team, TeamId } from '../team.model';
-import { EventDTO } from './events.model';
-import { StatusLong, StatusShort } from './status.model';
+import type { League } from '../competition.model';
+import type { MongoDbId } from '../mongodb.model';
+import type { Team, TeamId } from '../team.model';
+import type { EventDTO } from './events.model';
+import type { StatusLong, StatusShort } from './fixture-status.model';
 
 export type FixtureDetail =
   | 'lineups'

@@ -1,21 +1,19 @@
-import { FlattenMaps } from 'mongoose';
+import type { FlattenMaps } from 'mongoose';
 
 import {
   type CompetitionId,
   type CompetitionRound,
   type FixtureDateString,
   type FixtureDTO,
-} from '@lib/models';
-
-import {
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
-} from '../helper';
+} from '@lib/models';
+import { COMPETITION_ROUNDS } from '@lib/shared';
 
-import { COMPETITION_ROUNDS, getSeason } from '../middleware';
+import { getSeason } from '../middleware';
 import { Fixtures } from '../models';
 import { FixturesService } from '../services';
 

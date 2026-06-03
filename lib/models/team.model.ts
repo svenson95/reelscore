@@ -1,4 +1,4 @@
-import { MongoDbId } from './mongodb.model';
+import type { MongoDbId } from './mongodb.model';
 
 export type Team = { id: TeamId; name: TeamName; logo: TeamLogo };
 export type TeamId = number;

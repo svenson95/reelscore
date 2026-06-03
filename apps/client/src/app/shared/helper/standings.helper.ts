@@ -1,4 +1,4 @@
-import { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 export const hasMultipleGroups = (standings: StandingsDTO): boolean => {
