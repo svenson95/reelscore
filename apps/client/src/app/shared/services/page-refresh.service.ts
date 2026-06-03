@@ -1,14 +1,16 @@
-import { effect, inject, Injectable, signal, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, interval, Subscription, tap } from 'rxjs';
+import type { Subscription } from 'rxjs';
+import { filter, interval, tap } from 'rxjs';
 
 import { STATUS_TYPES_PLAYING, type StatusShort } from '@lib/models';
 
 import { getTodayDateString } from '../constants';
 
 type PageRefreshOptions = {
-  isPlaying: boolean;
+  isPlaying: () => boolean;
   canRefresh: () => boolean;
   refresh: () => void;
 };
@@ -55,7 +57,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
   });
 
   init(options: PageRefreshOptions): void {
-    if (options.isPlaying) {
+    if (options.isPlaying()) {
       this.options = options;
       this.start();
     }
