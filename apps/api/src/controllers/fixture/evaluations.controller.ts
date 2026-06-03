@@ -1,4 +1,4 @@
-import {
+import type {
   EvaluationDTO,
   EvaluationTeam,
   FixtureDTO,
@@ -114,7 +114,7 @@ export class FixtureEvaluationsController {
   private readonly analyzePerformances = async (
     teamId: number,
     fixtures: FixtureDTO[]
-  ): Promise<FixturePerformance[]> | null => {
+  ): Promise<FixturePerformance[]> => {
     const performances = fixtures.map(async (fixture) => {
       const fixtureId: FixtureIdParameter = fixture.fixture.id.toString();
       const stats = await this.statisticsService.findById(fixtureId);
@@ -158,19 +158,21 @@ export class FixtureEvaluationsController {
     teamId: number,
     fixture: FixtureDTO
   ): FixtureResult => {
-    const team =
-      teamId === fixture.teams.home.id
-        ? fixture.teams.home
-        : fixture.teams.away;
-    const isWinner = team.winner;
+    const homeGoals = fixture.goals.home;
+    const awayGoals = fixture.goals.away;
 
-    switch (isWinner) {
-      case true:
-        return 'WIN';
-      case false:
-        return 'LOSS';
-      case null:
-        return 'DRAW';
+    if (homeGoals === null || awayGoals === null) {
+      return 'NO_RESULT_AVAILABLE';
     }
+
+    if (homeGoals === awayGoals) {
+      return 'DRAW';
+    }
+
+    const isHomeTeam = teamId === fixture.teams.home.id;
+    const teamGoals = isHomeTeam ? homeGoals : awayGoals;
+    const opponentGoals = isHomeTeam ? awayGoals : homeGoals;
+
+    return teamGoals > opponentGoals ? 'WIN' : 'LOSS';
   };
 }
