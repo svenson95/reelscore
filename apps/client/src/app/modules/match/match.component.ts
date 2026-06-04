@@ -57,20 +57,28 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
-  private readonly facade = inject(MatchFacade);
-  readonly fixture = this.facade.fixture;
-  readonly data = this.facade.data;
-  readonly error = this.facade.error;
-
   private readonly pageRefreshService = inject(PageRefreshService);
   private readonly visibilityObserverService = inject(
     VisibilityObserverService
   );
 
+  private readonly facade = inject(MatchFacade);
+  readonly fixture = this.facade.fixture;
+  readonly data = this.facade.data;
+  readonly error = this.facade.error;
+
+  private isActive = false;
+
   private readonly hasPlayingFixtures = computed<boolean>(() => {
     const status = this.fixture()?.data.fixture.status.short;
     if (!status) return false;
     return this.pageRefreshService.hasPlayingState([status]);
+  });
+
+  pageRefreshEffect = effect(() => {
+    this.hasPlayingFixtures()
+      ? this.startPageRefreshService()
+      : this.pageRefreshService.stop();
   });
 
   loadFixtureEffect = effect(() => {
@@ -83,17 +91,11 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
-    this.visibilityObserverService.init();
-    this.pageRefreshService.init({
-      isPlaying: () => this.hasPlayingFixtures(),
-      canRefresh: () => this.canRefresh(),
-      refresh: () => this.refresh(),
-    });
+    this.startPageServices();
   }
 
   ngOnDestroy(): void {
-    this.visibilityObserverService.stop();
-    this.pageRefreshService.stop();
+    this.stopPageServices();
   }
 
   private canRefresh(): boolean {
@@ -102,5 +104,29 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
 
   private refresh(): void {
     this.facade.reloadFixture();
+  }
+
+  private startPageRefreshService(): void {
+    this.pageRefreshService.init({
+      isPlaying: () => this.hasPlayingFixtures(),
+      canRefresh: () => this.canRefresh(),
+      refresh: () => this.refresh(),
+    });
+  }
+
+  private startPageServices(): void {
+    if (this.isActive) return;
+    this.isActive = true;
+
+    this.visibilityObserverService.init();
+    this.startPageRefreshService();
+  }
+
+  private stopPageServices(): void {
+    if (!this.isActive) return;
+    this.isActive = false;
+
+    this.visibilityObserverService.stop();
+    this.pageRefreshService.stop();
   }
 }
