@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { shareReplay } from 'rxjs';
 
-import { FixtureId, GetFixtureDTO } from '@lib/models';
+import type { FixtureId, GetFixtureDTO } from '@lib/models';
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureService {

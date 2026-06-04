@@ -1,4 +1,4 @@
-import { StatisticDTO, StatisticItemValue } from '@lib/models';
+import type { StatisticDTO, StatisticItemValue } from '@lib/models';
 
 export type StatisticListItem = {
   home: StatisticItemValue;

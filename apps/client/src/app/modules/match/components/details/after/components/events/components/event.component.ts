@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import { EventDTO } from '@lib/models';
+import type { EventDTO } from '@lib/models';
 
 import {
   EventCardComponent,

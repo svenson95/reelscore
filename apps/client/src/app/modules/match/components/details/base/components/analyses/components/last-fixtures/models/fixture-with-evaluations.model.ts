@@ -1,4 +1,4 @@
-import { EvaluationAnalyses, ExtendedFixtureDTO } from '@lib/models';
+import type { EvaluationAnalyses, ExtendedFixtureDTO } from '@lib/models';
 
 export const ANALYSES_TEAM = {
   HOME: 'home',

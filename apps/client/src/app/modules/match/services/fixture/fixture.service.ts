@@ -1,5 +1,6 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
-import { FixtureId } from '@lib/models';
+import type { WritableSignal} from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+import type { FixtureId } from '@lib/models';
 
 export abstract class FixtureService {
   abstract fixtureId: WritableSignal<FixtureId | undefined>;

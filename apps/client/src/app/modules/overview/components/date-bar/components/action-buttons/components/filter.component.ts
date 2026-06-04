@@ -10,12 +10,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import type {
+  SelectCompetitionGroup} from '@app/shared';
 import {
   ResponsiveImageComponent,
-  SELECT_COMPETITION_DATA,
-  SelectCompetitionGroup,
+  SELECT_COMPETITION_DATA
 } from '@app/shared';
-import { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@lib/models';
 
 import {
   FilteredStandingsStore,

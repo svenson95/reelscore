@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { EvaluationAnalyses } from '@lib/models';
+import type { EvaluationAnalyses } from '@lib/models';
 
 @Component({
   selector: 'rs-match-fixture-analyses-evaluation',

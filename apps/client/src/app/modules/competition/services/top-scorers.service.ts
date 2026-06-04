@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { shareReplay } from 'rxjs';
 
-import { CompetitionId, TopScorersDTO } from '@lib/models';
+import type { CompetitionId, TopScorersDTO } from '@lib/models';
 
 import { environment } from '../../../../environments/environment';
 

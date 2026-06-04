@@ -1,6 +1,8 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import type { PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 
-import { EventWithResult, timeTotal } from '@lib/models';
+import type { EventWithResult} from '@lib/models';
+import { timeTotal } from '@lib/models';
 
 @Pipe({
   name: 'timeTotal',

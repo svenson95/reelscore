@@ -3,7 +3,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
 import { errorHandler, type StateHandler } from '@app/shared';
-import { FixtureIdParameter, StatisticDTO } from '@lib/models';
+import type { FixtureIdParameter, StatisticDTO } from '@lib/models';
 
 import { HttpFixtureStatisticsService } from '../services';
 

@@ -1,8 +1,10 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import type { BreakpointObserver} from '@angular/cdk/layout';
+import { Breakpoints } from '@angular/cdk/layout';
+import type {
+  Signal,
+  WritableSignal} from '@angular/core';
 import {
   Injectable,
-  Signal,
-  WritableSignal,
   computed,
   signal,
 } from '@angular/core';

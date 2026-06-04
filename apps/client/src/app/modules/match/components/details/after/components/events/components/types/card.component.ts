@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { EventDTO } from '@lib/models';
+import type { EventDTO } from '@lib/models';
 
 @Component({
   selector: 'rs-event-card',

@@ -6,7 +6,7 @@ import {
   untracked,
 } from '@angular/core';
 
-import { StatisticDTO } from '@lib/models';
+import type { StatisticDTO } from '@lib/models';
 import { StatisticList } from './models';
 
 @Component({

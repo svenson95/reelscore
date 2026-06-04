@@ -1,4 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import type { PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 
 import { ABBREVIATION_TEAM_NAMES } from './abbreviation-names.data';
 import { LONG_TEAM_NAMES } from './long-names.data';

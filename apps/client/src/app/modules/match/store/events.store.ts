@@ -2,14 +2,16 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import { errorHandler, StateHandler } from '@app/shared';
-import {
+import type { StateHandler } from '@app/shared';
+import { errorHandler } from '@app/shared';
+import type {
   EventDTO,
   EventResult,
   EventWithResult,
   FixtureIdParameter,
   MatchTeams,
-  RapidEventsDTO,
+  RapidEventsDTO} from '@lib/models';
+import {
   timeTotal,
 } from '@lib/models';
 

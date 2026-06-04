@@ -1,7 +1,8 @@
 import { effect, inject } from '@angular/core';
 
+import type {
+  CompetitionData} from '@app/shared';
 import {
-  CompetitionData,
   LeagueService,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,

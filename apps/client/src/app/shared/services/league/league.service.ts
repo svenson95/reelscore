@@ -1,6 +1,7 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import type { WritableSignal} from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
-import { CompetitionData } from '../../models';
+import type { CompetitionData } from '../../models';
 
 export abstract class LeagueService {
   abstract selectedLeague: WritableSignal<CompetitionData | undefined>;

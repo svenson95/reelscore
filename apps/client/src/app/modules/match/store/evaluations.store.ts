@@ -2,8 +2,9 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import { errorHandler, StateHandler } from '@app/shared';
-import { EvaluationDTO, FixtureId } from '@lib/models';
+import type { StateHandler } from '@app/shared';
+import { errorHandler } from '@app/shared';
+import type { EvaluationDTO, FixtureId } from '@lib/models';
 
 import { HttpEvaluationsService } from '../services';
 

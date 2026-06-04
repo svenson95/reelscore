@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 import { TeamNamePipe } from '@app/shared';
-import { TopScorer } from '@lib/models';
+import type { TopScorer } from '@lib/models';
 
 import { TopScorersStore } from '../store';
 
