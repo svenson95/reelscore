@@ -31,74 +31,6 @@ const NON_UPCOMING_STATES = [
 export class FixturesController {
   private fixturesService = new FixturesService();
 
-  async getByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
-    const fixtures = await this.fixturesService.findByDate(date);
-    return fixtures;
-  }
-
-  async getCompetitionFixtures(
-    id: CompetitionId,
-    type: CompetitionRequestType,
-    showAll: boolean
-  ): Promise<FlattenMaps<FixtureDTO>[][]> {
-    if (id === ONE_ROUND_REVERSED_COMPETITION) {
-      return this.getOneRoundCompetitionFixtures(id, type);
-    }
-
-    const currentRound = await this.getCurrentRound(id);
-    if (!currentRound) return [];
-
-    const season = getSeason(id);
-    const competitionRounds = COMPETITION_ROUNDS[season]?.[id];
-    if (!competitionRounds) return [];
-
-    const rounds = Object.values(competitionRounds);
-    const nextRound = this.getNextRound(rounds, currentRound);
-    const hasMultipleRounds = this.isSameRoundNumber(currentRound, nextRound);
-
-    const round =
-      type === 'last'
-        ? await this.getLastFixturesRound(
-            currentRound,
-            hasMultipleRounds,
-            rounds
-          )
-        : await this.getNextFixturesRound(nextRound, hasMultipleRounds, rounds);
-
-    const fixtures = await this.fixturesService.findByCompetitionAndRounds(
-      id,
-      round,
-      showAll
-    );
-
-    const fixturesArray = fixtures.length === 0 ? [] : [fixtures];
-
-    if (hasMultipleRounds || showAll) {
-      const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
-
-      return fixturesRounds.map((round) =>
-        fixtures.filter((f) => f.league.round === round)
-      );
-    }
-
-    return fixturesArray;
-  }
-
-  async competitionFixtures(
-    type: CompetitionRequestType,
-    id: CompetitionId,
-    showAll: boolean
-  ): Promise<FlattenMaps<FixtureDTO[]>[]> {
-    const fixturesController = new FixturesController();
-    const fixtures = await fixturesController.getCompetitionFixtures(
-      id,
-      type,
-      showAll
-    );
-
-    return fixtures;
-  }
-
   private getFixturesWithResultQuery = () => ({
     $or: [
       {
@@ -142,6 +74,57 @@ export class FixturesController {
     ],
   });
 
+  async getByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
+    const fixtures = await this.fixturesService.findByDate(date);
+    return fixtures;
+  }
+
+  private getMultipleRounds = (
+    round: CompetitionRound,
+    rounds: Array<CompetitionRound>
+  ): CompetitionRound[] => {
+    const roundNumber = round[round.length - 1];
+
+    return rounds.filter((r) => r.endsWith(roundNumber));
+  };
+
+  private hasMultipleRoundsWithSameNumber = (
+    round: CompetitionRound,
+    rounds: Array<CompetitionRound>
+  ): boolean => {
+    const roundNumber = round[round.length - 1];
+
+    return rounds.filter((r) => r.endsWith(roundNumber)).length > 1;
+  };
+
+  private getLastResultRound = async (
+    competitionId: CompetitionId
+  ): Promise<CompetitionRound | null> => {
+    const fixture = await Fixtures.findOne({
+      'league.id': competitionId,
+      'league.season': getSeason(competitionId),
+      ...this.getFixturesWithResultQuery(),
+    })
+      .sort({ 'fixture.date': -1 })
+      .lean();
+
+    return fixture?.league.round ?? null;
+  };
+
+  private getNextUpcomingRound = async (
+    competitionId: CompetitionId
+  ): Promise<CompetitionRound | null> => {
+    const fixture = await Fixtures.findOne({
+      'league.id': competitionId,
+      'league.season': getSeason(competitionId),
+      ...this.getFixturesWithoutResultQuery(),
+    })
+      .sort({ 'fixture.date': 1 })
+      .lean();
+
+    return fixture?.league.round ?? null;
+  };
+
   private getOneRoundCompetitionFixtures = async (
     competitionId: CompetitionId,
     type: CompetitionRequestType
@@ -166,84 +149,73 @@ export class FixturesController {
     return fixtures.length ? [fixtures] : [];
   };
 
-  private getLastFixturesRound = async (
-    currentRound: CompetitionRound,
-    hasMultipleRounds: boolean,
-    rounds: Array<CompetitionRound>
-  ) => {
-    return hasMultipleRounds
-      ? this.getMultipleRounds(currentRound, rounds)
-      : [currentRound];
-  };
+  private async getCompetitionFixtures(
+    id: CompetitionId,
+    type: CompetitionRequestType,
+    showAll: boolean
+  ): Promise<FlattenMaps<FixtureDTO>[][]> {
+    if (id === ONE_ROUND_REVERSED_COMPETITION) {
+      return this.getOneRoundCompetitionFixtures(id, type);
+    }
 
-  private getNextFixturesRound = async (
-    nextRound: CompetitionRound | null,
-    hasMultipleRounds: boolean,
-    rounds: Array<CompetitionRound>
-  ): Promise<CompetitionRound[]> => {
-    if (!nextRound) return [];
+    const season = getSeason(id);
+    const competitionRounds = COMPETITION_ROUNDS[season]?.[id];
+    if (!competitionRounds) return [];
 
-    const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
-    const nextMultipleRound = nextRound.replace(
-      String(nextRoundNumber),
-      String(nextRoundNumber + 1)
-    ) as CompetitionRound;
+    const rounds = Object.values(competitionRounds);
 
-    return hasMultipleRounds
-      ? this.getMultipleRounds(nextMultipleRound, rounds)
-      : [nextRound];
-  };
+    const selectedRound =
+      type === 'last'
+        ? await this.getLastResultRound(id)
+        : await this.getNextUpcomingRound(id);
 
-  private isSameRoundNumber = (
-    currentRound: CompetitionRound,
-    nextRound: CompetitionRound | null
-  ): boolean => {
-    if (!nextRound) return false;
+    if (!selectedRound) return [];
 
-    const currentRoundNumber = Number(currentRound[currentRound.length - 1]);
-    const nextRoundNumber = Number(nextRound[nextRound.length - 1]);
-
-    return (
-      !Number.isNaN(currentRoundNumber) &&
-      !Number.isNaN(nextRoundNumber) &&
-      currentRoundNumber === nextRoundNumber
+    const hasMultipleRounds = this.hasMultipleRoundsWithSameNumber(
+      selectedRound,
+      rounds
     );
-  };
 
-  private getMultipleRounds = (
-    round: CompetitionRound,
-    rounds: Array<CompetitionRound>
-  ) => {
-    const roundNumber = round[round.length - 1];
-    return rounds.filter((r) => r.includes(roundNumber));
-  };
+    const round = hasMultipleRounds
+      ? this.getMultipleRounds(selectedRound, rounds)
+      : [selectedRound];
 
-  private getCurrentRound = async (
-    competitionId: CompetitionId
-  ): Promise<CompetitionRound | null> => {
-    const currentSeason = { 'league.season': getSeason(competitionId) };
-    const finishedStates = STATUS_TYPES_FINISHED;
-    const isMatchFinished = { 'fixture.status.short': finishedStates };
+    const fixtures = await Fixtures.find({
+      'league.id': id,
+      'league.season': season,
+      'league.round': { $in: round },
+      ...(type === 'last'
+        ? this.getFixturesWithResultQuery()
+        : this.getFixturesWithoutResultQuery()),
+    })
+      .sort({ 'fixture.date': type === 'last' ? -1 : 1 })
+      .lean();
 
-    const lastMatch = await Fixtures.findOne({
-      'league.id': competitionId,
-      $and: [currentSeason, isMatchFinished],
-    }).sort({ 'fixture.date': -1 });
+    if (!fixtures.length) return [];
 
-    if (!lastMatch) return null;
+    if (hasMultipleRounds || showAll) {
+      const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
 
-    return lastMatch.league.round;
-  };
+      return fixturesRounds.map((round) =>
+        fixtures.filter((f) => f.league.round === round)
+      );
+    }
 
-  private getNextRound = (
-    rounds: Array<CompetitionRound>,
-    currentRound: CompetitionRound
-  ): CompetitionRound | null => {
-    const currentRoundIndex = rounds.indexOf(currentRound);
-    const isLastRound = rounds.length - 1 === currentRoundIndex;
+    return [fixtures];
+  }
 
-    if (isLastRound) return null;
+  async competitionFixtures(
+    type: CompetitionRequestType,
+    id: CompetitionId,
+    showAll: boolean
+  ): Promise<FlattenMaps<FixtureDTO[]>[]> {
+    const fixturesController = new FixturesController();
+    const fixtures = await fixturesController.getCompetitionFixtures(
+      id,
+      type,
+      showAll
+    );
 
-    return rounds[currentRoundIndex + 1];
-  };
+    return fixtures;
+  }
 }

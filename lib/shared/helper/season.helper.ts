@@ -1,19 +1,22 @@
-import moment from 'moment-timezone';
+import type { Moment } from 'moment';
 
 import type {
   CompetitionId,
   CompetitionSeason,
 } from '../../models/competition.model';
-import { FIXED_SEASON_BY_COMPETITION } from '../constants/season.data';
+import {
+  FIXED_SEASON_BY_COMPETITION,
+  SEASON_START_CUTOFF,
+} from '../constants/season.data';
 
 import { isCompetitionSeason } from './competition.helper';
-import { TIMEZONE } from './date.helper';
+import { getDateInTimezone, getNow } from './date.helper';
 
 export const getSeason = (
   competition: CompetitionId | null = null,
   date: string | null = null
 ): CompetitionSeason => {
-  const today = date ? moment.tz(date, TIMEZONE) : moment().tz(TIMEZONE);
+  const today = date ? getDateInTimezone(date) : getNow();
   const competitionId = Number(competition);
 
   return (
@@ -22,12 +25,8 @@ export const getSeason = (
   );
 };
 
-const getRegularCompetitionSeason = (
-  today: moment.Moment
-): CompetitionSeason => {
-  const seasonStartCutoff = today.clone().month(7).date(1);
-
-  const season = today.isSameOrBefore(seasonStartCutoff)
+const getRegularCompetitionSeason = (today: Moment): CompetitionSeason => {
+  const season = today.isSameOrBefore(SEASON_START_CUTOFF)
     ? today.year() - 1
     : today.year();
 
