@@ -34,7 +34,7 @@ const EXTERNAL_MODULES = [RouterLink];
     :host {
       @apply flex flex-col overflow-hidden bg-rs-alt-bg shadow-rs2;
       border: 1px solid var(--rs-button-border-color);
-      border-radius: var(--mat-standard-button-toggle-shape);
+      border-radius: var(--mat-button-toggle-shape);
 
       --mat-table-header-headline-line-height: 14px;
     }

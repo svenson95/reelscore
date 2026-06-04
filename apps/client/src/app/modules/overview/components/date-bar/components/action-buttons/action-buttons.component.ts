@@ -24,7 +24,7 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
 
     :host ::ng-deep {
       button[mat-icon-button] {
-        --mdc-icon-button-state-layer-size: 36px;
+        --mat-icon-button-state-layer-size: 36px;
         border: 1px solid var(--rs-button-border-color);
         margin-left: 1px;
       }

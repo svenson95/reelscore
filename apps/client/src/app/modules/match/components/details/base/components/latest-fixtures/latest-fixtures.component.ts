@@ -18,7 +18,7 @@ import { MatchFixturesTableComponent } from './components';
     :host { @apply flex flex-col m-3; }
     .latest-fixtures-container {
       @apply flex flex-col md:flex-row mt-rs1 gap-rs2;
-      border-radius: var(--mat-standard-button-toggle-shape);
+      border-radius: var(--mat-button-toggle-shape);
     }
     .no-data { @apply m-auto; }
   `,
