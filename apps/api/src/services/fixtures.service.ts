@@ -8,9 +8,8 @@ import type {
   FixtureDTO,
   FixtureId,
 } from '@lib/models';
-import { COMPETITION_ROUNDS } from '@lib/shared';
+import { COMPETITION_ROUNDS, getSeason } from '@lib/shared';
 
-import { getSeason } from '../middleware';
 import { Fixtures } from '../models';
 
 type FixturesByCompetitionAndRoundsQuery = {
@@ -64,13 +63,16 @@ export class FixturesService {
     rounds: CompetitionRound[],
     showAll: boolean
   ): Promise<FixtureDTO[]> {
+    const season = getSeason(competitionId);
     const query: FilterQuery<FixturesByCompetitionAndRoundsQuery> = {
       'league.id': competitionId,
-      'league.season': getSeason(competitionId),
+      'league.season': season,
     };
 
     if (showAll) {
-      const allRounds = Object.values(COMPETITION_ROUNDS[competitionId]);
+      const competitionRounds = COMPETITION_ROUNDS[season]?.[competitionId];
+      if (!competitionRounds) return [];
+      const allRounds = Object.values(competitionRounds);
 
       const firstRound = rounds[0];
       const lastRound = rounds[rounds.length - 1];

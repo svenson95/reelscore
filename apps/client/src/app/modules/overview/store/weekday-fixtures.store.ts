@@ -8,7 +8,7 @@ import {
   HttpWeekFixturesService,
   type StateHandler,
 } from '@app/shared';
-import { FixturesWeekData } from '@lib/models';
+import type { FixturesWeekData } from '@lib/models';
 
 type WeekdayFixturesState = StateHandler<{
   weekFixtures: FixturesWeekData;

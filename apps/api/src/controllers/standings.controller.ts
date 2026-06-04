@@ -2,13 +2,13 @@ import type { FilterQuery } from 'mongoose';
 
 import type {
   CompetitionId,
+  CompetitionSeason,
   StandingRanks,
   StandingsDTO,
   StandingsFilter,
 } from '@lib/models';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
+import { getSeason, isCompetitionWithMultipleGroups } from '@lib/shared';
 
-import { getSeason } from '../middleware';
 import { StandingsService } from '../services';
 
 export class StandingsController {
@@ -103,7 +103,7 @@ export class StandingsController {
 
   private async findLatestStandingsBySeason(
     leagueId: CompetitionId,
-    season: number,
+    season: CompetitionSeason,
     date?: string
   ): Promise<StandingsDTO | null> {
     const baseFilter: FilterQuery<StandingsFilter> = {

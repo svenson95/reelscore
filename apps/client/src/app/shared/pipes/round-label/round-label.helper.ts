@@ -1,18 +1,14 @@
-import type { CompetitionRound } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
+import { type CompetitionRound, type CompetitionSeason } from '@lib/models';
 
-import {
-  CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,
-  DEFAULT_ROUND_MAP,
-  LEAGUE_RELEGATION_ROUND_MAP,
-} from './data';
+import { DEFAULT_ROUND_MAP } from './data';
+import { ROUND_MAP_RULES } from './round-map.data';
 
-export type LabelType = 'default' | 'header';
+type LabelType = 'default' | 'header';
 
 export type RoundLabelContext = {
   type?: LabelType;
   id: number;
-  season: number;
+  season: CompetitionSeason;
 };
 
 type RoundLabelTranslation = {
@@ -22,49 +18,15 @@ type RoundLabelTranslation = {
 
 type RoundLabelFactory = (round: CompetitionRound) => RoundLabelTranslation;
 
-type RoundMap = Record<CompetitionRound, RoundLabelFactory>;
+export type RoundMap = Record<CompetitionRound, RoundLabelFactory>;
 export type RoundMapOverride = Partial<RoundMap>;
 
-type RoundMapRule = {
+export type RoundMapRule = {
   type?: LabelType;
   id: number;
-  fromSeason: number;
+  fromSeason: CompetitionSeason;
   map: RoundMapOverride;
 };
-
-const RELEGATION_COMPETITION_IDS = [
-  COMPETITION_ID.GERMANY_BUNDESLIGA,
-  COMPETITION_ID.GERMANY_BUNDESLIGA_2,
-  COMPETITION_ID.ITALY_SERIE_A,
-  COMPETITION_ID.FRANCE_LIGUE_1,
-  COMPETITION_ID.SPAIN_LA_LIGA,
-  COMPETITION_ID.ENGLAND_PREMIER_LEAGUE,
-];
-
-const createRoundMapRules = (
-  competitionIds: number[],
-  fromSeason: number,
-  map: RoundMapOverride
-): RoundMapRule[] =>
-  competitionIds.map((id) => ({
-    id,
-    fromSeason,
-    map,
-  }));
-
-const ROUND_MAP_RULES: RoundMapRule[] = [
-  {
-    id: COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE,
-    fromSeason: 2025,
-    map: CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,
-  },
-
-  ...createRoundMapRules(
-    RELEGATION_COMPETITION_IDS,
-    0,
-    LEAGUE_RELEGATION_ROUND_MAP
-  ),
-];
 
 const getBestRoundMapRule = (
   context: RoundLabelContext
@@ -124,8 +86,13 @@ export const getCompetitionRoundLabel = (
   const roundMap = getRoundMap(context);
   const labelType = context.type ?? 'default';
   const type = getType(round, roundMap);
-  const translation = roundMap[type](round);
-  return translation?.[labelType] ?? round;
+
+  const translateRound = roundMap[type];
+
+  if (!translateRound) return round;
+  const translation = translateRound(round);
+
+  return translation?.[labelType] ?? translation?.default ?? round;
 };
 
 // data helper

@@ -1,9 +1,5 @@
-import {
-  type RoundMapOverride,
-  groupLabel,
-  leagueLabel,
-  roundNumber,
-} from '../round-label.helper';
+import type { RoundMapOverride } from '../../round-label.helper';
+import { groupLabel, leagueLabel, roundNumber } from '../../round-label.helper';
 
 export const DEFAULT_ROUND_MAP = {
   'Regular Season': (round) => ({

@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import type { CompetitionWithFixtures } from '@app/shared';
 import {
-  CompetitionWithFixtures,
   FixtureListComponent,
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
@@ -16,7 +16,7 @@ import {
   ResponsiveImageComponent,
   RoundLabelPipe,
 } from '@app/shared';
-import { CompetitionRound } from '@lib/models';
+import type { CompetitionRound } from '@lib/models';
 
 const EXTERNAL_MODULES = [RouterLink];
 
