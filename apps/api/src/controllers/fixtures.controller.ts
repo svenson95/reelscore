@@ -176,9 +176,7 @@ export class FixturesController {
       rounds
     );
 
-    const round = hasMultipleRounds
-      ? this.getMultipleRounds(selectedRound, rounds)
-      : [selectedRound];
+    const round = showAll || hasMultipleRounds ? rounds : [selectedRound];
 
     const fixtures = await Fixtures.find({
       'league.id': id,
