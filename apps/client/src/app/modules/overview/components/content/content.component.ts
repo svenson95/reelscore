@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
-import { DateString } from '@app/shared';
+import type { DateString } from '@lib/shared';
 
 import { SelectedDateService } from '../../services';
 

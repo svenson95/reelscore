@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DateString } from '@app/shared';
+import type { DateString } from '@lib/shared';
 
 @Component({
   selector: 'rs-today-button',

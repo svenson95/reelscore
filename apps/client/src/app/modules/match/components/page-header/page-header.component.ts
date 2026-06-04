@@ -7,11 +7,8 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import {
-  BackButtonComponent,
-  RefreshTickerComponent,
-  type DateString,
-} from '@app/shared';
+import { BackButtonComponent, RefreshTickerComponent } from '@app/shared';
+import type { DateString } from '@lib/shared';
 
 import { MatchFacade } from '../../match.facade';
 

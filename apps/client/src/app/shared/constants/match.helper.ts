@@ -1,7 +1,7 @@
 import type { FixtureDTO } from '@lib/models';
+import { formatDateToYearMonthDay } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from './select-league.constant';
-import { formatBerlinDateString } from './date.model';
 
 export const linkToMatch = (data: FixtureDTO): string[] => {
   const leagueUrl = SELECT_COMPETITION_DATA_FLAT.find(
@@ -10,7 +10,7 @@ export const linkToMatch = (data: FixtureDTO): string[] => {
   if (!leagueUrl) throw new Error('Error in linkToMatch');
 
   const fixtureId = String(data.fixture.id);
-  const date = formatBerlinDateString(data.fixture.date);
+  const date = formatDateToYearMonthDay(data.fixture.date);
 
   return ['/', date, leagueUrl, fixtureId];
 };

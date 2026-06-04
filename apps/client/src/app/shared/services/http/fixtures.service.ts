@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { shareReplay } from 'rxjs';
 
-import { FixturesWeekData } from '@lib/models';
+import type { FixturesWeekData } from '@lib/models';
+import type { DateString } from '@lib/shared';
 
 import { environment } from '../../../../environments/environment';
-import { DateString } from '../../constants';
 
 export abstract class HttpWeekFixturesService {
   abstract getWeekFixtures(date: DateString): Observable<FixturesWeekData>;

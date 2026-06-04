@@ -1,30 +1,35 @@
 import {
-  SEASONS,
   type CompetitionId,
   type CompetitionRound,
   type CompetitionSeason,
-} from '../../models';
+} from '../../models/competition.model';
+import {
+  COMPETITIONS_WITH_MULTIPLE_GROUPS,
+  COMPETITIONS_WITH_ONLY_ONE_FIXTURE,
+  COMPETITIONS_WITHOUT_STANDINGS,
+  ROUNDS_KO_PHASE,
+  SEASONS,
+} from '../constants/season.data';
 
 export const isCompetitionWithMultipleGroups = (
   competitionId: CompetitionId
 ): boolean => {
-  const COMPETITIONS_WITH_MULTIPLE_GROUPS = [1, 4, 5, 31, 32];
   return COMPETITIONS_WITH_MULTIPLE_GROUPS.includes(competitionId);
 };
 
 export const isCompetitionWithoutStandings = (
   competitionId: CompetitionId
-): boolean => [10, 48, 81, 137, 528, 529, 531].includes(competitionId);
+): boolean => COMPETITIONS_WITHOUT_STANDINGS.includes(competitionId);
 
 export const isCompetitionWithOneFixture = (
   competitionId: CompetitionId
-): boolean => [528, 529, 531].includes(competitionId);
+): boolean => COMPETITIONS_WITH_ONLY_ONE_FIXTURE.includes(competitionId);
 
 export const isKoPhase = (round: CompetitionRound): boolean =>
-  ['Round of 16', 'Quarter-finals', 'Final', 'Semi-finals'].includes(round);
+  ROUNDS_KO_PHASE.includes(round);
 
 export const isCompetitionSeason = (
   season: number
 ): season is CompetitionSeason => {
-  return SEASONS.includes(season as CompetitionSeason);
+  return SEASONS.includes(season);
 };

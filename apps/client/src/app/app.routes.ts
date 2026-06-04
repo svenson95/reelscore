@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 
-import { getTodayDateString } from './shared';
+import { getTodayDateString } from '@lib/shared';
 
 export const routes: Routes = [
   {

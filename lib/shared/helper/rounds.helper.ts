@@ -3,8 +3,9 @@ import {
   type CompetitionRounds,
   type CompetitionRoundsData,
   type CompetitionSeason,
-  SEASONS,
 } from '../../models/competition.model';
+
+import { SEASONS } from '../constants/season.data';
 
 export const buildCompetitionRounds = (
   roundsByCompetition: Record<

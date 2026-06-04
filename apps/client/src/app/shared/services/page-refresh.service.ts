@@ -6,8 +6,7 @@ import type { Subscription } from 'rxjs';
 import { filter, interval, tap } from 'rxjs';
 
 import { STATUS_TYPES_PLAYING, type StatusShort } from '@lib/models';
-
-import { getTodayDateString } from '../constants';
+import { getTodayDateString } from '@lib/shared';
 
 type PageRefreshOptions = {
   isPlaying: () => boolean;
