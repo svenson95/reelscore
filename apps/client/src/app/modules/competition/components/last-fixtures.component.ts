@@ -71,18 +71,17 @@ export class LastFixturesComponent {
     });
   });
 
-  readonly isCompetitionWithOneFixture = computed<boolean>(() => {
-    const id = this.competition()?.id;
-
-    return id ? isCompetitionWithOneFixture(id) : false;
+  readonly isLastFixturesEmpty = computed<boolean>(() => {
+    return this.fixturesData()?.length === 0;
   });
 
   readonly showLoadAllButton = computed<boolean>(() => {
-    const competitionId = this.competition()?.id;
+    const competitionId = this.competition()?.id ?? -1;
 
     return (
       !this.isFirstRound() &&
-      !this.isCompetitionWithOneFixture() &&
+      !isCompetitionWithOneFixture(competitionId) &&
+      !this.isLastFixturesEmpty() &&
       !isReversedSingleRoundCompetition(competitionId) &&
       !this.showAll()
     );
