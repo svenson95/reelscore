@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { TeamDTO } from '@lib/models';
+import type { TeamDTO } from '@lib/models';
 
 const TeamsSchema = new mongoose.Schema<TeamDTO>(
   {

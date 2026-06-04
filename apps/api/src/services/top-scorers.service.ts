@@ -1,6 +1,6 @@
-import { FilterQuery } from 'mongoose';
+import type { FilterQuery } from 'mongoose';
 
-import { TopScorersDTO } from '@lib/models';
+import type { TopScorersDTO } from '@lib/models';
 
 import { TopScorers } from '../models';
 

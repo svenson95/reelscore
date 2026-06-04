@@ -1,4 +1,4 @@
-import { RapidStatisticsDTO } from '@lib/models';
+import type { RapidStatisticsDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
 const StatisticsSchema = new mongoose.Schema<RapidStatisticsDTO>({

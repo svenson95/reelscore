@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import type mongoose from 'mongoose';
 
-import { ExtendedFixtureDTO, FixtureId } from '@lib/models';
+import type { ExtendedFixtureDTO, FixtureId } from '@lib/models';
 
 import { Fixtures } from '../../models';
 

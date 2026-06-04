@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { FixtureId } from '@lib/models';
+import type { FixtureId } from '@lib/models';
 
 import { FixtureAnalysesController } from '../../controllers';
 

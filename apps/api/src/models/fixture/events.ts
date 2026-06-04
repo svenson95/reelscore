@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { RapidEventsDTO } from '@lib/models';
+import type { RapidEventsDTO } from '@lib/models';
 
 const EventsSchema = new mongoose.Schema<RapidEventsDTO>({
   parameters: {

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
   fixture: {
