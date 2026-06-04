@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import type mongoose from 'mongoose';
 
-import { FixtureIdParameter, RapidStatisticsDTO } from '@lib/models';
+import type { FixtureIdParameter, RapidStatisticsDTO } from '@lib/models';
 
 import { findDocument } from '../../middleware';
 import { FixturesStatistics } from '../../models';

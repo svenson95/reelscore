@@ -1,4 +1,4 @@
-import { RapidDTO } from '@lib/models';
+import type { RapidDTO } from '@lib/models';
 import mongoose from 'mongoose';
 
 export const findDocument = async <T extends RapidDTO<unknown>>(

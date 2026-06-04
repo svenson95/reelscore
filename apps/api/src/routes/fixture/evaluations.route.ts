@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import express from 'express';
 
-import { FixtureId } from '@lib/models';
+import type { FixtureId } from '@lib/models';
 
 import { FixtureEvaluationsController } from '../../controllers';
 

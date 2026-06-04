@@ -1,5 +1,5 @@
-import { EventDTO, FixtureIdParameter, RapidEventsDTO } from '@lib/models';
-import { FlattenMaps } from 'mongoose';
+import type { EventDTO, FixtureIdParameter, RapidEventsDTO } from '@lib/models';
+import type { FlattenMaps } from 'mongoose';
 import { FixtureEventsService } from '../../services';
 
 const time = (e: EventDTO) => e.time.elapsed + (e.time.extra ?? 0);

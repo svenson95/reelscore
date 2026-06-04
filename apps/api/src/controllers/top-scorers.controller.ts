@@ -1,6 +1,6 @@
-import { FlattenMaps } from 'mongoose';
+import type { FlattenMaps } from 'mongoose';
 
-import { TopScorersDTO } from '@lib/models';
+import type { TopScorersDTO } from '@lib/models';
 
 import { TopScorersService } from '../services';
 
