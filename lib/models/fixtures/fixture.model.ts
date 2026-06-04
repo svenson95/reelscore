@@ -10,7 +10,7 @@ export type FixtureDetail =
   | 'players-statistics'
   | 'events';
 
-export type FixtureId = number;
+export type FixtureId = number | string;
 export type FixtureIdParameter = string;
 export type FixtureDateString = string;
 export type FixturePeriods = { first: number; second: number };
@@ -65,11 +65,14 @@ export interface ExtendedFixtureDTO extends FixtureDTO {
 
 export const PREDICTION_PROBABILITIES = [0.75, 0.8, 0.85, 0.9, 0.95] as const;
 export type PredictionProbability = (typeof PREDICTION_PROBABILITIES)[number];
+export const PREDICTION_CORRECT_VALUES = [null, false, true] as const;
+export type PredictionCorrectValue = (typeof PREDICTION_CORRECT_VALUES)[number];
+
 export type FixturePrediction = {
   bet: string;
   qoute: number;
   probability: PredictionProbability; // in %
-  correct: boolean;
+  correct: PredictionCorrectValue;
 };
 export type AnalysisLevel = 'LUCKY' | 'UNLUCKY';
 export type AnalysisType =
