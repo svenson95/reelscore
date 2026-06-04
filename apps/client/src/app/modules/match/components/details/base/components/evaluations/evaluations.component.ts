@@ -16,7 +16,7 @@ import { ToKebabCasePipe } from './pipes';
 
     .content {
       @apply flex flex-col gap-10 mt-rs1 mx-auto w-full py-6 border shadow-rs2 bg-rs-color-text-3;
-      border-radius: var(--mat-standard-button-toggle-shape);
+      border-radius: var(--mat-button-toggle-shape);
     }
     .content > .teams-form {
       @apply flex flex-col gap-5 mx-auto;

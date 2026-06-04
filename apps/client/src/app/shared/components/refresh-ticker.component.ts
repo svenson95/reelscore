@@ -24,10 +24,10 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
     :host-context:not(.is-active) { @apply bg-[var(--rs-button-bg-color)]; }
 
     :host-context(.is-active) mat-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: var(--rs-color-text-3);
+      --mat-progress-spinner-active-indicator-color: var(--rs-color-text-3);
     }
     :host-context:not(.is-active) mat-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: var(--rs-border-color-2);
+      --mat-progress-spinner-active-indicator-color: var(--rs-border-color-2);
     }
   `,
   template: `<mat-progress-spinner

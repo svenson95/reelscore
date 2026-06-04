@@ -118,14 +118,14 @@ button {
   background-color: var(--rs-button-bg-color);
 
   &.mdc-button {
-    --mat-filled-button-icon-offset: 0;
-    --mat-outlined-button-horizontal-padding: 1rem;
-    --mat-outlined-button-icon-offset: 0;
+    --mat-button-filled-icon-offset: 0;
+    --mat-button-outlined-horizontal-padding: 1rem;
+    --mat-button-outlined-icon-offset: 0;
   }
 
   &.mdc-button,
   &.mat-mdc-icon-button {
-    --mdc-filled-button-label-text-color: var(--rs-color-primary);
+    --mat-button-filled-label-text-color: var(--rs-color-primary);
     box-shadow: var(--rs-size-box-shadow-3);
     border: 1px solid var(--rs-button-border-color);
     background-color: var(--rs-button-bg-color);
@@ -177,7 +177,7 @@ mat-button-toggle {
 .mat-mdc-elevation-specific.mat-elevation-z8 {
   box-shadow: var(--rs-size-box-shadow);
   border-radius: var(--rs-size-border-radius);
-  border: 1px solid var(--mat-standard-button-toggle-divider-color);
+  border: 1px solid var(--mat-button-toggle-divider-color);
 }
 
 // mat-select
@@ -233,8 +233,8 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   mat-calendar.mat-calendar {
     height: 368px;
 
-    --mat-text-button-state-layer-color: var(--rs-color-ripple);
-    --mat-text-button-ripple-color: var(--rs-color-ripple);
+    --mat-button-text-state-layer-color: var(--rs-color-ripple);
+    --mat-button-text-ripple-color: var(--rs-color-ripple);
   }
 
   .mat-calendar-header {

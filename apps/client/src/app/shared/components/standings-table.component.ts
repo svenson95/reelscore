@@ -79,7 +79,7 @@ const DISPLAYED_COLUMNS: string[] = [
     :host {
       @apply flex overflow-hidden shadow-rs2;
       border: 1px solid var(--rs-button-border-color);
-      border-radius: var(--mat-standard-button-toggle-shape);
+      border-radius: var(--mat-button-toggle-shape);
       --mat-table-background-color: var(--rs-color-text-3);
     }
 
@@ -88,7 +88,7 @@ const DISPLAYED_COLUMNS: string[] = [
       --mat-table-row-item-label-text-size: var(--rs-font-size-body-2);
       --mat-table-header-container-height: 41px;
       --mat-table-row-item-container-height: 33px;
-      --mat-table-row-item-outline-color: var(--mat-standard-button-toggle-divider-color);
+      --mat-table-row-item-outline-color: var(--mat-button-toggle-divider-color);
     }
 
     td { @apply py-[4px]; }
