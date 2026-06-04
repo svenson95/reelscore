@@ -55,7 +55,10 @@ export class MatchDetailsFacade {
   hasMultipleGroups = computed<boolean>(() => {
     const fixture = this.fixture();
     return fixture
-      ? isCompetitionWithMultipleGroups(fixture.data.league.id)
+      ? isCompetitionWithMultipleGroups(
+          fixture.data.league.id,
+          fixture.data.league.season
+        )
       : false;
   });
 }

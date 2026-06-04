@@ -78,8 +78,9 @@ export class StandingsController {
       return null;
     }
 
-    const mappedStandings = this.isCompetitionWithMultipleGroups(
-      standings.league.id
+    const mappedStandings = isCompetitionWithMultipleGroups(
+      standings.league.id,
+      season
     )
       ? this.mapMultipleGroupStandings(
           standings.league.standings,
@@ -175,11 +176,5 @@ export class StandingsController {
 
       return standingRanks;
     });
-  }
-
-  private isCompetitionWithMultipleGroups(
-    competitionId: CompetitionId
-  ): boolean {
-    return isCompetitionWithMultipleGroups(competitionId);
   }
 }

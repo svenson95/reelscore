@@ -10,7 +10,12 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
-import type { Competition, CompetitionId, StandingRanks } from '@lib/models';
+import type {
+  Competition,
+  CompetitionId,
+  CompetitionSeason,
+  StandingRanks,
+} from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
@@ -43,8 +48,8 @@ export class GetTeamLogoSetPipe implements PipeTransform {
 
 @Pipe({ name: 'hasMultipleGroups' })
 export class HasMultipleGroupsPipe implements PipeTransform {
-  transform(id: CompetitionId): boolean {
-    return isCompetitionWithMultipleGroups(id);
+  transform(id: CompetitionId, season: CompetitionSeason): boolean {
+    return isCompetitionWithMultipleGroups(id, season);
   }
 }
 
@@ -143,13 +148,14 @@ const DISPLAYED_COLUMNS: string[] = [
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
+          @let competition = league();
           <a [routerLink]="competitionLink()">
-            @if (league().id | hasMultipleGroups) {
+            @if (competition.id | hasMultipleGroups : competition.season) {
             {{ roundLabel() }}
             } @else if (header()) {
             {{ header() }}
             } @else {
-            {{ league().name }}
+            {{ competition.name }}
             }
           </a>
         </th>
