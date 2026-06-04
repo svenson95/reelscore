@@ -15,8 +15,6 @@ type PageRefreshOptions = {
   refresh: () => void;
 };
 
-const DEBUGGER = false;
-
 const REFRESH_INTERVAL = 20_000;
 export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 
@@ -105,15 +103,6 @@ export class AbstractedPageRefreshService implements PageRefreshService {
   private isTodayRoute(url: string): boolean {
     const todayRoute = '/' + getTodayDateString();
     return url.includes(todayRoute);
-  }
-
-  private debug(message: string): void {
-    if (DEBUGGER) {
-      console.log(
-        `page-refresh ${message} | `,
-        new Date().toLocaleTimeString()
-      );
-    }
   }
 }
 

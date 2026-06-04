@@ -3,11 +3,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
 } from '@angular/core';
 
 import { getWeekdayIndex, PageRefreshService } from '@app/shared';
 
+import type { RouteReuseLifecycle } from '../../config';
 import { RouterView } from '../router-view';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
@@ -39,7 +41,10 @@ import {
     <section class="overview-content" rs-overview-content></section>
   `,
 })
-export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
+export class OverviewComponent
+  extends RouterView
+  implements OnInit, OnDestroy, RouteReuseLifecycle
+{
   private readonly weekFixturesStore = inject(WeekdayFixturesStore);
   private readonly weekStandingsStore = inject(WeekdayStandingsStore);
 
@@ -49,28 +54,35 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
     VisibilityObserverService
   );
 
+  private isActive = false;
+
   private readonly hasPlayingFixtures = computed<boolean>(() => {
     const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
-    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex];
-    const states = fixtures.map((f) => f.fixture.status.short);
+    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex] ?? [];
+    const states = fixtures.map((fixture) => fixture.fixture.status.short);
     return this.pageRefreshService.hasPlayingState(states);
   });
 
-  ngOnInit(): void {
-    this.visibilityObserverService.init();
+  pageRefreshEffect = effect(() => {
+    this.hasPlayingFixtures()
+      ? this.startPageRefreshService()
+      : this.pageRefreshService.stop();
+  });
 
-    if (this.hasPlayingFixtures()) {
-      this.pageRefreshService.init({
-        isPlaying: () => this.hasPlayingFixtures(),
-        canRefresh: () => this.canRefresh(),
-        refresh: () => this.refresh(),
-      });
-    }
+  ngOnInit(): void {
+    this.startServices();
   }
 
   ngOnDestroy(): void {
-    this.visibilityObserverService.stop();
-    this.pageRefreshService.stop();
+    this.stopServices();
+  }
+
+  onRouteDetach(): void {
+    this.stopServices();
+  }
+
+  onRouteAttach(): void {
+    this.startServices();
   }
 
   private canRefresh(): boolean {
@@ -88,5 +100,29 @@ export class OverviewComponent extends RouterView implements OnInit, OnDestroy {
       !this.weekFixturesStore.isLoading() &&
       !this.weekStandingsStore.isLoading()
     );
+  }
+
+  private startPageRefreshService(): void {
+    this.pageRefreshService.init({
+      isPlaying: () => this.hasPlayingFixtures(),
+      canRefresh: () => this.canRefresh(),
+      refresh: () => this.refresh(),
+    });
+  }
+
+  private startServices(): void {
+    if (this.isActive) return;
+    this.isActive = true;
+
+    this.visibilityObserverService.init();
+    this.startPageRefreshService();
+  }
+
+  private stopServices(): void {
+    if (!this.isActive) return;
+    this.isActive = false;
+
+    this.visibilityObserverService.stop();
+    this.pageRefreshService.stop();
   }
 }
