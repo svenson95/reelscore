@@ -4,6 +4,9 @@ import type {
   CompetitionSeason,
 } from '../../models/competition.model';
 
+export const COMPETITION_WITH_MULTIPLE_ROUNDS_IN_SOME_SEASONS: CompetitionId[] =
+  [2, 3];
+
 export const COMPETITIONS_WITH_MULTIPLE_GROUPS: CompetitionId[] = [
   1, 4, 5, 31, 32,
 ] as const;
@@ -27,8 +30,10 @@ export const FIXED_SEASON_BY_COMPETITION = new Map<
   CompetitionId,
   CompetitionSeason
 >([
+  [31, 2026], // World Cup Qualifiers Concaf
   [32, 2024], // World Cup Qualifiers Europe
   [1, 2026], // World Cup
+  [4, 2024], // Euro Cup
   [10, 2026], // Friendlies
   [253, 2026], // Friendlies
 ]);
