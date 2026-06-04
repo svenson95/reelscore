@@ -1,2 +1,2 @@
 export * from './competition';
-export * from './competition-rounds.data';
+export * from './rounds.data';

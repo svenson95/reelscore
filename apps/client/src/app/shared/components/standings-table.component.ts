@@ -10,7 +10,7 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
-import type { CompetitionId, League, StandingRanks } from '@lib/models';
+import type { Competition, CompetitionId, StandingRanks } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
@@ -233,7 +233,7 @@ const DISPLAYED_COLUMNS: string[] = [
 })
 export class StandingsTableComponent {
   readonly ranks = input.required<StandingRanks[]>();
-  readonly league = input.required<League>();
+  readonly league = input.required<Competition>();
   readonly header = input<string>();
 
   private readonly breakpoint = inject(BreakpointObserverService);

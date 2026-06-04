@@ -1,4 +1,4 @@
-import type { League } from '../competition.model';
+import type { Competition } from '../competition.model';
 import type { MongoDbId } from '../mongodb.model';
 import type { Team, TeamId } from '../team.model';
 import type { EventDTO } from './events.model';
@@ -51,7 +51,7 @@ export type FixtureFinal = {
 export type FixtureDTO = {
   _id: MongoDbId;
   fixture: Fixture;
-  league: League;
+  league: Competition;
   teams: MatchTeams;
   goals: Goals;
   score: Score;

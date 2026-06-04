@@ -11,9 +11,8 @@ import {
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
 } from '@lib/models';
-import { COMPETITION_ROUNDS } from '@lib/shared';
+import { COMPETITION_ROUNDS, getSeason } from '@lib/shared';
 
-import { getSeason } from '../middleware';
 import { Fixtures } from '../models';
 import { FixturesService } from '../services';
 
@@ -49,7 +48,11 @@ export class FixturesController {
     const currentRound = await this.getCurrentRound(id);
     if (!currentRound) return [];
 
-    const rounds = Object.values(COMPETITION_ROUNDS[id]);
+    const season = getSeason(id);
+    const competitionRounds = COMPETITION_ROUNDS[season]?.[id];
+    if (!competitionRounds) return [];
+
+    const rounds = Object.values(competitionRounds);
     const nextRound = this.getNextRound(rounds, currentRound);
     const hasMultipleRounds = this.isSameRoundNumber(currentRound, nextRound);
 

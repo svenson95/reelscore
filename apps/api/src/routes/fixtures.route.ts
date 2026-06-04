@@ -1,12 +1,10 @@
-import express, { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import express from 'express';
 
 import type { CompetitionId, FixtureId } from '@lib/models';
 
-import {
-  CompetitionRequestType,
-  FixtureController,
-  FixturesController,
-} from '../controllers';
+import type { CompetitionRequestType } from '../controllers';
+import { FixtureController, FixturesController } from '../controllers';
 import { getWeekDatesArray } from '../middleware';
 
 export const fixtures = express.Router();

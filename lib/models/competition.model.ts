@@ -25,36 +25,32 @@ export type StandingRanks = {
 };
 
 export type LeagueType = 'League' | 'Cup' | 'Friendly' | 'International';
-export type League = {
-  id: CompetitionId;
-  name: CompetitionName;
-  country: string;
-  logo: string;
-  flag: string;
-  season: number;
-  round: CompetitionRound;
-  standings?: StandingRanks[][];
-};
 
 export type CompetitionUrl = string;
 export type CompetitionId = number;
+export const SEASONS = [2023, 2024, 2025, 2026] as const;
+export type CompetitionSeason = (typeof SEASONS)[number];
 export type CompetitionName = string;
 export type CompetitionNameTranslated = string;
 
 export type CompetitionRound = string;
 export type CompetitionRoundTranslated = string;
 export type CompetitionRoundIndex = number;
-export type CompetitionRoundsData = Record<CompetitionId, CompetitionRounds>;
 export type CompetitionRounds = Record<CompetitionRoundIndex, CompetitionRound>;
+export type CompetitionRoundsData = Record<CompetitionId, CompetitionRounds>;
+export type CompetitionRoundsSeasons = Record<
+  CompetitionSeason,
+  CompetitionRoundsData
+>;
 
 export type Competition = {
   id: CompetitionId;
-  name: string;
+  name: CompetitionName;
   country: string;
   logo: string;
   flag: string;
-  season: number;
-  round: string;
+  season: CompetitionSeason;
+  round: CompetitionRound;
   standings?: StandingRanks[][];
 };
 

@@ -1,4 +1,9 @@
-import type { CompetitionId, CompetitionRound } from '../../models';
+import {
+  SEASONS,
+  type CompetitionId,
+  type CompetitionRound,
+  type CompetitionSeason,
+} from '../../models';
 
 export const isCompetitionWithMultipleGroups = (
   competitionId: CompetitionId
@@ -17,3 +22,9 @@ export const isCompetitionWithOneFixture = (
 
 export const isKoPhase = (round: CompetitionRound): boolean =>
   ['Round of 16', 'Quarter-finals', 'Final', 'Semi-finals'].includes(round);
+
+export const isCompetitionSeason = (
+  season: number
+): season is CompetitionSeason => {
+  return SEASONS.includes(season as CompetitionSeason);
+};

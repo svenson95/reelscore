@@ -1,4 +1,4 @@
-import { type RoundMapOverride, roundNumber } from '../round-label.helper';
+import { type RoundMapOverride, roundNumber } from '../../round-label.helper';
 
 export const CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP = {
   'League Stage': (round) => ({
