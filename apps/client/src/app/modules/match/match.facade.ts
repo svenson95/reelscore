@@ -1,17 +1,14 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {
-  type DateString,
-  formatBerlinDateString,
-  RouteService,
-  SELECT_COMPETITION_DATA_FLAT,
-} from '@app/shared';
+import { RouteService, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
 import type {
   CompetitionUrl,
   ExtendedFixtureDTO,
   FixtureId,
 } from '@lib/models';
+import type { DateString } from '@lib/shared';
+import { formatDateToYearMonthDay } from '@lib/shared';
 
 import { FixtureStore } from './store';
 
@@ -43,7 +40,7 @@ export class MatchFacade {
     const data = SELECT_COMPETITION_DATA_FLAT.find((c) => c.url === url);
     const isCompetitionParamCorrect = !!data;
 
-    const fixtureDate = formatBerlinDateString(fixture.fixture.date);
+    const fixtureDate = formatDateToYearMonthDay(fixture.fixture.date);
     const isDateParamCorrect = this.routerDate() === fixtureDate;
 
     if (isCompetitionParamCorrect && isDateParamCorrect) return;

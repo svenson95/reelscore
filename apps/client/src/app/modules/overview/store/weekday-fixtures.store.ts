@@ -3,12 +3,12 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
 import {
-  type DateString,
   errorHandler,
   HttpWeekFixturesService,
   type StateHandler,
 } from '@app/shared';
 import type { FixturesWeekData } from '@lib/models';
+import type { DateString } from '@lib/shared';
 
 type WeekdayFixturesState = StateHandler<{
   weekFixtures: FixturesWeekData;

@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 
 import type { ExtendedFixtureDTO } from '@lib/models';
 
-import { APP_TIMEZONE, linkToMatch } from '../../../../constants';
+import { linkToMatch } from '../../../../constants';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
@@ -22,6 +22,7 @@ import { TeamNamePipe } from '../../../../pipes';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 
+import { TIMEZONE } from '@lib/shared';
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
 const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
@@ -132,7 +133,7 @@ export class FixtureListItemComponent {
     if (state.isHalftime) return 'HZ';
     if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
     if (state.isFinished) {
-      return formatDate(fixture.fixture.date, 'HH:mm', 'de-DE', APP_TIMEZONE);
+      return formatDate(fixture.fixture.date, 'HH:mm', 'de-DE', TIMEZONE);
     }
 
     return '';

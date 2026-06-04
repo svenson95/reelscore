@@ -1,6 +1,8 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { DateString, getTodayDateString } from '@app/shared';
+import type { DateString } from '@lib/shared';
+import { getTodayDateString } from '@lib/shared';
 
 import { FilterService } from './filter.service';
 

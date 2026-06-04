@@ -1,6 +1,7 @@
 import { computed, effect, inject, Injectable } from '@angular/core';
 
-import { type DateString, formatCalendarWeekKey } from '@app/shared';
+import type { DateString } from '@lib/shared';
+import { formatCalendarWeekKey } from '@lib/shared';
 
 import { DateService, SelectedDateService } from '../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';

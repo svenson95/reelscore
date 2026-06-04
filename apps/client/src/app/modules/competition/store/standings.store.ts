@@ -3,12 +3,12 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
 import {
-  type DateString,
   errorHandler,
   HttpStandingsService,
   type StateHandler,
 } from '@app/shared';
 import type { CompetitionId, StandingsDTO } from '@lib/models';
+import type { DateString } from '@lib/shared';
 
 type CompetitionStandingsState = StateHandler<{
   standings: StandingsDTO | null;

@@ -1,3 +1,5 @@
+import { SEASONS } from '../shared/constants/season.data';
+
 import type { MongoDbId } from './mongodb.model';
 import type { Team } from './team.model';
 
@@ -28,7 +30,6 @@ export type LeagueType = 'League' | 'Cup' | 'Friendly' | 'International';
 
 export type CompetitionUrl = string;
 export type CompetitionId = number;
-export const SEASONS = [2023, 2024, 2025, 2026] as const;
 export type CompetitionSeason = (typeof SEASONS)[number];
 export type CompetitionName = string;
 export type CompetitionNameTranslated = string;

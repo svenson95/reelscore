@@ -1,13 +1,16 @@
 import moment from 'moment';
 
+export const TIMEZONE = 'Europe/Berlin' as const;
+
 export type DateString = string; // format YYYY-MM-DD
 export type CalendarWeek = number;
 
-export const APP_TIMEZONE = 'Europe/Berlin';
+export const getNow = () => moment().tz(TIMEZONE);
+export const getDateInTimezone = (date: string) => moment(date).tz(TIMEZONE);
 
-export const formatBerlinDateString = (value: string | Date): DateString => {
+export const formatDateToYearMonthDay = (value: string | Date): DateString => {
   const parts = new Intl.DateTimeFormat('de-DE', {
-    timeZone: APP_TIMEZONE,
+    timeZone: TIMEZONE,
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -25,10 +28,10 @@ export const formatBerlinDateString = (value: string | Date): DateString => {
 };
 
 export const getTodayDateString = (): DateString =>
-  formatBerlinDateString(new Date());
+  formatDateToYearMonthDay(new Date());
 
 export const formatCalendarWeekKey = (value: string | Date): string => {
-  const date = moment.utc(value).tz(APP_TIMEZONE);
+  const date = moment.utc(value).tz(TIMEZONE);
   const week = String(date.isoWeek()).padStart(2, '0');
 
   return `${date.isoWeekYear()}-W${week}`;
@@ -41,3 +44,6 @@ export const getWeekdayIndex = (dateString: string): number => {
 
   return (date.getDay() + 6) % 7;
 };
+
+export const startOfWeek = (day: string) =>
+  moment.tz(day, 'YYYY-MM-DD', TIMEZONE).startOf('isoWeek');

@@ -1,23 +1,14 @@
 import { DatePipe } from '@angular/common';
-import {
-  Injectable,
-  Signal,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import type { Signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import moment from 'moment-timezone';
-
+import type { CalendarWeek, DateString } from '@lib/shared';
 import {
-  APP_TIMEZONE,
-  CalendarWeek,
-  DateString,
   formatCalendarWeekKey,
   getTodayDateString,
-} from '@app/shared';
+  startOfWeek,
+} from '@lib/shared';
 
 import { SelectedDateService } from './selected-date.service';
 
@@ -84,12 +75,10 @@ export class AbstractedDateService extends DateService {
   }
 
   private createWeekDaysArray(day: DateString): DateString[] {
-    const startOfWeek = moment
-      .tz(day, 'YYYY-MM-DD', APP_TIMEZONE)
-      .startOf('isoWeek');
+    const isStartOfWeek = startOfWeek(day);
 
     return Array.from({ length: 7 }, (_, index) =>
-      startOfWeek.clone().add(index, 'days').format('YYYY-MM-DD')
+      isStartOfWeek.clone().add(index, 'days').format('YYYY-MM-DD')
     );
   }
 

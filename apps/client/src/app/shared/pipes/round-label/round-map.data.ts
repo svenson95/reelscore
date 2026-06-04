@@ -1,6 +1,5 @@
 import type { CompetitionId, CompetitionSeason } from '@lib/models';
-import { SEASONS } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
+import { COMPETITION_ID, SEASONS } from '@lib/shared';
 
 import {
   CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,

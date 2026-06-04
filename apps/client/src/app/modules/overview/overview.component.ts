@@ -7,7 +7,8 @@ import {
   inject,
 } from '@angular/core';
 
-import { getWeekdayIndex, PageRefreshService } from '@app/shared';
+import { PageRefreshService } from '@app/shared';
+import { getWeekdayIndex } from '@lib/shared';
 
 import type { RouteReuseLifecycle } from '../../config';
 import { RouterView } from '../router-view';

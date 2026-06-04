@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import type { PipeTransform } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +8,13 @@ import {
   input,
   output,
   Pipe,
-  PipeTransform,
 } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { CalendarWeek, DateString, formatBerlinDateString } from '@app/shared';
+import type { CalendarWeek, DateString } from '@lib/shared';
+import { formatDateToYearMonthDay } from '@lib/shared';
 
 import { DateService } from '../../../services';
 import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
@@ -131,7 +132,7 @@ export class WeekToggleGroupComponent {
   setDateTo(target: number): void {
     const targetDate = new Date(this.selectedDay());
     targetDate.setDate(targetDate.getDate() + target);
-    const formattedDate = formatBerlinDateString(targetDate);
+    const formattedDate = formatDateToYearMonthDay(targetDate);
     this.dateSelected.emit(formattedDate);
   }
 
