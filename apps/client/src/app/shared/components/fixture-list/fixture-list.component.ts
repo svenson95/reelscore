@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { FixtureListItemComponent } from './components';
 

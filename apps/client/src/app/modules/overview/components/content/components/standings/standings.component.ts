@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { StandingsTableComponent } from '@app/shared';
-import { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@lib/models';
 
 import { OverviewStandingsFacade } from './standings.facade';
 

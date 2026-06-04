@@ -6,8 +6,8 @@ import {
   input,
 } from '@angular/core';
 
-import { CompetitionWithFixtures } from '@app/shared';
-import { ExtendedFixtureDTO } from '@lib/models';
+import type { CompetitionWithFixtures } from '@app/shared';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { MatchDayListComponent } from './components';
 import { OverviewFixturesFacade } from './fixtures.facade';

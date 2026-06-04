@@ -1,4 +1,4 @@
-import { CompetitionId, CompetitionName, CompetitionUrl } from '@lib/models';
+import type { CompetitionId, CompetitionName, CompetitionUrl } from '@lib/models';
 
 export type CompetitionData = {
   image: string;

@@ -1,4 +1,4 @@
-import { CompetitionName, CompetitionNameTranslated } from '@lib/models';
+import type { CompetitionName, CompetitionNameTranslated } from '@lib/models';
 
 export const COMPETITION_NAME_MAP: Record<
   CompetitionName,

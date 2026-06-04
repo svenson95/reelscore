@@ -1,12 +1,14 @@
-import {
-  HTTP_INTERCEPTORS,
+import type {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
+  HttpRequest} from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { finalize, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { finalize } from 'rxjs';
 
 import { LoadingService } from './loading.service';
 

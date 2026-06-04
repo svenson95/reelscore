@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import type { MatSelectChange} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { ResponsiveImageComponent } from '../../../components';
 import { SELECT_COMPETITION_DATA } from '../../../constants';
-import { CompetitionData } from '../../../models';
+import type { CompetitionData } from '../../../models';
 
 @Component({
   selector: 'nav[rs-competition-select]',

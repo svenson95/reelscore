@@ -1,4 +1,5 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import type { WritableSignal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 export abstract class LoadingService {
   abstract isLoading: WritableSignal<boolean>;

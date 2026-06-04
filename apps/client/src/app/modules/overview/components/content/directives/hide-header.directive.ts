@@ -1,4 +1,5 @@
-import { Directive, ElementRef, inject, OnInit } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Directive, ElementRef, inject } from '@angular/core';
 
 @Directive({
   selector: '[rsHideHeader]',

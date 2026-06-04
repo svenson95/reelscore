@@ -2,8 +2,9 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import { StateHandler, errorHandler } from '@app/shared';
-import { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
+import type { StateHandler} from '@app/shared';
+import { errorHandler } from '@app/shared';
+import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 import { HttpLastFixturesService } from '../services';
 

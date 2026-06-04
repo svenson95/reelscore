@@ -1,5 +1,7 @@
-import {
+import type {
   AfterViewInit,
+  OnDestroy} from '@angular/core';
+import {
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -7,7 +9,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnDestroy,
   ViewChild,
 } from '@angular/core';
 

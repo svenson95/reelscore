@@ -9,11 +9,12 @@ import {
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
-import { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
-import {
-  ANALYSES_TEAM,
+import type { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
+import type {
   AnalysesTeamType,
-  FixtureWithEvaluations,
+  FixtureWithEvaluations} from '../../models';
+import {
+  ANALYSES_TEAM
 } from '../../models';
 
 import { AnalysesEvaluationComponent } from './components';

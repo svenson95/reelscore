@@ -1,6 +1,7 @@
+import type {
+  ElementRef} from '@angular/core';
 import {
   DestroyRef,
-  ElementRef,
   Injectable,
   NgZone,
   inject,

@@ -1,6 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import type { PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 
-import { FixtureResult, FixtureTeam, MatchTeams } from '@lib/models';
+import type { FixtureResult, FixtureTeam, MatchTeams } from '@lib/models';
 
 @Pipe({
   name: 'checkScore',

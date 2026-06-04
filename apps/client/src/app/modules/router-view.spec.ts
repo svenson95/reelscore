@@ -1,7 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { ComponentFixture} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CompetitionUrl } from '@lib/models';
+import type { CompetitionUrl } from '@lib/models';
 
 import { routes } from '../app.routes';
 

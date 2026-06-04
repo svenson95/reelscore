@@ -1,6 +1,7 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import type { WritableSignal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
-import { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@lib/models';
 
 export abstract class FilterService {
   abstract selectedCompetition: WritableSignal<CompetitionId | null>;

@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 import { RoundLabelPipe } from '@app/shared';
-import { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { FixtureStore } from '../../../../../store';
 
