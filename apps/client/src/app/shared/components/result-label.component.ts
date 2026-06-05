@@ -27,9 +27,8 @@ import {
     } @else {
     <span>{{ mainResult().home }}</span>
 
-    @if (isNotPlayed()) { @if (showNotPlayedText()) {
-    <span class="text-rs-font-size-small"> Abgesagt </span>
-    } @else { － } } @else if (isScheduled()) { vs } @else { : }
+    @if (isNotPlayed()) { @if (!showNotPlayedText()) { － } } @else if
+    (isScheduled()) { vs } @else { : }
 
     <span>{{ mainResult().away }}</span>
     }
@@ -41,9 +40,14 @@ export class ResultLabelComponent {
 
   readonly mainResult = computed<Goals>(() => this.fixture().goals);
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
-  readonly status = computed<FixtureStatus>(
-    () => this.fixture().fixture.status
+
+  readonly isScheduled = computed<boolean>(() =>
+    STATUS_TYPES_SCHEDULED.includes(this.status().short)
   );
+
+  readonly isPenaltyShootout = computed<boolean>(() => {
+    return this.status().short === 'P';
+  });
 
   readonly isNotPlayed = computed<boolean>(() => {
     const status = this.status().short;
@@ -55,11 +59,7 @@ export class ResultLabelComponent {
     );
   });
 
-  readonly isScheduled = computed<boolean>(() =>
-    STATUS_TYPES_SCHEDULED.includes(this.status().short)
+  private readonly status = computed<FixtureStatus>(
+    () => this.fixture().fixture.status
   );
-
-  readonly isPenaltyShootout = computed<boolean>(() => {
-    return this.status().short === 'P';
-  });
 }
