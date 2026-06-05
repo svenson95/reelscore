@@ -30,7 +30,8 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/images/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/assets/images/competition-responsive/**",
+          "/assets/images/team-logo-responsive/**"
         ]
       }
     }
