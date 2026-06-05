@@ -14,7 +14,7 @@ type PageRefreshOptions = {
   refresh: () => void;
 };
 
-const REFRESH_INTERVAL = 20_000;
+const REFRESH_INTERVAL = 15_000;
 export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 
 export abstract class PageRefreshService {
