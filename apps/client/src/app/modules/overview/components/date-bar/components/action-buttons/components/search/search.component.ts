@@ -37,7 +37,7 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
   imports: [...MAT_MODULES, SearchInputComponent, SearchResultsComponent],
   styles: `
     :host {
-      @apply block;
+      @apply flex;
     }
 
     ::ng-deep .search-menu .mat-mdc-menu-content {
