@@ -18,7 +18,7 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
     '[class.is-active]': 'isActive()',
   },
   styles: `
-    :host { @apply flex h-fit p-[0.38rem] border shadow-rs2; }
+    :host { @apply flex h-fit p-[0.375rem] border shadow-rs2; }
 
     :host-context(.is-active) { @apply bg-rs-color-primary; }
     :host-context:not(.is-active) { @apply bg-[var(--rs-button-bg-color)]; }
