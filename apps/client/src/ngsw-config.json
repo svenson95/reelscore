@@ -5,26 +5,32 @@
     {
       "name": "app",
       "installMode": "prefetch",
-      "resources": {
-        "files": ["/favicon.ico", "/manifest.webmanifest", "/*.css", "/*.js"]
-      }
-    },
-    {
-      "name": "assets-logos",
-      "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
         ]
       }
     },
     {
-      "name": "assets",
+      "name": "critical-assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/assets/icons/**"]
+      }
+    },
+    {
+      "name": "assets-logos",
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/assets/images/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
       }
     }
