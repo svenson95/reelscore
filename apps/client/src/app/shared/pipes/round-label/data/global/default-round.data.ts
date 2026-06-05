@@ -1,5 +1,10 @@
 import type { RoundMapOverride } from '../../round-label.helper';
-import { groupLabel, leagueLabel, roundNumber } from '../../round-label.helper';
+import {
+  groupLabel,
+  groupLabelHeader,
+  leagueLabel,
+  roundNumber,
+} from '../../round-label.helper';
 
 export const DEFAULT_ROUND_MAP = {
   'Regular Season': (round) => ({
@@ -19,7 +24,7 @@ export const DEFAULT_ROUND_MAP = {
 
   Group: (round) => ({
     default: groupLabel(round),
-    header: `${roundNumber(round)}. Spieltag`,
+    header: groupLabelHeader(round),
   }),
 
   League: (round) => ({

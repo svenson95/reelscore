@@ -117,6 +117,14 @@ export const groupLabel = (value: CompetitionRound): CompetitionRound => {
   return `Gruppe ${group} - ${round}. Spieltag`;
 };
 
+export const groupLabelHeader = (value: CompetitionRound): CompetitionRound => {
+  const roundIdx = value.indexOf('-') + 2;
+  const round = value.slice(roundIdx);
+  const group = value.slice('Group'.length, roundIdx - 2);
+
+  return `#${round} Gruppe ${group}`;
+};
+
 // comp helper
 export const isFirstCompetitionRound = (
   round: CompetitionRound,

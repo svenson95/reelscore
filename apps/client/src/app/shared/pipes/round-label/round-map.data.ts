@@ -3,7 +3,9 @@ import { COMPETITION_ID, SEASONS } from '@lib/shared';
 
 import {
   CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,
+  FRIENDLIES_FROM_2023_ROUND_MAP,
   LEAGUE_RELEGATION_ROUND_MAP,
+  NATIONS_LEAGUE_FROM_2024_ROUND_MAP,
 } from './data';
 import type { RoundMap, RoundMapRule } from './round-label.helper';
 
@@ -37,6 +39,18 @@ export const ROUND_MAP_RULES: RoundMapRule[] = [
     id: COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE,
     fromSeason: 2025,
     map: CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,
+  },
+
+  {
+    id: COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE,
+    fromSeason: 2024,
+    map: NATIONS_LEAGUE_FROM_2024_ROUND_MAP,
+  },
+
+  {
+    id: COMPETITION_ID.INTERNATIONAL_FRIENDLIES,
+    fromSeason: 2023,
+    map: FRIENDLIES_FROM_2023_ROUND_MAP,
   },
 
   ...createRoundMapRules({
