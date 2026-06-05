@@ -19,19 +19,7 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
   ],
   styles: `
     :host {
-      @apply flex;
-    }
-
-    :host ::ng-deep {
-      button[mat-icon-button] {
-        --mat-icon-button-state-layer-size: 36px;
-        border: 1px solid var(--rs-button-border-color);
-        margin-left: 1px;
-      }
-
-      mat-icon {
-        @apply w-[20px] h-[20px] text-[20px] align-text-top;
-      }
+      @apply flex gap-px;
     }
   `,
   template: `

@@ -11,7 +11,7 @@ import { getTodayDateString } from '@lib/shared';
 type PageRefreshOptions = {
   isPlaying: () => boolean;
   canRefresh: () => boolean;
-  refresh: () => void;
+  refresh: () => Promise<void>;
 };
 
 const REFRESH_INTERVAL = 15_000;
@@ -23,11 +23,13 @@ export abstract class PageRefreshService {
   abstract hasPlayingState(states: StatusShort[]): boolean;
   abstract timer: Signal<number>;
   abstract isRunning: Signal<boolean>;
+  abstract refresh(options?: { delayLoadingDone: boolean }): void;
 }
 
 @Injectable()
 export class AbstractedPageRefreshService implements PageRefreshService {
   private readonly router = inject(Router);
+  private readonly AUTO_REFRESH_LOADING_DELAY_MS = 1_000;
 
   readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
   readonly isRunning = signal<boolean>(false);
@@ -81,7 +83,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
 
     this.refreshSubscription = interval(1000)
       .pipe(
-        tap(() => {
+        tap(async () => {
           const nextTimerValue = this.timer() - 1;
 
           if (nextTimerValue > 0) {
@@ -90,10 +92,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
           }
 
           this.timer.set(REFRESH_INTERVAL_SECONDS);
-
-          if (this.options?.canRefresh()) {
-            this.options.refresh();
-          }
+          await this.refresh({ delayLoadingDone: true });
         })
       )
       .subscribe();
@@ -102,6 +101,36 @@ export class AbstractedPageRefreshService implements PageRefreshService {
   private isTodayRoute(url: string): boolean {
     const todayRoute = '/' + getTodayDateString();
     return url.includes(todayRoute);
+  }
+
+  async refresh(options?: { delayLoadingDone?: boolean }): Promise<void> {
+    if (!this.options?.canRefresh()) return;
+
+    this.stop();
+
+    try {
+      await this.options.refresh();
+    } catch (error) {
+      console.error('Refresh failed', error);
+    } finally {
+      await this.nextFrame();
+
+      if (this.options.canRefresh()) {
+        this.start();
+      }
+
+      if (options?.delayLoadingDone) {
+        await this.sleep(this.AUTO_REFRESH_LOADING_DELAY_MS);
+      }
+    }
+  }
+
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private nextFrame(): Promise<void> {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 }
 
