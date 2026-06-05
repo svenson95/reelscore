@@ -102,8 +102,8 @@ export class MatchComponent extends RouterView implements OnInit, OnDestroy {
     return !this.facade.isLoading();
   }
 
-  private refresh(): void {
-    this.facade.reloadFixture();
+  private async refresh(): Promise<void> {
+    await this.facade.reloadFixture();
   }
 
   private startPageRefreshService(): void {

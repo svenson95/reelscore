@@ -90,7 +90,7 @@ export class OverviewComponent
     return this.isNotLoading();
   }
 
-  private refresh(): void {
+  private async refresh(): Promise<void> {
     const date = this.selectedDateService.selectedDay();
     this.weekFixturesStore.loadWeekdayFixtures(date, true);
     this.weekStandingsStore.loadWeekdayStandings(date, true);

@@ -4,8 +4,8 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
@@ -13,40 +13,98 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   selector: 'rs-refresh-ticker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatProgressSpinner, MatTooltip],
+  imports: [MatButtonModule, MatIcon],
+  styles: `
+    :host {
+      @apply flex;
+    }
+
+    $buttonBg: var(--rs-color-text-3);
+
+    button {
+      position: relative;
+      overflow: hidden;
+      background-color: var(--rs-color-primary);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: conic-gradient(
+        var(--rs-color-primary) var(--progress),
+        transparent 0
+      );
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    button::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      background-color: $buttonBg;
+    }
+
+    mat-icon {
+      position: relative;
+      z-index: 1;
+      --mat-icon-color: var(--rs-border-color-2);
+    }
+
+    :host(.is-active) button::before {
+      opacity: 1;
+      animation: refresh-progress ${REFRESH_INTERVAL_SECONDS}s linear infinite;
+    }
+
+    :host(.is-active) mat-icon {
+      --mat-icon-color: var(--rs-color-primary);
+    }
+
+    @property --progress {
+      syntax: '<percentage>';
+      inherits: false;
+      initial-value: 0%;
+    }
+
+    @keyframes refresh-progress {
+      from {
+        --progress: 0%;
+      }
+
+      to {
+        --progress: 100%;
+      }
+    }
+  `,
   host: {
     '[class.is-active]': 'isActive()',
   },
-  styles: `
-    :host { @apply flex h-fit p-[0.375rem] border shadow-rs2; }
-
-    :host-context(.is-active) { @apply bg-rs-color-primary; }
-    :host-context:not(.is-active) { @apply bg-[var(--rs-button-bg-color)]; }
-
-    :host-context(.is-active) mat-progress-spinner {
-      --mat-progress-spinner-active-indicator-color: var(--rs-color-text-3);
-    }
-    :host-context:not(.is-active) mat-progress-spinner {
-      --mat-progress-spinner-active-indicator-color: var(--rs-border-color-2);
-    }
+  template: `
+    <button
+      mat-icon-button
+      [disabled]="buttonDisabled()"
+      (click)="refresh($event)"
+    >
+      <mat-icon fontIcon="refresh" />
+    </button>
   `,
-  template: `<mat-progress-spinner
-    [value]="value()"
-    diameter="22"
-    strokeWidth="2.5"
-    [matTooltip]="
-      isActive() ? 'Automatische Updates aktiv' : 'Automatische Updates inaktiv'
-    "
-    #tooltip="matTooltip"
-    (click)="tooltip.toggle()"
-  /> `,
 })
 export class RefreshTickerComponent {
   private readonly pageRefreshService = inject(PageRefreshService);
 
   readonly isActive = this.pageRefreshService.isRunning;
 
-  readonly value = computed<number>(() => {
-    return (this.pageRefreshService.timer() / REFRESH_INTERVAL_SECONDS) * 100;
+  readonly buttonDisabled = computed<boolean>(() => {
+    const BUTTON_DELAY = REFRESH_INTERVAL_SECONDS - 3;
+    return !this.isActive() || this.pageRefreshService.timer() > BUTTON_DELAY;
   });
+
+  refresh(event: Event): void {
+    event.preventDefault();
+    void this.pageRefreshService.refresh();
+  }
 }
