@@ -330,6 +330,7 @@ const FR_TROPHEE_DES_CHAMPIONS = {
 const EREDIVISE_2025 = {
   ...SMALL_LEAGUE,
   35: 'Semi-Finals',
+  36: 'Final',
 };
 const EREDIVISE_2023 = {
   ...SMALL_LEAGUE,
