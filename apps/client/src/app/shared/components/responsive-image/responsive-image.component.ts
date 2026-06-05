@@ -15,7 +15,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="lazy"
+      loading="eager"
       decoding="async"
     />
     } @else {
@@ -25,7 +25,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="lazy"
+      loading="eager"
       decoding="async"
     />
     }
