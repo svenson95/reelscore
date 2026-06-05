@@ -56,11 +56,6 @@ module.exports = {
   plugins: [
     function ({ addUtilities }) {
       const newUtitilites = {
-        '.rs-as-label': {
-          background: 'var(--rs-button-bg-color)',
-          '--mdc-outlined-button-disabled-label-text-color':
-            'var(--rs-color-text-1)',
-        },
         '.rs-competition-tab': {
           display: 'flex',
           'margin-top': '0.75rem',
