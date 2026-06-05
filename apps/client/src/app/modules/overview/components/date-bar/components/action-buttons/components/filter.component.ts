@@ -10,19 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import type {
-  SelectCompetitionGroup} from '@app/shared';
-import {
-  ResponsiveImageComponent,
-  SELECT_COMPETITION_DATA
-} from '@app/shared';
+import type { SelectCompetitionGroup } from '@app/shared';
+import { ResponsiveImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 
+import { FilterService, SelectedDateService } from '../../../../../services';
 import {
   FilteredStandingsStore,
   WeekdayFixturesStore,
 } from '../../../../../store';
-import { SelectedDateService, FilterService } from '../../../../../services';
 
 const MAT_MODULES = [
   MatButtonModule,
@@ -36,6 +32,7 @@ const MAT_MODULES = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...MAT_MODULES, ResponsiveImageComponent],
   styles: `
+    :host { @apply flex; }
     button[mat-icon-button].is-filtering {
       @apply bg-rs-color-primary;
       .mat-icon { @apply text-rs-color-text-3; }
