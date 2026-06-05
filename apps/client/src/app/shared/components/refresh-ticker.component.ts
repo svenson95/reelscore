@@ -19,7 +19,7 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       @apply flex;
     }
 
-    $buttonBg: var(--rs-color-text-3);
+    $buttonBg: var(--rs-button-bg-color);
 
     button {
       position: relative;
@@ -60,8 +60,9 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       animation: refresh-progress ${REFRESH_INTERVAL_SECONDS}s linear infinite;
     }
 
-    :host(.is-active) mat-icon {
+    :host(.is-active) button:not(:disabled) mat-icon {
       --mat-icon-color: var(--rs-color-primary);
+      transition: color 150ms ease-in-out;
     }
 
     @property --progress {
