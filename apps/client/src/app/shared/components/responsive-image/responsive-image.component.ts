@@ -15,7 +15,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="eager"
+      loading="lazy"
       fetchpriority="high"
       decoding="async"
     />
@@ -26,7 +26,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="eager"
+      loading="lazy"
       fetchpriority="high"
       decoding="async"
     />
