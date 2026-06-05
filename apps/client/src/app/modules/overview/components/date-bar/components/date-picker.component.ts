@@ -71,7 +71,7 @@ const DATE_PICKER_PROVIDERS = [
       [class.is-open]="picker.opened"
     >
       <mat-icon>calendar_today</mat-icon>
-      <span>{{ selectedDay() | date : 'dd.MM.YY' }}</span>
+      <span>{{ selectedDay() | date : 'dd.MM.yy' }}</span>
     </button>
     <mat-form-field>
       <input

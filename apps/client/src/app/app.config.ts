@@ -2,11 +2,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import type {
-  ApplicationConfig} from '@angular/core';
-import {
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
+import type { ApplicationConfig } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
@@ -26,7 +22,6 @@ import {
 import { GLOBAL_SERVICE_PROVIDERS } from './shared';
 
 const BASE_PROVIDERS = [
-  provideExperimentalZonelessChangeDetection(),
   provideRouter(
     routes,
     withComponentInputBinding(),
