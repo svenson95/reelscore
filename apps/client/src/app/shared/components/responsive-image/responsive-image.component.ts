@@ -16,7 +16,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [width]="width()"
       [height]="height()"
       loading="lazy"
-      fetchpriority="high"
       decoding="async"
     />
     } @else {
@@ -27,7 +26,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       [width]="width()"
       [height]="height()"
       loading="lazy"
-      fetchpriority="high"
       decoding="async"
     />
     }
