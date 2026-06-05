@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx run-many --parallel --target=serve --projects=api,client"
+    "dev": "nx run-many --parallel --target=serve --projects=api,client NX_TUI=false"
   },
   "private": true,
   "dependencies": {
