@@ -27,7 +27,7 @@
     {
       "name": "assets-logos",
       "installMode": "lazy",
-      "updateMode": "prefetch",
+      "updateMode": "lazy",
       "resources": {
         "files": [
           "/assets/images/competition-responsive/**",
