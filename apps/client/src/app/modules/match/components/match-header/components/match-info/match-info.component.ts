@@ -85,7 +85,13 @@ export class MatchInfoComponent {
     if (state.isNotPlayed) return 'Abgesagt';
     if (state.isPenalty) return 'Elfmeterschießen';
     if (state.isHalftime) return 'HZ';
-    if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
+    if (state.isPlaying) {
+      if (state.status === 'INT') {
+        return 'Unterbrechung';
+      } else {
+        return `${fixture.fixture.status.elapsed}'`;
+      }
+    }
     if (state.isFinished) return 'ENDE';
     return '';
   });

@@ -131,7 +131,10 @@ export class FixtureListItemComponent {
 
     if (state.isPenalty) return 'Elfm.';
     if (state.isHalftime) return 'HZ';
-    if (state.isPlaying) return `${fixture.fixture.status.elapsed}'`;
+    if (state.isPlaying) {
+      if (state.status === 'INT') return 'Unt.';
+      return `${fixture.fixture.status.elapsed}'`;
+    }
     if (state.isFinished) {
       return formatDate(fixture.fixture.date, 'HH:mm', 'de-DE', TIMEZONE);
     }
