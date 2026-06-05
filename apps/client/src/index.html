@@ -94,11 +94,6 @@
         width: 64px;
         height: 64px;
         object-fit: contain;
-        content: url('/assets/icons/logo-black.png');
-
-        @media (prefers-color-scheme: dark) {
-          content: url('/assets/icons/logo-white.png');
-        }
       }
 
       .progress {
@@ -141,7 +136,22 @@
   </head>
   <body>
     <div id="app-initializer" class="app-initializer">
-      <img class="app-initializer-logo" alt="Reelscore" />
+      <picture>
+        <source
+          srcset="/assets/icons/logo-white.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <img
+          class="app-initializer-logo"
+          src="/assets/icons/logo-black.png"
+          width="64"
+          height="64"
+          alt="reelscore"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
 
       <div class="progress" aria-label="App wird geladen">
         <div class="progress-bar"></div>
