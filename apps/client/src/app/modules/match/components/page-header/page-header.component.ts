@@ -21,8 +21,7 @@ const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
   styles: `
     :host { @apply flex p-3; }
     button {
-      --mat-button-outlined-container-height: 36px;
-      --mat-button-outlined-disabled-label-text-color: var(--rs-color-text-1);
+      --mat-button-outlined-container-height: 36px; // TODO refactor to material.scss
     }
     rs-refresh-ticker { @apply ml-px; }
     .spacer { @apply flex-1; }

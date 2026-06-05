@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { retry } from 'rxjs/operators';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 import type { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
@@ -20,11 +21,23 @@ type FixtureState = StateHandler<{
   isRefreshing: boolean;
 }>;
 
+type LoadFixtureOptions = {
+  isRefresh: boolean;
+};
+
 const initialState: FixtureState = {
   fixture: null,
   isLoading: false,
   isRefreshing: false,
   error: null,
+};
+
+const getFixtureDate = (fixture: GetFixtureDTO): string => {
+  return fixture.data.fixture.date.split('T')[0];
+};
+
+const getFixtureIdParameter = (fixtureId: FixtureId): FixtureIdParameter => {
+  return fixtureId.toString();
 };
 
 export const FixtureStore = signalStore(
@@ -40,14 +53,7 @@ export const FixtureStore = signalStore(
       latestFixturesStore = inject(LatestFixturesStore),
       analysesStore = inject(AnalysesStore)
     ) => {
-      const loadFixtureData = (
-        id: FixtureId,
-        options: {
-          isRefresh: boolean;
-        }
-      ): Promise<void> => {
-        const isRefresh = options.isRefresh;
-
+      const patchLoadingState = (isRefresh: boolean): void => {
         patchState(
           store,
           isRefresh
@@ -62,63 +68,76 @@ export const FixtureStore = signalStore(
                 isRefreshing: false,
               }
         );
+      };
 
-        return new Promise((resolve) => {
-          http
-            .getFixture(id)
-            .pipe(retry(errorHandler))
-            .subscribe({
-              next: (fixture) => {
-                const fixtureId = fixture.data.fixture.id;
-
-                patchState(store, {
-                  fixture,
-                  isLoading: false,
-                  isRefreshing: false,
-                  error: null,
-                });
-
-                if (!isCompetitionWithoutStandings(fixture.data.league.id)) {
-                  const { home, away } = fixture.data.teams;
-                  const teamIds = `${home.id},${away.id}`;
-                  const competitionId = fixture.data.league.id;
-                  const date = fixture.data.fixture.date.split('T')[0];
-
-                  standingsStore.loadFixtureStandings(
-                    teamIds,
-                    competitionId,
-                    date
-                  );
-                }
-
-                const fixtureIdParameter: FixtureIdParameter =
-                  fixtureId.toString();
-
-                evaluationsStore.loadEvaluations(fixtureId);
-                latestFixturesStore.loadLatestFixtures(fixtureId);
-                analysesStore.loadAnalyses(fixtureId);
-
-                eventsStore.loadEvents({
-                  fixtureId: fixtureIdParameter,
-                  teams: fixture.data.teams,
-                });
-
-                statisticsStore.loadStatistics(fixtureIdParameter);
-
-                resolve();
-              },
-              error: (error) => {
-                patchState(store, {
-                  fixture: isRefresh ? store.fixture() : null,
-                  isLoading: false,
-                  isRefreshing: false,
-                  error,
-                });
-
-                resolve();
-              },
-            });
+      const patchFixtureLoaded = (fixture: GetFixtureDTO): void => {
+        patchState(store, {
+          fixture,
+          isLoading: false,
+          isRefreshing: false,
+          error: null,
         });
+      };
+
+      const patchFixtureError = (error: unknown, isRefresh: boolean): void => {
+        patchState(store, {
+          fixture: isRefresh ? store.fixture() : null,
+          isLoading: false,
+          isRefreshing: false,
+          error: null,
+        });
+      };
+
+      const loadFixtureStandings = (fixture: GetFixtureDTO): void => {
+        const competitionId = fixture.data.league.id;
+
+        if (isCompetitionWithoutStandings(competitionId)) {
+          return;
+        }
+
+        const { home, away } = fixture.data.teams;
+        const teamIds = `${home.id},${away.id}`;
+        const date = getFixtureDate(fixture);
+
+        standingsStore.loadFixtureStandings(teamIds, competitionId, date);
+      };
+
+      const loadRelatedFixtureData = (fixture: GetFixtureDTO): void => {
+        const fixtureId = fixture.data.fixture.id;
+        const fixtureIdParameter = getFixtureIdParameter(fixtureId);
+
+        loadFixtureStandings(fixture);
+
+        evaluationsStore.loadEvaluations(fixtureId);
+        latestFixturesStore.loadLatestFixtures(fixtureId);
+        analysesStore.loadAnalyses(fixtureId);
+
+        eventsStore.loadEvents({
+          fixtureId: fixtureIdParameter,
+          teams: fixture.data.teams,
+        });
+
+        statisticsStore.loadStatistics(fixtureIdParameter);
+      };
+
+      const loadFixtureData = async (
+        id: FixtureId,
+        options: LoadFixtureOptions
+      ): Promise<void> => {
+        const { isRefresh } = options;
+
+        patchLoadingState(isRefresh);
+
+        try {
+          const fixture = await firstValueFrom(
+            http.getFixture(id).pipe(retry(errorHandler))
+          );
+
+          patchFixtureLoaded(fixture);
+          loadRelatedFixtureData(fixture);
+        } catch (error) {
+          patchFixtureError(error, isRefresh);
+        }
       };
 
       return {

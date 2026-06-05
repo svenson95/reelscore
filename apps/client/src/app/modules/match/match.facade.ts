@@ -21,6 +21,7 @@ export class MatchFacade {
   readonly fixture = this.fixtureStore.fixture;
   readonly isLoading = this.fixtureStore.isLoading;
   readonly error = this.fixtureStore.error;
+  readonly isRefreshing = this.fixtureStore.isRefreshing;
   loadFixture = this.fixtureStore.loadFixture;
   reloadFixture = this.fixtureStore.reloadFixture;
 

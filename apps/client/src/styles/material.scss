@@ -143,6 +143,12 @@ button {
     }
   }
 
+  &.mdc-button,
+  &.mdc-icon-button {
+    --mat-icon-button-disabled-icon-color: var(--rs-color-text-1);
+    --mat-button-outlined-disabled-label-text-color: var(--rs-color-text-1);
+  }
+
   &.mat-mdc-icon-button {
     border-radius: var(--rs-size-border-radius);
 
