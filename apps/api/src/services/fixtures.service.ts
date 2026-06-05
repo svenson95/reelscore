@@ -8,7 +8,7 @@ import type {
   FixtureDTO,
   FixtureId,
 } from '@lib/models';
-import { COMPETITION_ROUNDS, getSeason } from '@lib/shared';
+import { COMPETITION_ROUNDS, getDateInTimezone, getSeason } from '@lib/shared';
 
 import { Fixtures } from '../models';
 
@@ -29,33 +29,18 @@ export class FixturesService {
   }
 
   async findByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
-    const [year, month, day] = date.split('-').map(Number);
-    const berlinOffsetHours = this.isDstInBerlin(year, month, day) ? 2 : 1;
-    const dayStart = Date.UTC(
-      year,
-      month - 1,
-      day,
-      -berlinOffsetHours,
-      0,
-      0,
-      0
-    );
-    const dayEnd = Date.UTC(
-      year,
-      month - 1,
-      day,
-      23 - berlinOffsetHours,
-      59,
-      59,
-      999
-    );
+    const start = getDateInTimezone(date).startOf('day').toDate();
+    const end = getDateInTimezone(date).add(1, 'day').startOf('day').toDate();
 
-    return await Fixtures.find()
-      .where('fixture.date')
-      .gte(dayStart)
-      .lte(dayEnd)
+    return await Fixtures.find({
+      'fixture.date': {
+        $gte: start,
+        $lt: end,
+      },
+    })
       .sort({ 'fixture.date': 1 })
-      .lean();
+      .lean<FixtureDTO[]>()
+      .exec();
   }
 
   async findByCompetitionAndRounds(
