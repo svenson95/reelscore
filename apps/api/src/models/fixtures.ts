@@ -22,6 +22,7 @@ const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
       long: String,
       short: String,
       elapsed: Number,
+      extra: Number,
     },
   },
   league: {

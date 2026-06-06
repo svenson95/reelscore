@@ -18,7 +18,8 @@ export type FixtureVenue = { id: number | null; name: string; city: string };
 export type FixtureStatus = {
   long: StatusLong;
   short: StatusShort;
-  elapsed: number;
+  elapsed: number | null;
+  extra: number | null;
 };
 export type FixtureResult = 'NO_RESULT_AVAILABLE' | 'WIN' | 'DRAW' | 'LOSS';
 export interface Fixture {
