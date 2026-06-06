@@ -128,13 +128,12 @@ export class FixtureListItemComponent {
   readonly timeLabel = computed<string>(() => {
     const fixture = this.fixture();
     const state = this.statusState();
-    const status = fixture.fixture.status;
 
     if (state.isPenalty) return 'Elfm.';
     if (state.isHalftime) return 'HZ';
     if (state.isPlaying) {
       if (state.status === 'INT') return 'Unt.';
-      // 'status.extra' is possibly 'null'.
+      const status = fixture.fixture.status;
       return `${(status.elapsed ?? 0) + (status.extra ?? 0)}'`;
     }
     if (state.isFinished) {

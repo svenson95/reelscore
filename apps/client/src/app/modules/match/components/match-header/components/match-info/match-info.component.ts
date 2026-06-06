@@ -77,7 +77,6 @@ export class MatchInfoComponent {
   readonly statusLabel = computed<string>(() => {
     const fixture = this.data();
     const state = this.statusState();
-    const status = fixture?.fixture.status;
 
     if (!fixture || !state || !status) {
       throw new Error('fixture, state or status in match-info not defined');
@@ -90,6 +89,7 @@ export class MatchInfoComponent {
       if (state.status === 'INT') {
         return 'Unterbrechung';
       } else {
+        const status = fixture.fixture.status;
         return `${(status.elapsed ?? 0) + (status.extra ?? 0)}'`;
       }
     }
