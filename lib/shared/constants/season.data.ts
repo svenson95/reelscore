@@ -1,9 +1,10 @@
+import type { Moment } from 'moment';
+
 import type {
   CompetitionId,
   CompetitionRound,
   CompetitionSeason,
 } from '../../models/competition.model';
-import { getNow } from '../helper/date.helper';
 
 export const COMPETITION_WITH_MULTIPLE_ROUNDS_IN_SOME_SEASONS: CompetitionId[] =
   [2, 3];
@@ -40,4 +41,4 @@ export const FIXED_SEASON_BY_COMPETITION = new Map<
   [253, 2026], // Friendlies
 ]);
 
-export const SEASON_START_CUTOFF = getNow().clone().month(7).date(1);
+export const SEASON_START = (d: Moment) => d.clone().month(7).date(1);
