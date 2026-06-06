@@ -60,7 +60,7 @@ import { ScrollService } from '../services';
     }
 
     .toggle-button {
-      @apply absolute bottom-[-6px] left-[50%] translate-x-[-50%] justify-items-center border-none;
+      @apply inline-flex absolute bottom-[-5px] left-[50%] translate-x-[-50%] justify-center items-center border-none;
 
       width: 2rem;
       height: 2rem;
@@ -75,7 +75,7 @@ import { ScrollService } from '../services';
       transition: transform 220ms ease;
     }
 
-    :not(.toggle-button--collapsed) .toggle-icon {
+    .toggle-button--collapsed .toggle-icon {
       transform: rotate(180deg);
     }
   `,
@@ -99,13 +99,13 @@ import { ScrollService } from '../services';
     >
       <svg
         class="toggle-icon"
-        width="18"
-        height="18"
+        width="14"
+        height="14"
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
         <path
-          d="M6 9l6 6 6-6"
+          d="M6 15l6-6 6 6"
           fill="none"
           stroke="currentColor"
           stroke-width="2"
