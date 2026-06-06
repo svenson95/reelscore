@@ -44,7 +44,7 @@ export type CompetitionRoundsSeasons = Record<
   CompetitionRoundsData
 >;
 
-export type Competition = {
+type FixtureLeagueBase = {
   id: CompetitionId;
   name: CompetitionName;
   country: string;
@@ -52,8 +52,15 @@ export type Competition = {
   flag: string;
   season: CompetitionSeason;
   round: CompetitionRound;
-  standings?: StandingRanks[][];
 };
+
+export interface FixtureLeague extends FixtureLeagueBase {
+  standings: boolean;
+}
+
+export interface StandingsLeague extends FixtureLeagueBase {
+  standings: StandingRanks[][];
+}
 
 export type CompetitionLeague = {
   id: CompetitionId;

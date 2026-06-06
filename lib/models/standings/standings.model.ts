@@ -1,9 +1,9 @@
-import type { Competition, CompetitionId } from '../competition.model';
+import type { CompetitionId, StandingsLeague } from '../competition.model';
 import type { MongoDbId } from '../mongodb.model';
 
 export interface StandingsDTO {
   _id: MongoDbId;
-  league: Competition;
+  league: StandingsLeague;
   createdAt: Date;
   updatedAt: Date;
 }
