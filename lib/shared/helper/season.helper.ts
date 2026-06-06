@@ -6,7 +6,7 @@ import type {
 } from '../../models/competition.model';
 import {
   FIXED_SEASON_BY_COMPETITION,
-  SEASON_START_CUTOFF,
+  SEASON_START,
 } from '../constants/season.data';
 
 import { isCompetitionSeason } from './competition.helper';
@@ -25,10 +25,9 @@ export const getSeason = (
   );
 };
 
-const getRegularCompetitionSeason = (today: Moment): CompetitionSeason => {
-  const season = today.isSameOrBefore(SEASON_START_CUTOFF)
-    ? today.year() - 1
-    : today.year();
+const getRegularCompetitionSeason = (date: Moment): CompetitionSeason => {
+  const cutoff = SEASON_START(date);
+  const season = date.isSameOrBefore(cutoff) ? date.year() - 1 : date.year();
 
   if (!isCompetitionSeason(season)) {
     throw new Error(`Unsupported competition season: ${season}`);
