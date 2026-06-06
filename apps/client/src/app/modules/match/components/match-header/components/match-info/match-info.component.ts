@@ -78,7 +78,7 @@ export class MatchInfoComponent {
     const fixture = this.data();
     const state = this.statusState();
 
-    if (!fixture || !state || !status) {
+    if (!fixture || !state) {
       throw new Error('fixture, state or status in match-info not defined');
     }
 
