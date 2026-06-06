@@ -4,22 +4,28 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   inject,
   input,
-  ViewChild,
 } from '@angular/core';
 
 import type { ExtendedFixtureDTO, FixtureHighlights } from '@lib/models';
 
-import { MatchHighlightsComponent, MatchInfoComponent } from './components';
+import {
+  CollapsibleScrollSection,
+  MatchHighlightsComponent,
+  MatchInfoComponent,
+} from './components';
 import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
 import { VENUE_IDS } from './venue-ids.data';
 
 @Component({
   selector: 'section[rs-match-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchInfoComponent, MatchHighlightsComponent],
+  imports: [
+    MatchInfoComponent,
+    MatchHighlightsComponent,
+    CollapsibleScrollSection,
+  ],
   providers: [ScrollService, VenueImageService],
   styles: `
     :host {
@@ -47,50 +53,13 @@ import { VENUE_IDS } from './venue-ids.data';
       }
     }
 
-    .animation-wrapper {
-      --highlights-height: 0px;
-      --highlights-progress: 0;
-
-      height: calc(
-        var(--highlights-height) * (1 - var(--highlights-progress))
-      );
-
-      opacity: calc(1 - var(--highlights-progress));
-
-      overflow: clip;
-      contain: layout paint style;
-
-      will-change: height, opacity;
-    }
-
-    @supports not (overflow: clip) {
-      .animation-wrapper {
-        overflow: hidden;
-      }
-    }
-
-    .animation-content {
-      transform: translate3d(
-        0,
-        calc(var(--highlights-height) * var(--highlights-progress) * -0.15),
-        0
-      );
-
-      will-change: transform;
-    }
-
     .toggle-highlights-row {
-      @apply flex items-center py-rs1;
-      overflow: hidden;
+      @apply flex items-center py-rs1 overflow-hidden;
       will-change: height, opacity;
 
       .divider {
         @apply w-full h-[1px] bg-rs-border-color-2;
       }
-    }
-
-    .match-highlights {
-      display: block;
     }
   `,
   template: `
@@ -105,19 +74,17 @@ import { VENUE_IDS } from './venue-ids.data';
       @let matchInfo = data();
       <rs-match-info [data]="matchInfo" />
       @if (highlights() && hasGoalsOrPenalty() && matchInfo) {
-      <div #animationWrapper class="animation-wrapper">
-        <div #highlightsContent class="animation-content">
-          <div class="toggle-highlights-row">
-            <div class="divider"></div>
-          </div>
-
-          <rs-match-highlights
-            class="match-highlights"
-            [data]="matchInfo"
-            [highlights]="highlights()!"
-          />
+      <rs-collapsible-scroll-section>
+        <div class="toggle-highlights-row">
+          <div class="divider"></div>
         </div>
-      </div>
+
+        <rs-match-highlights
+          class="match-highlights"
+          [data]="matchInfo"
+          [highlights]="highlights()!"
+        />
+      </rs-collapsible-scroll-section>
       }
     </div>
   `,
@@ -126,19 +93,9 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   readonly data = input.required<ExtendedFixtureDTO | null>();
   readonly highlights = input.required<FixtureHighlights | null>();
 
-  @ViewChild('animationWrapper', { read: ElementRef })
-  set animationWrapper(ref: ElementRef<HTMLElement> | null) {
-    this.scrollService.setAnimationWrapper(ref);
-  }
-
-  @ViewChild('highlightsContent', { read: ElementRef })
-  set highlightsContent(ref: ElementRef<HTMLElement> | null) {
-    this.scrollService.setHighlightsContent(ref);
-  }
-
   private readonly scrollService = inject(ScrollService);
-
   private readonly venueImageService = inject(VenueImageService);
+
   readonly hasValidVenueBackground =
     this.venueImageService.hasValidVenueBackground;
   readonly venueBackgroundLoaded = this.venueImageService.venueBackgroundLoaded;

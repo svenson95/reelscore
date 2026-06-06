@@ -1,11 +1,5 @@
-import type {
-  ElementRef} from '@angular/core';
-import {
-  DestroyRef,
-  Injectable,
-  NgZone,
-  inject,
-} from '@angular/core';
+import type { ElementRef } from '@angular/core';
+import { DestroyRef, Injectable, NgZone, inject } from '@angular/core';
 
 @Injectable()
 export class ScrollService {
@@ -13,45 +7,29 @@ export class ScrollService {
   private readonly destroyRef = inject(DestroyRef);
 
   private wrapper?: HTMLElement;
-  private content?: HTMLElement;
-
-  private resizeObserver?: ResizeObserver;
+  private scrollFrame: number | null = null;
   private destroyScrollListener?: () => void;
 
-  private scrollFrame: number | null = null;
   private initialScrollY = 0;
   private highlightsHeight = 0;
 
   setAnimationWrapper(ref: ElementRef<HTMLElement> | null): void {
     this.wrapper = ref?.nativeElement;
-    this.updateCssVariables();
-  }
 
-  setHighlightsContent(ref: ElementRef<HTMLElement> | null): void {
-    this.resizeObserver?.disconnect();
-    this.content = ref?.nativeElement;
-
-    if (!this.content) {
-      this.highlightsHeight = 0;
-      this.updateCssVariables();
-      return;
-    }
-
-    this.measureHeight();
-
-    this.resizeObserver = new ResizeObserver(() => {
-      this.requestUpdate(() => {
-        this.measureHeight();
-        this.updateProgress();
-      });
+    this.requestUpdate(() => {
+      this.measureHeight();
+      this.updateProgress();
     });
-
-    this.resizeObserver.observe(this.content);
   }
 
   observeScrollPosition(): void {
     this.ngZone.runOutsideAngular(() => {
       this.initialScrollY = this.getScrollY();
+
+      this.requestUpdate(() => {
+        this.measureHeight();
+        this.updateProgress();
+      });
 
       const onScroll = () => {
         this.requestUpdate(() => {
@@ -95,9 +73,6 @@ export class ScrollService {
     this.destroyScrollListener?.();
     this.destroyScrollListener = undefined;
 
-    this.resizeObserver?.disconnect();
-    this.resizeObserver = undefined;
-
     if (this.scrollFrame !== null) {
       cancelAnimationFrame(this.scrollFrame);
       this.scrollFrame = null;
@@ -116,14 +91,17 @@ export class ScrollService {
   }
 
   private measureHeight(): void {
-    if (!this.content) {
+    if (!this.wrapper) {
       this.highlightsHeight = 0;
-      this.updateCssVariables();
       return;
     }
 
-    this.highlightsHeight = this.content.scrollHeight;
-    this.updateCssVariables();
+    this.highlightsHeight = this.wrapper.scrollHeight;
+
+    this.wrapper.style.setProperty(
+      '--highlights-height',
+      `${this.highlightsHeight}px`
+    );
   }
 
   private updateProgress(): void {
@@ -135,17 +113,6 @@ export class ScrollService {
     const progress = Math.min(1, scrolled / this.highlightsHeight);
 
     this.wrapper.style.setProperty('--highlights-progress', `${progress}`);
-  }
-
-  private updateCssVariables(): void {
-    if (!this.wrapper) {
-      return;
-    }
-
-    this.wrapper.style.setProperty(
-      '--highlights-height',
-      `${this.highlightsHeight}px`
-    );
   }
 
   private getScrollY(): number {
