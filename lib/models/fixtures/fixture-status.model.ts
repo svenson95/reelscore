@@ -45,6 +45,13 @@ export const STATUS_TYPES_PLAYING: string[] = [
 ] as const;
 export type StatusTypePlaying = (typeof STATUS_TYPES_PLAYING)[number];
 
+export const STATUS_TYPES_PLAYING_ACTIVE: string[] = [
+  '1H',
+  '2H',
+  'ET',
+  'P',
+] as const;
+
 export const STATUS_TYPES_FINISHED: string[] = ['FT', 'AET', 'PEN'] as const;
 export type StatusTypeFinished = (typeof STATUS_TYPES_FINISHED)[number];
 
