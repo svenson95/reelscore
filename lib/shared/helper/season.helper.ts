@@ -26,8 +26,10 @@ export const getSeason = (
 };
 
 const getRegularCompetitionSeason = (date: Moment): CompetitionSeason => {
-  const cutoff = SEASON_START(date);
-  const season = date.isSameOrBefore(cutoff) ? date.year() - 1 : date.year();
+  const startOfNextSeason = SEASON_START(date);
+  const season = date.isBefore(startOfNextSeason, 'day')
+    ? date.year() - 1
+    : date.year();
 
   if (!isCompetitionSeason(season)) {
     throw new Error(`Unsupported competition season: ${season}`);
