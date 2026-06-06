@@ -25,16 +25,16 @@ import { MatchFixturesTableComponent } from './components';
   template: `
     <h2>Letzte Partien</h2>
     <div class="latest-fixtures-container">
-      @let lf = latestFixtures(); @if (isLoading()) {
+      @let lf = latestFixtures(); @if (lf) { @let d = data(); @if (d) {
+      <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />
+      <rs-match-fixtures-table [team]="d.teams.away" [fixtures]="lf.away" />
+      } } @else if (isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
       } @else if (error()) {
       <p class="no-data">Fehler beim Laden der Spiele</p>
       } @else if (!lf) {
       <p class="no-data">Keine Spiele gefunden</p>
-      } @else { @let d = data(); @if (d) {
-      <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />
-      <rs-match-fixtures-table [team]="d.teams.away" [fixtures]="lf.away" />
-      } }
+      }
     </div>
   `,
 })
