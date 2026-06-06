@@ -79,7 +79,7 @@ export class MatchInfoComponent {
     const state = this.statusState();
 
     if (!fixture || !state) {
-      throw new Error('fixture, state or status in match-info not defined');
+      throw new Error('fixture or state in match-info not defined');
     }
 
     if (state.isNotPlayed) return 'Abgesagt';
