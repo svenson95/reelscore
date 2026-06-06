@@ -65,7 +65,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     <a matRipple [routerLink]="fixtureLink()">
       <div
         class="time"
-        [class.is-upcoming]="statusState().isUpcoming"
+        [class.is-upcoming]="statusState().isScheduled"
         [class.is-playing]="statusState().isLive"
       >
         <span class="time-label" [class.is-finished]="statusState().isFinished">
@@ -91,7 +91,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
             />
           </div>
         </div>
-        <div class="result" [class.is-upcoming]="statusState().isUpcoming">
+        <div class="result" [class.is-upcoming]="statusState().isScheduled">
           <rs-result-label [fixture]="fixture()" />
         </div>
         <div>

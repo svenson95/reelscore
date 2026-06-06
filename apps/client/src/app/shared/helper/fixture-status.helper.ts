@@ -13,7 +13,6 @@ import {
 
 export interface FixtureStatusState {
   status: StatusShort;
-  isUpcoming: boolean;
   isScheduled: boolean;
   isPlaying: boolean;
   isHalftime: boolean;
@@ -44,7 +43,6 @@ export function getFixtureStatusState(status: StatusShort): FixtureStatusState {
 
   return {
     status,
-    isUpcoming: isScheduled,
     isScheduled,
     isPlaying,
     isHalftime,
