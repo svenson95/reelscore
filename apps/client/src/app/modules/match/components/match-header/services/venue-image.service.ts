@@ -1,16 +1,12 @@
 import { computed, effect, Injectable, signal } from '@angular/core';
 
-import type { ExtendedFixtureDTO } from '@lib/models';
-
-import { VENUE_IDS } from '../venue-ids.data';
-
-const ALLIANZ_ARENA_ID = 20732;
+export const ALLIANZ_ARENA_ID = 20732;
 
 @Injectable()
 export class VenueImageService {
   private readonly activeVenueImageUrl = signal<string | undefined>(undefined);
-  private readonly data = signal<ExtendedFixtureDTO | null>(null);
 
+  private readonly venueId = signal<number | null>(null);
   readonly hasValidVenueBackground = signal<boolean>(false);
   readonly venueBackgroundLoaded = signal<boolean>(false);
 
@@ -36,22 +32,21 @@ export class VenueImageService {
     });
   });
 
-  setData(fixture: ExtendedFixtureDTO | null): void {
-    this.data.set(fixture);
+  setVenueId(venueId: number | null): void {
+    this.venueId.set(venueId);
   }
 
   private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
-    const fixture = this.data();
+    const id = this.venueId();
 
-    if (!fixture) {
+    if (!id) {
       this.setVenueBackground(undefined, true);
       return;
     }
 
     this.setVenueBackground(undefined, false);
 
-    const venueId = VENUE_IDS[fixture.teams.home.id] ?? ALLIANZ_ARENA_ID;
-    const imageUrl = this.getVenueImageUrl(venueId);
+    const imageUrl = this.getVenueImageUrl(id);
     const validImageUrl = await this.getValidVenueImageUrl(imageUrl);
 
     if (isCancelled()) return;
