@@ -1,6 +1,4 @@
-import type {
-  AfterViewInit,
-  OnDestroy} from '@angular/core';
+import type { AfterViewInit, OnDestroy } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +13,8 @@ import {
 import type { ExtendedFixtureDTO, FixtureHighlights } from '@lib/models';
 
 import { MatchHighlightsComponent, MatchInfoComponent } from './components';
-import { ScrollService, VenueImageService } from './services';
+import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
+import { VENUE_IDS } from './venue-ids.data';
 
 @Component({
   selector: 'section[rs-match-header]',
@@ -145,6 +144,12 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   readonly venueBackgroundLoaded = this.venueImageService.venueBackgroundLoaded;
   readonly venueBackgroundImage = this.venueImageService.venueBackgroundImage;
 
+  readonly venueId = computed<number | null>(() => {
+    const data = this.data();
+    if (!data) return null;
+    return VENUE_IDS[data.teams.home.id] ?? ALLIANZ_ARENA_ID;
+  });
+
   readonly hasGoalsOrPenalty = computed<boolean>(() => {
     const data = this.data();
     if (!data) return false;
@@ -165,7 +170,7 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   });
 
   venueServiceEffect = effect(() => {
-    this.venueImageService.setData(this.data());
+    this.venueImageService.setVenueId(this.venueId());
   });
 
   ngAfterViewInit(): void {
