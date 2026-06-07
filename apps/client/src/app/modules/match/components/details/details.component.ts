@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
+
 import {
   MatchEventsComponent,
   MatchStatisticsComponent,
@@ -59,9 +61,9 @@ const ANGULAR_MODULES = [
   `,
   template: `
     <mat-tab-group
+      [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
-      animationDuration="150ms"
     >
       <mat-tab>
         <ng-template mat-tab-label>
@@ -145,6 +147,8 @@ export class MatchDetailsComponent {
   readonly hasNoStandings = this.facade.hasNoStandings;
   readonly isLoadingStandings = this.facade.standingsStore.isLoading;
   readonly isKoPhase = this.facade.isKoPhase;
+
+  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
   readonly selectedTabIndex = signal<number>(0);
 

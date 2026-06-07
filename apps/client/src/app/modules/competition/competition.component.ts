@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+
+import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
 import { RouterView } from '../router-view';
 
@@ -47,7 +48,7 @@ import {
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
     <section class="competition-data">
-      <mat-tab-group animationDuration="150ms">
+      <mat-tab-group [animationDuration]="animationDuration">
         <mat-tab>
           <ng-template mat-tab-label>
             <div class="tab-label-content">
@@ -98,7 +99,7 @@ import {
   `,
 })
 export class CompetitionComponent extends RouterView {
-  private readonly routerService = inject(Router);
+  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
   private readonly lastFixturesStore = inject(LastFixturesStore);
   private readonly nextFixturesStore = inject(NextFixturesStore);

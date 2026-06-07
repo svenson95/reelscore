@@ -1,0 +1,1 @@
+export const MAT_TAB_ANIMATION_DURATION = '220ms';
