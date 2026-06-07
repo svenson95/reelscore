@@ -47,7 +47,7 @@ import { ScrollService } from '../services';
         opacity 160ms ease;
     }
 
-    .animation-wrapper--manual-collapsed {
+    .animation-wrapper--manual-active {
       --manual-collapse: 1;
     }
 
@@ -59,7 +59,7 @@ import { ScrollService } from '../services';
       }
     }
 
-    .toggle-button {
+    .collapse-button {
       @apply inline-flex absolute bottom-[-5px] left-[50%] translate-x-[-50%] justify-center items-center border-none;
 
       width: 2rem;
@@ -75,7 +75,7 @@ import { ScrollService } from '../services';
       transition: transform 220ms ease;
     }
 
-    .toggle-button--collapsed .toggle-icon {
+    .collapse-button--active .toggle-icon {
       transform: rotate(180deg);
     }
   `,
@@ -83,7 +83,7 @@ import { ScrollService } from '../services';
     <div
       #animationWrapper
       class="animation-wrapper"
-      [class.animation-wrapper--manual-collapsed]="collapsed()"
+      [class.animation-wrapper--manual-active]="collapsed()"
       [class.animation-wrapper--manual-animating]="manualAnimating()"
     >
       <ng-content />
@@ -91,8 +91,9 @@ import { ScrollService } from '../services';
 
     <button
       type="button"
-      class="toggle-button"
-      [class.toggle-button--collapsed]="collapsed()"
+      class="collapse-button"
+      [class.opacity-0]="!hasVisibleHeight()"
+      [class.collapse-button--active]="collapsed()"
       [attr.aria-expanded]="!collapsed()"
       aria-label="Highlights ein- oder ausklappen"
       (click)="toggle()"
@@ -126,6 +127,8 @@ export class CollapsibleScrollSection {
 
   readonly collapsed = signal<boolean>(false);
   readonly manualAnimating = signal<boolean>(false);
+
+  readonly hasVisibleHeight = this.scrollService.hasVisibleHeight;
 
   toggle(): void {
     this.manualAnimating.set(true);

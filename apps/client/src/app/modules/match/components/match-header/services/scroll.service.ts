@@ -1,5 +1,12 @@
 import type { ElementRef } from '@angular/core';
-import { DestroyRef, Injectable, NgZone, inject } from '@angular/core';
+import {
+  computed,
+  DestroyRef,
+  inject,
+  Injectable,
+  NgZone,
+  signal,
+} from '@angular/core';
 
 @Injectable()
 export class ScrollService {
@@ -11,10 +18,22 @@ export class ScrollService {
   private destroyScrollListener?: () => void;
 
   private initialScrollY = 0;
-  private highlightsHeight = 0;
+
+  private readonly highlightsHeight = signal<number>(0);
+  private readonly highlightsProgress = signal<number>(0);
+
+  readonly hasVisibleHeight = computed(() => {
+    console.log('value', this.highlightsProgress());
+    return this.highlightsHeight() > 0 && this.highlightsProgress() < 1;
+  });
 
   setAnimationWrapper(ref: ElementRef<HTMLElement> | null): void {
     this.wrapper = ref?.nativeElement;
+
+    if (!this.wrapper) {
+      this.highlightsHeight.set(0);
+      return;
+    }
 
     this.requestUpdate(() => {
       this.measureHeight();
@@ -92,25 +111,30 @@ export class ScrollService {
 
   private measureHeight(): void {
     if (!this.wrapper) {
-      this.highlightsHeight = 0;
+      this.highlightsHeight.set(0);
+      this.highlightsProgress.set(0);
       return;
     }
 
-    this.highlightsHeight = this.wrapper.scrollHeight;
+    const height = this.wrapper.scrollHeight;
 
-    this.wrapper.style.setProperty(
-      '--highlights-height',
-      `${this.highlightsHeight}px`
-    );
+    this.highlightsHeight.set(height);
+
+    this.wrapper.style.setProperty('--highlights-height', `${height}px`);
   }
 
   private updateProgress(): void {
-    if (!this.wrapper || this.highlightsHeight <= 0) {
+    const highlightsHeight = this.highlightsHeight();
+
+    if (!this.wrapper || highlightsHeight <= 0) {
+      this.highlightsProgress.set(0);
       return;
     }
 
     const scrolled = Math.max(0, this.getScrollY() - this.initialScrollY);
-    const progress = Math.min(1, scrolled / this.highlightsHeight);
+    const progress = Math.min(1, scrolled / highlightsHeight);
+
+    this.highlightsProgress.set(progress);
 
     this.wrapper.style.setProperty('--highlights-progress', `${progress}`);
   }
