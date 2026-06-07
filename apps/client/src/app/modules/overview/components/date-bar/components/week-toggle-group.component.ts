@@ -9,6 +9,7 @@ import {
   output,
   Pipe,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -27,6 +28,7 @@ export class IsTodayPipe implements PipeTransform {
 
 const EXTERNAL_MODULES = [
   DatePipe,
+  MatButtonModule,
   MatButtonToggleModule,
   MatIconModule,
   MatTooltipModule,
@@ -63,7 +65,7 @@ const EXTERNAL_MODULES = [
         )
       );
 
-      @apply flex border-none flex-1;
+      @apply flex border-none flex-1 mx-px;
 
       mat-button-toggle.mat-button-toggle {
         @apply flex-1;
@@ -93,28 +95,41 @@ const EXTERNAL_MODULES = [
     }
   `,
   template: `
-    <mat-button-toggle-group
-      hideSingleSelectionIndicator
-      [value]="selectedDay()"
-      (valueChange)="toggleValueChange($event)"
-    >
-      <mat-button-toggle [disabled]="isLoading()" (click)="setDateTo(-1)">
-        <mat-icon>keyboard_arrow_left</mat-icon>
-      </mat-button-toggle>
-      @for(day of weekdays(); track day.toString()) {
-      <mat-button-toggle
-        [disabled]="isLoading() || selectedDay() === day"
-        [value]="day"
-        [class.is-today]="day | isToday"
+    <div class="week-toggle-wrapper">
+      <button
+        mat-icon-button
+        type="button"
+        [disabled]="isLoading()"
+        (click)="setDateTo(-1)"
       >
-        {{ day | date : 'ccc' }}
-      </mat-button-toggle>
-      }
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
 
-      <mat-button-toggle [disabled]="isLoading()" (click)="setDateTo(+1)">
+      <mat-button-toggle-group
+        hideSingleSelectionIndicator
+        [value]="selectedDay()"
+        (valueChange)="toggleValueChange($event)"
+      >
+        @for(day of weekdays(); track day) {
+        <mat-button-toggle
+          [disabled]="isLoading() || selectedDay() === day"
+          [value]="day"
+          [class.is-today]="day | isToday"
+        >
+          {{ day | date : 'ccc' }}
+        </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+
+      <button
+        mat-icon-button
+        type="button"
+        [disabled]="isLoading()"
+        (click)="setDateTo(+1)"
+      >
         <mat-icon>keyboard_arrow_right</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+      </button>
+    </div>
   `,
 })
 export class WeekToggleGroupComponent {
@@ -136,8 +151,9 @@ export class WeekToggleGroupComponent {
     this.dateSelected.emit(formattedDate);
   }
 
-  toggleValueChange(value: string) {
-    if (!value) return;
+  toggleValueChange(value: DateString): void {
+    if (!value || value === this.selectedDay()) return;
+
     this.dateSelected.emit(value);
   }
 }
