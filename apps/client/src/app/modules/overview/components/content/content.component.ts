@@ -1,17 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-} from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
-
-import type { DateString } from '@lib/shared';
-
-import { SelectedDateService } from '../../services';
 
 import {
   OverviewFixturesComponent,
@@ -71,9 +59,6 @@ const MAT_MODULES = [MatTabsModule];
   `,
 })
 export class OverviewContentComponent {
-  private readonly router = inject(Router);
-  private readonly dateService = inject(SelectedDateService);
-
   private readonly facade = inject(OverviewContentFacade);
   readonly tabIndex = this.facade.tabIndex;
   readonly weekdays = this.facade.weekdays;
@@ -85,26 +70,4 @@ export class OverviewContentComponent {
   readonly weekStandings = this.facade.weekStandings;
   readonly standingsLoading = this.facade.standingsLoading;
   readonly standingsError = this.facade.standingsError;
-
-  readonly routeEvent = toSignal(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    )
-  );
-
-  readonly routeEffect = effect(() => {
-    this.routeEvent();
-
-    const date = this.getDateFromUrl(this.router.url);
-
-    if (!date) return;
-
-    this.dateService.setSelectedDay(date);
-  });
-
-  private getDateFromUrl(url: string): DateString | null {
-    const date = url.split('?')[0].split('/').filter(Boolean)[0];
-
-    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? (date as DateString) : null;
-  }
 }
