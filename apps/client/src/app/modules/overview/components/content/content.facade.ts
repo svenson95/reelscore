@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable, untracked } from '@angular/core';
 
 import type { DateString } from '@lib/shared';
 import { formatCalendarWeekKey } from '@lib/shared';
@@ -44,8 +44,8 @@ export class OverviewContentFacade {
     }
 
     this.previousWeekKey = weekKey;
+    const date = untracked(this.selectedDateString);
 
-    const date: DateString = this.selectedDateString();
     this.weekFixturesStore.loadWeekdayFixtures(date);
     this.weekStandingsStore.loadWeekdayStandings(date);
   });
