@@ -79,15 +79,6 @@ export class FixturesController {
     return fixtures;
   }
 
-  private getMultipleRounds = (
-    round: CompetitionRound,
-    rounds: Array<CompetitionRound>
-  ): CompetitionRound[] => {
-    const roundNumber = round[round.length - 1];
-
-    return rounds.filter((r) => r.endsWith(roundNumber));
-  };
-
   private hasMultipleRoundsWithSameNumber = (
     round: CompetitionRound,
     rounds: Array<CompetitionRound>
