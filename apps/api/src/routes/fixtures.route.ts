@@ -33,10 +33,14 @@ fixtures.get(
   '/by-date',
   async (req: Request, res: Response): Promise<Response> => {
     const date = String(req.query.date);
-    const weekDates = getWeekDatesArray(date);
+    const withEdgeDays = req.query.withEdgeDays === 'true';
+
+    const dates = getWeekDatesArray(date, withEdgeDays);
+
     const fixturesController = new FixturesController();
+
     const weekFixtures = await Promise.all(
-      weekDates.map((day) => fixturesController.getByDate(day))
+      dates.map((day) => fixturesController.getByDate(day))
     );
 
     return res.json(weekFixtures);
