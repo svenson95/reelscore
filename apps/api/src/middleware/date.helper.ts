@@ -1,22 +1,31 @@
+const toDateString = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+const addDays = (date: Date, days: number): Date => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
 export const getWeekDatesArray = (
   date: string,
   withEdgeDays = false
 ): string[] => {
-  const startOfWeek = new Date(date);
-  const day = startOfWeek.getDay();
+  const selectedDate = new Date(date);
+
+  const dayOfWeek = selectedDate.getDay();
   const SUNDAY = 0;
   const LAST_DAY_OF_WEEK = 7;
-  const correctedDayOfWeek = day === SUNDAY ? LAST_DAY_OF_WEEK : day;
+  const correctedDayOfWeek =
+    dayOfWeek === SUNDAY ? LAST_DAY_OF_WEEK : dayOfWeek;
 
-  startOfWeek.setDate(startOfWeek.getDate() - correctedDayOfWeek + 1);
+  const monday = addDays(selectedDate, -correctedDayOfWeek + 1);
 
   const startOffset = withEdgeDays ? -1 : 0;
-  const length = withEdgeDays ? 9 : 7;
+  const numberOfDays = withEdgeDays ? 9 : 7;
 
-  return Array.from({ length }, (_, i) => {
-    const day = new Date(startOfWeek);
-    day.setDate(startOfWeek.getDate() + startOffset + i);
-
-    return day.toISOString().split('T')[0];
+  return Array.from({ length: numberOfDays }, (_, index) => {
+    return toDateString(addDays(monday, startOffset + index));
   });
 };
