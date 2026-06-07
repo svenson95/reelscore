@@ -23,7 +23,6 @@ export class ScrollService {
   private readonly highlightsProgress = signal<number>(0);
 
   readonly hasVisibleHeight = computed(() => {
-    console.log('value', this.highlightsProgress());
     return this.highlightsHeight() > 0 && this.highlightsProgress() < 1;
   });
 
