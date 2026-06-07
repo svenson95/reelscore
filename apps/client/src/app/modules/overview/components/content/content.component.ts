@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
+
 import {
   OverviewFixturesComponent,
   OverviewStandingsComponent,
@@ -29,8 +31,8 @@ const MAT_MODULES = [MatTabsModule];
   `,
   template: `
     <mat-tab-group
+      [animationDuration]="animationDuration"
       [selectedIndex]="tabIndex()"
-      animationDuration="150ms"
       rsHideHeader
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
@@ -70,4 +72,6 @@ export class OverviewContentComponent {
   readonly weekStandings = this.facade.weekStandings;
   readonly standingsLoading = this.facade.standingsLoading;
   readonly standingsError = this.facade.standingsError;
+
+  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 }
