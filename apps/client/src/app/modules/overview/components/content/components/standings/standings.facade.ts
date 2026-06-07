@@ -11,11 +11,7 @@ export class OverviewStandingsFacade {
   readonly dayStandings = this.standingsStore.standings;
 
   private readonly filterService = inject(FilterService);
-  readonly isFiltering = computed<boolean>(
-    () =>
-      this.filterService.selectedCompetition() !== null &&
-      this.dayStandings() !== null
-  );
+  readonly isFiltering = this.filterService.isFiltering;
 
   readonly hasMultipleGroups = computed<boolean>(() => {
     const standings = this.dayStandings();
