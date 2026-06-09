@@ -68,15 +68,9 @@ const getType = (
   round: CompetitionRound,
   roundMap: RoundMap
 ): CompetitionRound => {
-  const roundTypes = Object.keys(roundMap);
-
-  for (const type of roundTypes) {
-    if (round.includes(type)) {
-      return type;
-    }
-  }
-
-  return '';
+  return (Object.keys(roundMap)
+    .sort((a, b) => b.length - a.length)
+    .find((type) => round.includes(type)) ?? '') as CompetitionRound;
 };
 
 export const getCompetitionRoundLabel = (
