@@ -1,3 +1,4 @@
+import type { VenueId } from './fixtures/fixture.model';
 import type { MongoDbId } from './mongodb.model';
 
 export type Team = { id: TeamId; name: TeamName; logo: TeamLogo };
@@ -14,7 +15,7 @@ export type TeamDetails = {
   logo: TeamLogo;
 };
 export type TeamVenue = {
-  id: number;
+  id: VenueId;
   name: string;
   address: string;
   city: string;
