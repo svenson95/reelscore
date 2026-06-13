@@ -1,4 +1,6 @@
-export const VENUE_IDS: Record<number, number> = {
+import type { TeamId, VenueId } from '@lib/models';
+
+export const VENUE_IDS: Record<TeamId, VenueId> = {
   '1': 173,
   '2': 20332,
   '3': 412,

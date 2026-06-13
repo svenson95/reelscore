@@ -14,7 +14,8 @@ export type FixtureId = number | string;
 export type FixtureIdParameter = string;
 export type FixtureDateString = string;
 export type FixturePeriods = { first: number; second: number };
-export type FixtureVenue = { id: number | null; name: string; city: string };
+export type VenueId = number;
+export type FixtureVenue = { id: VenueId | null; name: string; city: string };
 export type FixtureStatus = {
   long: StatusLong;
   short: StatusShort;
