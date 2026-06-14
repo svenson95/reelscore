@@ -111,11 +111,11 @@ import { StatisticList } from './models';
         <h4>Pässe insgesamt</h4>
         <div>
           <ul>
-            <li>{{ stats().passesTotal.home }}</li>
+            <li>{{ stats().passesTotal?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().passesTotal.away }}</li>
+            <li>{{ stats().passesTotal?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -124,11 +124,11 @@ import { StatisticList } from './models';
         <h4>Pass Qoute</h4>
         <div>
           <ul>
-            <li>{{ stats().passAccuracy.home }}</li>
+            <li>{{ stats().passAccuracy?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().passAccuracy.away }}</li>
+            <li>{{ stats().passAccuracy?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
