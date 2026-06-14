@@ -140,11 +140,11 @@ import { StatisticList } from './models';
         <h4>Gelbe Karten</h4>
         <div>
           <ul>
-            <li>{{ statistics.yellowCards?.home ?? '-' }}</li>
+            <li>{{ statistics.yellowCards?.home ?? 0 }}</li>
           </ul>
 
           <ul>
-            <li>{{ statistics.yellowCards?.away ?? '-' }}</li>
+            <li>{{ statistics.yellowCards?.away ?? 0 }}</li>
           </ul>
         </div>
       </div>
@@ -153,11 +153,11 @@ import { StatisticList } from './models';
         <h4>Rote Karten</h4>
         <div>
           <ul>
-            <li>{{ statistics.redCards?.home ?? '-' }}</li>
+            <li>{{ statistics.redCards?.home ?? 0 }}</li>
           </ul>
 
           <ul>
-            <li>{{ statistics.redCards?.away ?? '-' }}</li>
+            <li>{{ statistics.redCards?.away ?? 0 }}</li>
           </ul>
         </div>
       </div>
