@@ -3,6 +3,7 @@ import type {
   StatisticItemType,
   StatisticItemValue,
   StatisticKey,
+  TeamStatistics,
 } from '@lib/models';
 
 export type StatisticListItem = {
@@ -46,27 +47,25 @@ export class StatisticList {
   constructor(data: StatisticDTO[]) {
     const homeStats = data[0]?.statistics ?? [];
 
-    const awayStatsByType = new Map(
-      (data[1]?.statistics ?? []).map((stat) => [stat.type, stat])
-    );
-
     homeStats.forEach((homeStat) => {
       const key = statisticTypeMap[homeStat.type];
+      const awayStats = data[1]?.statistics ?? [];
 
       this[key] = this.createValue(
         homeStat.value,
-        awayStatsByType.get(homeStat.type)?.value
+        this.statMapper(awayStats).get(homeStat.type)?.value ?? null
       );
     });
   }
 
   private createValue(
-    home: StatisticItemValue | undefined,
-    away: StatisticItemValue | undefined
+    home: StatisticItemValue,
+    away: StatisticItemValue
   ): StatisticListItem {
-    return {
-      home: home ? home : -1,
-      away: away ? away : -1,
-    };
+    return { home, away };
+  }
+
+  private statMapper(statistics: TeamStatistics) {
+    return new Map(statistics.map((stat) => [stat.type, stat]));
   }
 }
