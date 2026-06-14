@@ -3,10 +3,10 @@ import {
   Component,
   computed,
   input,
-  untracked,
 } from '@angular/core';
 
 import type { StatisticDTO } from '@lib/models';
+
 import { StatisticList } from './models';
 
 @Component({
@@ -22,16 +22,17 @@ import { StatisticList } from './models';
     h4 { @apply text-rs-color-primary text-center mb-2 tracking-widest font-extralight text-rs-font-size-body-2; }
   `,
   template: `
+    @let statistics = stats();
     <div>
       <div class="shotsTotal">
         <h4>Schüsse</h4>
         <div>
           <ul>
-            <li>{{ stats().shotsTotal.home }}</li>
+            <li>{{ statistics.shotsTotal?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().shotsTotal.away }}</li>
+            <li>{{ statistics.shotsTotal?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -40,11 +41,11 @@ import { StatisticList } from './models';
         <h4>Torschüsse</h4>
         <div>
           <ul>
-            <li>{{ stats().shotsOnGoal.home }}</li>
+            <li>{{ statistics.shotsOnGoal?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().shotsOnGoal.away }}</li>
+            <li>{{ statistics.shotsOnGoal?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -55,11 +56,11 @@ import { StatisticList } from './models';
         <h4>Ballbesitz</h4>
         <div>
           <ul>
-            <li>{{ stats().ballPossession.home }}</li>
+            <li>{{ statistics.ballPossession?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().ballPossession.away }}</li>
+            <li>{{ statistics.ballPossession?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -68,11 +69,11 @@ import { StatisticList } from './models';
         <h4>Eckstöße</h4>
         <div>
           <ul>
-            <li>{{ stats().cornerKicks.home }}</li>
+            <li>{{ statistics.cornerKicks?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().cornerKicks.away }}</li>
+            <li>{{ statistics.cornerKicks?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -83,11 +84,11 @@ import { StatisticList } from './models';
         <h4>Fouls</h4>
         <div>
           <ul>
-            <li>{{ stats().fouls.home }}</li>
+            <li>{{ statistics.fouls?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().fouls.away }}</li>
+            <li>{{ statistics.fouls?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -96,11 +97,11 @@ import { StatisticList } from './models';
         <h4>Abseits</h4>
         <div>
           <ul>
-            <li>{{ stats().offsides.home }}</li>
+            <li>{{ statistics.offsides?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().offsides.away }}</li>
+            <li>{{ statistics.offsides?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -111,11 +112,11 @@ import { StatisticList } from './models';
         <h4>Pässe insgesamt</h4>
         <div>
           <ul>
-            <li>{{ stats().passesTotal?.home ?? '-' }}</li>
+            <li>{{ statistics.passesTotal?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().passesTotal?.away ?? '-' }}</li>
+            <li>{{ statistics.passesTotal?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -124,11 +125,11 @@ import { StatisticList } from './models';
         <h4>Pass Qoute</h4>
         <div>
           <ul>
-            <li>{{ stats().passAccuracy?.home ?? '-' }}</li>
+            <li>{{ statistics.passAccuracy?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().passAccuracy?.away ?? '-' }}</li>
+            <li>{{ statistics.passAccuracy?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -139,11 +140,11 @@ import { StatisticList } from './models';
         <h4>Gelbe Karten</h4>
         <div>
           <ul>
-            <li>{{ stats().yellowCards.home }}</li>
+            <li>{{ statistics.yellowCards?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().yellowCards.away }}</li>
+            <li>{{ statistics.yellowCards?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -152,11 +153,11 @@ import { StatisticList } from './models';
         <h4>Rote Karten</h4>
         <div>
           <ul>
-            <li>{{ stats().redCards.home }}</li>
+            <li>{{ statistics.redCards?.home ?? '-' }}</li>
           </ul>
 
           <ul>
-            <li>{{ stats().redCards.away }}</li>
+            <li>{{ statistics.redCards?.away ?? '-' }}</li>
           </ul>
         </div>
       </div>
@@ -164,6 +165,8 @@ import { StatisticList } from './models';
   `,
 })
 export class MatchStatisticsComponent {
-  data = input.required<StatisticDTO[]>();
-  stats = computed(() => StatisticList.init(untracked(this.data)));
+  readonly data = input.required<StatisticDTO[]>();
+  readonly stats = computed<StatisticList>(() =>
+    StatisticList.init(this.data())
+  );
 }

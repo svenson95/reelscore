@@ -1,93 +1,72 @@
-import type { StatisticDTO, StatisticItemValue } from '@lib/models';
+import type {
+  StatisticDTO,
+  StatisticItemType,
+  StatisticItemValue,
+  StatisticKey,
+} from '@lib/models';
 
 export type StatisticListItem = {
-  home: StatisticItemValue;
-  away: StatisticItemValue;
+  home: StatisticItemValue | undefined;
+  away: StatisticItemValue | undefined;
 };
 
+const statisticTypeMap = {
+  'Ball Possession': 'ballPossession',
+  'Total Shots': 'shotsTotal',
+  'Shots on Goal': 'shotsOnGoal',
+  'Shots off Goal': 'shotsOffGoal',
+  'Corner Kicks': 'cornerKicks',
+  Fouls: 'fouls',
+  'Goalkeeper Saves': 'goalkeeperSaves',
+  Offsides: 'offsides',
+  'Yellow Cards': 'yellowCards',
+  'Red Cards': 'redCards',
+  'Total passes': 'passesTotal',
+  'Passes %': 'passAccuracy',
+} as const satisfies Record<StatisticItemType, StatisticKey>;
+
 export class StatisticList {
+  ballPossession?: StatisticListItem;
+  shotsTotal?: StatisticListItem;
+  shotsOnGoal?: StatisticListItem;
+  shotsOffGoal?: StatisticListItem;
+  cornerKicks?: StatisticListItem;
+  fouls?: StatisticListItem;
+  goalkeeperSaves?: StatisticListItem;
+  offsides?: StatisticListItem;
+  yellowCards?: StatisticListItem;
+  redCards?: StatisticListItem;
+  passesTotal?: StatisticListItem;
+  passAccuracy?: StatisticListItem;
+
   static init(data: StatisticDTO[]): StatisticList {
     return new StatisticList(data);
   }
 
-  ballPossession!: StatisticListItem;
-  shotsTotal!: StatisticListItem;
-  shotsOnGoal!: StatisticListItem;
-  shotsOffGoal!: StatisticListItem;
-  cornerKicks!: StatisticListItem;
-  fouls!: StatisticListItem;
-  goalkeeperSaves!: StatisticListItem;
-  offsides!: StatisticListItem;
-  passesTotal!: StatisticListItem;
-  passAccuracy!: StatisticListItem;
-  yellowCards!: StatisticListItem;
-  redCards!: StatisticListItem;
-
   constructor(data: StatisticDTO[]) {
-    const homeStats = data[0].statistics;
-    const awayStats = data[1].statistics;
+    const homeStats = data[0]?.statistics ?? [];
 
-    homeStats.forEach((s, idx) => {
-      const h = s.value;
-      const a = awayStats[idx].value;
+    const awayStatsByType = new Map(
+      (data[1]?.statistics ?? []).map((stat) => [stat.type, stat])
+    );
 
-      if (s.type === 'Ball Possession') {
-        this.ballPossession = this.setValue(h, a);
-      }
+    homeStats.forEach((homeStat) => {
+      const key = statisticTypeMap[homeStat.type];
 
-      if (s.type === 'Total Shots') {
-        this.shotsTotal = this.setValue(h, a);
-      }
-
-      if (s.type === 'Shots on Goal') {
-        this.shotsOnGoal = this.setValue(h, a);
-      }
-
-      if (s.type === 'Shots off Goal') {
-        this.shotsOffGoal = this.setValue(h, a);
-      }
-
-      if (s.type === 'Corner Kicks') {
-        this.cornerKicks = this.setValue(h, a);
-      }
-
-      if (s.type === 'Fouls') {
-        this.fouls = this.setValue(h, a);
-      }
-
-      if (s.type === 'Goalkeeper Saves') {
-        this.goalkeeperSaves = this.setValue(h, a);
-      }
-
-      if (s.type === 'Offsides') {
-        this.offsides = this.setValue(h, a);
-      }
-
-      if (s.type === 'Yellow Cards') {
-        this.yellowCards = this.setValue(h, a);
-      }
-
-      if (s.type === 'Red Cards') {
-        this.redCards = this.setValue(h, a);
-      }
-
-      if (s.type === 'Total passes') {
-        this.passesTotal = this.setValue(h, a);
-      }
-
-      if (s.type === 'Passes %') {
-        this.passAccuracy = this.setValue(h, a);
-      }
+      this[key] = this.createValue(
+        homeStat.value,
+        awayStatsByType.get(homeStat.type)?.value
+      );
     });
   }
 
-  private setValue(
-    home: StatisticItemValue,
-    away: StatisticItemValue
+  private createValue(
+    home: StatisticItemValue | undefined,
+    away: StatisticItemValue | undefined
   ): StatisticListItem {
     return {
-      home: home ?? 0,
-      away: away ?? 0,
+      home: home ? home : -1,
+      away: away ? away : -1,
     };
   }
 }
