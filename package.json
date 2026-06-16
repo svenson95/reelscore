@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "NX_TUI=false nx run-many --parallel --target=serve --projects=api,client"
+    "dev": "NX_TUI=false nx run-many --parallel --target=serve --projects=api,client",
+    "allow-buffer": "git config http.postBuffer 524288000",
+    "reset-buffer": "git config --unset http.postBuffer"
   },
   "private": true,
   "dependencies": {
