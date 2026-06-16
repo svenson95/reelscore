@@ -6,7 +6,7 @@ export type DateString = string; // format YYYY-MM-DD
 export type CalendarWeek = number;
 
 export const getNow = () => moment().tz(TIMEZONE);
-export const getDateInTimezone = (date: string) => moment(date).tz(TIMEZONE);
+export const getDateInTimezone = (date: string) => moment.tz(date, TIMEZONE);
 
 export const formatDateToYearMonthDay = (value: string | Date): DateString => {
   const parts = new Intl.DateTimeFormat('de-DE', {
