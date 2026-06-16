@@ -112,27 +112,25 @@ export class StandingsController {
       'league.season': season,
     };
 
-    if (date) {
-      const standingsUntilDate = await this.standingsService.findByFilter(
-        {
-          ...baseFilter,
-          updatedAt: {
-            $lte: `${date}T23:59:59.999Z`,
-          },
-        },
-        {
-          sort: { updatedAt: -1 },
-        }
-      );
-
-      if (standingsUntilDate) {
-        return standingsUntilDate;
-      }
+    if (!date) {
+      return this.standingsService.findByFilter(baseFilter, {
+        sort: { updatedAt: -1 },
+      });
     }
 
-    return this.standingsService.findByFilter(baseFilter, {
-      sort: { updatedAt: -1 },
-    });
+    const startOfDay = new Date(`${date}T00:00:00.000Z`);
+
+    return this.standingsService.findByFilter(
+      {
+        ...baseFilter,
+        updatedAt: {
+          $lt: startOfDay,
+        },
+      },
+      {
+        sort: { updatedAt: -1 },
+      }
+    );
   }
 
   private mapMultipleGroupStandings(
