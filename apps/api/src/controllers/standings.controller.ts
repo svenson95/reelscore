@@ -7,7 +7,11 @@ import type {
   StandingsDTO,
   StandingsFilter,
 } from '@lib/models';
-import { getSeason, isCompetitionWithMultipleGroups } from '@lib/shared';
+import {
+  getDateInTimezone,
+  getSeason,
+  isCompetitionWithMultipleGroups,
+} from '@lib/shared';
 
 import { StandingsService } from '../services';
 
@@ -118,7 +122,7 @@ export class StandingsController {
       });
     }
 
-    const startOfDay = new Date(`${date}T00:00:00.000Z`);
+    const startOfDay = getDateInTimezone(date).startOf('day').toDate();
 
     return this.standingsService.findByFilter(
       {
