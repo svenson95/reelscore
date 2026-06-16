@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+python3 generate_xcassets.py \
+  ./team-logo-responsive/48x48 \
+  ./YourApp/Assets.xcassets/TeamLogos \
+  team-logo;
+"""
 
 import json
 import re
