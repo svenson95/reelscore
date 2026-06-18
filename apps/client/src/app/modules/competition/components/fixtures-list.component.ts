@@ -27,7 +27,7 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     ResponsiveImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col shadow-rs3 rounded-fb overflow-clip; }
+    :host { @apply flex flex-col shadow-rs3 rounded-border2 overflow-clip; }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
       @apply bg-rs-button-bg;

@@ -46,7 +46,8 @@ module.exports = {
         'rs-max-width': 'var(--rs-size-max-width)',
       },
       borderRadius: {
-        fb: 'var(--rs-size-border-radius)',
+        border1: 'var(--rs-size-border-radius-1)',
+        border2: 'var(--rs-size-border-radius-2)',
       },
       boxShadow: {
         rs: 'var(--rs-size-box-shadow)',

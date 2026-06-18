@@ -42,15 +42,15 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     :host > div { @apply inline-flex flex-col; }
     .time-label.is-finished { @apply line-through decoration-rs-color-primary; }
     .time {
-      @apply justify-center items-center min-w-[40px] text-rs-font-size-small;
+      @apply justify-center items-center self-center min-w-[40px] h-fit py-[2px] text-rs-font-size-small;
 
       &.is-playing { @apply bg-rs-color-green text-white; }
     }
     .time, .result {
-      @apply flex text-center justify-center;
+      @apply flex text-center justify-center rounded-border1;
     }
     .result {
-      @apply h-full min-w-[42px] px-2 items-center gap-[0.1rem];
+      @apply min-w-[42px] px-2 items-center gap-[0.1rem];
     }
     .result:not(.is-upcoming),  .time.is-upcoming {
       background-color: var(--rs-color-surface-2);

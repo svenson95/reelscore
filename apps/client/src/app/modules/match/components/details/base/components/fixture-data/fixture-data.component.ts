@@ -15,7 +15,7 @@ import { FixtureStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RoundLabelPipe],
   styles: `
-    :host { @apply flex flex-col m-3 bg-rs-button-bg shadow-rs3 rounded-fb; }
+    :host { @apply flex flex-col m-3 bg-rs-button-bg shadow-rs3 rounded-border2; }
     ul { @apply py-4; }
     li:not(:last-of-type) .item { @apply pb-2; }
     .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-1; }
