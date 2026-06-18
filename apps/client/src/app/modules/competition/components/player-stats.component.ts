@@ -30,7 +30,7 @@ import { TopScorersStore } from '../store';
     .stat-value { @apply text-rs-font-size-body-1 self-center; }
   `,
   template: `
-    @if (topScorers() !== null) {
+    @if (isDataLoaded()) {
     <div class="column">
       <h2>Torschützen</h2>
       <div class="stats">
@@ -77,35 +77,50 @@ import { TopScorersStore } from '../store';
 })
 export class PlayerStatsComponent {
   private readonly store = inject(TopScorersStore);
+
   readonly topScorers = this.store.topScorers;
   readonly isLoading = this.store.isLoading;
 
-  readonly goalScorer = computed(() =>
-    [...(this.topScorers()?.response ?? [])].sort((a, b) => {
-      const aStats = this.getStats(a);
-      const bStats = this.getStats(b);
+  private getTopScorers(): TopScorer[] {
+    return [...(this.topScorers()?.response ?? [])];
+  }
 
-      return (
-        bStats.goals - aStats.goals ||
-        aStats.penaltyGoals - bStats.penaltyGoals ||
-        bStats.assists - aStats.assists ||
-        aStats.minutes - bStats.minutes
-      );
-    })
+  readonly goalScorer = computed(() =>
+    this.getTopScorers()
+      .sort(this.sortGoals)
+      .filter((stat) => this.getStats(stat).goals > 0)
   );
 
   readonly assists = computed(() =>
-    [...(this.topScorers()?.response ?? [])].sort((a, b) => {
-      const aStats = this.getStats(a);
-      const bStats = this.getStats(b);
-
-      return (
-        bStats.assists - aStats.assists ||
-        bStats.goals - aStats.goals ||
-        aStats.minutes - bStats.minutes
-      );
-    })
+    this.getTopScorers()
+      .sort(this.sortAssists)
+      .filter((stat) => this.getStats(stat).assists > 0)
   );
+
+  readonly isDataLoaded = computed<boolean>(() => this.topScorers() !== null);
+
+  private sortGoals = (a: TopScorer, b: TopScorer): number => {
+    const aStats = this.getStats(a);
+    const bStats = this.getStats(b);
+
+    return (
+      bStats.goals - aStats.goals ||
+      aStats.penaltyGoals - bStats.penaltyGoals ||
+      bStats.assists - aStats.assists ||
+      aStats.minutes - bStats.minutes
+    );
+  };
+
+  private sortAssists = (a: TopScorer, b: TopScorer): number => {
+    const aStats = this.getStats(a);
+    const bStats = this.getStats(b);
+
+    return (
+      bStats.assists - aStats.assists ||
+      bStats.goals - aStats.goals ||
+      aStats.minutes - bStats.minutes
+    );
+  };
 
   private getStats(stat: TopScorer) {
     const statistics = stat.statistics[0];
