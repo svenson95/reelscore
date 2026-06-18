@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
   untracked,
 } from '@angular/core';
@@ -15,6 +16,7 @@ import {
   NameLabelPipe,
   ResponsiveImageComponent,
   RoundLabelPipe,
+  ThemeService,
 } from '@app/shared';
 import type { CompetitionRound } from '@lib/models';
 
@@ -86,20 +88,35 @@ const EXTERNAL_MODULES = [RouterLink];
   `,
 })
 export class MatchDayListComponent {
-  competition = input.required<CompetitionWithFixtures>();
-  firstFixture = computed(() => untracked(this.competition).fixtures[0]);
+  readonly competition = input.required<CompetitionWithFixtures>();
 
-  round = computed<CompetitionRound>(() => {
+  private readonly themeService = inject(ThemeService);
+
+  private readonly firstFixture = computed(
+    () => untracked(this.competition).fixtures[0]
+  );
+
+  readonly round = computed<CompetitionRound>(() => {
     const fixture = untracked(this.firstFixture);
     return fixture ? fixture.league.round : '';
   });
 
-  getCompetitionLogo = computed(() => {
+  readonly getCompetitionLogo = computed(() => {
     const fixture = untracked(this.firstFixture);
-    return getCompetitionLogo(fixture.league.id, 24);
+    return getCompetitionLogo(
+      fixture.league.id,
+      24,
+      1,
+      this.themeService.isSystemDark()
+    );
   });
-  getCompetitionLogoSet = computed(() => {
+
+  readonly getCompetitionLogoSet = computed(() => {
     const fixture = untracked(this.firstFixture);
-    return getCompetitionLogoSrcSet(fixture.league.id, 24);
+    return getCompetitionLogoSrcSet(
+      fixture.league.id,
+      24,
+      this.themeService.isSystemDark()
+    );
   });
 }

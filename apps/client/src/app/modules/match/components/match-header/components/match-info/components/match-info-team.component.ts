@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core';
 
 import {
   ResponsiveImageComponent,
   TeamNamePipe,
+  ThemeService,
   getTeamLogo,
   getTeamLogoSrcSet,
 } from '@app/shared';
@@ -55,13 +57,15 @@ export type MatchHeaderTeam = {
 export class MatchInfoTeamComponent {
   readonly team = input<MatchHeaderTeam | null>();
 
+  private readonly themeService = inject(ThemeService);
+
   readonly logo = computed(() => {
     const id = this.team()?.id ?? 0;
-    return getTeamLogo(id, 48);
+    return getTeamLogo(id, 48, 1, this.themeService.isSystemDark());
   });
 
   readonly logoSet = computed(() => {
     const id = this.team()?.id ?? 0;
-    return getTeamLogoSrcSet(id, 48);
+    return getTeamLogoSrcSet(id, 48, this.themeService.isSystemDark());
   });
 }
