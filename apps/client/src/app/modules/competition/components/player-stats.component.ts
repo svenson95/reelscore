@@ -19,10 +19,9 @@ import { TopScorersStore } from '../store';
     .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
-    .player-stat { @apply flex justify-between bg-rs-button-bg px-4 py-2 shadow-rs3; }
+    .stats { @apply flex flex-col p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2; }
+    .player-stat { @apply flex justify-between bg-rs-button-bg px-4 py-2; }
     .player-stat:not(:last-child) { @apply border-b; }
-    .player-stat:first-of-type { @apply rounded-tl-border2 rounded-tr-border2; }
-    .player-stat:last-of-type { @apply rounded-bl-border2 rounded-br-border2; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }
     .stat-rank { @apply text-rs-font-size-body-1 w-[20px] text-right; }
@@ -34,36 +33,40 @@ import { TopScorersStore } from '../store';
     @if (topScorers() !== null) {
     <div class="column">
       <h2>Torschützen</h2>
-      @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
-      <div class="player-stat">
-        <div class="player-row">
-          <span class="stat-rank">{{ idx + 1 }}.</span>
-          <img [src]="stat.player.photo" />
-          <span class="player-name">{{ stat.player.name }}</span>
-          <span class="team-name">
-            {{ stat.statistics[0].team.name | teamName : 'short' }}
-          </span>
+      <div class="stats">
+        @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
+        <div class="player-stat">
+          <div class="player-row">
+            <span class="stat-rank">{{ idx + 1 }}.</span>
+            <img [src]="stat.player.photo" />
+            <span class="player-name">{{ stat.player.name }}</span>
+            <span class="team-name">
+              {{ stat.statistics[0].team.name | teamName : 'short' }}
+            </span>
+          </div>
+          <span class="stat-value">{{ stat.statistics[0].goals.total }}</span>
         </div>
-        <span class="stat-value">{{ stat.statistics[0].goals.total }}</span>
+        }
       </div>
-      }
     </div>
 
     <div class="column">
       <h2>Vorlagen</h2>
-      @for (stat of assists(); track stat.player.id; let idx = $index) {
-      <div class="player-stat">
-        <div class="player-row">
-          <span class="stat-rank">{{ idx + 1 }}.</span>
-          <img [src]="stat.player.photo" />
-          <span class="player-name">{{ stat.player.name }}</span>
-          <span class="team-name">
-            {{ stat.statistics[0].team.name | teamName : 'short' }}
-          </span>
+      <div class="stats">
+        @for (stat of assists(); track stat.player.id; let idx = $index) {
+        <div class="player-stat">
+          <div class="player-row">
+            <span class="stat-rank">{{ idx + 1 }}.</span>
+            <img [src]="stat.player.photo" />
+            <span class="player-name">{{ stat.player.name }}</span>
+            <span class="team-name">
+              {{ stat.statistics[0].team.name | teamName : 'short' }}
+            </span>
+          </div>
+          <span class="stat-value">{{ stat.statistics[0].goals.assists }}</span>
         </div>
-        <span class="stat-value">{{ stat.statistics[0].goals.assists }}</span>
+        }
       </div>
-      }
     </div>
     } @else if (isLoading()) {
     <p class="no-data">Spieler-Statistiken werden geladen ...</p>
