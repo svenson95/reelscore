@@ -77,7 +77,7 @@ const DISPLAYED_COLUMNS: string[] = [
   ],
   styles: `
     :host {
-      @apply flex overflow-hidden shadow-rs3;
+      @apply flex overflow-hidden shadow-rs3 p-rs1 bg-rs-button-bg;
       border-radius: var(--mat-button-toggle-shape);
     }
 
@@ -91,8 +91,6 @@ const DISPLAYED_COLUMNS: string[] = [
     }
 
     td { @apply py-[4px]; }
-
-    th:first-of-type { @apply bg-white; }
 
     td, th {
       @apply leading-[14px];
