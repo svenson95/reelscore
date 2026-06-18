@@ -114,7 +114,6 @@
 
 button {
   --mat-icon-button-ripple-color: var(--rs-color-ripple);
-  border: 1px solid var(--rs-button-border-color);
   background-color: var(--rs-button-bg-color);
 
   &.mdc-button {
@@ -134,7 +133,6 @@ button {
   &.mat-mdc-icon-button {
     --mat-button-filled-label-text-color: var(--rs-color-primary);
     box-shadow: var(--rs-size-box-shadow-3);
-    border: 1px solid var(--rs-button-border-color);
     background-color: var(--rs-button-bg-color);
 
     & + button.mdc-button,
@@ -179,9 +177,7 @@ mat-button-toggle {
   border-radius: var(--rs-size-border-radius);
 
   .mat-mdc-text-field-wrapper {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border: 1px solid var(--rs-button-border-color);
+    border-radius: var(--rs-size-border-radius);
   }
 }
 
@@ -196,7 +192,6 @@ mat-button-toggle {
 // mat-select
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
   border-radius: var(--rs-size-border-radius);
-  border: 1px solid var(--rs-button-border-color);
 }
 
 .mat-mdc-optgroup-label {
@@ -241,7 +236,6 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 // mat-datepicker
 .mat-datepicker-content {
   touch-action: pan-x pan-y;
-  border: 1px solid var(--rs-button-border-color);
 
   mat-calendar.mat-calendar {
     height: 368px;

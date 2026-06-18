@@ -23,14 +23,14 @@
   --rs-size-button-border-width: 2px;
   --rs-size-league-select-height: 32px;
   --rs-size-max-width: 1000px;
-  --rs-size-border-radius: 0px;
+  --rs-size-border-radius: 20px;
 }
 
 :root,
 [data-theme='light'] {
   color-scheme: light;
 
-  --rs-color-bg: #fafafa;
+  --rs-color-bg: #f1f1f6;
   --rs-color-surface: #ffffff;
   --rs-color-surface-2: #f3f3f3;
 

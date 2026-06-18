@@ -28,8 +28,10 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     :host {
       @apply h-fit flex-1 text-rs-font-size-body-2;
     }
-    a { @apply bg-rs-alt-bg flex items-center p-2 gap-2 border-[1px] shadow-rs2; }
+    a { @apply bg-rs-alt-bg flex items-center p-2 gap-2 shadow-rs3; }
     a + a { margin-top: 1px; }
+    a:first-of-type { @apply rounded-tl-fb rounded-tr-fb; }
+    a:last-of-type { @apply rounded-bl-fb rounded-br-fb; }
     .date { @apply w-[40px] text-rs-font-size-small text-center; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
@@ -37,7 +39,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
-    .no-data { @apply bg-rs-alt-bg border shadow-rs2; }
+    .no-data { @apply bg-rs-alt-bg border shadow-rs3; }
   `,
   template: `
     @for(match of fixtures(); track match.fixture.id) {

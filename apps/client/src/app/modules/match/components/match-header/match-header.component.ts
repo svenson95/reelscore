@@ -35,13 +35,13 @@ import { VENUE_IDS } from './venue-ids.data';
     }
 
     .wrapper {
-      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs2 bg-rs-alt-bg border;
+      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs3 bg-rs-alt-bg;
       position: relative;
       & > *:not(.background-wrapper) { z-index: 3; }
     }
 
     .background-wrapper {
-      @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full;
+      @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full rounded-fb;
 
       position: absolute;
       top: 0;
