@@ -19,7 +19,7 @@ import type { StandingsDTO } from '@lib/models';
   styles: `
     :host {
       rs-standings-table {
-        @apply sm:min-w-[500px] sm:mx-auto shadow-rs2;
+        @apply sm:min-w-[500px] sm:mx-auto shadow-rs3;
       }
       .standings-container { @apply flex flex-col px-3 py-3 gap-rs1; }
     }

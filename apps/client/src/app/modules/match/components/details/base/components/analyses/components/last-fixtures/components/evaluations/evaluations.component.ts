@@ -10,12 +10,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
 import type { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
-import type {
-  AnalysesTeamType,
-  FixtureWithEvaluations} from '../../models';
-import {
-  ANALYSES_TEAM
-} from '../../models';
+import type { AnalysesTeamType, FixtureWithEvaluations } from '../../models';
+import { ANALYSES_TEAM } from '../../models';
 
 import { AnalysesEvaluationComponent } from './components';
 
@@ -37,7 +33,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
       @apply flex flex-col;
 
       mat-expansion-panel {
-        @apply mb-px border shadow-rs2;
+        @apply mb-px shadow-rs3;
 
         ::ng-deep {
           .mat-expansion-panel-header-title { @apply flex-grow-0 text-rs-font-size-small; }

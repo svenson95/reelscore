@@ -15,7 +15,7 @@ import { ToKebabCasePipe } from './pipes';
     :host { @apply flex flex-col m-3; }
 
     .content {
-      @apply flex flex-col gap-10 mt-rs1 mx-auto w-full py-6 border shadow-rs2 bg-rs-color-text-3;
+      @apply flex flex-col gap-10 mt-rs1 mx-auto w-full py-6 shadow-rs3 bg-rs-color-text-3;
       border-radius: var(--mat-button-toggle-shape);
     }
     .content > .teams-form {
@@ -40,8 +40,7 @@ import { ToKebabCasePipe } from './pipes';
       .today { @apply self-center text-rs-color-text-1; }
 
       span, .evaluation-placeholder {
-        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px] shadow-rs2;
-        border: 1px solid var(--rs-border-color-2);
+        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px] shadow-rs3;
       }
       .evaluation-placeholder { @apply bg-gray-200; }
 

@@ -47,13 +47,13 @@ const EXTERNAL_MODULES = [
     }
 
     .week-toggle-wrapper {
-      @apply flex items-center w-full xs:w-fit shadow-rs3 rounded-full;
+      @apply flex items-center w-full xs:w-fit;
     }
 
     mat-button-toggle-group.mat-button-toggle-group {
       @include mat.button-toggle-overrides(
         (
-          height: 34px,
+          height: 36px,
           label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-primary),
           selected-state-text-color: var(--rs-color-text-3),
@@ -65,11 +65,11 @@ const EXTERNAL_MODULES = [
         )
       );
 
-      @apply flex border-none flex-1 mx-px;
+      @apply flex border-none flex-1 mx-px overflow-visible;
 
       mat-button-toggle.mat-button-toggle {
-        @apply flex-1;
-        border: 1px solid var(--rs-button-border-color);
+        @apply flex-1 shadow-rs3;
+        border: none;
 
         &.is-today ::ng-deep .mat-button-toggle-label-content {
           @apply underline decoration-solid;
