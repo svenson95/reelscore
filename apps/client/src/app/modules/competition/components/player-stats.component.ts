@@ -19,8 +19,8 @@ import { TopScorersStore } from '../store';
     .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
-    .player-stat { @apply flex justify-between bg-rs-alt-bg px-4 py-2 shadow-rs3; }
-    .player-stat:not(:last-child) { @apply mb-px; }
+    .player-stat { @apply flex justify-between bg-rs-button-bg px-4 py-2 shadow-rs3; }
+    .player-stat:not(:last-child) { @apply border-b; }
     .player-stat:first-of-type { @apply rounded-tl-fb rounded-tr-fb; }
     .player-stat:last-of-type { @apply rounded-bl-fb rounded-br-fb; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }

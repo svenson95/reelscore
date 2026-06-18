@@ -28,8 +28,8 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     :host {
       @apply h-fit flex-1 text-rs-font-size-body-2;
     }
-    a { @apply bg-rs-alt-bg flex items-center p-2 gap-2 shadow-rs3; }
-    a + a { margin-top: 1px; }
+    a { @apply bg-rs-button-bg flex items-center p-2 gap-2 shadow-rs3; }
+    a + a { @apply border-t; }
     a:first-of-type { @apply rounded-tl-fb rounded-tr-fb; }
     a:last-of-type { @apply rounded-bl-fb rounded-br-fb; }
     .date { @apply w-[40px] text-rs-font-size-small text-center; }

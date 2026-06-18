@@ -29,7 +29,7 @@ import {
     :host { @apply m-3; }
     .latest-fixtures { @apply grid grid-cols-1 md:grid-cols-2 gap-3 mt-rs1; }
     .latest-fixtures > div { @apply min-w-0; }
-    .no-data { @apply bg-rs-alt-bg rounded-fb shadow-rs3; }
+    .no-data { @apply bg-rs-button-bg rounded-fb shadow-rs3; }
   `,
   template: `
     <h2>Spielanalysen</h2>
