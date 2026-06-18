@@ -40,7 +40,7 @@ const EXTERNAL_MODULES = [RouterLink];
 
       --mat-table-header-headline-line-height: 14px;
     }
-    .header { @apply flex gap-4 pr-3 border-b-[1px] items-center; border-bottom-color: var(--rs-button-border-color); }
+    .header { @apply flex gap-rs1 pr-3 border-b-[1px] items-center; border-bottom-color: var(--rs-button-border-color); }
     .header {
       span, a {
         font-family: var(--rs-font-family);

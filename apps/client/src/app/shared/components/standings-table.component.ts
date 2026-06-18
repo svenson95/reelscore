@@ -93,7 +93,7 @@ const DISPLAYED_COLUMNS: string[] = [
     td { @apply py-[4px]; }
 
     td, th {
-      @apply leading-[14px];
+      @apply leading-[14px] px-rs1;
 
       &:first-of-type {
         @apply text-center justify-items-center;
@@ -101,14 +101,14 @@ const DISPLAYED_COLUMNS: string[] = [
     }
 
     .mdc-data-table__cell, .mdc-data-table__header-cell {
-      &.rank-column { width: 40px; padding-inline: 8px; }
+      &.rank-column { width: 40px; padding-inline: 0; }
 
       &.number-column {
         @apply px-1;
       }
 
       &.points-column {
-        @apply pl-2;
+        @apply px-rs1;
       }
 
       &.number-column, &.points-column {
