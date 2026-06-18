@@ -5,8 +5,8 @@
     (
       text-container-shape: 0,
       text-hover-state-layer-opacity: var(--rs-button-hover-opacity),
-      outlined-container-shape: var(--rs-size-border-radius),
-      filled-container-shape: var(--rs-size-border-radius),
+      outlined-container-shape: var(--rs-size-border-radius-2),
+      filled-container-shape: var(--rs-size-border-radius-2),
       filled-container-color: var(--rs-button-bg-color),
       filled-state-layer-color: var(--rs-color-ripple),
       filled-ripple-color: var(--rs-color-ripple),
@@ -29,7 +29,7 @@
     (
       state-layer-color: var(--rs-color-ripple),
       background-color: var(--rs-button-bg-color),
-      shape: var(--rs-size-border-radius),
+      shape: var(--rs-size-border-radius-2),
       hover-state-layer-opacity: var(--rs-button-hover-opacity),
     )
   );
@@ -54,7 +54,7 @@
 
   @include mat.menu-overrides(
     (
-      container-shape: var(--rs-size-border-radius),
+      container-shape: var(--rs-size-border-radius-2),
       container-elevation-shadow: var(--rs-size-box-shadow),
       container-color: var(--rs-color-white),
       item-leading-spacing: 16px,
@@ -97,7 +97,7 @@
 
   @include mat.datepicker-overrides(
     (
-      calendar-container-shape: var(--rs-size-border-radius),
+      calendar-container-shape: var(--rs-size-border-radius-2),
       calendar-container-elevation-shadow: var(--rs-size-box-shadow),
       calendar-container-background-color: var(--rs-color-white),
       calendar-date-disabled-state-text-color: var(--rs-color-text-2),
@@ -148,23 +148,24 @@ button {
   }
 
   &.mat-mdc-icon-button {
-    border-radius: var(--rs-size-border-radius);
+    border-radius: var(--rs-size-border-radius-2);
 
     .mat-mdc-button-persistent-ripple {
-      border-radius: var(--rs-size-border-radius);
+      border-radius: var(--rs-size-border-radius-2);
     }
   }
 }
 
 // mat-button-toggle
 mat-button-toggle {
-  border-radius: var(--rs-size-border-radius);
+  border-radius: var(--rs-size-border-radius-2);
 
   .mat-button-toggle-label-content {
     z-index: 10;
   }
   .mat-ripple.mat-button-toggle-ripple {
     z-index: 5;
+    border-radius: var(--rs-size-border-radius-2);
   }
 
   &.mat-button-toggle + mat-button-toggle.mat-button-toggle {
@@ -174,10 +175,10 @@ mat-button-toggle {
 
 // mat-form-field
 .mat-mdc-form-field {
-  border-radius: var(--rs-size-border-radius);
+  border-radius: var(--rs-size-border-radius-2);
 
   .mat-mdc-text-field-wrapper {
-    border-radius: var(--rs-size-border-radius);
+    border-radius: var(--rs-size-border-radius-2);
   }
 }
 
@@ -185,13 +186,13 @@ mat-button-toggle {
 .mat-elevation-z8,
 .mat-mdc-elevation-specific.mat-elevation-z8 {
   box-shadow: var(--rs-size-box-shadow);
-  border-radius: var(--rs-size-border-radius);
+  border-radius: var(--rs-size-border-radius-2);
   border: 1px solid var(--mat-button-toggle-divider-color);
 }
 
 // mat-select
 .cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
-  border-radius: var(--rs-size-border-radius);
+  border-radius: var(--rs-size-border-radius-2);
 }
 
 .mat-mdc-optgroup-label {

@@ -27,7 +27,7 @@ import {
       @apply relative flex flex-1 items-center justify-center gap-1 text-rs-font-size-body-1 sm:text-rs-font-size-body-1;
     }
     .result-label { @apply font-semibold; }
-    .status { @apply absolute top-[-10px] py-[.15rem] px-2 text-rs-font-size-small; text-shadow: none; }
+    .status { @apply absolute top-[-10px] py-[.15rem] px-2 text-rs-font-size-small rounded-border1; text-shadow: none; }
     .status.is-playing { @apply bg-rs-color-green text-white font-semibold; }
     .status.is-finished { @apply bg-rs-button-bg text-rs-color-text-1; }
   `,
