@@ -67,7 +67,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
     .evaluation.is-away {
       @apply flex-row-reverse;
     }
-    .evaluation:not(:last-of-type) { @apply border-b border-rs-border-color-2 pb-2 mb-2; }
+    .evaluation:not(:last-of-type) { @apply border-b border-rs-button-border pb-2 mb-2; }
     .home-col { @apply border-r pr-2; }
     .home-col, .away-col { @apply min-w-[120px] sm:min-w-[200px] flex-1 py-2; }
   `,

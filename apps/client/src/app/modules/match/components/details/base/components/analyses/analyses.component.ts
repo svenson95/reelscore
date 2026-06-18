@@ -28,10 +28,7 @@ import { AnalysesLastFixturesComponent } from './components';
     .fixture-analyse > div {
       @apply w-full flex flex-wrap gap-5;
 
-      &:not(:last-of-type) {
-        @apply border-b-[1px] pb-5;
-        border-color: var(--rs-border-color-2);
-      }
+      &:not(:last-of-type) { @apply border-b-[1px] pb-5 border-rs-button-border; }
       &:not(:first-of-type) { @apply pt-5; }
 
       .home { @apply text-end; }
