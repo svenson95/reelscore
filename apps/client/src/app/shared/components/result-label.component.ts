@@ -28,7 +28,7 @@ import {
     <span>{{ mainResult().home }}</span>
 
     @if (isNotPlayed()) { @if (!showNotPlayedText()) { － } } @else if
-    (isScheduled()) { vs } @else { : }
+    (isScheduled()) { vs } @else {&#8239;:&#8239;}
 
     <span>{{ mainResult().away }}</span>
     }
