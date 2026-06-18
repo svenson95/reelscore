@@ -51,34 +51,21 @@ const getResponsiveImagePath = <Id extends string | number>(
 const getTeamLogoBySizeAndScale = (
   id: TeamId,
   size: TeamLogoSize,
-  scale: ImageScale,
-  isDarkTheme = false
+  scale: ImageScale
 ): string =>
-  getResponsiveImagePath(
-    'team',
-    'team-logo-responsive',
-    id,
-    size,
-    scale,
-    isDarkTheme
-  );
+  getResponsiveImagePath('team', 'team-logo-responsive', id, size, scale);
 
 export const getTeamLogo = (
   id: TeamId,
   size: TeamLogoSize,
-  scale: ImageScale = 1,
-  isDarkTheme = false
-): string => getTeamLogoBySizeAndScale(id, size, scale, isDarkTheme);
+  scale: ImageScale = 1
+): string => getTeamLogoBySizeAndScale(id, size, scale);
 
-export const getTeamLogoSrcSet = (
-  id: TeamId,
-  size: TeamLogoSize,
-  isDarkTheme = false
-): string =>
+export const getTeamLogoSrcSet = (id: TeamId, size: TeamLogoSize): string =>
   [
-    `${getTeamLogoBySizeAndScale(id, size, 1, isDarkTheme)} 1x`,
-    `${getTeamLogoBySizeAndScale(id, size, 2, isDarkTheme)} 2x`,
-    `${getTeamLogoBySizeAndScale(id, size, 3, isDarkTheme)} 3x`,
+    `${getTeamLogoBySizeAndScale(id, size, 1)} 1x`,
+    `${getTeamLogoBySizeAndScale(id, size, 2)} 2x`,
+    `${getTeamLogoBySizeAndScale(id, size, 3)} 3x`,
   ].join(', ');
 
 const hasDarkCompetitionLogo = (id: CompetitionId): boolean =>
