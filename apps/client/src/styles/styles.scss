@@ -97,7 +97,7 @@ router-outlet + * {
 }
 
 .competition-logo-small {
-  @apply w-full h-full min-h-[40px] max-w-[40px] bg-white content-center;
+  @apply w-full h-full min-h-[40px] max-w-[40px] content-center;
 }
 .team-logo-small {
   @apply w-[14px] h-[14px];
