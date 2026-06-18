@@ -39,7 +39,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
-    .no-data { @apply bg-rs-alt-bg border shadow-rs3; }
+    .no-data { @apply bg-rs-button-bg border shadow-rs3; }
   `,
   template: `
     @for(match of fixtures(); track match.fixture.id) {
