@@ -28,7 +28,7 @@ import {
     }
     .result-label { @apply font-semibold; }
     .status { @apply absolute top-[-10px] py-[.15rem] px-2 text-rs-font-size-small rounded-border1; text-shadow: none; }
-    .status.is-playing { @apply bg-rs-color-green text-white font-semibold; }
+    .status.is-playing { @apply bg-rs-color-green text-white; }
     .status.is-finished { @apply bg-rs-button-bg text-rs-color-text-1; }
   `,
   template: `
