@@ -29,7 +29,7 @@ import {
     .result-label { @apply font-semibold; }
     .status { @apply absolute top-[-10px] py-[.15rem] px-2 text-rs-font-size-small; text-shadow: none; }
     .status.is-playing { @apply bg-rs-color-green text-white font-semibold; }
-    .status.is-finished { @apply bg-rs-alt-bg text-rs-color-text-1; }
+    .status.is-finished { @apply bg-rs-button-bg text-rs-color-text-1; }
   `,
   template: `
     @let fixture = data();

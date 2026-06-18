@@ -35,7 +35,7 @@ import { VENUE_IDS } from './venue-ids.data';
     }
 
     .wrapper {
-      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs3 bg-rs-alt-bg;
+      @apply flex flex-col mx-auto p-5 rounded-fb w-full max-w-rs-max-width shadow-rs3 bg-rs-button-bg;
       position: relative;
       & > *:not(.background-wrapper) { z-index: 3; }
     }
