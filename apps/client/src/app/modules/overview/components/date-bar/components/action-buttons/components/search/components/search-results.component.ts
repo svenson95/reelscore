@@ -137,8 +137,14 @@ export class SearchResultsComponent {
     switch (result.type) {
       case 'fixtures':
         return [
-          this.teamNamePipe.transform(result.data.teams.home.name ?? ''),
-          this.teamNamePipe.transform(result.data.teams.away.name ?? ''),
+          this.teamNamePipe.transform(
+            result.data.teams.home.name ?? '',
+            'short'
+          ),
+          this.teamNamePipe.transform(
+            result.data.teams.away.name ?? '',
+            'short'
+          ),
         ]
           .filter(Boolean)
           .join(' - ');
