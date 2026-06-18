@@ -28,7 +28,7 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     :host { @apply flex flex-col shadow-rs3 rounded-fb overflow-clip; }
     p { @apply text-rs-font-size-body-2 font-medium; }
     div.round, .day {
-      @apply bg-rs-alt-bg;
+      @apply bg-rs-button-bg;
     }
     div.round {
       @apply w-full flex items-center gap-4;

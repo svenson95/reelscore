@@ -24,6 +24,7 @@ module.exports = {
         'rs-color-text-3': 'var(--rs-color-text-3)',
         'rs-color-primary': 'var(--rs-color-primary)',
         'rs-alt-bg': 'var(--rs-color-text-3)',
+        'rs-button-bg': 'var(--rs-button-bg-color)',
         'rs-border-color-1': 'var(--rs-border-color-1)',
         'rs-border-color-2': 'var(--rs-border-color-2)',
       },
