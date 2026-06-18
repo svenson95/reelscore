@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 python3 generate_xcassets.py \
-  ./team-logo-responsive/48x48 \
-  ./YourApp/Assets.xcassets/TeamLogos \
-  team-logo;
+  ./team-logo-responsive/14x14 \
+  ./output \
+  team_logo_14x14;
 """
 
 import json
