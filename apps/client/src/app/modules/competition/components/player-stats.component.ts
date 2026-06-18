@@ -21,8 +21,8 @@ import { TopScorersStore } from '../store';
     h2 { @apply mb-2 ml-4; }
     .player-stat { @apply flex justify-between bg-rs-button-bg px-4 py-2 shadow-rs3; }
     .player-stat:not(:last-child) { @apply border-b; }
-    .player-stat:first-of-type { @apply rounded-tl-fb rounded-tr-fb; }
-    .player-stat:last-of-type { @apply rounded-bl-fb rounded-br-fb; }
+    .player-stat:first-of-type { @apply rounded-tl-border2 rounded-tr-border2; }
+    .player-stat:last-of-type { @apply rounded-bl-border2 rounded-br-border2; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }
     .stat-rank { @apply text-rs-font-size-body-1 w-[20px] text-right; }

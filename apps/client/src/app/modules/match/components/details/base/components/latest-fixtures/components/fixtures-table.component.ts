@@ -30,8 +30,8 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     }
     a { @apply bg-rs-button-bg flex items-center p-2 gap-2 shadow-rs3; }
     a + a { @apply border-t; }
-    a:first-of-type { @apply rounded-tl-fb rounded-tr-fb; }
-    a:last-of-type { @apply rounded-bl-fb rounded-br-fb; }
+    a:first-of-type { @apply rounded-tl-border2 rounded-tr-border2; }
+    a:last-of-type { @apply rounded-bl-border2 rounded-br-border2; }
     .date { @apply w-[40px] text-rs-font-size-small text-center; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
