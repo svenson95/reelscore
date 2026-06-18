@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import {
   ResponsiveImageComponent,
   TeamNamePipe,
+  ThemeService,
   getCompetitionLogoSrcSet,
   getTeamLogoSrcSet,
 } from '@app/shared';
@@ -40,8 +41,6 @@ const MAT_MODULES = [MatListModule];
     }
 
     .result-icon {
-      background: white;
-      outline: 11px solid white;
       --mat-list-list-item-leading-icon-start-space: 12px;
       --mat-list-list-item-leading-icon-end-space: 24px;
     }
@@ -103,6 +102,7 @@ export class SearchResultsComponent {
   readonly groups = input.required<SearchResultGroup[]>();
 
   private readonly teamNamePipe = inject(TeamNamePipe);
+  private readonly themeService = inject(ThemeService);
 
   readonly clickEvent = output<SearchResult>();
 
@@ -122,7 +122,11 @@ export class SearchResultsComponent {
     switch (result.type) {
       case 'competitions':
       case 'fixtures':
-        return getCompetitionLogoSrcSet(result.data.league.id, 24);
+        return getCompetitionLogoSrcSet(
+          result.data.league.id,
+          24,
+          this.themeService.isSystemDark()
+        );
 
       case 'teams':
         return getTeamLogoSrcSet(result.data.team.id, 48);

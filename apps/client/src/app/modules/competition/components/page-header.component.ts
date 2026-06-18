@@ -9,6 +9,7 @@ import {
   BackButtonComponent,
   LeagueService,
   ResponsiveImageComponent,
+  ThemeService,
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
 } from '@app/shared';
@@ -38,18 +39,22 @@ import {
   `,
 })
 export class PageHeaderComponent {
-  private leagueService = inject(LeagueService);
-  private selectedLeague = this.leagueService.selectedLeague;
+  private readonly themeService = inject(ThemeService);
+  private readonly leagueService = inject(LeagueService);
 
-  label = computed(() => this.selectedLeague()?.label ?? 'unknown');
-  competitionLogo = computed<string>(() => {
+  private readonly selectedLeague = this.leagueService.selectedLeague;
+
+  readonly label = computed(() => this.selectedLeague()?.label ?? 'unknown');
+
+  readonly competitionLogo = computed<string>(() => {
     const id = this.selectedLeague()?.id;
     if (!id) throw new Error('Selected league is undefined');
-    return getCompetitionLogo(id, 64);
+    return getCompetitionLogo(id, 64, 1, this.themeService.isSystemDark());
   });
-  competitionLogoSet = computed<string>(() => {
+
+  readonly competitionLogoSet = computed<string>(() => {
     const id = this.selectedLeague()?.id;
     if (!id) throw new Error('Selected league is undefined');
-    return getCompetitionLogoSrcSet(id, 64);
+    return getCompetitionLogoSrcSet(id, 64, this.themeService.isSystemDark());
   });
 }

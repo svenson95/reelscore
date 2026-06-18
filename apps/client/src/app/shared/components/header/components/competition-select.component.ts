@@ -1,12 +1,22 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import type { MatSelectChange} from '@angular/material/select';
+import type { MatSelectChange } from '@angular/material/select';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { ResponsiveImageComponent } from '../../../components';
 import { SELECT_COMPETITION_DATA } from '../../../constants';
-import type { CompetitionData } from '../../../models';
+import {
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
+  type CompetitionData,
+} from '../../../models';
+import { ThemeService } from '../../../services';
 
 @Component({
   selector: 'nav[rs-competition-select]',
@@ -76,8 +86,8 @@ import type { CompetitionData } from '../../../models';
             <a [routerLink]="['competition', c.url]">
               <rs-responsive-image
                 class="competition-logo"
-                [source]="c.image"
-                [sourceSet]="c.imageSet"
+                [source]="competitionLogo(c)"
+                [sourceSet]="competitionLogoSrcSet(c)"
                 [altText]="c.label"
                 [width]="14"
                 [height]="14"
@@ -94,6 +104,16 @@ import type { CompetitionData } from '../../../models';
 })
 export class CompetitionSelectComponent {
   readonly selectedCompetition = input.required<CompetitionData | undefined>();
-  readonly removeFocus = (e: MatSelectChange) => e.source.close();
+
+  private readonly themeService = inject(ThemeService);
+
   readonly groups = SELECT_COMPETITION_DATA;
+
+  removeFocus = (e: MatSelectChange) => e.source.close();
+
+  competitionLogo = (c: CompetitionData) =>
+    getCompetitionLogo(c.id, 24, 1, this.themeService.isSystemDark());
+
+  competitionLogoSrcSet = (c: CompetitionData) =>
+    getCompetitionLogoSrcSet(c.id, 24, this.themeService.isSystemDark());
 }

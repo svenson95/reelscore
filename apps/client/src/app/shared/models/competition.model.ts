@@ -37,58 +37,89 @@ const getResponsiveImagePath = <Id extends string | number>(
   baseFolder: string,
   id: Id,
   size: number,
-  scale: ImageScale
-): string =>
-  getCachedImagePath(
-    `${type}-${size}-${id}@${scale}x`,
-    `${BASE}/${baseFolder}/${size}x${size}/${id}@${scale}x.png`
+  scale: ImageScale,
+  isDarkTheme = false
+): string => {
+  const themeSuffix = isDarkTheme ? '_dark' : '';
+
+  return getCachedImagePath(
+    `${type}-${size}-${id}${themeSuffix}@${scale}x`,
+    `${BASE}/${baseFolder}/${size}x${size}/${id}${themeSuffix}@${scale}x.png`
   );
+};
 
 const getTeamLogoBySizeAndScale = (
   id: TeamId,
   size: TeamLogoSize,
-  scale: ImageScale
+  scale: ImageScale,
+  isDarkTheme = false
 ): string =>
-  getResponsiveImagePath('team', 'team-logo-responsive', id, size, scale);
+  getResponsiveImagePath(
+    'team',
+    'team-logo-responsive',
+    id,
+    size,
+    scale,
+    isDarkTheme
+  );
 
 export const getTeamLogo = (
   id: TeamId,
   size: TeamLogoSize,
-  scale: ImageScale = 1
-): string => getTeamLogoBySizeAndScale(id, size, scale);
+  scale: ImageScale = 1,
+  isDarkTheme = false
+): string => getTeamLogoBySizeAndScale(id, size, scale, isDarkTheme);
 
-export const getTeamLogoSrcSet = (id: TeamId, size: TeamLogoSize): string =>
+export const getTeamLogoSrcSet = (
+  id: TeamId,
+  size: TeamLogoSize,
+  isDarkTheme = false
+): string =>
   [
-    `${getTeamLogoBySizeAndScale(id, size, 1)} 1x`,
-    `${getTeamLogoBySizeAndScale(id, size, 2)} 2x`,
-    `${getTeamLogoBySizeAndScale(id, size, 3)} 3x`,
+    `${getTeamLogoBySizeAndScale(id, size, 1, isDarkTheme)} 1x`,
+    `${getTeamLogoBySizeAndScale(id, size, 2, isDarkTheme)} 2x`,
+    `${getTeamLogoBySizeAndScale(id, size, 3, isDarkTheme)} 3x`,
   ].join(', ');
+
+const hasDarkCompetitionLogo = (id: CompetitionId): boolean =>
+  !COMPETITIONS_WITH_LIGHT_ONLY_LOGOS.has(id);
+
+const COMPETITIONS_WITH_LIGHT_ONLY_LOGOS = new Set<CompetitionId>([
+  4, 5, 10, 45, 46, 47, 48, 61, 66, 81, 137, 140, 253, 526, 528, 529, 531, 547,
+]);
 
 const getCompetitionLogoBySizeAndScale = (
   id: CompetitionId,
   size: CompetitionLogoSize,
-  scale: ImageScale
-): string =>
-  getResponsiveImagePath(
+  scale: ImageScale,
+  isDarkTheme = false
+): string => {
+  const shouldUseDarkLogo = isDarkTheme && hasDarkCompetitionLogo(id);
+
+  return getResponsiveImagePath(
     'competition',
     'competition-responsive',
     id,
     size,
-    scale
+    scale,
+    shouldUseDarkLogo
   );
+};
 
 export const getCompetitionLogo = (
   id: CompetitionId,
   size: CompetitionLogoSize,
-  scale: ImageScale = 1
-): string => getCompetitionLogoBySizeAndScale(id, size, scale);
+  scale: ImageScale = 1,
+  isDarkTheme = false
+): string => getCompetitionLogoBySizeAndScale(id, size, scale, isDarkTheme);
 
 export const getCompetitionLogoSrcSet = (
   id: CompetitionId,
-  size: CompetitionLogoSize
+  size: CompetitionLogoSize,
+  isDarkTheme = false
 ): string =>
   [
-    `${getCompetitionLogoBySizeAndScale(id, size, 1)} 1x`,
-    `${getCompetitionLogoBySizeAndScale(id, size, 2)} 2x`,
-    `${getCompetitionLogoBySizeAndScale(id, size, 3)} 3x`,
+    `${getCompetitionLogoBySizeAndScale(id, size, 1, isDarkTheme)} 1x`,
+    `${getCompetitionLogoBySizeAndScale(id, size, 2, isDarkTheme)} 2x`,
+    `${getCompetitionLogoBySizeAndScale(id, size, 3, isDarkTheme)} 3x`,
   ].join(', ');

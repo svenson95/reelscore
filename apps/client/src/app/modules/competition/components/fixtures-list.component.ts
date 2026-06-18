@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core';
 
@@ -10,6 +11,7 @@ import {
   FixtureListComponent,
   ResponsiveImageComponent,
   RoundLabelPipe,
+  ThemeService,
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
 } from '@app/shared';
@@ -82,12 +84,23 @@ export class FixturesListComponent {
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
   readonly isLoading = input.required<boolean>();
 
+  private readonly themeService = inject(ThemeService);
+
   readonly competitionLogo = computed<string>(() =>
-    getCompetitionLogo(this.competition(), 24)
+    getCompetitionLogo(
+      this.competition(),
+      24,
+      1,
+      this.themeService.isSystemDark()
+    )
   );
 
   readonly competitionLogoSet = computed<string>(() =>
-    getCompetitionLogoSrcSet(this.competition(), 24)
+    getCompetitionLogoSrcSet(
+      this.competition(),
+      24,
+      this.themeService.isSystemDark()
+    )
   );
 
   readonly fixturesDays = computed(() => {

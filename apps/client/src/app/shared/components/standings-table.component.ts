@@ -26,7 +26,7 @@ import {
   getTeamLogoSrcSet,
 } from '../models';
 import { TeamNamePipe } from '../pipes';
-import { BreakpointObserverService } from '../services';
+import { BreakpointObserverService, ThemeService } from '../services';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';
 
@@ -240,6 +240,8 @@ export class StandingsTableComponent {
   readonly header = input<string>();
 
   private readonly breakpoint = inject(BreakpointObserverService);
+  private readonly themeService = inject(ThemeService);
+
   readonly isMobile = this.breakpoint.isMobile;
 
   readonly type = computed<'all' | 'home' | 'away'>(() => {
@@ -254,11 +256,22 @@ export class StandingsTableComponent {
   });
 
   readonly competitionLogo = computed(() =>
-    getCompetitionLogo(this.league().id, 24)
+    getCompetitionLogo(
+      this.league().id,
+      24,
+      1,
+      this.themeService.isSystemDark()
+    )
   );
+
   readonly competitionLogoSet = computed(() =>
-    getCompetitionLogoSrcSet(this.league().id, 24)
+    getCompetitionLogoSrcSet(
+      this.league().id,
+      24,
+      this.themeService.isSystemDark()
+    )
   );
+
   readonly competitionLink = computed(() => {
     const id = this.league().id;
     const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
