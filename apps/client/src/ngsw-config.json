@@ -34,6 +34,14 @@
           "/assets/images/team-logo-responsive/**"
         ]
       }
+    },
+    {
+      "name": "fonts",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/*.woff2", "/media/*.woff2", "/assets/fonts/**"]
+      }
     }
   ]
 }
