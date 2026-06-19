@@ -9,15 +9,15 @@ export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionName> = {
   [CompetitionCode.EUROPA_UEFA_SUPER_CUP]: 'UEFA Super Cup',
 
   // International
-  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'UEFA Europameisterschaft',
+  [CompetitionCode.INTERNATIONAL_EURO_CHAMPIONSHIP]: 'Europameisterschaft',
   // [CompetitionCode.INTERNATIONAL_CONFEDARATIONS_CUP]: 'Confedarations Cup',
-  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'UEFA Weltmeisterschaft',
+  [CompetitionCode.INTERNATIONAL_WORLD_CUP]: 'Weltmeisterschaft',
   [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_CONCACAF]:
-    'WM - Qualifikation CONCACAF',
+    'WM - Quali. CONCACAF',
   [CompetitionCode.INTERNATIONAL_WORLD_CUP_QUALIFICATION_EUROPE]:
-    'WM - Qualifikation Europa',
+    'WM - Quali. Europa',
   // [CompetitionCode.INTERNATIONAL_FIFA_WORLD_CUP]: 'FIFA World Cup',
-  [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'UEFA Nations League',
+  [CompetitionCode.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: 'Nations League',
   [CompetitionCode.INTERNATIONAL_FRIENDLIES]: 'Freundschaftsspiele',
 
   // Deutschland
