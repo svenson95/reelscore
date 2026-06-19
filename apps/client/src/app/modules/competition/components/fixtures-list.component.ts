@@ -27,23 +27,16 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     ResponsiveImageComponent,
   ],
   styles: `
-    :host { @apply flex flex-col shadow-rs3 rounded-border2 overflow-clip p-rs1 bg-rs-button-bg; }
-    p { @apply text-rs-font-size-body-2 font-medium; }
-    div.round {
-      @apply w-full flex items-center gap-4;
-    }
-    div.logo-wrapper {
-      min-width: 40px;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-    }
-    div.competition-logo { @apply ml-1; }
-    div.days {
-      @apply flex flex-col;
-      .group-date { @apply py-2 px-4 border-y-[1px] leading-[16px]; border-color: var(--rs-button-border-color); }
-    }
-  `,
+  :host { @apply flex flex-col w-[400px] shadow-rs3 rounded-border2 overflow-clip p-rs1 bg-rs-button-bg; }
+  p { @apply text-rs-font-size-body-2 font-medium; }
+  div.round { @apply w-full flex items-center gap-rs1; }
+  div.logo-wrapper { @apply min-w-[40px] flex items-center gap-6; }
+  div.competition-logo { @apply ml-1; }
+  div.days { @apply flex flex-col; }
+  .group-date { @apply flex items-center gap-rs1 p-2 leading-[16px]; }
+  .group-date-label { @apply shrink-0 text-rs-font-size-body-2 font-medium; }
+  .group-date-line { @apply h-px flex-1 bg-rs-button-border; }
+`,
   template: `
     <div class="round">
       <div class="logo-wrapper">
@@ -66,10 +59,18 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
         }
       </p>
     </div>
+
     <div class="days">
       @for (day of fixturesDays(); track $index + '-' + day.date) {
       <div class="day">
-        <p class="group-date">{{ day.date | date : 'cccc | dd.MM' }}</p>
+        <div class="group-date">
+          <p class="group-date-label">
+            {{ day.date | date : 'cccc | dd.MM' }}
+          </p>
+
+          <div class="group-date-line"></div>
+        </div>
+
         <rs-fixture-list [fixtures]="day.fixtures" />
       </div>
       }

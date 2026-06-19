@@ -24,18 +24,22 @@ import { FixturesListComponent } from './fixtures-list.component';
   imports: [MatButtonModule, FixturesListComponent],
   styles: `
     :host { @apply rs-competition-tab flex-col gap-rs2 overflow-hidden; }
+    .list-container { @apply flex flex-wrap gap-rs2 items-start justify-center; }
     button { @apply shadow-rs3; }
   `,
   template: `
     @let fixtureGroups = fixturesData(); @if (fixtureGroups !== null) { @if
-    (fixtureGroups.length > 0) { @for (fixtureGroup of fixtureGroups; track
-    $index) {
-    <rs-competition-fixtures-list
-      [fixtures]="fixtureGroup"
-      [competition]="competitionId()"
-      [isLoading]="isLoading()"
-    />
-    } } @else {
+    (fixtureGroups.length > 0) {
+    <div class="list-container">
+      @for (fixtureGroup of fixtureGroups; track $index) {
+      <rs-competition-fixtures-list
+        [fixtures]="fixtureGroup"
+        [competition]="competitionId()"
+        [isLoading]="isLoading()"
+      />
+      }
+    </div>
+    } @else {
     <p class="no-data">Keine vergangenen Spiele</p>
     } @if (showLoadAllButton()) {
     <button mat-flat-button (click)="loadAllLastFixtures(competitionId())">
