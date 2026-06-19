@@ -5,9 +5,11 @@ export const COMPETITION_NAME_MAP: Record<
   CompetitionNameTranslated
 > = {
   'League Cup': 'Carabao Cup',
-  'Euro Championship': 'UEFA Europameisterschaft',
-  'World Cup': 'UEFA Weltmeisterschaft',
-  'World Cup - Qualification Europe': 'WM - Qualifikation Europa',
-  'World Cup - Qualification CONCACAF': 'WM - Qualifikation CONCACAF',
+  'Euro Championship': 'Europameisterschaft',
+  'World Cup': 'Weltmeisterschaft',
+  'World Cup - Qualification Europe': 'WM - Quali. Europa',
+  'World Cup - Qualification CONCACAF': 'WM - Quali. CONCACAF',
   Friendlies: 'Freundschaftsspiele',
+  'UEFA Champions League': 'Champions League',
+  'UEFA Europa League': 'Europa League',
 };
