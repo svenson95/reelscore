@@ -5,6 +5,7 @@ export const ALLIANZ_ARENA_ID = 20732;
 @Injectable()
 export class VenueImageService {
   private readonly activeVenueImageUrl = signal<string | undefined>(undefined);
+  private activeObjectUrl?: string;
 
   private readonly venueId = signal<number | null>(null);
   readonly hasValidVenueBackground = signal<boolean>(false);
@@ -19,14 +20,14 @@ export class VenueImageService {
   });
 
   venueImageLoader = effect((onCleanup) => {
-    let cancelled = false;
+    const controller = new AbortController();
 
     onCleanup(() => {
-      cancelled = true;
+      controller.abort();
     });
 
-    this.loadVenueImage(() => cancelled).catch(() => {
-      if (!cancelled) {
+    this.loadVenueImage(controller.signal).catch(() => {
+      if (!controller.signal.aborted) {
         this.setVenueBackground(undefined, true);
       }
     });
@@ -36,7 +37,7 @@ export class VenueImageService {
     this.venueId.set(venueId);
   }
 
-  private async loadVenueImage(isCancelled: () => boolean): Promise<void> {
+  private async loadVenueImage(signal: AbortSignal): Promise<void> {
     const id = this.venueId();
 
     if (!id) {
@@ -47,34 +48,62 @@ export class VenueImageService {
     this.setVenueBackground(undefined, false);
 
     const imageUrl = this.getVenueImageUrl(id);
-    const validImageUrl = await this.getValidVenueImageUrl(imageUrl);
+    const validImageUrl = await this.getValidVenueImageUrl(imageUrl, signal);
 
-    if (isCancelled()) return;
+    if (signal.aborted) return;
 
     this.setVenueBackground(validImageUrl, true);
   }
 
   private async getValidVenueImageUrl(
-    imageUrl: string
+    imageUrl: string,
+    signal: AbortSignal
   ): Promise<string | undefined> {
-    if (await this.preloadVenueImage(imageUrl)) {
-      return imageUrl;
+    const objectUrl = await this.loadVenueImageAsObjectUrl(imageUrl, signal);
+
+    if (objectUrl) {
+      return objectUrl;
     }
 
     const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
-
-    if (await this.preloadVenueImage(fallbackImageUrl)) {
-      return fallbackImageUrl;
-    }
-
-    return undefined;
+    return this.loadVenueImageAsObjectUrl(fallbackImageUrl, signal);
   }
 
   private getVenueImageUrl(venueId: number): string {
     return `https://media.api-sports.io/football/venues/${venueId}.png`;
   }
 
-  private preloadVenueImage(imageUrl: string): Promise<boolean> {
+  private async loadVenueImageAsObjectUrl(
+    imageUrl: string,
+    signal: AbortSignal
+  ): Promise<string | undefined> {
+    try {
+      const response = await fetch(imageUrl, {
+        signal,
+        referrerPolicy: 'no-referrer',
+      });
+
+      if (!response.ok) {
+        return undefined;
+      }
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      const isValidImage = await this.validateImageDimensions(objectUrl);
+
+      if (!isValidImage) {
+        URL.revokeObjectURL(objectUrl);
+        return undefined;
+      }
+
+      return objectUrl;
+    } catch {
+      return undefined;
+    }
+  }
+
+  private validateImageDimensions(imageUrl: string): Promise<boolean> {
     return new Promise((resolve) => {
       const img = new Image();
 
@@ -94,8 +123,21 @@ export class VenueImageService {
   }
 
   private setVenueBackground(imageUrl?: string, loaded = true): void {
+    this.revokeActiveObjectUrl();
+
     this.activeVenueImageUrl.set(imageUrl);
     this.hasValidVenueBackground.set(Boolean(imageUrl));
     this.venueBackgroundLoaded.set(loaded);
+
+    if (imageUrl?.startsWith('blob:')) {
+      this.activeObjectUrl = imageUrl;
+    }
+  }
+
+  private revokeActiveObjectUrl(): void {
+    if (!this.activeObjectUrl) return;
+
+    URL.revokeObjectURL(this.activeObjectUrl);
+    this.activeObjectUrl = undefined;
   }
 }

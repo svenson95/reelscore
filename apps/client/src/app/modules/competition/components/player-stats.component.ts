@@ -57,7 +57,7 @@ import { TopScorersStore } from '../store';
         <div class="player-stat">
           <div class="player-row">
             <span class="stat-rank">{{ idx + 1 }}.</span>
-            <img [src]="stat.player.photo" />
+            <img [src]="stat.player.photo" referrerpolicy="no-referrer" />
             <span class="player-name">{{ stat.player.name }}</span>
             <span class="team-name">
               {{ stat.statistics[0].team.name | teamName : 'short' }}
