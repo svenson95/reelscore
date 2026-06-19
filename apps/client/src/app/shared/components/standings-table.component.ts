@@ -77,7 +77,7 @@ const DISPLAYED_COLUMNS: string[] = [
   ],
   styles: `
     :host {
-      @apply flex overflow-hidden shadow-rs3 p-rs1 bg-rs-button-bg w-full max-w-[450px];
+      @apply flex w-full max-w-[450px] bg-rs-button-bg p-rs1 self-center shadow-rs3 overflow-hidden;
       border-radius: var(--mat-button-toggle-shape);
     }
 
