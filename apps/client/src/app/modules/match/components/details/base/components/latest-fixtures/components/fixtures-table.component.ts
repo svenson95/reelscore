@@ -26,7 +26,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
   ],
   styles: `
     :host {
-      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2 text-rs-font-size-body-2;
+      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2 text-rs-font-size-body-3;
     }
     a { @apply flex items-center p-2 gap-2; }
     a + a { @apply border-t; }
