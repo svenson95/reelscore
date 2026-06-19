@@ -15,7 +15,7 @@ import { ToKebabCasePipe } from './pipes';
     :host { @apply flex flex-col m-3; }
 
     .content {
-      @apply flex flex-col gap-10 mt-rs1 mx-auto w-full py-6 shadow-rs3 bg-rs-button-bg;
+      @apply flex flex-col gap-10 mt-rs1 mx-auto p-8 shadow-rs3 bg-rs-button-bg;
       border-radius: var(--mat-button-toggle-shape);
     }
     .content > .teams-form {

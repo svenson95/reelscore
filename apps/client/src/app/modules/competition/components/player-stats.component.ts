@@ -20,7 +20,7 @@ import { TopScorersStore } from '../store';
     .column { @apply flex-1; }
     h2 { @apply mb-2 ml-4; }
     .stats { @apply flex flex-col p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2; }
-    .player-stat { @apply flex justify-between bg-rs-button-bg px-4 py-2; }
+    .player-stat { @apply flex justify-between bg-rs-button-bg p-2; }
     .player-stat:not(:last-child) { @apply border-b; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }

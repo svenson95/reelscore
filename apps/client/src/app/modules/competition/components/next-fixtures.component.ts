@@ -18,17 +18,21 @@ import { FixturesListComponent } from './fixtures-list.component';
   imports: [FixturesListComponent],
   styles: `
     :host { @apply rs-competition-tab flex-col; }
+    .list-container { @apply flex flex-wrap gap-rs2 items-start justify-center; }
   `,
   template: `
     @let fixtureGroups = fixtures(); @if (fixtureGroups !== null) { @if
-    (fixtureGroups.length > 0) { @for (fixtureGroup of fixtureGroups; track
-    $index) {
-    <rs-competition-fixtures-list
-      [fixtures]="fixtureGroup"
-      [competition]="competitionId()"
-      [isLoading]="isLoading()"
-    />
-    } } @else {
+    (fixtureGroups.length > 0) {
+    <div class="list-container">
+      @for (fixtureGroup of fixtureGroups; track $index) {
+      <rs-competition-fixtures-list
+        [fixtures]="fixtureGroup"
+        [competition]="competitionId()"
+        [isLoading]="isLoading()"
+      />
+      }
+    </div>
+    } @else {
     <p class="no-data">Keine anstehenden Spiele</p>
     } } @else if (isLoading()) {
     <p class="no-data">Spiele werden geladen ...</p>
