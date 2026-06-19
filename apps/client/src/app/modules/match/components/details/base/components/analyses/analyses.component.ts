@@ -55,7 +55,7 @@ import { AnalysesLastFixturesComponent } from './components';
           } } @else { - }
         </div>
         <div class="analysis">
-          <span>Spieler mit Torserie</span>
+          <span>Torjäger</span>
           <span>3+ Spiele in Folge getroffen</span>
         </div>
         <div class="away">

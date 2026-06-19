@@ -173,7 +173,7 @@ const DISPLAYED_COLUMNS: string[] = [
       </ng-container>
 
       <ng-container matColumnDef="played">
-        <th mat-header-cell *matHeaderCellDef class="number-column">SP</th>
+        <th mat-header-cell *matHeaderCellDef class="number-column">Sp</th>
         <td mat-cell *matCellDef="let element" class="number-column">
           {{ element[type()].played }}
         </td>
