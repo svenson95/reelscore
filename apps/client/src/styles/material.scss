@@ -99,7 +99,6 @@
     (
       calendar-container-shape: var(--rs-size-border-radius-2),
       calendar-container-elevation-shadow: var(--rs-size-box-shadow),
-      calendar-container-background-color: var(--rs-color-white),
       calendar-date-disabled-state-text-color: var(--rs-color-text-2),
       calendar-period-button-text-color: var(--rs-color-primary),
       calendar-navigation-button-icon-color: var(--rs-color-primary),
@@ -266,7 +265,7 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
     }
 
     .mat-calendar-period-button {
-      margin-left: 0;
+      @apply rounded-border2 ml-0;
     }
   }
 }
