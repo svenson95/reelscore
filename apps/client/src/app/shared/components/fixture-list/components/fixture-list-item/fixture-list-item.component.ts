@@ -55,7 +55,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
     .result:not(.is-upcoming),  .time.is-upcoming {
       background-color: var(--rs-color-surface-2);
     }
-    .teams { @apply w-full flex items-center text-rs-font-size-body-2; }
+    .teams { @apply w-full flex items-center text-rs-font-size-body-3; }
     .teams > div:not(.result) { @apply flex flex-1 px-2 py-1 gap-2 items-center h-fit; }
     .teams > div:first-of-type { @apply justify-end text-end; }
     .team-name { line-height: 24px; text-wrap: balance; }

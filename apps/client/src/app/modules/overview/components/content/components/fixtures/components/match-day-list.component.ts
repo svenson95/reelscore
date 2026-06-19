@@ -45,7 +45,7 @@ const EXTERNAL_MODULES = [RouterLink];
       span, a {
         font-family: var(--rs-font-family);
         line-height: var(--mat-table-header-headline-line-height);
-        font-size: var(--rs-font-size-body-2);
+        font-size: var(--rs-font-size-body-3);
         font-weight: var(--mat-table-header-headline-weight, 500);
 
         &.gray { @apply text-rs-color-text-2 text-rs-font-size-small shrink-0; }
