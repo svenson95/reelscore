@@ -36,9 +36,9 @@ const BASE_PROVIDERS = [
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    PWA_PROVIDER,
     ...BASE_PROVIDERS,
     APP_INITIALIZER_PROVIDER,
-    PWA_PROVIDER,
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,

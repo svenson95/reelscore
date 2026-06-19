@@ -1,3 +1,4 @@
+import { APP_UPDATE_SERVICE_PROVIDER } from './app-update.service';
 import { BREAKPOINT_OBSERVER_SERVICE_PROVIDER } from './breakpoint-observer.service';
 import { HTTP_WEEK_FIXTURES_SERVICE_PROVIDER } from './http/fixtures.service';
 import { HTTP_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
@@ -9,6 +10,7 @@ import { ROUTE_SERVICE_PROVIDER } from './route.service';
 import { STARTUP_SERVICE_PROVIDER } from './startup.service';
 import { THEME_SERVICE_PROVIDER } from './theme.service';
 
+export * from './app-update.service';
 export * from './breakpoint-observer.service';
 export * from './http/fixtures.service';
 export * from './http/standings.service';
@@ -21,6 +23,7 @@ export * from './startup.service';
 export * from './theme.service';
 
 export const GLOBAL_SERVICE_PROVIDERS = [
+  APP_UPDATE_SERVICE_PROVIDER,
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   HTTP_WEEK_FIXTURES_SERVICE_PROVIDER,
   HTTP_STANDINGS_SERVICE_PROVIDER,
