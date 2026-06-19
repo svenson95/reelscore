@@ -1,14 +1,15 @@
 import { DOCUMENT } from '@angular/common';
 import type { Signal } from '@angular/core';
-import { Injectable, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, inject, signal } from '@angular/core';
 
 export abstract class ThemeService {
   abstract isSystemDark: Signal<boolean>;
 }
 
-@Injectable({ providedIn: 'root' })
-export class AbstractedThemeService {
+@Injectable()
+export class AbstractedThemeService implements ThemeService {
   private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly darkThemeQuery = this.document.defaultView?.matchMedia(
     '(prefers-color-scheme: dark)'
@@ -21,8 +22,14 @@ export class AbstractedThemeService {
   readonly isSystemDark = this.isSystemDarkSignal.asReadonly();
 
   constructor() {
-    this.darkThemeQuery?.addEventListener('change', (event) => {
+    const onThemeChange = (event: MediaQueryListEvent): void => {
       this.isSystemDarkSignal.set(event.matches);
+    };
+
+    this.darkThemeQuery?.addEventListener('change', onThemeChange);
+
+    this.destroyRef.onDestroy(() => {
+      this.darkThemeQuery?.removeEventListener('change', onThemeChange);
     });
   }
 }

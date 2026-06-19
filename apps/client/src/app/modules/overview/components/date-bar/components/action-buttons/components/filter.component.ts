@@ -11,7 +11,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import type { SelectCompetitionGroup } from '@app/shared';
-import { ResponsiveImageComponent, SELECT_COMPETITION_DATA } from '@app/shared';
+import {
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
+  ResponsiveImageComponent,
+  SELECT_COMPETITION_DATA,
+  ThemeService,
+} from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../../../services';
@@ -120,21 +126,30 @@ export class FilterComponent {
   private readonly standingsStore = inject(FilteredStandingsStore);
   private readonly selectedDateService = inject(SelectedDateService);
   private readonly filterService = inject(FilterService);
+  private readonly themeService = inject(ThemeService);
+
   readonly selectedCompetition = this.filterService.selectedCompetition;
 
   readonly filteredGroups = computed<Array<SelectCompetitionGroup>>(() => {
     const selectedDate = this.selectedDateService.selectedDay();
+    const isDarkTheme = this.themeService.isSystemDark();
+
     const fixtures = this.facade
       .weekFixtures()
       .flat()
       .filter((f) => f.fixture.date.substring(0, 10) === selectedDate);
 
     const selectableCompetitions = new Set(fixtures.map((f) => f.league.id));
+
     const filteredCompetitions = SELECT_COMPETITION_DATA.map((group) => ({
       ...group,
-      competitions: group.competitions.filter((competition) =>
-        selectableCompetitions.has(competition.id)
-      ),
+      competitions: group.competitions
+        .filter((competition) => selectableCompetitions.has(competition.id))
+        .map((competition) => ({
+          ...competition,
+          image: getCompetitionLogo(competition.id, 24, 1, isDarkTheme),
+          imageSet: getCompetitionLogoSrcSet(competition.id, 24, isDarkTheme),
+        })),
     }));
 
     return filteredCompetitions.filter(
