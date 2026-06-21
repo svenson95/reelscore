@@ -43,7 +43,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
         @include mat.expansion-overrides((
           container-background-color: var(--rs-color-text-3),
           container-shape: var(--rs-size-border-radius-2),
-          header-text-size: var(--rs-font-size-body-2),
+          header-text-size: var(--rs-font-size-body-3),
           header-text-weight: 400,
           header-text-color: var(--rs-color-text-1),
           header-description-color: var(--rs-color-text-1),

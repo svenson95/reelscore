@@ -46,7 +46,7 @@ const MAT_MODULES = [MatListModule];
     }
 
     .result-title {
-      @apply truncate font-medium text-rs-font-size-body-2;
+      @apply truncate font-medium text-rs-font-size-body-3;
     }
 
     .result-subtitle {

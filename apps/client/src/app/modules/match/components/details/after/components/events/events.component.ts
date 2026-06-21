@@ -37,8 +37,8 @@ type MatchTimelineItem =
     .event-row > .team { @apply flex-1; }
 
     .home { @apply text-right; }
-    .time { @apply text-rs-font-size-body-2; }
-    .result { @apply text-rs-font-size-body-2; }
+    .time { @apply text-rs-font-size-body-3; }
+    .result { @apply text-rs-font-size-body-3; }
 
     .spacer-row {
       @apply flex items-center justify-center text-rs-font-size-body-3 text-rs-color-text-2 uppercase;

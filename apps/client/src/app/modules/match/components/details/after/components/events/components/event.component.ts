@@ -24,7 +24,7 @@ import {
     EventVarComponent,
   ],
   styles: `
-    :host { @apply flex text-rs-font-size-body-2; }
+    :host { @apply flex text-rs-font-size-body-3; }
     :host.is-home { @apply justify-end pl-4; }
     :host:not(.is-home) { @apply pr-4; }
   `,

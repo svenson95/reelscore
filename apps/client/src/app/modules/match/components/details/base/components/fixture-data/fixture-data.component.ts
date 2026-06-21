@@ -22,7 +22,7 @@ import { FixtureStore } from '../../../../../store';
     .item > *:not(.key) { @apply flex-2 sm:flex-1; }
     .key { @apply text-rs-color-text-2 text-right tracking-wider font-extralight flex-1; }
     .key, .value { @apply content-center;}
-    span { @apply text-rs-font-size-body-2;}
+    span { @apply text-rs-font-size-body-3;}
     .list-item-placeholder {  @apply w-[100px] h-[16px] my-1 bg-gray-200 rounded; }
   `,
   template: `
