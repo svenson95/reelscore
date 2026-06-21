@@ -28,13 +28,13 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
   ],
   styles: `
   :host { @apply flex flex-col w-full max-w-[450px] shadow-rs3 rounded-border2 overflow-clip p-rs1 bg-rs-button-bg; }
-  p { @apply text-rs-font-size-body-2 font-medium; }
+  p { @apply text-rs-font-size-body-3 font-medium; }
   div.round { @apply w-full flex items-center gap-rs1; }
   div.logo-wrapper { @apply min-w-[40px] flex items-center gap-6; }
   div.competition-logo { @apply ml-1; }
   div.days { @apply flex flex-col; }
   .group-date { @apply flex items-center gap-rs1 p-2 leading-[16px]; }
-  .group-date-label { @apply shrink-0 text-rs-font-size-body-2 font-medium; }
+  .group-date-label { @apply shrink-0 text-rs-font-size-body-3 font-medium; }
   .group-date-line { @apply h-px flex-1 bg-rs-button-border; }
 `,
   template: `

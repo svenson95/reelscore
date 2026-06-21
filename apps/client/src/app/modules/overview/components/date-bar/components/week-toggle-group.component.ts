@@ -54,7 +54,7 @@ const EXTERNAL_MODULES = [
       @include mat.button-toggle-overrides(
         (
           height: 36px,
-          label-text-size: var(--rs-font-size-body-2),
+          label-text-size: var(--rs-font-size-body-3),
           text-color: var(--rs-color-primary),
           selected-state-text-color: var(--rs-color-text-3),
           disabled-state-text-color: var(--rs-color-text-2),

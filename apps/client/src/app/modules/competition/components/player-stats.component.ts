@@ -24,10 +24,10 @@ import { TopScorersStore } from '../store';
     .player-stat:not(:last-child) { @apply border-b; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }
-    .stat-rank { @apply text-rs-font-size-body-1 w-[20px] text-right; }
-    .player-name { @apply text-rs-font-size-body-1; }
+    .stat-rank { @apply text-rs-font-size-body-3 w-[20px] text-right; }
+    .player-name { @apply text-rs-font-size-body-3; }
     .team-name { @apply ml-3 text-rs-color-text-2 text-rs-font-size-body-3; }
-    .stat-value { @apply text-rs-font-size-body-1 self-center; }
+    .stat-value { @apply text-rs-font-size-body-3 self-center; }
   `,
   template: `
     @if (isDataLoaded()) {
