@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   Injectable,
   input,
   output,
@@ -12,7 +13,10 @@ import {
   NativeDateAdapter,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatDatepickerIntl,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -37,9 +41,18 @@ class CustomDateAdapter extends NativeDateAdapter {
   }
 }
 
+@Injectable()
+export class CustomMatDatepickerIntl extends MatDatepickerIntl {
+  override prevMonthLabel = '';
+  override nextMonthLabel = '';
+  override prevMultiYearLabel = '';
+  override nextMultiYearLabel = '';
+}
+
 const DATE_PICKER_PROVIDERS = [
   provideNativeDateAdapter(),
   { provide: DateAdapter, useClass: CustomDateAdapter },
+  { provide: MatDatepickerIntl, useClass: CustomMatDatepickerIntl },
 ];
 
 @Component({
@@ -72,13 +85,14 @@ const DATE_PICKER_PROVIDERS = [
       [class.is-open]="picker.opened"
     >
       <mat-icon>calendar_today</mat-icon>
-      <span>{{ selectedDay() | date : 'dd.MM.yy' }}</span>
+      <span>{{ selectedDate() | date : 'dd.MM.yy' }}</span>
     </button>
+
     <mat-form-field>
       <input
         matInput
         tabindex="-1"
-        [value]="selectedDay()"
+        [value]="selectedDate()"
         (dateChange)="updateDate($event.value)"
         [min]="MIN_DATE"
         [max]="MAX_DATE"
@@ -92,12 +106,17 @@ export class DatePickerComponent {
   readonly selectedDay = input.required<DateString>();
   readonly dateSelected = output<DateString>();
 
-  readonly MIN_DATE = formatDateToYearMonthDay(new Date(2023, 7, 11));
-  readonly MAX_DATE = formatDateToYearMonthDay(
-    new Date(new Date().getFullYear(), 11, 31)
-  );
+  readonly MIN_DATE = new Date(2023, 7, 11);
+  readonly MAX_DATE = new Date(2026, 11, 31);
 
-  updateDate(value: DateString): void {
+  readonly selectedDate = computed<Date>(() => {
+    const value = this.selectedDay();
+    const [year, month, day] = value.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  });
+
+  updateDate(value: Date | null): void {
+    if (!value) return;
     const date = formatDateToYearMonthDay(value);
     this.dateSelected.emit(date);
   }
