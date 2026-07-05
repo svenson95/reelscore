@@ -5,7 +5,7 @@ import type {
   RapidEventsDTO,
 } from '@lib/models';
 
-import { findDocument } from '../../middleware';
+import { findDocument } from '../../helper';
 import { FixtureEvents } from '../../models';
 
 export class FixtureEventsService {

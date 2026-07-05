@@ -5,7 +5,7 @@ import type { CompetitionId, FixtureId } from '@lib/models';
 
 import type { CompetitionRequestType } from '../controllers';
 import { FixtureController, FixturesController } from '../controllers';
-import { getWeekDatesArray } from '../middleware';
+import { getWeekDatesArray } from '../helper';
 
 export const fixtures = express.Router();
 
