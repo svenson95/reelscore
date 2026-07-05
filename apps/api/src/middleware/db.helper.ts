@@ -7,41 +7,65 @@ type MongoConfig = {
   database: string;
 };
 
+type MongoCache = {
+  connection: typeof mongoose | null;
+  connectionPromise: Promise<typeof mongoose> | null;
+};
+
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoCache: MongoCache | undefined;
+}
+
+const cache: MongoCache = globalThis.mongoCache ?? {
+  connection: null,
+  connectionPromise: null,
+};
+
+globalThis.mongoCache = cache;
+
 export class DBHelper {
-  private static connectionPromise: Promise<typeof mongoose> | null = null;
   private static listenersRegistered = false;
 
-  static init(): Promise<typeof mongoose> {
-    return this.connectionPromise ?? this.connect();
-  }
-
-  private static connect(): Promise<typeof mongoose> {
-    const uri = this.getConnectionUri();
-
+  static async init(): Promise<typeof mongoose> {
     this.registerConnectionListeners();
 
-    this.connectionPromise = mongoose
-      .connect(uri, {
-        maxPoolSize: 10,
-        minPoolSize: 2,
-        serverSelectionTimeoutMS: 5_000,
-      })
-      .catch((error) => {
-        this.connectionPromise = null;
-        throw error;
-      });
+    if (cache.connection && mongoose.connection.readyState === 1) {
+      return cache.connection;
+    }
 
-    return this.connectionPromise;
+    if (!cache.connectionPromise) {
+      cache.connectionPromise = this.connect();
+    }
+
+    try {
+      cache.connection = await cache.connectionPromise;
+      return cache.connection;
+    } catch (error) {
+      cache.connection = null;
+      cache.connectionPromise = null;
+      throw error;
+    }
+  }
+
+  private static async connect(): Promise<typeof mongoose> {
+    const uri = this.getConnectionUri();
+
+    return mongoose.connect(uri, {
+      maxPoolSize: 5,
+      minPoolSize: 0,
+      serverSelectionTimeoutMS: 5_000,
+      socketTimeoutMS: 20_000,
+      maxIdleTimeMS: 30_000,
+      bufferCommands: false,
+    });
   }
 
   private static getConnectionUri(): string {
     const { username, password, cluster, database } = this.getConfig();
-    const options = {
-      // Retry eligible write operations after short network errors
-      // Useful for short connection interruptions during a write
-      retryWrites: true,
 
-      // Confirm a write only after most MongoDB servers have saved it
+    const options = {
+      retryWrites: true,
       w: 'majority',
     };
 
@@ -49,20 +73,17 @@ export class DBHelper {
       Object.entries(options).map(([key, value]) => [key, String(value)])
     ).toString();
 
-    return `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${database}?${optionsString}`;
+    return `mongodb+srv://${encodeURIComponent(username)}:${encodeURIComponent(
+      password
+    )}@${cluster}.mongodb.net/${database}?${optionsString}`;
   }
 
   private static getConfig(): MongoConfig {
-    const username = this.getEnv('MONGODB_USER');
-    const password = this.getEnv('MONGODB_PASSWORD');
-    const cluster = this.getEnv('MONGODB_CLUSTER');
-    const database = this.getEnv('MONGODB_DATABASE');
-
     return {
-      username,
-      password,
-      cluster,
-      database,
+      username: this.getEnv('MONGODB_USER'),
+      password: this.getEnv('MONGODB_PASSWORD'),
+      cluster: this.getEnv('MONGODB_CLUSTER'),
+      database: this.getEnv('MONGODB_DATABASE'),
     };
   }
 
@@ -97,8 +118,8 @@ export class DBHelper {
           `[server]: Disconnected from database '${mongoose.connection.host}'`
         );
       })
-      .on('error', (err) => {
-        console.warn(`[server]: Connection error: '${err}'`);
+      .on('error', (error) => {
+        console.warn('[server]: Database connection error', error);
       });
 
     this.listenersRegistered = true;
