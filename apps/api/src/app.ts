@@ -3,6 +3,7 @@ import express from 'express';
 import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 
+import { databaseMiddleware } from './middleware';
 import {
   fixtureAnalyses,
   fixtureEvaluations,
@@ -29,18 +30,24 @@ const corsOptions: CorsOptions = {
 
     return callback(new Error('Not allowed by CORS'));
   },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 app.use(helmet());
 app.use(express.json({ limit: '2mb' }));
 
-app.get('/', (req: express.Request, res: express.Response) => {
+app.get('/', (req, res) => {
   return res.json({
     status: 'ok',
     service: 'reelscore API',
   });
 });
+
+app.use(databaseMiddleware);
 
 app.use('/standings', standings);
 app.use('/top-scorers', topScorers);
@@ -65,6 +72,10 @@ app.use(
     next: express.NextFunction
   ) => {
     console.error('[server]: Unhandled error', error);
+
+    if (res.headersSent) {
+      return next(error);
+    }
 
     res.status(500).json({
       message: 'Internal server error',
