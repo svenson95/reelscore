@@ -4,7 +4,7 @@ import express from 'express';
 import type { CompetitionId } from '@lib/models';
 
 import { StandingsController } from '../controllers';
-import { getWeekDatesArray } from '../middleware';
+import { getWeekDatesArray } from '../helper';
 
 export const standings = express.Router();
 

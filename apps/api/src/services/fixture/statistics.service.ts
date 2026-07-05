@@ -2,7 +2,7 @@ import type mongoose from 'mongoose';
 
 import type { FixtureIdParameter, RapidStatisticsDTO } from '@lib/models';
 
-import { findDocument } from '../../middleware';
+import { findDocument } from '../../helper';
 import { FixturesStatistics } from '../../models';
 
 export class FixtureStatisticsService {

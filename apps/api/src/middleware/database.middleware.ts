@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { DBHelper } from './db.helper';
+import { DBHelper } from '../helper/db.helper';
 
 export const databaseMiddleware = async (
   req: Request,
