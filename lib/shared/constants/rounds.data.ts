@@ -469,6 +469,10 @@ const INTERNATIONAL_WORLD_CUP_2026 = {
   2: `${GROUP_STAGE_STR}2`,
   3: `${GROUP_STAGE_STR}3`,
   4: 'Round of 32',
+  5: 'Round of 16',
+  6: 'Quarter-finals',
+  7: 'Semi-finals',
+  8: 'Final',
 };
 
 const INTERNATIONAL_EURO_CHAMPIONSHIP_2024 = {
