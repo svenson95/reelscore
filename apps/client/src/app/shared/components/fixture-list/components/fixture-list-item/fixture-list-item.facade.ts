@@ -74,18 +74,21 @@ export class FixtureListItemFacade {
   private isKoEliminated = (
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
-  ) => {
+  ): boolean => {
     const round = fixture.league.round;
+
+    const isKoRound = this.koRounds.includes(round);
+    if (!isKoRound) return false;
+
     const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
     const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
-    const isTwoLeggedKoRound = isTwoLeggedCompetition && !isTwoLeggedRound;
 
-    const isKoRound = this.koRounds.some((r) => r === round);
-    return (
-      (!isTwoLeggedCompetition || isTwoLeggedKoRound) &&
-      isKoRound &&
-      fixture.teams[team].winner === false
-    );
+    // Two-legged rounds are handled by isTwoLeggedEliminated()
+    if (isTwoLeggedCompetition && isTwoLeggedRound) {
+      return false;
+    }
+
+    return fixture.teams[team].winner === false;
   };
 
   private isTwoLeggedEliminated = (
