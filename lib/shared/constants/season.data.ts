@@ -20,6 +20,7 @@ export const COMPETITIONS_WITH_ONLY_ONE_FIXTURE: CompetitionId[] = [
 ] as const;
 
 export const ROUNDS_KO_PHASE: CompetitionRound[] = [
+  'Round of 32',
   'Round of 16',
   'Quarter-finals',
   'Final',
