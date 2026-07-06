@@ -40,12 +40,12 @@ const EXTERNAL_MODULES = [RouterLink];
 
       --mat-table-header-headline-line-height: 14px;
     }
-    .header { @apply flex gap-rs1 pr-3 border-b-[1px] items-center; border-bottom-color: var(--rs-button-border-color); }
+    .header { @apply flex gap-rs1 pr-3 border-b-[1px] items-center; }
     .header {
       span, a {
         font-family: var(--rs-font-family);
         line-height: var(--mat-table-header-headline-line-height);
-        font-size: var(--rs-font-size-body-3);
+        font-size: var(--rs-font-size-body-2);
         font-weight: var(--mat-table-header-headline-weight, 500);
 
         &.gray { @apply text-rs-color-text-2 text-rs-font-size-small shrink-0; }
