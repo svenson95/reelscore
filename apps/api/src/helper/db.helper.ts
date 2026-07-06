@@ -52,7 +52,7 @@ export class DBHelper {
     const uri = this.getConnectionUri();
 
     return mongoose.connect(uri, {
-      maxPoolSize: 5,
+      maxPoolSize: 10,
       minPoolSize: 0,
       serverSelectionTimeoutMS: 5_000,
       socketTimeoutMS: 20_000,
