@@ -25,9 +25,9 @@ import { TopScorersStore } from '../store';
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }
     .stat-rank { @apply text-rs-font-size-body-3 w-[20px] text-right; }
-    .player-name { @apply text-rs-font-size-body-3; }
+    .player-name { @apply text-rs-font-size-body-2; }
     .team-name { @apply ml-3 text-rs-color-text-2 text-rs-font-size-body-3; }
-    .stat-value { @apply text-rs-font-size-body-3 self-center; }
+    .stat-value { @apply text-rs-font-size-body-2 self-center; }
   `,
   template: `
     @if (isDataLoaded()) {
