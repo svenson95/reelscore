@@ -72,6 +72,11 @@ export const DEFAULT_ROUND_MAP = {
     header: 'Ausscheidungsspiele',
   }),
 
+  'Round of 32': () => ({
+    default: 'Sechzehntelfinale',
+    header: 'Sechzehntelfinale',
+  }),
+
   'Round of 16': () => ({
     default: 'Achtelfinale',
     header: 'Achtelfinale',
