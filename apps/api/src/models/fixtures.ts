@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import type { ExtendedFixtureDTO } from '@lib/models';
 
-const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
+const FixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
   fixture: {
     id: Number,
     referee: String,
@@ -154,4 +154,4 @@ const fixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
   },
 });
 
-export const Fixtures = mongoose.model('fixtures', fixturesSchema);
+export const Fixtures = mongoose.model('fixtures', FixturesSchema);
