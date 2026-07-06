@@ -73,7 +73,6 @@ const DATE_PICKER_PROVIDERS = [
       @include mat.button-overrides(
         (
           filled-container-height: 36px,
-          filled-label-text-size: var(--rs-font-size-body-3)
         )
       );
     }
