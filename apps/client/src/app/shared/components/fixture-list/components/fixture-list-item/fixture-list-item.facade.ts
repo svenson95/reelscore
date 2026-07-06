@@ -49,6 +49,7 @@ export class FixtureListItemFacade {
     '1st Round',
     '2nd Round',
     '3rd Round',
+    'Round of 32',
     'Round of 16',
     'Quarter-finals',
     'Semi-finals',
