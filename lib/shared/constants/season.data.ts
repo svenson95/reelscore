@@ -23,8 +23,8 @@ export const ROUNDS_KO_PHASE: CompetitionRound[] = [
   'Round of 32',
   'Round of 16',
   'Quarter-finals',
-  'Final',
   'Semi-finals',
+  'Final',
 ] as const;
 
 export const SEASONS: number[] = [2023, 2024, 2025, 2026] as const;
