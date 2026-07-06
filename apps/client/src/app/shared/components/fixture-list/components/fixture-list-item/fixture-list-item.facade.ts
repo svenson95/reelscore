@@ -83,7 +83,6 @@ export class FixtureListItemFacade {
     const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
     const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
 
-    // Two-legged rounds are handled by isTwoLeggedEliminated()
     if (isTwoLeggedCompetition && isTwoLeggedRound) {
       return false;
     }
