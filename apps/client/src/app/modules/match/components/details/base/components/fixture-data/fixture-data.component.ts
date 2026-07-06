@@ -15,14 +15,13 @@ import { FixtureStore } from '../../../../../store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RoundLabelPipe],
   styles: `
-    :host { @apply flex flex-col m-3 bg-rs-button-bg shadow-rs3 rounded-border2; }
+    :host { @apply flex flex-col my-3 mx-auto w-[350px] xs:w-[450px] bg-rs-button-bg shadow-rs3 rounded-border2; }
     ul { @apply py-4; }
-    li:not(:last-of-type) .item { @apply pb-2; }
+    li:not(:last-of-type) .item { @apply pb-3; }
     .item { @apply flex justify-center px-4 gap-6 text-rs-color-text-1; }
     .item > *:not(.key) { @apply flex-2 sm:flex-1; }
     .key { @apply text-rs-color-text-2 text-right tracking-wider font-extralight flex-1; }
-    .key, .value { @apply content-center;}
-    span { @apply text-rs-font-size-body-3;}
+    span { @apply text-rs-font-size-body-2;}
     .list-item-placeholder {  @apply w-[100px] h-[16px] my-1 bg-gray-200 rounded; }
   `,
   template: `
@@ -30,56 +29,46 @@ import { FixtureStore } from '../../../../../store';
       <li>
         <div class="item">
           <span class="key">Spieltag</span>
-          <div class="value">
-            @if (isLoaded()) { @let comp = data()!.league;
-            <span>
-              {{
-                comp.round | roundLabel : { id: comp.id, season: comp.season }
-              }}
-            </span>
-            } @else {
-            <div class="list-item-placeholder"></div>
-            }
-          </div>
+          @if (isLoaded()) { @let comp = data()!.league;
+          <span class="value">
+            {{ comp.round | roundLabel : { id: comp.id, season: comp.season } }}
+          </span>
+          } @else {
+          <div class="list-item-placeholder"></div>
+          }
         </div>
       </li>
 
       <li>
         <div class="item">
           <span class="key">Stadion</span>
-          <div class="value">
-            @if (isLoaded()) {
-            <span>{{ data()!.fixture.venue.name }}</span>
-            } @else {
-            <div class="list-item-placeholder"></div>
-            }
-          </div>
+          @if (isLoaded()) {
+          <span class="value">{{ data()!.fixture.venue.name }}</span>
+          } @else {
+          <div class="list-item-placeholder"></div>
+          }
         </div>
       </li>
 
       <li>
         <div class="item">
           <span class="key">Stadt</span>
-          <div class="value">
-            @if (isLoaded()) {
-            <span>{{ data()!.fixture.venue.city }}</span>
-            } @else {
-            <div class="list-item-placeholder"></div>
-            }
-          </div>
+          @if (isLoaded()) {
+          <span class="value">{{ data()!.fixture.venue.city }}</span>
+          } @else {
+          <div class="list-item-placeholder"></div>
+          }
         </div>
       </li>
 
       <li>
         <div class="item">
           <span class="key">Schiedsrichter</span>
-          <div class="value">
-            @if (isLoaded()) {
-            <span>{{ data()!.fixture.referee }}</span>
-            } @else {
-            <div class="list-item-placeholder"></div>
-            }
-          </div>
+          @if (isLoaded()) {
+          <span class="value">{{ data()!.fixture.referee }}</span>
+          } @else {
+          <div class="list-item-placeholder"></div>
+          }
         </div>
       </li>
     </ul>
