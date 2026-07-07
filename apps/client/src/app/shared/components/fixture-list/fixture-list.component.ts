@@ -10,19 +10,23 @@ import { FixtureListItemComponent } from './components';
   imports: [FixtureListItemComponent],
   styles: `
     ul { @apply w-full; }
-    li:not(:last-child) { @apply border-b-[1px]; border-bottom-color: var(--rs-button-border-color); }
-    li:last-child { border-bottom: 0.5px solid transparent; }
+    li:not(:last-child) { @apply border-b-[1px]; }
   `,
   template: `
     <ul>
-      @for(match of fixtures(); track match.fixture.id) {
+      @for(match of fixtures(); track match.fixture.id; let isLast = $last) {
       <li>
-        <rs-fixture-list-item [fixture]="match" />
+        <rs-fixture-list-item
+          class="fixture-list-item"
+          [fixture]="match"
+          [class.is-last]="isLastList() && isLast"
+        />
       </li>
       }
     </ul>
   `,
 })
 export class FixtureListComponent {
-  fixtures = input.required<ExtendedFixtureDTO[]>();
+  readonly fixtures = input.required<ExtendedFixtureDTO[]>();
+  readonly isLastList = input<boolean>(true);
 }

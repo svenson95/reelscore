@@ -38,8 +38,9 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
   ],
   providers: [FixtureListItemFacade],
   styles: `
-    a { @apply flex items-stretch; }
     :host > div { @apply inline-flex flex-col; }
+    :host(.is-last) a { @apply rounded-b-border2; }
+    a { @apply flex items-stretch; }
     .time-label.is-finished { @apply line-through decoration-rs-color-primary; }
     .time {
       @apply justify-center items-center self-center min-w-[40px] h-fit py-[2px] text-rs-font-size-small;

@@ -30,6 +30,8 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     }
     a { @apply flex items-center p-2 gap-2; }
     a + a { @apply border-t; }
+    a:first-of-type { @apply rounded-t-border2; }
+    a:last-of-type { @apply rounded-b-border2; }
     .date { @apply w-[40px] text-rs-font-size-small text-center; }
     .team { @apply flex-1 content-center leading-[13px]; }
     .home { @apply text-right; }
