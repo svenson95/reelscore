@@ -61,7 +61,8 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
     </div>
 
     <div class="days">
-      @for (day of fixturesDays(); track $index + '-' + day.date) {
+      @for (day of fixturesDays(); track $index + '-' + day.date; let isLast =
+      $last) {
       <div class="day">
         <div class="group-date">
           <p class="group-date-label">
@@ -71,7 +72,11 @@ import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
           <div class="group-date-line"></div>
         </div>
 
-        <rs-fixture-list [fixtures]="day.fixtures" />
+        <rs-fixture-list
+          class="fixtures-list"
+          [fixtures]="day.fixtures"
+          [isLastList]="isLast"
+        />
       </div>
       }
     </div>
