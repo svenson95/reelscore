@@ -24,7 +24,7 @@ import { TopScorersStore } from '../store';
     .player-stat:not(:last-child) { @apply border-b; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
     .player-row { @apply flex items-center; }
-    .stat-rank { @apply text-rs-font-size-body-3 w-[20px] text-right; }
+    .stat-rank { @apply text-rs-font-size-body-2 w-[20px] text-right; }
     .player-name { @apply text-rs-font-size-body-2; }
     .team-name { @apply ml-3 text-rs-color-text-2 text-rs-font-size-body-3; }
     .stat-value { @apply text-rs-font-size-body-2 self-center; }
@@ -37,7 +37,7 @@ import { TopScorersStore } from '../store';
         @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
           <div class="player-row">
-            <span class="stat-rank">{{ idx + 1 }}.</span>
+            <span class="stat-rank">{{ idx + 1 }}</span>
             <img [src]="stat.player.photo" />
             <span class="player-name">{{ stat.player.name }}</span>
             <span class="team-name">
@@ -56,7 +56,7 @@ import { TopScorersStore } from '../store';
         @for (stat of assists(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
           <div class="player-row">
-            <span class="stat-rank">{{ idx + 1 }}.</span>
+            <span class="stat-rank">{{ idx + 1 }}</span>
             <img [src]="stat.player.photo" referrerpolicy="no-referrer" />
             <span class="player-name">{{ stat.player.name }}</span>
             <span class="team-name">
