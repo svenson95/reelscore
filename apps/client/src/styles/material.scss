@@ -144,7 +144,7 @@ button {
 
   &.mdc-button,
   &.mdc-icon-button {
-    --mat-icon-button-disabled-icon-color: var(--rs-color-text-2);
+    --mat-icon-button-disabled-icon-color: var(--rs-border-color-2);
     --mat-icon-button-disabled-state-layer-color: transparent;
     --mat-button-outlined-disabled-label-text-color: var(--rs-color-text-1);
   }
