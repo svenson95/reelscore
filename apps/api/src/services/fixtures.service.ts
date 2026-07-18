@@ -98,11 +98,4 @@ export class FixturesService {
       .sort({ 'fixture.date': -1 })
       .lean();
   }
-
-  private isDstInBerlin(year: number, month: number, day: number): boolean {
-    const date = new Date(Date.UTC(year, month - 1, day));
-    const jan = new Date(Date.UTC(year, 0, 1)).getTimezoneOffset();
-    const jul = new Date(Date.UTC(year, 6, 1)).getTimezoneOffset();
-    return Math.min(jan, jul) !== date.getTimezoneOffset();
-  }
 }

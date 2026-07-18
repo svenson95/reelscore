@@ -6,7 +6,7 @@ export type DateString = string; // format YYYY-MM-DD
 export type CalendarWeek = number;
 
 export const getNow = () => moment().tz(TIMEZONE);
-export const getDateInTimezone = (date: string) => moment.tz(date, TIMEZONE);
+export const getDateInTimezone = (date: string) => moment.parseZone(date);
 
 export const formatDateToYearMonthDay = (value: string | Date): DateString => {
   const parts = new Intl.DateTimeFormat('de-DE', {
@@ -47,3 +47,26 @@ export const getWeekdayIndex = (dateString: string): number => {
 
 export const startOfWeek = (day: string) =>
   moment.tz(day, 'YYYY-MM-DD', TIMEZONE).startOf('isoWeek');
+
+const FIXTURE_TIME_FORMATTER = new Intl.DateTimeFormat('de-DE', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: TIMEZONE,
+});
+
+export const formatFixtureTime = (
+  timestamp: number | null | undefined
+): string => {
+  if (timestamp == null) {
+    return '';
+  }
+
+  const date = new Date(timestamp * 1000);
+
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  return FIXTURE_TIME_FORMATTER.format(date);
+};
