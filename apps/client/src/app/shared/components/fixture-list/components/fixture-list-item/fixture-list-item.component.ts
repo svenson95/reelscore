@@ -1,4 +1,3 @@
-import { DatePipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +10,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import type { ExtendedFixtureDTO } from '@lib/models';
+import { formatFixtureTime } from '@lib/shared';
 
 import { linkToMatch } from '../../../../constants';
 import {
@@ -22,10 +22,9 @@ import { TeamNamePipe } from '../../../../pipes';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 
-import { TIMEZONE } from '@lib/shared';
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
-const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
+const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
 
 @Component({
   selector: 'rs-fixture-list-item',
@@ -73,7 +72,7 @@ const EXTERNAL_MODULES = [MatRippleModule, DatePipe, RouterModule];
           @if (timeLabel(); as label) {
           <span class="truncate text-ellipsis">{{ label }}</span>
           } @else {
-          {{ match.fixture.date | date : 'HH:mm' }}
+          {{ formattedFixtureTime() }}
           }
         </span>
       </div>
@@ -126,19 +125,26 @@ export class FixtureListItemComponent {
     getFixtureStatusState(this.fixture().fixture.status.short)
   );
 
+  readonly formattedFixtureTime = computed(() => {
+    return formatFixtureTime(this.fixture().fixture.timestamp);
+  });
+
   readonly timeLabel = computed<string>(() => {
     const fixture = this.fixture();
     const state = this.statusState();
 
     if (state.isPenalty) return 'Elfm.';
     if (state.isHalftime) return 'HZ';
+
     if (state.isPlaying) {
       if (state.status === 'INT') return 'Unt.';
-      const status = fixture.fixture.status;
-      return `${(status.elapsed ?? 0) + (status.extra ?? 0)}'`;
+
+      const { elapsed, extra } = fixture.fixture.status;
+      return `${(elapsed ?? 0) + (extra ?? 0)}'`;
     }
+
     if (state.isFinished) {
-      return formatDate(fixture.fixture.date, 'HH:mm', 'de-DE', TIMEZONE);
+      return formatFixtureTime(fixture.fixture.timestamp);
     }
 
     return '';
