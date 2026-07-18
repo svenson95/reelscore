@@ -472,7 +472,8 @@ const INTERNATIONAL_WORLD_CUP_2026 = {
   5: 'Round of 16',
   6: 'Quarter-finals',
   7: 'Semi-finals',
-  8: 'Final',
+  8: '3rd Place Final',
+  9: 'Final',
 };
 
 const INTERNATIONAL_EURO_CHAMPIONSHIP_2024 = {
