@@ -92,6 +92,11 @@ export const DEFAULT_ROUND_MAP = {
     header: 'Halbfinale',
   }),
 
+  '3rd Place Final': () => ({
+    default: 'Spiel um dritten Platz',
+    header: 'Spiel um Platz 3',
+  }),
+
   Final: () => ({
     default: 'Finale',
     header: 'Finale',
