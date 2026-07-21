@@ -81,6 +81,7 @@ const DATE_PICKER_PROVIDERS = [
     <button
       mat-flat-button
       (click)="picker.open()"
+      [disabled]="isLoading()"
       [class.is-open]="picker.opened"
     >
       <mat-icon>calendar_today</mat-icon>
@@ -103,6 +104,7 @@ const DATE_PICKER_PROVIDERS = [
 })
 export class DatePickerComponent {
   readonly selectedDay = input.required<DateString>();
+  readonly isLoading = input.required<boolean>();
   readonly dateSelected = output<DateString>();
 
   readonly MIN_DATE = new Date(2023, 7, 11);
