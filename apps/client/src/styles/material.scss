@@ -147,6 +147,8 @@ button {
     --mat-icon-button-disabled-icon-color: var(--rs-border-color-2);
     --mat-icon-button-disabled-state-layer-color: transparent;
     --mat-button-outlined-disabled-label-text-color: var(--rs-color-text-1);
+    --mat-button-filled-disabled-container-color: var(--rs-button-bg-color);
+    --mat-button-filled-disabled-label-text-color: var(--rs-border-color-2);
   }
 
   &.mat-mdc-icon-button {
