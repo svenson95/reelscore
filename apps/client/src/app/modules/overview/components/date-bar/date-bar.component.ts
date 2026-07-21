@@ -1,9 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 
 import { BreakpointObserverService } from '@app/shared';
 import type { DateString } from '@lib/shared';
 
 import { DateService, SelectedDateService } from '../../services';
+import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
 
 import {
   ActionButtonsComponent,
@@ -34,14 +40,11 @@ import {
     <div class="top">
       <rs-date-picker
         [selectedDay]="selectedDay()"
+        [isLoading]="isLoading()"
         (dateSelected)="setDate($event)"
       />
       @if (isMobile()){ @if (!isToday()) {
-      <rs-today-button
-        [today]="today()"
-        [isToday]="isToday()"
-        (clicked)="resetDate()"
-      />
+      <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
       }
       <div class="spacer"></div>
       <rs-action-buttons />
@@ -52,15 +55,12 @@ import {
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
       [calendarWeek]="calendarWeek()"
+      [isLoading]="isLoading()"
       (dateSelected)="setDate($event)"
     ></rs-week-toggle-group>
 
     @if (!isMobile()){ @if (!isToday()) {
-    <rs-today-button
-      [today]="today()"
-      [isToday]="isToday()"
-      (clicked)="resetDate()"
-    />
+    <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
     }
     <div class="spacer"></div>
     <rs-action-buttons />
@@ -78,6 +78,13 @@ export class DateBarComponent {
   today = this.dateService.today;
   isToday = this.dateService.isToday;
   calendarWeek = this.dateService.calendarWeek;
+
+  private readonly weekFixtures = inject(WeekdayFixturesStore);
+  private readonly weekStandings = inject(WeekdayStandingsStore);
+
+  readonly isLoading = computed<boolean>(
+    () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
+  );
 
   setDate(day: DateString): void {
     const formattedDate = day.split('T')[0];

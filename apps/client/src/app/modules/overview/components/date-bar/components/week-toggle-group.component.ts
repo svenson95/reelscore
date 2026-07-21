@@ -3,7 +3,6 @@ import type { PipeTransform } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   input,
   output,
@@ -18,7 +17,6 @@ import type { CalendarWeek, DateString } from '@lib/shared';
 import { formatDateToYearMonthDay } from '@lib/shared';
 
 import { DateService } from '../../../services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../../store';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
@@ -57,7 +55,7 @@ const EXTERNAL_MODULES = [
           label-text-size: var(--rs-font-size-body-2),
           text-color: var(--rs-color-primary),
           selected-state-text-color: var(--rs-color-text-3),
-          disabled-state-text-color: var(--rs-color-text-2),
+          disabled-state-text-color: var(--rs-border-color-2),
           disabled-selected-state-text-color: var(--rs-color-text-3),
           selected-state-background-color: var(--rs-color-primary),
           disabled-state-background-color: var(--rs-button-bg-color),
@@ -136,13 +134,9 @@ export class WeekToggleGroupComponent {
   readonly selectedDay = input.required<DateString>();
   readonly calendarWeek = input.required<CalendarWeek>();
   readonly weekdays = input.required<DateString[]>();
-  readonly dateSelected = output<DateString>();
+  readonly isLoading = input.required<boolean>();
 
-  private readonly weekFixtures = inject(WeekdayFixturesStore);
-  private readonly weekStandings = inject(WeekdayStandingsStore);
-  readonly isLoading = computed<boolean>(
-    () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
-  );
+  readonly dateSelected = output<DateString>();
 
   setDateTo(target: number): void {
     const targetDate = new Date(this.selectedDay());
