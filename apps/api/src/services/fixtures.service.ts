@@ -1,3 +1,4 @@
+import moment from 'moment';
 import type { FilterQuery } from 'mongoose';
 
 import type {
@@ -8,7 +9,7 @@ import type {
   FixtureDTO,
   FixtureId,
 } from '@lib/models';
-import { COMPETITION_ROUNDS, getDateInTimezone, getSeason } from '@lib/shared';
+import { COMPETITION_ROUNDS, getSeason, TIMEZONE } from '@lib/shared';
 
 import { Fixtures } from '../models';
 
@@ -29,16 +30,22 @@ export class FixturesService {
   }
 
   async findByDate(date: FixtureDateString): Promise<FixtureDTO[]> {
-    const start = getDateInTimezone(date).startOf('day').toDate();
-    const end = getDateInTimezone(date).add(1, 'day').startOf('day').toDate();
+    const start = moment.tz(date, 'YYYY-MM-DD', true, TIMEZONE).startOf('day');
 
-    return await Fixtures.find({
-      'fixture.date': {
-        $gte: start,
-        $lt: end,
+    if (!start.isValid()) {
+      throw new Error(`Invalid fixture date: ${date}`);
+    }
+
+    const startTimestamp = start.unix();
+    const endTimestamp = start.clone().add(1, 'day').unix();
+
+    return Fixtures.find({
+      'fixture.timestamp': {
+        $gte: startTimestamp,
+        $lt: endTimestamp,
       },
     })
-      .sort({ 'fixture.date': 1 })
+      .sort({ 'fixture.timestamp': 1 })
       .lean<FixtureDTO[]>()
       .exec();
   }
@@ -57,11 +64,13 @@ export class FixturesService {
     if (showAll) {
       const competitionRounds = COMPETITION_ROUNDS[season]?.[competitionId];
       if (!competitionRounds) return [];
+
       const allRounds = Object.values(competitionRounds);
 
       const firstRound = rounds[0];
       const lastRound = rounds[rounds.length - 1];
       const currentRound = rounds.length > 1 ? lastRound : firstRound;
+
       const currentRoundIndex = allRounds.findIndex(
         (round) => round === currentRound
       );
@@ -75,11 +84,10 @@ export class FixturesService {
       query['league.round'] = { $in: rounds };
     }
 
-    const fixtures = await Fixtures.find(query)
-      .sort({ 'fixture.date': -1 })
-      .lean();
-
-    return fixtures;
+    return Fixtures.find(query)
+      .sort({ 'fixture.timestamp': -1 })
+      .lean<FixtureDTO[]>()
+      .exec();
   }
 
   async findByFixtureAndTeamType(
@@ -88,14 +96,17 @@ export class FixturesService {
     limit = 5
   ): Promise<ExtendedFixtureDTO[]> {
     const teamId = fixture.teams[team].id;
-    const date = fixture.fixture.date;
+    const date = fixture.fixture.timestamp;
 
-    return await Fixtures.find()
-      .where('fixture.date')
-      .lt(Number(date))
-      .or([{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }])
+    return Fixtures.find({
+      'fixture.timestamp': {
+        $lt: date,
+      },
+      $or: [{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }],
+    })
+      .sort({ 'fixture.timestamp': -1 })
       .limit(limit)
-      .sort({ 'fixture.date': -1 })
-      .lean();
+      .lean<ExtendedFixtureDTO[]>()
+      .exec();
   }
 }
