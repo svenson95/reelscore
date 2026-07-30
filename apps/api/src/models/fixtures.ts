@@ -8,7 +8,10 @@ const FixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
     referee: String,
     timezone: String,
     date: Date,
-    timestamp: Number,
+    timestamp: {
+      type: Number,
+      required: true,
+    },
     periods: {
       first: Number,
       second: Number,
