@@ -8,6 +8,7 @@ import type {
   StandingsFilter,
 } from '@lib/models';
 import {
+  COMPETITION_ID,
   getDateInTimezone,
   getSeason,
   isCompetitionWithMultipleGroups,
@@ -48,11 +49,11 @@ export class StandingsController {
 
   async getTopFive(date: string): Promise<StandingsDTO[]> {
     const standingsIds: CompetitionId[] = [
-      78, // Bundesliga
-      39, // Premier League
-      140, // La Liga
-      135, // Serie A
-      61, // Ligue 1
+      COMPETITION_ID.GERMANY_BUNDESLIGA,
+      COMPETITION_ID.ENGLAND_PREMIER_LEAGUE,
+      COMPETITION_ID.SPAIN_LA_LIGA,
+      COMPETITION_ID.ITALY_SERIE_A,
+      COMPETITION_ID.FRANCE_LIGUE_1,
     ];
 
     const standings = await Promise.all(
