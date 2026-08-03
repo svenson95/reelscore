@@ -20,6 +20,8 @@ export const COMPETITIONS_WITH_ONLY_ONE_FIXTURE: CompetitionId[] = [
 ] as const;
 
 export const ROUNDS_KO_PHASE: CompetitionRound[] = [
+  'Round of 128',
+  'Round of 64',
   'Round of 32',
   'Round of 16',
   'Quarter-finals',
@@ -42,4 +44,6 @@ export const FIXED_SEASON_BY_COMPETITION = new Map<
   [253, 2026], // Friendlies
 ]);
 
-export const SEASON_START = (d: Moment) => d.clone().month(7).date(1);
+const JULY = 6;
+const FIRST = 1;
+export const SEASON_START = (d: Moment) => d.clone().month(JULY).date(FIRST);
