@@ -1,7 +1,18 @@
-/* eslint-disable */
+import type { ChildProcess } from 'node:child_process';
 
-module.exports = async function () {
-  // Put clean up logic here (e.g. stopping services, docker-compose, etc.).
-  // Hint: `globalThis` is shared between setup and teardown.
-  console.log(globalThis.__TEARDOWN_MESSAGE__);
-};
+declare global {
+  // eslint-disable-next-line no-var
+  var __API_PROCESS__: ChildProcess | undefined;
+}
+
+export default async function globalTeardown(): Promise<void> {
+  console.log('\nStopping API...\n');
+
+  const apiProcess = globalThis.__API_PROCESS__;
+
+  if (!apiProcess || apiProcess.killed) {
+    return;
+  }
+
+  apiProcess.kill('SIGTERM');
+}
