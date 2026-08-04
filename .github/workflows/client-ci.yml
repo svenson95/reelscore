@@ -4,28 +4,10 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'apps/client/**'
-      - 'apps/client-e2e/**'
-      - 'libs/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'nx.json'
-      - 'tsconfig.base.json'
-      - '.github/workflows/client-ci.yml'
 
   push:
     branches:
       - main
-    paths:
-      - 'apps/client/**'
-      - 'apps/client-e2e/**'
-      - 'libs/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'nx.json'
-      - 'tsconfig.base.json'
-      - '.github/workflows/client-ci.yml'
 
 concurrency:
   group: client-ci-${{ github.ref }}
