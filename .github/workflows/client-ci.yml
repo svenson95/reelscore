@@ -1,0 +1,72 @@
+name: Client CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/client/**'
+      - 'apps/client-e2e/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+      - '.github/workflows/client-ci.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/client/**'
+      - 'apps/client-e2e/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+      - '.github/workflows/client-ci.yml'
+
+concurrency:
+  group: client-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  client-checks:
+    name: Client checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint client
+        run: npx nx lint client
+
+      - name: Build client
+        run: npx nx build client --configuration=production
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run client E2E tests
+        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-playwright-report
+          path: dist/.playwright/apps/client-e2e/playwright-report
+          retention-days: 7
+          if-no-files-found: ignore
