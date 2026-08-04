@@ -40,7 +40,7 @@ import {
       rs-date-bar
       class="animate-drop-from-top"
     ></nav>
-    <section class="overview-content" rs-overview-content></section>
+    <section rs-overview-content data-testid="overview-page"></section>
   `,
 })
 export class OverviewComponent
