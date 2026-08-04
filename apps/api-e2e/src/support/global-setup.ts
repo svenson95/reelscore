@@ -1,4 +1,7 @@
 import { spawn, type ChildProcess } from 'node:child_process';
+import { join } from 'node:path';
+
+import { workspaceRoot } from '@nx/devkit';
 
 import { API_E2E_PORT, API_E2E_URL } from './test-environment';
 
@@ -20,9 +23,7 @@ const waitForApi = async (): Promise<void> => {
       if (response.ok) {
         return;
       }
-    } catch {
-      // the API is not available yet
-    }
+    } catch {}
 
     await new Promise<void>((resolve) => {
       setTimeout(resolve, POLL_INTERVAL_MS);
@@ -37,17 +38,24 @@ const waitForApi = async (): Promise<void> => {
 export default async function globalSetup(): Promise<void> {
   console.log('\nStarting API for E2E tests...\n');
 
-  const apiProcess = spawn('npx', ['nx', 'serve', 'api'], {
-    cwd: process.cwd(),
+  const apiEntry = join(workspaceRoot, 'dist/apps/api/main.cjs');
+
+  const apiProcess = spawn(process.execPath, [apiEntry], {
+    cwd: workspaceRoot,
     env: {
       ...process.env,
       PORT: String(API_E2E_PORT),
     },
     stdio: 'inherit',
-    shell: process.platform === 'win32',
   });
 
   globalThis.__API_PROCESS__ = apiProcess;
+
+  apiProcess.once('exit', (code) => {
+    if (code !== null && code !== 0) {
+      console.error(`API process exited unexpectedly with code ${code}`);
+    }
+  });
 
   try {
     await waitForApi();
