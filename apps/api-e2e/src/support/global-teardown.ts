@@ -14,5 +14,10 @@ export default async function globalTeardown(): Promise<void> {
     return;
   }
 
-  apiProcess.kill('SIGTERM');
+  await new Promise<void>((resolve) => {
+    apiProcess.once('exit', () => resolve());
+    apiProcess.kill('SIGTERM');
+
+    setTimeout(resolve, 5_000);
+  });
 }
