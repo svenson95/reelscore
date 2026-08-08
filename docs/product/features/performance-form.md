@@ -4,7 +4,7 @@
 
 Zusätzlich zur klassischen Ergebnisform soll eine Formbewertung angezeigt werden, die beschreibt, wie gut eine Mannschaft in einem Spiel tatsächlich gespielt hat.
 
-Die klassische Ergebnisform bleibt weiterhin bestehen und zeigt:
+Die klassische "Ergebnis-Form" bleibt weiterhin bestehen und zeigt:
 
 - Sieg
 - Unentschieden
