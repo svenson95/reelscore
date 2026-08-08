@@ -1,7 +1,7 @@
 import { type RoundMapOverride } from '../../round-label.helper';
 
 export const FRIENDLIES_FROM_2023_ROUND_MAP = {
-  Friendlies: (round) => ({
+  Friendlies: (_) => ({
     default: '-',
     header: '-',
   }),
