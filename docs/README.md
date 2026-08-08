@@ -6,6 +6,7 @@
 - [Overview Page](./product/pages/overview.md) // TODO: add missing docs
 - [Match Page](./product/pages/match.md) // missing
 - [Competition Page](./product/pages/competition.md) // missing
+- [Team Page](./product/pages/team.md) // missing
 
 ## Architecture
 
@@ -14,6 +15,6 @@
 - [Client Components](./architecture/components-client.md)
 - [API Components](./architecture/components-api.md) // missing
 
-## Architecture Decisions
+## Decisions
 
 See [Architecture Decision Records](./decisions/README.md).

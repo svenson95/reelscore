@@ -1,10 +1,5 @@
 # System Context
 
-## reelscore
-
-reelscore stellt Fußballspiele, Wettbewerbe, Tabellen und Live-Daten dar
-und bereitet diese für Nutzer auf.
-
 ## Externe Systeme
 
 ### API-Football
