@@ -1,5 +1,3 @@
-import type { CompetitionUrl } from '@lib/models';
-
 describe('RouterView', () => {
   // let fixture: ComponentFixture<OverviewComponent>;
   // let component: OverviewComponent;
@@ -31,11 +29,9 @@ describe('RouterView', () => {
 
     it('should return undefined if input is invalid', () => {
       // given
-      const invalidUrl = 'url-with-typo' as CompetitionUrl;
-
+      // const invalidUrl = 'url-with-typo' as CompetitionUrl;
       // when
       // const league = component.getLeagueByUrl(invalidUrl);
-
       // // then
       // expect(league).toBeUndefined();
     });
