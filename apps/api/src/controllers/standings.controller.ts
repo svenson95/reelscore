@@ -123,13 +123,16 @@ export class StandingsController {
       });
     }
 
-    const startOfDay = getDateInTimezone(date).startOf('day').toDate();
+    const startOfNextDay = getDateInTimezone(date)
+      .add(1, 'day')
+      .startOf('day')
+      .toDate();
 
     return this.standingsService.findByFilter(
       {
         ...baseFilter,
         updatedAt: {
-          $lt: startOfDay,
+          $lt: startOfNextDay,
         },
       },
       {
