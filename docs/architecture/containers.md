@@ -7,10 +7,8 @@
 
 Verantwortlich für:
 
-- Seitennavigation
-- Darstellung von Fixtures, Tabellen und Spieldetails
-- Laden von API-Daten
-- PWA-Verhalten
+- Darstellung und Interaktion der Benutzeroberfläche
+- Bezieht Anwendungsdaten über die nachfolgend beschriebene HTTP-API
 
 ## API
 
@@ -19,19 +17,19 @@ Verantwortlich für:
 
 Verantwortlich für:
 
-- Bereitstellung der HTTP-API
-- Datenbankzugriff
-- Validierung und Transformation der Daten
+- Bereitstellung der HTTP-Schnittstelle für den Client
+- Lesen der für die Anwendung benötigten Daten aus MongoDB
 
-## Datenimport über seperate Admin-Anwendung
+## Admin-Anwendung
 
-**Pfad:** anderes Projekt
+**Pfad:** seperates NX-Projekt
 
 Verantwortlich für:
 
-- Abruf von Daten aus API-Football
-- Rate-Limit-Steuerung
-- Aktualisierung der Datenbank
+- Abruf externer Fußballdaten von API-Football
+- Verarbeitung und Normalisierung der importierten Daten
+- Steuerung und Einhaltung von API-Rate-Limits
+- Aktualisierung und Pflege der MongoDB-Datenbank
 - zeitgesteuerte Aktualisierungen (cron jobs)
 
 ## MongoDB Atlas
@@ -39,13 +37,15 @@ Verantwortlich für:
 Verantwortlich für die persistente Speicherung von:
 
 - Fußball-Partien / fixtures
-- Wettbewerben / competitions
-- Tabellen / standings
-- Mannschaften / teams
 - Spielereignissen / events
 - Statistiken / fixture-statistics
 - Spieler-Statistiken / players-statistics
 - Aufstellungen / lineups
+- Wettbewerben / competitions
+- Wettbewerb-Spieler-Statistiken / competition-top-scorers
+- Tabellen / standings
+- Mannschaften / teams
+- Trainer / team-coaches
 
 ## Gemeinsame Libraries
 
