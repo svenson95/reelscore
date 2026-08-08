@@ -2,17 +2,29 @@
 
 Football livescore web application with a focus on match predictions and team form ratings.
 
-The project is organized as an [Nx](https://nx.dev) monorepo and contains the reelscore frontend and API.
+The project is organized as an [Nx](https://nx.dev) monorepo and contains the reelscore client and API.
 
-## Documentation
+Architectural decisions and technical details are documented in [/docs](./docs/README.md).
 
-Technical decisions that affect the architecture or long-term development of ReelScore are documented under:
+## Tech Stack
 
-```text
-docs/decisions/
-```
+### Client
 
-These documents should explain significant decisions and their reasoning rather than implementation tasks or temporary development notes.
+- Angular
+- Angular Material
+- Tailwind
+
+### API
+
+- Node.js
+- Express
+- TypeScript
+- MongoDB & Mongoose
+
+### Tooling
+
+- Nx
+- GitHub Actions
 
 ## Requirements
 
@@ -176,26 +188,6 @@ MONGODB_CLUSTER=
 MONGODB_DATABASE=
 ```
 
-## Tech Stack
-
-### Client
-
-- Angular
-- Angular Material
-- Tailwind
-
-### API
-
-- Node.js
-- Express
-- TypeScript
-- MongoDB & Mongoose
-
-### Tooling
-
-- Nx
-- GitHub Actions
-
 ## Project Structure
 
 The main applications are located under `apps/`:
@@ -283,9 +275,7 @@ Generated files are written to, for example:
 
 3. Run the logo processing script.
 
-4. Move the approved generated files from the output directory into the appropriate asset directory, for example the team-logo-responsive/14x14/ directory.
-
-5. Inspect the git changes & compare updated logos with the currently used assets. Keep the existing logo when it has better visual quality.
+4. Inspect the git changes & compare updated logos with the currently used assets. Keep the existing logo when it has better visual quality.
 
    For example, an older logo may have a proper transparent background while a newly provided version does not.
 
