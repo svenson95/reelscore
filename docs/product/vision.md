@@ -2,7 +2,7 @@
 
 ## Ausgangssituation
 
-Bestehende Fußball-Livescore-Anwendungen zeigen Ergebnisse, Tabellen, Spieldetails und häufig eine einfache Formanzeige der letzten Spiele. Diese Formanzeige bewertet Mannschaften normalerweise ausschließlich anhand des Spielergebnisses:
+Bestehende Fußball-Livescore-Anwendungen zeigen neben den üblichen Daten häufig eine einfache Formanzeige, welche Mannschaften normalerweise ausschließlich anhand des Spielergebnisses bewertet:
 
 - Sieg
 - Unentschieden
@@ -12,53 +12,46 @@ Das Ergebnis allein beschreibt jedoch nicht immer, wie gut eine Mannschaft tats�
 
 ## Produktidee
 
-reelscore ist eine Fußball-Livescore-Anwendung, die aktuelle und vergangene Spiele sowie Wettbewerbs- und Mannschaftsinformationen übersichtlich darstellt.
+reelscore ist eine Fußball-Livescore-Anwendung mit Fokus auf Statistiken und Leistungsanalyse.
 
-Zusätzlich zu den üblichen Ergebnis- und Formdaten soll reelscore Informationen so aufbereiten, dass Nutzer die Leistung und aktuelle Verfassung einer Mannschaft besser einschätzen können.
+Zusätzlich zu den üblichen Daten (letzte Spiele etc.) soll reelscore Informationen so aufbereiten, dass Nutzer die Leistung und aktuelle Verfassung einer Mannschaft besser einschätzen können.
 
 Ein zentrales Unterscheidungsmerkmal ist eine zusätzliche Formbewertung, die nicht ausschließlich das Endergebnis berücksichtigt, sondern die tatsächliche Spielleistung einbezieht.
 
+Dafür werden Spiele anhand von Spielzusammenfassungen analysiert und relevante Spielszenen detaillierter dokumentiert. Neben Torchancen und besonderen Spielzügen können dabei beispielsweise unberechtigte Elfmeter, Platzverweise oder andere spielentscheidende Situationen berücksichtigt werden.
+
 ## Zielgruppe
 
-reelscore richtet sich an Fußballinteressierte, die vor einem Spiel schnell relevante Informationen zu Mannschaften, bisherigen Leistungen, Tabellenständen und aktuellen Entwicklungen erhalten möchten.
+reelscore richtet sich an Fußballinteressierte, die vor einem Spiel schnell relevante Informationen erhalten möchten.
 
-Die Anwendung soll eine informierte Einschätzung eines Spiels unterstützen.
+Die Anwendung soll relevante Informationen besser darstellen.
 
 ## Zentrale Nutzerziele
 
 Nutzer sollen:
 
-- anstehende, laufende und vergangene Spiele finden können,
-- Details & Analysen zu einem bestimmten Spiel aufrufen können,
-- Wettbewerbe und Tabellenstände einsehen können,
-- die Ergebnisform und die leistungsbasierte Form unterscheiden können.
+- die gewohnten Funktionen einer Livescore-Anwendung nutzen können,
+- detaillierte Informationen und Analysen zu anstehenden und vergangenen Spielen erhalten,
+- auf der Startseite einen schnellen Überblick über die Tabellenstände der europäischen Top-5-Ligen erhalten.
 
 ## Kernbereiche
 
-### Overview
+### Überblick / Overview
 
-Die Overview Page zeigt die Spiele eines ausgewählten Tages und bietet einen schnellen Einstieg in Spiel- und Wettbewerbsdetails.
+Die Overview Page zeigt die Spiele des ausgewählten Tages und die Tabellenstände der europäischen Top-5-Ligen.
 
-### Match
+### Fußball-Partie / Match
 
-Die Match Page zeigt detaillierte Informationen zu einem einzelnen Spiel, beispielsweise Spielstand, Ereignisse, Statistiken, Aufstellungen und Forminformationen & Analysen.
+Die Match Page zeigt detaillierte Informationen zu einem einzelnen Spiel.
 
-### Competition
+### Wettbewerb / Competition
 
-Die Competition Page bündelt Informationen zu einem Wettbewerb, beispielsweise Spiele, Tabellenstände, Spieler-Statistiken wie die Torjäger- und Vorlagengeber-Liste.
-
-## Abgrenzung
-
-reelscore soll keine Wettplattform sein. Die Anwendung verarbeitet keine Wetteinsätze und gibt keine Wett- oder Gewinnversprechen ab.
-
-Der Fokus liegt auf Livescore-Funktionen sowie der Aufbereitung, Darstellung und Analyse von Fußballstatistiken und relevanten Spieldaten.
+Die Competition Page bündelt Informationen zu einem Wettbewerb.
 
 ## Erfolgskriterien
 
 Das Produkt ist erfolgreich, wenn Nutzer:
 
-- relevante Spiele schnell finden,
-- die wichtigsten Informationen ohne unnötige Navigation verstehen,
-- Live-Änderungen schnell & zuverlässig erhalten,
-- anstehende Spiele leicht analysieren können,
-- die Anwendung auf Desktop- und Mobilgeräten zuverlässig verwenden können.
+- relevante Informationen schnell finden,
+- Live-Updates schnell & zuverlässig erhalten,
+- mehr Informationen erhalten und dadurch anstehende Partien besser einschätzen können.
