@@ -15,36 +15,30 @@ Verantwortlich für:
 Verantwortlich für:
 
 - Datumsauswahl
-- Fixture-Liste
-- Top-Wettbewerbe
+- Fixture-Liste (Alle Spiele am ausgewählten Datum)
+- Top-5 Ligatebllen (relativ zum Datum)
 - Tabellen-Vorschau
-- Live-Aktualisierung der angezeigten Fixtures
 
 ## Match Feature
 
 Verantwortlich für:
 
-- Spielkopf
+- Spieldetails
+- Tabellen (Normal, Heim- & Auswärtstabellen)
+- Analysen und Vorhersagen
 - Ereignisse
 - Statistiken
 - Aufstellungen
-- Tabellenkontext
-- Formanzeigen
 
 ## Competition Feature
 
 Verantwortlich für:
 
-- Wettbewerbskopf
-- Saison- und Rundenauswahl
-- Fixture-Liste
-- Tabellen
-- Gruppendarstellung
+- Datumsauswahl
+- Fixture-Liste (Vergangene und Anstehende Spiele eines Wettbewerbs relativ zum ausgewählten Datum)
+- Tabellen (Normal, Heim- & Auswärtstabellen)
+- Spieler-Statistiken (Torjäger- und Vorlagen-Liste)
 
-## Shared UI
+## Shared
 
 Enthält wiederverwendbare, fachlich möglichst neutrale UI-Bausteine.
-
-## Shared Data Access
-
-Enthält technische Zugriffe auf die Reelscore API und Live-Verbindungen.
