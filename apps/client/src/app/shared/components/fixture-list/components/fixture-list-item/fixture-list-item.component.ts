@@ -37,28 +37,63 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
   ],
   providers: [FixtureListItemFacade],
   styles: `
-    :host > div { @apply inline-flex flex-col; }
-    :host(.is-last) a { @apply rounded-b-border2; }
-    a { @apply flex items-stretch; }
-    .time-label.is-finished { @apply line-through decoration-rs-color-primary; }
-    .time {
-      @apply justify-center items-center self-center min-w-[40px] h-fit py-[2px] text-rs-font-size-small;
-
-      &.is-playing { @apply bg-rs-color-green text-white; }
+    :host > div {
+      @apply inline-flex flex-col;
     }
-    .time, .result {
+
+    :host(.is-last) a {
+      @apply rounded-b-border2;
+    }
+
+    a {
+      @apply flex items-stretch;
+    }
+
+    .time-label.is-finished {
+      @apply line-through decoration-rs-color-primary;
+    }
+
+    .time {
+      @apply flex-none justify-center items-center self-center min-w-[40px] h-fit py-[2px] text-rs-font-size-small;
+
+      &.is-playing {
+        @apply bg-rs-color-green text-white;
+      }
+    }
+
+    .time,
+    .result {
       @apply flex text-center justify-center rounded-border1;
     }
+
     .result {
-      @apply min-w-[42px] px-2 items-center gap-[0.1rem];
+      @apply flex-none min-w-[42px] px-2 items-center gap-[0.1rem];
     }
-    .result:not(.is-upcoming),  .time.is-upcoming {
+
+    .result:not(.is-upcoming),
+    .time.is-upcoming {
       background-color: var(--rs-color-surface-2);
     }
-    .teams { @apply w-full flex items-center text-rs-font-size-body-3; }
-    .teams > div:not(.result) { @apply flex flex-1 px-2 py-1 gap-2 items-center h-fit; }
-    .teams > div:first-of-type { @apply justify-end text-end; }
-    .team-name { line-height: 24px; text-wrap: balance; }
+
+    .teams {
+      @apply w-full flex flex-1 min-w-0 items-center text-rs-font-size-body-3;
+    }
+
+    .teams > div:not(.result) {
+      @apply flex flex-1 min-w-0 px-2 py-1 gap-2 items-center h-fit;
+    }
+
+    .teams > div:first-of-type {
+      @apply justify-end text-end;
+    }
+
+    .team-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 24px;
+    }
   `,
   template: `
     @let match = fixture();
