@@ -99,6 +99,7 @@
 
   @include mat.datepicker-overrides(
     (
+      calendar-container-background-color: var(--mat-sys-surface),
       calendar-container-shape: var(--rs-size-border-radius-2),
       calendar-container-elevation-shadow: var(--rs-size-box-shadow),
       calendar-date-disabled-state-text-color: var(--rs-color-text-2),
