@@ -9,7 +9,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./modules/overview/overview.component').then(
+          import('./features/overview/overview.component').then(
             (m) => m.OverviewComponent
           ),
         data: { shouldReuse: true },
@@ -17,7 +17,7 @@ export const routes: Routes = [
       {
         path: ':competitionUrl/:fixtureId',
         loadComponent: () =>
-          import('./modules/match/match.component').then(
+          import('./features/match/match.component').then(
             (m) => m.MatchComponent
           ),
       },
@@ -26,7 +26,7 @@ export const routes: Routes = [
   {
     path: 'competition/:competitionUrl',
     loadComponent: () =>
-      import('./modules/competition/competition.component').then(
+      import('./features/competition/competition.component').then(
         (m) => m.CompetitionComponent
       ),
   },
