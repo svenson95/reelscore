@@ -4,7 +4,7 @@ import type { Subscription } from 'rxjs';
 import { fromEvent } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import { FixtureStore } from '../../match/store';
+import { FixtureStore } from '../store';
 
 export abstract class VisibilityObserverService {
   abstract init(): void;
