@@ -11,7 +11,7 @@ import {
 import { PageRefreshService } from '@app/shared';
 import { type CompetitionUrl, type FixtureId } from '@lib/models';
 
-import { RouterView } from '../router-view';
+import { RouteCompetitionContext } from '../route-competition-context';
 
 import {
   MatchDetailsComponent,
@@ -53,7 +53,10 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent extends RouterView implements OnInit, OnDestroy {
+export class MatchComponent
+  extends RouteCompetitionContext
+  implements OnInit, OnDestroy
+{
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
