@@ -11,7 +11,7 @@ import { PageRefreshService } from '@app/shared';
 import { getWeekdayIndex } from '@lib/shared';
 
 import type { RouteReuseLifecycle } from '../../config';
-import { RouterView } from '../router-view';
+import { RouteCompetitionContext } from '../route-competition-context';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
 import {
@@ -44,7 +44,7 @@ import {
   `,
 })
 export class OverviewComponent
-  extends RouterView
+  extends RouteCompetitionContext
   implements OnInit, OnDestroy, RouteReuseLifecycle
 {
   private readonly weekFixturesStore = inject(WeekdayFixturesStore);

@@ -1,25 +1,27 @@
 import { effect, inject } from '@angular/core';
 
-import type {
-  CompetitionData} from '@app/shared';
+import type { CompetitionData } from '@app/shared';
 import {
   LeagueService,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
 
-export class RouterView {
-  leagueService = inject(LeagueService);
-  routeService = inject(RouteService);
+export class RouteCompetitionContext {
+  private readonly routeService = inject(RouteService);
 
-  routeEvent = effect(() => this.updateLeague(this.routeService.url()));
+  readonly leagueService = inject(LeagueService);
 
-  private updateLeague(route: string | undefined): void {
-    const leagueData = this.findLeagueData(route);
-    this.leagueService.setSelectedLeague(leagueData);
+  private readonly routeEvent = effect(() =>
+    this.updateCompetition(this.routeService.url())
+  );
+
+  private updateCompetition(route: string | undefined): void {
+    const competitionData = this.findCompetitionData(route);
+    this.leagueService.setSelectedLeague(competitionData);
   }
 
-  private findLeagueData(
+  private findCompetitionData(
     route: string | undefined
   ): CompetitionData | undefined {
     if (!route || !route.split('/')[2]) return undefined;
