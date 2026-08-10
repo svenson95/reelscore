@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
-import { RouterView } from '../router-view';
+import { RouteCompetitionContext } from '../route-competition-context';
 
 import {
   CompetitionStandingsComponent,
@@ -98,7 +98,7 @@ import {
     </section>
   `,
 })
-export class CompetitionComponent extends RouterView {
+export class CompetitionComponent extends RouteCompetitionContext {
   readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
   private readonly lastFixturesStore = inject(LastFixturesStore);
