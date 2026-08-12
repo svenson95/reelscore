@@ -45,6 +45,14 @@ export const ROUNDS_KO_PHASE: CompetitionRound[] = [
   'Final',
 ] as const;
 
+export const ROUNDS_QUALIFY_PHASE: CompetitionRound[] = [
+  'Preliminary Round',
+  '1st Qualifying Round',
+  '2nd Qualifying Round',
+  '3rd Qualifying Round',
+  'Play-offs',
+] as const;
+
 export const SEASONS: number[] = [2023, 2024, 2025, 2026] as const;
 
 export const FIXED_SEASON_BY_COMPETITION = new Map<

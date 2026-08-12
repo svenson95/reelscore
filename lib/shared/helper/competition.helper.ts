@@ -9,6 +9,7 @@ import {
   COMPETITIONS_WITH_ONLY_ONE_FIXTURE,
   COMPETITIONS_WITHOUT_STANDINGS,
   ROUNDS_KO_PHASE,
+  ROUNDS_QUALIFY_PHASE,
   SEASONS,
 } from '../constants/season.data';
 
@@ -45,6 +46,9 @@ export const isCompetitionWithOneFixture = (
 
 export const isKoPhase = (round: CompetitionRound): boolean =>
   ROUNDS_KO_PHASE.includes(round);
+
+export const isQualifyPhase = (round: CompetitionRound): boolean =>
+  ROUNDS_QUALIFY_PHASE.includes(round);
 
 export const isCompetitionSeason = (
   season: number
