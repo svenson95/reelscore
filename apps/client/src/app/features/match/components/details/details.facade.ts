@@ -57,7 +57,6 @@ export class MatchDetailsFacade {
     return fixture ? isQualifyPhase(fixture.data.league.round) : false;
   });
 
-  // TODO update template to display multiple rounds for group (e. g. 2025-03-23 uefa nations league had multiple rounds on same day)
   hasMultipleGroups = computed<boolean>(() => {
     const fixture = this.fixture();
     return fixture
