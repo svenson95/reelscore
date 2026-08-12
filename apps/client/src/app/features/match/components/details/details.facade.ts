@@ -4,6 +4,7 @@ import {
   isCompetitionWithMultipleGroups,
   isCompetitionWithoutStandings,
   isKoPhase,
+  isQualifyPhase,
 } from '@lib/shared';
 
 import {
@@ -49,6 +50,11 @@ export class MatchDetailsFacade {
   isKoPhase = computed<boolean>(() => {
     const fixture = this.fixture();
     return fixture ? isKoPhase(fixture.data.league.round) : false;
+  });
+
+  isQualifyPhase = computed<boolean>(() => {
+    const fixture = this.fixture();
+    return fixture ? isQualifyPhase(fixture.data.league.round) : false;
   });
 
   // TODO update template to display multiple rounds for group (e. g. 2025-03-23 uefa nations league had multiple rounds on same day)
