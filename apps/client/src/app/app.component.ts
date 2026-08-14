@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { FooterComponent, HeaderComponent, StartupService } from './shared';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { StartupService } from './shared/services/startup/startup.service';
 
 @Component({
   selector: 'rs-root',
@@ -16,9 +18,11 @@ import { FooterComponent, HeaderComponent, StartupService } from './shared';
   `,
   template: `
     <header rs-header-content></header>
+
     <main>
       <router-outlet (activate)="onRouteActivated()" />
     </main>
+
     <footer rs-footer-content></footer>
   `,
 })
