@@ -12,6 +12,9 @@ import { LoadingService } from '../../services';
   selector: 'rs-logo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'data-test-id': 'app-logo',
+  },
   styles: `
     :host { @apply select-none text-rs-font-size-body-1 tracking-wide font-normal; }
     :host span:first-child { @apply text-rs-color-primary; }

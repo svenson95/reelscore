@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTOR_PROVIDER } from './loading.interceptor';
 import { LOADING_SERVICE_PROVIDER } from './loading.service';
 import { PAGE_REFRESH_SERVICE_PROVIDER } from './page-refresh.service';
 import { ROUTE_SERVICE_PROVIDER } from './route.service';
-import { STARTUP_SERVICE_PROVIDER } from './startup.service';
+import { STARTUP_SERVICE_PROVIDER } from './startup/startup.service';
 import { THEME_SERVICE_PROVIDER } from './theme.service';
 
 export * from './app-update.service';
@@ -19,7 +19,7 @@ export * from './loading.interceptor';
 export * from './loading.service';
 export * from './page-refresh.service';
 export * from './route.service';
-export * from './startup.service';
+export * from './startup/startup.service';
 export * from './theme.service';
 
 export const GLOBAL_SERVICE_PROVIDERS = [

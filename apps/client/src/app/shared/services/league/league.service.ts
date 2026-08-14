@@ -1,4 +1,4 @@
-import type { WritableSignal} from '@angular/core';
+import type { WritableSignal } from '@angular/core';
 import { Injectable, signal } from '@angular/core';
 
 import type { CompetitionData } from '../../models';
@@ -12,7 +12,7 @@ export abstract class LeagueService {
 export class AbstractedLeagueService extends LeagueService {
   selectedLeague = signal<CompetitionData | undefined>(undefined);
 
-  setSelectedLeague(data: CompetitionData): void {
+  setSelectedLeague(data: CompetitionData | undefined): void {
     this.selectedLeague.set(data);
   }
 }

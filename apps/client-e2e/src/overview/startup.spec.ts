@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('App startup', () => {
-  test('shows the startup overlay until the first route is activated', async ({
+  test('keeps startup overlay visible until the app has initialized', async ({
     page,
   }) => {
     let releaseMainBundle!: () => void;
@@ -28,9 +28,11 @@ test.describe('App startup', () => {
     await page.waitForLoadState('load');
 
     await expect(page.locator('rs-root')).toBeVisible();
+
     await expect(startupOverlay).toBeHidden({
       timeout: 5_000,
     });
+
     await expect(startupOverlay).toHaveCount(0, {
       timeout: 5_000,
     });
