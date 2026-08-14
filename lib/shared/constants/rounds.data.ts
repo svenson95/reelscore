@@ -281,6 +281,10 @@ const IT_SUPER_CUP = {
   2: 'Final',
 };
 
+const IT_COPPA_ITALIA_2026 = {
+  1: 'Round of 128',
+  2: 'Round of 64',
+};
 const IT_COPPA_ITALIA_2025 = {
   1: 'Preliminary Round',
   2: '1st Round',
@@ -740,6 +744,7 @@ export const COMPETITION_ROUNDS = buildCompetitionRounds({
   137: {
     2023: IT_COPPA_ITALIA_2023,
     2025: IT_COPPA_ITALIA_2025,
+    2026: IT_COPPA_ITALIA_2026,
   },
 
   /* FRANCE */
