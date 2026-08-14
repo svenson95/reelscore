@@ -1,66 +1,67 @@
 import { Location } from '@angular/common';
-import type { ComponentFixture} from '@angular/core/testing';
-import { TestBed, fakeAsync } from '@angular/core/testing';
+import type { ComponentFixture } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 
-import { routes } from '../../app.routes';
-import { LeagueService } from '../../services';
+import { getTodayDateString } from '@lib/shared';
+
+import { routes } from '../../../app.routes';
+import { GLOBAL_SERVICE_PROVIDERS, LeagueService } from '../../services';
 
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let location: Location;
+  let router: Router;
+  let leagueService: LeagueService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes(routes), HeaderComponent],
-      providers: [LeagueService],
+      imports: [HeaderComponent],
+      providers: [provideRouter(routes), ...GLOBAL_SERVICE_PROVIDERS],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
+
     location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
+    leagueService = TestBed.inject(LeagueService);
 
     fixture.detectChanges();
   });
 
-  /* DOM Tests */
   it(`should display 'reelscore' logo`, () => {
-    // given
-    const debugElement = fixture.debugElement;
+    // Arrange
+    const logo = fixture.debugElement.query(By.css('rs-logo'));
 
-    // when
-    const logo = debugElement.query(By.css('rs-logo'));
-
-    // then
+    // Assert
     expect(logo).toBeTruthy();
-    expect(logo.nativeElement.textContent).toEqual('FUT⚽BET');
+    expect(logo.nativeElement.textContent).toContain('reelscore');
   });
 
-  it('should route to start on logo-toggle click', fakeAsync(() => {
-    // given
-    // const initPath = '/leagues/' + mockLeague.url;
-    // location.go(initPath);
-    // expect(location.path()).toEqual(initPath);
-    // // when
-    // const button = fixture.debugElement.query(By.css(`.logo-toggle`));
-    // button.nativeElement.click();
-    // tick();
-    // // then
-    // expect(location.path()).toEqual('/');
-  }));
+  it('should route to start on logo-toggle click', async () => {
+    // Arrange
+    const testLocation = '/2026-08-14/bundesliga-2/1576148';
 
-  it('should route to league on league-toggle click', fakeAsync(() => {
-    // given
-    expect(location.path()).toEqual('');
+    await router.navigateByUrl(testLocation);
 
-    // when
-    // const button = fixture.debugElement.query(By.css(`.${mockLeague.url}`));
-    // button.nativeElement.click();
-    // tick();
+    expect(location.path()).toBe(testLocation);
 
-    // // then
-    // expect(location.path()).toEqual('/leagues/' + mockLeague.url);
-  }));
+    // Act
+    const button = fixture.debugElement.query(
+      By.css('[data-test-id="app-logo"]')
+    );
+    button.nativeElement.click();
+
+    await fixture.whenStable();
+
+    // Assert
+    expect(location.path()).toBe('/' + getTodayDateString());
+  });
+
+  it('should initialize without selected league', () => {
+    expect(leagueService.selectedLeague()).toBeUndefined();
+  });
 });

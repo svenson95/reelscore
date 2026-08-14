@@ -1,57 +1,79 @@
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
+import {
+  LeagueService,
+  RouteService,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
+
+import { RouteCompetitionContext } from './route-competition-context';
+
 describe('RouteCompetitionContext', () => {
-  // let fixture: ComponentFixture<OverviewComponent>;
-  // let component: OverviewComponent;
+  const route = signal<string | undefined>(undefined);
 
-  // beforeEach(async () => {
-  //   await TestBed.configureTestingModule({
-  //     imports: [OverviewComponent, RouterTestingModule.withRoutes(routes)],
-  //   }).compileComponents();
+  const leagueServiceMock = {
+    selectedLeague: signal(undefined),
+    setSelectedLeague: jest.fn(),
+  };
 
-  //   fixture = TestBed.createComponent(OverviewComponent);
-  //   component = fixture.componentInstance;
+  const routeServiceMock = {
+    url: route.asReadonly(),
+  };
 
-  //   fixture.detectChanges();
-  // });
+  beforeEach(() => {
+    route.set(undefined);
+    leagueServiceMock.setSelectedLeague.mockClear();
 
-  describe('getLeagueByUrl', () => {
-    it('should return league if input is valid', () => {
-      // given
-      // const validData = SELECT_LEAGUE[2];
-      // when
-      // const league = component.getLeagueByUrl(validData.url as CompetitionUrl);
-      // then
-      // expect(league).not.toBeUndefined();
-      // if (league) expect(league.image).toBe(validData.image);
-      // if (league) expect(league.label).toBe(validData.label);
-      // if (league) expect(league.id).toBe(validData.id);
-      // if (league) expect(league.url).toBe(validData.url);
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: LeagueService,
+          useValue: leagueServiceMock,
+        },
+        {
+          provide: RouteService,
+          useValue: routeServiceMock,
+        },
+      ],
     });
 
-    it('should return undefined if input is invalid', () => {
-      // given
-      // const invalidUrl = 'url-with-typo' as CompetitionUrl;
-      // when
-      // const league = component.getLeagueByUrl(invalidUrl);
-      // // then
-      // expect(league).toBeUndefined();
+    TestBed.runInInjectionContext(() => {
+      new RouteCompetitionContext();
     });
+
+    TestBed.tick();
   });
 
-  describe('updateLeagueOnRouting', () => {
-    it('should update selected league after routing', () => {
-      // given
-      // const mock = CompetitionCode.ENGLAND_PREMIER_LEAGUE;
-      // const validRoute = COMPETITION_URL[mock] as CompetitionUrl;
-      // const validMetaData = SELECT_LEAGUE.find(
-      //   (m) => m.id === COMPETITION_ID[mock]
-      // );
-      // expect(component.selectedLeague()).toBe(undefined);
-      // jest.spyOn(component, 'updateLeague');
-      // // when
-      // component.updateLeague(validRoute);
-      // // then
-      // expect(component.updateLeague).toHaveBeenCalledWith(validRoute);
-      // expect(component.selectedLeague()).toBe(validMetaData);
-    });
+  it('should select competition matching the current route', () => {
+    const competition = SELECT_COMPETITION_DATA_FLAT[0];
+
+    route.set(`/competition/${competition.url}`);
+
+    TestBed.tick();
+
+    expect(leagueServiceMock.setSelectedLeague).toHaveBeenLastCalledWith(
+      competition
+    );
+  });
+
+  it('should clear selected competition if route does not contain a competition', () => {
+    route.set('/2026-08-14');
+
+    TestBed.tick();
+
+    expect(leagueServiceMock.setSelectedLeague).toHaveBeenLastCalledWith(
+      undefined
+    );
+  });
+
+  it('should clear selected competition if competition does not exist', () => {
+    route.set('/competition/does-not-exist');
+
+    TestBed.tick();
+
+    expect(leagueServiceMock.setSelectedLeague).toHaveBeenLastCalledWith(
+      undefined
+    );
   });
 });
