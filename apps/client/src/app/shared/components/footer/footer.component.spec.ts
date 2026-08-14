@@ -1,5 +1,7 @@
-import type { ComponentFixture} from '@angular/core/testing';
+import type { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
+
+import { LOADING_SERVICE_PROVIDER } from '../../services';
 
 import { FooterComponent } from './footer.component';
 
@@ -9,6 +11,7 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
+      providers: [LOADING_SERVICE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
@@ -16,13 +19,8 @@ describe('FooterComponent', () => {
   });
 
   it(`should display 'reelscore' logo`, () => {
-    // Arrange
-    const nativeElement = fixture.debugElement.nativeElement;
+    const logo = fixture.nativeElement.querySelector('rs-logo');
 
-    // Act
-    const logo = nativeElement.querySelector('rs-logo');
-
-    // Assert
     expect(logo).toBeTruthy();
   });
 });

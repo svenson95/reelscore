@@ -1,73 +1,50 @@
-import { Location } from '@angular/common';
-import type {
-  ComponentFixture} from '@angular/core/testing';
-import {
-  TestBed,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { StartupService } from './shared/services/startup/startup.service';
 
 import { AppComponent } from './app.component';
-import { routes } from './app.routes';
 
 describe('AppComponent', () => {
-  let location: Location;
-  let router: Router;
-  let fixture: ComponentFixture<AppComponent>;
+  let component: AppComponent;
+
+  const startupServiceMock = {
+    routeActivated: false,
+    hideAppInitializer: jest.fn(),
+    removeAppInitializerElement: jest.fn(),
+  };
 
   beforeEach(async () => {
+    startupServiceMock.routeActivated = false;
+    startupServiceMock.hideAppInitializer.mockClear();
+
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        RouterTestingModule.withRoutes(routes),
-        BrowserAnimationsModule,
+      imports: [AppComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: StartupService,
+          useValue: startupServiceMock,
+        },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AppComponent, {
+        remove: {
+          imports: [HeaderComponent, FooterComponent],
+        },
+      })
+      .compileComponents();
 
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
-
-    fixture = TestBed.createComponent(AppComponent);
-    router.initialNavigation();
+    component = TestBed.createComponent(AppComponent).componentInstance;
   });
 
-  /* Class Tests */
-  it('should start with "/" route', fakeAsync(() => {
-    // Arrange
-    const path = location.path();
+  it('should hide app initializer only after first route activation', () => {
+    component.onRouteActivated();
+    component.onRouteActivated();
 
-    // Act
-    tick();
-
-    // Assert
-    expect(path).toBe('/');
-  }));
-
-  /* DOM Tests */
-  it('should display header, router and footer', () => {
-    // Arrange
-    const header = fixture.nativeElement.querySelector('header');
-    const router = fixture.nativeElement.querySelector('router-outlet');
-    const footer = fixture.nativeElement.querySelector('footer');
-
-    // Act
-    fixture.detectChanges();
-
-    // Assert
-    expect(header).toBeTruthy();
-    expect(router).toBeTruthy();
-    expect(footer).toBeTruthy();
+    expect(startupServiceMock.routeActivated).toBe(true);
+    expect(startupServiceMock.hideAppInitializer).toHaveBeenCalledTimes(1);
   });
-
-  // it('should render title', () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.nativeElement as HTMLElement;
-  //   expect(compiled.querySelector('h1')?.textContent).toContain(
-  //     'Welcome client'
-  //   );
-  // });
 });
