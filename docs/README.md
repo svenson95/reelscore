@@ -3,8 +3,8 @@
 ## Product
 
 - [Product Vision](./product/vision.md)
-- [Overview Page](./product/pages/overview.md) // TODO: add missing docs
-- [Match Page](./product/pages/match.md) // missing
+- [Overview Page](./product/pages/overview.md)
+- [Match Page](./product/pages/match.md) // TODO: add missing docs
 - [Competition Page](./product/pages/competition.md) // missing
 - [Team Page](./product/pages/team.md) // missing
 
