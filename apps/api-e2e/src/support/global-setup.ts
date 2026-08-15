@@ -44,7 +44,7 @@ export default async function globalSetup(): Promise<void> {
     cwd: workspaceRoot,
     env: {
       ...process.env,
-      PORT: String(API_E2E_PORT),
+      API_PORT: String(API_E2E_PORT),
     },
     stdio: 'inherit',
   });
