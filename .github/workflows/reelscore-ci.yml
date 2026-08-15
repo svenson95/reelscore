@@ -19,6 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    env:
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
+      MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,6 +54,12 @@ jobs:
     name: Client checks
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
+    env:
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
+      MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
 
     steps:
       - name: Checkout repository
