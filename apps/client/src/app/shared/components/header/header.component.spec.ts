@@ -51,7 +51,7 @@ describe('HeaderComponent', () => {
 
     // Act
     const button = fixture.debugElement.query(
-      By.css('[data-test-id="app-logo"]')
+      By.css('[data-testid="app-logo"]')
     );
     button.nativeElement.click();
 

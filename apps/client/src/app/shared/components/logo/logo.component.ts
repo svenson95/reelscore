@@ -13,7 +13,7 @@ import { LoadingService } from '../../services';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'data-test-id': 'app-logo',
+    'data-testid': 'app-logo',
   },
   styles: `
     :host { @apply select-none text-rs-font-size-body-1 tracking-wide font-normal; }

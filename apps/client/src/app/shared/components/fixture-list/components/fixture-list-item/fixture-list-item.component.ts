@@ -97,7 +97,7 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
   `,
   template: `
     @let match = fixture();
-    <a matRipple [routerLink]="fixtureLink()">
+    <a matRipple [routerLink]="fixtureLink()" data-testid="fixture-list-item">
       <div
         class="time"
         [class.is-upcoming]="statusState().isScheduled"
