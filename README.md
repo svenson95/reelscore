@@ -182,7 +182,7 @@ Formatting and linting should be checked before creating a pull request.
 The applications require environment-specific configuration.
 
 ```env
-PORT=
+API_PORT=
 MONGODB_USER=
 MONGODB_PASSWORD=
 MONGODB_CLUSTER=
