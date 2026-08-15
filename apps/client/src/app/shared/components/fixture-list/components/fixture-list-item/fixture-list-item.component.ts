@@ -80,7 +80,7 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
     }
 
     .teams > div:not(.result) {
-      @apply flex flex-1 min-w-0 px-2 py-1 gap-2 items-center h-fit;
+      @apply flex flex-1 min-w-0 p-2 gap-2 items-center h-fit;
     }
 
     .teams > div:first-of-type {
@@ -92,7 +92,6 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      line-height: 24px;
     }
   `,
   template: `
