@@ -20,7 +20,6 @@ jobs:
     timeout-minutes: 15
 
     env:
-      API_PORT: 3333
       MONGODB_USER: ${{ secrets.MONGODB_USER }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
