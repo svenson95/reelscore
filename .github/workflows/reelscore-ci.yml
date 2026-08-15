@@ -35,6 +35,9 @@ jobs:
       - name: Lint API
         run: npx nx lint api
 
+      - name: Run API unit tests
+        run: npx nx test api --skip-nx-cache
+
       - name: Build API
         run: npx nx build api --configuration=production
 
