@@ -87,7 +87,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run client E2E tests
-        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache
+        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache --verbose
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
