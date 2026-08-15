@@ -30,9 +30,10 @@ import { OverviewFixturesFacade } from './fixtures.facade';
     />
     } } @else {
     <p class="no-data">
-      @if (isLoading()) { Spiele werden geladen ... } @else { @if (error()) {
-      Fehler beim Laden der Spiele. } @else if (fixtures.length === 0) { Es
-      finden keine Spiele statt. } }
+      @if (isLoading()) {
+      <span data-testid="fixtures-loading">Spiele werden geladen ...</span> }
+      @else { @if (error()) { Fehler beim Laden der Spiele. } @else if
+      (fixtures.length === 0) { Es finden keine Spiele statt. } }
     </p>
     }
   `,

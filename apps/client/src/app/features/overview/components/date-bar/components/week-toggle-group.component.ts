@@ -97,6 +97,7 @@ const EXTERNAL_MODULES = [
       <button
         mat-icon-button
         type="button"
+        data-testid="week-toggle-prev-btn"
         [disabled]="isLoading()"
         (click)="setDateTo(-1)"
       >
@@ -122,6 +123,7 @@ const EXTERNAL_MODULES = [
       <button
         mat-icon-button
         type="button"
+        data-testid="week-toggle-next-btn"
         [disabled]="isLoading()"
         (click)="setDateTo(+1)"
       >
