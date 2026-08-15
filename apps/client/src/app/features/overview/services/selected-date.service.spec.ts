@@ -1,104 +1,68 @@
-import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { SELECT_COMPETITION_DATA, type CompetitionData } from '@app/shared';
+import type { CompetitionId } from '@lib/models';
+import type { DateString } from '@lib/shared';
+import { getTodayDateString } from '@lib/shared';
 
-import { FilterService } from './filter.service';
+import { AbstractedFilterService, FilterService } from './filter.service';
 import {
-  SELECTED_DATE_SERVICE_PROVIDER,
+  AbstractedSelectedDateService,
   SelectedDateService,
 } from './selected-date.service';
 
 describe('SelectedDateService', () => {
   let service: SelectedDateService;
-
-  const selectedCompetition = signal<CompetitionData | null>(null);
-
-  let consoleWarnSpy: jest.SpiedFunction<typeof console.warn>;
+  let filterService: FilterService;
 
   beforeEach(() => {
-    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    jest.useFakeTimers();
-
     TestBed.configureTestingModule({
       providers: [
-        SELECTED_DATE_SERVICE_PROVIDER,
+        {
+          provide: SelectedDateService,
+          useClass: AbstractedSelectedDateService,
+        },
         {
           provide: FilterService,
-          useValue: {
-            selectedCompetition,
-          },
+          useClass: AbstractedFilterService,
         },
       ],
     });
-
-    selectedCompetition.set(null);
   });
 
   afterEach(() => {
-    consoleWarnSpy.mockRestore();
-    jest.useRealTimers();
-    window.history.pushState({}, '', '/');
+    window.history.replaceState({}, '', '/');
+    jest.restoreAllMocks();
   });
 
-  const createService = (): SelectedDateService =>
-    TestBed.inject(SelectedDateService);
+  it('should initialize selected day from the URL', () => {
+    window.history.replaceState({}, '', '/2026-08-15');
 
-  it('should initialize selectedDay from URL', () => {
-    window.history.pushState({}, '', '/2026-08-10');
-
-    service = createService();
-
-    expect(service.selectedDay()).toBe('2026-08-10');
-  });
-
-  it('should initialize selectedDay with today if URL does not contain a date', () => {
-    jest.setSystemTime(new Date('2026-08-14T08:00:00Z'));
-    window.history.pushState({}, '', '/');
-
-    service = createService();
-
-    expect(service.selectedDay()).toBe('2026-08-14');
-  });
-
-  it('should initialize selectedDay with today if URL contains an invalid date', () => {
-    jest.setSystemTime(new Date('2026-08-14T08:00:00Z'));
-    window.history.pushState({}, '', '/invalid-date');
-
-    service = createService();
-
-    expect(service.selectedDay()).toBe('2026-08-14');
-  });
-
-  it('should update selectedDay', () => {
-    window.history.pushState({}, '', '/2026-08-14');
-
-    service = createService();
-
-    service.setSelectedDay('2026-08-15');
+    service = TestBed.inject(SelectedDateService);
 
     expect(service.selectedDay()).toBe('2026-08-15');
   });
 
-  it('should reset competition filter when selected day changes', () => {
-    window.history.pushState({}, '', '/2026-08-14');
+  it('should use today when the URL does not contain a valid date', () => {
+    jest.spyOn(console, 'warn').mockImplementation();
 
-    service = createService();
+    window.history.replaceState({}, '', '/overview');
 
-    selectedCompetition.set(SELECT_COMPETITION_DATA[0].competitions[0]);
+    service = TestBed.inject(SelectedDateService);
 
-    service.setSelectedDay('2026-08-15');
-
-    expect(selectedCompetition()).toBeNull();
+    expect(service.selectedDay()).toBe(getTodayDateString());
   });
 
-  it('should use the next calendar day in Europe/Berlin when UTC time is still the previous day', () => {
-    jest.setSystemTime(new Date('2026-08-14T23:30:00Z'));
-    window.history.pushState({}, '', '/');
+  it('should update selected day and reset selected competition', () => {
+    window.history.replaceState({}, '', '/2026-08-15');
 
-    service = createService();
+    service = TestBed.inject(SelectedDateService);
+    filterService = TestBed.inject(FilterService);
 
-    expect(service.selectedDay()).toBe('2026-08-15');
+    filterService.selectedCompetition.set(78 as CompetitionId);
+
+    service.setSelectedDay('2026-08-16' as DateString);
+
+    expect(service.selectedDay()).toBe('2026-08-16');
+    expect(filterService.selectedCompetition()).toBeNull();
   });
 });

@@ -55,7 +55,7 @@ type FixtureLeagueBase = {
 };
 
 export interface FixtureLeague extends FixtureLeagueBase {
-  standings: boolean;
+  standings?: boolean;
 }
 
 export interface StandingsLeague extends FixtureLeagueBase {
