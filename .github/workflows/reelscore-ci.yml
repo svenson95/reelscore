@@ -86,33 +86,8 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install chromium --with-deps
 
-      - name: Debug E2E servers
-        run: |
-          npx nx serve api --configuration=development > api.log 2>&1 &
-          API_PID=$!
-
-          npx nx serve client --configuration=development > client.log 2>&1 &
-          CLIENT_PID=$!
-
-          sleep 30
-
-          echo "=== API RESPONSE ==="
-          curl -i http://localhost:3333 || true
-
-          echo "=== API LOG ==="
-          cat api.log || true
-
-          echo "=== CLIENT RESPONSE ==="
-          curl -i http://localhost:4200 || true
-
-          echo "=== CLIENT LOG ==="
-          cat client.log || true
-
-          kill $API_PID || true
-          kill $CLIENT_PID || true
-
       - name: Run client E2E tests
-        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache --verbose
+        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
