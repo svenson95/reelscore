@@ -42,13 +42,13 @@ jobs:
         run: npx nx lint api
 
       - name: Run API unit tests
-        run: npx nx test api --skip-nx-cache
+        run: npx nx test api --skip-nx-cache --verbose
 
       - name: Build API
         run: npx nx build api --configuration=production
 
       - name: Run API E2E tests
-        run: npx nx e2e api-e2e --skip-nx-cache
+        run: npx nx e2e api-e2e --skip-nx-cache --verbose
 
   client-checks:
     name: Client checks
@@ -79,7 +79,7 @@ jobs:
         run: npx nx lint client
 
       - name: Run client unit tests
-        run: npx nx test client --skip-nx-cache
+        run: npx nx test client --skip-nx-cache --verbose
 
       - name: Build client
         run: npx nx build client --configuration=production
