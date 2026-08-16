@@ -42,13 +42,13 @@ jobs:
         run: npx nx lint api
 
       - name: Run API unit tests
-        run: npx nx test api --skip-nx-cache --outputStyle=static
+        run: npx nx test api --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Build API
         run: npx nx build api --configuration=production
 
       - name: Run API E2E tests
-        run: npx nx e2e api-e2e --skip-nx-cache --outputStyle=static
+        run: npx nx e2e api-e2e --skip-nx-cache --outputStyle=stream-without-prefixes
 
   client-checks:
     name: Client checks
@@ -79,7 +79,7 @@ jobs:
         run: npx nx lint client
 
       - name: Run client unit tests
-        run: npx nx test client --skip-nx-cache --outputStyle=static
+        run: npx nx test client --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Build client
         run: npx nx build client --configuration=production
@@ -88,7 +88,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run client E2E tests
-        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache
+        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}

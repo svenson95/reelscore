@@ -1,6 +1,7 @@
 /* eslint-disable */
 module.exports = {
   displayName: 'api',
+  verbose: true,
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
