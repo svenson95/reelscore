@@ -5,55 +5,63 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 
 import { BackButtonComponent, RefreshTickerComponent } from '@app/shared';
 import { formatFixtureTime } from '@lib/shared';
 
 import { MatchFacade } from '../../match.facade';
 
-const EXTERNAL_MODULES = [DatePipe, MatButtonModule];
-
 @Component({
   selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...EXTERNAL_MODULES, BackButtonComponent, RefreshTickerComponent],
+  imports: [DatePipe, BackButtonComponent, RefreshTickerComponent],
   styles: `
-    :host { @apply flex p-3; }
-
-    button {
-      @apply border-none;
-      --mat-button-outlined-container-height: 36px;
+    :host {
+      @apply flex p-3;
     }
 
-    rs-refresh-ticker { @apply ml-px; }
-    .spacer { @apply flex-1; }
+    .header-label {
+      @apply inline-flex h-9 min-w-16 px-4 items-center justify-center rounded-border2 bg-rs-button-bg shadow-rs3 text-rs-font-size-body-2 font-medium;
+    }
+
+    .header-label + .header-label {
+      @apply ml-[1px];
+    }
+
+    rs-refresh-ticker {
+      @apply ml-px;
+    }
+
+    .spacer {
+      @apply flex-1;
+    }
+
     .date-placeholder {
-      @apply m-auto w-[36px] h-[12px] bg-gray-200 rounded;
+      @apply m-auto h-[12px] w-[36px] rounded bg-gray-200;
     }
   `,
   template: `
     <rs-back-button />
 
-    <button mat-stroked-button disabled>
+    <span class="header-label">
       {{ routerDate() | date : 'dd.MM.yy' }}
-    </button>
+    </span>
 
     <rs-refresh-ticker />
 
     <div class="spacer"></div>
 
-    <button mat-stroked-button disabled>
+    <span class="header-label">
       {{ routerDate() | date : 'ccc' }}
-    </button>
+    </span>
 
-    <button mat-stroked-button disabled>
+    <span class="header-label">
       @if (fixtureTime(); as time) {
       {{ time }}
       } @else {
-      <div class="date-placeholder"></div>
+      <span class="date-placeholder"></span>
       }
-    </button>
+    </span>
   `,
 })
 export class PageHeaderComponent {
