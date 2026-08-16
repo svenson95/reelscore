@@ -136,11 +136,6 @@ button {
     --mat-button-filled-label-text-color: var(--rs-color-primary);
     box-shadow: var(--rs-size-box-shadow-3);
     background-color: var(--rs-button-bg-color);
-
-    & + button.mdc-button,
-    & + button.mat-mdc-icon-button {
-      margin-left: 1px;
-    }
   }
 
   &.mdc-button,
