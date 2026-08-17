@@ -79,7 +79,7 @@ jobs:
         run: npx nx lint client
 
       - name: Run client unit tests
-        run: npx nx test client --skip-nx-cache --outputStyle=stream-without-prefixes
+        run: npx nx test client --skip-nx-cache
 
       - name: Build client
         run: npx nx build client --configuration=production

@@ -2,6 +2,7 @@
 module.exports = {
   displayName: 'client',
   verbose: true,
+  reporters: ['<rootDir>/jest/grouped-reporter.cjs'],
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../coverage/apps/client',
