@@ -2,19 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import type { CompetitionId } from '@lib/models';
 
-import { AbstractedFilterService, FilterService } from './filter.service';
+import { FilterService } from './filter.service';
 
 describe('FilterService', () => {
   let service: FilterService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: FilterService,
-          useClass: AbstractedFilterService,
-        },
-      ],
+      providers: [FilterService],
     });
 
     service = TestBed.inject(FilterService);

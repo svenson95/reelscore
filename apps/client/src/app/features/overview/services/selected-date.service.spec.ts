@@ -4,11 +4,8 @@ import type { CompetitionId } from '@lib/models';
 import type { DateString } from '@lib/shared';
 import { getTodayDateString } from '@lib/shared';
 
-import { AbstractedFilterService, FilterService } from './filter.service';
-import {
-  AbstractedSelectedDateService,
-  SelectedDateService,
-} from './selected-date.service';
+import { FilterService } from './filter.service';
+import { SelectedDateService } from './selected-date.service';
 
 describe('SelectedDateService', () => {
   let service: SelectedDateService;
@@ -16,16 +13,7 @@ describe('SelectedDateService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: SelectedDateService,
-          useClass: AbstractedSelectedDateService,
-        },
-        {
-          provide: FilterService,
-          useClass: AbstractedFilterService,
-        },
-      ],
+      providers: [SelectedDateService, FilterService],
     });
   });
 

@@ -8,15 +8,13 @@ import {
 import { BreakpointObserverService } from '@app/shared';
 import type { DateString } from '@lib/shared';
 
-import { DateService, SelectedDateService } from '../../services';
+import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
-import {
-  ActionButtonsComponent,
-  DatePickerComponent,
-  TodayButtonComponent,
-  WeekToggleGroupComponent,
-} from './components';
+import { ActionButtonsComponent } from './action-buttons/action-buttons.component';
+import { DatePickerComponent } from './date-picker.component';
+import { TodayButtonComponent } from './today-button.component';
+import { WeekToggleGroupComponent } from './week-toggle-group.component';
 
 @Component({
   selector: 'nav[rs-date-bar]',
@@ -71,13 +69,13 @@ export class DateBarComponent {
   private breakpointObserverService = inject(BreakpointObserverService);
   isMobile = this.breakpointObserverService.isMobile;
 
-  private dateService = inject(DateService);
+  private dateNavigationService = inject(DateNavigationService);
   private selectedDateService = inject(SelectedDateService);
   selectedDay = this.selectedDateService.selectedDay;
-  weekdays = this.dateService.weekdays;
-  today = this.dateService.today;
-  isToday = this.dateService.isToday;
-  calendarWeek = this.dateService.calendarWeek;
+  weekdays = this.dateNavigationService.weekdays;
+  today = this.dateNavigationService.today;
+  isToday = this.dateNavigationService.isToday;
+  calendarWeek = this.dateNavigationService.calendarWeek;
 
   private readonly weekFixtures = inject(WeekFixturesStore);
   private readonly weekStandings = inject(WeekStandingsStore);
@@ -92,6 +90,6 @@ export class DateBarComponent {
   }
 
   resetDate(): void {
-    this.dateService.resetToday();
+    this.dateNavigationService.resetToday();
   }
 }

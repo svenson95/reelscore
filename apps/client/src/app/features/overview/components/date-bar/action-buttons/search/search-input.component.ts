@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import type { SearchResult } from '@lib/models';
 
-import { SEARCH_SERVICE_PROVIDER, SearchService } from '../../../services';
+import { SEARCH_SERVICE_PROVIDER, SearchService } from './search.service';
 
 const SEARCH_TERM_PATTERN = /^[\p{L}\p{N} ]+$/u;
 
