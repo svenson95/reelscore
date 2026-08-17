@@ -161,22 +161,22 @@ export class FilterComponent {
 
   filterEffect = effect(() => {
     const id = this.selectedCompetition();
-    if (!id) return;
+
+    if (id === null) {
+      this.standingsStore.reset();
+      return;
+    }
+
     const date = this.selectedDateService.selectedDay();
-    this.standingsStore.loadFilteredStandings(date, id).then(() => {
-      this.selectedCompetition.set(id);
-    });
+
+    this.standingsStore.loadFilteredStandings(date, id);
   });
 
   isSameId = (id: CompetitionId) => this.selectedCompetition() === id;
 
   setFilter(id: CompetitionId): void {
-    if (this.selectedCompetition() === id) {
-      this.selectedCompetition.set(null);
-      this.standingsStore.reset();
-      return;
-    }
-
-    this.selectedCompetition.set(id);
+    this.selectedCompetition.update((selectedId) =>
+      selectedId === id ? null : id
+    );
   }
 }

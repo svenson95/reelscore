@@ -103,8 +103,8 @@ export class OverviewComponent
 
   private canRefresh(): boolean {
     return (
-      !this.weekFixturesStore.isLoading() &&
-      !this.weekStandingsStore.isLoading()
+      !this.weekFixturesStore.isPending() &&
+      !this.weekStandingsStore.isPending()
     );
   }
 
