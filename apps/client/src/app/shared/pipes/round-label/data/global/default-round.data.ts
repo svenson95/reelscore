@@ -72,9 +72,19 @@ export const DEFAULT_ROUND_MAP = {
     header: 'Ausscheidungsspiele',
   }),
 
+  'Round of 128': () => ({
+    default: '1/64-Finale',
+    header: '1/64-Finale',
+  }),
+
+  'Round of 64': () => ({
+    default: '1/32-Finale',
+    header: '1/32-Finale',
+  }),
+
   'Round of 32': () => ({
-    default: 'Sechzehntelfinale',
-    header: 'Sechzehntelfinale',
+    default: '1/16-Finale',
+    header: '1/16-Finale',
   }),
 
   'Round of 16': () => ({
