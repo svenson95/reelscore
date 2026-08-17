@@ -1,29 +1,19 @@
 import { DatePipe } from '@angular/common';
-import type { Signal } from '@angular/core';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import type { CalendarWeek, DateString } from '@lib/shared';
 import {
   formatCalendarWeekKey,
   getTodayDateString,
   startOfWeek,
+  type CalendarWeek,
+  type DateString,
 } from '@lib/shared';
 
 import { SelectedDateService } from './selected-date.service';
 
-export abstract class DateService {
-  abstract selectedTabIndex: Signal<number>;
-  abstract today: Signal<DateString>;
-  abstract isToday: Signal<boolean>;
-  abstract resetToday(): void;
-  abstract calendarWeek: Signal<CalendarWeek>;
-  abstract calendarWeekKey: Signal<string>;
-  abstract weekdays: Signal<DateString[]>;
-}
-
 @Injectable()
-export class AbstractedDateService extends DateService {
+export class DateService {
   private readonly router = inject(Router);
   private readonly selectedDateService = inject(SelectedDateService);
 
@@ -35,6 +25,7 @@ export class AbstractedDateService extends DateService {
 
   private readonly todaySignal = signal<DateString>(getTodayDateString());
   readonly today = this.todaySignal.asReadonly();
+
   readonly isToday = computed<boolean>(
     () => this.selectedDateService.selectedDay() === this.today()
   );
@@ -53,7 +44,7 @@ export class AbstractedDateService extends DateService {
     return this.createWeekDaysArray(selectedDay);
   });
 
-  readonly selectedDayEffect = effect(() => {
+  private readonly selectedDayEffect = effect(() => {
     const date = this.selectedDateService.selectedDay();
     this.updateRoute(date);
   });
@@ -86,11 +77,13 @@ export class AbstractedDateService extends DateService {
     try {
       const datepipe = new DatePipe('de-DE');
       const week = datepipe.transform(day, 'w');
+
       if (!week) {
         throw new Error(
           `Invalid date: getCalendarWeekFrom(day: DateString): CalendarWeek | ${day}`
         );
       }
+
       return Number(week);
     } catch (error) {
       console.error(
@@ -101,8 +94,3 @@ export class AbstractedDateService extends DateService {
     }
   }
 }
-
-export const DATE_SERVICE_PROVIDER = {
-  provide: DateService,
-  useClass: AbstractedDateService,
-};

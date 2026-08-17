@@ -1,4 +1,3 @@
-import type { Signal } from '@angular/core';
 import { inject, Injectable, signal } from '@angular/core';
 
 import type { DateString } from '@lib/shared';
@@ -6,13 +5,8 @@ import { getTodayDateString } from '@lib/shared';
 
 import { FilterService } from './filter.service';
 
-export abstract class SelectedDateService {
-  abstract selectedDay: Signal<DateString>;
-  abstract setSelectedDay(day: DateString): void;
-}
-
 @Injectable()
-export class AbstractedSelectedDateService extends SelectedDateService {
+export class SelectedDateService {
   private readonly filterService = inject(FilterService);
 
   private readonly selectedDaySignal = signal<DateString>(this.initialDate);
@@ -38,8 +32,3 @@ export class AbstractedSelectedDateService extends SelectedDateService {
     return dateString;
   }
 }
-
-export const SELECTED_DATE_SERVICE_PROVIDER = {
-  provide: SelectedDateService,
-  useClass: AbstractedSelectedDateService,
-};
