@@ -2,8 +2,8 @@ import { computed, inject, Injectable } from '@angular/core';
 
 import { hasMultipleGroups, showHomeAndAwayStandings } from '@app/shared';
 
-import { FilterService } from '../../../../services';
-import { FilteredStandingsStore } from '../../../../store';
+import { FilterService } from '../../../services';
+import { FilteredStandingsStore } from '../../../store';
 
 @Injectable()
 export class OverviewStandingsFacade {

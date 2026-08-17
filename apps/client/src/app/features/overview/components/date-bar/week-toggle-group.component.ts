@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import type { CalendarWeek, DateString } from '@lib/shared';
 import { formatDateToYearMonthDay } from '@lib/shared';
 
-import { DateService } from '../../../services';
+import { DateService } from '../../services';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {

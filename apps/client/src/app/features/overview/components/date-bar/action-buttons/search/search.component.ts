@@ -26,7 +26,8 @@ import type {
   SearchType,
 } from '@lib/models';
 
-import { SearchInputComponent, SearchResultsComponent } from './components';
+import { SearchInputComponent } from './search-input.component';
+import { SearchResultsComponent } from './search-results.component';
 
 const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
 

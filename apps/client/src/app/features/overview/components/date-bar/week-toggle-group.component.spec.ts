@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import type { DateString } from '@lib/shared';
 
-import { DateService } from '../../../services';
+import { DateService } from '../../services';
 
 import { WeekToggleGroupComponent } from './week-toggle-group.component';
 
