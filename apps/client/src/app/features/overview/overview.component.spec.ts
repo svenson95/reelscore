@@ -1,4 +1,9 @@
-import { signal, type Signal, type WritableSignal } from '@angular/core';
+import {
+  computed,
+  signal,
+  type Signal,
+  type WritableSignal,
+} from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
 import {
@@ -12,7 +17,7 @@ import { getWeekdayIndex } from '@lib/shared';
 
 import { OverviewComponent } from './overview.component';
 import { SelectedDateService, VisibilityObserverService } from './services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from './store';
+import { WeekFixturesStore, WeekStandingsStore } from './store';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -44,21 +49,25 @@ describe('OverviewComponent', () => {
 
   let weekFixturesStoreMock: {
     weekFixtures: Signal<FixturesWeekData>;
-    isLoading: Signal<boolean>;
-    loadWeekdayFixtures: jest.Mock;
+    isPending: Signal<boolean>;
+    loadWeekFixtures: jest.Mock;
   };
 
   let weekStandingsStoreMock: {
-    isLoading: Signal<boolean>;
-    loadWeekdayStandings: jest.Mock;
+    isPending: Signal<boolean>;
+    loadWeekStandings: jest.Mock;
   };
 
   const testDate = '2023-11-02';
 
   let selectedDay: WritableSignal<string>;
   let weekFixtures: WritableSignal<FixturesWeekData>;
+
   let fixturesLoading: WritableSignal<boolean>;
+  let fixturesRefreshing: WritableSignal<boolean>;
+
   let standingsLoading: WritableSignal<boolean>;
+  let standingsRefreshing: WritableSignal<boolean>;
 
   beforeEach(() => {
     routeServiceMock = {
@@ -91,18 +100,21 @@ describe('OverviewComponent', () => {
 
     weekFixtures = signal<FixturesWeekData>([[], [], [], [], [], [], []]);
 
-    fixturesLoading = signal<boolean>(false);
-    standingsLoading = signal<boolean>(false);
+    fixturesLoading = signal(false);
+    fixturesRefreshing = signal(false);
+
+    standingsLoading = signal(false);
+    standingsRefreshing = signal(false);
 
     weekFixturesStoreMock = {
       weekFixtures,
-      isLoading: fixturesLoading,
-      loadWeekdayFixtures: jest.fn(),
+      isPending: computed(() => fixturesLoading() || fixturesRefreshing()),
+      loadWeekFixtures: jest.fn(),
     };
 
     weekStandingsStoreMock = {
-      isLoading: standingsLoading,
-      loadWeekdayStandings: jest.fn(),
+      isPending: computed(() => standingsLoading() || standingsRefreshing()),
+      loadWeekStandings: jest.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -138,11 +150,11 @@ describe('OverviewComponent', () => {
       useValue: selectedDateServiceMock,
     });
 
-    TestBed.overrideProvider(WeekdayFixturesStore, {
+    TestBed.overrideProvider(WeekFixturesStore, {
       useValue: weekFixturesStoreMock,
     });
 
-    TestBed.overrideProvider(WeekdayStandingsStore, {
+    TestBed.overrideProvider(WeekStandingsStore, {
       useValue: weekStandingsStoreMock,
     });
 
@@ -242,7 +254,7 @@ describe('OverviewComponent', () => {
       });
     });
 
-    it('should allow refresh when fixtures and standings are not loading', () => {
+    it('should allow refresh when fixtures and standings are not pending', () => {
       startPageRefresh();
 
       const config = getPageRefreshConfig();
@@ -270,6 +282,26 @@ describe('OverviewComponent', () => {
       expect(config.canRefresh()).toBe(false);
     });
 
+    it('should prevent refresh while fixtures are refreshing', () => {
+      startPageRefresh();
+
+      const config = getPageRefreshConfig();
+
+      fixturesRefreshing.set(true);
+
+      expect(config.canRefresh()).toBe(false);
+    });
+
+    it('should prevent refresh while standings are refreshing', () => {
+      startPageRefresh();
+
+      const config = getPageRefreshConfig();
+
+      standingsRefreshing.set(true);
+
+      expect(config.canRefresh()).toBe(false);
+    });
+
     it('should reload fixtures and standings for the selected day', async () => {
       startPageRefresh();
 
@@ -277,12 +309,12 @@ describe('OverviewComponent', () => {
 
       await config.refresh();
 
-      expect(weekFixturesStoreMock.loadWeekdayFixtures).toHaveBeenCalledWith(
+      expect(weekFixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
         testDate,
         true
       );
 
-      expect(weekStandingsStoreMock.loadWeekdayStandings).toHaveBeenCalledWith(
+      expect(weekStandingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
         testDate,
         true
       );
