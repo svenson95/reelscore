@@ -31,13 +31,7 @@ describe('OverviewFixturesFacade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OverviewFixturesFacade,
-        {
-          provide: FilterService,
-          useClass: AbstractedFilterService,
-        },
-      ],
+      providers: [OverviewFixturesFacade, FilterService],
     });
 
     facade = TestBed.inject(OverviewFixturesFacade);
