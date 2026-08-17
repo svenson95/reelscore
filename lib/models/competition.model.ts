@@ -51,7 +51,7 @@ type FixtureLeagueBase = {
   logo: string;
   flag: string;
   season: CompetitionSeason;
-  round?: CompetitionRound;
+  round: CompetitionRound;
 };
 
 export interface FixtureLeague extends FixtureLeagueBase {
