@@ -4,7 +4,7 @@
   "plugins": ["@nx"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.cjs"],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -34,8 +34,15 @@
       "rules": {}
     },
     {
-      "files": ["*.js", "*.jsx"],
+      "files": ["*.js", "*.jsx", "*.cjs"],
       "extends": ["plugin:@nx/javascript"],
+      "env": {
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "script"
+      },
       "rules": {}
     },
     {
