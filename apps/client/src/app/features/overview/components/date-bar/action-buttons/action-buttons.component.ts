@@ -5,7 +5,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RefreshTickerComponent } from '@app/shared';
 
-import { FilterComponent, SearchComponent } from './components';
+import { FilterComponent } from './filter.component';
+import { SearchComponent } from './search/search.component';
 
 const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
 @Component({

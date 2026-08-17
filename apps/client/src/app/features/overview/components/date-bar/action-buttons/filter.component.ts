@@ -20,11 +20,8 @@ import {
 } from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 
-import { FilterService, SelectedDateService } from '../../../../../services';
-import {
-  FilteredStandingsStore,
-  WeekFixturesStore,
-} from '../../../../../store';
+import { FilterService, SelectedDateService } from '../../../services';
+import { FilteredStandingsStore, WeekFixturesStore } from '../../../store';
 
 const MAT_MODULES = [
   MatButtonModule,

@@ -1,10 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 
-import type { CompetitionWithFixtures } from '@app/shared';
-import { COMPETITIONS_ORDER, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
+import {
+  COMPETITIONS_ORDER,
+  SELECT_COMPETITION_DATA_FLAT,
+  type CompetitionWithFixtures,
+} from '@app/shared';
 import type { CompetitionName, ExtendedFixtureDTO } from '@lib/models';
 
-import { FilterService } from '../../../../services';
+import { FilterService } from '../../../services';
 
 @Injectable()
 export class OverviewFixturesFacade {
