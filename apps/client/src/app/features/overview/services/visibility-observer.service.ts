@@ -1,14 +1,13 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import type { Subscription } from 'rxjs';
-import { fromEvent } from 'rxjs';
+import { fromEvent, type Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import { getTodayDateString } from '@lib/shared';
 
 import { WeekFixturesStore, WeekStandingsStore } from '../store';
 
-import { DateService } from './date.service';
+import { DateNavigationService } from './date-navigation.service';
 import { SelectedDateService } from './selected-date.service';
 
 export abstract class VisibilityObserverService {
@@ -20,7 +19,7 @@ export abstract class VisibilityObserverService {
 export class AbstractedVisibilityObserverService extends VisibilityObserverService {
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly dateService = inject(DateService);
+  private readonly dateNavigationService = inject(DateNavigationService);
   private readonly selectedDateService = inject(SelectedDateService);
 
   private readonly weekFixturesStore = inject(WeekFixturesStore);
@@ -69,8 +68,8 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   private updateTodayIfNeeded(): void {
     const now = getTodayDateString();
 
-    if (this.dateService.today() !== now) {
-      this.dateService.resetToday();
+    if (this.dateNavigationService.today() !== now) {
+      this.dateNavigationService.resetToday();
     }
   }
 

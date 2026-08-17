@@ -13,15 +13,19 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import type { CalendarWeek, DateString } from '@lib/shared';
-import { formatDateToYearMonthDay } from '@lib/shared';
+import {
+  formatDateToYearMonthDay,
+  type CalendarWeek,
+  type DateString,
+} from '@lib/shared';
 
-import { DateService } from '../../services';
+import { DateNavigationService } from '../../services';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {
-  dateService = inject(DateService);
-  transform = (day: DateString): boolean => day === this.dateService.today();
+  dateNavigationService = inject(DateNavigationService);
+  transform = (day: DateString): boolean =>
+    day === this.dateNavigationService.today();
 }
 
 const EXTERNAL_MODULES = [
