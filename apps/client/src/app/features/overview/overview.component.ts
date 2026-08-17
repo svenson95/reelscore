@@ -5,6 +5,7 @@ import {
   computed,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 
 import { PageRefreshService } from '@app/shared';
@@ -56,19 +57,25 @@ export class OverviewComponent
     VisibilityObserverService
   );
 
-  private isActive = false;
+  private readonly isActive = signal<boolean>(false);
 
-  private readonly hasPlayingFixtures = computed<boolean>(() => {
+  private readonly hasPlayingFixtures = computed(() => {
     const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
+
     const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex] ?? [];
-    const states = fixtures.map((fixture) => fixture.fixture.status.short);
-    return this.pageRefreshService.hasPlayingState(states);
+
+    return this.pageRefreshService.hasPlayingState(
+      fixtures.map((fixture) => fixture.fixture.status.short)
+    );
   });
 
-  pageRefreshEffect = effect(() => {
-    this.hasPlayingFixtures()
-      ? this.startPageRefreshService()
-      : this.pageRefreshService.stop();
+  private readonly pageRefreshEffect = effect(() => {
+    if (!this.isActive() || !this.hasPlayingFixtures()) {
+      this.pageRefreshService.stop();
+      return;
+    }
+
+    this.startPageRefreshService();
   });
 
   ngOnInit(): void {
@@ -87,17 +94,14 @@ export class OverviewComponent
     this.startServices();
   }
 
-  private canRefresh(): boolean {
-    return this.isNotLoading();
-  }
-
   private async refresh(): Promise<void> {
     const date = this.selectedDateService.selectedDay();
+
     this.weekFixturesStore.loadWeekdayFixtures(date, true);
     this.weekStandingsStore.loadWeekdayStandings(date, true);
   }
 
-  private isNotLoading(): boolean {
+  private canRefresh(): boolean {
     return (
       !this.weekFixturesStore.isLoading() &&
       !this.weekStandingsStore.isLoading()
@@ -113,17 +117,16 @@ export class OverviewComponent
   }
 
   private startServices(): void {
-    if (this.isActive) return;
-    this.isActive = true;
+    if (this.isActive()) return;
 
+    this.isActive.set(true);
     this.visibilityObserverService.init();
-    this.startPageRefreshService();
   }
 
   private stopServices(): void {
-    if (!this.isActive) return;
-    this.isActive = false;
+    if (!this.isActive()) return;
 
+    this.isActive.set(false);
     this.visibilityObserverService.stop();
     this.pageRefreshService.stop();
   }
