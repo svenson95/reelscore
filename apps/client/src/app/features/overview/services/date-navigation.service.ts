@@ -13,7 +13,7 @@ import {
 import { SelectedDateService } from './selected-date.service';
 
 @Injectable()
-export class DateService {
+export class DateNavigationService {
   private readonly router = inject(Router);
   private readonly selectedDateService = inject(SelectedDateService);
 

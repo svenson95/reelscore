@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import type { ExtendedFixtureDTO } from '@lib/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../../../../testing/fixtures.mock';
-import { AbstractedFilterService, FilterService } from '../../../../services';
+import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
+import { FilterService } from '../../../services';
 
 import { OverviewFixturesFacade } from './fixtures.facade';
 
@@ -31,13 +31,7 @@ describe('OverviewFixturesFacade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OverviewFixturesFacade,
-        {
-          provide: FilterService,
-          useClass: AbstractedFilterService,
-        },
-      ],
+      providers: [OverviewFixturesFacade, FilterService],
     });
 
     facade = TestBed.inject(OverviewFixturesFacade);

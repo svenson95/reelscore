@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import type { DateString } from '@lib/shared';
 
-import { DateService, SelectedDateService } from '../../services';
+import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
 import { OverviewContentFacade } from './content.facade';
@@ -16,7 +16,7 @@ describe('OverviewContentFacade', () => {
     setSelectedDay: jest.fn(),
   };
 
-  const dateServiceMock = {
+  const dateNavigationServiceMock = {
     selectedTabIndex: signal(0),
   };
 
@@ -48,8 +48,8 @@ describe('OverviewContentFacade', () => {
           useValue: selectedDateServiceMock,
         },
         {
-          provide: DateService,
-          useValue: dateServiceMock,
+          provide: DateNavigationService,
+          useValue: dateNavigationServiceMock,
         },
         {
           provide: WeekFixturesStore,

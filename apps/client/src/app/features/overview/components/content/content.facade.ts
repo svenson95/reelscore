@@ -3,17 +3,17 @@ import { computed, effect, inject, Injectable, untracked } from '@angular/core';
 import type { DateString } from '@lib/shared';
 import { formatCalendarWeekKey } from '@lib/shared';
 
-import { DateService, SelectedDateService } from '../../services';
+import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
 @Injectable()
 export class OverviewContentFacade {
   readonly weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 
-  private readonly dateService = inject(DateService);
+  private readonly dateNavigationService = inject(DateNavigationService);
   private readonly selectedDateService = inject(SelectedDateService);
   private readonly selectedDay = this.selectedDateService.selectedDay;
-  readonly tabIndex = this.dateService.selectedTabIndex;
+  readonly tabIndex = this.dateNavigationService.selectedTabIndex;
 
   private readonly weekFixturesStore = inject(WeekFixturesStore);
   readonly weekFixtures = this.weekFixturesStore.weekFixtures;
