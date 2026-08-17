@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import type { DateString } from '@lib/shared';
 
-import { DateService } from '../../services';
+import { DateNavigationService } from '../../services';
 
 import { WeekToggleGroupComponent } from './week-toggle-group.component';
 
@@ -19,7 +19,7 @@ describe('WeekToggleGroupComponent', () => {
     '2026-08-16',
   ];
 
-  const dateServiceMock = {
+  const dateNavigationServiceMock = {
     today: jest.fn(() => '2026-08-15'),
   };
 
@@ -28,8 +28,8 @@ describe('WeekToggleGroupComponent', () => {
       imports: [WeekToggleGroupComponent],
       providers: [
         {
-          provide: DateService,
-          useValue: dateServiceMock,
+          provide: DateNavigationService,
+          useValue: dateNavigationServiceMock,
         },
       ],
     }).compileComponents();
