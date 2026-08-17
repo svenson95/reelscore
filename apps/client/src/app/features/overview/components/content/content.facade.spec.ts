@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import type { DateString } from '@lib/shared';
 
 import { DateService, SelectedDateService } from '../../services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
 import { OverviewContentFacade } from './content.facade';
 
@@ -24,21 +24,21 @@ describe('OverviewContentFacade', () => {
     weekFixtures: signal([]),
     isLoading: signal(false),
     error: signal<string | null>(null),
-    loadWeekdayFixtures: jest.fn(),
+    loadWeekFixtures: jest.fn(),
   };
 
   const standingsStoreMock = {
     weekStandings: signal([]),
     isLoading: signal(false),
     error: signal(null),
-    loadWeekdayStandings: jest.fn(),
+    loadWeekStandings: jest.fn(),
   };
 
   beforeEach(() => {
     selectedDay.set('2026-08-10');
 
-    fixturesStoreMock.loadWeekdayFixtures.mockClear();
-    standingsStoreMock.loadWeekdayStandings.mockClear();
+    fixturesStoreMock.loadWeekFixtures.mockClear();
+    standingsStoreMock.loadWeekStandings.mockClear();
 
     TestBed.configureTestingModule({
       providers: [
@@ -52,11 +52,11 @@ describe('OverviewContentFacade', () => {
           useValue: dateServiceMock,
         },
         {
-          provide: WeekdayFixturesStore,
+          provide: WeekFixturesStore,
           useValue: fixturesStoreMock,
         },
         {
-          provide: WeekdayStandingsStore,
+          provide: WeekStandingsStore,
           useValue: standingsStoreMock,
         },
       ],
@@ -67,11 +67,11 @@ describe('OverviewContentFacade', () => {
     TestBed.inject(OverviewContentFacade);
     TestBed.tick();
 
-    expect(fixturesStoreMock.loadWeekdayFixtures).toHaveBeenCalledWith(
+    expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
       '2026-08-10'
     );
 
-    expect(standingsStoreMock.loadWeekdayStandings).toHaveBeenCalledWith(
+    expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
       '2026-08-10'
     );
   });
@@ -80,31 +80,31 @@ describe('OverviewContentFacade', () => {
     TestBed.inject(OverviewContentFacade);
     TestBed.tick();
 
-    fixturesStoreMock.loadWeekdayFixtures.mockClear();
-    standingsStoreMock.loadWeekdayStandings.mockClear();
+    fixturesStoreMock.loadWeekFixtures.mockClear();
+    standingsStoreMock.loadWeekStandings.mockClear();
 
     selectedDay.set('2026-08-12');
     TestBed.tick();
 
-    expect(fixturesStoreMock.loadWeekdayFixtures).not.toHaveBeenCalled();
-    expect(standingsStoreMock.loadWeekdayStandings).not.toHaveBeenCalled();
+    expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
+    expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
   });
 
   it('should reload fixtures and standings when selected day changes to another week', () => {
     TestBed.inject(OverviewContentFacade);
     TestBed.tick();
 
-    fixturesStoreMock.loadWeekdayFixtures.mockClear();
-    standingsStoreMock.loadWeekdayStandings.mockClear();
+    fixturesStoreMock.loadWeekFixtures.mockClear();
+    standingsStoreMock.loadWeekStandings.mockClear();
 
     selectedDay.set('2026-08-17');
     TestBed.tick();
 
-    expect(fixturesStoreMock.loadWeekdayFixtures).toHaveBeenCalledWith(
+    expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
       '2026-08-17'
     );
 
-    expect(standingsStoreMock.loadWeekdayStandings).toHaveBeenCalledWith(
+    expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
       '2026-08-17'
     );
   });

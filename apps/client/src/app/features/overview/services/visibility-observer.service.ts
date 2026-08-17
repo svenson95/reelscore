@@ -6,7 +6,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import { getTodayDateString } from '@lib/shared';
 
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../store';
 
 import { DateService } from './date.service';
 import { SelectedDateService } from './selected-date.service';
@@ -23,8 +23,8 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
   private readonly dateService = inject(DateService);
   private readonly selectedDateService = inject(SelectedDateService);
 
-  private readonly weekFixturesStore = inject(WeekdayFixturesStore);
-  private readonly weekStandingsStore = inject(WeekdayStandingsStore);
+  private readonly weekFixturesStore = inject(WeekFixturesStore);
+  private readonly weekStandingsStore = inject(WeekStandingsStore);
 
   private subscription?: Subscription;
 
@@ -62,8 +62,8 @@ export class AbstractedVisibilityObserverService extends VisibilityObserverServi
 
     const date = this.selectedDateService.selectedDay();
 
-    this.weekFixturesStore.loadWeekdayFixtures(date, true);
-    this.weekStandingsStore.loadWeekdayStandings(date, true);
+    this.weekFixturesStore.loadWeekFixtures(date, true);
+    this.weekStandingsStore.loadWeekStandings(date, true);
   }
 
   private updateTodayIfNeeded(): void {

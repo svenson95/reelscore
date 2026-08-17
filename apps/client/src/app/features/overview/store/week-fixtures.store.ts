@@ -3,8 +3,8 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
-import { errorHandler, HttpStandingsService } from '@app/shared';
-import type { StandingsWeekData } from '@lib/models';
+import { errorHandler, HttpWeekFixturesService } from '@app/shared';
+import type { FixturesWeekData } from '@lib/models';
 import type { DateString } from '@lib/shared';
 
 import {
@@ -13,42 +13,40 @@ import {
   withWeekRequestState,
 } from './week-request.feature';
 
-type WeekdayStandingsState = {
-  weekStandings: StandingsWeekData;
+type WeekFixturesState = {
+  weekFixtures: FixturesWeekData;
 };
 
-type LoadWeekdayStandingsParams = {
+type LoadWeekFixturesParams = {
   date: DateString;
   updateOnly: boolean;
 };
 
-const initialState: WeekdayStandingsState = {
-  weekStandings: createEmptyWeekStandings(),
+const initialState: WeekFixturesState = {
+  weekFixtures: createEmptyWeekFixtures(),
 };
 
-export const WeekdayStandingsStore = signalStore(
+export const WeekFixturesStore = signalStore(
   withState(initialState),
   withWeekRequestState(),
 
-  withMethods((store, http = inject(HttpStandingsService)) => {
-    const load = rxMethod<LoadWeekdayStandingsParams>(
+  withMethods((store, http = inject(HttpWeekFixturesService)) => {
+    const load = rxMethod<LoadWeekFixturesParams>(
       pipe(
         tap(({ updateOnly }) => {
           patchState(store, {
             ...getWeekRequestStartPatch(updateOnly),
-            ...(updateOnly
-              ? {}
-              : { weekStandings: createEmptyWeekStandings() }),
+            ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
           });
         }),
 
         switchMap(({ date, updateOnly }) =>
-          http.getWeekStandings(date).pipe(
+          http.getWeekFixtures(date).pipe(
             retry(errorHandler),
 
-            tap((weekStandings) => {
+            tap((weekFixtures) => {
               patchState(store, {
-                weekStandings,
+                weekFixtures,
                 ...WEEK_REQUEST_END_PATCH,
                 error: null,
               });
@@ -60,7 +58,7 @@ export const WeekdayStandingsStore = signalStore(
                 error,
                 ...(updateOnly
                   ? {}
-                  : { weekStandings: createEmptyWeekStandings() }),
+                  : { weekFixtures: createEmptyWeekFixtures() }),
               });
 
               return EMPTY;
@@ -71,7 +69,7 @@ export const WeekdayStandingsStore = signalStore(
     );
 
     return {
-      loadWeekdayStandings(date: DateString, updateOnly = false): void {
+      loadWeekFixtures(date: DateString, updateOnly = false): void {
         load({
           date,
           updateOnly,
@@ -81,6 +79,6 @@ export const WeekdayStandingsStore = signalStore(
   })
 );
 
-function createEmptyWeekStandings(): StandingsWeekData {
+function createEmptyWeekFixtures(): FixturesWeekData {
   return Array.from({ length: 7 }, () => []);
 }

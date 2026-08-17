@@ -9,7 +9,7 @@ import { BreakpointObserverService } from '@app/shared';
 import type { DateString } from '@lib/shared';
 
 import { DateService, SelectedDateService } from '../../services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
 import {
   ActionButtonsComponent,
@@ -79,8 +79,8 @@ export class DateBarComponent {
   isToday = this.dateService.isToday;
   calendarWeek = this.dateService.calendarWeek;
 
-  private readonly weekFixtures = inject(WeekdayFixturesStore);
-  private readonly weekStandings = inject(WeekdayStandingsStore);
+  private readonly weekFixtures = inject(WeekFixturesStore);
+  private readonly weekStandings = inject(WeekStandingsStore);
 
   readonly isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()

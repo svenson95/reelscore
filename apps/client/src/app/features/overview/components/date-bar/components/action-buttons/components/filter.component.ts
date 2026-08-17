@@ -23,7 +23,7 @@ import type { CompetitionId } from '@lib/models';
 import { FilterService, SelectedDateService } from '../../../../../services';
 import {
   FilteredStandingsStore,
-  WeekdayFixturesStore,
+  WeekFixturesStore,
 } from '../../../../../store';
 
 const MAT_MODULES = [
@@ -122,7 +122,7 @@ const MAT_MODULES = [
   `,
 })
 export class FilterComponent {
-  private readonly facade = inject(WeekdayFixturesStore);
+  private readonly facade = inject(WeekFixturesStore);
   private readonly standingsStore = inject(FilteredStandingsStore);
   private readonly selectedDateService = inject(SelectedDateService);
   private readonly filterService = inject(FilterService);
