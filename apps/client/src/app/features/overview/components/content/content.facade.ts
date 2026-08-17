@@ -4,7 +4,7 @@ import type { DateString } from '@lib/shared';
 import { formatCalendarWeekKey } from '@lib/shared';
 
 import { DateService, SelectedDateService } from '../../services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../store';
 
 @Injectable()
 export class OverviewContentFacade {
@@ -15,12 +15,12 @@ export class OverviewContentFacade {
   private readonly selectedDay = this.selectedDateService.selectedDay;
   readonly tabIndex = this.dateService.selectedTabIndex;
 
-  private readonly weekFixturesStore = inject(WeekdayFixturesStore);
+  private readonly weekFixturesStore = inject(WeekFixturesStore);
   readonly weekFixtures = this.weekFixturesStore.weekFixtures;
   readonly fixturesLoading = this.weekFixturesStore.isLoading;
   readonly fixturesError = this.weekFixturesStore.error;
 
-  private readonly weekStandingsStore = inject(WeekdayStandingsStore);
+  private readonly weekStandingsStore = inject(WeekStandingsStore);
   readonly weekStandings = this.weekStandingsStore.weekStandings;
   readonly standingsLoading = this.weekStandingsStore.isLoading;
   readonly standingsError = this.weekStandingsStore.error;
@@ -46,7 +46,7 @@ export class OverviewContentFacade {
     this.previousWeekKey = weekKey;
     const date = untracked(this.selectedDateString);
 
-    this.weekFixturesStore.loadWeekdayFixtures(date);
-    this.weekStandingsStore.loadWeekdayStandings(date);
+    this.weekFixturesStore.loadWeekFixtures(date);
+    this.weekStandingsStore.loadWeekStandings(date);
   });
 }

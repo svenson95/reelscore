@@ -5,7 +5,7 @@ import { HttpStandingsService } from '@app/shared';
 import type { StandingsDTO, StandingsWeekData } from '@lib/models';
 import { COMPETITION_ID, COMPETITION_LABEL } from '@lib/shared';
 
-import { WeekdayStandingsStore } from './weekday-standings.store';
+import { WeekStandingsStore } from './week-standings.store';
 
 const testDate = '2026-08-17';
 const nextWeekDate = '2026-08-24';
@@ -17,8 +17,8 @@ const testLeagueName = COMPETITION_LABEL.GERMANY_BUNDESLIGA;
 const testSeason = 2026;
 const testTeamId = 157; // Bayern Munich
 
-describe('WeekdayStandingsStore', () => {
-  let store: InstanceType<typeof WeekdayStandingsStore>;
+describe('WeekStandingsStore', () => {
+  let store: InstanceType<typeof WeekStandingsStore>;
 
   let httpMock: {
     getWeekStandings: jest.Mock;
@@ -31,7 +31,7 @@ describe('WeekdayStandingsStore', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        WeekdayStandingsStore,
+        WeekStandingsStore,
         {
           provide: HttpStandingsService,
           useValue: httpMock,
@@ -39,7 +39,7 @@ describe('WeekdayStandingsStore', () => {
       ],
     });
 
-    store = TestBed.inject(WeekdayStandingsStore);
+    store = TestBed.inject(WeekStandingsStore);
   });
 
   afterEach(() => {
@@ -51,7 +51,7 @@ describe('WeekdayStandingsStore', () => {
 
     httpMock.getWeekStandings.mockReturnValue(of(weekStandings));
 
-    store.loadWeekdayStandings(testDate);
+    store.loadWeekStandings(testDate);
 
     expect(httpMock.getWeekStandings).toHaveBeenCalledWith(testDate);
     expect(store.weekStandings()).toBe(weekStandings);
@@ -64,7 +64,7 @@ describe('WeekdayStandingsStore', () => {
 
     httpMock.getWeekStandings.mockReturnValue(response$);
 
-    store.loadWeekdayStandings(testDate);
+    store.loadWeekStandings(testDate);
 
     expect(store.isLoading()).toBe(true);
     expect(store.isRefreshing()).toBe(false);
@@ -85,8 +85,8 @@ describe('WeekdayStandingsStore', () => {
       .mockReturnValueOnce(of(currentWeek))
       .mockReturnValueOnce(refresh$);
 
-    store.loadWeekdayStandings(testDate);
-    store.loadWeekdayStandings(testDate, true);
+    store.loadWeekStandings(testDate);
+    store.loadWeekStandings(testDate, true);
 
     expect(store.weekStandings()).toBe(currentWeek);
     expect(store.isRefreshing()).toBe(true);
@@ -110,8 +110,8 @@ describe('WeekdayStandingsStore', () => {
       .mockReturnValueOnce(firstRequest$)
       .mockReturnValueOnce(secondRequest$);
 
-    store.loadWeekdayStandings(testDate);
-    store.loadWeekdayStandings(nextWeekDate);
+    store.loadWeekStandings(testDate);
+    store.loadWeekStandings(nextWeekDate);
 
     secondRequest$.next(secondWeek);
     firstRequest$.next(firstWeek);
@@ -129,8 +129,8 @@ describe('WeekdayStandingsStore', () => {
       .mockReturnValueOnce(of(currentWeek))
       .mockReturnValueOnce(throwError(() => error));
 
-    store.loadWeekdayStandings(testDate);
-    store.loadWeekdayStandings(nextWeekDate);
+    store.loadWeekStandings(testDate);
+    store.loadWeekStandings(nextWeekDate);
 
     await jest.runAllTimersAsync();
 
@@ -150,8 +150,8 @@ describe('WeekdayStandingsStore', () => {
       .mockReturnValueOnce(of(currentWeek))
       .mockReturnValueOnce(throwError(() => error));
 
-    store.loadWeekdayStandings(testDate);
-    store.loadWeekdayStandings(testDate, true);
+    store.loadWeekStandings(testDate);
+    store.loadWeekStandings(testDate, true);
 
     await jest.runAllTimersAsync();
 

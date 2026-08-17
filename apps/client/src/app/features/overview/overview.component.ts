@@ -22,8 +22,8 @@ import {
 } from './services';
 import {
   STORE_PROVIDERS,
-  WeekdayFixturesStore,
-  WeekdayStandingsStore,
+  WeekFixturesStore,
+  WeekStandingsStore,
 } from './store';
 
 @Component({
@@ -48,8 +48,8 @@ export class OverviewComponent
   extends RouteCompetitionContext
   implements OnInit, OnDestroy, RouteReuseLifecycle
 {
-  private readonly weekFixturesStore = inject(WeekdayFixturesStore);
-  private readonly weekStandingsStore = inject(WeekdayStandingsStore);
+  private readonly weekFixturesStore = inject(WeekFixturesStore);
+  private readonly weekStandingsStore = inject(WeekStandingsStore);
 
   private readonly selectedDateService = inject(SelectedDateService);
   private readonly pageRefreshService = inject(PageRefreshService);
@@ -97,8 +97,8 @@ export class OverviewComponent
   private async refresh(): Promise<void> {
     const date = this.selectedDateService.selectedDay();
 
-    this.weekFixturesStore.loadWeekdayFixtures(date, true);
-    this.weekStandingsStore.loadWeekdayStandings(date, true);
+    this.weekFixturesStore.loadWeekFixtures(date, true);
+    this.weekStandingsStore.loadWeekStandings(date, true);
   }
 
   private canRefresh(): boolean {

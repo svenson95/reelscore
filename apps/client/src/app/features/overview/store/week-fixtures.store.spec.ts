@@ -4,14 +4,14 @@ import { of, Subject, throwError } from 'rxjs';
 import { HttpWeekFixturesService } from '@app/shared';
 import type { FixturesWeekData } from '@lib/models';
 
-import { WeekdayFixturesStore } from './weekday-fixtures.store';
+import { WeekFixturesStore } from './week-fixtures.store';
 
 const testDate = '2026-08-17';
 const nextWeekDate = '2026-08-24';
 const daysPerWeek = 7;
 
-describe('WeekdayFixturesStore', () => {
-  let store: InstanceType<typeof WeekdayFixturesStore>;
+describe('WeekFixturesStore', () => {
+  let store: InstanceType<typeof WeekFixturesStore>;
 
   let httpMock: {
     getWeekFixtures: jest.Mock;
@@ -24,7 +24,7 @@ describe('WeekdayFixturesStore', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        WeekdayFixturesStore,
+        WeekFixturesStore,
         {
           provide: HttpWeekFixturesService,
           useValue: httpMock,
@@ -32,7 +32,7 @@ describe('WeekdayFixturesStore', () => {
       ],
     });
 
-    store = TestBed.inject(WeekdayFixturesStore);
+    store = TestBed.inject(WeekFixturesStore);
   });
 
   afterEach(() => {
@@ -52,7 +52,7 @@ describe('WeekdayFixturesStore', () => {
 
     httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
 
-    store.loadWeekdayFixtures(testDate);
+    store.loadWeekFixtures(testDate);
 
     expect(httpMock.getWeekFixtures).toHaveBeenCalledWith(testDate);
     expect(store.weekFixtures()).toBe(weekFixtures);
@@ -67,7 +67,7 @@ describe('WeekdayFixturesStore', () => {
 
     httpMock.getWeekFixtures.mockReturnValue(response$);
 
-    store.loadWeekdayFixtures(testDate);
+    store.loadWeekFixtures(testDate);
 
     expect(store.isLoading()).toBe(true);
     expect(store.isRefreshing()).toBe(false);
@@ -88,8 +88,8 @@ describe('WeekdayFixturesStore', () => {
       .mockReturnValueOnce(of(currentWeek))
       .mockReturnValueOnce(refresh$);
 
-    store.loadWeekdayFixtures(testDate);
-    store.loadWeekdayFixtures(testDate, true);
+    store.loadWeekFixtures(testDate);
+    store.loadWeekFixtures(testDate, true);
 
     expect(store.weekFixtures()).toBe(currentWeek);
     expect(store.isLoading()).toBe(false);
@@ -114,8 +114,8 @@ describe('WeekdayFixturesStore', () => {
       .mockReturnValueOnce(firstRequest$)
       .mockReturnValueOnce(secondRequest$);
 
-    store.loadWeekdayFixtures(testDate);
-    store.loadWeekdayFixtures(nextWeekDate);
+    store.loadWeekFixtures(testDate);
+    store.loadWeekFixtures(nextWeekDate);
 
     secondRequest$.next(secondWeek);
     firstRequest$.next(firstWeek);
@@ -133,8 +133,8 @@ describe('WeekdayFixturesStore', () => {
       .mockReturnValueOnce(of(currentWeek))
       .mockReturnValueOnce(throwError(() => error));
 
-    store.loadWeekdayFixtures(testDate);
-    store.loadWeekdayFixtures(testDate, true);
+    store.loadWeekFixtures(testDate);
+    store.loadWeekFixtures(testDate, true);
 
     await jest.runAllTimersAsync();
 

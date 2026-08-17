@@ -17,7 +17,7 @@ import { getWeekdayIndex } from '@lib/shared';
 
 import { OverviewComponent } from './overview.component';
 import { SelectedDateService, VisibilityObserverService } from './services';
-import { WeekdayFixturesStore, WeekdayStandingsStore } from './store';
+import { WeekFixturesStore, WeekStandingsStore } from './store';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -50,12 +50,12 @@ describe('OverviewComponent', () => {
   let weekFixturesStoreMock: {
     weekFixtures: Signal<FixturesWeekData>;
     isPending: Signal<boolean>;
-    loadWeekdayFixtures: jest.Mock;
+    loadWeekFixtures: jest.Mock;
   };
 
   let weekStandingsStoreMock: {
     isPending: Signal<boolean>;
-    loadWeekdayStandings: jest.Mock;
+    loadWeekStandings: jest.Mock;
   };
 
   const testDate = '2023-11-02';
@@ -109,12 +109,12 @@ describe('OverviewComponent', () => {
     weekFixturesStoreMock = {
       weekFixtures,
       isPending: computed(() => fixturesLoading() || fixturesRefreshing()),
-      loadWeekdayFixtures: jest.fn(),
+      loadWeekFixtures: jest.fn(),
     };
 
     weekStandingsStoreMock = {
       isPending: computed(() => standingsLoading() || standingsRefreshing()),
-      loadWeekdayStandings: jest.fn(),
+      loadWeekStandings: jest.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -150,11 +150,11 @@ describe('OverviewComponent', () => {
       useValue: selectedDateServiceMock,
     });
 
-    TestBed.overrideProvider(WeekdayFixturesStore, {
+    TestBed.overrideProvider(WeekFixturesStore, {
       useValue: weekFixturesStoreMock,
     });
 
-    TestBed.overrideProvider(WeekdayStandingsStore, {
+    TestBed.overrideProvider(WeekStandingsStore, {
       useValue: weekStandingsStoreMock,
     });
 
@@ -309,12 +309,12 @@ describe('OverviewComponent', () => {
 
       await config.refresh();
 
-      expect(weekFixturesStoreMock.loadWeekdayFixtures).toHaveBeenCalledWith(
+      expect(weekFixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
         testDate,
         true
       );
 
-      expect(weekStandingsStoreMock.loadWeekdayStandings).toHaveBeenCalledWith(
+      expect(weekStandingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
         testDate,
         true
       );
