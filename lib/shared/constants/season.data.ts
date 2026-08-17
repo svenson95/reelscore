@@ -7,7 +7,7 @@ import type {
 } from '../../models/competition.model';
 import { COMPETITION_ID } from './competition';
 
-export const COMPETITION_WITH_MULTIPLE_ROUNDS_IN_SOME_SEASONS: CompetitionId[] =
+export const COMPETITION_WITH_MULTIPLE_GROUPS_IN_SOME_SEASONS: CompetitionId[] =
   [
     COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE,
     COMPETITION_ID.EUROPA_UEFA_EURO_LEAGUE,
