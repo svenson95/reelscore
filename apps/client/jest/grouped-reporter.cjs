@@ -94,6 +94,15 @@ class GroupedReporter {
     }
   }
 
+  printFailures(result) {
+    if (!result.failureMessage) {
+      return;
+    }
+
+    console.log(chalk.red('\n  Failure:'));
+    console.log(result.failureMessage);
+  }
+
   printTestFile(result) {
     const tree = this.buildTestTree(result.testResults);
 
@@ -118,6 +127,8 @@ class GroupedReporter {
         this.printTest(test, 2);
       }
     }
+
+    this.printFailures(result);
 
     console.log();
   }
@@ -231,21 +242,34 @@ class GroupedReporter {
   }
 
   printSummary(result) {
-    const suitesPassed = result.numFailedTestSuites === 0;
-    const testsPassed = result.numFailedTests === 0;
+    const suiteResults = [];
+
+    if (result.numFailedTestSuites > 0) {
+      suiteResults.push(chalk.red(`${result.numFailedTestSuites} failed`));
+    }
+
+    if (result.numPassedTestSuites > 0) {
+      suiteResults.push(chalk.green(`${result.numPassedTestSuites} passed`));
+    }
+
+    const testResults = [];
+
+    if (result.numFailedTests > 0) {
+      testResults.push(chalk.red(`${result.numFailedTests} failed`));
+    }
+
+    if (result.numPassedTests > 0) {
+      testResults.push(chalk.green(`${result.numPassedTests} passed`));
+    }
 
     console.log(
       [
-        `${chalk.bold('Test Suites:')} ${
-          suitesPassed
-            ? chalk.green(`${result.numPassedTestSuites} passed`)
-            : chalk.red(`${result.numFailedTestSuites} failed`)
-        }, ${result.numTotalTestSuites} total`,
-        `${chalk.bold('Tests:')}       ${
-          testsPassed
-            ? chalk.green(`${result.numPassedTests} passed`)
-            : chalk.red(`${result.numFailedTests} failed`)
-        }, ${result.numTotalTests} total`,
+        `${chalk.bold('Test Suites:')} ${suiteResults.join(', ')}, ${
+          result.numTotalTestSuites
+        } total`,
+        `${chalk.bold('Tests:')}       ${testResults.join(', ')}, ${
+          result.numTotalTests
+        } total`,
       ].join('\n')
     );
   }
