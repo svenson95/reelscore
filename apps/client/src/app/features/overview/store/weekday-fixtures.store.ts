@@ -1,63 +1,82 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
-import {
-  errorHandler,
-  HttpWeekFixturesService,
-  type StateHandler,
-} from '@app/shared';
+import { errorHandler, HttpWeekFixturesService } from '@app/shared';
 import type { FixturesWeekData } from '@lib/models';
 import type { DateString } from '@lib/shared';
 
-type WeekdayFixturesState = StateHandler<{
+import {
+  getWeekRequestStartPatch,
+  WEEK_REQUEST_END_PATCH,
+  withWeekRequestState,
+} from './week-request.feature';
+
+type WeekdayFixturesState = {
   weekFixtures: FixturesWeekData;
-  isRefreshing: boolean;
-}>;
+};
+
+type LoadWeekdayFixturesParams = {
+  date: DateString;
+  updateOnly: boolean;
+};
 
 const initialState: WeekdayFixturesState = {
   weekFixtures: createEmptyWeekFixtures(),
-  isLoading: false,
-  isRefreshing: false,
-  error: null,
 };
 
 export const WeekdayFixturesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpWeekFixturesService)) => ({
-    loadWeekdayFixtures(date: DateString, updateOnly = false): void {
-      patchState(store, {
-        error: null,
-        isLoading: !updateOnly,
-        isRefreshing: updateOnly,
-        ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
-      });
+  withWeekRequestState(),
 
-      http
-        .getWeekFixtures(date)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (weekFixtures) => {
-            patchState(store, {
-              weekFixtures,
-              isLoading: false,
-              isRefreshing: false,
-              error: null,
-            });
-          },
-          error: (error) => {
-            patchState(store, {
-              isLoading: false,
-              isRefreshing: false,
-              error,
-              ...(updateOnly
-                ? {}
-                : { weekFixtures: createEmptyWeekFixtures() }),
-            });
-          },
+  withMethods((store, http = inject(HttpWeekFixturesService)) => {
+    const load = rxMethod<LoadWeekdayFixturesParams>(
+      pipe(
+        tap(({ updateOnly }) => {
+          patchState(store, {
+            ...getWeekRequestStartPatch(updateOnly),
+            ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
+          });
+        }),
+
+        switchMap(({ date, updateOnly }) =>
+          http.getWeekFixtures(date).pipe(
+            retry(errorHandler),
+
+            tap((weekFixtures) => {
+              patchState(store, {
+                weekFixtures,
+                ...WEEK_REQUEST_END_PATCH,
+                error: null,
+              });
+            }),
+
+            catchError((error) => {
+              patchState(store, {
+                ...WEEK_REQUEST_END_PATCH,
+                error,
+                ...(updateOnly
+                  ? {}
+                  : { weekFixtures: createEmptyWeekFixtures() }),
+              });
+
+              return EMPTY;
+            })
+          )
+        )
+      )
+    );
+
+    return {
+      loadWeekdayFixtures(date: DateString, updateOnly = false): void {
+        load({
+          date,
+          updateOnly,
         });
-    },
-  }))
+      },
+    };
+  })
 );
 
 function createEmptyWeekFixtures(): FixturesWeekData {

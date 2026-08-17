@@ -1,4 +1,9 @@
-import { signal, type Signal, type WritableSignal } from '@angular/core';
+import {
+  computed,
+  signal,
+  type Signal,
+  type WritableSignal,
+} from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
 import {
@@ -44,12 +49,12 @@ describe('OverviewComponent', () => {
 
   let weekFixturesStoreMock: {
     weekFixtures: Signal<FixturesWeekData>;
-    isLoading: Signal<boolean>;
+    isPending: Signal<boolean>;
     loadWeekdayFixtures: jest.Mock;
   };
 
   let weekStandingsStoreMock: {
-    isLoading: Signal<boolean>;
+    isPending: Signal<boolean>;
     loadWeekdayStandings: jest.Mock;
   };
 
@@ -57,8 +62,12 @@ describe('OverviewComponent', () => {
 
   let selectedDay: WritableSignal<string>;
   let weekFixtures: WritableSignal<FixturesWeekData>;
+
   let fixturesLoading: WritableSignal<boolean>;
+  let fixturesRefreshing: WritableSignal<boolean>;
+
   let standingsLoading: WritableSignal<boolean>;
+  let standingsRefreshing: WritableSignal<boolean>;
 
   beforeEach(() => {
     routeServiceMock = {
@@ -91,17 +100,20 @@ describe('OverviewComponent', () => {
 
     weekFixtures = signal<FixturesWeekData>([[], [], [], [], [], [], []]);
 
-    fixturesLoading = signal<boolean>(false);
-    standingsLoading = signal<boolean>(false);
+    fixturesLoading = signal(false);
+    fixturesRefreshing = signal(false);
+
+    standingsLoading = signal(false);
+    standingsRefreshing = signal(false);
 
     weekFixturesStoreMock = {
       weekFixtures,
-      isLoading: fixturesLoading,
+      isPending: computed(() => fixturesLoading() || fixturesRefreshing()),
       loadWeekdayFixtures: jest.fn(),
     };
 
     weekStandingsStoreMock = {
-      isLoading: standingsLoading,
+      isPending: computed(() => standingsLoading() || standingsRefreshing()),
       loadWeekdayStandings: jest.fn(),
     };
 
@@ -242,7 +254,7 @@ describe('OverviewComponent', () => {
       });
     });
 
-    it('should allow refresh when fixtures and standings are not loading', () => {
+    it('should allow refresh when fixtures and standings are not pending', () => {
       startPageRefresh();
 
       const config = getPageRefreshConfig();
@@ -266,6 +278,26 @@ describe('OverviewComponent', () => {
       const config = getPageRefreshConfig();
 
       standingsLoading.set(true);
+
+      expect(config.canRefresh()).toBe(false);
+    });
+
+    it('should prevent refresh while fixtures are refreshing', () => {
+      startPageRefresh();
+
+      const config = getPageRefreshConfig();
+
+      fixturesRefreshing.set(true);
+
+      expect(config.canRefresh()).toBe(false);
+    });
+
+    it('should prevent refresh while standings are refreshing', () => {
+      startPageRefresh();
+
+      const config = getPageRefreshConfig();
+
+      standingsRefreshing.set(true);
 
       expect(config.canRefresh()).toBe(false);
     });

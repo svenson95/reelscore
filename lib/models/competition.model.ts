@@ -17,9 +17,9 @@ export type StandingRanks = {
   points: number;
   goalsDiff: number;
   group: string;
-  form: string;
+  form: string | null;
   status: string;
-  description: string;
+  description: string | null;
   all: StandingsPlayed;
   home: StandingsPlayed;
   away: StandingsPlayed;
@@ -51,7 +51,7 @@ type FixtureLeagueBase = {
   logo: string;
   flag: string;
   season: CompetitionSeason;
-  round: CompetitionRound;
+  round?: CompetitionRound;
 };
 
 export interface FixtureLeague extends FixtureLeagueBase {

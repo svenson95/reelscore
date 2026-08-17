@@ -1,63 +1,84 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
-import {
-  errorHandler,
-  HttpStandingsService,
-  type StateHandler,
-} from '@app/shared';
+import { errorHandler, HttpStandingsService } from '@app/shared';
 import type { StandingsWeekData } from '@lib/models';
 import type { DateString } from '@lib/shared';
 
-type WeekdayStandingsState = StateHandler<{
+import {
+  getWeekRequestStartPatch,
+  WEEK_REQUEST_END_PATCH,
+  withWeekRequestState,
+} from './week-request.feature';
+
+type WeekdayStandingsState = {
   weekStandings: StandingsWeekData;
-  isRefreshing: boolean;
-}>;
+};
+
+type LoadWeekdayStandingsParams = {
+  date: DateString;
+  updateOnly: boolean;
+};
 
 const initialState: WeekdayStandingsState = {
   weekStandings: createEmptyWeekStandings(),
-  isLoading: false,
-  isRefreshing: false,
-  error: null,
 };
 
 export const WeekdayStandingsStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpStandingsService)) => ({
-    loadWeekdayStandings(date: DateString, updateOnly = false): void {
-      patchState(store, {
-        error: null,
-        isLoading: !updateOnly,
-        isRefreshing: updateOnly,
-        ...(updateOnly ? {} : { weekStandings: createEmptyWeekStandings() }),
-      });
+  withWeekRequestState(),
 
-      http
-        .getWeekStandings(date)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (weekStandings) => {
-            patchState(store, {
-              weekStandings,
-              isLoading: false,
-              isRefreshing: false,
-              error: null,
-            });
-          },
-          error: (error) => {
-            patchState(store, {
-              isLoading: false,
-              isRefreshing: false,
-              error,
-              ...(updateOnly
-                ? {}
-                : { weekStandings: createEmptyWeekStandings() }),
-            });
-          },
+  withMethods((store, http = inject(HttpStandingsService)) => {
+    const load = rxMethod<LoadWeekdayStandingsParams>(
+      pipe(
+        tap(({ updateOnly }) => {
+          patchState(store, {
+            ...getWeekRequestStartPatch(updateOnly),
+            ...(updateOnly
+              ? {}
+              : { weekStandings: createEmptyWeekStandings() }),
+          });
+        }),
+
+        switchMap(({ date, updateOnly }) =>
+          http.getWeekStandings(date).pipe(
+            retry(errorHandler),
+
+            tap((weekStandings) => {
+              patchState(store, {
+                weekStandings,
+                ...WEEK_REQUEST_END_PATCH,
+                error: null,
+              });
+            }),
+
+            catchError((error) => {
+              patchState(store, {
+                ...WEEK_REQUEST_END_PATCH,
+                error,
+                ...(updateOnly
+                  ? {}
+                  : { weekStandings: createEmptyWeekStandings() }),
+              });
+
+              return EMPTY;
+            })
+          )
+        )
+      )
+    );
+
+    return {
+      loadWeekdayStandings(date: DateString, updateOnly = false): void {
+        load({
+          date,
+          updateOnly,
         });
-    },
-  }))
+      },
+    };
+  })
 );
 
 function createEmptyWeekStandings(): StandingsWeekData {
