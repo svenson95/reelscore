@@ -1,5 +1,6 @@
-import type { OnDestroy, OnInit } from '@angular/core';
 import {
+  type OnDestroy,
+  type OnInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -24,7 +25,7 @@ import {
   STORE_PROVIDERS,
   WeekFixturesStore,
   WeekStandingsStore,
-} from './store';
+} from './stores';
 
 @Component({
   selector: 'rs-overview-page',

@@ -10,18 +10,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import type { SelectCompetitionGroup } from '@app/shared';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   ResponsiveImageComponent,
   SELECT_COMPETITION_DATA,
+  type SelectCompetitionGroup,
   ThemeService,
 } from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../services';
-import { FilteredStandingsStore, WeekFixturesStore } from '../../../store';
+import { FilteredStandingsStore, WeekFixturesStore } from '../../../stores';
 
 const MAT_MODULES = [
   MatButtonModule,
@@ -156,7 +156,7 @@ export class FilterComponent {
 
   readonly hasFilterOptions = computed(() => this.filteredGroups().length > 0);
 
-  filterEffect = effect(() => {
+  private readonly filterEffect = effect(() => {
     const id = this.selectedCompetition();
 
     if (id === null) {

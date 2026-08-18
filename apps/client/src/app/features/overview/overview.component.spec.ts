@@ -17,7 +17,7 @@ import { getWeekdayIndex } from '@lib/shared';
 
 import { OverviewComponent } from './overview.component';
 import { SelectedDateService, VisibilityObserverService } from './services';
-import { WeekFixturesStore, WeekStandingsStore } from './store';
+import { WeekFixturesStore, WeekStandingsStore } from './stores';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
