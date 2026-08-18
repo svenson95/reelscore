@@ -1,5 +1,7 @@
 const chalk = require('chalk');
 
+const FEATURE_ROOT_ORDER = ['components', 'store', 'services'];
+
 const TEST_GROUPS = [
   {
     name: 'GLOBAL',
@@ -78,6 +80,14 @@ class GroupedReporter {
     console.log(`\n${chalk.bold.cyan(name)}\n`);
 
     const sortedResults = [...results].sort((a, b) => {
+      const rootFolderDifference =
+        this.getFeatureRootOrder(a.testFilePath, name) -
+        this.getFeatureRootOrder(b.testFilePath, name);
+
+      if (rootFolderDifference !== 0) {
+        return rootFolderDifference;
+      }
+
       const depthDifference =
         this.getPathDepth(a.testFilePath, name) -
         this.getPathDepth(b.testFilePath, name);
@@ -272,6 +282,26 @@ class GroupedReporter {
         } total`,
       ].join('\n')
     );
+  }
+
+  getFeatureRootOrder(path, groupName) {
+    const group = TEST_GROUPS.find((group) => group.name === groupName);
+
+    if (!group?.path) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    const relativePath = path.split(group.path)[1];
+
+    if (!relativePath) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    const [rootFolder] = relativePath.split('/');
+
+    const index = FEATURE_ROOT_ORDER.indexOf(rootFolder);
+
+    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
   }
 }
 
