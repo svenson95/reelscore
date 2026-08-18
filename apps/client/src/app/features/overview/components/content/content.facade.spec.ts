@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import type { DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
 
 import { OverviewContentFacade } from './content.facade';
 
