@@ -1,5 +1,20 @@
 const chalk = require('chalk');
 
+const FEATURE_SECTIONS = [
+  {
+    path: 'components',
+    name: 'COMPONENTS',
+  },
+  {
+    path: 'stores',
+    name: 'STORES',
+  },
+  {
+    path: 'services',
+    name: 'SERVICES',
+  },
+];
+
 const TEST_GROUPS = [
   {
     name: 'GLOBAL',
@@ -74,13 +89,11 @@ class GroupedReporter {
     return relativePath.split('/').length;
   }
 
-  printGroup(name, results) {
-    console.log(`\n${chalk.bold.cyan(name)}\n`);
-
+  printSortedResults(groupName, results, indent = 0) {
     const sortedResults = [...results].sort((a, b) => {
       const depthDifference =
-        this.getPathDepth(a.testFilePath, name) -
-        this.getPathDepth(b.testFilePath, name);
+        this.getPathDepth(a.testFilePath, groupName) -
+        this.getPathDepth(b.testFilePath, groupName);
 
       if (depthDifference !== 0) {
         return depthDifference;
@@ -90,7 +103,32 @@ class GroupedReporter {
     });
 
     for (const result of sortedResults) {
-      this.printTestFile(result);
+      this.printTestFile(result, indent);
+    }
+  }
+
+  printGroup(name, results) {
+    console.log(`\n${chalk.bold.cyan(name)}\n`);
+
+    const rootResults = [];
+    const sectionResults = Map.groupBy(results, (result) => {
+      return this.getFeatureSection(result.testFilePath, name)?.name ?? 'ROOT';
+    });
+
+    rootResults.push(...(sectionResults.get('ROOT') ?? []));
+
+    this.printSortedResults(name, rootResults);
+
+    for (const section of FEATURE_SECTIONS) {
+      const results = sectionResults.get(section.name);
+
+      if (!results?.length) {
+        continue;
+      }
+
+      console.log(`  ${chalk.bold.cyan(section.name)}\n`);
+
+      this.printSortedResults(name, results, 1);
     }
   }
 
@@ -103,28 +141,29 @@ class GroupedReporter {
     console.log(result.failureMessage);
   }
 
-  printTestFile(result) {
+  printTestFile(result, baseDepth = 0) {
     const tree = this.buildTestTree(result.testResults);
+    const baseIndent = '  '.repeat(baseDepth);
 
     for (const [name, node] of tree.children) {
       const passed = this.isNodePassed(node);
 
       console.log(
-        `  ${passed ? chalk.green('✓') : chalk.red('✕')} ${
+        `${baseIndent}  ${passed ? chalk.green('✓') : chalk.red('✕')} ${
           passed ? chalk.white(name) : chalk.red(name)
         }`
       );
 
-      this.printNode(node, 2);
+      this.printNode(node, baseDepth + 2);
     }
 
     if (tree.tests.length > 0) {
       const fileName = this.getFileName(result.testFilePath);
 
-      console.log(`  ${chalk.white(fileName)}`);
+      console.log(`${baseIndent}  ${chalk.white(fileName)}`);
 
       for (const test of tree.tests) {
-        this.printTest(test, 2);
+        this.printTest(test, baseDepth + 2);
       }
     }
 
@@ -271,6 +310,26 @@ class GroupedReporter {
           result.numTotalTests
         } total`,
       ].join('\n')
+    );
+  }
+
+  getFeatureSection(path, groupName) {
+    const group = TEST_GROUPS.find((group) => group.name === groupName);
+
+    if (!group?.path) {
+      return null;
+    }
+
+    const relativePath = path.split(group.path)[1];
+
+    if (!relativePath) {
+      return null;
+    }
+
+    const [rootFolder] = relativePath.split('/');
+
+    return (
+      FEATURE_SECTIONS.find((section) => section.path === rootFolder) ?? null
     );
   }
 }
