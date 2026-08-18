@@ -6,7 +6,7 @@ const FEATURE_SECTIONS = [
     name: 'COMPONENTS',
   },
   {
-    path: 'store',
+    path: 'stores',
     name: 'STORES',
   },
   {
