@@ -21,17 +21,13 @@ import {
   SERVICE_PROVIDERS,
   VisibilityObserverService,
 } from './services';
-import {
-  STORE_PROVIDERS,
-  WeekFixturesStore,
-  WeekStandingsStore,
-} from './stores';
+import { WeekFixturesStore, WeekStandingsStore } from './stores';
 
 @Component({
   selector: 'rs-overview-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
-  providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
+  providers: [...SERVICE_PROVIDERS],
   styles: `
     :host ::ng-deep h2 { margin-left: 1rem; }
     :host { @apply min-h-[70vh]; }

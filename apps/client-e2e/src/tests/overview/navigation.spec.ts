@@ -1,12 +1,20 @@
-import test, { expect } from '@playwright/test';
+import test, { expect, type Request } from '@playwright/test';
 
-import { OverviewPage } from '../../pages';
-test('should preserve selected day after navigating back from a match', async ({
+import { MatchPage, OverviewPage } from '../../pages';
+
+const testDate = '2026-08-11';
+const expectedLabel = '11.08.26';
+
+const OVERVIEW_DATA_ENDPOINTS = [
+  '/fixtures/by-date',
+  '/standings/start-top-five',
+];
+
+test('restores overview without reloading its data after navigating back from a match', async ({
   page,
 }) => {
   const overviewPage = new OverviewPage(page);
-  const testDate = '2026-08-11';
-  const expectedLabel = '11.08.26';
+  const matchPage = new MatchPage(page);
 
   await overviewPage.goto(testDate);
 
@@ -22,8 +30,28 @@ test('should preserve selected day after navigating back from a match', async ({
 
   await expect(page).toHaveURL(new RegExp(`/${testDate}/[^/]+/\\d+$`));
 
+  await expect(matchPage.latestFixtures).toBeVisible({
+    timeout: 15_000,
+  });
+
+  const overviewRequests: string[] = [];
+
+  const requestListener = (request: Request): void => {
+    const matchingRequests = OVERVIEW_DATA_ENDPOINTS.filter((endpoint) =>
+      request.url().includes(endpoint)
+    ).map(() => request.url());
+
+    overviewRequests.push(...matchingRequests);
+  };
+
+  page.on('request', requestListener);
+
   await page.goBack();
 
   await expect(page).toHaveURL(new RegExp(`/${testDate}$`));
   await expect(overviewPage.selectedDate).toContainText(expectedLabel);
+
+  page.off('request', requestListener);
+
+  expect(overviewRequests).toEqual([]);
 });

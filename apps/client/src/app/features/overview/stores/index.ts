@@ -6,7 +6,7 @@ export * from './filtered-standings.store';
 export * from './week-fixtures.store';
 export * from './week-standings.store';
 
-export const STORE_PROVIDERS = [
+export const OVERVIEW_WEEK_STORE_PROVIDERS = [
   FilteredStandingsStore,
   WeekFixturesStore,
   WeekStandingsStore,
