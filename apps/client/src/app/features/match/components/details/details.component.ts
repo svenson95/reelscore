@@ -83,7 +83,7 @@ const ANGULAR_MODULES = [
           />
           }
           <rs-match-evaluations [evaluations]="evaluations()" />
-          <rs-match-latest-fixtures />
+          <rs-match-latest-fixtures data-testid="match-latest-fixtures" />
           } @else {
           <mat-spinner [diameter]="32"></mat-spinner>
           }

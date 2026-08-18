@@ -33,16 +33,17 @@ export class OverviewContentFacade {
     return formatCalendarWeekKey(date);
   });
 
-  private previousWeekKey: string | null = null;
-
   readonly calendarWeekEffect = effect(() => {
     const weekKey = this.weekKey();
 
-    if (this.previousWeekKey === weekKey) {
+    const isCached =
+      this.weekFixturesStore.weekKey() === weekKey &&
+      this.weekStandingsStore.weekKey() === weekKey;
+
+    if (isCached) {
       return;
     }
 
-    this.previousWeekKey = weekKey;
     const date = untracked(this.selectedDateString);
 
     this.weekFixturesStore.loadWeekFixtures(date);
