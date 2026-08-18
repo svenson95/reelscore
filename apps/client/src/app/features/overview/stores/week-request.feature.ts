@@ -4,10 +4,12 @@ import { signalStoreFeature, withComputed, withState } from '@ngrx/signals';
 import type { StateHandler } from '@app/shared';
 
 type WeekRequestState = StateHandler<{
+  weekKey: string | null;
   isRefreshing: boolean;
 }>;
 
 const initialState: WeekRequestState = {
+  weekKey: null,
   isLoading: false,
   isRefreshing: false,
   error: null,

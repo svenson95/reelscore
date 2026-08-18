@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { StartupService } from './shared/services/startup/startup.service';
+import { FooterComponent, HeaderComponent, StartupService } from '@app/shared';
+import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
 
 @Component({
   selector: 'rs-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  providers: [...OVERVIEW_WEEK_STORE_PROVIDERS],
   styles: `
     :host {
       box-sizing: border-box;

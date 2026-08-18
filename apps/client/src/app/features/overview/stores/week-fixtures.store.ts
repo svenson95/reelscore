@@ -5,7 +5,7 @@ import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import { errorHandler, HttpWeekFixturesService } from '@app/shared';
 import type { FixturesWeekData } from '@lib/models';
-import type { DateString } from '@lib/shared';
+import { formatCalendarWeekKey, type DateString } from '@lib/shared';
 
 import {
   getWeekRequestStartPatch,
@@ -47,6 +47,7 @@ export const WeekFixturesStore = signalStore(
             tap((weekFixtures) => {
               patchState(store, {
                 weekFixtures,
+                weekKey: formatCalendarWeekKey(date),
                 ...WEEK_REQUEST_END_PATCH,
                 error: null,
               });
@@ -58,7 +59,7 @@ export const WeekFixturesStore = signalStore(
                 error,
                 ...(updateOnly
                   ? {}
-                  : { weekFixtures: createEmptyWeekFixtures() }),
+                  : { weekKey: null, weekFixtures: createEmptyWeekFixtures() }),
               });
 
               return EMPTY;
