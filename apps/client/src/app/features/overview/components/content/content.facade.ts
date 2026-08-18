@@ -1,10 +1,9 @@
 import { computed, effect, inject, Injectable, untracked } from '@angular/core';
 
-import type { DateString } from '@lib/shared';
-import { formatCalendarWeekKey } from '@lib/shared';
+import { formatCalendarWeekKey, type DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
 
 @Injectable()
 export class OverviewContentFacade {

@@ -1,14 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  ElementRef,
+  inject,
+  type OnInit,
+} from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
 import { OverviewContentFacade } from './content.facade';
-import { HideHeaderDirective } from './directives';
 import { OverviewFixturesComponent } from './fixtures/fixtures.component';
 import { OverviewStandingsComponent } from './standings/standings.component';
 
 const MAT_MODULES = [MatTabsModule];
+
+@Directive({
+  selector: '[rsHideHeader]',
+  standalone: true,
+})
+export class HideHeaderDirective implements OnInit {
+  elementRef = inject(ElementRef);
+
+  ngOnInit(): void {
+    const headerElement = this.elementRef.nativeElement.children[0];
+    headerElement.style.display = 'none';
+  }
+}
 
 @Component({
   selector: 'section[rs-overview-content]',
