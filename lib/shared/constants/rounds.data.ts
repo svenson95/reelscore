@@ -81,7 +81,12 @@ const DE_DFB_POKAL = {
 };
 
 /* SPAIN */
-
+const LA_LIGA_2026 = {
+  ...BIG_LEAGUE,
+  4: 'Regular Season - 6',
+  5: 'Regular Season - 4',
+  6: 'Regular Season - 5',
+};
 const LA_LIGA_2025 = {
   ...BIG_LEAGUE,
   3: 'Regular Season - 6',
@@ -694,6 +699,7 @@ export const COMPETITION_ROUNDS = buildCompetitionRounds({
   140: {
     2023: LA_LIGA_2023,
     2025: LA_LIGA_2025,
+    2026: LA_LIGA_2026,
   },
   556: {
     2023: ES_SUPER_CUP,
