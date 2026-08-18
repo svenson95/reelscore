@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { DateString } from '@lib/shared';
+import { formatCalendarWeekKey, type DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
@@ -9,7 +9,11 @@ import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
 import { OverviewContentFacade } from './content.facade';
 
 describe('OverviewContentFacade', () => {
-  const selectedDay = signal<DateString>('2026-08-10');
+  const initialDate: DateString = '2026-08-10';
+  const sameWeekDate: DateString = '2026-08-12';
+  const nextWeekDate: DateString = '2026-08-17';
+
+  const selectedDay = signal<DateString>(initialDate);
 
   const selectedDateServiceMock = {
     selectedDay: selectedDay.asReadonly(),
@@ -21,6 +25,7 @@ describe('OverviewContentFacade', () => {
   };
 
   const fixturesStoreMock = {
+    weekKey: signal<string | null>(null),
     weekFixtures: signal([]),
     isLoading: signal(false),
     error: signal<string | null>(null),
@@ -28,17 +33,27 @@ describe('OverviewContentFacade', () => {
   };
 
   const standingsStoreMock = {
+    weekKey: signal<string | null>(null),
     weekStandings: signal([]),
     isLoading: signal(false),
-    error: signal(null),
+    error: signal<string | null>(null),
     loadWeekStandings: jest.fn(),
   };
 
   beforeEach(() => {
-    selectedDay.set('2026-08-10');
+    selectedDay.set(initialDate);
+
+    fixturesStoreMock.weekKey.set(null);
+    standingsStoreMock.weekKey.set(null);
 
     fixturesStoreMock.loadWeekFixtures.mockClear();
     standingsStoreMock.loadWeekStandings.mockClear();
+
+    fixturesStoreMock.isLoading.set(false);
+    standingsStoreMock.isLoading.set(false);
+
+    fixturesStoreMock.error.set(null);
+    standingsStoreMock.error.set(null);
 
     TestBed.configureTestingModule({
       providers: [
@@ -68,11 +83,10 @@ describe('OverviewContentFacade', () => {
     TestBed.tick();
 
     expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
-      '2026-08-10'
+      initialDate
     );
-
     expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
-      '2026-08-10'
+      initialDate
     );
   });
 
@@ -80,10 +94,12 @@ describe('OverviewContentFacade', () => {
     TestBed.inject(OverviewContentFacade);
     TestBed.tick();
 
+    markWeekAsCached(initialDate);
+
     fixturesStoreMock.loadWeekFixtures.mockClear();
     standingsStoreMock.loadWeekStandings.mockClear();
 
-    selectedDay.set('2026-08-12');
+    selectedDay.set(sameWeekDate);
     TestBed.tick();
 
     expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
@@ -94,19 +110,31 @@ describe('OverviewContentFacade', () => {
     TestBed.inject(OverviewContentFacade);
     TestBed.tick();
 
+    markWeekAsCached(initialDate);
+
     fixturesStoreMock.loadWeekFixtures.mockClear();
     standingsStoreMock.loadWeekStandings.mockClear();
 
-    selectedDay.set('2026-08-17');
+    selectedDay.set(nextWeekDate);
     TestBed.tick();
 
     expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
-      '2026-08-17'
+      nextWeekDate
     );
 
     expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
-      '2026-08-17'
+      nextWeekDate
     );
+  });
+
+  it('should not load when the selected week is already cached', () => {
+    markWeekAsCached(initialDate);
+
+    TestBed.inject(OverviewContentFacade);
+    TestBed.tick();
+
+    expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
+    expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
   });
 
   it('should expose fixture and standings loading states independently', () => {
@@ -136,4 +164,11 @@ describe('OverviewContentFacade', () => {
     expect(facade.fixturesError()).toEqual('Fixtures failed');
     expect(facade.standingsError()).toBeNull();
   });
+
+  const markWeekAsCached = (date: DateString): void => {
+    const weekKey = formatCalendarWeekKey(date);
+
+    fixturesStoreMock.weekKey.set(weekKey);
+    standingsStoreMock.weekKey.set(weekKey);
+  };
 });
