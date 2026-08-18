@@ -9,7 +9,7 @@ import { BreakpointObserverService } from '@app/shared';
 import type { DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
 
 import { ActionButtonsComponent } from './action-buttons/action-buttons.component';
 import { DatePickerComponent } from './date-picker.component';
@@ -66,19 +66,20 @@ import { WeekToggleGroupComponent } from './week-toggle-group.component';
   `,
 })
 export class DateBarComponent {
-  private breakpointObserverService = inject(BreakpointObserverService);
-  isMobile = this.breakpointObserverService.isMobile;
-
-  private dateNavigationService = inject(DateNavigationService);
-  private selectedDateService = inject(SelectedDateService);
-  selectedDay = this.selectedDateService.selectedDay;
-  weekdays = this.dateNavigationService.weekdays;
-  today = this.dateNavigationService.today;
-  isToday = this.dateNavigationService.isToday;
-  calendarWeek = this.dateNavigationService.calendarWeek;
+  private readonly breakpointObserverService = inject(
+    BreakpointObserverService
+  );
+  private readonly dateNavigationService = inject(DateNavigationService);
+  private readonly selectedDateService = inject(SelectedDateService);
 
   private readonly weekFixtures = inject(WeekFixturesStore);
   private readonly weekStandings = inject(WeekStandingsStore);
+
+  readonly isMobile = this.breakpointObserverService.isMobile;
+  readonly selectedDay = this.selectedDateService.selectedDay;
+  readonly weekdays = this.dateNavigationService.weekdays;
+  readonly isToday = this.dateNavigationService.isToday;
+  readonly calendarWeek = this.dateNavigationService.calendarWeek;
 
   readonly isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()

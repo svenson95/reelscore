@@ -5,7 +5,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import { getTodayDateString } from '@lib/shared';
 
-import { WeekFixturesStore, WeekStandingsStore } from '../store';
+import { WeekFixturesStore, WeekStandingsStore } from '../stores';
 
 import { DateNavigationService } from './date-navigation.service';
 import { SelectedDateService } from './selected-date.service';
