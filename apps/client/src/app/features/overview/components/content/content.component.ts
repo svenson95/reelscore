@@ -61,6 +61,7 @@ export class HideHeaderDirective implements OnInit {
             class="fixtures-container"
             [filteredFixtures]="fixtures"
             [isLoading]="fixturesLoading()"
+            [hasDataForSelectedDay]="hasFixturesDataForSelectedDay()"
             [error]="fixturesError()"
           />
           } @if (standings) {
@@ -68,6 +69,7 @@ export class HideHeaderDirective implements OnInit {
             class="standings-container"
             [weekStandings]="standings"
             [isLoading]="standingsLoading()"
+            [hasDataForSelectedDay]="hasStandingsDataForSelectedDay()"
             [error]="standingsError()"
           />
           }
@@ -78,6 +80,8 @@ export class HideHeaderDirective implements OnInit {
   `,
 })
 export class OverviewContentComponent {
+  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+
   private readonly facade = inject(OverviewContentFacade);
   readonly tabIndex = this.facade.tabIndex;
   readonly weekdays = this.facade.weekdays;
@@ -85,10 +89,12 @@ export class OverviewContentComponent {
   readonly weekFixtures = this.facade.weekFixtures;
   readonly fixturesLoading = this.facade.fixturesLoading;
   readonly fixturesError = this.facade.fixturesError;
+  readonly hasFixturesDataForSelectedDay =
+    this.facade.hasFixturesDataForSelectedDay;
 
   readonly weekStandings = this.facade.weekStandings;
   readonly standingsLoading = this.facade.standingsLoading;
   readonly standingsError = this.facade.standingsError;
-
-  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+  readonly hasStandingsDataForSelectedDay =
+    this.facade.hasStandingsDataForSelectedDay;
 }

@@ -56,16 +56,22 @@ describe('OverviewStandingsComponent', () => {
   const createComponent = ({
     standings = [],
     isLoading = false,
+    hasDataForSelectedDay = false,
     error = null,
   }: {
     standings?: StandingsDTO[];
     isLoading?: boolean;
+    hasDataForSelectedDay?: boolean;
     error?: string | null;
   } = {}) => {
     const fixture = TestBed.createComponent(OverviewStandingsComponent);
 
     fixture.componentRef.setInput('weekStandings', standings);
     fixture.componentRef.setInput('isLoading', isLoading);
+    fixture.componentRef.setInput(
+      'hasDataForSelectedDay',
+      hasDataForSelectedDay
+    );
     fixture.componentRef.setInput('error', error);
 
     fixture.detectChanges();
@@ -81,18 +87,26 @@ describe('OverviewStandingsComponent', () => {
     );
   });
 
-  it('should display a loading state while standings are loading', () => {
+  it('should display a loading state while standings are loading and no cached data is available', () => {
     const fixture = createComponent({
       isLoading: true,
+      hasDataForSelectedDay: false,
     });
 
-    expect(fixture.nativeElement.textContent).toContain(
-      'Tabellen werden geladen ...'
-    );
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="standings-loading"]')
+    ).not.toBeNull();
+  });
 
-    expect(fixture.nativeElement.textContent).not.toContain(
-      'Keine Tabellen gefunden.'
-    );
+  it('should not display the loading state while cached edge-day data is available', () => {
+    const fixture = createComponent({
+      isLoading: true,
+      hasDataForSelectedDay: true,
+    });
+
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="standings-loading"]')
+    ).toBeNull();
   });
 
   it('should display an error state when standings could not be loaded', () => {

@@ -36,13 +36,10 @@ export const WeekStandingsStore = signalStore(
         tap(({ updateOnly }) => {
           patchState(store, {
             ...getWeekRequestStartPatch(updateOnly),
-            ...(updateOnly
-              ? {}
-              : { weekStandings: createEmptyWeekStandings() }),
           });
         }),
 
-        switchMap(({ date, updateOnly }) =>
+        switchMap(({ date }) =>
           http.getWeekStandings(date).pipe(
             retry(errorHandler),
 
@@ -59,12 +56,6 @@ export const WeekStandingsStore = signalStore(
               patchState(store, {
                 ...WEEK_REQUEST_END_PATCH,
                 error,
-                ...(updateOnly
-                  ? {}
-                  : {
-                      weekKey: null,
-                      weekStandings: createEmptyWeekStandings(),
-                    }),
               });
 
               return EMPTY;

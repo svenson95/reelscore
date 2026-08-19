@@ -23,8 +23,9 @@ standings.get(
   '/start-top-five',
   async (req: Request, res: Response): Promise<Response> => {
     const date = String(req.query.date);
+    const withEdgeDays = req.query.withEdgeDays === 'true';
     const standingsController = new StandingsController();
-    const weekDates = getWeekDatesArray(date);
+    const weekDates = getWeekDatesArray(date, withEdgeDays);
     const weekData = await Promise.all(
       weekDates.map((day) => standingsController.getTopFive(day))
     );
