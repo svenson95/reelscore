@@ -113,7 +113,7 @@ const EXTERNAL_MODULES = [
         [value]="selectedDay()"
         (valueChange)="toggleValueChange($event)"
       >
-        @for (day of weekdays(); track $index) {
+        @for (day of weekdays(); track day) {
         <mat-button-toggle
           [disabled]="isLoading() || selectedDay() === day"
           [value]="day"
