@@ -1,5 +1,6 @@
-import type { OnDestroy, OnInit } from '@angular/core';
 import {
+  type OnDestroy,
+  type OnInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -10,8 +11,6 @@ import {
 
 import { PageRefreshService } from '@app/shared';
 import { type CompetitionUrl, type FixtureId } from '@lib/models';
-
-import { RouteCompetitionContext } from '../route-competition-context';
 
 import {
   MatchDetailsComponent,
@@ -53,10 +52,7 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent
-  extends RouteCompetitionContext
-  implements OnInit, OnDestroy
-{
+export class MatchComponent implements OnInit, OnDestroy {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
