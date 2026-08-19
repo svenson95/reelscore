@@ -3,12 +3,12 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Bayern Munich': 'FC Bayern München',
   'Bayern München': 'FC Bayern München',
   'Vfl Bochum': 'VfL Bochum',
-  'Eintracht Frankfurt': 'Eintracht Frankfurt',
   'Hertha Berlin': 'Hertha BSC',
   'FC Koln': '1. FC Köln',
   '1.FC Köln': '1. FC Köln',
   'Bayer Leverkusen': 'Bayer 04 Leverkusen',
   'Borussia Monchengladbach': 'Borussia Mönchengladbach',
+  'Werder Bremen': 'SV Werder Bremen',
 
   // 2. Bundesliga
   'SpVgg Greuter Furth': 'SpVgg Greuter Fürth',
@@ -28,7 +28,7 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Aston Villa': 'Aston Villa',
   'Crystal Palace': 'Crystal Palace',
   Everton: 'Everton',
-  'Leeds United': 'Leeds United',
+  Leeds: 'Leeds United',
   Southampton: 'Southampton',
   'West Ham': 'West Ham United',
   Wolves: 'Wolverhampton Wanderers',
@@ -37,13 +37,16 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   Fulham: 'Fulham',
   'Sheffield Utd': 'Sheffield United',
   Luton: 'Luton Town',
+  Coventry: 'Coventry City',
+  Newcastle: 'Newcastle United',
 
   // Ligue 1
   'Paris Saint Germain': 'Paris Saint-Germain',
+  'Paris FC': 'Paris Football Club',
   'LE Havre': 'Le Havre AC',
   Marseille: 'Olympique de Marseille',
   Metz: 'FC Metz',
-  Monaco: 'AS Monaco',
+  Monaco: 'AS Monaco Football Club',
   Nantes: 'FC Nantes',
   Lens: 'Racing Club de Lens',
   Lille: 'Lille Olympique Sporting Club',
@@ -56,9 +59,12 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   Strasbourg: 'Racing Club de Strasbourg',
   'Saint-Etienne': 'AS Saint-Étienne',
   'Saint Etienne': 'AS Saint-Étienne',
-  Toulouse: 'FC Toulouse',
+  Toulouse: 'Toulouse Football Club',
   Auxerre: 'AJ Auxerre',
   Angers: 'SCO Angers',
+  'Estac Troyes': 'ESTAC Troyes',
+  'Le Mans': 'Le Mans Football Club',
+  'Le Havre': 'Le Havre Athletic Club',
 
   // La Liga
   'Athletic Club': 'Athletic Bilbao',
@@ -84,6 +90,8 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   Cadiz: 'Cádiz CF',
   Valladolid: 'Real Valladolid',
   Leganes: 'CD Leganés',
+  Elche: 'Elche CF',
+  'Racing Santander': 'Real Racing Club Santander',
 
   // Serie A
   'AS Roma': 'AS Roma',
@@ -179,6 +187,7 @@ export const LONG_TEAM_NAMES: Readonly<Record<string, string>> = {
   Maribor: 'NK Maribor',
   'Wisla Krakow': 'Wisła Kraków',
   Llapi: 'KF Llapi Podujevë',
+  'Hapoel Beer Sheva': 'Hapoel Beer-Sheva',
 
   // International
   'Northern Ireland': 'Nordirland',

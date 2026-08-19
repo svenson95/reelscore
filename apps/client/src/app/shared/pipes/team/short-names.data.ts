@@ -86,6 +86,7 @@ export const SHORT_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Saint-Etienne': 'St-Étienne',
   'Saint Etienne': 'St-Étienne',
   'Clermont Foot': 'Clermont',
+  'Estac Troyes': 'Troyes',
 
   // La Liga
   'Athletic Club': 'Bilbao',
@@ -96,6 +97,8 @@ export const SHORT_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Rayo Vallecano': 'Vallecano',
   'Real Sociedad': 'Sociedad',
   Leganes: 'Leganés',
+  'Deportivo La Coruna': 'Deportivo',
+  'Racing Santander': 'R. Santander',
 
   // Serie A
   'AC Milan': 'Milan',
@@ -113,6 +116,8 @@ export const SHORT_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Sparta Rotterdam': 'Rotterdam',
   'Almere City FC': 'Almere',
   'NEC Nijmegen': 'Nijmegen',
+  'ADO Den Haag': 'Den Haag',
+  'PEC Zwolle': 'Zwolle',
 
   // MLS
   'Nashville SC': 'Nashville',
@@ -193,6 +198,7 @@ export const SHORT_TEAM_NAMES: Readonly<Record<string, string>> = {
   'Corvinul Hunedoara': 'Corvinul',
   'Botev Plovdiv': 'Botev',
   'Wisla Krakow': 'Wisła',
+  'Hapoel Beer Sheva': 'H. Beer-Sheva',
 
   // International
   'Northern Ireland': 'Nordirland',
