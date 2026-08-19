@@ -36,11 +36,10 @@ export const WeekFixturesStore = signalStore(
         tap(({ updateOnly }) => {
           patchState(store, {
             ...getWeekRequestStartPatch(updateOnly),
-            ...(updateOnly ? {} : { weekFixtures: createEmptyWeekFixtures() }),
           });
         }),
 
-        switchMap(({ date, updateOnly }) =>
+        switchMap(({ date }) =>
           http.getWeekFixtures(date).pipe(
             retry(errorHandler),
 
@@ -57,9 +56,6 @@ export const WeekFixturesStore = signalStore(
               patchState(store, {
                 ...WEEK_REQUEST_END_PATCH,
                 error,
-                ...(updateOnly
-                  ? {}
-                  : { weekKey: null, weekFixtures: createEmptyWeekFixtures() }),
               });
 
               return EMPTY;

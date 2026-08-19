@@ -119,14 +119,14 @@ describe('WeekStandingsStore', () => {
     expect(store.weekStandings()).toBe(secondWeek);
   });
 
-  it('should clear standings when loading a new week fails', async () => {
+  it('should preserve existing standings when loading a new week fails', async () => {
     jest.useFakeTimers();
 
-    const currentWeek = createWeekStandings();
-    const error = new Error('Failed to load standings');
+    const existingStandings = createWeekStandings();
+    const error = new Error('Request failed');
 
     httpMock.getWeekStandings
-      .mockReturnValueOnce(of(currentWeek))
+      .mockReturnValueOnce(of(existingStandings))
       .mockReturnValueOnce(throwError(() => error));
 
     store.loadWeekStandings(testDate);
@@ -134,7 +134,7 @@ describe('WeekStandingsStore', () => {
 
     await jest.runAllTimersAsync();
 
-    expect(store.weekStandings()).toEqual(createEmptyWeekStandings());
+    expect(store.weekStandings()).toBe(existingStandings);
     expect(store.isLoading()).toBe(false);
     expect(store.isPending()).toBe(false);
     expect(store.error()).toBe(error);

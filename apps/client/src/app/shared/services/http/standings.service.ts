@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import type { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs';
+import { shareReplay, type Observable } from 'rxjs';
 
 import type {
   CompetitionId,
@@ -42,7 +41,10 @@ export class AbstractedHttpStandingsService extends HttpStandingsService {
 
   getWeekStandings(date: DateString): Observable<StandingsWeekData> {
     const dateString = date.substring(0, 10);
-    const params = new HttpParams().append('date', dateString);
+    const params = new HttpParams()
+      .append('date', dateString)
+      .append('withEdgeDays', true);
+
     return this.http
       .get<StandingsWeekData>(this.BASE_URL + '/start-top-five', {
         params,

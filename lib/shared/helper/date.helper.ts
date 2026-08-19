@@ -70,3 +70,26 @@ export const formatFixtureTime = (
 
   return FIXTURE_TIME_FORMATTER.format(date);
 };
+
+export const getWeekStartFromKey = (weekKey: string): DateString => {
+  const match = /^(\d{4})-W(\d{2})$/.exec(weekKey);
+
+  if (!match) {
+    throw new Error(`Invalid calendar week key: ${weekKey}`);
+  }
+
+  const [, year, week] = match;
+
+  return moment
+    .tz(TIMEZONE)
+    .isoWeekYear(Number(year))
+    .isoWeek(Number(week))
+    .startOf('isoWeek')
+    .format('YYYY-MM-DD');
+};
+
+export const addDays = (date: DateString, days: number): DateString =>
+  moment
+    .tz(date, 'YYYY-MM-DD', TIMEZONE)
+    .add(days, 'days')
+    .format('YYYY-MM-DD');

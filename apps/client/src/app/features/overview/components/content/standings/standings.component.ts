@@ -55,8 +55,10 @@ import { OverviewStandingsFacade } from './standings.facade';
       [ranks]="standing.league.standings![0]"
       [league]="standing.league"
     />
-    } } @else if (isLoading()) {
-    <p class="no-data">Tabellen werden geladen ...</p>
+    } } @else if (isLoading() && !hasDataForSelectedDay()) {
+    <p class="no-data" data-testid="standings-loading">
+      Tabellen werden geladen ...
+    </p>
     } @else if (error()) {
     <p class="no-data">Fehler beim Laden der Tabellen.</p>
     } @else if (!isLoading()) {
@@ -65,18 +67,19 @@ import { OverviewStandingsFacade } from './standings.facade';
   `,
 })
 export class OverviewStandingsComponent {
-  weekStandings = input.required<StandingsDTO[]>();
-  isLoading = input.required<boolean>();
-  error = input.required<string | null>();
+  readonly weekStandings = input.required<StandingsDTO[]>();
+  readonly isLoading = input.required<boolean>();
+  readonly hasDataForSelectedDay = input.required<boolean>();
+  readonly error = input.required<string | null>();
 
-  facade = inject(OverviewStandingsFacade);
-  dayStandings = this.facade.dayStandings;
-  isFiltering = this.facade.isFiltering;
-  hasMultipleGroups = this.facade.hasMultipleGroups;
-  showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
+  private readonly facade = inject(OverviewStandingsFacade);
+  readonly dayStandings = this.facade.dayStandings;
+  readonly isFiltering = this.facade.isFiltering;
+  readonly hasMultipleGroups = this.facade.hasMultipleGroups;
+  readonly showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
 
   // TODO check if this signal can be moved to facade, depend on weekStandings is a problem (1/2)
-  showTopFive = computed<boolean>(() => {
+  readonly showTopFive = computed<boolean>(() => {
     const standings = this.weekStandings();
     if (!standings) return false;
     return standings.length === 5;
