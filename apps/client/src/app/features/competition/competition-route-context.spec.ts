@@ -1,5 +1,5 @@
-import { signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
 import {
   LeagueService,
@@ -7,9 +7,14 @@ import {
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
 
-import { RouteCompetitionContext } from './route-competition-context';
+import { CompetitionRouteContext } from './competition-route-context';
 
-describe('RouteCompetitionContext', () => {
+@Component({
+  template: '',
+})
+class TestCompetitionComponent extends CompetitionRouteContext {}
+
+describe('CompetitionRouteContext', () => {
   const route = signal<string | undefined>(undefined);
 
   const leagueServiceMock = {
@@ -21,11 +26,14 @@ describe('RouteCompetitionContext', () => {
     url: route.asReadonly(),
   };
 
+  let fixture: ComponentFixture<TestCompetitionComponent>;
+
   beforeEach(() => {
     route.set(undefined);
     leagueServiceMock.setSelectedLeague.mockClear();
 
     TestBed.configureTestingModule({
+      imports: [TestCompetitionComponent],
       providers: [
         {
           provide: LeagueService,
@@ -38,9 +46,7 @@ describe('RouteCompetitionContext', () => {
       ],
     });
 
-    TestBed.runInInjectionContext(() => {
-      new RouteCompetitionContext();
-    });
+    fixture = TestBed.createComponent(TestCompetitionComponent);
 
     TestBed.tick();
   });
@@ -57,14 +63,18 @@ describe('RouteCompetitionContext', () => {
     );
   });
 
-  it('should clear selected competition if route does not contain a competition', () => {
-    route.set('/2026-08-14');
+  it('should clear selected competition on destroy', () => {
+    const competition = SELECT_COMPETITION_DATA_FLAT[0];
 
+    route.set(`/competition/${competition.url}`);
     TestBed.tick();
 
-    expect(leagueServiceMock.setSelectedLeague).toHaveBeenLastCalledWith(
-      undefined
-    );
+    leagueServiceMock.setSelectedLeague.mockClear();
+
+    fixture.destroy();
+
+    expect(leagueServiceMock.setSelectedLeague).toHaveBeenCalledTimes(1);
+    expect(leagueServiceMock.setSelectedLeague).toHaveBeenCalledWith(undefined);
   });
 
   it('should clear selected competition if competition does not exist', () => {

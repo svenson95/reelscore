@@ -7,9 +7,9 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
+import { LeagueService, MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
-import { RouteCompetitionContext } from '../route-competition-context';
+import { CompetitionRouteContext } from './competition-route-context';
 
 import {
   CompetitionStandingsComponent,
@@ -98,17 +98,21 @@ import {
     </section>
   `,
 })
-export class CompetitionComponent extends RouteCompetitionContext {
-  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+export class CompetitionComponent extends CompetitionRouteContext {
+  private readonly leagueService = inject(LeagueService);
 
   private readonly lastFixturesStore = inject(LastFixturesStore);
   private readonly nextFixturesStore = inject(NextFixturesStore);
   private readonly standingsStore = inject(CompetitionStandingsStore);
   private readonly topScorersStore = inject(TopScorersStore);
 
-  leagueEffect = effect(async () => {
+  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+
+  private readonly leagueEffect = effect(async () => {
     const competition = this.leagueService.selectedLeague();
+
     if (!competition) return;
+
     await this.lastFixturesStore.loadLastFixtures(competition.id);
     await this.nextFixturesStore.loadNextFixtures(competition.id);
     await this.standingsStore.loadStandings(
