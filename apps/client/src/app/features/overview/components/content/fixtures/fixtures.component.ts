@@ -30,7 +30,7 @@ import { MatchDayListComponent } from './match-day-list.component';
     />
     } } @else {
     <p class="no-data">
-      @if (isLoading()) {
+      @if (isLoading() && !hasDataForSelectedDay()) {
       <span data-testid="fixtures-loading">Spiele werden geladen ...</span> }
       @else { @if (error()) { Fehler beim Laden der Spiele. } @else if
       (fixtures.length === 0) { Es finden keine Spiele statt. } }
@@ -39,11 +39,12 @@ import { MatchDayListComponent } from './match-day-list.component';
   `,
 })
 export class OverviewFixturesComponent {
-  filteredFixtures = input.required<ExtendedFixtureDTO[]>();
-  isLoading = input.required<boolean>();
-  error = input.required<string | null>();
+  readonly filteredFixtures = input.required<ExtendedFixtureDTO[]>();
+  readonly isLoading = input.required<boolean>();
+  readonly hasDataForSelectedDay = input.required<boolean>();
+  readonly error = input.required<string | null>();
 
-  facade = inject(OverviewFixturesFacade);
+  private readonly facade = inject(OverviewFixturesFacade);
 
   // TODO check if this signal can be moved to facade, depend on filteredFixtures is a problem
   competitions = computed<CompetitionWithFixtures[]>(() => {

@@ -1,13 +1,32 @@
+import { Component, input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import type { CompetitionWithFixtures } from '@app/shared';
 import type { ExtendedFixtureDTO } from '@lib/models';
+
+import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
 
 import { OverviewFixturesComponent } from './fixtures.component';
 import { OverviewFixturesFacade } from './fixtures.facade';
+import { MatchDayListComponent } from './match-day-list.component';
+
+@Component({
+  selector: 'rs-start-match-day-list',
+  standalone: true,
+  template: '',
+})
+class MatchDayListStubComponent {
+  readonly competition = input.required<CompetitionWithFixtures>();
+}
 
 describe('OverviewFixturesComponent', () => {
-  const facadeMock = {
-    initCompetitionsWithFixtures: jest.fn(() => []),
+  const facadeMock: {
+    initCompetitionsWithFixtures: jest.Mock<
+      CompetitionWithFixtures[],
+      [ExtendedFixtureDTO[] | null]
+    >;
+  } = {
+    initCompetitionsWithFixtures: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -15,7 +34,12 @@ describe('OverviewFixturesComponent', () => {
       imports: [OverviewFixturesComponent],
     })
       .overrideComponent(OverviewFixturesComponent, {
-        set: {
+        remove: {
+          imports: [MatchDayListComponent],
+          providers: [OverviewFixturesFacade],
+        },
+        add: {
+          imports: [MatchDayListStubComponent],
           providers: [
             {
               provide: OverviewFixturesFacade,
@@ -33,16 +57,22 @@ describe('OverviewFixturesComponent', () => {
   const createComponent = ({
     fixtures = [],
     isLoading = false,
+    hasDataForSelectedDay = false,
     error = null,
   }: {
     fixtures?: ExtendedFixtureDTO[];
     isLoading?: boolean;
+    hasDataForSelectedDay?: boolean;
     error?: string | null;
   } = {}) => {
     const fixture = TestBed.createComponent(OverviewFixturesComponent);
 
     fixture.componentRef.setInput('filteredFixtures', fixtures);
     fixture.componentRef.setInput('isLoading', isLoading);
+    fixture.componentRef.setInput(
+      'hasDataForSelectedDay',
+      hasDataForSelectedDay
+    );
     fixture.componentRef.setInput('error', error);
 
     fixture.detectChanges();
@@ -58,9 +88,10 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should display a loading state while fixtures are loading', () => {
+  it('should display a loading state while fixtures are loading and no cached data is available', () => {
     const fixture = createComponent({
       isLoading: true,
+      hasDataForSelectedDay: false,
     });
 
     expect(
@@ -70,6 +101,47 @@ describe('OverviewFixturesComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain(
       'Es finden keine Spiele statt.'
     );
+  });
+
+  it('should not display the loading state while cached edge-day data is available', () => {
+    const fixture = createComponent({
+      isLoading: true,
+      hasDataForSelectedDay: true,
+    });
+
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="fixtures-loading"]')
+    ).toBeNull();
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'Es finden keine Spiele statt.'
+    );
+  });
+
+  it('should keep fixtures visible while the next week is loading', () => {
+    const competition: CompetitionWithFixtures = {
+      id: EXAMPLE_FIXTURE.league.id,
+      name: EXAMPLE_FIXTURE.league.name,
+      image: EXAMPLE_FIXTURE.league.flag || 'error',
+      url: ['/', 'competition', 'champions-league'],
+      fixtures: [EXAMPLE_FIXTURE],
+    };
+
+    facadeMock.initCompetitionsWithFixtures.mockReturnValue([competition]);
+
+    const fixture = createComponent({
+      fixtures: [EXAMPLE_FIXTURE],
+      isLoading: true,
+      hasDataForSelectedDay: true,
+    });
+
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="fixtures-loading"]')
+    ).toBeNull();
+
+    expect(
+      fixture.nativeElement.querySelector('rs-start-match-day-list')
+    ).not.toBeNull();
   });
 
   it('should display an error state when fixtures could not be loaded', () => {
@@ -86,9 +158,10 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should prefer the loading state while fixtures are loading', () => {
+  it('should prefer the loading state over an error when no cached data is available', () => {
     const fixture = createComponent({
       isLoading: true,
+      hasDataForSelectedDay: false,
       error: 'Request failed',
     });
 
@@ -99,5 +172,17 @@ describe('OverviewFixturesComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain(
       'Fehler beim Laden der Spiele.'
     );
+  });
+
+  it('should prefer cached data over the loading state', () => {
+    const fixture = createComponent({
+      isLoading: true,
+      hasDataForSelectedDay: true,
+      error: 'Request failed',
+    });
+
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="fixtures-loading"]')
+    ).toBeNull();
   });
 });
