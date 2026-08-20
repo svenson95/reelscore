@@ -87,7 +87,7 @@ describe('OverviewStandingsComponent', () => {
     );
   });
 
-  it('should display a loading state while standings are loading and no cached data is available', () => {
+  it('should display a loading state while standings are loading without data for the selected day', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: false,
@@ -96,9 +96,13 @@ describe('OverviewStandingsComponent', () => {
     expect(
       fixture.nativeElement.querySelector('[data-testid="standings-loading"]')
     ).not.toBeNull();
+
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Keine Tabellen gefunden.'
+    );
   });
 
-  it('should not display the loading state while cached edge-day data is available', () => {
+  it('should display the empty state instead of loading while cached data for the selected day is available', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: true,
@@ -107,6 +111,10 @@ describe('OverviewStandingsComponent', () => {
     expect(
       fixture.nativeElement.querySelector('[data-testid="standings-loading"]')
     ).toBeNull();
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'Keine Tabellen gefunden.'
+    );
   });
 
   it('should display an error state when standings could not be loaded', () => {
@@ -120,6 +128,22 @@ describe('OverviewStandingsComponent', () => {
 
     expect(fixture.nativeElement.textContent).not.toContain(
       'Keine Tabellen gefunden.'
+    );
+  });
+
+  it('should prefer the loading state over an error when no data for the selected day is available', () => {
+    const fixture = createComponent({
+      isLoading: true,
+      hasDataForSelectedDay: false,
+      error: 'Request failed',
+    });
+
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="standings-loading"]')
+    ).not.toBeNull();
+
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Fehler beim Laden der Tabellen.'
     );
   });
 });
