@@ -16,7 +16,7 @@ import { linkToMatch } from '../../../../constants';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
-} from '../../../../helper';
+} from '../../../../helpers';
 import { getTeamLogo, getTeamLogoSrcSet } from '../../../../models';
 import { TeamNamePipe } from '../../../../pipes';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
