@@ -18,10 +18,13 @@ import { MatchDayListComponent } from './match-day-list.component';
   imports: [MatchDayListComponent],
   providers: [OverviewFixturesFacade],
   styles: `
-    :host { @apply flex flex-col gap-rs1; }
+    :host {
+      @apply flex flex-col gap-rs1;
+    }
   `,
   template: `
     <h2>Partien</h2>
+
     @let comps = competitions(); @let fixtures = filteredFixtures(); @if (comps
     && comps.length > 0) { @for (competition of comps; track competition.name) {
     <rs-start-match-day-list
@@ -31,9 +34,9 @@ import { MatchDayListComponent } from './match-day-list.component';
     } } @else {
     <p class="no-data">
       @if (isLoading() && !hasDataForSelectedDay()) {
-      <span data-testid="fixtures-loading">Spiele werden geladen ...</span> }
-      @else { @if (error()) { Fehler beim Laden der Spiele. } @else if
-      (fixtures.length === 0) { Es finden keine Spiele statt. } }
+      <span data-testid="fixtures-loading"> Spiele werden geladen ... </span>
+      } @else if (error()) { Fehler beim Laden der Spiele. } @else if
+      (fixtures.length === 0) { Es finden keine Spiele statt. }
     </p>
     }
   `,
@@ -46,9 +49,7 @@ export class OverviewFixturesComponent {
 
   private readonly facade = inject(OverviewFixturesFacade);
 
-  // TODO check if this signal can be moved to facade, depend on filteredFixtures is a problem
-  competitions = computed<CompetitionWithFixtures[]>(() => {
-    const fixtures = this.filteredFixtures();
-    return this.facade.initCompetitionsWithFixtures(fixtures);
+  readonly competitions = computed<CompetitionWithFixtures[]>(() => {
+    return this.facade.initCompetitionsWithFixtures(this.filteredFixtures());
   });
 }
