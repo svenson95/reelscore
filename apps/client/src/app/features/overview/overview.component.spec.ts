@@ -12,12 +12,17 @@ import {
   RouteService,
   type CompetitionData,
 } from '@app/shared';
-import { type ExtendedFixtureDTO, type FixturesWeekData } from '@lib/models';
-import { getWeekdayIndex } from '@lib/shared';
+import type { ExtendedFixtureDTO, FixturesWeekData } from '@lib/models';
+import { formatCalendarWeekKey, getWeekdayIndex } from '@lib/shared';
 
 import { OverviewComponent } from './overview.component';
 import { SelectedDateService, VisibilityObserverService } from './services';
 import { WeekFixturesStore, WeekStandingsStore } from './stores';
+
+const testDate = '2023-11-02';
+const testWeekMonday = '2023-10-30';
+const previousSunday = '2023-10-29';
+const nextMonday = '2023-11-06';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -48,6 +53,7 @@ describe('OverviewComponent', () => {
   };
 
   let weekFixturesStoreMock: {
+    weekKey: Signal<string | null>;
     weekFixtures: Signal<FixturesWeekData>;
     isPending: Signal<boolean>;
     loadWeekFixtures: jest.Mock;
@@ -58,10 +64,9 @@ describe('OverviewComponent', () => {
     loadWeekStandings: jest.Mock;
   };
 
-  const testDate = '2023-11-02';
-
   let selectedDay: WritableSignal<string>;
   let weekFixtures: WritableSignal<FixturesWeekData>;
+  let cachedWeekKey: WritableSignal<string | null>;
 
   let fixturesLoading: WritableSignal<boolean>;
   let fixturesRefreshing: WritableSignal<boolean>;
@@ -98,7 +103,17 @@ describe('OverviewComponent', () => {
       selectedDay,
     };
 
-    weekFixtures = signal<FixturesWeekData>([[], [], [], [], [], [], []]);
+    weekFixtures = signal<FixturesWeekData>([
+      [], // previous Sunday
+      [], // Monday
+      [], // Tuesday
+      [], // Wednesday
+      [], // Thursday
+      [], // Friday
+      [], // Saturday
+      [], // Sunday
+      [], // next Monday
+    ]);
 
     fixturesLoading = signal(false);
     fixturesRefreshing = signal(false);
@@ -106,7 +121,10 @@ describe('OverviewComponent', () => {
     standingsLoading = signal(false);
     standingsRefreshing = signal(false);
 
+    cachedWeekKey = signal(formatCalendarWeekKey(testDate));
+
     weekFixturesStoreMock = {
+      weekKey: cachedWeekKey,
       weekFixtures,
       isPending: computed(() => fixturesLoading() || fixturesRefreshing()),
       loadWeekFixtures: jest.fn(),
@@ -167,11 +185,11 @@ describe('OverviewComponent', () => {
       fixture.detectChanges();
 
       expect(visibilityObserverServiceMock.init).toHaveBeenCalledTimes(1);
+      expect(pageRefreshServiceMock.init).toHaveBeenCalledTimes(1);
     });
 
     it('should stop services on destroy', () => {
       fixture.detectChanges();
-      TestBed.tick();
 
       pageRefreshServiceMock.stop.mockClear();
 
@@ -179,15 +197,6 @@ describe('OverviewComponent', () => {
 
       expect(visibilityObserverServiceMock.stop).toHaveBeenCalledTimes(1);
       expect(pageRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not start services multiple times while already active', () => {
-      fixture.detectChanges();
-
-      component.onRouteAttach();
-      component.onRouteAttach();
-
-      expect(visibilityObserverServiceMock.init).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -205,7 +214,6 @@ describe('OverviewComponent', () => {
 
     it('should stop services when route is detached', () => {
       fixture.detectChanges();
-      TestBed.tick();
 
       pageRefreshServiceMock.stop.mockClear();
 
@@ -215,37 +223,23 @@ describe('OverviewComponent', () => {
       expect(pageRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
     });
 
-    it('should restart page refresh when route is attached with playing fixtures', () => {
+    it('should start services when route is attached', () => {
       fixture.detectChanges();
       component.onRouteDetach();
 
-      setPlayingFixture();
-      TestBed.tick();
-
+      visibilityObserverServiceMock.init.mockClear();
       pageRefreshServiceMock.init.mockClear();
 
       component.onRouteAttach();
-      TestBed.tick();
 
+      expect(visibilityObserverServiceMock.init).toHaveBeenCalledTimes(1);
       expect(pageRefreshServiceMock.init).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not start page refresh while route is detached', () => {
-      fixture.detectChanges();
-      component.onRouteDetach();
-
-      pageRefreshServiceMock.init.mockClear();
-
-      setPlayingFixture();
-      TestBed.tick();
-
-      expect(pageRefreshServiceMock.init).not.toHaveBeenCalled();
     });
   });
 
   describe('page refresh', () => {
     it('should provide refresh configuration to PageRefreshService', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       expect(pageRefreshServiceMock.init).toHaveBeenCalledWith({
         isPlaying: expect.any(Function),
@@ -254,8 +248,20 @@ describe('OverviewComponent', () => {
       });
     });
 
+    it('should report playing fixtures for the selected day', () => {
+      fixture.detectChanges();
+
+      const config = getPageRefreshConfig();
+
+      expect(config.isPlaying()).toBe(false);
+
+      setPlayingFixture();
+
+      expect(config.isPlaying()).toBe(true);
+    });
+
     it('should allow refresh when fixtures and standings are not pending', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -263,7 +269,7 @@ describe('OverviewComponent', () => {
     });
 
     it('should prevent refresh while fixtures are loading', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -273,7 +279,7 @@ describe('OverviewComponent', () => {
     });
 
     it('should prevent refresh while standings are loading', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -283,7 +289,7 @@ describe('OverviewComponent', () => {
     });
 
     it('should prevent refresh while fixtures are refreshing', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -293,7 +299,7 @@ describe('OverviewComponent', () => {
     });
 
     it('should prevent refresh while standings are refreshing', () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -303,7 +309,7 @@ describe('OverviewComponent', () => {
     });
 
     it('should reload fixtures and standings for the selected day', async () => {
-      startPageRefresh();
+      fixture.detectChanges();
 
       const config = getPageRefreshConfig();
 
@@ -319,15 +325,49 @@ describe('OverviewComponent', () => {
         true
       );
     });
+
+    it('should report playing fixtures for the next monday edge day', () => {
+      selectedDay.set(nextMonday);
+      cachedWeekKey.set(formatCalendarWeekKey(testDate));
+
+      fixture.detectChanges();
+
+      const config = getPageRefreshConfig();
+
+      expect(config.isPlaying()).toBe(false);
+
+      const NEXT_DAY_INDEX = 8;
+      setPlayingFixtureAtStoreIndex(NEXT_DAY_INDEX);
+
+      expect(config.isPlaying()).toBe(true);
+    });
+
+    it('should report playing fixtures for the previous sunday edge day', () => {
+      selectedDay.set(previousSunday);
+      cachedWeekKey.set(formatCalendarWeekKey(testWeekMonday));
+
+      fixture.detectChanges();
+
+      const config = getPageRefreshConfig();
+
+      expect(config.isPlaying()).toBe(false);
+
+      const PREVIOUS_DAY_INDEX = 0;
+      setPlayingFixtureAtStoreIndex(PREVIOUS_DAY_INDEX);
+
+      expect(config.isPlaying()).toBe(true);
+    });
   });
 
   const setPlayingFixture = (): void => {
-    const weekdayIndex = getWeekdayIndex(testDate);
+    setPlayingFixtureAtStoreIndex(getWeekdayIndex(testDate) + 1);
+  };
 
+  const setPlayingFixtureAtStoreIndex = (storeIndex: number): void => {
     weekFixtures.update((week) => {
       const updated = [...week];
 
-      updated[weekdayIndex] = [
+      updated[storeIndex] = [
         {
           fixture: {
             status: {
@@ -339,16 +379,6 @@ describe('OverviewComponent', () => {
 
       return updated;
     });
-  };
-
-  const startPageRefresh = (): void => {
-    fixture.detectChanges();
-
-    setPlayingFixture();
-
-    TestBed.tick();
-
-    expect(pageRefreshServiceMock.init).toHaveBeenCalled();
   };
 
   const getPageRefreshConfig = () => {

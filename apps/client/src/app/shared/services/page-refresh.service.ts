@@ -1,17 +1,12 @@
-import type { Signal } from '@angular/core';
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router } from '@angular/router';
-import type { Subscription } from 'rxjs';
-import { filter, interval, tap } from 'rxjs';
+import { effect, Injectable, signal, type Signal } from '@angular/core';
+import { interval, tap, type Subscription } from 'rxjs';
 
 import { STATUS_TYPES_PLAYING, type StatusShort } from '@lib/models';
-import { getTodayDateString } from '@lib/shared';
 
 type PageRefreshOptions = {
-  isPlaying: () => boolean;
-  canRefresh: () => boolean;
-  refresh: () => Promise<void>;
+  isPlaying: Signal<boolean>;
+  canRefresh: Signal<boolean>;
+  refresh: () => void | Promise<void>;
 };
 
 const REFRESH_INTERVAL = 15_000;
@@ -23,60 +18,79 @@ export abstract class PageRefreshService {
   abstract hasPlayingState(states: StatusShort[]): boolean;
   abstract timer: Signal<number>;
   abstract isRunning: Signal<boolean>;
-  abstract refresh(options?: { delayLoadingDone: boolean }): void;
+  abstract refresh(options?: { delayLoadingDone?: boolean }): Promise<void>;
 }
 
 @Injectable()
 export class AbstractedPageRefreshService implements PageRefreshService {
-  private readonly router = inject(Router);
   private readonly AUTO_REFRESH_LOADING_DELAY_MS = 1_000;
 
   readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
   readonly isRunning = signal<boolean>(false);
 
+  private readonly options = signal<PageRefreshOptions | undefined>(undefined);
+
   private refreshSubscription?: Subscription;
-  private options?: PageRefreshOptions;
 
-  private readonly navigationEnd = toSignal<NavigationEnd | null>(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ),
-    { initialValue: null }
-  );
+  private readonly refreshStateEffect = effect(() => {
+    const options = this.options();
 
-  stopOnNavigation = effect(() => {
-    const event = this.navigationEnd();
-    if (!event) return;
+    if (!options) {
+      return;
+    }
 
-    if (this.refreshSubscription) this.stop();
+    const isPlaying = options.isPlaying();
+    const canRefresh = options.canRefresh();
 
-    if (this.isTodayRoute(event.urlAfterRedirects)) {
+    if (!isPlaying) {
+      this.stopTimer();
+      return;
+    }
+
+    if (canRefresh && !this.isRunning()) {
       this.start();
     }
   });
 
   init(options: PageRefreshOptions): void {
-    if (options.isPlaying()) {
-      this.options = options;
-      this.start();
-    }
+    this.options.set(options);
   }
 
   stop(): void {
-    this.refreshSubscription?.unsubscribe();
-    this.refreshSubscription = undefined;
-    this.timer.set(REFRESH_INTERVAL_SECONDS);
-    this.isRunning.set(false);
+    this.options.set(undefined);
+    this.stopTimer();
   }
 
   hasPlayingState(states: StatusShort[]): boolean {
     return states.some((status) => STATUS_TYPES_PLAYING.includes(status));
   }
 
-  private start(): void {
-    if (!this.options) return;
+  async refresh(options?: { delayLoadingDone?: boolean }): Promise<void> {
+    const refreshOptions = this.options();
 
-    if (this.refreshSubscription) this.stop();
+    if (!refreshOptions?.canRefresh()) {
+      return;
+    }
+
+    this.stopTimer();
+
+    try {
+      await refreshOptions.refresh();
+    } catch (error) {
+      console.error('Refresh failed', error);
+    }
+
+    if (options?.delayLoadingDone) {
+      await this.sleep(this.AUTO_REFRESH_LOADING_DELAY_MS);
+    }
+  }
+
+  private start(): void {
+    const options = this.options();
+
+    if (!options || this.refreshSubscription) {
+      return;
+    }
 
     this.timer.set(REFRESH_INTERVAL_SECONDS);
     this.isRunning.set(true);
@@ -92,45 +106,25 @@ export class AbstractedPageRefreshService implements PageRefreshService {
           }
 
           this.timer.set(REFRESH_INTERVAL_SECONDS);
-          await this.refresh({ delayLoadingDone: true });
+
+          await this.refresh({
+            delayLoadingDone: true,
+          });
         })
       )
       .subscribe();
   }
 
-  private isTodayRoute(url: string): boolean {
-    const todayRoute = '/' + getTodayDateString();
-    return url.includes(todayRoute);
-  }
+  private stopTimer(): void {
+    this.refreshSubscription?.unsubscribe();
+    this.refreshSubscription = undefined;
 
-  async refresh(options?: { delayLoadingDone?: boolean }): Promise<void> {
-    if (!this.options?.canRefresh()) return;
-
-    this.stop();
-
-    try {
-      await this.options.refresh();
-    } catch (error) {
-      console.error('Refresh failed', error);
-    } finally {
-      await this.nextFrame();
-
-      if (this.options.canRefresh()) {
-        this.start();
-      }
-
-      if (options?.delayLoadingDone) {
-        await this.sleep(this.AUTO_REFRESH_LOADING_DELAY_MS);
-      }
-    }
+    this.timer.set(REFRESH_INTERVAL_SECONDS);
+    this.isRunning.set(false);
   }
 
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  private nextFrame(): Promise<void> {
-    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 }
 

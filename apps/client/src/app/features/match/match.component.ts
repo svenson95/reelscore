@@ -62,70 +62,45 @@ export class MatchComponent implements OnInit, OnDestroy {
   );
 
   private readonly facade = inject(MatchFacade);
+
   readonly fixture = this.facade.fixture;
   readonly data = this.facade.data;
   readonly error = this.facade.error;
 
-  private isActive = false;
-
-  private readonly hasPlayingFixtures = computed<boolean>(() => {
+  private readonly isPlaying = computed<boolean>(() => {
     const status = this.fixture()?.data.fixture.status.short;
-    if (!status) return false;
-    return this.pageRefreshService.hasPlayingState([status]);
+
+    return status ? this.pageRefreshService.hasPlayingState([status]) : false;
   });
 
-  pageRefreshEffect = effect(() => {
-    this.hasPlayingFixtures()
-      ? this.startPageRefreshService()
-      : this.pageRefreshService.stop();
-  });
-
-  loadFixtureEffect = effect(() => {
-    const fixtureId = this.fixtureId();
-    this.facade.loadFixture(fixtureId);
-  });
-
-  invalidUrlEffect = effect(() =>
-    this.facade.handleInvalidUrl(this.competitionUrl())
+  private readonly canRefresh = computed<boolean>(
+    () => !this.facade.isLoading()
   );
 
+  private readonly loadFixtureEffect = effect(() => {
+    this.facade.loadFixture(this.fixtureId());
+  });
+
+  private readonly invalidUrlEffect = effect(() => {
+    this.facade.handleInvalidUrl(this.competitionUrl());
+  });
+
   ngOnInit(): void {
-    this.startPageServices();
-  }
+    this.visibilityObserverService.init();
 
-  ngOnDestroy(): void {
-    this.stopPageServices();
-  }
-
-  private canRefresh(): boolean {
-    return !this.facade.isLoading();
-  }
-
-  private async refresh(): Promise<void> {
-    await this.facade.reloadFixture();
-  }
-
-  private startPageRefreshService(): void {
     this.pageRefreshService.init({
-      isPlaying: () => this.hasPlayingFixtures(),
-      canRefresh: () => this.canRefresh(),
+      isPlaying: this.isPlaying,
+      canRefresh: this.canRefresh,
       refresh: () => this.refresh(),
     });
   }
 
-  private startPageServices(): void {
-    if (this.isActive) return;
-    this.isActive = true;
-
-    this.visibilityObserverService.init();
-    this.startPageRefreshService();
-  }
-
-  private stopPageServices(): void {
-    if (!this.isActive) return;
-    this.isActive = false;
-
+  ngOnDestroy(): void {
     this.visibilityObserverService.stop();
     this.pageRefreshService.stop();
+  }
+
+  private async refresh(): Promise<void> {
+    await this.facade.reloadFixture();
   }
 }
