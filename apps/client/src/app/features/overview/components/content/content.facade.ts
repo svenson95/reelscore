@@ -100,11 +100,10 @@ function getVisibleWeekData<T>(
   cachedWeekKey: string | null,
   selectedDay: DateString
 ): Array<T | undefined> {
-  if (cachedWeekKey === null) {
-    return data;
-  }
-
-  if (cachedWeekKey === formatCalendarWeekKey(selectedDay)) {
+  if (
+    cachedWeekKey === null ||
+    cachedWeekKey === formatCalendarWeekKey(selectedDay)
+  ) {
     return data.slice(CURRENT_WEEK_START_INDEX, CURRENT_WEEK_END_INDEX + 1);
   }
 

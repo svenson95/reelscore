@@ -4,17 +4,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
-  signal,
 } from '@angular/core';
 
 import { PageRefreshService } from '@app/shared';
-import { getWeekdayIndex } from '@lib/shared';
 
 import type { RouteReuseLifecycle } from '../../config';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
+import { getSelectedDayData } from './helpers';
 import {
   SelectedDateService,
   SERVICE_PROVIDERS,
@@ -52,25 +50,24 @@ export class OverviewComponent
     VisibilityObserverService
   );
 
-  private readonly isActive = signal<boolean>(false);
-
   private readonly hasPlayingFixtures = computed(() => {
-    const weekIndex = getWeekdayIndex(this.selectedDateService.selectedDay());
-
-    const fixtures = this.weekFixturesStore.weekFixtures()[weekIndex] ?? [];
+    const fixtures =
+      getSelectedDayData(
+        this.weekFixturesStore.weekFixtures(),
+        this.weekFixturesStore.weekKey(),
+        this.selectedDateService.selectedDay()
+      ) ?? [];
 
     return this.pageRefreshService.hasPlayingState(
       fixtures.map((fixture) => fixture.fixture.status.short)
     );
   });
 
-  private readonly pageRefreshEffect = effect(() => {
-    if (!this.isActive() || !this.hasPlayingFixtures()) {
-      this.pageRefreshService.stop();
-      return;
-    }
-
-    this.startPageRefreshService();
+  private readonly canRefresh = computed(() => {
+    return (
+      !this.weekFixturesStore.isPending() &&
+      !this.weekStandingsStore.isPending()
+    );
   });
 
   ngOnInit(): void {
@@ -89,40 +86,25 @@ export class OverviewComponent
     this.startServices();
   }
 
-  private async refresh(): Promise<void> {
-    const date = this.selectedDateService.selectedDay();
+  private startServices(): void {
+    this.visibilityObserverService.init();
 
-    this.weekFixturesStore.loadWeekFixtures(date, true);
-    this.weekStandingsStore.loadWeekStandings(date, true);
-  }
-
-  private canRefresh(): boolean {
-    return (
-      !this.weekFixturesStore.isPending() &&
-      !this.weekStandingsStore.isPending()
-    );
-  }
-
-  private startPageRefreshService(): void {
     this.pageRefreshService.init({
-      isPlaying: () => this.hasPlayingFixtures(),
-      canRefresh: () => this.canRefresh(),
+      isPlaying: this.hasPlayingFixtures,
+      canRefresh: this.canRefresh,
       refresh: () => this.refresh(),
     });
   }
 
-  private startServices(): void {
-    if (this.isActive()) return;
-
-    this.isActive.set(true);
-    this.visibilityObserverService.init();
-  }
-
   private stopServices(): void {
-    if (!this.isActive()) return;
-
-    this.isActive.set(false);
     this.visibilityObserverService.stop();
     this.pageRefreshService.stop();
+  }
+
+  private refresh(): void {
+    const date = this.selectedDateService.selectedDay();
+
+    this.weekFixturesStore.loadWeekFixtures(date, true);
+    this.weekStandingsStore.loadWeekStandings(date, true);
   }
 }

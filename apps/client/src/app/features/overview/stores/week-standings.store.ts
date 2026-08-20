@@ -77,5 +77,5 @@ export const WeekStandingsStore = signalStore(
 );
 
 function createEmptyWeekStandings(): StandingsWeekData {
-  return Array.from({ length: 7 }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }

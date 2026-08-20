@@ -374,11 +374,11 @@ describe('OverviewContentFacade', () => {
 });
 
 function createEmptyFixturesWeekData(): FixturesWeekData {
-  return Array.from({ length: 7 }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }
 
 function createEmptyStandingsWeekData(): StandingsWeekData {
-  return Array.from({ length: 7 }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }
 
 function createIndexedFixturesWeekData(startId = 0): FixturesWeekData {
