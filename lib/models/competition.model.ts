@@ -49,7 +49,7 @@ type LeagueBase = {
   name: CompetitionName;
   country: string;
   logo: string;
-  flag: string;
+  flag: string | null;
   season: CompetitionSeason;
 };
 

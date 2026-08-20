@@ -26,6 +26,7 @@ describe('OverviewContentFacade', () => {
   const previousSunday: DateString = '2026-08-09';
   const currentSunday: DateString = '2026-08-16';
   const nextMonday: DateString = '2026-08-17';
+  const nextTuesday: DateString = '2026-08-18';
 
   const selectedDay = signal<DateString>(initialDate);
 
@@ -190,7 +191,6 @@ describe('OverviewContentFacade', () => {
       TestBed.tick();
 
       expect(facade.weekFixtures()).toEqual([[], [], [], [], [], [], []]);
-
       expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });
 
@@ -204,6 +204,7 @@ describe('OverviewContentFacade', () => {
       TestBed.tick();
 
       expect(facade.weekFixtures()).toEqual(weekData.slice(1, 8));
+      expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
     });
 
     it('should keep the edge monday visible while the next week is loading', () => {
@@ -227,7 +228,6 @@ describe('OverviewContentFacade', () => {
 
     it('should keep the edge sunday visible while the previous week is loading', () => {
       const currentWeekDate: DateString = '2026-08-17';
-
       const weekData = createIndexedFixturesWeekData();
 
       fixturesStoreMock.weekFixtures.set(weekData);
@@ -276,8 +276,7 @@ describe('OverviewContentFacade', () => {
       expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
     });
 
-    it('should not expose cached data for a selected day outside the edge-day range', () => {
-      const dateOutsideEdgeRange: DateString = '2026-08-18';
+    it('should hide cached week data when a non-edge day of another week is selected', () => {
       const weekData = createIndexedFixturesWeekData();
 
       fixturesStoreMock.weekFixtures.set(weekData);
@@ -286,13 +285,14 @@ describe('OverviewContentFacade', () => {
       const facade = TestBed.inject(OverviewContentFacade);
       TestBed.tick();
 
-      selectedDay.set(dateOutsideEdgeRange);
+      selectedDay.set(nextTuesday);
       selectedTabIndex.set(1);
+      fixturesStoreMock.isLoading.set(true);
 
       TestBed.tick();
 
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
       expect(facade.weekFixtures()[1]).toBeUndefined();
+      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });
   });
 
@@ -319,6 +319,22 @@ describe('OverviewContentFacade', () => {
       expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
     });
 
+    it('should report fixture and standings data as unavailable for a non-edge day of another week', () => {
+      const cachedWeekKey = formatCalendarWeekKey(initialDate);
+
+      fixturesStoreMock.weekKey.set(cachedWeekKey);
+      standingsStoreMock.weekKey.set(cachedWeekKey);
+
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      selectedDay.set(nextTuesday);
+      TestBed.tick();
+
+      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
+      expect(facade.hasStandingsDataForSelectedDay()).toBe(false);
+    });
+
     it('should report fixture data as unavailable before the previous sunday', () => {
       const dateBeforeEdgeRange: DateString = '2026-08-08';
 
@@ -328,19 +344,6 @@ describe('OverviewContentFacade', () => {
       TestBed.tick();
 
       selectedDay.set(dateBeforeEdgeRange);
-
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
-    });
-
-    it('should report fixture data as unavailable after the next monday', () => {
-      const dateAfterEdgeRange: DateString = '2026-08-18';
-
-      fixturesStoreMock.weekKey.set(formatCalendarWeekKey(initialDate));
-
-      const facade = TestBed.inject(OverviewContentFacade);
-      TestBed.tick();
-
-      selectedDay.set(dateAfterEdgeRange);
 
       expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });

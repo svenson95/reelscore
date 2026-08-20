@@ -17,13 +17,20 @@ import { OverviewStandingsFacade } from './standings.facade';
   imports: [StandingsTableComponent],
   providers: [OverviewStandingsFacade],
   styles: `
-    :host { @apply flex flex-col gap-rs1; }
+    :host {
+      @apply flex flex-col gap-rs1;
+    }
   `,
   template: `
-    <h2>Tabellen<span> @if (!isFiltering()) { Top 5 }</span></h2>
+    <h2>
+      Tabellen @if (!isFiltering()) {
+      <span> Top 5</span>
+      }
+    </h2>
+
     @let filteredStandings = dayStandings(); @let ws = weekStandings(); @if
-    (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for
-    (multipleStanding of filteredStandings.league.standings; track $index) {
+    (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for (
+    multipleStanding of filteredStandings.league.standings; track $index ) {
     <rs-standings-table
       class="animate-fade-in"
       [ranks]="multipleStanding"
@@ -43,6 +50,7 @@ import { OverviewStandingsFacade } from './standings.facade';
       [league]="filteredStandings.league"
       header="Heimtabelle"
     />
+
     <rs-standings-table
       class="animate-fade-in"
       [ranks]="filteredStandings.league.standings![2]"
@@ -61,7 +69,7 @@ import { OverviewStandingsFacade } from './standings.facade';
     </p>
     } @else if (error()) {
     <p class="no-data">Fehler beim Laden der Tabellen.</p>
-    } @else if (!isLoading()) {
+    } @else if (!isLoading() || hasDataForSelectedDay()) {
     <p class="no-data">Keine Tabellen gefunden.</p>
     }
   `,
@@ -73,15 +81,13 @@ export class OverviewStandingsComponent {
   readonly error = input.required<string | null>();
 
   private readonly facade = inject(OverviewStandingsFacade);
+
   readonly dayStandings = this.facade.dayStandings;
   readonly isFiltering = this.facade.isFiltering;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
   readonly showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
 
-  // TODO check if this signal can be moved to facade, depend on weekStandings is a problem (1/2)
   readonly showTopFive = computed<boolean>(() => {
-    const standings = this.weekStandings();
-    if (!standings) return false;
-    return standings.length === 5;
+    return this.weekStandings().length === 5;
   });
 }
