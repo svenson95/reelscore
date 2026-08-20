@@ -88,7 +88,7 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should display a loading state while fixtures are loading and no cached data is available', () => {
+  it('should display a loading state while fixtures are loading without data for the selected day', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: false,
@@ -103,7 +103,7 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should not display the loading state while cached edge-day data is available', () => {
+  it('should display the empty state instead of loading while cached data for the selected day is available', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: true,
@@ -118,7 +118,7 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should keep fixtures visible while the next week is loading', () => {
+  it('should keep fixtures visible while another week is loading', () => {
     const competition: CompetitionWithFixtures = {
       id: EXAMPLE_FIXTURE.league.id,
       name: EXAMPLE_FIXTURE.league.name,
@@ -158,7 +158,7 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should prefer the loading state over an error when no cached data is available', () => {
+  it('should prefer the loading state over an error when no data for the selected day is available', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: false,
@@ -174,7 +174,7 @@ describe('OverviewFixturesComponent', () => {
     );
   });
 
-  it('should prefer cached data over the loading state', () => {
+  it('should not display the loading state while data for the selected day is available', () => {
     const fixture = createComponent({
       isLoading: true,
       hasDataForSelectedDay: true,

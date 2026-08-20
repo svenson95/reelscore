@@ -38,7 +38,7 @@ export class OverviewContentFacade {
   readonly standingsError = this.weekStandingsStore.error;
 
   private readonly selectedDateString = computed<DateString>(
-    () => this.selectedDay().split('T')[0]
+    () => this.selectedDay().split('T')[0] as DateString
   );
 
   private readonly weekKey = computed(() =>
@@ -141,9 +141,14 @@ function hasDataForSelectedDay(
     return false;
   }
 
-  const weekStart = getWeekStartFromKey(cachedWeekKey);
-  const previousSunday = addDays(weekStart, -1);
-  const nextMonday = addDays(weekStart, 7);
+  if (cachedWeekKey === formatCalendarWeekKey(selectedDay)) {
+    return true;
+  }
 
-  return selectedDay >= previousSunday && selectedDay <= nextMonday;
+  const weekStart = getWeekStartFromKey(cachedWeekKey);
+
+  return (
+    selectedDay === addDays(weekStart, -1) ||
+    selectedDay === addDays(weekStart, 7)
+  );
 }
