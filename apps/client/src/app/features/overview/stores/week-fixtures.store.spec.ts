@@ -3,12 +3,12 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { HttpWeekFixturesService } from '@app/shared';
 import type { FixturesWeekData } from '@lib/models';
+import { formatCalendarWeekKey } from '@lib/shared';
 
 import { WeekFixturesStore } from './week-fixtures.store';
 
 const testDate = '2026-08-17';
 const nextWeekDate = '2026-08-24';
-const daysPerWeek = 7;
 
 describe('WeekFixturesStore', () => {
   let store: InstanceType<typeof WeekFixturesStore>;
@@ -41,6 +41,7 @@ describe('WeekFixturesStore', () => {
 
   it('should initialize with an empty week', () => {
     expect(store.weekFixtures()).toEqual(createWeekFixtures());
+    expect(store.weekKey()).toBeNull();
     expect(store.isLoading()).toBe(false);
     expect(store.isRefreshing()).toBe(false);
     expect(store.isPending()).toBe(false);
@@ -56,6 +57,7 @@ describe('WeekFixturesStore', () => {
 
     expect(httpMock.getWeekFixtures).toHaveBeenCalledWith(testDate);
     expect(store.weekFixtures()).toBe(weekFixtures);
+    expect(store.weekKey()).toBe(formatCalendarWeekKey(testDate));
     expect(store.isLoading()).toBe(false);
     expect(store.isRefreshing()).toBe(false);
     expect(store.isPending()).toBe(false);
@@ -146,5 +148,5 @@ describe('WeekFixturesStore', () => {
 });
 
 function createWeekFixtures(): FixturesWeekData {
-  return Array.from({ length: daysPerWeek }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }

@@ -3,7 +3,11 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { HttpStandingsService } from '@app/shared';
 import type { StandingsDTO, StandingsWeekData } from '@lib/models';
-import { COMPETITION_ID, COMPETITION_LABEL } from '@lib/shared';
+import {
+  COMPETITION_ID,
+  COMPETITION_LABEL,
+  formatCalendarWeekKey,
+} from '@lib/shared';
 
 import { WeekStandingsStore } from './week-standings.store';
 
@@ -46,6 +50,15 @@ describe('WeekStandingsStore', () => {
     jest.useRealTimers();
   });
 
+  it('should initialize with an empty week', () => {
+    expect(store.weekStandings()).toEqual(createEmptyWeekStandings());
+    expect(store.weekKey()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+    expect(store.isRefreshing()).toBe(false);
+    expect(store.isPending()).toBe(false);
+    expect(store.error()).toBeNull();
+  });
+
   it('should load standings for the selected week', () => {
     const weekStandings = createWeekStandings();
 
@@ -55,6 +68,7 @@ describe('WeekStandingsStore', () => {
 
     expect(httpMock.getWeekStandings).toHaveBeenCalledWith(testDate);
     expect(store.weekStandings()).toBe(weekStandings);
+    expect(store.weekKey()).toBe(formatCalendarWeekKey(testDate));
     expect(store.isPending()).toBe(false);
     expect(store.error()).toBeNull();
   });
@@ -163,13 +177,13 @@ describe('WeekStandingsStore', () => {
 });
 
 function createEmptyWeekStandings(): StandingsWeekData {
-  return Array.from({ length: 7 }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }
 
 function createWeekStandings(): StandingsWeekData {
   const weekStandings = createEmptyWeekStandings();
 
-  weekStandings[0] = [createStandings()];
+  weekStandings[1] = [createStandings()];
 
   return weekStandings;
 }

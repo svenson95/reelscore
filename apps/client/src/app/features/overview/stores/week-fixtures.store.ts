@@ -77,5 +77,5 @@ export const WeekFixturesStore = signalStore(
 );
 
 function createEmptyWeekFixtures(): FixturesWeekData {
-  return Array.from({ length: 7 }, () => []);
+  return Array.from({ length: 9 }, () => []);
 }
