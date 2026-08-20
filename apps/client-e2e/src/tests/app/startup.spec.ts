@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import { AppPage } from '../../pages';
 
-test.describe('App startup', () => {
+test.describe('App', () => {
   test('keeps startup overlay visible until the app has initialized', async ({
     page,
   }) => {

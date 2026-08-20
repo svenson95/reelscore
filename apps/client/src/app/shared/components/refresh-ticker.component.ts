@@ -14,6 +14,10 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatButtonModule, MatIcon],
+  host: {
+    '[class.is-active]': 'isActive()',
+    'data-testid': 'refresh-timer',
+  },
   styles: `
     :host {
       @apply flex;
@@ -81,9 +85,6 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       }
     }
   `,
-  host: {
-    '[class.is-active]': 'isActive()',
-  },
   template: `
     <button
       mat-icon-button
