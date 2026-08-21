@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import type {
-  CompetitionId,
-  CompetitionRound,
-  ExtendedFixtureDTO,
-} from '@lib/models';
 import {
+  type ExtendedFixtureDTO,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_HALFTIME,
 } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
+import { COMPETITION_KO_ROUNDS, isTwoLeggedRound } from '@lib/shared';
 
 @Injectable()
 export class FixtureListItemFacade {
@@ -19,42 +15,6 @@ export class FixtureListItemFacade {
   readonly halfTime = [STATUS_VALUE_HALFTIME];
   readonly playing = [...STATUS_TYPES_PLAYING];
   readonly finished = [...STATUS_TYPES_FINISHED];
-
-  readonly twoLeggedCompetitions: { [key: CompetitionId]: CompetitionRound[] } =
-    {
-      [COMPETITION_ID.EUROPA_UEFA_CHAMPIONS_LEAGUE]: [
-        'Round of 16',
-        'Quarter-finals',
-        'Semi-finals',
-      ],
-      [COMPETITION_ID.EUROPA_UEFA_EURO_LEAGUE]: [
-        'Round of 16',
-        'Quarter-finals',
-        'Semi-finals',
-      ],
-      [COMPETITION_ID.INTERNATIONAL_UEFA_NATIONS_LEAGUE]: [
-        'Play-offs A/B',
-        'Play-offs B/C',
-        'Quarter-finals',
-        'Play-offs C/D',
-      ],
-      [COMPETITION_ID.ENGLAND_LEAGUE_CUP]: ['Semi-finals'],
-      [COMPETITION_ID.ITALY_COPPA_ITALIA]: ['Semi-finals'],
-      [COMPETITION_ID.SPAIN_COPA_DEL_REY]: ['Semi-finals'],
-    };
-
-  readonly koRounds = [
-    'Preliminary Round',
-    'Play-offs',
-    '1st Round',
-    '2nd Round',
-    '3rd Round',
-    'Round of 32',
-    'Round of 16',
-    'Quarter-finals',
-    'Semi-finals',
-    'Final',
-  ];
 
   isTeamEliminated(
     fixture: ExtendedFixtureDTO,
@@ -77,13 +37,11 @@ export class FixtureListItemFacade {
   ): boolean => {
     const round = fixture.league.round;
 
-    const isKoRound = this.koRounds.includes(round);
-    if (!isKoRound) return false;
+    if (!COMPETITION_KO_ROUNDS.includes(round)) {
+      return false;
+    }
 
-    const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
-    const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
-
-    if (isTwoLeggedCompetition && isTwoLeggedRound) {
+    if (isTwoLeggedRound(fixture.league.id, fixture.league.round)) {
       return false;
     }
 
@@ -94,31 +52,16 @@ export class FixtureListItemFacade {
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean => {
-    const round = fixture.league.round;
-    const isTwoLeggedCompetition = this.isTwoLeggedCompetition(fixture);
-    const isTwoLeggedRound = this.getTwoLeggedRounds(fixture).includes(round);
+    if (!isTwoLeggedRound(fixture.league.id, fixture.league.round)) {
+      return false;
+    }
 
-    const hasFinalData = 'final' in fixture;
-    const winnerOfFinal = fixture?.final?.winnerOfFinal;
-    const winnerTeamId = hasFinalData ? winnerOfFinal : null;
-    const isFinalFinished = !!winnerTeamId;
-    const relatedTeam = fixture.teams[team].id;
+    const winnerTeamId = fixture.final?.winnerOfFinal;
 
-    return (
-      isTwoLeggedCompetition &&
-      isTwoLeggedRound &&
-      isFinalFinished &&
-      relatedTeam !== winnerTeamId
-    );
-  };
+    if (!winnerTeamId) {
+      return false;
+    }
 
-  private getTwoLeggedRounds = (
-    fixture: ExtendedFixtureDTO
-  ): CompetitionRound[] => {
-    return this.twoLeggedCompetitions[fixture.league.id] || [];
-  };
-
-  private isTwoLeggedCompetition = (fixture: ExtendedFixtureDTO): boolean => {
-    return fixture.league.id in this.twoLeggedCompetitions;
+    return fixture.teams[team].id !== winnerTeamId;
   };
 }
