@@ -32,34 +32,30 @@ import { OverviewStandingsFacade } from './standings.facade';
     (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for (
     multipleStanding of filteredStandings.league.standings; track $index ) {
     <rs-standings-table
-      class="animate-fade-in"
       [ranks]="multipleStanding"
       [league]="filteredStandings.league"
     />
     } } @else {
     <rs-standings-table
-      class="animate-fade-in"
       [ranks]="filteredStandings.league.standings![0]"
       [league]="filteredStandings.league"
     />
 
     @if (showHomeAndAwayStandings()) {
     <rs-standings-table
-      class="animate-fade-in"
       [ranks]="filteredStandings.league.standings![1]"
       [league]="filteredStandings.league"
       header="Heimtabelle"
     />
 
     <rs-standings-table
-      class="animate-fade-in"
       [ranks]="filteredStandings.league.standings![2]"
       [league]="filteredStandings.league"
       header="Auswärtstabelle"
     />
-    } } } @else if (showTopFive()) { @for (standing of ws; track $index) {
+    } } } @else if (showTopFive()) { @for (standing of ws; track
+    standing.league.id) {
     <rs-standings-table
-      class="animate-fade-in"
       [ranks]="standing.league.standings![0]"
       [league]="standing.league"
     />

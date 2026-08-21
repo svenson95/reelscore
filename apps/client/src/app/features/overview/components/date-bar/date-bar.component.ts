@@ -52,7 +52,6 @@ import { WeekToggleGroupComponent } from './week-toggle-group.component';
     <rs-week-toggle-group
       [weekdays]="weekdays()"
       [selectedDay]="selectedDay()"
-      [calendarWeek]="calendarWeek()"
       [isLoading]="isLoading()"
       (dateSelected)="setDate($event)"
     ></rs-week-toggle-group>
@@ -79,7 +78,6 @@ export class DateBarComponent {
   readonly selectedDay = this.selectedDateService.selectedDay;
   readonly weekdays = this.dateNavigationService.weekdays;
   readonly isToday = this.dateNavigationService.isToday;
-  readonly calendarWeek = this.dateNavigationService.calendarWeek;
 
   readonly isLoading = computed<boolean>(
     () => this.weekFixtures.isLoading() || this.weekStandings.isLoading()
