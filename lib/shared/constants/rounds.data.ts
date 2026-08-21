@@ -306,6 +306,7 @@ const IT_SUPER_CUP = {
 const IT_COPPA_ITALIA_2026 = {
   1: 'Round of 128',
   2: 'Round of 64',
+  3: 'Round of 32',
 };
 const IT_COPPA_ITALIA_2025 = {
   1: 'Preliminary Round',
