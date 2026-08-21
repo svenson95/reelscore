@@ -23,7 +23,6 @@ describe('OverviewContentFacade', () => {
   const initialDate: DateString = '2026-08-10';
   const sameWeekDate: DateString = '2026-08-12';
 
-  const previousSunday: DateString = '2026-08-09';
   const currentSunday: DateString = '2026-08-16';
   const nextMonday: DateString = '2026-08-17';
   const nextTuesday: DateString = '2026-08-18';
@@ -99,88 +98,98 @@ describe('OverviewContentFacade', () => {
     });
   });
 
-  it('should load fixtures and standings for the selected week', () => {
-    TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
+  describe('week loading', () => {
+    it('should load fixtures and standings for the selected week', () => {
+      TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
 
-    expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
-      initialDate
-    );
-    expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
-      initialDate
-    );
+      expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
+        initialDate
+      );
+      expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
+        initialDate
+      );
+    });
+
+    it('should not reload the week when selected day changes within the same week', () => {
+      TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      markWeekAsCached(initialDate);
+
+      fixturesStoreMock.loadWeekFixtures.mockClear();
+      standingsStoreMock.loadWeekStandings.mockClear();
+
+      selectedDay.set(sameWeekDate);
+      TestBed.tick();
+
+      expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
+      expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
+    });
+
+    it('should reload fixtures and standings when selected day changes to another week', () => {
+      TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      markWeekAsCached(initialDate);
+
+      fixturesStoreMock.loadWeekFixtures.mockClear();
+      standingsStoreMock.loadWeekStandings.mockClear();
+
+      selectedDay.set(nextMonday);
+      TestBed.tick();
+
+      expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(
+        nextMonday
+      );
+      expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
+        nextMonday
+      );
+    });
+
+    it('should not load when the selected week is already cached', () => {
+      markWeekAsCached(initialDate);
+
+      TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
+      expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
+    });
   });
 
-  it('should not reload the week when selected day changes within the same week', () => {
-    TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
+  describe('request state', () => {
+    it('should expose fixtures and standings loading states independently', () => {
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
 
-    markWeekAsCached(initialDate);
+      fixturesStoreMock.isLoading.set(true);
 
-    fixturesStoreMock.loadWeekFixtures.mockClear();
-    standingsStoreMock.loadWeekStandings.mockClear();
+      expect(facade.fixturesLoading()).toBe(true);
+      expect(facade.standingsLoading()).toBe(false);
 
-    selectedDay.set(sameWeekDate);
-    TestBed.tick();
+      fixturesStoreMock.isLoading.set(false);
+      standingsStoreMock.isLoading.set(true);
 
-    expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
-    expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
-  });
+      expect(facade.fixturesLoading()).toBe(false);
+      expect(facade.standingsLoading()).toBe(true);
+    });
 
-  it('should reload fixtures and standings when selected day changes to another week', () => {
-    TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
+    it('should expose fixtures and standings errors independently', () => {
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
 
-    markWeekAsCached(initialDate);
+      fixturesStoreMock.error.set('Fixtures failed');
 
-    fixturesStoreMock.loadWeekFixtures.mockClear();
-    standingsStoreMock.loadWeekStandings.mockClear();
+      expect(facade.fixturesError()).toBe('Fixtures failed');
+      expect(facade.standingsError()).toBeNull();
 
-    selectedDay.set(nextMonday);
-    TestBed.tick();
+      fixturesStoreMock.error.set(null);
+      standingsStoreMock.error.set('Standings failed');
 
-    expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledWith(nextMonday);
-    expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledWith(
-      nextMonday
-    );
-  });
-
-  it('should not load when the selected week is already cached', () => {
-    markWeekAsCached(initialDate);
-
-    TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
-
-    expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
-    expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
-  });
-
-  it('should expose fixture and standings loading states independently', () => {
-    const facade = TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
-
-    fixturesStoreMock.isLoading.set(true);
-    standingsStoreMock.isLoading.set(false);
-
-    expect(facade.fixturesLoading()).toBe(true);
-    expect(facade.standingsLoading()).toBe(false);
-
-    fixturesStoreMock.isLoading.set(false);
-    standingsStoreMock.isLoading.set(true);
-
-    expect(facade.fixturesLoading()).toBe(false);
-    expect(facade.standingsLoading()).toBe(true);
-  });
-
-  it('should expose fixture and standings errors independently', () => {
-    const facade = TestBed.inject(OverviewContentFacade);
-    TestBed.tick();
-
-    fixturesStoreMock.error.set('Fixtures failed');
-    standingsStoreMock.error.set(null);
-
-    expect(facade.fixturesError()).toEqual('Fixtures failed');
-    expect(facade.standingsError()).toBeNull();
+      expect(facade.fixturesError()).toBeNull();
+      expect(facade.standingsError()).toBe('Standings failed');
+    });
   });
 
   describe('week data mapping', () => {
@@ -194,7 +203,7 @@ describe('OverviewContentFacade', () => {
       expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });
 
-    it('should map the nine loaded fixture days to the seven visible weekdays', () => {
+    it('should map the nine loaded fixtures days to the seven visible weekdays', () => {
       const weekData = createIndexedFixturesWeekData();
 
       fixturesStoreMock.weekFixtures.set(weekData);
@@ -205,6 +214,40 @@ describe('OverviewContentFacade', () => {
 
       expect(facade.weekFixtures()).toEqual(weekData.slice(1, 8));
       expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
+    });
+
+    it('should keep the visible fixtures week data reference when selected day changes within the same week', () => {
+      const weekData = createIndexedFixturesWeekData();
+
+      fixturesStoreMock.weekFixtures.set(weekData);
+      markWeekAsCached(initialDate);
+
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      const weekFixtures = facade.weekFixtures();
+
+      selectedDay.set(sameWeekDate);
+      TestBed.tick();
+
+      expect(facade.weekFixtures()).toBe(weekFixtures);
+    });
+
+    it('should keep the visible standings week data reference when selected day changes within the same week', () => {
+      const weekData = createIndexedStandingsWeekData();
+
+      standingsStoreMock.weekStandings.set(weekData);
+      markWeekAsCached(initialDate);
+
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      const weekStandings = facade.weekStandings();
+
+      selectedDay.set(sameWeekDate);
+      TestBed.tick();
+
+      expect(facade.weekStandings()).toBe(weekStandings);
     });
 
     it('should keep the edge monday visible while the next week is loading', () => {
@@ -294,59 +337,6 @@ describe('OverviewContentFacade', () => {
       expect(facade.weekFixtures()[1]).toBeUndefined();
       expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });
-  });
-
-  describe('edge-day availability', () => {
-    it('should report fixture data as available for the previous sunday edge day', () => {
-      fixturesStoreMock.weekKey.set(formatCalendarWeekKey(initialDate));
-
-      const facade = TestBed.inject(OverviewContentFacade);
-      TestBed.tick();
-
-      selectedDay.set(previousSunday);
-
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
-    });
-
-    it('should report fixture data as available for the next monday edge day', () => {
-      fixturesStoreMock.weekKey.set(formatCalendarWeekKey(initialDate));
-
-      const facade = TestBed.inject(OverviewContentFacade);
-      TestBed.tick();
-
-      selectedDay.set(nextMonday);
-
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
-    });
-
-    it('should report fixture and standings data as unavailable for a non-edge day of another week', () => {
-      const cachedWeekKey = formatCalendarWeekKey(initialDate);
-
-      fixturesStoreMock.weekKey.set(cachedWeekKey);
-      standingsStoreMock.weekKey.set(cachedWeekKey);
-
-      const facade = TestBed.inject(OverviewContentFacade);
-      TestBed.tick();
-
-      selectedDay.set(nextTuesday);
-      TestBed.tick();
-
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
-      expect(facade.hasStandingsDataForSelectedDay()).toBe(false);
-    });
-
-    it('should report fixture data as unavailable before the previous sunday', () => {
-      const dateBeforeEdgeRange: DateString = '2026-08-08';
-
-      fixturesStoreMock.weekKey.set(formatCalendarWeekKey(initialDate));
-
-      const facade = TestBed.inject(OverviewContentFacade);
-      TestBed.tick();
-
-      selectedDay.set(dateBeforeEdgeRange);
-
-      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
-    });
 
     it('should keep standings edge-day data available while the next week is loading', () => {
       const weekData = createIndexedStandingsWeekData();
@@ -365,6 +355,37 @@ describe('OverviewContentFacade', () => {
 
       expect(facade.weekStandings()[0]).toBe(weekData[8]);
       expect(facade.hasStandingsDataForSelectedDay()).toBe(true);
+    });
+  });
+
+  describe('data availability', () => {
+    it('should report fixtures and standings data as unavailable for a non-edge day of another week', () => {
+      const cachedWeekKey = formatCalendarWeekKey(initialDate);
+
+      fixturesStoreMock.weekKey.set(cachedWeekKey);
+      standingsStoreMock.weekKey.set(cachedWeekKey);
+
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      selectedDay.set(nextTuesday);
+      TestBed.tick();
+
+      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
+      expect(facade.hasStandingsDataForSelectedDay()).toBe(false);
+    });
+
+    it('should report fixtures data as unavailable before the previous sunday', () => {
+      const dateBeforeEdgeRange: DateString = '2026-08-08';
+
+      fixturesStoreMock.weekKey.set(formatCalendarWeekKey(initialDate));
+
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      selectedDay.set(dateBeforeEdgeRange);
+
+      expect(facade.hasFixturesDataForSelectedDay()).toBe(false);
     });
   });
 

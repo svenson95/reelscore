@@ -12,6 +12,8 @@ import type { ExtendedFixtureDTO } from '@lib/models';
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
 
+type FixturesViewState = 'loading' | 'error' | 'empty' | null;
+
 @Component({
   selector: 'rs-overview-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,20 +27,18 @@ import { MatchDayListComponent } from './match-day-list.component';
   template: `
     <h2>Partien</h2>
 
-    @let comps = competitions(); @let fixtures = filteredFixtures(); @if (comps
-    && comps.length > 0) { @for (competition of comps; track competition.name) {
-    <rs-start-match-day-list
-      class="animate-fade-in"
-      [competition]="competition"
-    />
-    } } @else {
-    <p class="no-data">
-      @if (isLoading() && !hasDataForSelectedDay()) {
-      <span data-testid="fixtures-loading"> Spiele werden geladen ... </span>
-      } @else if (error()) { Fehler beim Laden der Spiele. } @else if
-      (fixtures.length === 0) { Es finden keine Spiele statt. }
+    @if (competitions().length > 0) { @for ( competition of competitions();
+    track getCompetitionKey(competition) ) {
+    <rs-start-match-day-list [competition]="competition" />
+    } } @else { @switch (viewState()) { @case ('loading') {
+    <p class="no-data" data-testid="fixtures-loading">
+      Spiele werden geladen ...
     </p>
-    }
+    } @case ('error') {
+    <p class="no-data">Fehler beim Laden der Spiele.</p>
+    } @case ('empty') {
+    <p class="no-data">Es finden keine Spiele statt.</p>
+    } } }
   `,
 })
 export class OverviewFixturesComponent {
@@ -49,7 +49,29 @@ export class OverviewFixturesComponent {
 
   private readonly facade = inject(OverviewFixturesFacade);
 
-  readonly competitions = computed<CompetitionWithFixtures[]>(() => {
-    return this.facade.initCompetitionsWithFixtures(this.filteredFixtures());
+  readonly competitions = computed<CompetitionWithFixtures[]>(() =>
+    this.facade.groupFixturesByCompetition(this.filteredFixtures())
+  );
+
+  readonly viewState = computed<FixturesViewState>(() => {
+    if (this.isLoading() && !this.hasDataForSelectedDay()) {
+      return 'loading';
+    }
+
+    if (this.error()) {
+      return 'error';
+    }
+
+    if (this.filteredFixtures().length === 0) {
+      return 'empty';
+    }
+
+    return null;
   });
+
+  getCompetitionKey(competition: CompetitionWithFixtures): string {
+    const round = competition.fixtures[0].league.round;
+
+    return `${competition.id}-${round}`;
+  }
 }

@@ -13,11 +13,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import {
-  formatDateToYearMonthDay,
-  type CalendarWeek,
-  type DateString,
-} from '@lib/shared';
+import { formatDateToYearMonthDay, type DateString } from '@lib/shared';
 
 import { DateNavigationService } from '../../services';
 
@@ -138,7 +134,6 @@ const EXTERNAL_MODULES = [
 })
 export class WeekToggleGroupComponent {
   readonly selectedDay = input.required<DateString>();
-  readonly calendarWeek = input.required<CalendarWeek>();
   readonly weekdays = input.required<DateString[]>();
   readonly isLoading = input.required<boolean>();
 
