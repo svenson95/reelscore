@@ -4,7 +4,6 @@ import {
   computed,
   inject,
   input,
-  untracked,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -93,16 +92,16 @@ export class MatchDayListComponent {
   private readonly themeService = inject(ThemeService);
 
   private readonly firstFixture = computed(
-    () => untracked(this.competition).fixtures[0]
+    () => this.competition().fixtures[0]
   );
 
   readonly round = computed<CompetitionRound>(() => {
-    const fixture = untracked(this.firstFixture);
-    return fixture ? fixture.league.round : '';
+    return this.firstFixture()?.league.round ?? '?';
   });
 
   readonly getCompetitionLogo = computed(() => {
-    const fixture = untracked(this.firstFixture);
+    const fixture = this.firstFixture();
+
     return getCompetitionLogo(
       fixture.league.id,
       24,
@@ -112,7 +111,8 @@ export class MatchDayListComponent {
   });
 
   readonly getCompetitionLogoSet = computed(() => {
-    const fixture = untracked(this.firstFixture);
+    const fixture = this.firstFixture();
+
     return getCompetitionLogoSrcSet(
       fixture.league.id,
       24,

@@ -11,7 +11,7 @@ import { LogoComponent } from '../logo/logo.component';
   `,
   template: `
     <div>
-      <rs-logo class="animate-fade-in" disabled />
+      <rs-logo disabled />
     </div>
 
     <div></div>

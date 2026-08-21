@@ -21,12 +21,12 @@ class MatchDayListStubComponent {
 
 describe('OverviewFixturesComponent', () => {
   const facadeMock: {
-    initCompetitionsWithFixtures: jest.Mock<
+    groupFixturesByCompetition: jest.Mock<
       CompetitionWithFixtures[],
-      [ExtendedFixtureDTO[] | null]
+      [ExtendedFixtureDTO[]]
     >;
   } = {
-    initCompetitionsWithFixtures: jest.fn(),
+    groupFixturesByCompetition: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -51,7 +51,7 @@ describe('OverviewFixturesComponent', () => {
       .compileComponents();
 
     jest.clearAllMocks();
-    facadeMock.initCompetitionsWithFixtures.mockReturnValue([]);
+    facadeMock.groupFixturesByCompetition.mockReturnValue([]);
   });
 
   const createComponent = ({
@@ -127,7 +127,7 @@ describe('OverviewFixturesComponent', () => {
       fixtures: [EXAMPLE_FIXTURE],
     };
 
-    facadeMock.initCompetitionsWithFixtures.mockReturnValue([competition]);
+    facadeMock.groupFixturesByCompetition.mockReturnValue([competition]);
 
     const fixture = createComponent({
       fixtures: [EXAMPLE_FIXTURE],

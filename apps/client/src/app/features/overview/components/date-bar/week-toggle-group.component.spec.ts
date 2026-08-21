@@ -39,7 +39,6 @@ describe('WeekToggleGroupComponent', () => {
     const fixture = TestBed.createComponent(WeekToggleGroupComponent);
 
     fixture.componentRef.setInput('selectedDay', selectedDay);
-    fixture.componentRef.setInput('calendarWeek', 33);
     fixture.componentRef.setInput('weekdays', weekdays);
     fixture.componentRef.setInput('isLoading', false);
 
