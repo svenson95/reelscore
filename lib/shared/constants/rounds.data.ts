@@ -76,7 +76,11 @@ const BUNDESLIGA_2025 = {
 const DE_SUPER_CUP = {
   1: 'Final',
 };
-const DE_DFB_POKAL = {
+
+const DE_DFB_POKAL_2026 = {
+  1: 'Round of 64',
+};
+const DE_DFB_POKAL_2023 = {
   1: '1st Round',
   2: '2nd Round',
   3: 'Round of 16',
@@ -134,21 +138,29 @@ const ES_COPA_DEL_REY_2023 = {
 
 /* England */
 
-const EN_LEAGUE_CUP = {
+const EN_LEAGUE_CUP_2023 = {
   1: '1st Round',
   2: '2nd Round',
   3: '3rd Round',
-  4: '4th Round',
-  5: 'Quarter-finals',
-  6: 'Semi-finals',
-  7: 'Final',
-};
-const EN_LEAGUE_CUP_2023 = {
-  ...EN_LEAGUE_CUP,
   4: 'Round of 16',
   5: 'Quarter-finals',
   6: 'Semi-finals',
   7: 'Final',
+};
+const EN_LEAGUE_CUP_2025 = {
+  1: 'Preliminary Round',
+  2: '1st Round',
+  3: '2nd Round',
+  4: '3rd Round',
+  5: '4th Round',
+  6: 'Quarter-finals',
+  7: 'Semi-finals',
+  8: 'Final',
+};
+const EN_LEAGUE_CUP_2026 = {
+  1: 'Preliminary Round',
+  2: 'Round of 128',
+  3: 'Round of 64',
 };
 
 const EN_EFL_TROPHY = {
@@ -696,7 +708,8 @@ export const COMPETITION_ROUNDS = buildCompetitionRounds({
     2023: DE_SUPER_CUP,
   },
   81: {
-    2023: DE_DFB_POKAL,
+    2023: DE_DFB_POKAL_2023,
+    2026: DE_DFB_POKAL_2026,
   },
 
   /* SPAIN */
@@ -733,7 +746,8 @@ export const COMPETITION_ROUNDS = buildCompetitionRounds({
   },
   48: {
     2023: EN_LEAGUE_CUP_2023,
-    2025: EN_LEAGUE_CUP,
+    2025: EN_LEAGUE_CUP_2025,
+    2026: EN_LEAGUE_CUP_2026,
   },
   528: {
     2023: EN_COMMUNITY_SHIELD,
@@ -865,6 +879,8 @@ export const COMPETITION_KO_ROUNDS = [
   '1st Round',
   '2nd Round',
   '3rd Round',
+  'Round of 128',
+  'Round of 64',
   'Round of 32',
   'Round of 16',
   'Quarter-finals',
