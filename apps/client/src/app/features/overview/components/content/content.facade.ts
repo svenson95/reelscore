@@ -19,6 +19,12 @@ const UI_WEEK_FIRST_INDEX = 0;
 const UI_WEEK_LAST_INDEX = 6;
 const UI_DAYS_PER_WEEK = 7;
 
+type VisibleWeekMode =
+  | 'current'
+  | 'previous-edge'
+  | 'next-edge'
+  | 'unavailable';
+
 @Injectable()
 export class OverviewContentFacade {
   readonly weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
@@ -45,34 +51,44 @@ export class OverviewContentFacade {
     formatCalendarWeekKey(this.selectedDateString())
   );
 
+  private readonly fixturesVisibleWeekMode = computed(() =>
+    getVisibleWeekMode(
+      this.weekFixturesStore.weekKey(),
+      this.selectedDateString()
+    )
+  );
+
+  private readonly standingsVisibleWeekMode = computed(() =>
+    getVisibleWeekMode(
+      this.weekStandingsStore.weekKey(),
+      this.selectedDateString()
+    )
+  );
+
   readonly weekFixtures = computed(() =>
     getVisibleWeekData(
       this.weekFixturesStore.weekFixtures(),
-      this.weekFixturesStore.weekKey(),
-      this.selectedDateString()
+      this.fixturesVisibleWeekMode()
     )
   );
 
   readonly weekStandings = computed(() =>
     getVisibleWeekData(
       this.weekStandingsStore.weekStandings(),
-      this.weekStandingsStore.weekKey(),
-      this.selectedDateString()
+      this.standingsVisibleWeekMode()
     )
   );
 
-  readonly hasFixturesDataForSelectedDay = computed(() =>
-    hasDataForSelectedDay(
-      this.weekFixturesStore.weekKey(),
-      this.selectedDateString()
-    )
+  readonly hasFixturesDataForSelectedDay = computed(
+    () =>
+      this.weekFixturesStore.weekKey() !== null &&
+      this.fixturesVisibleWeekMode() !== 'unavailable'
   );
 
-  readonly hasStandingsDataForSelectedDay = computed(() =>
-    hasDataForSelectedDay(
-      this.weekStandingsStore.weekKey(),
-      this.selectedDateString()
-    )
+  readonly hasStandingsDataForSelectedDay = computed(
+    () =>
+      this.weekStandingsStore.weekKey() !== null &&
+      this.standingsVisibleWeekMode() !== 'unavailable'
   );
 
   private readonly calendarWeekEffect = effect(() => {
@@ -95,32 +111,50 @@ export class OverviewContentFacade {
   });
 }
 
-function getVisibleWeekData<T>(
-  data: T[],
+function getVisibleWeekMode(
   cachedWeekKey: string | null,
   selectedDay: DateString
-): Array<T | undefined> {
+): VisibleWeekMode {
   if (
     cachedWeekKey === null ||
     cachedWeekKey === formatCalendarWeekKey(selectedDay)
   ) {
-    return data.slice(CURRENT_WEEK_START_INDEX, CURRENT_WEEK_END_INDEX + 1);
+    return 'current';
   }
 
-  const weekStart = getWeekStartFromKey(cachedWeekKey);
+  const cachedWeekStart = getWeekStartFromKey(cachedWeekKey);
 
-  if (selectedDay === addDays(weekStart, 7)) {
-    return createEdgeWeekData(UI_WEEK_FIRST_INDEX, data[EDGE_NEXT_DAY_INDEX]);
+  if (selectedDay === addDays(cachedWeekStart, 7)) {
+    return 'next-edge';
   }
 
-  if (selectedDay === addDays(weekStart, -1)) {
-    return createEdgeWeekData(
-      UI_WEEK_LAST_INDEX,
-      data[EDGE_PREVIOUS_DAY_INDEX]
-    );
+  if (selectedDay === addDays(cachedWeekStart, -1)) {
+    return 'previous-edge';
   }
 
-  return Array(UI_DAYS_PER_WEEK).fill(undefined);
+  return 'unavailable';
+}
+
+function getVisibleWeekData<T>(
+  data: T[],
+  mode: VisibleWeekMode
+): Array<T | undefined> {
+  switch (mode) {
+    case 'current':
+      return data.slice(CURRENT_WEEK_START_INDEX, CURRENT_WEEK_END_INDEX + 1);
+
+    case 'next-edge':
+      return createEdgeWeekData(UI_WEEK_FIRST_INDEX, data[EDGE_NEXT_DAY_INDEX]);
+
+    case 'previous-edge':
+      return createEdgeWeekData(
+        UI_WEEK_LAST_INDEX,
+        data[EDGE_PREVIOUS_DAY_INDEX]
+      );
+
+    case 'unavailable':
+      return Array(UI_DAYS_PER_WEEK).fill(undefined);
+  }
 }
 
 function createEdgeWeekData<T>(
@@ -131,24 +165,4 @@ function createEdgeWeekData<T>(
   weekData[index] = edgeDayData;
 
   return weekData;
-}
-
-function hasDataForSelectedDay(
-  cachedWeekKey: string | null,
-  selectedDay: DateString
-): boolean {
-  if (cachedWeekKey === null) {
-    return false;
-  }
-
-  if (cachedWeekKey === formatCalendarWeekKey(selectedDay)) {
-    return true;
-  }
-
-  const weekStart = getWeekStartFromKey(cachedWeekKey);
-
-  return (
-    selectedDay === addDays(weekStart, -1) ||
-    selectedDay === addDays(weekStart, 7)
-  );
 }

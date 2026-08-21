@@ -39,7 +39,7 @@ describe('OverviewFixturesFacade', () => {
   });
 
   it('should return fixtures from all competitions when no competition filter is selected', () => {
-    const competitions = facade.initCompetitionsWithFixtures(fixtures);
+    const competitions = facade.groupFixturesByCompetition(fixtures);
 
     expect(competitions).toHaveLength(2);
 
@@ -51,7 +51,7 @@ describe('OverviewFixturesFacade', () => {
   it('should return only fixtures from the selected competition', () => {
     filterService.selectedCompetition.set(78);
 
-    const competitions = facade.initCompetitionsWithFixtures(fixtures);
+    const competitions = facade.groupFixturesByCompetition(fixtures);
 
     expect(competitions).toHaveLength(1);
     expect(competitions[0].id).toBe(78);
@@ -61,11 +61,11 @@ describe('OverviewFixturesFacade', () => {
   it('should restore fixtures from all competitions after clearing the filter', () => {
     filterService.selectedCompetition.set(78);
 
-    expect(facade.initCompetitionsWithFixtures(fixtures)).toHaveLength(1);
+    expect(facade.groupFixturesByCompetition(fixtures)).toHaveLength(1);
 
     filterService.selectedCompetition.set(null);
 
-    const competitions = facade.initCompetitionsWithFixtures(fixtures);
+    const competitions = facade.groupFixturesByCompetition(fixtures);
 
     expect(competitions).toHaveLength(2);
 
@@ -83,7 +83,7 @@ describe('OverviewFixturesFacade', () => {
       },
     };
 
-    const competitions = facade.initCompetitionsWithFixtures([
+    const competitions = facade.groupFixturesByCompetition([
       CHAMPIONS_LEAGUE_FIXTURE,
       secondChampionsLeagueFixture,
     ]);
@@ -105,7 +105,7 @@ describe('OverviewFixturesFacade', () => {
       },
     };
 
-    const competitions = facade.initCompetitionsWithFixtures([
+    const competitions = facade.groupFixturesByCompetition([
       CHAMPIONS_LEAGUE_FIXTURE,
       semiFinalFixture,
     ]);

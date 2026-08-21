@@ -5,84 +5,78 @@ import {
   SELECT_COMPETITION_DATA_FLAT,
   type CompetitionWithFixtures,
 } from '@app/shared';
-import type { CompetitionName, ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { FilterService } from '../../../services';
 
+const COMPETITION_BY_ID = new Map(
+  SELECT_COMPETITION_DATA_FLAT.map((competition) => [
+    competition.id,
+    competition,
+  ])
+);
+
+const DEFAULT_COMPETITION_ORDER = Object.keys(COMPETITIONS_ORDER).length + 1;
+
 @Injectable()
 export class OverviewFixturesFacade {
-  private filterService = inject(FilterService);
+  private readonly filterService = inject(FilterService);
 
-  initCompetitionsWithFixtures = (
-    fixtures: Array<ExtendedFixtureDTO> | null
-  ): Array<CompetitionWithFixtures> => {
-    if (!fixtures) return [];
+  groupFixturesByCompetition(
+    fixtures: ExtendedFixtureDTO[]
+  ): CompetitionWithFixtures[] {
+    const selectedCompetition = this.filterService.selectedCompetition();
+    const groups = new Map<string, CompetitionWithFixtures>();
 
-    const competitionGroups = [
-      ...new Map(
-        fixtures.map((fixture) => [
-          this.getCompetitionGroupKey(fixture),
-          {
-            id: fixture.league.id,
-            name: fixture.league.name,
-            round: fixture.league.round,
-          },
-        ])
-      ).values(),
-    ];
+    for (const fixture of fixtures) {
+      if (
+        selectedCompetition !== null &&
+        fixture.league.id !== selectedCompetition
+      ) {
+        continue;
+      }
 
-    const competitions: Array<CompetitionWithFixtures> = competitionGroups
-      .map((group) =>
-        this.groupFixturesToCompetitions(
-          fixtures,
-          group.id,
-          group.name,
-          group.round
-        )
-      )
-      .sort((a, b) => {
-        const ORDER = COMPETITIONS_ORDER;
-        const endOfList = Object.keys(ORDER).length + 1;
+      const key = this.getCompetitionGroupKey(fixture);
+      const existingGroup = groups.get(key);
 
-        return (ORDER[a.name] || endOfList) - (ORDER[b.name] || endOfList);
-      });
+      if (existingGroup) {
+        existingGroup.fixtures.push(fixture);
+        continue;
+      }
 
-    const filter = this.filterService.selectedCompetition();
-    const filtered = competitions.filter((c) => c.id === filter);
+      groups.set(key, this.createCompetitionGroup(fixture));
+    }
 
-    return filter ? filtered : competitions;
-  };
-
-  private groupFixturesToCompetitions = (
-    filteredFixtures: ExtendedFixtureDTO[],
-    id: number,
-    name: CompetitionName,
-    round?: string
-  ): CompetitionWithFixtures => {
-    const fixture = filteredFixtures.find(
-      (f) => f.league.id === id && f.league.round === round
+    return [...groups.values()].sort(
+      (a, b) => this.getCompetitionOrder(a) - this.getCompetitionOrder(b)
     );
+  }
 
-    const competition = SELECT_COMPETITION_DATA_FLAT.find(
-      (c) => c.id === fixture?.league.id
-    );
+  private createCompetitionGroup(
+    fixture: ExtendedFixtureDTO
+  ): CompetitionWithFixtures {
+    const competition = COMPETITION_BY_ID.get(fixture.league.id);
 
-    if (!fixture || !competition) {
-      throw new Error(`Not found ('${name}'${round ? ` - ${round}` : ''})`);
+    if (!competition) {
+      const round = fixture.league.round ? ` - ${fixture.league.round}` : '';
+
+      throw new Error(`Not found ('${fixture.league.name}${round}')`);
     }
 
     return {
-      name,
+      id: fixture.league.id,
+      name: fixture.league.name,
+      image: fixture.league.flag ?? 'error',
       url: ['/', 'competition', competition.url],
-      id: fixture.league.id || -1,
-      image: fixture.league.flag || 'error',
-      fixtures: filteredFixtures.filter(
-        (f) => f.league.id === id && f.league.round === round
-      ),
+      fixtures: [fixture],
     };
-  };
+  }
 
-  private getCompetitionGroupKey = (fixture: ExtendedFixtureDTO): string => {
+  private getCompetitionOrder(competition: CompetitionWithFixtures): number {
+    return COMPETITIONS_ORDER[competition.name] ?? DEFAULT_COMPETITION_ORDER;
+  }
+
+  private getCompetitionGroupKey(fixture: ExtendedFixtureDTO): string {
     return `${fixture.league.id}-${fixture.league.round ?? 'default'}`;
-  };
+  }
 }
