@@ -92,6 +92,10 @@ const DATE_PICKER_PROVIDERS = [
         )
       );
     }
+
+    ::ng-deep .overview-date-picker button.mat-calendar-next-button {
+      margin-left: 1px;
+    }
   `,
   template: `
     <button
@@ -116,7 +120,10 @@ const DATE_PICKER_PROVIDERS = [
         [max]="MAX_DATE"
         [matDatepicker]="picker"
       />
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-datepicker
+        #picker
+        panelClass="overview-date-picker"
+      ></mat-datepicker>
     </mat-form-field>
   `,
 })

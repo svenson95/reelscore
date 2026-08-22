@@ -15,8 +15,12 @@ import {
   type StatusShort,
 } from '@lib/models';
 
-import { PageTitleComponent } from '../../page-title.component';
+import {
+  PageTitleActionDirective,
+  PageTitleComponent,
+} from '../../page-title.component';
 
+import { DateNavigationService } from '../../../services';
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
 
@@ -28,7 +32,12 @@ const hasPlayingState = (status: StatusShort): boolean =>
 @Component({
   selector: 'rs-overview-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatchDayListComponent, PageTitleComponent],
+  imports: [
+    MatButtonModule,
+    MatchDayListComponent,
+    PageTitleComponent,
+    PageTitleActionDirective,
+  ],
   providers: [OverviewFixturesFacade],
   styles: `
     :host {
@@ -38,11 +47,11 @@ const hasPlayingState = (status: StatusShort): boolean =>
     .live-button {
       @apply min-w-0 rounded-full px-3 font-semibold;
       background-color: rgb(34 197 94 / 25%);
-      color: rgb(22 163 74);
+      color: var(--rs-color-green);
       --mat-button-filled-container-height: 30px;
 
       &.is-active {
-        background-color: rgb(22 163 74);
+        background-color: var(--rs-color-green);
         color: white;
       }
     }
@@ -54,8 +63,9 @@ const hasPlayingState = (status: StatusShort): boolean =>
   `,
   template: `
     <rs-page-title title="Partien">
+      @if (isTodaySelected()) {
       <button
-        pageTitleAction
+        rsPageTitleAction
         mat-flat-button
         type="button"
         class="live-button"
@@ -66,6 +76,7 @@ const hasPlayingState = (status: StatusShort): boolean =>
         <span class="live-button-indicator"></span>
         <span class="live-button-text">LIVE</span>
       </button>
+      }
     </rs-page-title>
 
     @if (competitions().length > 0) { @for ( competition of competitions();
@@ -91,8 +102,10 @@ export class OverviewFixturesComponent {
   readonly hasDataForSelectedDay = input.required<boolean>();
   readonly error = input.required<string | null>();
 
+  private readonly dateNavigationService = inject(DateNavigationService);
   private readonly facade = inject(OverviewFixturesFacade);
 
+  readonly isTodaySelected = this.dateNavigationService.isToday;
   readonly liveOnly = signal<boolean>(false);
 
   readonly visibleFixtures = computed<ExtendedFixtureDTO[]>(() => {

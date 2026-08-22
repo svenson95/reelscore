@@ -23,7 +23,7 @@ const MIN_LOADING_DURATION_MS = 1000;
   styles: `
     :host {
       @apply inline-flex select-none items-center
-        text-rs-font-size-body-1 font-semibold tracking-normal
+        text-rs-font-size-body-1 tracking-normal
         text-rs-color-text-1;
     }
 
