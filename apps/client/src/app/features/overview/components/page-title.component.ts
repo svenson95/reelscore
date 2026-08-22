@@ -23,7 +23,7 @@ export class PageTitleActionDirective {}
     }
 
     .title-wrapper {
-      @apply flex shrink-0 items-center gap-[0.2rem];
+      @apply flex shrink-0 items-center gap-[0.1rem];
     }
 
     .marker {
@@ -34,7 +34,7 @@ export class PageTitleActionDirective {}
     .marker::before,
     .marker::after {
       content: '';
-      @apply block w-[3px] bg-rs-color-primary;
+      @apply block w-[2px] bg-rs-color-primary;
     }
 
     .marker::before {
