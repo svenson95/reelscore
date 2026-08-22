@@ -19,11 +19,11 @@ export class PageTitleActionDirective {}
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
-      @apply flex min-h-10 w-full items-center gap-3 pl-3 pr-2;
+      @apply flex min-h-10 w-full items-center gap-3 pl-1 sm:px-2;
     }
 
     .title-wrapper {
-      @apply flex shrink-0 items-center gap-[0.1rem];
+      @apply flex shrink-0 items-center gap-[0.3rem];
     }
 
     .marker {
