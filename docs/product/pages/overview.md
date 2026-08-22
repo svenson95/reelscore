@@ -2,58 +2,54 @@
 
 Die Overview Page ist die zentrale Einstiegsseite von reelscore. Sie bietet eine Übersicht über die Spiele des ausgewählten Tages sowie relevante Tabellenstände und ermöglicht die schnelle Navigation zu Wettbewerben und Spielen.
 
-## Header
-
-### Button: App-Logo
-
-Das App-Logo dient als Navigation zur Overview Page.
-
-Ein Klick auf das Logo führt unabhängig von der aktuell geöffneten Seite zurück zur Overview Page.
-
-### Select: Wettbewerbs-Selector
-
-Über die Wettbewerbs-Auswahl können die verfügbaren Wettbewerbe ausgewählt werden.
-
-Die Auswahl eines Wettbewerbs führt zur Competition Page des jeweiligen Wettbewerbs.
-
-## Content: Top-Bar
+## Top Bar
 
 Die Top Bar dient zur Auswahl des angezeigten Datums sowie zum Filtern, Suchen und Anzeigen des Aktualisierungsstatus.
 
-### Button: Date-Picker
+### Date Picker
 
 Der Date Picker zeigt das aktuell ausgewählte Datum an.
 
 Initial ist der aktuelle Tag ausgewählt. Über den Date Picker kann ein beliebiges anderes Datum ausgewählt werden.
 
-### Toggle-Select: Weekday-Toggle-Bar
+### Weekday Toggle Bar
 
 Die Weekday Toggle Bar zeigt die Wochentage von Montag bis Sonntag der aktuell ausgewählten Woche.
 
 Der ausgewählte Tag wird hervorgehoben.
 
-Über Pfeil-Buttons links und rechts kann zur vorherigen beziehungsweise nächsten Woche gewechselt werden.
+Über die Pfeil-Buttons links und rechts kann zur vorherigen beziehungsweise nächsten Woche gewechselt werden.
 
-### Action-Buttons
+### Action Buttons
 
-#### Readonly Button: Reload Indicator
+#### Readonly Reload Indicator
 
-Der Reload Indicator zeigt dem Nutzer an, wenn die Anwendung Daten aktualisiert.
+Der Reload Indicator zeigt an, wenn die Anwendung Daten aktualisiert.
 
 Dies ist insbesondere bei laufenden Spielen relevant, deren Daten regelmäßig neu geladen werden.
 
 Der Indicator besitzt keine direkte Benutzerinteraktion.
 
-#### Button: Filter
+#### Competition Filter
 
-Der Filter ermöglicht die Auswahl eines Wettbewerbs. Nach Auswahl eines Wettbewerbs werden:
+Über den Competition Filter kann die Overview Page auf einen bestimmten Wettbewerb eingeschränkt werden.
 
-- nur Fixtures des ausgewählten Wettbewerbs angezeigt,
-- die standardmäßige Top-5-Tabellenübersicht durch die Tabelle des ausgewählten Wettbewerbs ersetzt.
+Ist ein Wettbewerb ausgewählt:
 
-Der Filter kann wieder zurückgesetzt werden, sodass erneut alle Fixtures und die standardmäßige Tabellenübersicht angezeigt werden.
+- werden nur Fixtures dieses Wettbewerbs angezeigt,
+- wird die standardmäßige Top-5-Tabellenübersicht durch die Tabelle des ausgewählten Wettbewerbs ersetzt.
 
-#### Button: Search
+Der Filter kann zurückgesetzt werden, sodass erneut alle Fixtures und die standardmäßige Tabellenübersicht angezeigt werden.
+
+#### Live Filter
+
+Über den Live Filter kann die Fixture-Liste auf aktuell laufende Spiele eingeschränkt werden.
+
+Ist der Live Filter aktiv, werden ausschließlich Fixtures angezeigt, die sich aktuell in einem Live-Status befinden.
+
+Der Live Filter beeinflusst ausschließlich die Fixture-Liste und kann wieder deaktiviert werden, um alle Fixtures des ausgewählten Tages anzuzeigen.
+
+#### Search
 
 Die Suche ermöglicht eine schnelle Navigation zu relevanten Inhalten innerhalb der Anwendung.
 
@@ -63,59 +59,46 @@ Unterstützte Suchergebnisse:
 - Wettbewerb anhand des Wettbewerbsnamens → Competition Page
 - Team anhand des Teamnamens → Team Page
 
-## Content: main
+## Main Content
 
-### Fixtures-List
+### Fixtures List
 
 Die Fixture-Liste zeigt alle verfügbaren Spiele des ausgewählten Tages.
 
-Die angezeigten Fixtures können gefiltert werden. Nach Wettbewerb oder ob LIVE oder nicht.
+Die angezeigten Fixtures können über den Competition Filter nach Wettbewerb und über den Live Filter nach aktuell laufenden Spielen gefiltert werden.
 
 Ein Fixture dient als Navigation zur jeweiligen Match Page.
 
-### Standings-List
+Der Name des Wettbewerbs innerhalb einer Fixture-Gruppe dient zusätzlich als Navigation zur zugehörigen Competition Page.
 
-Standardmäßig zeigt die Overview Page eine kompakte Übersicht der europäischen Top-5-Ligen.
+### Standings List
+
+Standardmäßig zeigt die Overview Page eine kompakte Tabellenübersicht der europäischen Top-5-Ligen.
 
 Für jeden Wettbewerb werden die ersten fünf Tabellenplätze angezeigt.
 
-Ist ein Wettbewerbsfilter aktiv, wird anstelle der Top-5-Übersicht die Tabelle des ausgewählten Wettbewerbs angezeigt.
+Ist ein Competition Filter aktiv, wird anstelle der Top-5-Übersicht die Tabelle des ausgewählten Wettbewerbs angezeigt.
 
-### Zustände
+Der Wettbewerbsname oberhalb einer Tabelle dient als Navigation zur zugehörigen Competition Page.
 
-#### Loading State
+## States
 
-Während benötigte Daten geladen oder aktualisiert werden, soll der Nutzer einen geeigneten Ladezustand erkennen können.
+### Loading State
 
-Bereits verfügbare Daten sollen nach Möglichkeit weiterhin sichtbar bleiben, wenn lediglich eine Aktualisierung im Hintergrund erfolgt.
+Während benötigte Daten geladen werden, soll ein geeigneter Ladezustand angezeigt werden.
 
-#### Empty State
+Bereits verfügbare Daten sollen weiterhin sichtbar bleiben, wenn lediglich neue Daten im Hintergrund geladen oder bestehende Daten aktualisiert werden.
 
-Sind für das ausgewählte Datum keine Fixtures verfügbar, soll dies dem Nutzer verständlich angezeigt werden.
+### Empty State
+
+Sind für das ausgewählte Datum keine Fixtures verfügbar, wird dies entsprechend angezeigt.
 
 Dasselbe gilt für nicht verfügbare Tabellendaten.
 
-#### Error State
+Ein Empty State kann ebenfalls entstehen, wenn durch die aktive Filterung keine passenden Fixtures vorhanden sind.
 
-Können Fixtures oder Tabellen nicht geladen werden, soll ein verständlicher Fehlerzustand dargestellt werden.
+### Error State
 
-Ein Fehler in einem Bereich soll nach Möglichkeit nicht verhindern, dass weiterhin verfügbare Daten anderer Bereiche angezeigt werden.
+Können Fixtures oder Tabellen nicht geladen werden, wird für den betroffenen Bereich ein verständlicher Fehlerzustand dargestellt.
 
-## Footer
-
-### App-Logo
-
-Der Footer zeigt das App-Logo als rein visuelles Element ohne Navigation oder weitere Interaktion.
-
-### Link-Liste
-
-Der Footer bietet Platz für allgemeine und rechtlich relevante Links, beispielsweise:
-
-- Impressum
-- Datenschutz
-
-Die Link-Liste kann zukünftig um weitere Einträge erweitert werden.
-
-### App-Description
-
-Eine kurze Beschreibung erläutert den Zweck von reelscore.
+Ein Fehler in einem Bereich soll nicht verhindern, dass weiterhin verfügbare Daten anderer Bereiche angezeigt werden.
