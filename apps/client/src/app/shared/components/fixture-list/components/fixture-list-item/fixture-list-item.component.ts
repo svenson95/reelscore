@@ -55,23 +55,22 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
 
     .time {
       @apply flex-none justify-center items-center self-center min-w-[40px] h-fit py-[2px] text-rs-font-size-small;
-
-      &.is-playing {
-        @apply bg-rs-color-green text-white;
-      }
     }
 
     .time,
     .result {
       @apply flex text-center justify-center rounded-border1;
+
+      &.is-playing {
+        @apply font-semibold text-rs-color-primary;
+      }
     }
 
     .result {
       @apply flex-none min-w-[42px] px-2 items-center gap-[0.1rem];
     }
 
-    .result:not(.is-upcoming),
-    .time.is-upcoming {
+    .result:not(.is-upcoming) {
       background-color: var(--rs-color-surface-2);
     }
 
@@ -125,7 +124,11 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
             />
           </div>
         </div>
-        <div class="result" [class.is-upcoming]="statusState().isScheduled">
+        <div
+          class="result"
+          [class.is-upcoming]="statusState().isScheduled"
+          [class.is-playing]="statusState().isLive"
+        >
           <rs-result-label [fixture]="fixture()" />
         </div>
         <div>
