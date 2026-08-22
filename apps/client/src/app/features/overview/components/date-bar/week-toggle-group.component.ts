@@ -46,10 +46,15 @@ const EXTERNAL_MODULES = [
 
     .week-toggle-wrapper {
       @apply flex items-center w-full xs:w-fit;
+    }
 
-      > button {
-        @apply text-rs-color-text-1;
-      }
+    button.navigate-button {
+      @include mat.icon-button-overrides(
+        (
+          icon-color: var(--rs-color-text-1),
+          disabled-icon-color: var(--rs-border-color-2),
+        )
+      );
     }
 
     mat-button-toggle-group.mat-button-toggle-group {
@@ -100,6 +105,7 @@ const EXTERNAL_MODULES = [
     <div class="week-toggle-wrapper">
       <button
         mat-icon-button
+        class="navigate-button"
         type="button"
         data-testid="week-toggle-prev-btn"
         [disabled]="isLoading()"
@@ -126,6 +132,7 @@ const EXTERNAL_MODULES = [
 
       <button
         mat-icon-button
+        class="navigate-button"
         type="button"
         data-testid="week-toggle-next-btn"
         [disabled]="isLoading()"

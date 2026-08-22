@@ -33,7 +33,7 @@ import { ThemeService } from '../../../services';
       .mdc-text-field--filled .mdc-line-ripple::before { @apply border-b-0; }
     }
 
-    mat-form-field { @apply w-[220px]; }
+    mat-form-field { @apply w-[200px]; }
     ::ng-deep div.competitionSelectMenu.mat-mdc-select-panel {
       @apply max-h-[70vh];
 
