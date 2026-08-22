@@ -9,12 +9,14 @@ import {
 import { StandingsTableComponent } from '@app/shared';
 import type { StandingsDTO } from '@lib/models';
 
+import { PageTitleComponent } from '../../page-title.component';
+
 import { OverviewStandingsFacade } from './standings.facade';
 
 @Component({
   selector: 'rs-overview-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StandingsTableComponent],
+  imports: [StandingsTableComponent, PageTitleComponent],
   providers: [OverviewStandingsFacade],
   styles: `
     :host {
@@ -22,11 +24,7 @@ import { OverviewStandingsFacade } from './standings.facade';
     }
   `,
   template: `
-    <h2>
-      Tabellen @if (!isFiltering()) {
-      <span> Top 5</span>
-      }
-    </h2>
+    <rs-page-title [title]="pageTitle()" />
 
     @let filteredStandings = dayStandings(); @let ws = weekStandings(); @if
     (isFiltering() && filteredStandings) { @if (hasMultipleGroups()) { @for (
@@ -82,6 +80,10 @@ export class OverviewStandingsComponent {
   readonly isFiltering = this.facade.isFiltering;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
   readonly showHomeAndAwayStandings = this.facade.showHomeAndAwayStandings;
+
+  readonly pageTitle = computed<string>(() =>
+    this.isFiltering() ? 'Tabellen' : 'Tabellen Top 5'
+  );
 
   readonly showTopFive = computed<boolean>(() => {
     return this.weekStandings().length === 5;

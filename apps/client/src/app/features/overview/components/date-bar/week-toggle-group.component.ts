@@ -46,6 +46,10 @@ const EXTERNAL_MODULES = [
 
     .week-toggle-wrapper {
       @apply flex items-center w-full xs:w-fit;
+
+      > button {
+        @apply text-rs-color-text-1;
+      }
     }
 
     mat-button-toggle-group.mat-button-toggle-group {
@@ -53,8 +57,8 @@ const EXTERNAL_MODULES = [
         (
           height: 36px,
           label-text-size: var(--rs-font-size-body-2),
-          text-color: var(--rs-color-primary),
-          selected-state-text-color: var(--rs-color-text-3),
+          text-color: var(--rs-color-text-1),
+          selected-state-text-color: var(--rs-color-text-1),
           disabled-state-text-color: var(--rs-border-color-2),
           disabled-selected-state-text-color: var(--rs-color-text-3),
           selected-state-background-color: var(--rs-color-primary),

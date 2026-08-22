@@ -35,11 +35,19 @@ const MAT_MODULES = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...MAT_MODULES, ResponsiveImageComponent],
   styles: `
-    :host { @apply flex; }
-    button[mat-icon-button].is-filtering {
-      @apply bg-rs-color-primary;
-      .mat-icon { @apply text-rs-color-text-3; }
+    :host {
+      @apply flex;
     }
+
+    button[mat-icon-button] {
+      @apply text-rs-color-text-1;
+
+      &.is-filtering,
+      &.is-open {
+        @apply bg-rs-color-primary text-rs-color-text-3;
+      }
+    }
+
     button[mat-menu-item] {
       --mat-menu-item-label-text-size: var(--rs-font-size-body-3);
       --mat-menu-item-label-text-line-height: var(--rs-font-size-body-3);
@@ -49,31 +57,53 @@ const MAT_MODULES = [
 
       @apply py-1;
 
-      &:not(.group-title) { @apply min-h-[32px]; }
-      &.group-title { @apply min-h-[48px]; }
-
-      &.is-filtering {
-        background-color: var(--rs-color-surface-2);
-        --mat-menu-item-icon-color: var(--rs-color-text-1);
-        mat-icon { @apply absolute right-4; }
+      &:not(.group-title) {
+        @apply min-h-[32px];
       }
 
-      mat-icon { --mat-menu-item-icon-size: 12px; @apply text-[12px] mr-0 align-middle; }
-      .competition-logo + span { @apply leading-[1.3]; }
+      &.group-title {
+        @apply min-h-[48px];
+      }
+
+      &.is-filtering {
+        --mat-menu-item-icon-color: var(--rs-color-text-1);
+
+        background-color: var(--rs-color-surface-2);
+
+        mat-icon {
+          @apply absolute right-4;
+        }
+      }
+
+      mat-icon {
+        --mat-menu-item-icon-size: 12px;
+
+        @apply mr-0 text-[12px] align-middle;
+      }
+
+      .competition-logo + span {
+        @apply leading-[1.3];
+      }
     }
 
     ::ng-deep .filter-menu.mat-mdc-menu-panel {
-      @apply min-w-[218px] max-w-[218px] max-h-[70vh]; // 218px is the width of league-select menu
+      @apply min-w-[218px] max-w-[218px] max-h-[70vh];
+
       border-color: var(--rs-button-border-color);
 
-      .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+      .mat-mdc-menu-item-text {
         @apply flex items-center gap-4;
       }
-      .mat-mdc-menu-content .mat-mdc-menu-item.group-title .mat-mdc-menu-item-text {
+
+      .group-title .mat-mdc-menu-item-text {
         @apply font-medium;
       }
 
-      .divider { @apply h-[1px] w-full; background-color: var(--rs-border-color-1); }
+      .divider {
+        @apply h-px w-full;
+
+        background-color: var(--rs-border-color-1);
+      }
     }
   `,
   template: `
@@ -89,12 +119,14 @@ const MAT_MODULES = [
     >
       <mat-icon>filter_list</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu" class="filter-menu" xPosition="before">
       @for (group of filteredGroups(); track group.label) {
       <button mat-menu-item class="group-title" disabled>
         <span>{{ group.label }}</span>
         <span class="divider"></span>
       </button>
+
       @for (competition of group.competitions; track competition.id) {
       <button
         mat-menu-item
@@ -109,7 +141,9 @@ const MAT_MODULES = [
           [width]="14"
           [height]="14"
         />
+
         <span>{{ competition.label }}</span>
+
         @if (isSameId(competition.id)) {
         <mat-icon>close</mat-icon>
         }

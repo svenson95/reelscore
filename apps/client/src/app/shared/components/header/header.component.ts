@@ -15,15 +15,31 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...EXTERNAL_IMPORTS, LogoComponent, CompetitionSelectComponent],
   styles: `
-    :host { @apply p-3 border-b-[1px] border-rs-color-primary z-[200] relative; }
-    .wrapper { @apply flex items-center justify-between lg:px-3; }
-    a { --mat-button-filled-container-color: transparent; }
+    :host {
+      @apply relative z-[200] border-b-[1px] border-rs-color-primary p-3;
+    }
+
+    .wrapper {
+      @apply flex items-center justify-between lg:px-3;
+    }
+
+    .logo-link {
+      --mat-button-filled-container-color: transparent;
+
+      @apply min-w-0 pl-0 pr-3;
+    }
   `,
   template: `
     <div class="wrapper">
-      <a mat-flat-button [routerLink]="['/']">
+      <a
+        class="logo-link"
+        mat-flat-button
+        [routerLink]="['/']"
+        aria-label="Zur Startseite"
+      >
         <rs-logo [showLoadingIndicator]="true" />
       </a>
+
       <nav
         aria-label="Competition-Select Navigation"
         rs-competition-select

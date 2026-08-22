@@ -41,6 +41,14 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
       @apply flex;
     }
 
+    .search-button {
+      @apply text-rs-color-text-1;
+
+      &.is-open {
+        @apply bg-rs-color-primary text-rs-color-text-3;
+      }
+    }
+
     ::ng-deep .search-menu .mat-mdc-menu-content {
       @apply p-0;
     }
