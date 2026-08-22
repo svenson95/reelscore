@@ -2,13 +2,30 @@ import { Component, input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import type { CompetitionWithFixtures } from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
+import {
+  STATUS_TYPES_PLAYING,
+  type ExtendedFixtureDTO,
+  type StatusShort,
+} from '@lib/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
 
 import { OverviewFixturesComponent } from './fixtures.component';
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
+
+const NON_PLAYING_STATUS: StatusShort = 'NS';
+
+const createFixtureWithStatus = (status: StatusShort): ExtendedFixtureDTO => ({
+  ...EXAMPLE_FIXTURE,
+  fixture: {
+    ...EXAMPLE_FIXTURE.fixture,
+    status: {
+      ...EXAMPLE_FIXTURE.fixture.status,
+      short: status,
+    },
+  },
+});
 
 @Component({
   selector: 'rs-start-match-day-list',
@@ -184,5 +201,87 @@ describe('OverviewFixturesComponent', () => {
     expect(
       fixture.nativeElement.querySelector('[data-testid="fixtures-loading"]')
     ).toBeNull();
+  });
+
+  it('should display all fixtures when live filter is disabled', () => {
+    const fixtures = [
+      createFixtureWithStatus(NON_PLAYING_STATUS),
+      createFixtureWithStatus(STATUS_TYPES_PLAYING[0]),
+    ];
+
+    const fixture = createComponent({ fixtures });
+
+    expect(fixture.componentInstance.visibleFixtures()).toEqual(fixtures);
+  });
+
+  it('should display only playing fixtures when live filter is enabled', () => {
+    const nonPlayingFixture = createFixtureWithStatus(NON_PLAYING_STATUS);
+    const playingFixture = createFixtureWithStatus(STATUS_TYPES_PLAYING[0]);
+
+    const fixture = createComponent({
+      fixtures: [nonPlayingFixture, playingFixture],
+    });
+
+    fixture.componentInstance.liveOnly.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.visibleFixtures()).toEqual([
+      playingFixture,
+    ]);
+  });
+
+  it('should restore all fixtures when live filter is disabled again', () => {
+    const fixtures = [
+      createFixtureWithStatus(NON_PLAYING_STATUS),
+      createFixtureWithStatus(STATUS_TYPES_PLAYING[0]),
+    ];
+
+    const fixture = createComponent({ fixtures });
+
+    fixture.componentInstance.liveOnly.set(true);
+    fixture.detectChanges();
+
+    fixture.componentInstance.liveOnly.set(false);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.visibleFixtures()).toEqual(fixtures);
+  });
+
+  it('should display a live empty state when no playing fixtures are available', () => {
+    const fixture = createComponent({
+      fixtures: [createFixtureWithStatus(NON_PLAYING_STATUS)],
+    });
+
+    fixture.componentInstance.liveOnly.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'Aktuell finden keine Live-Spiele statt.'
+    );
+
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Es finden keine Spiele statt.'
+    );
+  });
+
+  it('should toggle live filter when clicking the live button', () => {
+    const fixture = createComponent();
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('.live-button');
+
+    expect(fixture.componentInstance.liveOnly()).toBe(false);
+    expect(button.getAttribute('aria-pressed')).toBe('false');
+
+    button.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.liveOnly()).toBe(true);
+    expect(button.getAttribute('aria-pressed')).toBe('true');
+
+    button.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.liveOnly()).toBe(false);
+    expect(button.getAttribute('aria-pressed')).toBe('false');
   });
 });

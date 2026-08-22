@@ -1,6 +1,7 @@
 import { Component, input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { StandingsTableComponent } from '@app/shared';
 import type { StandingsDTO } from '@lib/models';
 
 import { OverviewStandingsComponent } from './standings.component';
@@ -40,7 +41,11 @@ describe('OverviewStandingsComponent', () => {
       imports: [OverviewStandingsComponent],
     })
       .overrideComponent(OverviewStandingsComponent, {
-        set: {
+        remove: {
+          imports: [StandingsTableComponent],
+          providers: [OverviewStandingsFacade],
+        },
+        add: {
           imports: [StandingsTableStubComponent],
           providers: [
             {
@@ -145,5 +150,20 @@ describe('OverviewStandingsComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain(
       'Fehler beim Laden der Tabellen.'
     );
+  });
+
+  it('should display top five title when no competition filter is active', () => {
+    const fixture = createComponent();
+
+    expect(fixture.nativeElement.textContent).toContain('Tabellen Top 5');
+  });
+
+  it('should display standings title when competition filter is active', () => {
+    isFiltering.set(true);
+
+    const fixture = createComponent();
+
+    expect(fixture.nativeElement.textContent).toContain('Tabellen');
+    expect(fixture.nativeElement.textContent).not.toContain('Tabellen Top 5');
   });
 });

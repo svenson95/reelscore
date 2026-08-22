@@ -43,6 +43,11 @@ import {
   styles: `
     :host ::ng-deep {
       mat-tab-header { @apply mx-3; }
+
+      h2 {
+        line-height: 40px;
+        letter-spacing: 2px;
+      }
     }
   `,
   template: `
