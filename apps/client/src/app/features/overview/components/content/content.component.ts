@@ -51,12 +51,14 @@ export class HideHeaderDirective implements OnInit {
       [animationDuration]="animationDuration"
       [selectedIndex]="tabIndex()"
       rsHideHeader
+      [preserveContent]="true"
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
         <div class="tab-content">
-          @let fixtures = weekFixtures()[idx]; @let standings =
-          weekStandings()[idx]; @if (fixtures) {
+          @let fixtures = weekFixtures()[idx] ?? []; @let standings =
+          weekStandings()[idx] ?? [];
+
           <rs-overview-fixtures
             class="fixtures-container"
             [filteredFixtures]="fixtures"
@@ -64,7 +66,7 @@ export class HideHeaderDirective implements OnInit {
             [hasDataForSelectedDay]="hasFixturesDataForSelectedDay()"
             [error]="fixturesError()"
           />
-          } @if (standings) {
+
           <rs-overview-standings
             class="standings-container"
             [weekStandings]="standings"
@@ -72,7 +74,6 @@ export class HideHeaderDirective implements OnInit {
             [hasDataForSelectedDay]="hasStandingsDataForSelectedDay()"
             [error]="standingsError()"
           />
-          }
         </div>
       </mat-tab>
       }
