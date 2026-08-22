@@ -4,28 +4,69 @@ import {
   computed,
   inject,
   input,
+  signal,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import type { CompetitionWithFixtures } from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
+import {
+  STATUS_TYPES_PLAYING,
+  type ExtendedFixtureDTO,
+  type StatusShort,
+} from '@lib/models';
+
+import { PageTitleComponent } from '../../page-title.component';
 
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
 
 type FixturesViewState = 'loading' | 'error' | 'empty' | null;
 
+const hasPlayingState = (status: StatusShort): boolean =>
+  STATUS_TYPES_PLAYING.includes(status);
+
 @Component({
   selector: 'rs-overview-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchDayListComponent],
+  imports: [MatButtonModule, MatchDayListComponent, PageTitleComponent],
   providers: [OverviewFixturesFacade],
   styles: `
     :host {
       @apply flex flex-col gap-rs1;
     }
+
+    .live-button {
+      @apply min-w-0 rounded-full px-3 font-semibold;
+      background-color: rgb(34 197 94 / 25%);
+      color: rgb(22 163 74);
+      --mat-button-filled-container-height: 30px;
+
+      &.is-active {
+        background-color: rgb(22 163 74);
+        color: white;
+      }
+    }
+
+    .live-button-indicator {
+      @apply mr-[0.35rem] inline-block size-2 rounded-full;
+      background-color: currentColor;
+    }
   `,
   template: `
-    <h2>Partien</h2>
+    <rs-page-title title="Partien">
+      <button
+        pageTitleAction
+        mat-flat-button
+        type="button"
+        class="live-button"
+        [class.is-active]="liveOnly()"
+        [attr.aria-pressed]="liveOnly()"
+        (click)="liveOnly.update((value) => !value)"
+      >
+        <span class="live-button-indicator"></span>
+        <span class="live-button-text">LIVE</span>
+      </button>
+    </rs-page-title>
 
     @if (competitions().length > 0) { @for ( competition of competitions();
     track getCompetitionKey(competition) ) {
@@ -37,7 +78,10 @@ type FixturesViewState = 'loading' | 'error' | 'empty' | null;
     } @case ('error') {
     <p class="no-data">Fehler beim Laden der Spiele.</p>
     } @case ('empty') {
-    <p class="no-data">Es finden keine Spiele statt.</p>
+    <p class="no-data">
+      @if (liveOnly()) { Aktuell finden keine Live-Spiele statt. } @else { Es
+      finden keine Spiele statt. }
+    </p>
     } } }
   `,
 })
@@ -49,8 +93,20 @@ export class OverviewFixturesComponent {
 
   private readonly facade = inject(OverviewFixturesFacade);
 
+  readonly liveOnly = signal<boolean>(false);
+
+  readonly visibleFixtures = computed<ExtendedFixtureDTO[]>(() => {
+    if (!this.liveOnly()) {
+      return this.filteredFixtures();
+    }
+
+    return this.filteredFixtures().filter((fixture) =>
+      hasPlayingState(fixture.fixture.status.short)
+    );
+  });
+
   readonly competitions = computed<CompetitionWithFixtures[]>(() =>
-    this.facade.groupFixturesByCompetition(this.filteredFixtures())
+    this.facade.groupFixturesByCompetition(this.visibleFixtures())
   );
 
   readonly viewState = computed<FixturesViewState>(() => {
@@ -62,7 +118,7 @@ export class OverviewFixturesComponent {
       return 'error';
     }
 
-    if (this.filteredFixtures().length === 0) {
+    if (this.visibleFixtures().length === 0) {
       return 'empty';
     }
 
