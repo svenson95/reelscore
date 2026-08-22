@@ -4,8 +4,8 @@
 
 - [Product Vision](./product/vision.md)
 - [Overview Page](./product/pages/overview.md)
-- [Match Page](./product/pages/match.md) // TODO: add missing docs
-- [Competition Page](./product/pages/competition.md) // missing
+- [Match Page](./product/pages/match.md)
+- [Competition Page](./product/pages/competition.md) // TODO: add missing docs
 - [Team Page](./product/pages/team.md) // missing
 
 ## Architecture
