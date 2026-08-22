@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
       @include mat.button-overrides(
         (
           filled-container-height: 36px,
+          filled-label-text-color: var(--rs-color-text-1)
         )
       );
     }

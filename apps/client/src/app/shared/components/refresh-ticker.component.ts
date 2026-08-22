@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
@@ -13,7 +7,7 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   selector: 'rs-refresh-ticker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatButtonModule, MatIcon],
+  imports: [MatIcon],
   host: {
     '[class.is-active]': 'isActive()',
     'data-testid': 'refresh-timer',
@@ -23,15 +17,26 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       @apply flex;
     }
 
-    $buttonBg: var(--rs-button-bg-color);
+    $tickerBg: var(--rs-button-bg-color);
 
-    button {
-      position: relative;
-      overflow: hidden;
-      background-color: var(--rs-color-primary);
+    .ticker {
+      @apply relative flex size-9 items-center justify-center overflow-hidden rounded-border2;
+      background-color: $tickerBg;
     }
 
-    button::before {
+    mat-icon {
+      position: relative;
+      z-index: 1;
+
+      --mat-icon-color: var(--rs-border-color-2);
+
+      $size: 20px;
+      font-size: $size;
+      width: $size;
+      height: $size;
+    }
+
+    .ticker::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -44,27 +49,21 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       pointer-events: none;
     }
 
-    button::after {
+    .ticker::after {
       content: '';
       position: absolute;
       inset: 1px;
       border-radius: inherit;
+      background-color: $tickerBg;
       pointer-events: none;
-      background-color: $buttonBg;
     }
 
-    mat-icon {
-      position: relative;
-      z-index: 1;
-      --mat-icon-color: var(--rs-border-color-2);
-    }
-
-    :host(.is-active) button::before {
+    :host(.is-active) .ticker::before {
       opacity: 1;
       animation: refresh-progress ${REFRESH_INTERVAL_SECONDS}s linear infinite;
     }
 
-    :host(.is-active) button:not(:disabled) mat-icon {
+    :host(.is-active) mat-icon {
       --mat-icon-color: var(--rs-color-primary);
       transition: color 150ms ease-in-out;
     }
@@ -86,27 +85,13 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
     }
   `,
   template: `
-    <button
-      mat-icon-button
-      [disabled]="buttonDisabled()"
-      (click)="refresh($event)"
-    >
+    <span class="ticker" aria-hidden="true">
       <mat-icon fontIcon="refresh" />
-    </button>
+    </span>
   `,
 })
 export class RefreshTickerComponent {
   private readonly pageRefreshService = inject(PageRefreshService);
 
   readonly isActive = this.pageRefreshService.isRunning;
-
-  readonly buttonDisabled = computed<boolean>(() => {
-    const BUTTON_DELAY = REFRESH_INTERVAL_SECONDS - 3;
-    return !this.isActive() || this.pageRefreshService.timer() > BUTTON_DELAY;
-  });
-
-  refresh(event: Event): void {
-    event.preventDefault();
-    void this.pageRefreshService.refresh();
-  }
 }

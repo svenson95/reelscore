@@ -70,6 +70,22 @@ const DATE_PICKER_PROVIDERS = [
         @apply opacity-0 w-0 h-0;
       }
 
+      button {
+        @apply text-rs-color-text-1;
+
+        mat-icon {
+          @apply text-rs-color-primary;
+        }
+
+        &.is-open {
+          @apply bg-rs-color-primary text-rs-color-text-3;
+
+          mat-icon {
+            @apply text-rs-color-text-3;
+          }
+        }
+      }
+
       @include mat.button-overrides(
         (
           filled-container-height: 36px,
