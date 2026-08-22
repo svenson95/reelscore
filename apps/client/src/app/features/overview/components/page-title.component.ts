@@ -1,4 +1,17 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  contentChild,
+  input,
+} from '@angular/core';
+
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[rsPageTitleAction]',
+  standalone: true,
+})
+export class PageTitleActionDirective {}
 
 @Component({
   selector: 'rs-page-title',
@@ -6,7 +19,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
-      @apply flex min-h-10 w-full items-center gap-3 px-3;
+      @apply flex min-h-10 w-full items-center gap-3 pl-3 pr-2;
     }
 
     .title-wrapper {
@@ -34,7 +47,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     }
 
     h2 {
-      @apply m-0 font-bold uppercase italic tracking-wide text-rs-color-text-1;
+      @apply m-0 font-medium uppercase italic tracking-wide text-rs-color-text-1;
       line-height: 1;
     }
 
@@ -55,11 +68,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
     <span class="divider" aria-hidden="true"></span>
 
+    @if (action()) {
     <div class="action">
-      <ng-content select="[pageTitleAction]" />
+      <ng-content select="[rsPageTitleAction]" />
     </div>
+    }
   `,
 })
 export class PageTitleComponent {
   readonly title = input.required<string>();
+
+  protected readonly action = contentChild(PageTitleActionDirective);
 }
