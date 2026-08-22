@@ -7,11 +7,18 @@ import { LogoComponent } from '../logo/logo.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LogoComponent],
   styles: `
-    :host { @apply flex justify-center px-3 py-[8rem] border-t-[1px] border-rs-color-primary; }
+    :host {
+      @apply flex justify-center border-t-[1px] border-rs-color-primary
+        px-3 py-[8rem];
+    }
+
+    .footer-logo {
+      @apply grayscale opacity-40;
+    }
   `,
   template: `
     <div>
-      <rs-logo disabled />
+      <rs-logo class="footer-logo" />
     </div>
 
     <div></div>
