@@ -23,7 +23,7 @@ import { MatchFixturesTableComponent } from './components';
     .no-data { @apply m-auto; }
   `,
   template: `
-    <h2>Letzte Partien</h2>
+    <h2>Letzte Spiele</h2>
     <div class="latest-fixtures-container">
       @let lf = latestFixtures(); @if (lf) { @let d = data(); @if (d) {
       <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />

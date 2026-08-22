@@ -23,37 +23,34 @@ export class PageTitleActionDirective {}
     }
 
     .title-wrapper {
-      @apply flex shrink-0 items-center gap-3;
+      @apply flex shrink-0 items-center gap-[0.2rem];
     }
 
     .marker {
-      @apply flex shrink-0 gap-1;
+      @apply flex shrink-0 gap-[0.2rem];
       transform: skewX(-16deg);
     }
 
     .marker::before,
     .marker::after {
       content: '';
-      @apply block w-1.5 bg-rs-color-primary;
+      @apply block w-[3px] bg-rs-color-primary;
     }
 
     .marker::before {
-      @apply h-6;
+      @apply h-[12px] opacity-[0.6];
     }
 
     .marker::after {
-      @apply h-6;
-      opacity: 0.55;
+      @apply h-[12px];
     }
 
     h2 {
-      @apply m-0 font-medium uppercase italic tracking-wide text-rs-color-text-1;
-      line-height: 1;
+      @apply m-0 font-medium uppercase italic tracking-wide text-rs-color-text-1 leading-none;
     }
 
     .divider {
-      @apply h-px min-w-4 flex-1;
-      background-color: var(--rs-border-color-2);
+      @apply h-px min-w-4 flex-1 bg-rs-border-color-2;
     }
 
     .action {
