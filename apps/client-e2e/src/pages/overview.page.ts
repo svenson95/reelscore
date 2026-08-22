@@ -14,11 +14,19 @@ export class OverviewPage {
   readonly fixtureItems: Locator;
   readonly refreshTimer: Locator;
 
+  readonly fixturesTitle: Locator;
+  readonly fixturesLoading: Locator;
+  readonly standingsLoading: Locator;
+
   constructor(private readonly page: Page) {
     this.root = page.getByTestId('overview-page');
     this.selectedDate = page.getByTestId('selected-date');
     this.fixtureItems = page.getByTestId('fixture-list-item');
     this.refreshTimer = page.getByTestId('refresh-timer');
+
+    this.fixturesTitle = page.getByTestId('fixtures-title');
+    this.fixturesLoading = page.getByTestId('fixtures-loading');
+    this.standingsLoading = page.getByTestId('standings-loading');
   }
 
   async goto(date: string): Promise<void> {
@@ -28,6 +36,24 @@ export class OverviewPage {
   async expectLoaded(): Promise<void> {
     await expect(this.root).toBeVisible();
     await expect(this.fixtureItems.first()).toBeVisible();
+  }
+
+  async selectDate(day: number): Promise<void> {
+    await this.selectedDate.click();
+
+    const calendar = this.page.locator('mat-datepicker-content');
+
+    await expect(calendar).toBeVisible();
+
+    await calendar
+      .locator('.mat-calendar-body-cell')
+      .filter({ hasText: new RegExp(`^\\s*${day}\\s*$`) })
+      .click();
+  }
+
+  async expectWeekLoading(): Promise<void> {
+    await expect(this.fixturesLoading).toBeVisible();
+    await expect(this.standingsLoading).toBeVisible();
   }
 
   async expectRefreshTimerRunning(): Promise<void> {

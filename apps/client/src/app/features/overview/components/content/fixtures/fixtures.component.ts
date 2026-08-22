@@ -62,7 +62,7 @@ const hasPlayingState = (status: StatusShort): boolean =>
     }
   `,
   template: `
-    <rs-page-title title="Partien">
+    <rs-page-title title="Partien" data-testid="fixtures-title">
       @if (isTodaySelected()) {
       <button
         rsPageTitleAction
