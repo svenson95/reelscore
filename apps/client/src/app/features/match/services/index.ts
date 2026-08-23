@@ -6,7 +6,7 @@ import { HTTP_FIXTURE_SERVICE_PROVIDER } from './http/fixture.service';
 import { HTTP_LATEST_FIXTURES_SERVICE_PROVIDER } from './http/latest-fixtures.service';
 import { HTTP_FIXTURE_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
 import { HTTP_FIXTURE_STATISTICS_SERVICE_PROVIDER } from './http/statistics.service';
-import { VISIBILITY_OBSERVER_SERVICE_PROVIDER } from './visibility-observer.service';
+import { MatchRefreshService } from './match-refresh.service';
 
 export * from './fixture/fixture.service';
 export * from './http/analyses.service';
@@ -16,7 +16,7 @@ export * from './http/fixture.service';
 export * from './http/latest-fixtures.service';
 export * from './http/standings.service';
 export * from './http/statistics.service';
-export * from './visibility-observer.service';
+export * from './match-refresh.service';
 
 export const SERVICE_PROVIDERS = [
   FIXTURE_SERVICE_PROVIDER,
@@ -27,5 +27,5 @@ export const SERVICE_PROVIDERS = [
   HTTP_FIXTURE_ANALYSES_SERVICE_PROVIDER,
   HTTP_FIXTURE_STANDINGS_SERVICE_PROVIDER,
   HTTP_FIXTURE_STATISTICS_SERVICE_PROVIDER,
-  VISIBILITY_OBSERVER_SERVICE_PROVIDER,
+  MatchRefreshService,
 ];
