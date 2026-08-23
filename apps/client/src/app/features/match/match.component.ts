@@ -9,7 +9,7 @@ import {
   input,
 } from '@angular/core';
 
-import { PageRefreshService } from '@app/shared';
+import { PAGE_REFRESH_SERVICE_PROVIDER, PageRefreshService } from '@app/shared';
 import { type CompetitionUrl, type FixtureId } from '@lib/models';
 
 import {
@@ -25,7 +25,12 @@ import { STORE_PROVIDERS } from './store';
   selector: 'rs-match-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PageHeaderComponent, MatchHeaderComponent, MatchDetailsComponent],
-  providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
+  providers: [
+    MatchFacade,
+    ...SERVICE_PROVIDERS,
+    ...STORE_PROVIDERS,
+    PAGE_REFRESH_SERVICE_PROVIDER,
+  ],
   styles: `
     :host { @apply gap-5; }
     :host ::ng-deep h2 { text-align: center; }

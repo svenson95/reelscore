@@ -14,6 +14,7 @@ export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 
 export abstract class PageRefreshService {
   abstract init(options: PageRefreshOptions): void;
+  abstract pause(): void;
   abstract stop(): void;
   abstract hasPlayingState(states: StatusShort[]): boolean;
   abstract timer: Signal<number>;
@@ -43,7 +44,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
     const canRefresh = options.canRefresh();
 
     if (!isPlaying) {
-      this.stopTimer();
+      this.stopTimer(true);
       return;
     }
 
@@ -56,9 +57,14 @@ export class AbstractedPageRefreshService implements PageRefreshService {
     this.options.set(options);
   }
 
+  pause(): void {
+    this.options.set(undefined);
+    this.stopTimer(false);
+  }
+
   stop(): void {
     this.options.set(undefined);
-    this.stopTimer();
+    this.stopTimer(true);
   }
 
   hasPlayingState(states: StatusShort[]): boolean {
@@ -72,7 +78,7 @@ export class AbstractedPageRefreshService implements PageRefreshService {
       return;
     }
 
-    this.stopTimer();
+    this.stopTimer(true);
 
     try {
       await refreshOptions.refresh();
@@ -92,7 +98,6 @@ export class AbstractedPageRefreshService implements PageRefreshService {
       return;
     }
 
-    this.timer.set(REFRESH_INTERVAL_SECONDS);
     this.isRunning.set(true);
 
     this.refreshSubscription = interval(1000)
@@ -115,11 +120,14 @@ export class AbstractedPageRefreshService implements PageRefreshService {
       .subscribe();
   }
 
-  private stopTimer(): void {
+  private stopTimer(resetTimer: boolean): void {
     this.refreshSubscription?.unsubscribe();
     this.refreshSubscription = undefined;
 
-    this.timer.set(REFRESH_INTERVAL_SECONDS);
+    if (resetTimer) {
+      this.timer.set(REFRESH_INTERVAL_SECONDS);
+    }
+
     this.isRunning.set(false);
   }
 

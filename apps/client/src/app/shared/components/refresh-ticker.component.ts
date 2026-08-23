@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
@@ -10,6 +17,8 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   imports: [MatIcon],
   host: {
     '[class.is-active]': 'isActive()',
+    '[style.--refresh-progress-offset]': 'animationOffset()',
+    '[attr.data-timer]': 'timer()',
     'data-testid': 'refresh-timer',
   },
   styles: `
@@ -60,7 +69,13 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
     :host(.is-active) .ticker::before {
       opacity: 1;
-      animation: refresh-progress ${REFRESH_INTERVAL_SECONDS}s linear infinite;
+
+      animation: refresh-progress
+        ${REFRESH_INTERVAL_SECONDS}s
+        linear
+        infinite;
+
+      animation-delay: var(--refresh-progress-offset);
     }
 
     :host(.is-active) mat-icon {
@@ -93,5 +108,19 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 export class RefreshTickerComponent {
   private readonly pageRefreshService = inject(PageRefreshService);
 
+  readonly timer = this.pageRefreshService.timer;
   readonly isActive = this.pageRefreshService.isRunning;
+
+  readonly animationOffset = signal('0s');
+
+  private readonly animationStateEffect = effect(() => {
+    if (!this.isActive()) {
+      return;
+    }
+
+    const remainingSeconds = untracked(this.timer);
+    const elapsedSeconds = REFRESH_INTERVAL_SECONDS - remainingSeconds;
+
+    this.animationOffset.set(`-${elapsedSeconds}s`);
+  });
 }
