@@ -1,14 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   inject,
-  signal,
-  untracked,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
-import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
+import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
 @Component({
   selector: 'rs-refresh-ticker',
@@ -17,7 +15,8 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   imports: [MatIcon],
   host: {
     '[class.is-active]': 'isActive()',
-    '[style.--refresh-progress-offset]': 'animationOffset()',
+    '[class.is-reset]': 'isReset()',
+    '[style.--refresh-progress]': 'progress()',
     '[attr.data-timer]': 'timer()',
     'data-testid': 'refresh-timer',
   },
@@ -45,17 +44,29 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       height: $size;
     }
 
+    @property --refresh-progress {
+      syntax: '<percentage>';
+      inherits: true;
+      initial-value: 0%;
+    }
+
     .ticker::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       background: conic-gradient(
-        var(--rs-color-primary) var(--progress),
+        var(--rs-color-primary) var(--refresh-progress),
         transparent 0
       );
       opacity: 0;
       pointer-events: none;
+
+      transition: --refresh-progress 1s linear;
+    }
+
+    :host(.is-reset) .ticker::before {
+      transition: none;
     }
 
     .ticker::after {
@@ -69,34 +80,11 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
     :host(.is-active) .ticker::before {
       opacity: 1;
-
-      animation: refresh-progress
-        ${REFRESH_INTERVAL_SECONDS}s
-        linear
-        infinite;
-
-      animation-delay: var(--refresh-progress-offset);
     }
 
     :host(.is-active) mat-icon {
       --mat-icon-color: var(--rs-color-primary);
       transition: color 150ms ease-in-out;
-    }
-
-    @property --progress {
-      syntax: '<percentage>';
-      inherits: false;
-      initial-value: 0%;
-    }
-
-    @keyframes refresh-progress {
-      from {
-        --progress: 0%;
-      }
-
-      to {
-        --progress: 100%;
-      }
     }
   `,
   template: `
@@ -106,21 +94,19 @@ import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   `,
 })
 export class RefreshTickerComponent {
-  private readonly pageRefreshService = inject(PageRefreshService);
+  private readonly liveRefreshService = inject(LiveRefreshService);
 
-  readonly timer = this.pageRefreshService.timer;
-  readonly isActive = this.pageRefreshService.isRunning;
+  readonly timer = this.liveRefreshService.timer;
+  readonly isActive = this.liveRefreshService.isRunning;
 
-  readonly animationOffset = signal('0s');
+  readonly progress = computed<string>(() => {
+    const elapsedSeconds = REFRESH_INTERVAL_SECONDS - this.timer();
+    const progress = (elapsedSeconds / REFRESH_INTERVAL_SECONDS) * 100;
 
-  private readonly animationStateEffect = effect(() => {
-    if (!this.isActive()) {
-      return;
-    }
-
-    const remainingSeconds = untracked(this.timer);
-    const elapsedSeconds = REFRESH_INTERVAL_SECONDS - remainingSeconds;
-
-    this.animationOffset.set(`-${elapsedSeconds}s`);
+    return `${Math.round(progress)}%`;
   });
+
+  readonly isReset = computed<boolean>(
+    () => this.timer() === REFRESH_INTERVAL_SECONDS
+  );
 }
