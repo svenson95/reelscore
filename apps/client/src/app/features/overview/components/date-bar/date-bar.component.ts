@@ -49,9 +49,12 @@ import { WeekToggleGroupComponent } from './week-toggle-group.component';
         [isLoading]="isLoading()"
         (dateSelected)="setDate($event)"
       />
-      @if (isMobile()){ @if (!isToday()) {
-      <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
-      }
+
+      @if (isMobile()) {
+      <div [class.invisible]="isToday()">
+        <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
+      </div>
+
       <div class="spacer"></div>
       <rs-action-buttons />
       }
@@ -64,9 +67,11 @@ import { WeekToggleGroupComponent } from './week-toggle-group.component';
       (dateSelected)="setDate($event)"
     ></rs-week-toggle-group>
 
-    @if (!isMobile()){ @if (!isToday()) {
-    <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
-    }
+    @if (!isMobile()) {
+    <div [class.invisible]="isToday()">
+      <rs-today-button [isLoading]="isLoading()" (clicked)="resetDate()" />
+    </div>
+
     <div class="spacer"></div>
     <rs-action-buttons />
     }
