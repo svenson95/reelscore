@@ -60,6 +60,22 @@ export class OverviewPage {
     await expect(this.refreshTimer).toHaveClass(/\bis-active\b/);
   }
 
+  async getRefreshTimerValue(): Promise<number> {
+    const value = await this.refreshTimer.getAttribute('data-timer');
+
+    if (value === null) {
+      throw new Error('Refresh timer value is missing');
+    }
+
+    const timer = Number(value);
+
+    if (Number.isNaN(timer)) {
+      throw new Error(`Invalid refresh timer value: "${value}"`);
+    }
+
+    return timer;
+  }
+
   async mockSelectedDayAsPlaying(date: string): Promise<void> {
     await this.page.route('**/fixtures/by-date**', async (route) => {
       const response = await route.fetch();

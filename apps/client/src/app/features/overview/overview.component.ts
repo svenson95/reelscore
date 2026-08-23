@@ -7,7 +7,7 @@ import {
   inject,
 } from '@angular/core';
 
-import { PageRefreshService } from '@app/shared';
+import { PAGE_REFRESH_SERVICE_PROVIDER, PageRefreshService } from '@app/shared';
 
 import type { RouteReuseLifecycle } from '../../config';
 
@@ -24,7 +24,7 @@ import { WeekFixturesStore, WeekStandingsStore } from './stores';
   selector: 'rs-overview-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
-  providers: [...SERVICE_PROVIDERS],
+  providers: [...SERVICE_PROVIDERS, PAGE_REFRESH_SERVICE_PROVIDER],
   styles: `
     :host ::ng-deep h2 { margin-left: 1rem; }
     :host { @apply min-h-[70vh]; }
@@ -79,7 +79,7 @@ export class OverviewComponent
   }
 
   onRouteDetach(): void {
-    this.stopServices();
+    this.pauseServices();
   }
 
   onRouteAttach(): void {
@@ -94,6 +94,11 @@ export class OverviewComponent
       canRefresh: this.canRefresh,
       refresh: () => this.refresh(),
     });
+  }
+
+  private pauseServices(): void {
+    this.visibilityObserverService.stop();
+    this.pageRefreshService.pause();
   }
 
   private stopServices(): void {

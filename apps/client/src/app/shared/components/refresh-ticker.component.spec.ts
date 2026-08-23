@@ -1,15 +1,17 @@
 import { signal } from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
-import { PageRefreshService } from '../services';
+import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
 import { RefreshTickerComponent } from './refresh-ticker.component';
 
 describe('RefreshTickerComponent', () => {
   const isRunning = signal(false);
+  const timer = signal(REFRESH_INTERVAL_SECONDS);
 
   const pageRefreshServiceMock = {
     isRunning: isRunning.asReadonly(),
+    timer: timer.asReadonly(),
   };
 
   let fixture: ComponentFixture<RefreshTickerComponent>;
@@ -17,6 +19,7 @@ describe('RefreshTickerComponent', () => {
 
   beforeEach(async () => {
     isRunning.set(false);
+    timer.set(REFRESH_INTERVAL_SECONDS);
 
     await TestBed.configureTestingModule({
       imports: [RefreshTickerComponent],
@@ -42,6 +45,13 @@ describe('RefreshTickerComponent', () => {
     expect(element.querySelector('button')).toBeNull();
   });
 
+  it('should expose the current timer value', () => {
+    timer.set(10);
+    fixture.detectChanges();
+
+    expect(element.getAttribute('data-timer')).toBe('10');
+  });
+
   it('should mark the ticker as active while auto refresh is running', () => {
     expect(element.classList.contains('is-active')).toBe(false);
 
@@ -61,5 +71,16 @@ describe('RefreshTickerComponent', () => {
     fixture.detectChanges();
 
     expect(element.classList.contains('is-active')).toBe(false);
+  });
+
+  it('should restore the visual progress when auto refresh resumes', () => {
+    timer.set(10);
+    isRunning.set(true);
+
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress-offset')).toBe(
+      '-5s'
+    );
   });
 });
