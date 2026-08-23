@@ -64,6 +64,8 @@ const ANGULAR_MODULES = [
       [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
+      [style.--tab-count]="MATCH_TABS_LENGTH"
+      [style.--active-tab-index]="selectedTabIndex()"
     >
       <mat-tab>
         <ng-template mat-tab-label>
@@ -151,6 +153,7 @@ export class MatchDetailsComponent {
   readonly isQualifyPhase = this.facade.isQualifyPhase;
 
   readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+  readonly MATCH_TABS_LENGTH = 4;
 
   readonly selectedTabIndex = signal<number>(0);
 

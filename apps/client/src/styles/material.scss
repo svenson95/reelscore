@@ -89,11 +89,17 @@
     (
       divider-height: 0,
       container-height: 60px,
-      inactive-ripple-color: var(--rs-color-ripple),
-      active-ripple-color: var(--rs-color-ripple),
-      active-label-text-color: var(--rs-color-text-1),
-      inactive-label-text-color: var(--rs-color-primary),
+
       label-text-size: var(--rs-font-size-body-2),
+      inactive-ripple-color: transparent,
+      active-ripple-color: transparent,
+
+      inactive-label-text-color: var(--rs-color-text-1),
+      inactive-hover-label-text-color: var(--rs-color-primary),
+      inactive-focus-label-text-color: var(--rs-color-text-1),
+      active-label-text-color: var(--rs-color-text-1),
+      active-hover-label-text-color: var(--rs-color-text-2),
+      active-focus-label-text-color: var(--rs-color-text-1),
     )
   );
 
@@ -206,31 +212,72 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
 // mat-tabs
 .mat-mdc-tab-group,
 .mat-mdc-tab-nav-bar {
-  .mat-mdc-tab-header {
-    .tab-label-content {
-      @apply flex flex-col items-center;
+  .mat-mdc-tab-label-container {
+    @apply pb-3;
+  }
 
-      .tab-label-span {
-        @apply text-rs-font-size-small xs:text-rs-font-size-body-3 py-1;
-      }
+  .mat-mdc-tab-labels {
+    position: relative;
+    display: flex;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 0;
+
+      top: 0;
+      left: calc(10% / var(--tab-count));
+
+      width: calc(80% / var(--tab-count));
+      height: 60px;
+
+      background: var(--rs-color-surface);
+      border-radius: var(--rs-size-border-radius-2);
+
+      @apply shadow-rs2;
+
+      transform: translateX(calc(var(--active-tab-index) * 125%));
+
+      transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      pointer-events: none;
+    }
+  }
+
+  .mat-mdc-tab {
+    @apply min-w-[50px] px-1;
+
+    flex: 1 1 0;
+    width: 0;
+
+    position: relative;
+    z-index: 1;
+
+    &.mdc-tab--active {
+      pointer-events: none;
     }
 
-    .mat-mdc-tab {
-      @apply min-w-[50px] px-1;
-
-      &:hover .mdc-tab__ripple::before {
-        opacity: var(--rs-button-hover-opacity);
-      }
-
-      &.mat-mdc-tab-disabled .mdc-tab__text-label {
-        color: var(--rs-color-text-2);
-      }
-
-      &.mdc-tab--active,
-      .mdc-tab__content {
-        pointer-events: none;
-      }
+    &.mat-mdc-tab-disabled .mdc-tab__text-label {
+      color: var(--rs-color-text-2);
     }
+  }
+
+  .mdc-tab__content,
+  .mdc-tab__text-label,
+  .tab-label-content {
+    @apply flex h-full w-full items-center justify-center;
+  }
+
+  .tab-label-content {
+    @apply flex-col gap-1;
+
+    .tab-label-span {
+      @apply text-rs-font-size-small xs:text-rs-font-size-body-3;
+    }
+  }
+
+  .mdc-tab-indicator {
+    display: none;
   }
 }
 

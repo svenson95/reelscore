@@ -51,7 +51,6 @@ export class HideHeaderDirective implements OnInit {
       [animationDuration]="animationDuration"
       [selectedIndex]="tabIndex()"
       rsHideHeader
-      [preserveContent]="true"
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
