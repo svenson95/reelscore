@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
-import { PageRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
+import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
 import { RefreshTickerComponent } from './refresh-ticker.component';
 
@@ -9,7 +9,7 @@ describe('RefreshTickerComponent', () => {
   const isRunning = signal(false);
   const timer = signal(REFRESH_INTERVAL_SECONDS);
 
-  const pageRefreshServiceMock = {
+  const liveRefreshServiceMock = {
     isRunning: isRunning.asReadonly(),
     timer: timer.asReadonly(),
   };
@@ -25,8 +25,8 @@ describe('RefreshTickerComponent', () => {
       imports: [RefreshTickerComponent],
       providers: [
         {
-          provide: PageRefreshService,
-          useValue: pageRefreshServiceMock,
+          provide: LiveRefreshService,
+          useValue: liveRefreshServiceMock,
         },
       ],
     }).compileComponents();
@@ -73,14 +73,54 @@ describe('RefreshTickerComponent', () => {
     expect(element.classList.contains('is-active')).toBe(false);
   });
 
-  it('should restore the visual progress when auto refresh resumes', () => {
+  it('should restore the visual progress from the current timer', () => {
     timer.set(10);
     isRunning.set(true);
 
     fixture.detectChanges();
 
-    expect(element.style.getPropertyValue('--refresh-progress-offset')).toBe(
-      '-5s'
+    const expectedProgress =
+      ((REFRESH_INTERVAL_SECONDS - timer()) / REFRESH_INTERVAL_SECONDS) * 100;
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe(
+      `${expectedProgress}%`
     );
+  });
+
+  it('should update the visual progress when the timer changes', () => {
+    isRunning.set(true);
+    timer.set(12);
+
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('40%');
+
+    timer.set(9);
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('55%');
+  });
+
+  it('should show full progress when timer reaches zero', () => {
+    timer.set(0);
+    isRunning.set(true);
+
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('100%');
+  });
+
+  it('should reset visual progress with the timer', () => {
+    timer.set(0);
+    isRunning.set(true);
+
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('100%');
+
+    timer.set(REFRESH_INTERVAL_SECONDS);
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('0%');
   });
 });

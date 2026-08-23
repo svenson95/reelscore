@@ -1,7 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  type OnInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { FooterComponent, HeaderComponent, StartupService } from '@app/shared';
+import {
+  FooterComponent,
+  HeaderComponent,
+  LiveRefreshService,
+  StartupService,
+  VisibilityObserverService,
+} from '@app/shared';
+
 import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
 
 @Component({
@@ -26,8 +38,17 @@ import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
     <footer rs-footer-content></footer>
   `,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private readonly startupService = inject(StartupService);
+  private readonly liveRefreshService = inject(LiveRefreshService);
+  private readonly visibilityObserverService = inject(
+    VisibilityObserverService
+  );
+
+  ngOnInit(): void {
+    this.liveRefreshService.start();
+    this.visibilityObserverService.init();
+  }
 
   onRouteActivated(): void {
     if (this.startupService.routeActivated) {

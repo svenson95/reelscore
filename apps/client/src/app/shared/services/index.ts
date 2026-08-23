@@ -14,12 +14,14 @@ export * from './breakpoint-observer.service';
 export * from './http/fixtures.service';
 export * from './http/standings.service';
 export * from './league/league.service';
+export * from './live-refresh.service';
 export * from './loading.interceptor';
 export * from './loading.service';
-export * from './page-refresh.service';
+export * from './refresh-registry.service';
 export * from './route.service';
 export * from './startup/startup.service';
 export * from './theme.service';
+export * from './visibility-observer.service';
 
 export const GLOBAL_SERVICE_PROVIDERS = [
   APP_UPDATE_SERVICE_PROVIDER,

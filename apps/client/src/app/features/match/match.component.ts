@@ -3,13 +3,11 @@ import {
   type OnInit,
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   input,
 } from '@angular/core';
 
-import { PAGE_REFRESH_SERVICE_PROVIDER, PageRefreshService } from '@app/shared';
 import { type CompetitionUrl, type FixtureId } from '@lib/models';
 
 import {
@@ -18,19 +16,14 @@ import {
   PageHeaderComponent,
 } from './components';
 import { MatchFacade } from './match.facade';
-import { SERVICE_PROVIDERS, VisibilityObserverService } from './services';
+import { MatchRefreshService, SERVICE_PROVIDERS } from './services';
 import { STORE_PROVIDERS } from './store';
 
 @Component({
   selector: 'rs-match-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PageHeaderComponent, MatchHeaderComponent, MatchDetailsComponent],
-  providers: [
-    MatchFacade,
-    ...SERVICE_PROVIDERS,
-    ...STORE_PROVIDERS,
-    PAGE_REFRESH_SERVICE_PROVIDER,
-  ],
+  providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host { @apply gap-5; }
     :host ::ng-deep h2 { text-align: center; }
@@ -61,26 +54,12 @@ export class MatchComponent implements OnInit, OnDestroy {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
-  private readonly pageRefreshService = inject(PageRefreshService);
-  private readonly visibilityObserverService = inject(
-    VisibilityObserverService
-  );
-
   private readonly facade = inject(MatchFacade);
+  private readonly refreshService = inject(MatchRefreshService);
 
   readonly fixture = this.facade.fixture;
   readonly data = this.facade.data;
   readonly error = this.facade.error;
-
-  private readonly isPlaying = computed<boolean>(() => {
-    const status = this.fixture()?.data.fixture.status.short;
-
-    return status ? this.pageRefreshService.hasPlayingState([status]) : false;
-  });
-
-  private readonly canRefresh = computed<boolean>(
-    () => !this.facade.isLoading()
-  );
 
   private readonly loadFixtureEffect = effect(() => {
     this.facade.loadFixture(this.fixtureId());
@@ -91,21 +70,10 @@ export class MatchComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.visibilityObserverService.init();
-
-    this.pageRefreshService.init({
-      isPlaying: this.isPlaying,
-      canRefresh: this.canRefresh,
-      refresh: () => this.refresh(),
-    });
+    this.refreshService.init(this.fixtureId());
   }
 
   ngOnDestroy(): void {
-    this.visibilityObserverService.stop();
-    this.pageRefreshService.stop();
-  }
-
-  private async refresh(): Promise<void> {
-    await this.facade.reloadFixture();
+    this.refreshService.destroy();
   }
 }
