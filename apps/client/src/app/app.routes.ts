@@ -4,24 +4,17 @@ import { getTodayDateString } from '@lib/shared';
 
 export const routes: Routes = [
   {
+    path: ':date/:competitionUrl/:fixtureId',
+    loadComponent: () =>
+      import('./features/match/match.component').then((m) => m.MatchComponent),
+  },
+  {
     path: ':date',
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./features/overview/overview.component').then(
-            (m) => m.OverviewComponent
-          ),
-        data: { shouldReuse: true },
-      },
-      {
-        path: ':competitionUrl/:fixtureId',
-        loadComponent: () =>
-          import('./features/match/match.component').then(
-            (m) => m.MatchComponent
-          ),
-      },
-    ],
+    loadComponent: () =>
+      import('./features/overview/overview.component').then(
+        (m) => m.OverviewComponent
+      ),
+    data: { shouldReuse: true },
   },
   {
     path: 'competition/:competitionUrl',

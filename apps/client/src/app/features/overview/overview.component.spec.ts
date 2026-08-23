@@ -39,6 +39,7 @@ describe('OverviewComponent', () => {
 
   let pageRefreshServiceMock: {
     init: jest.Mock;
+    pause: jest.Mock;
     stop: jest.Mock;
     hasPlayingState: jest.Mock;
   };
@@ -86,6 +87,7 @@ describe('OverviewComponent', () => {
 
     pageRefreshServiceMock = {
       init: jest.fn(),
+      pause: jest.fn(),
       stop: jest.fn(),
       hasPlayingState: jest
         .fn()
@@ -191,12 +193,14 @@ describe('OverviewComponent', () => {
     it('should stop services on destroy', () => {
       fixture.detectChanges();
 
+      pageRefreshServiceMock.pause.mockClear();
       pageRefreshServiceMock.stop.mockClear();
 
       fixture.destroy();
 
       expect(visibilityObserverServiceMock.stop).toHaveBeenCalledTimes(1);
       expect(pageRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
+      expect(pageRefreshServiceMock.pause).not.toHaveBeenCalled();
     });
   });
 
@@ -212,15 +216,17 @@ describe('OverviewComponent', () => {
       expect(visibilityObserverServiceMock.init).toHaveBeenCalledTimes(1);
     });
 
-    it('should stop services when route is detached', () => {
+    it('should pause services when route is detached', () => {
       fixture.detectChanges();
 
+      pageRefreshServiceMock.pause.mockClear();
       pageRefreshServiceMock.stop.mockClear();
 
       component.onRouteDetach();
 
       expect(visibilityObserverServiceMock.stop).toHaveBeenCalledTimes(1);
-      expect(pageRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
+      expect(pageRefreshServiceMock.pause).toHaveBeenCalledTimes(1);
+      expect(pageRefreshServiceMock.stop).not.toHaveBeenCalled();
     });
 
     it('should start services when route is attached', () => {

@@ -1,6 +1,7 @@
 import type {
   ActivatedRouteSnapshot,
   DetachedRouteHandle,
+  Route,
 } from '@angular/router';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -16,30 +17,40 @@ type ReusableHandle = DetachedRouteHandle & {
 };
 
 export class CustomRouteReuseStrategy implements RouteReuseStrategy {
-  private handlers: { [key: string]: DetachedRouteHandle } = {};
+  private readonly handlers = new Map<Route, DetachedRouteHandle>();
 
   shouldReuse = (route: ActivatedRouteSnapshot): boolean =>
     route.data['shouldReuse'] === true;
 
-  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-    const path = route.routeConfig?.path;
+  store(
+    route: ActivatedRouteSnapshot,
+    handle: DetachedRouteHandle | null
+  ): void {
+    const routeConfig = route.routeConfig;
 
-    if (this.shouldReuse(route) && path) {
-      const reusableHandle = handle as ReusableHandle;
-      reusableHandle.componentRef?.instance?.onRouteDetach?.();
-
-      this.handlers[path] = handle;
+    if (!this.shouldReuse(route) || !routeConfig || !handle) {
+      return;
     }
+
+    const reusableHandle = handle as ReusableHandle;
+
+    reusableHandle.componentRef?.instance?.onRouteDetach?.();
+
+    this.handlers.set(routeConfig, handle);
   }
 
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    const path = route.routeConfig?.path;
-    if (!route.routeConfig || path === undefined) return null;
+    const routeConfig = route.routeConfig;
 
-    const handle = this.handlers[path] ?? null;
+    if (!routeConfig) {
+      return null;
+    }
+
+    const handle = this.handlers.get(routeConfig) ?? null;
 
     if (handle) {
       const reusableHandle = handle as ReusableHandle;
+
       reusableHandle.componentRef?.instance?.onRouteAttach?.();
     }
 
@@ -47,8 +58,9 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   }
 
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    const path = route.routeConfig?.path;
-    return !!path && !!this.handlers[path];
+    const routeConfig = route.routeConfig;
+
+    return !!routeConfig && this.handlers.has(routeConfig);
   }
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
