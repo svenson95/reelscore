@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -10,7 +11,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LeagueService, MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
 import { CompetitionRouteContext } from './competition-route-context';
-
 import {
   CompetitionStandingsComponent,
   LastFixturesComponent,
@@ -53,7 +53,12 @@ import {
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
     <section class="competition-data">
-      <mat-tab-group [animationDuration]="animationDuration">
+      <mat-tab-group
+        [animationDuration]="animationDuration"
+        [style.--tab-count]="COMPETITION_TABS_LENGTH"
+        [style.--active-tab-index]="selectedTabIndex()"
+        (selectedIndexChange)="selectedTabIndex.set($event)"
+      >
         <mat-tab>
           <ng-template mat-tab-label>
             <div class="tab-label-content">
@@ -112,6 +117,9 @@ export class CompetitionComponent extends CompetitionRouteContext {
   private readonly topScorersStore = inject(TopScorersStore);
 
   readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+
+  readonly COMPETITION_TABS_LENGTH = 4;
+  readonly selectedTabIndex = signal<number>(0);
 
   private readonly leagueEffect = effect(async () => {
     const competition = this.leagueService.selectedLeague();
