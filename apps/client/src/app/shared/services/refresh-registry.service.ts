@@ -1,4 +1,4 @@
-import { Injectable, type Signal } from '@angular/core';
+import { computed, Injectable, signal, type Signal } from '@angular/core';
 
 export type RefreshTarget = {
   id: string;
@@ -13,20 +13,40 @@ type RefreshOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class RefreshRegistryService {
-  private readonly targets = new Map<string, RefreshTarget>();
+  private readonly targets = signal<Map<string, RefreshTarget>>(
+    new Map<string, RefreshTarget>()
+  );
+
+  readonly hasLiveTargets = computed<boolean>(() =>
+    [...this.targets().values()].some((target) => target.isLive())
+  );
 
   register(target: RefreshTarget): () => void {
-    this.targets.set(target.id, target);
+    this.targets.update((targets) => {
+      const updated = new Map(targets);
+
+      updated.set(target.id, target);
+
+      return updated;
+    });
 
     return () => {
-      if (this.targets.get(target.id) === target) {
-        this.targets.delete(target.id);
-      }
+      this.targets.update((targets) => {
+        if (targets.get(target.id) !== target) {
+          return targets;
+        }
+
+        const updated = new Map(targets);
+
+        updated.delete(target.id);
+
+        return updated;
+      });
     };
   }
 
   async refresh(options?: RefreshOptions): Promise<boolean> {
-    const refreshTargets = [...this.targets.values()].filter(
+    const refreshTargets = [...this.targets().values()].filter(
       (target) => target.canRefresh() && (options?.force || target.isLive())
     );
 

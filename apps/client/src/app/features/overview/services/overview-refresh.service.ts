@@ -1,4 +1,4 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 
 import { getFixtureStatusState, RefreshRegistryService } from '@app/shared';
 import { getTodayDateString } from '@lib/shared';
@@ -21,21 +21,39 @@ export class OverviewRefreshService {
 
   private unregister?: () => void;
 
-  private readonly isLive = computed(() => {
-    const fixtures =
-      getSelectedDayData(
-        this.weekFixturesStore.weekFixtures(),
-        this.weekFixturesStore.weekKey(),
-        this.selectedDateService.selectedDay()
-      ) ?? [];
+  private readonly hasLiveFixturesToday = signal(false);
 
-    return fixtures.some(
-      (fixture) => getFixtureStatusState(fixture.fixture.status.short).isLive
+  private readonly isTodaySelected = computed(
+    () =>
+      this.selectedDateService.selectedDay() ===
+      this.dateNavigationService.today()
+  );
+
+  private readonly syncLiveFixturesToday = effect(() => {
+    if (!this.isTodaySelected()) {
+      return;
+    }
+
+    const fixtures = getSelectedDayData(
+      this.weekFixturesStore.weekFixtures(),
+      this.weekFixturesStore.weekKey(),
+      this.selectedDateService.selectedDay()
+    );
+
+    if (!fixtures) {
+      return;
+    }
+
+    this.hasLiveFixturesToday.set(
+      fixtures.some(
+        (fixture) => getFixtureStatusState(fixture.fixture.status.short).isLive
+      )
     );
   });
 
   private readonly canRefresh = computed(
     () =>
+      this.isTodaySelected() &&
       !this.weekFixturesStore.isPending() &&
       !this.weekStandingsStore.isPending()
   );
@@ -47,7 +65,7 @@ export class OverviewRefreshService {
 
     this.unregister = this.refreshRegistry.register({
       id: 'overview',
-      isLive: this.isLive,
+      isLive: this.hasLiveFixturesToday,
       canRefresh: this.canRefresh,
       refresh: () => this.refresh(),
     });

@@ -17,8 +17,6 @@ import { OverviewRefreshService } from './overview-refresh.service';
 import { SelectedDateService } from './selected-date.service';
 
 const testDate = '2023-11-02';
-const testWeekMonday = '2023-10-30';
-const previousSunday = '2023-10-29';
 const nextMonday = '2023-11-06';
 
 describe('OverviewRefreshService', () => {
@@ -173,42 +171,34 @@ describe('OverviewRefreshService', () => {
   });
 
   describe('live state', () => {
-    it('should report no live fixtures for the selected day', () => {
+    it('should report no live fixtures for today', () => {
       service.init();
+      TestBed.tick();
 
       expect(getTarget().isLive()).toBe(false);
     });
 
-    it('should report live fixtures for the selected day', () => {
+    it('should report live fixtures for today', () => {
       service.init();
+      TestBed.tick();
 
       setLiveFixture();
+      TestBed.tick();
 
       expect(getTarget().isLive()).toBe(true);
     });
 
-    it('should report live fixtures for the next monday edge day', () => {
+    it('should keep today live state when another day is selected', () => {
+      service.init();
+      TestBed.tick();
+
+      setLiveFixture();
+      TestBed.tick();
+
+      expect(getTarget().isLive()).toBe(true);
+
       selectedDay.set(nextMonday);
-      cachedWeekKey.set(formatCalendarWeekKey(testDate));
-
-      service.init();
-
-      expect(getTarget().isLive()).toBe(false);
-
-      setLiveFixtureAtStoreIndex(8);
-
-      expect(getTarget().isLive()).toBe(true);
-    });
-
-    it('should report live fixtures for the previous sunday edge day', () => {
-      selectedDay.set(previousSunday);
-      cachedWeekKey.set(formatCalendarWeekKey(testWeekMonday));
-
-      service.init();
-
-      expect(getTarget().isLive()).toBe(false);
-
-      setLiveFixtureAtStoreIndex(0);
+      TestBed.tick();
 
       expect(getTarget().isLive()).toBe(true);
     });
@@ -249,6 +239,14 @@ describe('OverviewRefreshService', () => {
       service.init();
 
       standingsRefreshing.set(true);
+
+      expect(getTarget().canRefresh()).toBe(false);
+    });
+
+    it('should prevent refresh when today is not selected', () => {
+      service.init();
+
+      selectedDay.set(nextMonday);
 
       expect(getTarget().canRefresh()).toBe(false);
     });

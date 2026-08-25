@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { signal, type Signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import {
@@ -103,7 +103,7 @@ describe('RefreshRegistryService', () => {
 
     it('should not refresh a target without live data', async () => {
       const target = createTarget({
-        isLive: false,
+        isLive: signal(false),
       });
 
       service.register(target);
@@ -116,7 +116,7 @@ describe('RefreshRegistryService', () => {
 
     it('should not refresh a target that cannot refresh', async () => {
       const target = createTarget({
-        canRefresh: false,
+        canRefresh: signal(false),
       });
 
       service.register(target);
@@ -129,7 +129,7 @@ describe('RefreshRegistryService', () => {
 
     it('should force refresh a target without live data', async () => {
       const target = createTarget({
-        isLive: false,
+        isLive: signal(false),
       });
 
       service.register(target);
@@ -144,8 +144,8 @@ describe('RefreshRegistryService', () => {
 
     it('should not force refresh a target that cannot refresh', async () => {
       const target = createTarget({
-        isLive: false,
-        canRefresh: false,
+        isLive: signal(false),
+        canRefresh: signal(false),
       });
 
       service.register(target);
@@ -188,20 +188,49 @@ describe('RefreshRegistryService', () => {
     });
   });
 
+  describe('live targets', () => {
+    it('should report whether a live target exists', () => {
+      const isLive = signal(false);
+
+      service.register(
+        createTarget({
+          isLive,
+        })
+      );
+
+      expect(service.hasLiveTargets()).toBe(false);
+
+      isLive.set(true);
+
+      expect(service.hasLiveTargets()).toBe(true);
+    });
+
+    it('should ignore refresh availability when detecting live targets', () => {
+      service.register(
+        createTarget({
+          isLive: signal(true),
+          canRefresh: signal(false),
+        })
+      );
+
+      expect(service.hasLiveTargets()).toBe(true);
+    });
+  });
+
   const createTarget = ({
     id = 'overview',
-    isLive = true,
-    canRefresh = true,
+    isLive = signal(true),
+    canRefresh = signal(true),
     refresh = jest.fn(),
   }: {
     id?: string;
-    isLive?: boolean;
-    canRefresh?: boolean;
+    isLive?: Signal<boolean>;
+    canRefresh?: Signal<boolean>;
     refresh?: jest.Mock;
   } = {}): RefreshTarget => ({
     id,
-    isLive: signal(isLive),
-    canRefresh: signal(canRefresh),
+    isLive,
+    canRefresh,
     refresh,
   });
 });

@@ -6,6 +6,10 @@ const FEATURE_SECTIONS = [
     name: 'COMPONENTS',
   },
   {
+    path: 'helpers',
+    name: 'HELPERS',
+  },
+  {
     path: 'stores',
     name: 'STORES',
   },
