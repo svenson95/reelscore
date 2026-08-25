@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
+import { MAT_TAB_ANIMATION_DURATION, PageTitleComponent } from '@app/shared';
 
 import {
   MatchEventsComponent,
@@ -35,6 +35,7 @@ const ANGULAR_MODULES = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...ANGULAR_MODULES,
+    PageTitleComponent,
     MatchFixtureDataComponent,
     MatchFixtureStandingsComponent,
     MatchEvaluationsComponent,
@@ -47,15 +48,23 @@ const ANGULAR_MODULES = [
   styles: `
     :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
-      mat-spinner { @apply mx-auto my-5; }
-      .tab-content { @apply flex flex-col gap-rs2; }
+
+      mat-spinner {
+        @apply mx-auto my-5;
+      }
+
+      .tab-content {
+        @apply flex flex-col;
+      }
 
       ::ng-deep {
         .mat-mdc-tab-body.mat-mdc-tab-body-active {
           @apply flex flex-col gap-2;
         }
 
-        .mat-mdc-tab-header { @apply mx-3; }
+        .mat-mdc-tab-header {
+          @apply mx-3;
+        }
       }
     }
   `,
@@ -67,16 +76,16 @@ const ANGULAR_MODULES = [
       [style.--tab-count]="MATCH_TABS_LENGTH"
       [style.--active-tab-index]="selectedTabIndex()"
     >
-      <mat-tab>
+      <mat-tab aria-label="Details">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>info</mat-icon>
-            <span class="tab-label-span">Details</span>
           </div>
         </ng-template>
 
         <div class="tab-content">
           <rs-match-fixture-data />
+
           @if (fixture()?.data) { @if (!hasNoStandings() && !isKoPhase() &&
           !isQualifyPhase()) {
           <rs-match-fixture-standings
@@ -84,19 +93,19 @@ const ANGULAR_MODULES = [
             [isLoading]="isLoadingStandings()"
           />
           }
+
           <rs-match-evaluations [evaluations]="evaluations()" />
           <rs-match-latest-fixtures data-testid="match-latest-fixtures" />
           } @else {
-          <mat-spinner [diameter]="32"></mat-spinner>
+          <mat-spinner [diameter]="32" />
           }
         </div>
       </mat-tab>
 
-      <mat-tab [disabled]="!analyses()">
+      <mat-tab aria-label="Analysen" [disabled]="!analyses()">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>pageview</mat-icon>
-            <span class="tab-label-span">Analysen</span>
           </div>
         </ng-template>
 
@@ -107,30 +116,32 @@ const ANGULAR_MODULES = [
         </div>
       </mat-tab>
 
-      <mat-tab [disabled]="!events()">
+      <mat-tab aria-label="Spielbericht" [disabled]="!events()">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>article</mat-icon>
-            <span class="tab-label-span">Bericht</span>
           </div>
         </ng-template>
 
         <div class="tab-content">
+          <rs-page-title title="Spielbericht" />
+
           @if (events()) {
           <rs-match-events [data]="events()!" />
           }
         </div>
       </mat-tab>
 
-      <mat-tab [disabled]="!statistics()">
+      <mat-tab aria-label="Statistiken" [disabled]="!statistics()">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>assessment</mat-icon>
-            <span class="tab-label-span">Statistiken</span>
           </div>
         </ng-template>
 
         <div class="tab-content">
+          <rs-page-title title="Statistiken" />
+
           @if (statistics()) {
           <rs-match-statistics [data]="statistics()!" />
           }
@@ -141,12 +152,14 @@ const ANGULAR_MODULES = [
 })
 export class MatchDetailsComponent {
   private readonly facade = inject(MatchDetailsFacade);
+
   readonly standings = this.facade.standings;
   readonly analyses = this.facade.analyses;
   readonly events = this.facade.events;
   readonly statistics = this.facade.statistics;
   readonly evaluations = this.facade.evaluations;
   readonly fixture = this.facade.fixture;
+
   readonly hasNoStandings = this.facade.hasNoStandings;
   readonly isLoadingStandings = this.facade.standingsStore.isLoading;
   readonly isKoPhase = this.facade.isKoPhase;
@@ -157,9 +170,10 @@ export class MatchDetailsComponent {
 
   readonly selectedTabIndex = signal<number>(0);
 
-  selectedTabEffect = effect(() => {
+  readonly selectedTabEffect = effect(() => {
     const selectedIndex = this.selectedTabIndex();
-    const tabsAvailable: boolean[] = [
+
+    const tabsAvailable = [
       true,
       !!this.analyses(),
       !!this.events(),

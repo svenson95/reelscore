@@ -5,6 +5,7 @@ import {
   input,
 } from '@angular/core';
 
+import { PageTitleComponent } from '@app/shared';
 import type {
   ExtendedFixtureDTO,
   FixtureEvaluation,
@@ -24,18 +25,26 @@ import {
 @Component({
   selector: 'rs-match-fixture-analyses-last-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AnalysesEvaluationsComponent],
+  imports: [PageTitleComponent, AnalysesEvaluationsComponent],
   styles: `
-    :host { @apply m-3; }
-    .latest-fixtures { @apply grid grid-cols-1 md:grid-cols-2 gap-3 mt-rs1; }
-    .latest-fixtures > div { @apply min-w-0; }
-    .no-data { @apply bg-rs-button-bg rounded-border2 shadow-rs3; }
+    .latest-fixtures {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-3 m-3;
+    }
+
+    .latest-fixtures > div {
+      @apply min-w-0;
+    }
+
+    .no-data {
+      @apply bg-rs-button-bg rounded-border2 shadow-rs3;
+    }
   `,
   template: `
-    <h2>Spielanalysen</h2>
+    <rs-page-title title="Spielanalysen" />
 
     <div class="latest-fixtures">
       @let fixturesData = fixturesWithEvaluations(); @let teamsData = teams();
+
       <div class="home">
         @if (fixturesData.home.length > 0) {
         <rs-match-fixture-analyses-evaluations
@@ -46,6 +55,7 @@ import {
         <p class="no-data">Keine Spiele gefunden</p>
         }
       </div>
+
       <div class="away">
         @if (fixturesData.away.length > 0) {
         <rs-match-fixture-analyses-evaluations
@@ -71,7 +81,7 @@ export class AnalysesLastFixturesComponent {
     away: this.toFixturesWithEvaluations(this.fixtures().away),
   }));
 
-  private toFixturesWithEvaluations = (
+  private readonly toFixturesWithEvaluations = (
     fixtures: ExtendedFixtureDTO[]
   ): FixtureWithEvaluations[] => {
     return fixtures.filter(this.hasAnalyses).map((fixture) => ({
@@ -82,28 +92,32 @@ export class AnalysesLastFixturesComponent {
     }));
   };
 
-  private hasAnalyses = (fixture: ExtendedFixtureDTO): boolean => {
+  private readonly hasAnalyses = (fixture: ExtendedFixtureDTO): boolean => {
     const home = fixture.evaluations?.home.analyses;
     const away = fixture.evaluations?.away.analyses;
+
     return !!home?.length || !!away?.length;
   };
 
-  private analysesWithTeam = (
+  private readonly analysesWithTeam = (
     evaluations: FixtureEvaluations
   ): ExtendedEvaluationAnalyses[] => {
     const home = this.mapTeamAnalyses(evaluations.home, ANALYSES_TEAM.HOME);
     const away = this.mapTeamAnalyses(evaluations.away, ANALYSES_TEAM.AWAY);
 
     return [...home, ...away].sort((a, b) => {
-      if (a.minute === null || b.minute === null) return 0;
+      if (a.minute === null || b.minute === null) {
+        return 0;
+      }
+
       return a.minute - b.minute;
     });
   };
 
-  private mapTeamAnalyses = (
+  private readonly mapTeamAnalyses = (
     data: FixtureEvaluation,
     team: AnalysesTeamType
-  ) => {
+  ): ExtendedEvaluationAnalyses[] => {
     return data.analyses.map((analysis) => ({
       ...analysis,
       team,

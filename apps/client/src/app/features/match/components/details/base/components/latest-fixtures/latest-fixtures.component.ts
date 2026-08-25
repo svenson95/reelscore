@@ -6,6 +6,9 @@ import {
   untracked,
 } from '@angular/core';
 
+import { PageTitleComponent } from '@app/shared';
+import type { ExtendedFixtureDTO } from '@lib/models';
+
 import { FixtureStore, LatestFixturesStore } from '../../../../../store';
 
 import { MatchFixturesTableComponent } from './components';
@@ -13,38 +16,55 @@ import { MatchFixturesTableComponent } from './components';
 @Component({
   selector: 'rs-match-latest-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatchFixturesTableComponent],
+  imports: [PageTitleComponent, MatchFixturesTableComponent],
   styles: `
-    :host { @apply flex flex-col m-3; }
+    :host {
+      @apply flex flex-col my-3;
+    }
+
     .latest-fixtures-container {
-      @apply flex flex-col md:flex-row mt-rs1 gap-rs2;
+      @apply flex flex-col md:flex-row mt-3 mx-3 gap-rs2;
       border-radius: var(--mat-button-toggle-shape);
     }
-    .no-data { @apply m-auto; }
+
+    .no-data {
+      @apply m-auto;
+    }
   `,
   template: `
-    <h2>Letzte Spiele</h2>
+    <rs-page-title title="Letzte Spiele" />
+
     <div class="latest-fixtures-container">
-      @let lf = latestFixtures(); @if (lf) { @let d = data(); @if (d) {
-      <rs-match-fixtures-table [team]="d.teams.home" [fixtures]="lf.home" />
-      <rs-match-fixtures-table [team]="d.teams.away" [fixtures]="lf.away" />
-      } } @else if (isLoading()) {
+      @let latest = latestFixtures(); @let fixture = data(); @if (latest &&
+      fixture) {
+      <rs-match-fixtures-table
+        [team]="fixture.teams.home"
+        [fixtures]="latest.home"
+      />
+
+      <rs-match-fixtures-table
+        [team]="fixture.teams.away"
+        [fixtures]="latest.away"
+      />
+      } @else if (isLoading()) {
       <p class="no-data">Spiele werden geladen ...</p>
       } @else if (error()) {
       <p class="no-data">Fehler beim Laden der Spiele</p>
-      } @else if (!lf) {
+      } @else {
       <p class="no-data">Keine Spiele gefunden</p>
       }
     </div>
   `,
 })
 export class MatchLatestFixturesComponent {
-  private latestFixturesStore = inject(LatestFixturesStore);
-  isLoading = computed(() => this.latestFixturesStore.isLoading());
-  error = computed(() => this.latestFixturesStore.error());
-  latestFixtures = computed(() => this.latestFixturesStore.latestFixtures());
+  private readonly latestFixturesStore = inject(LatestFixturesStore);
+  private readonly fixtureStore = inject(FixtureStore);
 
-  private fixtureStore = inject(FixtureStore);
-  private fixture = computed(() => this.fixtureStore.fixture());
-  data = computed(() => untracked(this.fixture)?.data);
+  readonly isLoading = this.latestFixturesStore.isLoading;
+  readonly error = this.latestFixturesStore.error;
+  readonly latestFixtures = this.latestFixturesStore.latestFixtures;
+
+  readonly data = computed<ExtendedFixtureDTO | null>(() =>
+    untracked(() => this.fixtureStore.fixture()?.data ?? null)
+  );
 }
