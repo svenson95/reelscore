@@ -66,7 +66,7 @@ const EXTERNAL_MODULES = [
           label-text-size: var(--rs-font-size-body-2),
 
           disabled-state-text-color: var(--rs-border-color-2),
-          disabled-selected-state-text-color: var(--rs-color-text-1),
+          disabled-selected-state-text-color: var(--rs-border-color-2),
 
           selected-state-background-color: transparent,
           disabled-state-background-color: transparent,
@@ -117,6 +117,11 @@ const EXTERNAL_MODULES = [
         color: var(--rs-color-text-1);
 
         transition: color 100ms ease;
+
+        &.mat-button-toggle-disabled {
+          color: var(--rs-border-color-2);
+          transition-delay: 0ms;
+        }
 
         &.mat-button-toggle-checked {
           color: var(--rs-color-text-3);
