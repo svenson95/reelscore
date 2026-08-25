@@ -97,8 +97,7 @@ export class DateBarComponent {
   );
 
   setDate(day: DateString): void {
-    const formattedDate = day.split('T')[0];
-    this.selectedDateService.setSelectedDay(formattedDate);
+    this.selectedDateService.setSelectedDay(day);
   }
 
   resetDate(): void {

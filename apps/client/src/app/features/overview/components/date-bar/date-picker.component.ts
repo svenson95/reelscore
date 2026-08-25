@@ -77,6 +77,14 @@ const DATE_PICKER_PROVIDERS = [
           @apply text-rs-color-primary;
         }
 
+        &:disabled {
+          @apply text-rs-border-color-2;
+
+          mat-icon {
+            @apply text-rs-border-color-2;
+          }
+        }
+
         &.is-open {
           @apply bg-rs-color-primary text-rs-color-text-3;
 
