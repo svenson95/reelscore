@@ -123,4 +123,38 @@ describe('RefreshTickerComponent', () => {
 
     expect(element.style.getPropertyValue('--refresh-progress')).toBe('0%');
   });
+
+  it('should hide active progress when ticker is disabled', () => {
+    isRunning.set(true);
+
+    fixture.componentRef.setInput('active', false);
+    fixture.detectChanges();
+
+    expect(element.classList.contains('is-active')).toBe(false);
+  });
+
+  it('should restore active progress with the current timer when enabled again', () => {
+    isRunning.set(true);
+    timer.set(10);
+
+    fixture.componentRef.setInput('active', false);
+    fixture.detectChanges();
+
+    expect(element.classList.contains('is-active')).toBe(false);
+
+    timer.set(5);
+    fixture.detectChanges();
+
+    fixture.componentRef.setInput('active', true);
+    fixture.detectChanges();
+
+    expect(element.classList.contains('is-active')).toBe(true);
+
+    const expectedProgress =
+      ((REFRESH_INTERVAL_SECONDS - 5) / REFRESH_INTERVAL_SECONDS) * 100;
+
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe(
+      `${expectedProgress}%`
+    );
+  });
 });

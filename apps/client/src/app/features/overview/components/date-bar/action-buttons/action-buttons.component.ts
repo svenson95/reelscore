@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RefreshTickerComponent } from '@app/shared';
+
+import { DateNavigationService } from '../../../services';
 
 import { FilterComponent } from './filter.component';
 import { SearchComponent } from './search/search.component';
@@ -24,9 +26,12 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
     }
   `,
   template: `
-    <rs-refresh-ticker />
+    <rs-refresh-ticker [active]="isToday()" />
     <rs-filter />
     <rs-search />
   `,
 })
-export class ActionButtonsComponent {}
+export class ActionButtonsComponent {
+  private readonly dateNavigationService = inject(DateNavigationService);
+  readonly isToday = this.dateNavigationService.isToday;
+}

@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { interval, type Subscription } from 'rxjs';
 
 import { RefreshRegistryService } from './refresh-registry.service';
@@ -16,33 +16,36 @@ type RefreshOptions = {
 export class LiveRefreshService {
   private readonly registry = inject(RefreshRegistryService);
 
-  readonly timer = signal(REFRESH_INTERVAL_SECONDS);
-  readonly isRunning = signal(false);
-  readonly isRefreshing = signal(false);
+  readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
+  readonly isRunning = signal<boolean>(false);
+  readonly isRefreshing = signal<boolean>(false);
+
+  private readonly isStarted = signal<boolean>(false);
 
   private refreshSubscription?: Subscription;
   private lastRefreshAt?: number;
 
-  private readonly instanceId = crypto.randomUUID();
+  constructor() {
+    effect(() => {
+      const shouldRun = this.isStarted() && this.registry.hasLiveTargets();
 
-  start(): void {
-    if (this.refreshSubscription) {
-      return;
-    }
-
-    this.isRunning.set(true);
-
-    this.refreshSubscription = interval(1000).subscribe(() => {
-      this.tick();
+      if (shouldRun) {
+        this.startTimer();
+      } else {
+        this.stopTimer();
+        this.resetTimer();
+      }
     });
   }
 
-  stop(): void {
-    this.refreshSubscription?.unsubscribe();
-    this.refreshSubscription = undefined;
+  start(): void {
+    this.isStarted.set(true);
+  }
 
+  stop(): void {
+    this.isStarted.set(false);
+    this.stopTimer();
     this.resetTimer();
-    this.isRunning.set(false);
   }
 
   resetTimer(): void {
@@ -68,6 +71,25 @@ export class LiveRefreshService {
     } finally {
       this.isRefreshing.set(false);
     }
+  }
+
+  private startTimer(): void {
+    if (this.refreshSubscription) {
+      return;
+    }
+
+    this.isRunning.set(true);
+
+    this.refreshSubscription = interval(1000).subscribe(() => {
+      this.tick();
+    });
+  }
+
+  private stopTimer(): void {
+    this.refreshSubscription?.unsubscribe();
+    this.refreshSubscription = undefined;
+
+    this.isRunning.set(false);
   }
 
   private tick(): void {

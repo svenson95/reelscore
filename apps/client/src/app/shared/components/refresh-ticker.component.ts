@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
@@ -94,10 +95,15 @@ import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   `,
 })
 export class RefreshTickerComponent {
+  readonly active = input<boolean>(true);
+
   private readonly liveRefreshService = inject(LiveRefreshService);
 
   readonly timer = this.liveRefreshService.timer;
-  readonly isActive = this.liveRefreshService.isRunning;
+
+  readonly isActive = computed<boolean>(
+    () => this.active() && this.liveRefreshService.isRunning()
+  );
 
   readonly progress = computed<string>(() => {
     const elapsedSeconds = REFRESH_INTERVAL_SECONDS - this.timer();
