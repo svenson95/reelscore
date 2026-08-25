@@ -6,26 +6,30 @@ import {
 } from '@angular/core';
 
 import {
-  StandingsTableComponent,
   hasMultipleGroups,
+  PageTitleComponent,
   showHomeAndAwayStandings,
+  StandingsTableComponent,
 } from '@app/shared';
-import type { StandingsDTO } from '@lib/models';
+import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
 
 @Component({
   selector: 'rs-match-fixture-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StandingsTableComponent],
+  imports: [PageTitleComponent, StandingsTableComponent],
   styles: `
     :host {
       rs-standings-table {
         @apply sm:min-w-[500px] sm:mx-auto shadow-rs3;
       }
-      .standings-container { @apply flex flex-col px-3 py-3 gap-rs1; }
+
+      .standings-container {
+        @apply flex flex-col px-3 py-3 gap-rs1;
+      }
     }
   `,
   template: `
-    <h2>Tabellen</h2>
+    <rs-page-title title="Tabellen" />
 
     <div class="standings-container">
       @let leagueData = league(); @let groups = standingGroups(); @if
@@ -57,20 +61,22 @@ export class MatchFixtureStandingsComponent {
   readonly standings = input.required<StandingsDTO | null>();
   readonly isLoading = input.required<boolean>();
 
-  readonly league = computed(() => this.standings()?.league ?? null);
-  readonly standingGroups = computed(() => this.league()?.standings ?? []);
+  readonly league = computed<StandingsLeague | null>(
+    () => this.standings()?.league ?? null
+  );
+  readonly standingGroups = computed<StandingRanks[][]>(
+    () => this.league()?.standings ?? []
+  );
 
   readonly hasMultipleGroups = computed<boolean>(() => {
     const standings = this.standings();
-    if (standings === null) return false;
 
-    return hasMultipleGroups(standings);
+    return standings ? hasMultipleGroups(standings) : false;
   });
 
   readonly showHomeAndAwayStandings = computed<boolean>(() => {
     const standings = this.standings();
-    if (standings === null) return false;
 
-    return showHomeAndAwayStandings(standings);
+    return standings ? showHomeAndAwayStandings(standings) : false;
   });
 }
