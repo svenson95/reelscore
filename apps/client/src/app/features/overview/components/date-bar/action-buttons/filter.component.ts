@@ -21,7 +21,11 @@ import {
 import type { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../services';
-import { FilteredStandingsStore, WeekFixturesStore } from '../../../stores';
+import {
+  FilteredStandingsStore,
+  WeekFixturesStore,
+  WeekStandingsStore,
+} from '../../../stores';
 
 const MAT_MODULES = [
   MatButtonModule,
@@ -45,6 +49,14 @@ const MAT_MODULES = [
       &.is-filtering,
       &.is-open {
         @apply bg-rs-color-primary text-rs-color-text-3;
+      }
+
+      &:disabled {
+        @apply text-rs-border-color-2;
+      }
+
+      mat-icon {
+        color: inherit;
       }
     }
 
@@ -114,7 +126,7 @@ const MAT_MODULES = [
       #menuTrigger="matMenuTrigger"
       [class.is-filtering]="!!selectedCompetition()"
       [matMenuTriggerFor]="menu"
-      [disabled]="!hasFilterOptions()"
+      [disabled]="isLoading() || !hasFilterOptions()"
       [class.is-open]="menuTrigger.menuOpen"
     >
       <mat-icon>filter_list</mat-icon>
@@ -153,7 +165,8 @@ const MAT_MODULES = [
   `,
 })
 export class FilterComponent {
-  private readonly facade = inject(WeekFixturesStore);
+  private readonly weekFixturesStore = inject(WeekFixturesStore);
+  private readonly weekStandingsStore = inject(WeekStandingsStore);
   private readonly standingsStore = inject(FilteredStandingsStore);
   private readonly selectedDateService = inject(SelectedDateService);
   private readonly filterService = inject(FilterService);
@@ -161,11 +174,20 @@ export class FilterComponent {
 
   readonly selectedCompetition = this.filterService.selectedCompetition;
 
+  readonly isLoading = computed<boolean>(
+    () =>
+      this.weekFixturesStore.isLoading() || this.weekStandingsStore.isLoading()
+  );
+
+  readonly hasFilterOptions = computed<boolean>(
+    () => this.filteredGroups().length > 0
+  );
+
   readonly filteredGroups = computed<Array<SelectCompetitionGroup>>(() => {
     const selectedDate = this.selectedDateService.selectedDay();
     const isDarkTheme = this.themeService.isSystemDark();
 
-    const fixtures = this.facade
+    const fixtures = this.weekFixturesStore
       .weekFixtures()
       .flat()
       .filter((f) => f.fixture.date.substring(0, 10) === selectedDate);
@@ -188,8 +210,6 @@ export class FilterComponent {
     );
   });
 
-  readonly hasFilterOptions = computed(() => this.filteredGroups().length > 0);
-
   private readonly filterEffect = effect(() => {
     const id = this.selectedCompetition();
 
@@ -206,6 +226,8 @@ export class FilterComponent {
   isSameId = (id: CompetitionId) => this.selectedCompetition() === id;
 
   setFilter(id: CompetitionId): void {
+    if (this.isLoading()) return;
+
     this.selectedCompetition.update((selectedId) =>
       selectedId === id ? null : id
     );
