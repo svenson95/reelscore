@@ -2,21 +2,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   contentChild,
+  Directive,
   input,
 } from '@angular/core';
 
-import { Directive } from '@angular/core';
-
 @Directive({
   selector: '[rsPageTitleAction]',
-  standalone: true,
 })
 export class PageTitleActionDirective {}
 
 @Component({
   selector: 'rs-page-title',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
   styles: `
     :host {
       @apply flex min-h-10 w-full items-center gap-3 pl-1 sm:px-2;

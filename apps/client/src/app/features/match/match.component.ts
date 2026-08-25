@@ -25,8 +25,19 @@ import { STORE_PROVIDERS } from './store';
   imports: [PageHeaderComponent, MatchHeaderComponent, MatchDetailsComponent],
   providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host { @apply gap-5; }
-    :host ::ng-deep h2 { text-align: center; }
+    :host {
+      @apply gap-5;
+    }
+
+    :host ::ng-deep {
+      rs-page-title {
+        @apply pl-5 pr-3;
+      }
+
+      h2 {
+        text-align: center;
+      }
+    }
   `,
   template: `
     @if (error()) {

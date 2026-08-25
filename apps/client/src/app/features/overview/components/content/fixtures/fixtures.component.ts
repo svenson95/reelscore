@@ -8,17 +8,16 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import type { CompetitionWithFixtures } from '@app/shared';
+import {
+  PageTitleActionDirective,
+  PageTitleComponent,
+  type CompetitionWithFixtures,
+} from '@app/shared';
 import {
   STATUS_TYPES_PLAYING,
   type ExtendedFixtureDTO,
   type StatusShort,
 } from '@lib/models';
-
-import {
-  PageTitleActionDirective,
-  PageTitleComponent,
-} from '../../page-title.component';
 
 import { DateNavigationService } from '../../../services';
 import { OverviewFixturesFacade } from './fixtures.facade';
