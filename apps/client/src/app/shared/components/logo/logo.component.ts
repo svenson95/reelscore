@@ -28,7 +28,7 @@ const MIN_LOADING_DURATION_MS = 1000;
     }
 
     .logo-icon {
-      @apply flex size-9 shrink-0 items-center justify-center
+      @apply flex h-10 w-9 shrink-0 items-center justify-center
         overflow-hidden rounded-border2;
     }
 
@@ -41,7 +41,7 @@ const MIN_LOADING_DURATION_MS = 1000;
     }
 
     .logo-text {
-      @apply relative;
+      @apply relative font-normal pr-3;
     }
 
     :host.is-loading .logo-text::after {
