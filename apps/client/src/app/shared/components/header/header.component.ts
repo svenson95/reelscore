@@ -3,17 +3,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 import { LeagueService } from '../../services';
-
 import { LogoComponent } from '../logo/logo.component';
 
 import { CompetitionSelectComponent } from './components';
 
-const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
+const MAT_MODULES = [MatButtonModule];
 
 @Component({
   selector: 'header[rs-header-content]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...EXTERNAL_IMPORTS, LogoComponent, CompetitionSelectComponent],
+  imports: [
+    ...MAT_MODULES,
+    RouterLink,
+    LogoComponent,
+    CompetitionSelectComponent,
+  ],
   styles: `
     :host {
       @apply relative z-[200] border-b-[1px] border-rs-color-primary p-3;
@@ -26,7 +30,7 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
     .logo-link {
       --mat-button-filled-container-color: transparent;
 
-      @apply min-w-0 pl-0 pr-3;
+      @apply min-w-0 pl-0 pr-0;
     }
   `,
   template: `
@@ -49,6 +53,6 @@ const EXTERNAL_IMPORTS = [RouterLink, MatButtonModule];
   `,
 })
 export class HeaderComponent {
-  private competitionService = inject(LeagueService);
-  selectedCompetition = this.competitionService.selectedLeague;
+  private readonly competitionService = inject(LeagueService);
+  readonly selectedCompetition = this.competitionService.selectedLeague;
 }
