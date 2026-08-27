@@ -41,7 +41,7 @@ const MIN_LOADING_DURATION_MS = 1000;
     }
 
     .logo-text {
-      @apply relative font-normal pr-3;
+      @apply relative font-normal mr-3;
     }
 
     :host.is-loading .logo-text::after {
