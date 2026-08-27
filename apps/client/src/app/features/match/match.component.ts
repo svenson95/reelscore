@@ -30,16 +30,6 @@ import { STORE_PROVIDERS } from './store';
     :host {
       @apply gap-5;
     }
-
-    :host ::ng-deep {
-      rs-page-title {
-        @apply pl-5 pr-3;
-      }
-
-      h2 {
-        text-align: center;
-      }
-    }
   `,
   template: `
     @if (error()) {
