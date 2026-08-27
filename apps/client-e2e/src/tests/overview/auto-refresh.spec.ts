@@ -1,5 +1,6 @@
 import test, { expect } from '@playwright/test';
 
+import { mockRealtimeConnected, mockRealtimeUnavailable } from '../../helpers';
 import { OverviewPage } from '../../pages';
 
 const testDate = '2023-11-02';
@@ -26,7 +27,7 @@ test.describe('Overview Page', () => {
   }) => {
     const overviewPage = new OverviewPage(page);
 
-    await overviewPage.mockRealtimeConnected();
+    await mockRealtimeConnected(page);
     await overviewPage.mockSelectedDayAsPlaying(testDate);
 
     await overviewPage.goto(testDate);
@@ -44,8 +45,10 @@ test.describe('Overview Page', () => {
 
     const overviewPage = new OverviewPage(page);
 
-    await overviewPage.mockRealtimeUnavailable();
+    await mockRealtimeUnavailable(page);
     await overviewPage.mockSelectedDayAsPlaying(testDate);
+
+    await overviewPage.goto(testDate);
 
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
@@ -81,7 +84,7 @@ test.describe('Overview Page', () => {
 
     const targetTimerValue = AUTO_REFRESH_INTERVAL_SECONDS - 5;
 
-    await overviewPage.mockRealtimeUnavailable();
+    await mockRealtimeUnavailable(page);
     await overviewPage.mockSelectedDayAsPlaying(testDate);
 
     await overviewPage.goto(testDate);
