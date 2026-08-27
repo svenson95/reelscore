@@ -4,7 +4,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import { errorHandler, HttpWeekFixturesService } from '@app/shared';
-import type { FixturesWeekData } from '@lib/models';
+import type { FixtureDTO, FixturesWeekData } from '@lib/models';
 import { formatCalendarWeekKey, type DateString } from '@lib/shared';
 
 import {
@@ -70,6 +70,21 @@ export const WeekFixturesStore = signalStore(
         load({
           date,
           updateOnly,
+        });
+      },
+
+      updateFixture(fixture: FixtureDTO): void {
+        patchState(store, {
+          weekFixtures: store.weekFixtures().map((dayFixtures) =>
+            dayFixtures.map((currentFixture) =>
+              currentFixture.fixture.id === fixture.fixture.id
+                ? {
+                    ...currentFixture,
+                    ...fixture,
+                  }
+                : currentFixture
+            )
+          ),
         });
       },
     };

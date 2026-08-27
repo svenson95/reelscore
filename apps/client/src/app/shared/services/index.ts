@@ -17,6 +17,8 @@ export * from './league/league.service';
 export * from './live-refresh.service';
 export * from './loading.interceptor';
 export * from './loading.service';
+export * from './realtime-update-registry.service';
+export * from './realtime.service';
 export * from './refresh-registry.service';
 export * from './route.service';
 export * from './startup/startup.service';

@@ -1,6 +1,4 @@
 import {
-  type OnDestroy,
-  type OnInit,
   ChangeDetectionStrategy,
   Component,
   effect,
@@ -16,7 +14,11 @@ import {
   PageHeaderComponent,
 } from './components';
 import { MatchFacade } from './match.facade';
-import { MatchRefreshService, SERVICE_PROVIDERS } from './services';
+import {
+  MatchRealtimeService,
+  MatchRefreshService,
+  SERVICE_PROVIDERS,
+} from './services';
 import { STORE_PROVIDERS } from './store';
 
 @Component({
@@ -61,12 +63,13 @@ import { STORE_PROVIDERS } from './store';
     }
   `,
 })
-export class MatchComponent implements OnInit, OnDestroy {
+export class MatchComponent {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 
   private readonly facade = inject(MatchFacade);
   private readonly refreshService = inject(MatchRefreshService);
+  private readonly matchRealtimeService = inject(MatchRealtimeService);
 
   readonly fixture = this.facade.fixture;
   readonly data = this.facade.data;
@@ -76,15 +79,20 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.facade.loadFixture(this.fixtureId());
   });
 
+  private readonly liveUpdatesEffect = effect((onCleanup) => {
+    const fixtureId = this.fixtureId();
+
+    this.refreshService.init(fixtureId);
+
+    const unregisterRealtime = this.matchRealtimeService.register(fixtureId);
+
+    onCleanup(() => {
+      this.refreshService.destroy();
+      unregisterRealtime();
+    });
+  });
+
   private readonly invalidUrlEffect = effect(() => {
     this.facade.handleInvalidUrl(this.competitionUrl());
   });
-
-  ngOnInit(): void {
-    this.refreshService.init(this.fixtureId());
-  }
-
-  ngOnDestroy(): void {
-    this.refreshService.destroy();
-  }
 }

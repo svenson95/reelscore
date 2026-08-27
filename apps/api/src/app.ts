@@ -10,6 +10,7 @@ import {
   fixtureEvents,
   fixtures,
   fixturesStatistics,
+  livestream,
   search,
   standings,
   topScorers,
@@ -57,6 +58,7 @@ app.use('/fixture-events', fixtureEvents);
 app.use('/fixture-evaluations', fixtureEvaluations);
 app.use('/fixture-analyses', fixtureAnalyses);
 app.use('/search', search);
+app.use('/livestream', livestream);
 
 app.use((req, res) => {
   res.status(404).json({

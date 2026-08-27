@@ -10,7 +10,7 @@ import { RefreshRegistryService } from './refresh-registry.service';
 describe('LiveRefreshService', () => {
   let service: LiveRefreshService;
 
-  const hasLiveTargets = signal(false);
+  const hasLiveTargets = signal<boolean>(false);
 
   const refreshRegistryMock = {
     hasLiveTargets,
@@ -22,6 +22,7 @@ describe('LiveRefreshService', () => {
     jest.setSystemTime(new Date('2026-08-23T12:00:00Z'));
 
     hasLiveTargets.set(false);
+
     refreshRegistryMock.refresh.mockReset();
     refreshRegistryMock.refresh.mockResolvedValue(true);
 
@@ -44,19 +45,34 @@ describe('LiveRefreshService', () => {
   });
 
   describe('lifecycle', () => {
+    it('should be disabled by default', () => {
+      expect(service.isEnabled()).toBe(false);
+      expect(service.isRunning()).toBe(false);
+    });
+
+    it('should enable refresh fallback on start', () => {
+      service.start();
+
+      expect(service.isEnabled()).toBe(true);
+    });
+
     it('should start the global refresh timer when live targets exist', () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
+      expect(service.isEnabled()).toBe(true);
       expect(service.isRunning()).toBe(true);
       expect(service.timer()).toBe(REFRESH_INTERVAL_SECONDS);
     });
 
     it('should not start multiple timers', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       service.start();
+
       TestBed.tick();
 
       await jest.advanceTimersByTimeAsync(1_000);
@@ -64,8 +80,9 @@ describe('LiveRefreshService', () => {
       expect(service.timer()).toBe(REFRESH_INTERVAL_SECONDS - 1);
     });
 
-    it('should stop and reset the timer', async () => {
+    it('should disable, stop and reset the timer', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -75,12 +92,14 @@ describe('LiveRefreshService', () => {
 
       service.stop();
 
+      expect(service.isEnabled()).toBe(false);
       expect(service.isRunning()).toBe(false);
       expect(service.timer()).toBe(REFRESH_INTERVAL_SECONDS);
     });
 
     it('should not continue counting down after stop', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -191,6 +210,7 @@ describe('LiveRefreshService', () => {
 
     it('should reset timer after successful refresh', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -217,6 +237,7 @@ describe('LiveRefreshService', () => {
   describe('timer', () => {
     it('should count down every second', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -227,6 +248,7 @@ describe('LiveRefreshService', () => {
 
     it('should trigger refresh after the refresh interval', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -250,6 +272,7 @@ describe('LiveRefreshService', () => {
       );
 
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 
@@ -295,6 +318,7 @@ describe('LiveRefreshService', () => {
 
     it('should stop and reset the timer when no live targets remain', async () => {
       hasLiveTargets.set(true);
+
       service.start();
       TestBed.tick();
 

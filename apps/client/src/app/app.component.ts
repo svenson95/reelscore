@@ -6,21 +6,21 @@ import {
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import {
-  FooterComponent,
-  HeaderComponent,
-  LiveRefreshService,
-  StartupService,
-  VisibilityObserverService,
-} from '@app/shared';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { RealtimeService } from './shared/services/realtime.service';
+import { StartupService } from './shared/services/startup/startup.service';
+import { VisibilityObserverService } from './shared/services/visibility-observer.service';
 
 import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
+
+import { RealtimeUpdateService } from './realtime/realtime-update.service';
 
 @Component({
   selector: 'rs-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
-  providers: [...OVERVIEW_WEEK_STORE_PROVIDERS],
+  providers: [...OVERVIEW_WEEK_STORE_PROVIDERS, RealtimeUpdateService],
   styles: `
     :host {
       box-sizing: border-box;
@@ -40,13 +40,15 @@ import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
 })
 export class AppComponent implements OnInit {
   private readonly startupService = inject(StartupService);
-  private readonly liveRefreshService = inject(LiveRefreshService);
   private readonly visibilityObserverService = inject(
     VisibilityObserverService
   );
+  private readonly realtimeService = inject(RealtimeService);
+  private readonly realtimeUpdateService = inject(RealtimeUpdateService);
 
   ngOnInit(): void {
-    this.liveRefreshService.start();
+    this.realtimeUpdateService.init();
+    this.realtimeService.connect();
     this.visibilityObserverService.init();
   }
 
