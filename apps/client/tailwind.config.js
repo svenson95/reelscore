@@ -59,12 +59,12 @@ module.exports = {
   plugins: [
     function ({ addUtilities }) {
       const newUtitilites = {
-        '.rs-competition-tab': {
-          display: 'flex',
-          'margin-top': '0.75rem',
-          'padding-inline': '0.75rem',
-          'padding-bottom': '1rem',
-        },
+        // '.rs-competition-tab': {
+        //   display: 'flex',
+        //   'margin-top': '0.75rem',
+        //   'padding-inline': '0.75rem',
+        //   'padding-bottom': '1rem',
+        // },
       };
 
       addUtilities(newUtitilites);

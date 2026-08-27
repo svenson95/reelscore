@@ -41,9 +41,11 @@ export class HideHeaderDirective implements OnInit {
   providers: [OverviewContentFacade],
   styles: `
     .tab-content {
-      @apply max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap w-full p-3 gap-rs2 mx-auto;
+      @apply w-full max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap py-3 gap-rs2 mx-auto;
+    }
 
-      .fixtures-container, .standings-container { @apply w-full min-w-[200px]; }
+    .fixtures-container, .standings-container {
+      @apply w-full min-w-[200px];
     }
   `,
   template: `

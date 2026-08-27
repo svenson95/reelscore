@@ -10,6 +10,7 @@ import {
   isFirstCompetitionRound,
   isReversedSingleRoundCompetition,
   LeagueService,
+  PageTitleComponent,
 } from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 import { isCompetitionWithOneFixture } from '@lib/shared';
@@ -21,13 +22,15 @@ import { FixturesListComponent } from './fixtures-list.component';
 @Component({
   selector: 'rs-competition-last-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, FixturesListComponent],
+  imports: [MatButtonModule, PageTitleComponent, FixturesListComponent],
   styles: `
-    :host { @apply rs-competition-tab flex-col gap-rs2 overflow-hidden; }
-    .list-container { @apply flex flex-wrap gap-rs2 items-start justify-center; }
+    :host { @apply flex flex-col gap-rs1 overflow-hidden; }
+    .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
     button { @apply shadow-rs3; }
   `,
   template: `
+    <rs-page-title title="Ergebnisse"></rs-page-title>
+
     @let fixtureGroups = fixturesData(); @if (fixtureGroups !== null) { @if
     (fixtureGroups.length > 0) {
     <div class="list-container">

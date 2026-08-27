@@ -42,16 +42,18 @@ import {
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host ::ng-deep {
-      mat-tab-header { @apply mx-3; }
-
-      h2 {
-        line-height: 40px;
-        letter-spacing: 2px;
+      mat-tab-header {
+        @apply mx-3;
       }
+    }
+
+    :host {
+      @apply min-h-[70vh];
     }
   `,
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
+
     <section class="competition-data">
       <mat-tab-group
         [animationDuration]="animationDuration"
@@ -63,9 +65,9 @@ import {
           <ng-template mat-tab-label>
             <div class="tab-label-content">
               <mat-icon>playlist_add_check</mat-icon>
-              <span class="tab-label-span">Ergebnisse</span>
             </div>
           </ng-template>
+
           <rs-competition-last-fixtures />
         </mat-tab>
 
@@ -73,9 +75,9 @@ import {
           <ng-template mat-tab-label>
             <div class="tab-label-content">
               <mat-icon>playlist_play</mat-icon>
-              <span class="tab-label-span">Spielplan</span>
             </div>
           </ng-template>
+
           <ng-template matTabContent>
             <rs-competition-next-fixtures />
           </ng-template>
@@ -85,9 +87,9 @@ import {
           <ng-template mat-tab-label>
             <div class="tab-label-content">
               <mat-icon>format_list_numbered</mat-icon>
-              <span class="tab-label-span">Tabellen</span>
             </div>
           </ng-template>
+
           <ng-template matTabContent>
             <rs-competition-standings />
           </ng-template>
@@ -97,9 +99,9 @@ import {
           <ng-template mat-tab-label>
             <div class="tab-label-content">
               <mat-icon>format_list_numbered_rtl</mat-icon>
-              <span class="tab-label-span">Statistiken</span>
             </div>
           </ng-template>
+
           <ng-template matTabContent>
             <rs-competition-player-stats />
           </ng-template>

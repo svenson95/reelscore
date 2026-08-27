@@ -17,7 +17,7 @@ export class PageTitleActionDirective {}
   imports: [],
   styles: `
     :host {
-      @apply flex min-h-10 w-full items-center gap-3 pl-1 sm:px-2;
+      @apply flex min-h-10 w-full items-center gap-3 px-6 sm:px-8;
     }
 
     .title-wrapper {

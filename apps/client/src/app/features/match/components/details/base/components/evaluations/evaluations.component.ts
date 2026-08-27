@@ -15,7 +15,7 @@ import { ToKebabCasePipe } from './pipes';
     }
 
     .content {
-      @apply flex flex-col gap-10 mt-3 mx-auto p-8 shadow-rs3 bg-rs-button-bg;
+      @apply flex flex-col gap-10 mt-rs1 mx-auto p-8 shadow-rs3 bg-rs-button-bg;
       border-radius: var(--mat-button-toggle-shape);
     }
 

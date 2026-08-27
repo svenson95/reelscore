@@ -31,7 +31,11 @@ type MatchTimelineItem =
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatchEventComponent, TimeTotalPipe],
   styles: `
-    :host { @apply flex flex-col m-3 gap-3 py-rs2 bg-rs-button-bg rounded-border2 shadow-rs3; }
+    :host {
+      @apply flex flex-col
+        bg-rs-button-bg rounded-border2 shadow-rs3
+        mx-3 mb-3 mt-rs1 gap-3 py-rs2;
+    }
 
     .event-row { @apply flex gap-5 items-center; }
     .event-row > .team { @apply flex-1; }

@@ -20,7 +20,7 @@ import { FixtureStore } from '../../../../../store';
     }
 
     .fixture-data {
-      @apply mx-auto mt-3 w-[350px] xs:w-[450px] bg-rs-button-bg shadow-rs3 rounded-border2;
+      @apply mx-auto mt-rs1 w-[350px] xs:w-[450px] bg-rs-button-bg shadow-rs3 rounded-border2;
     }
 
     ul {

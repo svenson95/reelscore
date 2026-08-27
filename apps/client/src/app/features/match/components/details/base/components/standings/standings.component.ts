@@ -24,7 +24,7 @@ import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
       }
 
       .standings-container {
-        @apply flex flex-col px-3 py-3 gap-rs1;
+        @apply flex flex-col px-3 py-rs1 gap-rs1;
       }
     }
   `,

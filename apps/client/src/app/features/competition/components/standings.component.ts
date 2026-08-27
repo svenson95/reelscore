@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import {
+  PageTitleComponent,
   StandingsTableComponent,
   hasMultipleGroups,
   showHomeAndAwayStandings,
@@ -16,9 +17,16 @@ import { CompetitionStandingsStore } from '../store';
 @Component({
   selector: 'rs-competition-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StandingsTableComponent],
+  imports: [PageTitleComponent, StandingsTableComponent],
   styles: `
-    :host { @apply rs-competition-tab gap-rs2 flex-wrap items-start justify-center; }
+    :host {
+      @apply flex flex-col gap-rs1;
+    }
+
+    .standings-container {
+      @apply flex flex-wrap items-start justify-center gap-rs2;
+    }
+
     .home-and-away-standings {
       @apply flex gap-rs2 flex-col md:flex-row;
 
@@ -26,32 +34,36 @@ import { CompetitionStandingsStore } from '../store';
     }
   `,
   template: `
-    @let leagueData = league(); @let groups = standingGroups(); @if (leagueData
-    && groups.length) { @if (hasMultipleGroups()) { @for (multipleStanding of
-    groups; track $index) {
-    <rs-standings-table [ranks]="multipleStanding" [league]="leagueData" />
-    } } @else {
-    <rs-standings-table [ranks]="groups[0]" [league]="leagueData" />
+    <rs-page-title title="Tabellen"></rs-page-title>
 
-    @if (showHomeAndAwayStandings()) {
-    <div class="home-and-away-standings">
-      <rs-standings-table
-        [ranks]="groups[1]"
-        [league]="leagueData"
-        header="Heimtabelle"
-      />
+    <div class="standings-container">
+      @let leagueData = league(); @let groups = standingGroups(); @if
+      (leagueData && groups.length) { @if (hasMultipleGroups()) { @for
+      (multipleStanding of groups; track $index) {
+      <rs-standings-table [ranks]="multipleStanding" [league]="leagueData" />
+      } } @else {
+      <rs-standings-table [ranks]="groups[0]" [league]="leagueData" />
 
-      <rs-standings-table
-        [ranks]="groups[2]"
-        [league]="leagueData"
-        header="Auswärtstabelle"
-      />
+      @if (showHomeAndAwayStandings()) {
+      <div class="home-and-away-standings">
+        <rs-standings-table
+          [ranks]="groups[1]"
+          [league]="leagueData"
+          header="Heimtabelle"
+        />
+
+        <rs-standings-table
+          [ranks]="groups[2]"
+          [league]="leagueData"
+          header="Auswärtstabelle"
+        />
+      </div>
+      } } } @else if (isLoading()) {
+      <p class="no-data">Tabelle wird geladen ...</p>
+      } @else {
+      <p class="no-data">Keine Tabelle vorhanden</p>
+      }
     </div>
-    } } } @else if (isLoading()) {
-    <p class="no-data">Tabelle wird geladen ...</p>
-    } @else {
-    <p class="no-data">Keine Tabelle vorhanden</p>
-    }
   `,
 })
 export class CompetitionStandingsComponent {
