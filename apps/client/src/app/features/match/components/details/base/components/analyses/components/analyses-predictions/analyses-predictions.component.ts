@@ -13,7 +13,9 @@ import type { AnalysesDTO } from '@lib/models';
     }
 
     .fixture-analyse {
-      @apply m-3 p-5 bg-rs-button-bg rounded-border2 shadow-rs3 text-rs-color-text-1 text-rs-font-size-body-2;
+      @apply mx-3 mb-3 mt-rs1 p-5
+        bg-rs-button-bg rounded-border2 shadow-rs3
+        text-rs-color-text-1 text-rs-font-size-body-2;
     }
 
     .fixture-analyse > div {

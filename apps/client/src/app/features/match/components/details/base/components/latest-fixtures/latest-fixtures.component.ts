@@ -23,7 +23,7 @@ import { MatchFixturesTableComponent } from './components';
     }
 
     .latest-fixtures-container {
-      @apply flex flex-col md:flex-row mt-3 mx-3 gap-rs2;
+      @apply flex flex-col md:flex-row mt-rs1 mx-3 gap-rs2;
       border-radius: var(--mat-button-toggle-shape);
     }
 

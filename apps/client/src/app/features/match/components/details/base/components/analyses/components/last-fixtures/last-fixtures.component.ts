@@ -28,7 +28,8 @@ import {
   imports: [PageTitleComponent, AnalysesEvaluationsComponent],
   styles: `
     .latest-fixtures {
-      @apply grid grid-cols-1 md:grid-cols-2 gap-3 m-3;
+      @apply grid grid-cols-1 md:grid-cols-2
+        gap-3 mx-3 mb-3 mt-rs1;
     }
 
     .latest-fixtures > div {

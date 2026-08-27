@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
-import { TeamNamePipe } from '@app/shared';
+import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 import type { TopScorer } from '@lib/models';
 
 import { TopScorersStore } from '../store';
@@ -13,13 +13,12 @@ import { TopScorersStore } from '../store';
 @Component({
   selector: 'rs-competition-player-stats',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TeamNamePipe],
+  imports: [PageTitleComponent, TeamNamePipe],
   styles: `
-    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap mx-3 pb-4; }
+    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap pb-4; }
     .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
-    .column { @apply flex-1; }
-    h2 { @apply mb-2 ml-4; }
-    .stats { @apply flex flex-col p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2; }
+    .column { @apply flex-1 flex flex-col gap-rs1; }
+    .stats { @apply flex flex-col p-rs1 mx-3 bg-rs-button-bg shadow-rs3 rounded-border2; }
     .player-stat { @apply flex justify-between bg-rs-button-bg p-2; }
     .player-stat:not(:last-child) { @apply border-b; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }
@@ -32,7 +31,8 @@ import { TopScorersStore } from '../store';
   template: `
     @if (isDataLoaded()) {
     <div class="column">
-      <h2>Torschützen</h2>
+      <rs-page-title title="Torschützen"></rs-page-title>
+
       <div class="stats">
         @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -44,14 +44,18 @@ import { TopScorersStore } from '../store';
               {{ stat.statistics[0].team.name | teamName : 'short' }}
             </span>
           </div>
-          <span class="stat-value">{{ stat.statistics[0].goals.total }}</span>
+
+          <span class="stat-value">
+            {{ stat.statistics[0].goals.total }}
+          </span>
         </div>
         }
       </div>
     </div>
 
     <div class="column">
-      <h2>Vorlagen</h2>
+      <rs-page-title title="Vorlagengeber"></rs-page-title>
+
       <div class="stats">
         @for (stat of assists(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -63,7 +67,10 @@ import { TopScorersStore } from '../store';
               {{ stat.statistics[0].team.name | teamName : 'short' }}
             </span>
           </div>
-          <span class="stat-value">{{ stat.statistics[0].goals.assists }}</span>
+
+          <span class="stat-value">
+            {{ stat.statistics[0].goals.assists }}
+          </span>
         </div>
         }
       </div>
