@@ -20,14 +20,14 @@ export class LiveRefreshService {
   readonly isRunning = signal<boolean>(false);
   readonly isRefreshing = signal<boolean>(false);
 
-  private readonly isStarted = signal<boolean>(false);
+  readonly isEnabled = signal<boolean>(false);
 
   private refreshSubscription?: Subscription;
   private lastRefreshAt?: number;
 
   constructor() {
     effect(() => {
-      const shouldRun = this.isStarted() && this.registry.hasLiveTargets();
+      const shouldRun = this.isEnabled() && this.registry.hasLiveTargets();
 
       if (shouldRun) {
         this.startTimer();
@@ -39,11 +39,11 @@ export class LiveRefreshService {
   }
 
   start(): void {
-    this.isStarted.set(true);
+    this.isEnabled.set(true);
   }
 
   stop(): void {
-    this.isStarted.set(false);
+    this.isEnabled.set(false);
     this.stopTimer();
     this.resetTimer();
   }

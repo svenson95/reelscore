@@ -4,7 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { retry } from 'rxjs/operators';
 
 import { errorHandler, type StateHandler } from '@app/shared';
-import type { FixtureId, FixtureIdParameter, GetFixtureDTO } from '@lib/models';
+import type {
+  FixtureDTO,
+  FixtureId,
+  FixtureIdParameter,
+  GetFixtureDTO,
+} from '@lib/models';
 import { isCompetitionWithoutStandings } from '@lib/shared';
 
 import { HttpFixtureService } from '../services';
@@ -156,6 +161,27 @@ export const FixtureStore = signalStore(
 
           return loadFixtureData(fixture.data.fixture.id, {
             isRefresh: true,
+          });
+        },
+
+        updateFixture(fixture: FixtureDTO): void {
+          const currentFixture = store.fixture();
+
+          if (
+            !currentFixture ||
+            currentFixture.data.fixture.id !== fixture.fixture.id
+          ) {
+            return;
+          }
+
+          patchState(store, {
+            fixture: {
+              ...currentFixture,
+              data: {
+                ...currentFixture.data,
+                ...fixture,
+              },
+            },
           });
         },
       };

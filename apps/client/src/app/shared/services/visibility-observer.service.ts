@@ -19,8 +19,18 @@ export class VisibilityObserverService {
     this.subscription = fromEvent(document, 'visibilitychange')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+
         filter(() => !document.hidden),
-        tap(() => void this.liveRefreshService.refresh({ force: true }))
+
+        tap(() => {
+          if (!this.liveRefreshService.isEnabled()) {
+            return;
+          }
+
+          void this.liveRefreshService.refresh({
+            force: true,
+          });
+        })
       )
       .subscribe();
   }

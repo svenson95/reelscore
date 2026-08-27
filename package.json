@@ -29,6 +29,8 @@
     "@ngrx/router-store": "21.1.0",
     "@ngrx/signals": "21.1.0",
     "@ngrx/store": "21.1.0",
+    "@upstash/realtime": "^1.1.0",
+    "@upstash/redis": "^1.38.3",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.22.2",
@@ -41,7 +43,8 @@
     "node-fetch": "^3.3.2",
     "rxjs": "~7.8.0",
     "sharp": "^0.35.3",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "21.2.19",

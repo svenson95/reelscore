@@ -10,7 +10,9 @@ const AUTO_REFRESH_TIMEOUT_MS = AUTO_REFRESH_INTERVAL_MS + 10_000;
 
 test.describe('Overview Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.clock.setFixedTime(new Date('2023-11-02T12:00:00Z'));
+    await page.clock.install({
+      time: new Date('2023-11-02T12:00:00Z'),
+    });
   });
 
   test.afterEach(async ({ page }) => {
@@ -19,16 +21,41 @@ test.describe('Overview Page', () => {
     });
   });
 
-  test('auto-refreshes while a fixture is playing', async ({ page }) => {
+  test('keeps polling disabled while realtime is connected', async ({
+    page,
+  }) => {
+    const overviewPage = new OverviewPage(page);
+
+    await overviewPage.mockRealtimeConnected();
+    await overviewPage.mockSelectedDayAsPlaying(testDate);
+
+    await overviewPage.goto(testDate);
+    await overviewPage.expectLoaded();
+
+    await overviewPage.expectRefreshTimerStopped();
+
+    expect(await overviewPage.getRefreshTimerValue()).toBe(
+      AUTO_REFRESH_INTERVAL_SECONDS
+    );
+  });
+
+  test('uses polling fallback while a fixture is playing', async ({ page }) => {
     test.setTimeout(AUTO_REFRESH_TIMEOUT_MS + 10_000);
 
     const overviewPage = new OverviewPage(page);
 
+    await overviewPage.mockRealtimeUnavailable();
     await overviewPage.mockSelectedDayAsPlaying(testDate);
 
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
     await overviewPage.expectRefreshTimerRunning();
+
+    await expect
+      .poll(() => overviewPage.getRefreshTimerValue(), {
+        timeout: 10_000,
+      })
+      .toBeLessThanOrEqual(AUTO_REFRESH_INTERVAL_SECONDS - 5);
 
     const refreshResponse = await page.waitForResponse(
       (response) =>
@@ -47,13 +74,14 @@ test.describe('Overview Page', () => {
     await overviewPage.expectRefreshTimerRunning();
   });
 
-  test('resumes auto-refresh timer after returning to the overview', async ({
+  test('keeps polling fallback active after returning to the overview', async ({
     page,
   }) => {
     const overviewPage = new OverviewPage(page);
 
     const targetTimerValue = AUTO_REFRESH_INTERVAL_SECONDS - 5;
 
+    await overviewPage.mockRealtimeUnavailable();
     await overviewPage.mockSelectedDayAsPlaying(testDate);
 
     await overviewPage.goto(testDate);
@@ -80,6 +108,7 @@ test.describe('Overview Page', () => {
     const restoredTimer = await overviewPage.getRefreshTimerValue();
 
     expect(restoredTimer).toBeLessThanOrEqual(timerBeforeNavigation);
+
     expect(restoredTimer).toBeGreaterThanOrEqual(timerBeforeNavigation - 1);
 
     await expect

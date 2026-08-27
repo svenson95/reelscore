@@ -2,7 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 
 import { HttpWeekFixturesService } from '@app/shared';
-import type { FixturesWeekData } from '@lib/models';
+import type {
+  ExtendedFixtureDTO,
+  FixtureDTO,
+  FixturesWeekData,
+} from '@lib/models';
 import { formatCalendarWeekKey } from '@lib/shared';
 
 import { WeekFixturesStore } from './week-fixtures.store';
@@ -145,8 +149,179 @@ describe('WeekFixturesStore', () => {
     expect(store.isPending()).toBe(false);
     expect(store.error()).toBe(error);
   });
+
+  describe('realtime updates', () => {
+    it('should update an existing fixture', () => {
+      const currentFixture = createExtendedFixture(123);
+      const weekFixtures = createWeekFixtures();
+
+      weekFixtures[4] = [currentFixture];
+
+      httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
+
+      store.loadWeekFixtures(testDate);
+
+      const update = createFixtureUpdate(123, 2, 1);
+
+      store.updateFixture(update);
+
+      const updatedFixture = store.weekFixtures()[4][0];
+
+      expect(updatedFixture.goals).toEqual({
+        home: 2,
+        away: 1,
+      });
+    });
+
+    it('should preserve extended fixture data when applying an update', () => {
+      const currentFixture = createExtendedFixture(123);
+      const weekFixtures = createWeekFixtures();
+
+      weekFixtures[4] = [currentFixture];
+
+      httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
+
+      store.loadWeekFixtures(testDate);
+
+      store.updateFixture(createFixtureUpdate(123, 2, 1));
+
+      const updatedFixture = store.weekFixtures()[4][0];
+
+      expect(updatedFixture.final).toBe(currentFixture.final);
+      expect(updatedFixture.prediction).toBe(currentFixture.prediction);
+      expect(updatedFixture.evaluations).toBe(currentFixture.evaluations);
+    });
+
+    it('should not update fixtures with a different fixture id', () => {
+      const currentFixture = createExtendedFixture(123);
+      const weekFixtures = createWeekFixtures();
+
+      weekFixtures[4] = [currentFixture];
+
+      httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
+
+      store.loadWeekFixtures(testDate);
+
+      store.updateFixture(createFixtureUpdate(456, 2, 1));
+
+      expect(store.weekFixtures()[4][0]).toBe(currentFixture);
+    });
+  });
 });
 
 function createWeekFixtures(): FixturesWeekData {
   return Array.from({ length: 9 }, () => []);
+}
+
+function createExtendedFixture(fixtureId: number): ExtendedFixtureDTO {
+  return {
+    _id: 'test-id',
+    fixture: {
+      id: fixtureId,
+      referee: '',
+      timezone: 'Europe/Berlin',
+      date: '2026-08-17T18:00:00+02:00',
+      timestamp: 0,
+      periods: {
+        first: 0,
+        second: 0,
+      },
+      venue: {
+        id: null,
+        name: '',
+        city: '',
+      },
+      status: {
+        long: 'Not Started',
+        short: 'NS',
+        elapsed: null,
+        extra: null,
+      },
+    },
+    league: {
+      id: 140,
+      name: 'La Liga',
+      country: 'Spain',
+      logo: '',
+      flag: '',
+      season: 2026,
+      round: 'Regular Season - 1',
+    },
+    teams: {
+      home: {
+        id: 1,
+        name: 'Home',
+        logo: '',
+        winner: false,
+      },
+      away: {
+        id: 2,
+        name: 'Away',
+        logo: '',
+        winner: false,
+      },
+    },
+    goals: {
+      home: 0,
+      away: 0,
+    },
+    score: {
+      halftime: {
+        home: 0,
+        away: 0,
+      },
+      fulltime: {
+        home: 0,
+        away: 0,
+      },
+      extratime: {
+        home: 0,
+        away: 0,
+      },
+      penalty: {
+        home: 0,
+        away: 0,
+      },
+    },
+    final: {
+      firstLegResult: null,
+      winnerOfFinal: null,
+    },
+    prediction: {
+      bet: 'home',
+      qoute: 1.5,
+      probability: 0.75,
+      correct: null,
+    },
+    evaluations: {
+      home: {
+        performance: 'MIDDLE',
+        analyses: [],
+      },
+      away: {
+        performance: 'MIDDLE',
+        analyses: [],
+      },
+    },
+  };
+}
+
+function createFixtureUpdate(
+  fixtureId: number,
+  homeGoals: number,
+  awayGoals: number
+): FixtureDTO {
+  const fixture = createExtendedFixture(fixtureId);
+
+  return {
+    _id: fixture._id,
+    fixture: fixture.fixture,
+    league: fixture.league,
+    teams: fixture.teams,
+    goals: {
+      home: homeGoals,
+      away: awayGoals,
+    },
+    score: fixture.score,
+  };
 }
