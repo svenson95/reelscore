@@ -10,10 +10,9 @@ import type {
   EventWithResult,
   FixtureIdParameter,
   MatchTeams,
-  RapidEventsDTO} from '@lib/models';
-import {
-  timeTotal,
+  RapidEventsDTO,
 } from '@lib/models';
+import { timeTotal } from '@lib/models';
 
 import { HttpFixtureEventsService } from '../services';
 
@@ -27,47 +26,65 @@ const initialState: EventsState = {
 
 export const EventsStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpFixtureEventsService)) => ({
-    async loadEvents({
-      fixtureId,
-      teams,
-    }: {
-      fixtureId: FixtureIdParameter;
-      teams: MatchTeams;
-    }): Promise<void> {
-      patchState(store, { isLoading: true });
 
-      http
-        .getFixtureEvents(fixtureId)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (events) => {
-            if (!events || !teams) {
-              return patchState(store, {
+  withMethods((store, http = inject(HttpFixtureEventsService)) => {
+    const patchEvents = (events: RapidEventsDTO, teams: MatchTeams): void => {
+      patchState(store, {
+        events: mappedEvents(events, teams),
+        isLoading: false,
+        error: null,
+      });
+    };
+
+    return {
+      async loadEvents({
+        fixtureId,
+        teams,
+      }: {
+        fixtureId: FixtureIdParameter;
+        teams: MatchTeams;
+      }): Promise<void> {
+        patchState(store, {
+          isLoading: true,
+        });
+
+        http
+          .getFixtureEvents(fixtureId)
+          .pipe(retry(errorHandler))
+          .subscribe({
+            next: (events) => {
+              if (!events || !teams) {
+                patchState(store, {
+                  events: null,
+                  isLoading: false,
+                  error: 'Events not found',
+                });
+
+                return;
+              }
+
+              patchEvents(events, teams);
+            },
+
+            error: (error) => {
+              patchState(store, {
                 events: null,
                 isLoading: false,
-                error: 'Events not found',
+                error,
               });
-            }
+            },
+          });
+      },
 
-            patchState(store, {
-              events: mappedEvents(events, teams),
-              isLoading: false,
-              error: events ? null : 'Events not found',
-            });
-          },
-          error: (error) =>
-            patchState(store, {
-              events: null,
-              isLoading: false,
-              error,
-            }),
-        });
-    },
-    async reset(): Promise<void> {
-      patchState(store, initialState);
-    },
-  }))
+      updateEvents(events: RapidEventsDTO, teams: MatchTeams): void {
+        patchEvents(events, teams);
+      },
+
+      async reset(): Promise<void> {
+        patchState(store, initialState);
+      },
+    };
+  })
 );
 
 const mappedEvents = (
