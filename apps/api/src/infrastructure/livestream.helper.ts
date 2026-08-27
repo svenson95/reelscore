@@ -1,4 +1,5 @@
 import type { Realtime } from '@upstash/realtime';
+import type { Redis } from '@upstash/redis';
 import { z } from 'zod';
 
 import type {
@@ -6,7 +7,7 @@ import type {
   LiveFixtureUpdateDTO,
 } from '@lib/models';
 
-import { redis } from './redis.helper';
+import { getRedis } from './redis.helper';
 
 const realtimeSchema = {
   fixture: {
@@ -16,7 +17,7 @@ const realtimeSchema = {
 };
 
 type RealtimeInstance = Realtime<{
-  redis: typeof redis;
+  redis: Redis;
   schema: typeof realtimeSchema;
   maxDurationSecs: number;
 }>;
@@ -26,7 +27,7 @@ let realtimePromise: Promise<RealtimeInstance> | null = null;
 export const getRealtime = (): Promise<RealtimeInstance> => {
   realtimePromise ??= import('@upstash/realtime').then(({ Realtime }) => {
     return new Realtime({
-      redis,
+      redis: getRedis(),
       schema: realtimeSchema,
       maxDurationSecs: 300,
     });

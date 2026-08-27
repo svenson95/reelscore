@@ -1,5 +1,6 @@
 import test, { expect, type Request } from '@playwright/test';
 
+import { mockRealtimeConnected } from '../../helpers';
 import { MatchPage, OverviewPage } from '../../pages';
 
 const testDate = '2026-08-11';
@@ -16,6 +17,8 @@ test.describe('Overview Page', () => {
   }) => {
     const overviewPage = new OverviewPage(page);
     const matchPage = new MatchPage(page);
+
+    await mockRealtimeConnected(page);
 
     await overviewPage.goto(testDate);
 
