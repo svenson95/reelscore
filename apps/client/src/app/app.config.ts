@@ -3,6 +3,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import type { ApplicationConfig } from '@angular/core';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
@@ -34,6 +35,16 @@ const BASE_PROVIDERS = [
   provideHttpClient(withInterceptorsFromDi()),
 ];
 
+const MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER = {
+  provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+  useValue: {
+    showDelay: 400,
+    hideDelay: 0,
+    touchGestures: 'auto',
+    touchendHideDelay: 2000,
+  },
+};
+
 export const appConfig: ApplicationConfig = {
   providers: [
     PWA_PROVIDER,
@@ -42,5 +53,6 @@ export const appConfig: ApplicationConfig = {
     LOCALE_PROVIDER,
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,
+    MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
   ],
 };
