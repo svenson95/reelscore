@@ -2,10 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
 import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
 
@@ -14,11 +16,13 @@ import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatIcon],
+  hostDirectives: [MatTooltip],
   host: {
     '[class.is-active]': 'isActive()',
     '[class.is-reset]': 'isReset()',
     '[style.--refresh-progress]': 'progress()',
     '[attr.data-timer]': 'timer()',
+    '(pointerup)': 'onPointerUp($event)',
     'data-testid': 'refresh-timer',
   },
   styles: `
@@ -87,6 +91,11 @@ import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
       --mat-icon-color: var(--rs-color-primary);
       transition: color 150ms ease-in-out;
     }
+
+    ::ng-deep .refresh-tooltip {
+      white-space: pre-line;
+      text-align: center;
+    }
   `,
   template: `
     <span class="ticker" aria-hidden="true">
@@ -98,6 +107,7 @@ export class RefreshTickerComponent {
   readonly active = input<boolean>(true);
 
   private readonly liveRefreshService = inject(LiveRefreshService);
+  private readonly tooltip = inject(MatTooltip);
 
   readonly timer = this.liveRefreshService.timer;
 
@@ -115,4 +125,23 @@ export class RefreshTickerComponent {
   readonly isReset = computed<boolean>(
     () => this.timer() === REFRESH_INTERVAL_SECONDS
   );
+
+  private readonly tooltipMessage = effect(() => {
+    this.tooltip.message = this.isActive()
+      ? 'Live-Aktualisierung läuft\nLive-Spiele verfügbar'
+      : 'Live-Aktualisierung aus\nKeine Live-Spiele verfügbar';
+  });
+
+  private readonly tooltipConfig = (() => {
+    this.tooltip.tooltipClass = 'refresh-tooltip';
+  })();
+
+  onPointerUp(event: PointerEvent): void {
+    if (event.pointerType !== 'touch') {
+      return;
+    }
+
+    this.tooltip.show();
+    this.tooltip.hide(2000);
+  }
 }
