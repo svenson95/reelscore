@@ -113,6 +113,13 @@
       calendar-navigation-button-icon-color: var(--rs-color-primary),
     )
   );
+
+  @include mat.tooltip-overrides(
+    (
+      container-color: var(--rs-color-primary),
+      supporting-text-color: black,
+    )
+  );
 }
 
 // mat-button
