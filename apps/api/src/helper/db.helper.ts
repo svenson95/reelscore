@@ -53,7 +53,7 @@ export class DBHelper {
 
     return mongoose.connect(uri, {
       maxPoolSize: 10,
-      minPoolSize: 1,
+      minPoolSize: 0,
       serverSelectionTimeoutMS: 5_000,
       socketTimeoutMS: 20_000,
       maxIdleTimeMS: 30_000,
