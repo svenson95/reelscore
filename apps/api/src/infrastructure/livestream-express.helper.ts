@@ -57,13 +57,14 @@ const createWebRequest = (
   req: Request,
   signal: AbortSignal
 ): globalThis.Request => {
-  const host = req.get('host');
+  const protocol = req.get('x-forwarded-proto') ?? req.protocol;
+  const host = req.get('x-forwarded-host') ?? req.get('host');
 
   if (!host) {
     throw new Error('Missing host header');
   }
 
-  const url = new URL(req.originalUrl, `${req.protocol}://${host}`);
+  const url = new URL(req.originalUrl, `${protocol}://${host}`);
 
   return new globalThis.Request(url, {
     method: 'GET',
