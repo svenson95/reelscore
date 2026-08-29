@@ -49,8 +49,6 @@ test.describe('Overview Page', () => {
     await overviewPage.mockSelectedDayAsPlaying(testDate);
 
     await overviewPage.goto(testDate);
-
-    await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
     await overviewPage.expectRefreshTimerRunning();
 
@@ -111,7 +109,6 @@ test.describe('Overview Page', () => {
     const restoredTimer = await overviewPage.getRefreshTimerValue();
 
     expect(restoredTimer).toBeLessThanOrEqual(timerBeforeNavigation);
-
     expect(restoredTimer).toBeGreaterThanOrEqual(timerBeforeNavigation - 1);
 
     await expect

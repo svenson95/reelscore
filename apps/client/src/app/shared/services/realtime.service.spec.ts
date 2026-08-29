@@ -99,34 +99,6 @@ describe('RealtimeService', () => {
     expect(liveRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
   });
 
-  it('should enable polling fallback and refresh immediately on realtime error', () => {
-    service.connect();
-
-    const eventSource = getEventSource();
-
-    eventSource.emitError();
-
-    expect(service.status()).toBe('error');
-    expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
-
-    expect(liveRefreshServiceMock.refresh).toHaveBeenCalledWith({
-      force: true,
-    });
-  });
-
-  it('should disable polling fallback again after reconnect', () => {
-    service.connect();
-
-    const eventSource = getEventSource();
-
-    eventSource.emitError();
-    eventSource.emitOpen();
-
-    expect(service.status()).toBe('connected');
-    expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
-    expect(liveRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
-  });
-
   it('should expose fixture updates', () => {
     const update = createFixtureUpdate(123);
 
@@ -169,6 +141,59 @@ describe('RealtimeService', () => {
 
     expect(service.fixtureUpdate()).toBeNull();
     expect(service.fixtureEventsUpdate()).toBeNull();
+  });
+
+  it('should not enable polling before reaching the realtime error limit', () => {
+    service.connect();
+
+    const eventSource = getEventSource();
+
+    eventSource.emitError();
+    eventSource.emitError();
+
+    expect(service.status()).toBe('error');
+
+    expect(eventSource.close).not.toHaveBeenCalled();
+
+    expect(liveRefreshServiceMock.start).not.toHaveBeenCalled();
+    expect(liveRefreshServiceMock.refresh).not.toHaveBeenCalled();
+  });
+
+  it('should permanently fall back to polling after reaching the realtime error limit', () => {
+    service.connect();
+
+    const eventSource = getEventSource();
+
+    eventSource.emitError();
+    eventSource.emitError();
+    eventSource.emitError();
+
+    expect(service.status()).toBe('fallback');
+
+    expect(eventSource.close).toHaveBeenCalledTimes(1);
+
+    expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
+
+    expect(liveRefreshServiceMock.refresh).toHaveBeenCalledTimes(1);
+    expect(liveRefreshServiceMock.refresh).toHaveBeenCalledWith({
+      force: true,
+    });
+  });
+
+  it('should not reconnect realtime after falling back to polling', () => {
+    service.connect();
+
+    const eventSource = getEventSource();
+
+    eventSource.emitError();
+    eventSource.emitError();
+    eventSource.emitError();
+
+    service.connect();
+    service.connect();
+
+    expect(service.status()).toBe('fallback');
+    expect(MockEventSource.instances).toHaveLength(1);
   });
 
   it('should disconnect realtime and enable polling fallback', () => {
