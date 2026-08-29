@@ -131,11 +131,6 @@ export class RealtimeService {
       }
 
       this.resetPingTimeout();
-
-      this.reconnectAttempts = 0;
-      this.status.set('connected');
-
-      this.liveRefreshService.stop();
     };
 
     eventSource.onmessage = (event: MessageEvent<string>): void => {
@@ -193,6 +188,7 @@ export class RealtimeService {
       }
 
       this.lastAck = message.id;
+      this.markConnectionHealthy();
 
       switch (message.event) {
         case REALTIME_EVENT.FIXTURES_UPDATED: {
@@ -236,9 +232,13 @@ export class RealtimeService {
         this.reconnect(event.timestamp);
         break;
 
+      case 'ping':
+        this.markConnectionHealthy();
+        break;
+
       case 'error':
       case 'disconnected':
-      case 'ping':
+        this.scheduleReconnect();
         break;
     }
   }
@@ -247,6 +247,7 @@ export class RealtimeService {
     this.closeConnection();
 
     this.status.set('error');
+    this.liveRefreshService.start();
 
     this.reconnectAttempts++;
 
@@ -310,7 +311,15 @@ export class RealtimeService {
     this.pingTimeout = setTimeout(() => {
       this.pingTimeout = undefined;
 
-      this.reconnect();
+      console.warn('[realtime] ping timeout');
+
+      this.scheduleReconnect();
     }, PING_TIMEOUT_MS);
+  }
+
+  private markConnectionHealthy(): void {
+    this.reconnectAttempts = 0;
+    this.status.set('connected');
+    this.liveRefreshService.stop();
   }
 }

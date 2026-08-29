@@ -108,12 +108,30 @@ describe('RealtimeService', () => {
       expect(MockEventSource.instances).toHaveLength(1);
     });
 
-    it('should stop fallback polling when realtime connects', () => {
+    it('should remain connecting until realtime activity is received', () => {
       service.connect();
 
       const eventSource = getLatestEventSource();
 
       eventSource.emitOpen();
+
+      expect(service.status()).toBe('connecting');
+      expect(liveRefreshServiceMock.stop).not.toHaveBeenCalled();
+    });
+
+    it('should stop fallback polling when a realtime ping is received', () => {
+      service.connect();
+
+      const eventSource = getLatestEventSource();
+
+      eventSource.emitOpen();
+
+      eventSource.emitRawMessage(
+        JSON.stringify({
+          type: 'ping',
+          timestamp: Date.now(),
+        })
+      );
 
       expect(service.status()).toBe('connected');
       expect(liveRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
@@ -141,6 +159,9 @@ describe('RealtimeService', () => {
       expect(
         result?.updates.every((update) => update.operation.time instanceof Date)
       ).toBe(true);
+
+      expect(service.status()).toBe('connected');
+      expect(liveRefreshServiceMock.stop).toHaveBeenCalledTimes(1);
     });
 
     it('should expose fixture events update batches', () => {
@@ -269,6 +290,8 @@ describe('RealtimeService', () => {
     });
 
     it('should reconnect when no realtime message is received within the timeout', () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
       service.connect();
 
       const firstEventSource = getLatestEventSource();
@@ -278,10 +301,19 @@ describe('RealtimeService', () => {
       jest.advanceTimersByTime(75_000);
 
       expect(firstEventSource.close).toHaveBeenCalledTimes(1);
+      expect(service.status()).toBe('error');
+      expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
+      expect(MockEventSource.instances).toHaveLength(1);
+
+      jest.advanceTimersByTime(1_000);
+
       expect(MockEventSource.instances).toHaveLength(2);
+      expect(service.status()).toBe('connecting');
     });
 
     it('should reset the connection timeout when a realtime message is received', () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
       service.connect();
 
       const firstEventSource = getLatestEventSource();
@@ -302,6 +334,31 @@ describe('RealtimeService', () => {
       expect(MockEventSource.instances).toHaveLength(1);
 
       jest.advanceTimersByTime(15_000);
+
+      expect(MockEventSource.instances).toHaveLength(1);
+
+      jest.advanceTimersByTime(1_000);
+
+      expect(MockEventSource.instances).toHaveLength(2);
+    });
+
+    it('should reconnect when the realtime server reports a disconnection', () => {
+      service.connect();
+
+      const eventSource = getLatestEventSource();
+
+      eventSource.emitRawMessage(
+        JSON.stringify({
+          type: 'disconnected',
+          channels: ['default'],
+        })
+      );
+
+      expect(eventSource.close).toHaveBeenCalledTimes(1);
+      expect(service.status()).toBe('error');
+      expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
+
+      jest.advanceTimersByTime(1_000);
 
       expect(MockEventSource.instances).toHaveLength(2);
     });
@@ -325,7 +382,7 @@ describe('RealtimeService', () => {
 
       expect(MockEventSource.instances).toHaveLength(3);
 
-      expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
+      expect(liveRefreshServiceMock.start).toHaveBeenCalled();
 
       expect(liveRefreshServiceMock.refresh).toHaveBeenCalledTimes(1);
       expect(liveRefreshServiceMock.refresh).toHaveBeenCalledWith({
