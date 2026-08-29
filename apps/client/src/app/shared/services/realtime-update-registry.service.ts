@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import type {
   FixtureDTO,
   FixtureId,
+  LiveFixtureEventsUpdateDTO,
   MatchTeams,
   RapidEventsDTO,
 } from '@lib/models';
@@ -33,25 +34,35 @@ export class RealtimeUpdateRegistryService {
     };
   }
 
-  updateFixture(fixture: FixtureDTO): void {
-    const target = this.targets.get(fixture.fixture.id);
+  updateFixtures(fixtures: FixtureDTO[]): void {
+    for (const fixture of fixtures) {
+      const target = this.targets.get(fixture.fixture.id);
 
-    target?.updateFixture(fixture);
+      target?.updateFixture(fixture);
+    }
   }
 
-  updateEvents(fixtureId: FixtureId, events: RapidEventsDTO): void {
-    const target = this.targets.get(fixtureId);
+  updateEvents(updates: LiveFixtureEventsUpdateDTO[]): void {
+    for (const update of updates) {
+      const events: RapidEventsDTO | undefined = update.operation.documents[0];
 
-    if (!target) {
-      return;
+      if (!events) {
+        continue;
+      }
+
+      const target = this.targets.get(update.fixtureId);
+
+      if (!target) {
+        continue;
+      }
+
+      const teams = target.getTeams();
+
+      if (!teams) {
+        continue;
+      }
+
+      target.updateEvents(events, teams);
     }
-
-    const teams = target.getTeams();
-
-    if (!teams) {
-      return;
-    }
-
-    target.updateEvents(events, teams);
   }
 }
