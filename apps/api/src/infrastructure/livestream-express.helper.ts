@@ -101,17 +101,6 @@ const readResponseBody = async (
   }
 };
 
-const endResponse = (
-  reader: ReadableStreamDefaultReader<Uint8Array>,
-  res: Response
-): void => {
-  reader.releaseLock();
-
-  if (!res.writableEnded) {
-    res.end();
-  }
-};
-
 const pipeResponseBody = async (
   body: ReadableStream<Uint8Array>,
   res: Response,

@@ -66,20 +66,27 @@ export const mockRealtimeUnavailable = async (page: Page): Promise<void> => {
       onmessage: ((event: MessageEvent<string>) => void) | null = null;
       onerror: ((event: Event) => void) | null = null;
 
-      private retryTimeout?: ReturnType<typeof setTimeout>;
+      private errorTimeout?: ReturnType<typeof setTimeout>;
 
       constructor(url: string | URL) {
         this.url = url.toString();
 
-        this.emitErrors(3);
+        this.errorTimeout = setTimeout(() => {
+          if (this.readyState === MockEventSource.CLOSED) {
+            return;
+          }
+
+          this.readyState = MockEventSource.CLOSED;
+          this.onerror?.(new Event('error'));
+        }, 50);
       }
 
       close(): void {
         this.readyState = MockEventSource.CLOSED;
 
-        if (this.retryTimeout !== undefined) {
-          clearTimeout(this.retryTimeout);
-          this.retryTimeout = undefined;
+        if (this.errorTimeout !== undefined) {
+          clearTimeout(this.errorTimeout);
+          this.errorTimeout = undefined;
         }
       }
 
@@ -93,20 +100,6 @@ export const mockRealtimeUnavailable = async (page: Page): Promise<void> => {
 
       dispatchEvent(): boolean {
         return true;
-      }
-
-      private emitErrors(remainingErrors: number): void {
-        this.retryTimeout = setTimeout(() => {
-          if (this.readyState === MockEventSource.CLOSED) {
-            return;
-          }
-
-          this.onerror?.(new Event('error'));
-
-          if (remainingErrors > 1) {
-            this.emitErrors(remainingErrors - 1);
-          }
-        }, 50);
       }
     }
 
