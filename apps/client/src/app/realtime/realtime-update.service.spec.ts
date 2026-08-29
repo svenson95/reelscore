@@ -3,7 +3,9 @@ import { TestBed } from '@angular/core/testing';
 
 import type {
   FixtureDTO,
+  LiveFixtureEventsBatchUpdateDTO,
   LiveFixtureEventsUpdateDTO,
+  LiveFixturesUpdateDTO,
   LiveFixtureUpdateDTO,
   RapidEventsDTO,
 } from '@lib/models';
@@ -21,31 +23,33 @@ import { RealtimeUpdateService } from './realtime-update.service';
 describe('RealtimeUpdateService', () => {
   let service: RealtimeUpdateService;
 
-  const fixtureUpdate = signal<LiveFixtureUpdateDTO | null>(null);
+  const fixturesUpdate = signal<LiveFixturesUpdateDTO | null>(null);
 
-  const fixtureEventsUpdate = signal<LiveFixtureEventsUpdateDTO | null>(null);
+  const fixtureEventsUpdate = signal<LiveFixtureEventsBatchUpdateDTO | null>(
+    null
+  );
 
   const realtimeServiceMock = {
-    fixtureUpdate,
+    fixturesUpdate,
     fixtureEventsUpdate,
   };
 
   const updateRegistryMock = {
-    updateFixture: jest.fn(),
+    updateFixtures: jest.fn(),
     updateEvents: jest.fn(),
   };
 
   const weekFixturesStoreMock = {
-    updateFixture: jest.fn(),
+    updateFixtures: jest.fn(),
   };
 
   beforeEach(() => {
-    fixtureUpdate.set(null);
+    fixturesUpdate.set(null);
     fixtureEventsUpdate.set(null);
 
-    updateRegistryMock.updateFixture.mockClear();
+    updateRegistryMock.updateFixtures.mockClear();
     updateRegistryMock.updateEvents.mockClear();
-    weekFixturesStoreMock.updateFixture.mockClear();
+    weekFixturesStoreMock.updateFixtures.mockClear();
 
     TestBed.configureTestingModule({
       providers: [
@@ -68,51 +72,69 @@ describe('RealtimeUpdateService', () => {
     service = TestBed.inject(RealtimeUpdateService);
   });
 
-  it('should forward fixture updates to overview and realtime registry', () => {
+  it('should forward fixture batches to overview and realtime registry', () => {
+    const fixtures = [createFixture(123), createFixture(456)];
+
+    service.init();
+
+    fixturesUpdate.set(createFixturesUpdate(fixtures));
+
+    TestBed.tick();
+
+    expect(weekFixturesStoreMock.updateFixtures).toHaveBeenCalledWith(fixtures);
+
+    expect(updateRegistryMock.updateFixtures).toHaveBeenCalledWith(fixtures);
+  });
+
+  it('should forward fixture events batches to realtime registry', () => {
+    const firstEvents = createRapidEvents();
+    const secondEvents = createRapidEvents();
+
+    const updates = [
+      createFixtureEventsUpdate(123, firstEvents),
+      createFixtureEventsUpdate(456, secondEvents),
+    ];
+
+    service.init();
+
+    fixtureEventsUpdate.set({
+      updates,
+    });
+
+    TestBed.tick();
+
+    expect(updateRegistryMock.updateEvents).toHaveBeenCalledWith(updates);
+  });
+
+  it('should ignore fixture batches without documents', () => {
+    service.init();
+
+    fixturesUpdate.set({
+      updates: [createEmptyFixtureUpdate(123), createEmptyFixtureUpdate(456)],
+    });
+
+    TestBed.tick();
+
+    expect(weekFixturesStoreMock.updateFixtures).not.toHaveBeenCalled();
+    expect(updateRegistryMock.updateFixtures).not.toHaveBeenCalled();
+  });
+
+  it('should forward only fixture updates with documents', () => {
     const fixture = createFixture(123);
 
     service.init();
 
-    fixtureUpdate.set(createFixtureUpdate(fixture));
+    fixturesUpdate.set({
+      updates: [createFixtureUpdate(fixture), createEmptyFixtureUpdate(456)],
+    });
 
     TestBed.tick();
 
-    expect(weekFixturesStoreMock.updateFixture).toHaveBeenCalledWith(fixture);
+    expect(weekFixturesStoreMock.updateFixtures).toHaveBeenCalledWith([
+      fixture,
+    ]);
 
-    expect(updateRegistryMock.updateFixture).toHaveBeenCalledWith(fixture);
-  });
-
-  it('should forward fixture events updates to realtime registry', () => {
-    const events = createRapidEvents();
-
-    service.init();
-
-    fixtureEventsUpdate.set(createFixtureEventsUpdate(123, events));
-
-    TestBed.tick();
-
-    expect(updateRegistryMock.updateEvents).toHaveBeenCalledWith(123, events);
-  });
-
-  it('should ignore fixture updates without documents', () => {
-    service.init();
-
-    fixtureUpdate.set(createEmptyFixtureUpdate(123));
-
-    TestBed.tick();
-
-    expect(weekFixturesStoreMock.updateFixture).not.toHaveBeenCalled();
-    expect(updateRegistryMock.updateFixture).not.toHaveBeenCalled();
-  });
-
-  it('should ignore fixture events updates without documents', () => {
-    service.init();
-
-    fixtureEventsUpdate.set(createEmptyFixtureEventsUpdate(123));
-
-    TestBed.tick();
-
-    expect(updateRegistryMock.updateEvents).not.toHaveBeenCalled();
+    expect(updateRegistryMock.updateFixtures).toHaveBeenCalledWith([fixture]);
   });
 
   it('should initialize update effects only once', () => {
@@ -121,12 +143,12 @@ describe('RealtimeUpdateService', () => {
     service.init();
     service.init();
 
-    fixtureUpdate.set(createFixtureUpdate(fixture));
+    fixturesUpdate.set(createFixturesUpdate([fixture]));
 
     TestBed.tick();
 
-    expect(weekFixturesStoreMock.updateFixture).toHaveBeenCalledTimes(1);
-    expect(updateRegistryMock.updateFixture).toHaveBeenCalledTimes(1);
+    expect(weekFixturesStoreMock.updateFixtures).toHaveBeenCalledTimes(1);
+    expect(updateRegistryMock.updateFixtures).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -145,6 +167,12 @@ function createFixtureUpdate(fixture: FixtureDTO): LiveFixtureUpdateDTO {
   };
 }
 
+function createFixturesUpdate(fixtures: FixtureDTO[]): LiveFixturesUpdateDTO {
+  return {
+    updates: fixtures.map(createFixtureUpdate),
+  };
+}
+
 function createEmptyFixtureUpdate(fixtureId: number): LiveFixtureUpdateDTO {
   return {
     fixtureId,
@@ -159,14 +187,5 @@ function createFixtureEventsUpdate(
   return {
     fixtureId,
     operation: createOperationResponse<RapidEventsDTO>([events]),
-  };
-}
-
-function createEmptyFixtureEventsUpdate(
-  fixtureId: number
-): LiveFixtureEventsUpdateDTO {
-  return {
-    fixtureId,
-    operation: createOperationResponse<RapidEventsDTO>([]),
   };
 }

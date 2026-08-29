@@ -151,29 +151,36 @@ describe('WeekFixturesStore', () => {
   });
 
   describe('realtime updates', () => {
-    it('should update an existing fixture', () => {
-      const currentFixture = createExtendedFixture(123);
+    it('should update existing fixtures in a single batch', () => {
+      const firstFixture = createExtendedFixture(123);
+      const secondFixture = createExtendedFixture(456);
+
       const weekFixtures = createWeekFixtures();
 
-      weekFixtures[4] = [currentFixture];
+      weekFixtures[4] = [firstFixture];
+      weekFixtures[5] = [secondFixture];
 
       httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
 
       store.loadWeekFixtures(testDate);
 
-      const update = createFixtureUpdate(123, 2, 1);
+      store.updateFixtures([
+        createFixtureUpdate(123, 2, 1),
+        createFixtureUpdate(456, 3, 2),
+      ]);
 
-      store.updateFixture(update);
-
-      const updatedFixture = store.weekFixtures()[4][0];
-
-      expect(updatedFixture.goals).toEqual({
+      expect(store.weekFixtures()[4][0].goals).toEqual({
         home: 2,
         away: 1,
       });
+
+      expect(store.weekFixtures()[5][0].goals).toEqual({
+        home: 3,
+        away: 2,
+      });
     });
 
-    it('should preserve extended fixture data when applying an update', () => {
+    it('should preserve extended fixture data when applying updates', () => {
       const currentFixture = createExtendedFixture(123);
       const weekFixtures = createWeekFixtures();
 
@@ -183,7 +190,7 @@ describe('WeekFixturesStore', () => {
 
       store.loadWeekFixtures(testDate);
 
-      store.updateFixture(createFixtureUpdate(123, 2, 1));
+      store.updateFixtures([createFixtureUpdate(123, 2, 1)]);
 
       const updatedFixture = store.weekFixtures()[4][0];
 
@@ -192,7 +199,7 @@ describe('WeekFixturesStore', () => {
       expect(updatedFixture.evaluations).toBe(currentFixture.evaluations);
     });
 
-    it('should not update fixtures with a different fixture id', () => {
+    it('should not change state when the batch contains no matching fixtures', () => {
       const currentFixture = createExtendedFixture(123);
       const weekFixtures = createWeekFixtures();
 
@@ -202,9 +209,56 @@ describe('WeekFixturesStore', () => {
 
       store.loadWeekFixtures(testDate);
 
-      store.updateFixture(createFixtureUpdate(456, 2, 1));
+      const stateBeforeUpdate = store.weekFixtures();
 
-      expect(store.weekFixtures()[4][0]).toBe(currentFixture);
+      store.updateFixtures([createFixtureUpdate(456, 2, 1)]);
+
+      expect(store.weekFixtures()).toBe(stateBeforeUpdate);
+    });
+
+    it('should ignore unknown fixtures while updating known fixtures', () => {
+      const currentFixture = createExtendedFixture(123);
+      const weekFixtures = createWeekFixtures();
+
+      weekFixtures[4] = [currentFixture];
+
+      httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
+
+      store.loadWeekFixtures(testDate);
+
+      store.updateFixtures([
+        createFixtureUpdate(123, 2, 1),
+        createFixtureUpdate(456, 4, 0),
+      ]);
+
+      expect(store.weekFixtures()[4][0].goals).toEqual({
+        home: 2,
+        away: 1,
+      });
+
+      const allFixtureIds = store
+        .weekFixtures()
+        .flat()
+        .map((fixture) => fixture.fixture.id);
+
+      expect(allFixtureIds).toEqual([123]);
+    });
+
+    it('should not change state for an empty update batch', () => {
+      const currentFixture = createExtendedFixture(123);
+      const weekFixtures = createWeekFixtures();
+
+      weekFixtures[4] = [currentFixture];
+
+      httpMock.getWeekFixtures.mockReturnValue(of(weekFixtures));
+
+      store.loadWeekFixtures(testDate);
+
+      const stateBeforeUpdate = store.weekFixtures();
+
+      store.updateFixtures([]);
+
+      expect(store.weekFixtures()).toBe(stateBeforeUpdate);
     });
   });
 });

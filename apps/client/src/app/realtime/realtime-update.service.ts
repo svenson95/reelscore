@@ -1,6 +1,6 @@
 import { effect, inject, Injectable, Injector } from '@angular/core';
 
-import type { FixtureDTO, RapidEventsDTO } from '@lib/models';
+import type { FixtureDTO } from '@lib/models';
 
 import { WeekFixturesStore } from '../features/overview/stores';
 
@@ -25,20 +25,22 @@ export class RealtimeUpdateService {
 
     effect(
       () => {
-        const update = this.realtimeService.fixtureUpdate();
+        const batch = this.realtimeService.fixturesUpdate();
 
-        if (!update) {
+        if (!batch) {
           return;
         }
 
-        const fixture: FixtureDTO | undefined = update.operation.documents[0];
+        const fixtures = batch.updates
+          .map((update) => update.operation.documents[0])
+          .filter((fixture): fixture is FixtureDTO => fixture != null);
 
-        if (!fixture) {
+        if (fixtures.length === 0) {
           return;
         }
 
-        this.weekFixturesStore.updateFixture(fixture);
-        this.updateRegistry.updateFixture(fixture);
+        this.weekFixturesStore.updateFixtures(fixtures);
+        this.updateRegistry.updateFixtures(fixtures);
       },
       {
         injector: this.injector,
@@ -47,20 +49,13 @@ export class RealtimeUpdateService {
 
     effect(
       () => {
-        const update = this.realtimeService.fixtureEventsUpdate();
+        const batch = this.realtimeService.fixtureEventsUpdate();
 
-        if (!update) {
+        if (!batch) {
           return;
         }
 
-        const events: RapidEventsDTO | undefined =
-          update.operation.documents[0];
-
-        if (!events) {
-          return;
-        }
-
-        this.updateRegistry.updateEvents(update.fixtureId, events);
+        this.updateRegistry.updateEvents(batch.updates);
       },
       {
         injector: this.injector,
