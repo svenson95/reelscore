@@ -2,7 +2,9 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import {
   REALTIME_EVENT,
+  type LiveFixtureEventsBatchUpdateDTO,
   type LiveFixtureEventsUpdateDTO,
+  type LiveFixturesUpdateDTO,
   type LiveFixtureUpdateDTO,
 } from '@lib/models';
 
@@ -51,9 +53,28 @@ const CHANNEL = 'default';
 const MAX_RECONNECT_ATTEMPTS = 3;
 const PING_TIMEOUT_MS = 75_000;
 
-const parseOperationTime = (time: Date | string): Date => {
-  return time instanceof Date ? time : new Date(time);
-};
+const parseOperationTime = (time: Date | string): Date =>
+  time instanceof Date ? time : new Date(time);
+
+const parseFixtureUpdate = (
+  update: LiveFixtureUpdateDTO
+): LiveFixtureUpdateDTO => ({
+  ...update,
+  operation: {
+    ...update.operation,
+    time: parseOperationTime(update.operation.time),
+  },
+});
+
+const parseFixtureEventsUpdate = (
+  update: LiveFixtureEventsUpdateDTO
+): LiveFixtureEventsUpdateDTO => ({
+  ...update,
+  operation: {
+    ...update.operation,
+    time: parseOperationTime(update.operation.time),
+  },
+});
 
 @Injectable({ providedIn: 'root' })
 export class RealtimeService {
@@ -61,9 +82,9 @@ export class RealtimeService {
 
   readonly status = signal<RealtimeStatus>('disconnected');
 
-  readonly fixtureUpdate = signal<LiveFixtureUpdateDTO | null>(null);
+  readonly fixturesUpdate = signal<LiveFixturesUpdateDTO | null>(null);
 
-  readonly fixtureEventsUpdate = signal<LiveFixtureEventsUpdateDTO | null>(
+  readonly fixtureEventsUpdate = signal<LiveFixtureEventsBatchUpdateDTO | null>(
     null
   );
 
@@ -174,29 +195,21 @@ export class RealtimeService {
       this.lastAck = message.id;
 
       switch (message.event) {
-        case REALTIME_EVENT.FIXTURE_UPDATED: {
-          const update = message.data as LiveFixtureUpdateDTO;
+        case REALTIME_EVENT.FIXTURES_UPDATED: {
+          const update = message.data as LiveFixturesUpdateDTO;
 
-          this.fixtureUpdate.set({
-            ...update,
-            operation: {
-              ...update.operation,
-              time: parseOperationTime(update.operation.time),
-            },
+          this.fixturesUpdate.set({
+            updates: update.updates.map(parseFixtureUpdate),
           });
 
           break;
         }
 
         case REALTIME_EVENT.FIXTURE_EVENTS_UPDATED: {
-          const update = message.data as LiveFixtureEventsUpdateDTO;
+          const update = message.data as LiveFixtureEventsBatchUpdateDTO;
 
           this.fixtureEventsUpdate.set({
-            ...update,
-            operation: {
-              ...update.operation,
-              time: parseOperationTime(update.operation.time),
-            },
+            updates: update.updates.map(parseFixtureEventsUpdate),
           });
 
           break;

@@ -73,17 +73,37 @@ export const WeekFixturesStore = signalStore(
         });
       },
 
-      updateFixture(fixture: FixtureDTO): void {
+      updateFixtures(fixtures: FixtureDTO[]): void {
+        if (fixtures.length === 0) {
+          return;
+        }
+
+        const fixturesById = new Map(
+          fixtures.map((fixture) => [fixture.fixture.id, fixture])
+        );
+
+        const currentWeekFixtures = store.weekFixtures();
+
+        const hasRelevantFixture = currentWeekFixtures.some((dayFixtures) =>
+          dayFixtures.some((fixture) => fixturesById.has(fixture.fixture.id))
+        );
+
+        if (!hasRelevantFixture) {
+          return;
+        }
+
         patchState(store, {
-          weekFixtures: store.weekFixtures().map((dayFixtures) =>
-            dayFixtures.map((currentFixture) =>
-              currentFixture.fixture.id === fixture.fixture.id
+          weekFixtures: currentWeekFixtures.map((dayFixtures) =>
+            dayFixtures.map((currentFixture) => {
+              const fixture = fixturesById.get(currentFixture.fixture.id);
+
+              return fixture
                 ? {
                     ...currentFixture,
                     ...fixture,
                   }
-                : currentFixture
-            )
+                : currentFixture;
+            })
           ),
         });
       },

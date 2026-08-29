@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { FixtureDTO, RapidEventsDTO } from '@lib/models';
+import type {
+  FixtureDTO,
+  LiveFixtureEventsBatchUpdateDTO,
+  LiveFixturesUpdateDTO,
+  RapidEventsDTO,
+} from '@lib/models';
 import {
   REALTIME_EVENT,
   type LiveFixtureEventsUpdateDTO,
@@ -73,7 +78,7 @@ describe('RealtimeService', () => {
   describe('initial state', () => {
     it('should initialize disconnected', () => {
       expect(service.status()).toBe('disconnected');
-      expect(service.fixtureUpdate()).toBeNull();
+      expect(service.fixturesUpdate()).toBeNull();
       expect(service.fixtureEventsUpdate()).toBeNull();
     });
   });
@@ -116,23 +121,30 @@ describe('RealtimeService', () => {
   });
 
   describe('messages', () => {
-    it('should expose fixture updates', () => {
-      const update = createFixtureUpdate(123);
+    it('should expose fixture update batches', () => {
+      const update = createFixturesUpdate(123, 456);
 
       service.connect();
 
       getLatestEventSource().emitMessage({
         id: '1',
         channel: 'default',
-        event: REALTIME_EVENT.FIXTURE_UPDATED,
+        event: REALTIME_EVENT.FIXTURES_UPDATED,
         data: update,
       });
 
-      expect(service.fixtureUpdate()).toStrictEqual(update);
+      const result = service.fixturesUpdate();
+
+      expect(result).not.toBeNull();
+      expect(result?.updates).toHaveLength(2);
+
+      expect(
+        result?.updates.every((update) => update.operation.time instanceof Date)
+      ).toBe(true);
     });
 
-    it('should expose fixture events updates', () => {
-      const update = createFixtureEventsUpdate(123);
+    it('should expose fixture events update batches', () => {
+      const update = createFixtureEventsBatchUpdate(123, 456);
 
       service.connect();
 
@@ -143,7 +155,14 @@ describe('RealtimeService', () => {
         data: update,
       });
 
-      expect(service.fixtureEventsUpdate()).toStrictEqual(update);
+      const result = service.fixtureEventsUpdate();
+
+      expect(result).not.toBeNull();
+      expect(result?.updates).toHaveLength(2);
+
+      expect(
+        result?.updates.every((update) => update.operation.time instanceof Date)
+      ).toBe(true);
     });
 
     it('should ignore unknown realtime events', () => {
@@ -156,7 +175,7 @@ describe('RealtimeService', () => {
         data: {},
       });
 
-      expect(service.fixtureUpdate()).toBeNull();
+      expect(service.fixturesUpdate()).toBeNull();
       expect(service.fixtureEventsUpdate()).toBeNull();
     });
 
@@ -167,7 +186,7 @@ describe('RealtimeService', () => {
 
       getLatestEventSource().emitRawMessage('invalid-json');
 
-      expect(service.fixtureUpdate()).toBeNull();
+      expect(service.fixturesUpdate()).toBeNull();
       expect(service.fixtureEventsUpdate()).toBeNull();
     });
   });
@@ -213,8 +232,8 @@ describe('RealtimeService', () => {
       firstEventSource.emitMessage({
         id: '123-0',
         channel: 'default',
-        event: REALTIME_EVENT.FIXTURE_UPDATED,
-        data: createFixtureUpdate(123),
+        event: REALTIME_EVENT.FIXTURES_UPDATED,
+        data: createFixturesUpdate(123),
       });
 
       firstEventSource.emitError();
@@ -438,11 +457,25 @@ function createFixtureUpdate(fixtureId: number): LiveFixtureUpdateDTO {
   };
 }
 
+function createFixturesUpdate(...fixtureIds: number[]): LiveFixturesUpdateDTO {
+  return {
+    updates: fixtureIds.map(createFixtureUpdate),
+  };
+}
+
 function createFixtureEventsUpdate(
   fixtureId: number
 ): LiveFixtureEventsUpdateDTO {
   return {
     fixtureId,
     operation: createOperationResponse<RapidEventsDTO>([createRapidEvents()]),
+  };
+}
+
+function createFixtureEventsBatchUpdate(
+  ...fixtureIds: number[]
+): LiveFixtureEventsBatchUpdateDTO {
+  return {
+    updates: fixtureIds.map(createFixtureEventsUpdate),
   };
 }
