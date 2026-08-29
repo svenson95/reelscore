@@ -14,7 +14,8 @@ export type RealtimeStatus =
   | 'disconnected'
   | 'connecting'
   | 'connected'
-  | 'error';
+  | 'error'
+  | 'fallback';
 
 type RealtimeEnvelope<T> = {
   id: string;
@@ -22,6 +23,8 @@ type RealtimeEnvelope<T> = {
   event: string;
   data: T;
 };
+
+const MAX_CONNECTION_ERRORS = 3;
 
 const parseOperationTime = (time: Date | string): Date => {
   return time instanceof Date ? time : new Date(time);
@@ -41,8 +44,12 @@ export class RealtimeService {
 
   private eventSource?: EventSource;
 
+  private connectionErrors = 0;
+
+  private realtimeDisabled = false;
+
   connect(): void {
-    if (this.eventSource) {
+    if (this.eventSource || this.realtimeDisabled) {
       return;
     }
 
@@ -53,19 +60,18 @@ export class RealtimeService {
     this.eventSource = eventSource;
 
     eventSource.onopen = (): void => {
+      if (this.realtimeDisabled) {
+        eventSource.close();
+        return;
+      }
+
       this.status.set('connected');
 
       this.liveRefreshService.stop();
     };
 
     eventSource.onerror = (): void => {
-      this.status.set('error');
-
-      this.liveRefreshService.start();
-
-      void this.liveRefreshService.refresh({
-        force: true,
-      });
+      this.handleConnectionError();
     };
 
     eventSource.onmessage = (event: MessageEvent<string>): void => {
@@ -74,12 +80,42 @@ export class RealtimeService {
   }
 
   disconnect(): void {
-    this.eventSource?.close();
-    this.eventSource = undefined;
+    this.closeEventSource();
 
     this.status.set('disconnected');
 
     this.liveRefreshService.start();
+  }
+
+  private handleConnectionError(): void {
+    this.connectionErrors++;
+
+    if (this.connectionErrors < MAX_CONNECTION_ERRORS) {
+      this.status.set('error');
+
+      return;
+    }
+
+    this.fallbackToRefresh();
+  }
+
+  private fallbackToRefresh(): void {
+    this.realtimeDisabled = true;
+
+    this.closeEventSource();
+
+    this.status.set('fallback');
+
+    this.liveRefreshService.start();
+
+    void this.liveRefreshService.refresh({
+      force: true,
+    });
+  }
+
+  private closeEventSource(): void {
+    this.eventSource?.close();
+    this.eventSource = undefined;
   }
 
   private handleMessage(data: string): void {
