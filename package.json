@@ -2,12 +2,15 @@
   "name": "@reelscore/source",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  },
+  "private": true,
   "scripts": {
     "dev": "NX_TUI=false nx run-many --parallel --target=serve --projects=api,client",
     "allow-buffer": "git config http.postBuffer 524288000",
     "reset-buffer": "git config --unset http.postBuffer"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "21.2.19",
     "@angular/cdk": "21.2.14",
