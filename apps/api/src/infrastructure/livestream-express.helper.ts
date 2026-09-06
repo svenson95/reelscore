@@ -130,10 +130,18 @@ const pipeResponseBody = async (
   }
 };
 
+const isRealtimeEnabled = (): boolean =>
+  process.env['ENABLE_REALTIME'] === 'true';
+
 export const handleRealtimeRequest = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  if (!isRealtimeEnabled()) {
+    res.status(204).end();
+    return;
+  }
+
   const realtimeHandler = await getRealtimeHandler();
 
   const abortController = new AbortController();
