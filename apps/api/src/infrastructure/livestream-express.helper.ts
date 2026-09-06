@@ -1,5 +1,6 @@
 import type { handle } from '@upstash/realtime';
 import type { Request, Response } from 'express';
+import { once } from 'node:events';
 
 import { getRealtime } from './livestream.helper';
 
@@ -85,6 +86,14 @@ const applyWebResponseHeaders = (
   res.flushHeaders();
 };
 
+const writeChunk = async (res: Response, chunk: Uint8Array): Promise<void> => {
+  if (res.write(Buffer.from(chunk))) {
+    return;
+  }
+
+  await once(res, 'drain');
+};
+
 const readResponseBody = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
   res: Response,
@@ -97,7 +106,7 @@ const readResponseBody = async (
       return;
     }
 
-    res.write(Buffer.from(result.value));
+    await writeChunk(res, result.value);
   }
 };
 
