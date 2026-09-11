@@ -74,9 +74,7 @@ type FooterLink = {
 
         <p class="footer-description">
           Live-Fußball, Ergebnisse, Tabellen, Statistiken und detaillierte
-          Analysen. <br />
-          Für ausgewählte europäische und internationale Wettbewerbe,
-          Mannschaften und Spieler.
+          Analysen. Für ausgewählte europäische und internationale Wettbewerbe.
         </p>
       </section>
 
