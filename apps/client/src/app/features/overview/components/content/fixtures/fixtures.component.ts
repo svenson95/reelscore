@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   signal,
@@ -13,20 +14,14 @@ import {
   PageTitleComponent,
   type CompetitionWithFixtures,
 } from '@app/shared';
-import {
-  STATUS_TYPES_PLAYING,
-  type ExtendedFixtureDTO,
-  type StatusShort,
-} from '@lib/models';
+import { STATUS_TYPES_PLAYING, type ExtendedFixtureDTO } from '@lib/models';
 
-import { DateNavigationService } from '../../../services';
+import { DateNavigationService, SelectedDateService } from '../../../services';
+
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
 
 type FixturesViewState = 'loading' | 'error' | 'empty' | null;
-
-const hasPlayingState = (status: StatusShort): boolean =>
-  STATUS_TYPES_PLAYING.includes(status);
 
 @Component({
   selector: 'rs-overview-fixtures',
@@ -102,6 +97,7 @@ export class OverviewFixturesComponent {
   readonly error = input.required<string | null>();
 
   private readonly dateNavigationService = inject(DateNavigationService);
+  private readonly selectedDateService = inject(SelectedDateService);
   private readonly facade = inject(OverviewFixturesFacade);
 
   readonly isTodaySelected = this.dateNavigationService.isToday;
@@ -113,7 +109,7 @@ export class OverviewFixturesComponent {
     }
 
     return this.filteredFixtures().filter((fixture) =>
-      hasPlayingState(fixture.fixture.status.short)
+      STATUS_TYPES_PLAYING.includes(fixture.fixture.status.short)
     );
   });
 
@@ -135,6 +131,11 @@ export class OverviewFixturesComponent {
     }
 
     return null;
+  });
+
+  private readonly liveFilterResetEffect = effect(() => {
+    this.selectedDateService.selectedDay();
+    this.liveOnly.set(false);
   });
 
   getCompetitionKey(competition: CompetitionWithFixtures): string {

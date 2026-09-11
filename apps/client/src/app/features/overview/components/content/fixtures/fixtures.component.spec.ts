@@ -6,7 +6,7 @@ import { type ExtendedFixtureDTO } from '@lib/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
 
-import { DateNavigationService } from '../../../services';
+import { DateNavigationService, SelectedDateService } from '../../../services';
 import { OverviewFixturesComponent } from './fixtures.component';
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';
@@ -31,13 +31,19 @@ describe('OverviewFixturesComponent', () => {
   };
 
   const isToday = signal(false);
+  const selectedDay = signal('2026-09-11');
 
   const dateNavigationServiceMock = {
     isToday,
   };
 
+  const selectedDateServiceMock = {
+    selectedDay,
+  };
+
   beforeEach(async () => {
     isToday.set(true);
+    selectedDay.set('2026-09-11');
 
     await TestBed.configureTestingModule({
       imports: [OverviewFixturesComponent],
@@ -57,6 +63,10 @@ describe('OverviewFixturesComponent', () => {
             {
               provide: DateNavigationService,
               useValue: dateNavigationServiceMock,
+            },
+            {
+              provide: SelectedDateService,
+              useValue: selectedDateServiceMock,
             },
           ],
         },
@@ -305,6 +315,20 @@ describe('OverviewFixturesComponent', () => {
 
       expect(fixture.componentInstance.liveOnly()).toBe(true);
       expect(button.getAttribute('aria-pressed')).toBe('true');
+    });
+
+    it('should reset the live filter when the selected day changes', () => {
+      const fixture = createComponent();
+
+      fixture.componentInstance.liveOnly.set(true);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.liveOnly()).toBe(true);
+
+      selectedDay.set('2026-09-12');
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.liveOnly()).toBe(false);
     });
   });
 });
