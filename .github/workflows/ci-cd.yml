@@ -132,7 +132,7 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Deploy to Production
-        run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+        run: vercel deploy --prod --yes --archive=tgz --token="$VERCEL_TOKEN"
 
   deploy-client:
     name: Deploy Client to Production
