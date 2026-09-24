@@ -1,5 +1,6 @@
-/* eslint-disable */
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
   displayName: 'api',
   verbose: true,
   preset: '../../jest.preset.js',
@@ -10,3 +11,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/api',
 };
+
+export default config;
