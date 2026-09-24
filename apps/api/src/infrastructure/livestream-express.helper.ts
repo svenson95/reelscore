@@ -1,4 +1,4 @@
-import type { handle } from '@upstash/realtime';
+import { handle } from '@upstash/realtime';
 import type { Request, Response } from 'express';
 import { once } from 'node:events';
 
@@ -6,23 +6,17 @@ import { getRealtime } from './livestream.helper';
 
 type RealtimeHandler = ReturnType<typeof handle>;
 
-const createRealtimeHandler = async (): Promise<RealtimeHandler> => {
-  const [{ handle }, realtime] = await Promise.all([
-    import('@upstash/realtime'),
-    getRealtime(),
-  ]);
-
-  return handle({
-    realtime,
+const createRealtimeHandler = (): RealtimeHandler =>
+  handle({
+    realtime: getRealtime(),
   });
-};
 
-let realtimeHandlerPromise: Promise<RealtimeHandler> | null = null;
+let realtimeHandler: RealtimeHandler | null = null;
 
-const getRealtimeHandler = (): Promise<RealtimeHandler> => {
-  realtimeHandlerPromise ??= createRealtimeHandler();
+const getRealtimeHandler = (): RealtimeHandler => {
+  realtimeHandler ??= createRealtimeHandler();
 
-  return realtimeHandlerPromise;
+  return realtimeHandler;
 };
 
 const appendRequestHeader = (
@@ -151,7 +145,7 @@ export const handleRealtimeRequest = async (
     return;
   }
 
-  const realtimeHandler = await getRealtimeHandler();
+  const realtimeHandler = getRealtimeHandler();
 
   const abortController = new AbortController();
 

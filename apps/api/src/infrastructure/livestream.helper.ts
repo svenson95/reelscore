@@ -1,5 +1,4 @@
-import type { Realtime } from '@upstash/realtime';
-import type { Redis } from '@upstash/redis';
+import { Realtime } from '@upstash/realtime';
 import { z } from 'zod';
 
 import type {
@@ -16,22 +15,19 @@ const realtimeSchema = {
   },
 };
 
-type RealtimeInstance = Realtime<{
-  redis: Redis;
-  schema: typeof realtimeSchema;
-  maxDurationSecs: number;
-}>;
-
-let realtimePromise: Promise<RealtimeInstance> | null = null;
-
-export const getRealtime = (): Promise<RealtimeInstance> => {
-  realtimePromise ??= import('@upstash/realtime').then(({ Realtime }) => {
-    return new Realtime({
-      redis: getRedis(),
-      schema: realtimeSchema,
-      maxDurationSecs: 300,
-    });
+const createRealtime = () =>
+  new Realtime({
+    redis: getRedis(),
+    schema: realtimeSchema,
+    maxDurationSecs: 300,
   });
 
-  return realtimePromise;
+type RealtimeInstance = ReturnType<typeof createRealtime>;
+
+let realtime: RealtimeInstance | null = null;
+
+export const getRealtime = (): RealtimeInstance => {
+  realtime ??= createRealtime();
+
+  return realtime;
 };
