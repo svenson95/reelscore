@@ -1,0 +1,180 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-cd-pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-api:
+    name: API Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
+      MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint API
+        run: npx nx lint api
+
+      - name: Run API Tests
+        run: npx nx test api --skip-nx-cache --outputStyle=stream-without-prefixes
+
+      - name: Build API
+        run: npx nx build api --configuration=production
+
+      - name: Run API E2E Tests
+        run: npx nx e2e api-e2e --skip-nx-cache --outputStyle=stream-without-prefixes
+
+  test-client:
+    name: Client Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      API_PORT: 3333
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
+      MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint Client
+        run: npx nx lint client
+
+      - name: Run Client Tests
+        run: npx nx test client --skip-nx-cache --outputStyle=stream-without-prefixes
+
+      - name: Build Client
+        run: npx nx build client --configuration=production
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Client E2E Tests
+        run: npx nx e2e client-e2e --project=chromium --skip-nx-cache --outputStyle=stream-without-prefixes
+
+      - name: Upload Playwright Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-playwright-report
+          path: dist/.playwright/apps/client-e2e/playwright-report
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy-api:
+    name: Deploy API to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    needs:
+      - test-api
+      - test-client
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_API }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN_REELSCORE_API }}
+
+      - name: Build Production Deployment
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN_REELSCORE_API }}
+
+      - name: Deploy to Production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN_REELSCORE_API }}
+
+  deploy-client:
+    name: Deploy Client to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    needs:
+      - test-api
+      - test-client
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_CLIENT }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN_REELSCORE_CLIENT }}
+
+      - name: Build Production Deployment
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN_REELSCORE_CLIENT }}
+
+      - name: Deploy to Production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN_REELSCORE_CLIENT }}
