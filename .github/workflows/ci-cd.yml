@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   test-api:
-    name: API Tests
+    name: Run API Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -38,20 +38,20 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Lint API
+      - name: Run Lint
         run: npx nx lint api
 
-      - name: Run API Tests
+      - name: Run Unit, Component and Integration Tests
         run: npx nx test api --skip-nx-cache --outputStyle=stream-without-prefixes
 
-      - name: Build API
+      - name: Build Application
         run: npx nx build api --configuration=production
 
-      - name: Run API E2E Tests
+      - name: Run E2E Tests
         run: npx nx e2e api-e2e --skip-nx-cache --outputStyle=stream-without-prefixes
 
   test-client:
-    name: Client Tests
+    name: Run Client Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -75,19 +75,19 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Lint Client
+      - name: Run Lint
         run: npx nx lint client
 
-      - name: Run Client Tests
+      - name: Run Unit, Component and Integration Tests
         run: npx nx test client --skip-nx-cache --outputStyle=stream-without-prefixes
 
-      - name: Build Client
+      - name: Build Application
         run: npx nx build client --configuration=production
 
       - name: Install Playwright Chromium
         run: npx playwright install chromium --with-deps
 
-      - name: Run Client E2E Tests
+      - name: Run E2E Tests
         run: npx nx e2e client-e2e --project=chromium --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Upload Playwright Report
@@ -113,7 +113,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_API }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_REELSCORE_API }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
       - name: Checkout Repository
@@ -132,13 +132,13 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Build Production Deployment
-        run: vercel build --prod --token=$VERCEL_TOKEN
+        run: vercel build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy to Production
-        run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
   deploy-client:
     name: Deploy Client to Production
@@ -154,7 +154,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_CLIENT }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_REELSCORE_CLIENT }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
       - name: Checkout Repository
