@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  api: 'https://reelscore-api-svenson95s-projects.vercel.app/',
+  api: 'https://reelscore-api.vercel.app/',
   isAdmin: false,
 };
