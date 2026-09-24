@@ -23,7 +23,9 @@ const waitForApi = async (): Promise<void> => {
       if (response.ok) {
         return;
       }
-    } catch {}
+    } catch {
+      /* empty */
+    }
 
     await new Promise<void>((resolve) => {
       setTimeout(resolve, POLL_INTERVAL_MS);
@@ -38,7 +40,7 @@ const waitForApi = async (): Promise<void> => {
 export default async function globalSetup(): Promise<void> {
   console.log('\nStarting API for E2E tests...\n');
 
-  const apiEntry = join(workspaceRoot, 'dist/apps/api/server.cjs');
+  const apiEntry = join(workspaceRoot, 'dist/apps/api/server.js');
 
   const apiProcess = spawn(process.execPath, [apiEntry], {
     cwd: workspaceRoot,

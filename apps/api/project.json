@@ -12,7 +12,7 @@
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/api",
-        "format": ["cjs"],
+        "format": ["esm"],
         "bundle": true,
         "main": "apps/api/src/server.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
