@@ -131,8 +131,27 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
+      - name: Pull Vercel Project
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build API for Vercel
+        run: >
+          vercel env run -e production
+          --token="$VERCEL_TOKEN"
+          --
+          npx nx run api:build-vercel --skip-nx-cache
+
+      - name: Create Vercel Build Output
+        run: node apps/api/scripts/build-vercel-output.cjs
+
       - name: Deploy to Production
-        run: vercel deploy --prod --yes --archive=tgz --token="$VERCEL_TOKEN"
+        run: >
+          vercel deploy
+          --prebuilt
+          --prod
+          --archive=tgz
+          --yes
+          --token="$VERCEL_TOKEN"
 
   deploy-client:
     name: Deploy Client to Production

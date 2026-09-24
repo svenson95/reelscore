@@ -12,7 +12,7 @@
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/api",
-        "format": ["esm"],
+        "format": ["cjs"],
         "bundle": true,
         "main": "apps/api/src/server.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
@@ -27,6 +27,20 @@
           "bundle": true,
           "sourcemap": false
         }
+      }
+    },
+    "build-vercel": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/api-vercel",
+        "format": ["cjs"],
+        "bundle": true,
+        "thirdParty": true,
+        "generatePackageJson": false,
+        "main": "apps/api/api/index.ts",
+        "tsConfig": "apps/api/tsconfig.app.json"
       }
     },
     "serve": {
