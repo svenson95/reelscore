@@ -16,8 +16,7 @@ import {
   createRapidEvents,
 } from '../../../testing/factories/realtime.factory';
 
-// TODO: refactor week store to core (3)
-import { WeekFixturesStore } from '../../features/overview/stores';
+import { WeekFixturesStore } from '../week-data';
 
 import { RealtimeUpdateService } from './realtime-update.service';
 

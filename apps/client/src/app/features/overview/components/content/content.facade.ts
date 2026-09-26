@@ -1,5 +1,6 @@
 import { computed, effect, inject, Injectable, untracked } from '@angular/core';
 
+import { WeekFixturesStore } from '@app/core';
 import {
   addDays,
   formatCalendarWeekKey,
@@ -8,7 +9,7 @@ import {
 } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
+import { WeekStandingsStore } from '../../stores';
 
 const EDGE_PREVIOUS_DAY_INDEX = 0;
 const CURRENT_WEEK_START_INDEX = 1;

@@ -11,7 +11,7 @@ import {
   getWeekRequestStartPatch,
   WEEK_REQUEST_END_PATCH,
   withWeekRequestState,
-} from './week-request.feature';
+} from '../week-request.feature';
 
 type WeekFixturesState = {
   weekFixtures: FixturesWeekData;

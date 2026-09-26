@@ -6,9 +6,6 @@ import {
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-// TODO: refactor week store to core (1)
-import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
-
 import {
   FooterComponent,
   HeaderComponent,
@@ -24,7 +21,6 @@ import {
   selector: 'rs-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
-  providers: [...OVERVIEW_WEEK_STORE_PROVIDERS, RealtimeUpdateService],
   styles: `
     :host {
       box-sizing: border-box;

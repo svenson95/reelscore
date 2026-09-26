@@ -13,9 +13,11 @@ import {
   type DateString,
 } from '@lib/shared';
 
+import { WeekFixturesStore } from '@app/core';
 import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
+
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
+import { WeekStandingsStore } from '../../stores';
 
 import { OverviewContentFacade } from './content.facade';
 

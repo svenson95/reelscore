@@ -1,13 +1,3 @@
-import { FilteredStandingsStore } from './filtered-standings.store';
-import { WeekFixturesStore } from './week-fixtures.store';
-import { WeekStandingsStore } from './week-standings.store';
-
-export * from './filtered-standings.store';
-export * from './week-fixtures.store';
-export * from './week-standings.store';
-
-export const OVERVIEW_WEEK_STORE_PROVIDERS = [
-  FilteredStandingsStore,
-  WeekFixturesStore,
-  WeekStandingsStore,
-];
+export * from './filtered-standings/filtered-standings.store';
+export * from './overview-store.providers';
+export * from './week-standings/week-standings.store';
