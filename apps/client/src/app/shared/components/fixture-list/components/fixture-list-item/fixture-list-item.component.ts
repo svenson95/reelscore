@@ -12,13 +12,13 @@ import { RouterModule } from '@angular/router';
 import type { ExtendedFixtureDTO } from '@lib/models';
 import { formatFixtureTime } from '@lib/shared';
 
-import { linkToMatch } from '../../../../constants';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
 } from '../../../../helpers';
-import { getTeamLogo, getTeamLogoSrcSet } from '../../../../models';
 import { TeamNamePipe } from '../../../../pipes';
+import { getTeamLogo, getTeamLogoSrcSet } from '../../../../types';
+import { linkToMatch } from '../../../../utils';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 

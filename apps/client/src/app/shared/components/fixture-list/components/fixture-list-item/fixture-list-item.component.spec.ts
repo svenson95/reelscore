@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
-import { linkToMatch } from '../../../../constants';
+import { linkToMatch } from '../../../../utils';
 
 import { FixtureListItemComponent } from './fixture-list-item.component';
 

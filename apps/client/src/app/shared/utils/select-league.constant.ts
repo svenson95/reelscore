@@ -4,8 +4,8 @@ import {
   COMPETITION_URL,
 } from '@lib/shared';
 
-import type { SelectCompetitionGroup } from '../models';
-import { getCompetitionLogo, getCompetitionLogoSrcSet } from '../models';
+import type { SelectCompetitionGroup } from '../types';
+import { getCompetitionLogo, getCompetitionLogoSrcSet } from '../types';
 
 const IMAGE_SIZE = 24;
 

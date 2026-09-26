@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 
-import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
+import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../services';
 
 import { RefreshTickerComponent } from './refresh-ticker.component';
 

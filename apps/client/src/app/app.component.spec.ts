@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { RealtimeService } from './shared/services/realtime.service';
-import { StartupService } from './shared/services/startup/startup.service';
-import { VisibilityObserverService } from './shared/services/visibility-observer.service';
-
-import { RealtimeUpdateService } from './realtime/realtime-update.service';
+import {
+  FooterComponent,
+  HeaderComponent,
+  RealtimeUpdateService,
+} from './core';
+import {
+  RealtimeService,
+  StartupService,
+  VisibilityObserverService,
+} from './shared';
 
 import { AppComponent } from './app.component';
 

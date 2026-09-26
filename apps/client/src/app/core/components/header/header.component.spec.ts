@@ -4,10 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 
+import { GLOBAL_SERVICE_PROVIDERS, LeagueService } from '@app/shared';
 import { getTodayDateString } from '@lib/shared';
 
 import { routes } from '../../../app.routes';
-import { GLOBAL_SERVICE_PROVIDERS, LeagueService } from '../../services';
 
 import { HeaderComponent } from './header.component';
 

@@ -6,15 +6,19 @@ import {
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { RealtimeService } from './shared/services/realtime.service';
-import { StartupService } from './shared/services/startup/startup.service';
-import { VisibilityObserverService } from './shared/services/visibility-observer.service';
-
+// TODO: refactor week store to core (1)
 import { OVERVIEW_WEEK_STORE_PROVIDERS } from './features/overview/stores';
 
-import { RealtimeUpdateService } from './realtime/realtime-update.service';
+import {
+  FooterComponent,
+  HeaderComponent,
+  RealtimeUpdateService,
+} from './core';
+import {
+  RealtimeService,
+  StartupService,
+  VisibilityObserverService,
+} from './shared';
 
 @Component({
   selector: 'rs-root',

@@ -2,7 +2,7 @@ import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, fromEvent, type Subscription, tap } from 'rxjs';
 
-import { LiveRefreshService } from './live-refresh.service';
+import { LiveRefreshService } from './live-refresh/live-refresh.service';
 
 @Injectable({ providedIn: 'root' })
 export class VisibilityObserverService {

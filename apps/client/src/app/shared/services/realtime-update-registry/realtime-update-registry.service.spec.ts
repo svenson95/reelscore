@@ -10,7 +10,7 @@ import type {
 import {
   createOperationResponse,
   createRapidEvents,
-} from '../../../testing/factories/realtime.factory';
+} from '../../../../testing/factories/realtime.factory';
 
 import {
   type RealtimeUpdateTarget,

@@ -1,11 +1,12 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { RefreshRegistryService } from '../refresh-registry/refresh-registry.service';
+
 import {
   LiveRefreshService,
   REFRESH_INTERVAL_SECONDS,
 } from './live-refresh.service';
-import { RefreshRegistryService } from './refresh-registry.service';
 
 describe('LiveRefreshService', () => {
   let service: LiveRefreshService;

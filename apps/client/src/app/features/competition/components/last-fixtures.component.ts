@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 
 import {
   isFirstCompetitionRound,
-  isReversedSingleRoundCompetition,
   LeagueService,
   PageTitleComponent,
 } from '@app/shared';
@@ -89,12 +88,19 @@ export class LastFixturesComponent {
       !this.isFirstRound() &&
       !isCompetitionWithOneFixture(competitionId) &&
       !this.isLastFixturesEmpty() &&
-      !isReversedSingleRoundCompetition(competitionId) &&
+      !this.isReversedSingleRoundCompetition(competitionId) &&
       !this.showAll()
     );
   });
 
   loadAllLastFixtures(id: CompetitionId): void {
     this.store.loadLastFixtures(id, true);
+  }
+
+  private isReversedSingleRoundCompetition(
+    competitionId: CompetitionId | string | null | undefined
+  ): boolean {
+    const COMPETITION_WITH_REVERSED_SINGLE_ROUND: CompetitionId = 10;
+    return Number(competitionId) === COMPETITION_WITH_REVERSED_SINGLE_ROUND;
   }
 }
