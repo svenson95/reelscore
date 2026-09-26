@@ -78,9 +78,6 @@ jobs:
       - name: Run Unit, Component and Integration Tests
         run: npx nx test client --skip-nx-cache --outputStyle=stream-without-prefixes
 
-      - name: Build Application
-        run: npx nx build client --configuration=production
-
       - name: Install Playwright Chromium
         run: npx playwright install chromium --with-deps
 
