@@ -1,6 +1,6 @@
 const { cp, mkdir, writeFile } = require('node:fs/promises');
 
-const outputDir = 'apps/api/.vercel/output';
+const outputDir = '.vercel/output';
 const functionDir = `${outputDir}/functions/api.func`;
 
 async function main() {
