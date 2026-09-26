@@ -528,14 +528,6 @@ const INTERNATIONAL_EURO_CHAMPIONSHIP_2024 = {
   22: 'Final',
 };
 
-const INTERNATIONAL_UEFA_NATIONS_LEAGUE_2026 = {
-  1: '1',
-  2: '2',
-  3: '3',
-  4: '4',
-  5: '5',
-  6: '6',
-};
 const INTERNATIONAL_UEFA_NATIONS_LEAGUE_2024 = {
   1: 'League C - 1',
   2: 'League A - 1',
@@ -818,7 +810,6 @@ export const COMPETITION_ROUNDS = buildCompetitionRounds({
   },
   5: {
     2024: INTERNATIONAL_UEFA_NATIONS_LEAGUE_2024,
-    2026: INTERNATIONAL_UEFA_NATIONS_LEAGUE_2026,
   },
   10: {
     2023: INTERNATIONAL_FRIENDLIES_2023,
