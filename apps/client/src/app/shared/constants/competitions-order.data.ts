@@ -7,4 +7,8 @@ export const COMPETITIONS_ORDER: { [key: string]: number } = {
   '2. Bundesliga': 6,
   Eredivisie: 7,
   'Major League Soccer': 8,
+  'UEFA Champions League': 9,
+  'UEFA Europa League': 10,
+  'World Cup': 11,
+  'UEFA Nations League': 12,
 };
