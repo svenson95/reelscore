@@ -5,11 +5,12 @@ import {
   inject,
 } from '@angular/core';
 
+import { WeekFixturesStore } from '@app/core';
 import { BreakpointObserverService } from '@app/shared';
 import type { DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekFixturesStore, WeekStandingsStore } from '../../stores';
+import { WeekStandingsStore } from '../../stores';
 
 import { ActionButtonsComponent } from './action-buttons/action-buttons.component';
 import { DatePickerComponent } from './date-picker.component';

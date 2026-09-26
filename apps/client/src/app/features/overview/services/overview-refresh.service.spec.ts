@@ -6,11 +6,12 @@ import {
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { WeekFixturesStore } from '@app/core';
 import { RefreshRegistryService, type RefreshTarget } from '@app/shared';
 import type { ExtendedFixtureDTO, FixturesWeekData } from '@lib/models';
 import { formatCalendarWeekKey, getWeekdayIndex } from '@lib/shared';
 
-import { WeekFixturesStore, WeekStandingsStore } from '../stores';
+import { WeekStandingsStore } from '../stores';
 
 import { DateNavigationService } from './date-navigation.service';
 import { OverviewRefreshService } from './overview-refresh.service';

@@ -20,7 +20,10 @@ import {
   LOCALE_PROVIDER,
   PWA_PROVIDER,
 } from './config';
+import { CORE_PROVIDERS } from './core';
 import { GLOBAL_SERVICE_PROVIDERS } from './shared';
+
+import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
 
 const BASE_PROVIDERS = [
   provideRouter(
@@ -54,5 +57,7 @@ export const appConfig: ApplicationConfig = {
     CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
     ...GLOBAL_SERVICE_PROVIDERS,
     MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
+    ...CORE_PROVIDERS,
+    ...OVERVIEW_STORE_PROVIDERS,
   ],
 };

@@ -11,7 +11,7 @@ import {
   getWeekRequestStartPatch,
   WEEK_REQUEST_END_PATCH,
   withWeekRequestState,
-} from './week-request.feature';
+} from '../../../../core/week-data/week-request.feature';
 
 type WeekStandingsState = {
   weekStandings: StandingsWeekData;

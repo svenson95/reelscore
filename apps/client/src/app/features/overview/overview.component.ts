@@ -7,13 +7,13 @@ import {
 } from '@angular/core';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
-import { OverviewRefreshService, SERVICE_PROVIDERS } from './services';
+import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './services';
 
 @Component({
   selector: 'rs-overview-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
-  providers: [...SERVICE_PROVIDERS],
+  providers: [...OVERVIEW_SERVICE_PROVIDERS],
   styles: `
     :host ::ng-deep h2 { margin-left: 1rem; }
     :host { @apply min-h-[70vh]; }

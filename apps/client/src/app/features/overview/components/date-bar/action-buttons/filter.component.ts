@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { WeekFixturesStore } from '@app/core';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
@@ -21,11 +22,7 @@ import {
 import type { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../services';
-import {
-  FilteredStandingsStore,
-  WeekFixturesStore,
-  WeekStandingsStore,
-} from '../../../stores';
+import { FilteredStandingsStore, WeekStandingsStore } from '../../../stores';
 
 const MAT_MODULES = [
   MatButtonModule,
