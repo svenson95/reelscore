@@ -1,4 +1,5 @@
-import moment from 'moment-timezone';
+import moment from 'moment';
+import 'moment-timezone';
 
 export const TIMEZONE = 'Europe/Berlin' as const;
 
