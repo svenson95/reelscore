@@ -40,7 +40,7 @@ const waitForApi = async (): Promise<void> => {
 export default async function globalSetup(): Promise<void> {
   console.log('\nStarting API for E2E tests...\n');
 
-  const apiEntry = join(workspaceRoot, 'dist/apps/api/server.js');
+  const apiEntry = join(workspaceRoot, 'dist/apps/api/server.cjs');
 
   const apiProcess = spawn(process.execPath, [apiEntry], {
     cwd: workspaceRoot,
