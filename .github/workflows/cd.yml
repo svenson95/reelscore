@@ -1,0 +1,90 @@
+name: Continuous Deployment
+
+on:
+  workflow_run:
+    workflows:
+      - Continuous Integration
+    types:
+      - completed
+    branches:
+      - main
+
+concurrency:
+  group: cd-production
+  cancel-in-progress: true
+
+jobs:
+  deploy-api:
+    name: Deploy API to Production
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_API }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build API for Vercel
+        run: >
+          npx vercel env run -e production
+          --token="$VERCEL_TOKEN"
+          --
+          npx nx run api:build-vercel --skip-nx-cache
+
+      - name: Create Vercel Build Output
+        run: node apps/api/scripts/build-vercel-output.cjs
+
+      - name: Deploy to Production
+        working-directory: apps/api
+        run: npx vercel deploy --prebuilt --prod --archive=tgz --yes --token="$VERCEL_TOKEN"
+
+  deploy-client:
+    name: Deploy Client to Production
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_REELSCORE_CLIENT }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Pull Vercel Environment
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Production Deployment
+        run: npx vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy to Production
+        run: npx vercel deploy --prebuilt --prod --archive=tgz --yes --token="$VERCEL_TOKEN"

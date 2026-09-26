@@ -103,6 +103,7 @@
     "tailwindcss": "^3.4.4",
     "ts-jest": "^29.4.7",
     "ts-node": "10.9.1",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vercel": "60.0.0"
   }
 }
