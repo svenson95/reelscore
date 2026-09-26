@@ -10,13 +10,14 @@ import type {
   RapidEventsDTO,
 } from '@lib/models';
 
+import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
 import {
   createOperationResponse,
   createRapidEvents,
-} from '../../testing/factories/realtime.factory';
-import { WeekFixturesStore } from '../features/overview/stores';
-import { RealtimeUpdateRegistryService } from '../shared/services/realtime-update-registry.service';
-import { RealtimeService } from '../shared/services/realtime.service';
+} from '../../../testing/factories/realtime.factory';
+
+// TODO: refactor week store to core (3)
+import { WeekFixturesStore } from '../../features/overview/stores';
 
 import { RealtimeUpdateService } from './realtime-update.service';
 
