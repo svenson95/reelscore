@@ -18,15 +18,15 @@ import type {
 } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
-import { SELECT_COMPETITION_DATA_FLAT } from '../constants';
+import { TeamNamePipe } from '../pipes';
+import { BreakpointObserverService, ThemeService } from '../services';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   getTeamLogo,
   getTeamLogoSrcSet,
-} from '../models';
-import { TeamNamePipe } from '../pipes';
-import { BreakpointObserverService, ThemeService } from '../services';
+} from '../types';
+import { SELECT_COMPETITION_DATA_FLAT } from '../utils';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';
 

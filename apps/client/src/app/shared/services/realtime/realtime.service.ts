@@ -8,9 +8,9 @@ import {
   type LiveFixtureUpdateDTO,
 } from '@lib/models';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
-import { LiveRefreshService } from './live-refresh.service';
+import { LiveRefreshService } from '../live-refresh/live-refresh.service';
 
 export type RealtimeStatus =
   | 'disconnected'

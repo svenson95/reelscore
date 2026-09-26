@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SELECT_COMPETITION_DATA } from '../../constants';
+import { SELECT_COMPETITION_DATA } from '../../utils';
 
 import { LEAGUE_SERVICE_PROVIDER, LeagueService } from './league.service';
 

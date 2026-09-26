@@ -1,11 +1,10 @@
 import { effect, inject, Injectable, Injector } from '@angular/core';
 
+import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
 import type { FixtureDTO } from '@lib/models';
 
-import { WeekFixturesStore } from '../features/overview/stores';
-
-import { RealtimeUpdateRegistryService } from '../shared/services/realtime-update-registry.service';
-import { RealtimeService } from '../shared/services/realtime.service';
+// TODO: refactor week store to core (2)
+import { WeekFixturesStore } from '../../features/overview/stores';
 
 @Injectable()
 export class RealtimeUpdateService {

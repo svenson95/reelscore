@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { interval, type Subscription } from 'rxjs';
 
-import { RefreshRegistryService } from './refresh-registry.service';
+import { RefreshRegistryService } from '../refresh-registry/refresh-registry.service';
 
 const REFRESH_INTERVAL = 20_000;
 const MIN_REFRESH_INTERVAL = 20_000;

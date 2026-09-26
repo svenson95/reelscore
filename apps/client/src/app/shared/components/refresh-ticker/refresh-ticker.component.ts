@@ -9,7 +9,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 
-import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../services';
+import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../services';
 
 @Component({
   selector: 'rs-refresh-ticker',

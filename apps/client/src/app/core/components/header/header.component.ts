@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
-import { LeagueService } from '../../services';
+import { LeagueService } from '@app/shared';
+
 import { LogoComponent } from '../logo/logo.component';
 
-import { CompetitionSelectComponent } from './components';
+import { CompetitionSelectComponent } from './competition-select.component';
 
 const MAT_MODULES = [MatButtonModule];
 

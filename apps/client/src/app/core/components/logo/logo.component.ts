@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { LoadingService } from '../../services';
+import { LoadingService } from '@app/shared';
 
 const MIN_LOADING_DURATION_MS = 1000;
 

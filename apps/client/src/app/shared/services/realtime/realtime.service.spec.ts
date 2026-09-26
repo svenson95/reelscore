@@ -12,13 +12,13 @@ import {
   type LiveFixtureUpdateDTO,
 } from '@lib/models';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import {
   createOperationResponse,
   createRapidEvents,
-} from '../../../testing/factories/realtime.factory';
+} from '../../../../testing/factories/realtime.factory';
 
-import { LiveRefreshService } from './live-refresh.service';
+import { LiveRefreshService } from '../live-refresh/live-refresh.service';
 import { RealtimeService } from './realtime.service';
 
 describe('RealtimeService', () => {
