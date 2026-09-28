@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 
 import { PageTitleComponent } from '@app/shared';
 import type { EvaluationDTO } from '@lib/models';
@@ -15,7 +20,7 @@ import { ToKebabCasePipe } from './pipes';
     }
 
     .content {
-      @apply flex flex-col gap-10 mt-rs1 mx-auto p-8 shadow-rs3 bg-rs-button-bg;
+      @apply flex flex-col gap-10 mt-rs1 mx-auto max-w-[calc(100%-1.5rem)] p-3 xs:p-8 shadow-rs3 bg-rs-button-bg;
       border-radius: var(--mat-button-toggle-shape);
     }
 
@@ -60,10 +65,6 @@ import { ToKebabCasePipe } from './pipes';
         @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px] shadow-rs3;
       }
 
-      .evaluation-placeholder {
-        @apply bg-gray-200;
-      }
-
       span {
         &.loss,
         &.low {
@@ -92,8 +93,12 @@ import { ToKebabCasePipe } from './pipes';
   template: `
     <rs-page-title title="Aktuelle Form" />
 
-    <div class="content">
-      @let teams = evaluations()?.teams;
+    <div class="content" [attr.aria-busy]="isLoading()">
+      @if (!isLoading() && error() && !hasEvaluations()) {
+      <p class="no-data" role="status">Fehler beim Laden der aktuellen Form</p>
+      } @else if (!isLoading() && !hasEvaluations()) {
+      <p class="no-data">Keine Formdaten verfügbar</p>
+      } @else { @let teams = isLoading() ? null : evaluations()?.teams;
 
       <div class="teams-form results">
         <div class="header">
@@ -109,7 +114,10 @@ import { ToKebabCasePipe } from './pipes';
         <div class="evaluation">
           <div class="team">
             @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span class="evaluation-placeholder"></span>
+            <span
+              class="rs-skeleton evaluation-placeholder"
+              aria-hidden="true"
+            ></span>
             } } @else { @for ( result of [...teams.home.results].reverse();
             track $index + '-' + result ) {
             <span [class]="result | rsToKebabCase">
@@ -123,7 +131,10 @@ import { ToKebabCasePipe } from './pipes';
 
           <div class="team">
             @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span class="evaluation-placeholder"></span>
+            <span
+              class="rs-skeleton evaluation-placeholder"
+              aria-hidden="true"
+            ></span>
             } } @else { @for ( result of teams.away.results; track $index + '-'
             + result ) {
             <span [class]="result | rsToKebabCase">
@@ -149,7 +160,10 @@ import { ToKebabCasePipe } from './pipes';
         <div class="evaluation">
           <div class="team">
             @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span class="evaluation-placeholder"></span>
+            <span
+              class="rs-skeleton evaluation-placeholder"
+              aria-hidden="true"
+            ></span>
             } } @else { @for ( performance of
             [...teams.home.performances].reverse(); track $index + '-' +
             performance ) {
@@ -166,7 +180,10 @@ import { ToKebabCasePipe } from './pipes';
 
           <div class="team">
             @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span class="evaluation-placeholder"></span>
+            <span
+              class="rs-skeleton evaluation-placeholder"
+              aria-hidden="true"
+            ></span>
             } } @else { @for ( performance of teams.away.performances; track
             $index + '-' + performance ) {
             <span [class]="performance | rsToKebabCase">
@@ -179,11 +196,27 @@ import { ToKebabCasePipe } from './pipes';
           </div>
         </div>
       </div>
+      }
     </div>
   `,
 })
 export class MatchEvaluationsComponent {
   readonly evaluations = input.required<EvaluationDTO | null>();
+
+  readonly isLoading = input(false);
+  readonly error = input<unknown>(null);
+  readonly hasEvaluations = computed(() => {
+    const teams = this.evaluations()?.teams;
+    return (
+      !!teams &&
+      [
+        teams.home.results,
+        teams.away.results,
+        teams.home.performances,
+        teams.away.performances,
+      ].some((values) => values.length > 0)
+    );
+  });
 
   protected readonly PLACEHOLDER_ITEMS = [0, 1, 2, 3, 4];
 }

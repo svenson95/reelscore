@@ -20,7 +20,7 @@ export const EvaluationsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpEvaluationsService)) => ({
     async loadEvaluations(fixtureId: FixtureId): Promise<void> {
-      patchState(store, { isLoading: true });
+      patchState(store, { isLoading: true, error: null });
 
       http
         .getEvaluations(fixtureId)
@@ -30,7 +30,7 @@ export const EvaluationsStore = signalStore(
             patchState(store, {
               evaluations,
               isLoading: false,
-              error: evaluations ? null : 'Evaluations not found',
+              error: null,
             }),
           error: (error) =>
             patchState(store, {

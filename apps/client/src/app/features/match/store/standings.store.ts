@@ -24,7 +24,7 @@ export const FixtureStandingsStore = signalStore(
       competition: CompetitionId,
       date: DateString
     ): Promise<void> {
-      patchState(store, { isLoading: true });
+      patchState(store, { isLoading: true, error: null });
 
       http
         .getFixtureStandings(teamIds, competition, date)
@@ -34,7 +34,7 @@ export const FixtureStandingsStore = signalStore(
             patchState(store, {
               standings,
               isLoading: false,
-              error: standings ? null : 'Fixture Standings not found',
+              error: null,
             }),
           error: (error) =>
             patchState(store, {

@@ -95,6 +95,12 @@ Der aktuell ausgewählte Tab wird hervorgehoben.
 
 Der Tab **Details** enthält allgemeine Informationen zum Spiel sowie zusätzliche Informationen zu den beteiligten Teams.
 
+### Ladeansicht
+
+Die einzelnen Sektionen sind bereits während des Ladens sichtbar. Fehlende Werte werden vorübergehend durch Skeletons ersetzt. Tabellenbezeichnungen und Spaltenüberschriften sind dabei bereits lesbar.
+
+Sobald die Spieldaten vorliegen, werden Tabellen für Wettbewerbe ohne Tabelle sowie für K.-o.- und Qualifikationsphasen ausgeblendet.
+
 ### Spiel-Details
 
 Die Spiel-Details zeigen grundlegende Informationen zur Begegnung.

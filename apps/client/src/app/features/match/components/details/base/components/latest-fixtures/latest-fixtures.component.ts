@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  untracked,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { PageTitleComponent } from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
-
-import { FixtureStore, LatestFixturesStore } from '../../../../../store';
+import type { ExtendedFixtureDTO, LatestFixturesDTO } from '@lib/models';
 
 import { MatchFixturesTableComponent } from './components';
 
@@ -27,6 +19,19 @@ import { MatchFixturesTableComponent } from './components';
       border-radius: var(--mat-button-toggle-shape);
     }
 
+    .fixtures-skeleton {
+      @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2;
+    }
+    .skeleton-row {
+      @apply flex items-center p-2 gap-2;
+      min-height: 37px;
+    }
+    .skeleton-row + .skeleton-row { @apply border-t; }
+    .skeleton-row .rs-skeleton { height: 13px; }
+    .skeleton-date { width: 40px; }
+    .skeleton-team { flex: 1; }
+    .skeleton-score { width: 42px; }
+
     .no-data {
       @apply m-auto;
     }
@@ -34,9 +39,9 @@ import { MatchFixturesTableComponent } from './components';
   template: `
     <rs-page-title title="Letzte Spiele" />
 
-    <div class="latest-fixtures-container">
+    <div class="latest-fixtures-container" [attr.aria-busy]="isLoading()">
       @let latest = latestFixtures(); @let fixture = data(); @if (latest &&
-      fixture) {
+      fixture && !isLoading()) {
       <rs-match-fixtures-table
         [team]="fixture.teams.home"
         [fixtures]="latest.home"
@@ -46,9 +51,18 @@ import { MatchFixturesTableComponent } from './components';
         [team]="fixture.teams.away"
         [fixtures]="latest.away"
       />
-      } @else if (isLoading()) {
-      <p class="no-data">Spiele werden geladen ...</p>
-      } @else if (error()) {
+      } @else if (isLoading()) { @for (team of [0, 1]; track team) {
+      <div class="fixtures-skeleton" aria-hidden="true">
+        @for (row of [0, 1, 2, 3, 4]; track row) {
+        <div class="skeleton-row">
+          <span class="rs-skeleton skeleton-date"></span>
+          <span class="rs-skeleton skeleton-team"></span>
+          <span class="rs-skeleton skeleton-score"></span>
+          <span class="rs-skeleton skeleton-team"></span>
+        </div>
+        }
+      </div>
+      } } @else if (error()) {
       <p class="no-data">Fehler beim Laden der Spiele</p>
       } @else {
       <p class="no-data">Keine Spiele gefunden</p>
@@ -57,14 +71,8 @@ import { MatchFixturesTableComponent } from './components';
   `,
 })
 export class MatchLatestFixturesComponent {
-  private readonly latestFixturesStore = inject(LatestFixturesStore);
-  private readonly fixtureStore = inject(FixtureStore);
-
-  readonly isLoading = this.latestFixturesStore.isLoading;
-  readonly error = this.latestFixturesStore.error;
-  readonly latestFixtures = this.latestFixturesStore.latestFixtures;
-
-  readonly data = computed<ExtendedFixtureDTO | null>(() =>
-    untracked(() => this.fixtureStore.fixture()?.data ?? null)
-  );
+  readonly data = input<ExtendedFixtureDTO | null>(null);
+  readonly latestFixtures = input<LatestFixturesDTO | null>(null);
+  readonly isLoading = input(false);
+  readonly error = input<unknown>(null);
 }

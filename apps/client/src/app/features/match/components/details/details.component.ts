@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { MAT_TAB_ANIMATION_DURATION, PageTitleComponent } from '@app/shared';
@@ -24,11 +23,7 @@ import {
 } from './base/components';
 import { MatchDetailsFacade } from './details.facade';
 
-const ANGULAR_MODULES = [
-  MatTabsModule,
-  MatIconModule,
-  MatProgressSpinnerModule,
-];
+const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
 
 @Component({
   selector: 'section[rs-match-details]',
@@ -49,9 +44,6 @@ const ANGULAR_MODULES = [
     :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
 
-      mat-spinner {
-        @apply mx-auto my-5;
-      }
 
       .tab-content {
         @apply flex flex-col;
@@ -84,21 +76,30 @@ const ANGULAR_MODULES = [
         </ng-template>
 
         <div class="tab-content">
-          <rs-match-fixture-data />
+          <rs-match-fixture-data [isLoading]="detailsLoading()" />
 
-          @if (fixture()?.data) { @if (!hasNoStandings() && !isKoPhase() &&
-          !isQualifyPhase()) {
+          @if (!hasNoStandings() && !isKoPhase() && !isQualifyPhase()) {
           <rs-match-fixture-standings
             [standings]="standings()"
             [isLoading]="isLoadingStandings()"
+            [error]="standingsError()"
+            [groupCompetition]="hasMultipleGroups()"
+            [competitionName]="fixture()?.data?.league?.name ?? null"
           />
           }
 
-          <rs-match-evaluations [evaluations]="evaluations()" />
-          <rs-match-latest-fixtures data-testid="match-latest-fixtures" />
-          } @else {
-          <mat-spinner [diameter]="32" />
-          }
+          <rs-match-evaluations
+            [evaluations]="evaluations()"
+            [isLoading]="evaluationsLoading()"
+            [error]="evaluationsError()"
+          />
+          <rs-match-latest-fixtures
+            data-testid="match-latest-fixtures"
+            [data]="fixture()?.data ?? null"
+            [latestFixtures]="latestFixtures()"
+            [isLoading]="latestFixturesLoading()"
+            [error]="latestFixturesError()"
+          />
         </div>
       </mat-tab>
 
@@ -161,7 +162,15 @@ export class MatchDetailsComponent {
   readonly fixture = this.facade.fixture;
 
   readonly hasNoStandings = this.facade.hasNoStandings;
-  readonly isLoadingStandings = this.facade.standingsStore.isLoading;
+  readonly isLoadingStandings = this.facade.standingsLoading;
+  readonly detailsLoading = this.facade.detailsLoading;
+  readonly evaluationsLoading = this.facade.evaluationsLoading;
+  readonly latestFixturesLoading = this.facade.latestFixturesLoading;
+  readonly latestFixtures = this.facade.latestFixtures;
+  readonly standingsError = this.facade.standingsError;
+  readonly evaluationsError = this.facade.evaluationsError;
+  readonly latestFixturesError = this.facade.latestFixturesError;
+  readonly hasMultipleGroups = this.facade.hasMultipleGroups;
   readonly isKoPhase = this.facade.isKoPhase;
   readonly isQualifyPhase = this.facade.isQualifyPhase;
 

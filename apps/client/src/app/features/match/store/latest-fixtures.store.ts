@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { StateHandler} from '@app/shared';
+import type { StateHandler } from '@app/shared';
 import { errorHandler } from '@app/shared';
 import type { FixtureId, LatestFixturesDTO } from '@lib/models';
 
@@ -22,7 +22,7 @@ export const LatestFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpLatestFixturesService)) => ({
     async loadLatestFixtures(fixtureId: FixtureId): Promise<void> {
-      patchState(store, { isLoading: true });
+      patchState(store, { isLoading: true, error: null });
       if (!fixtureId) {
         return patchState(store, {
           latestFixtures: null,
@@ -39,7 +39,7 @@ export const LatestFixturesStore = signalStore(
             patchState(store, {
               latestFixtures,
               isLoading: false,
-              error: latestFixtures ? null : 'Latest Fixtures not found',
+              error: null,
             }),
           error: (error) =>
             patchState(store, {

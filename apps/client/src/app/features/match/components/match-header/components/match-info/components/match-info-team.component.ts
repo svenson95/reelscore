@@ -25,8 +25,8 @@ export type MatchHeaderTeam = {
     :host { @apply flex flex-1 flex-col gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1; }
     .team-logo { @apply flex m-auto; }
     .team-name { @apply leading-[16px] text-center flex-1 font-semibold text-balance; }
-    .team-name-placeholder { @apply block w-[100px] h-[16px] bg-gray-200 rounded m-auto; }
-    .team-logo-placeholder { @apply w-[48px] h-[48px] bg-gray-200 rounded-full self-center; }
+    .team-name-placeholder { @apply block w-[100px] h-[16px] rounded m-auto; }
+    .team-logo-placeholder { @apply w-[48px] h-[48px] rounded-full self-center; }
   `,
   template: `
     <div class="team-logo">
@@ -39,7 +39,7 @@ export type MatchHeaderTeam = {
         [height]="48"
       />
       } @else {
-      <div class="team-logo-placeholder"></div>
+      <div class="rs-skeleton team-logo-placeholder" aria-hidden="true"></div>
       }
     </div>
 
@@ -47,7 +47,7 @@ export type MatchHeaderTeam = {
       @if (team(); as teamData) {
       {{ teamData.name | teamName }}
       } @else {
-      <span class="team-name-placeholder"></span>
+      <span class="rs-skeleton team-name-placeholder" aria-hidden="true"></span>
       }
     </span>
   `,
