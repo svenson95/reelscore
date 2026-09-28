@@ -37,7 +37,7 @@ import { MatchFacade } from '../../match.facade';
     }
 
     .date-placeholder {
-      @apply m-auto h-[12px] w-[36px] rounded bg-gray-200;
+      @apply m-auto h-[12px] w-[36px] rounded;
     }
   `,
   template: `
@@ -59,7 +59,7 @@ import { MatchFacade } from '../../match.facade';
       @if (fixtureTime(); as time) {
       {{ time }}
       } @else {
-      <span class="date-placeholder"></span>
+      <span class="rs-skeleton date-placeholder" aria-hidden="true"></span>
       }
     </span>
   `,

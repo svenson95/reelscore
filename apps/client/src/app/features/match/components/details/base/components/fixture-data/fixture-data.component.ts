@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from '@angular/core';
 
 import { PageTitleComponent, RoundLabelPipe } from '@app/shared';
@@ -20,7 +21,7 @@ import { FixtureStore } from '../../../../../store';
     }
 
     .fixture-data {
-      @apply mx-auto mt-rs1 w-[350px] xs:w-[450px] bg-rs-button-bg shadow-rs3 rounded-border2;
+      @apply mx-auto mt-rs1 w-[350px] xs:w-[450px] max-w-[calc(100%-1.5rem)] bg-rs-button-bg shadow-rs3 rounded-border2;
     }
 
     ul {
@@ -48,22 +49,27 @@ import { FixtureStore } from '../../../../../store';
     }
 
     .list-item-placeholder {
-      @apply w-[100px] h-[16px] my-1 bg-gray-200 rounded;
+      @apply w-[100px] max-w-full h-[12px];
     }
   `,
   template: `
     <rs-page-title title="Details" />
 
-    <div class="fixture-data">
+    <div class="fixture-data" [attr.aria-busy]="isLoading()">
       <ul>
         <li>
           <div class="item">
             <span class="key">Wettbewerb</span>
 
-            @if (data(); as fixture) {
+            @if (visibleData(); as fixture) {
             <span class="value">{{ fixture.league.name }}</span>
             } @else {
-            <div class="list-item-placeholder"></div>
+            <span class="value">
+              <span
+                class="rs-skeleton list-item-placeholder"
+                aria-hidden="true"
+              ></span>
+            </span>
             }
           </div>
         </li>
@@ -72,7 +78,7 @@ import { FixtureStore } from '../../../../../store';
           <div class="item">
             <span class="key">Spieltag</span>
 
-            @if (data(); as fixture) {
+            @if (visibleData(); as fixture) {
             <span class="value">
               {{
                 fixture.league.round
@@ -84,7 +90,12 @@ import { FixtureStore } from '../../../../../store';
               }}
             </span>
             } @else {
-            <div class="list-item-placeholder"></div>
+            <span class="value">
+              <span
+                class="rs-skeleton list-item-placeholder"
+                aria-hidden="true"
+              ></span>
+            </span>
             }
           </div>
         </li>
@@ -93,10 +104,15 @@ import { FixtureStore } from '../../../../../store';
           <div class="item">
             <span class="key">Stadion</span>
 
-            @if (data(); as fixture) {
+            @if (visibleData(); as fixture) {
             <span class="value">{{ fixture.fixture.venue.name }}</span>
             } @else {
-            <div class="list-item-placeholder"></div>
+            <span class="value">
+              <span
+                class="rs-skeleton list-item-placeholder"
+                aria-hidden="true"
+              ></span>
+            </span>
             }
           </div>
         </li>
@@ -105,10 +121,15 @@ import { FixtureStore } from '../../../../../store';
           <div class="item">
             <span class="key">Stadt</span>
 
-            @if (data(); as fixture) {
+            @if (visibleData(); as fixture) {
             <span class="value">{{ fixture.fixture.venue.city }}</span>
             } @else {
-            <div class="list-item-placeholder"></div>
+            <span class="value">
+              <span
+                class="rs-skeleton list-item-placeholder"
+                aria-hidden="true"
+              ></span>
+            </span>
             }
           </div>
         </li>
@@ -117,10 +138,15 @@ import { FixtureStore } from '../../../../../store';
           <div class="item">
             <span class="key">Schiedsrichter</span>
 
-            @if (data(); as fixture) {
+            @if (visibleData(); as fixture) {
             <span class="value">{{ fixture.fixture.referee }}</span>
             } @else {
-            <div class="list-item-placeholder"></div>
+            <span class="value">
+              <span
+                class="rs-skeleton list-item-placeholder"
+                aria-hidden="true"
+              ></span>
+            </span>
             }
           </div>
         </li>
@@ -129,6 +155,11 @@ import { FixtureStore } from '../../../../../store';
   `,
 })
 export class MatchFixtureDataComponent {
+  readonly isLoading = input(false);
+  readonly visibleData = computed(() =>
+    this.isLoading() ? null : this.data()
+  );
+
   private readonly fixtureStore = inject(FixtureStore);
 
   readonly data = computed<ExtendedFixtureDTO | null>(

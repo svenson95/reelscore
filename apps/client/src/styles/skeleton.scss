@@ -1,0 +1,24 @@
+// Shared appearance; each component owns the geometry of its placeholders.
+.rs-skeleton {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 4px;
+  background: color-mix(
+    in srgb,
+    var(--rs-color-text-2) 18%,
+    var(--rs-button-bg-color)
+  );
+  animation: rs-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes rs-skeleton-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rs-skeleton {
+    animation: none;
+  }
+}
