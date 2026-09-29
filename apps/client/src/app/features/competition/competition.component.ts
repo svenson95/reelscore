@@ -25,7 +25,7 @@ import {
   NextFixturesStore,
   STORE_PROVIDERS,
   TopScorersStore,
-} from './store';
+} from './stores';
 
 @Component({
   selector: 'rs-competition-page',

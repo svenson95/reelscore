@@ -7,7 +7,7 @@ import type { GetFixtureDTO } from '@lib/models';
 import { EXAMPLE_FIXTURE } from '../../../testing/fixtures.mock';
 
 import { MatchFacade } from './match.facade';
-import { FixtureStore } from './store';
+import { FixtureStore } from './stores';
 
 describe('MatchFacade', () => {
   const routeUrl = signal<string | undefined>(undefined);

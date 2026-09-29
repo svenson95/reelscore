@@ -4,7 +4,7 @@ import type { FixtureId } from '@lib/models';
 
 import { RealtimeUpdateRegistryService } from '@app/shared';
 
-import { EventsStore, FixtureStore } from '../store';
+import { EventsStore, FixtureStore } from '../stores';
 
 @Injectable()
 export class MatchRealtimeService {

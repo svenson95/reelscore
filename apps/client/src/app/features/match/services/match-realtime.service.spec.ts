@@ -20,7 +20,7 @@ import {
   FixtureStore,
   LatestFixturesStore,
   StatisticsStore,
-} from '../store';
+} from '../stores';
 
 import { HttpFixtureEventsService } from './http/events.service';
 import { HttpFixtureService } from './http/fixture.service';

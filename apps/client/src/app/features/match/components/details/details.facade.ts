@@ -17,7 +17,7 @@ import {
   FixtureStore,
   LatestFixturesStore,
   StatisticsStore,
-} from '../../store';
+} from '../../stores';
 
 @Injectable()
 export class MatchDetailsFacade {

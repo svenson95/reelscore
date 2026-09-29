@@ -9,7 +9,7 @@ import {
 import { PageTitleComponent, RoundLabelPipe } from '@app/shared';
 import type { ExtendedFixtureDTO } from '@lib/models';
 
-import { FixtureStore } from '../../../../../store';
+import { FixtureStore } from '../../../../../stores';
 
 @Component({
   selector: 'rs-match-fixture-data',

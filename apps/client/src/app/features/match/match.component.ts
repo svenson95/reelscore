@@ -19,7 +19,7 @@ import {
   MatchRefreshService,
   SERVICE_PROVIDERS,
 } from './services';
-import { STORE_PROVIDERS } from './store';
+import { STORE_PROVIDERS } from './stores';
 
 @Component({
   selector: 'rs-match-page',

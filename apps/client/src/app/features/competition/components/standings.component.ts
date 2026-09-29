@@ -12,7 +12,7 @@ import {
   showHomeAndAwayStandings,
 } from '@app/shared';
 
-import { CompetitionStandingsStore } from '../store';
+import { CompetitionStandingsStore } from '../stores';
 
 @Component({
   selector: 'rs-competition-standings',

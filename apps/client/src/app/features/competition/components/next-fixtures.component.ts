@@ -8,7 +8,7 @@ import {
 import { LeagueService, PageTitleComponent } from '@app/shared';
 import type { CompetitionId } from '@lib/models';
 
-import { NextFixturesStore } from '../store';
+import { NextFixturesStore } from '../stores';
 
 import { FixturesListComponent } from './fixtures-list.component';
 
