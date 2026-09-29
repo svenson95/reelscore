@@ -9,7 +9,7 @@ export type EventTeam = {
   goals: number;
 };
 export type EventPlayer = { id: PlayerId; name: PlayerName };
-export type EventAssist = { id: PlayerId; name: PlayerName };
+export type EventAssist = { id: PlayerId | null; name: PlayerName | null };
 export type EventType = 'Goal' | 'Card' | 'subst' | 'Var';
 export type EventDetail =
   | 'Normal Goal'
