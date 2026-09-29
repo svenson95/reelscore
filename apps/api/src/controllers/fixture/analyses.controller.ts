@@ -10,6 +10,7 @@ import type {
   PlayerName,
   TeamId,
 } from '@lib/models';
+import { isHighlightGoal } from '@lib/shared';
 
 import {
   FixtureEventsService,
@@ -86,11 +87,7 @@ export class FixtureAnalysesController {
     if (!events) return [];
 
     return events.response
-      .filter(({ type, detail }) => {
-        // TODO refactor to lib (2/2)
-        const goalTypes = ['Normal Goal', 'Own Goal', 'Penalty'];
-        return type === 'Goal' && goalTypes.includes(detail);
-      })
+      .filter((event) => isHighlightGoal(event))
       .filter(({ team }) => team.id === teamId)
       .map(({ player }) => player.name);
   }

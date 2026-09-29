@@ -38,6 +38,7 @@ export class MatchRealtimeService {
 
       updateEvents: (events, teams): void => {
         this.eventsStore.updateEvents(events, teams);
+        this.fixtureStore.updateHighlights(events.response);
       },
     });
 
