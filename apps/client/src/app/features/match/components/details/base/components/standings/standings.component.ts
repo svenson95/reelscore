@@ -22,7 +22,7 @@ import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
   styles: `
     :host {
       rs-standings-table, .standings-skeleton {
-        @apply sm:min-w-[500px] sm:mx-auto shadow-rs3;
+        @apply sm:min-w-[450px] sm:mx-auto shadow-rs3;
       }
 
       .standings-container {
