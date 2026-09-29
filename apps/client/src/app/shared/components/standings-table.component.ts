@@ -11,10 +11,9 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
 import type {
-  CompetitionId,
-  CompetitionSeason,
   StandingRanks,
   StandingsLeague,
+  StandingsPlayed,
 } from '@lib/models';
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
@@ -30,8 +29,6 @@ import { SELECT_COMPETITION_DATA_FLAT } from '../utils';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';
 
-const EXTERNAL_IMPORTS = [RouterLink, MatTableModule];
-
 @Pipe({ name: 'getTeamLogo' })
 export class GetTeamLogoPipe implements PipeTransform {
   transform(id: number): string {
@@ -46,14 +43,17 @@ export class GetTeamLogoSetPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'hasMultipleGroups' })
-export class HasMultipleGroupsPipe implements PipeTransform {
-  transform(id: CompetitionId, season: CompetitionSeason): boolean {
-    return isCompetitionWithMultipleGroups(id, season);
-  }
+type StandingsType = 'all' | 'home' | 'away';
+
+interface StandingsTableRow {
+  rank: number;
+  team: StandingRanks['team'];
+  stats: StandingsPlayed;
+  goalDifference: number;
+  points: number;
 }
 
-const DISPLAYED_COLUMNS: string[] = [
+const DISPLAYED_COLUMNS = [
   'rank',
   'team',
   'played',
@@ -64,16 +64,22 @@ const DISPLAYED_COLUMNS: string[] = [
   'points',
 ] as const;
 
+type StandingsColumn = (typeof DISPLAYED_COLUMNS)[number];
+
+const MOBILE_COLUMNS: readonly StandingsColumn[] = DISPLAYED_COLUMNS.filter(
+  (column) => column !== 'goalDifference'
+);
+
 @Component({
   selector: 'rs-standings-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...EXTERNAL_IMPORTS,
+    RouterLink,
+    MatTableModule,
     ResponsiveImageComponent,
     TeamNamePipe,
     GetTeamLogoPipe,
     GetTeamLogoSetPipe,
-    HasMultipleGroupsPipe,
   ],
   styles: `
     :host {
@@ -125,7 +131,7 @@ const DISPLAYED_COLUMNS: string[] = [
     }
   `,
   template: `
-    <table mat-table [dataSource]="ranks()">
+    <table mat-table [dataSource]="rows()">
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef class="rank-column">
           <div class="competition-logo-small">
@@ -145,15 +151,8 @@ const DISPLAYED_COLUMNS: string[] = [
 
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
-          @let competition = league();
           <a [routerLink]="competitionLink()">
-            @if (competition.id | hasMultipleGroups : competition.season) {
-            {{ roundLabel() }}
-            } @else if (header()) {
-            {{ header() }}
-            } @else {
-            {{ competition.name }}
-            }
+            {{ title() }}
           </a>
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
@@ -175,28 +174,28 @@ const DISPLAYED_COLUMNS: string[] = [
       <ng-container matColumnDef="played">
         <th mat-header-cell *matHeaderCellDef class="number-column">Sp</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element[type()].played }}
+          {{ element.stats.played }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="win">
         <th mat-header-cell *matHeaderCellDef class="number-column">S</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element[type()].win }}
+          {{ element.stats.win }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="draw">
         <th mat-header-cell *matHeaderCellDef class="number-column">U</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element[type()].draw }}
+          {{ element.stats.draw }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="lost">
         <th mat-header-cell *matHeaderCellDef class="number-column">N</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          {{ element[type()].lose }}
+          {{ element.stats.lose }}
         </td>
       </ng-container>
 
@@ -204,13 +203,7 @@ const DISPLAYED_COLUMNS: string[] = [
       <ng-container matColumnDef="goalDifference">
         <th mat-header-cell *matHeaderCellDef class="number-column">TD</th>
         <td mat-cell *matCellDef="let element" class="number-column">
-          @switch(type()) { @case ('home') {
-          {{ element.home.goals.for - element.home.goals.against }}
-          } @case ('away') {
-          {{ element.away.goals.for - element.away.goals.against }}
-          } @default {
-          {{ element.goalsDiff }}
-          } }
+          {{ element.goalDifference }}
         </td>
       </ng-container>
       }
@@ -218,13 +211,7 @@ const DISPLAYED_COLUMNS: string[] = [
       <ng-container matColumnDef="points">
         <th mat-header-cell *matHeaderCellDef class="points-column">Pkt</th>
         <td mat-cell *matCellDef="let element" class="points-column">
-          @switch(type()) { @case ('home') {
-          {{ element.home.win * 3 + element.home.draw }}
-          } @case ('away') {
-          {{ element.away.win * 3 + element.away.draw }}
-          } @default {
           {{ element.points }}
-          } }
         </td>
       </ng-container>
 
@@ -244,7 +231,7 @@ export class StandingsTableComponent {
 
   readonly isMobile = this.breakpoint.isMobile;
 
-  readonly type = computed<'all' | 'home' | 'away'>(() => {
+  readonly type = computed<StandingsType>(() => {
     switch (this.header()) {
       case 'Heimtabelle':
         return 'home';
@@ -255,7 +242,7 @@ export class StandingsTableComponent {
     }
   });
 
-  readonly competitionLogo = computed(() =>
+  readonly competitionLogo = computed<string>(() =>
     getCompetitionLogo(
       this.league().id,
       24,
@@ -264,7 +251,7 @@ export class StandingsTableComponent {
     )
   );
 
-  readonly competitionLogoSet = computed(() =>
+  readonly competitionLogoSet = computed<string>(() =>
     getCompetitionLogoSrcSet(
       this.league().id,
       24,
@@ -272,18 +259,41 @@ export class StandingsTableComponent {
     )
   );
 
-  readonly competitionLink = computed(() => {
+  readonly competitionLink = computed<string[]>(() => {
     const id = this.league().id;
     const competition = SELECT_COMPETITION_DATA_FLAT.find((c) => c.id === id);
     return competition ? ['/', 'competition', competition.url] : ['/'];
   });
 
-  readonly columns = computed(() => {
-    const filtered = DISPLAYED_COLUMNS.filter((c) => c !== 'goalDifference');
-    return this.isMobile() ? filtered : DISPLAYED_COLUMNS;
+  readonly columns = computed<readonly StandingsColumn[]>(() =>
+    this.isMobile() ? MOBILE_COLUMNS : DISPLAYED_COLUMNS
+  );
+
+  readonly rows = computed<StandingsTableRow[]>(() => {
+    const type = this.type();
+    return this.ranks().map((rank): StandingsTableRow => {
+      const stats = rank[type];
+      return {
+        rank: rank.rank,
+        team: rank.team,
+        stats,
+        goalDifference:
+          type === 'all'
+            ? rank.goalsDiff
+            : stats.goals.for - stats.goals.against,
+        points: type === 'all' ? rank.points : stats.win * 3 + stats.draw,
+      };
+    });
   });
 
-  readonly roundLabel = computed(() => {
+  readonly title = computed<string>(() => {
+    const league = this.league();
+    return isCompetitionWithMultipleGroups(league.id, league.season)
+      ? this.roundLabel()
+      : this.header() || league.name;
+  });
+
+  readonly roundLabel = computed<string>(() => {
     const firstRank = this.ranks()[0];
 
     if (!firstRank?.group) {
@@ -295,10 +305,11 @@ export class StandingsTableComponent {
     const isLeagueCompetition = round.includes('League');
 
     if (isLeagueCompetition && isGroupCompetition) {
-      const [leaguePart, groupPart] = round.split(',');
-      const league = leaguePart.trim().replace('League', 'Liga');
-      const group = groupPart.trim().replace('Group', 'Gruppe');
-      return `${league} ${group}`;
+      return round
+        .replace('League', 'Liga')
+        .replace('Group', 'Gruppe')
+        .replace(/\s*,\s*/, ' ')
+        .trim();
     }
 
     if (isGroupCompetition) {
