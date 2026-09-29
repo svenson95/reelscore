@@ -138,6 +138,56 @@ describe('RealtimeService', () => {
     });
   });
 
+  describe('lifecycle', () => {
+    it('should use polling without opening SSE when disabled', () => {
+      const enabled = environment.realtimeEnabled;
+      environment.realtimeEnabled = false;
+      try {
+        service.connect();
+        service.connect();
+        expect(MockEventSource.instances).toHaveLength(0);
+        expect(service.status()).toBe('fallback');
+        expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
+      } finally {
+        environment.realtimeEnabled = enabled;
+      }
+    });
+
+    it('should close in the background and resume with a fresh snapshot', () => {
+      service.connect();
+      const source = getLatestEventSource();
+      source.emitRawMessage(
+        JSON.stringify({ type: 'connected', cursor: 'old-0' })
+      );
+      const hidden = jest
+        .spyOn(document, 'hidden', 'get')
+        .mockReturnValue(true);
+      document.dispatchEvent(new Event('visibilitychange'));
+      jest.advanceTimersByTime(120_000);
+      expect(source.close).toHaveBeenCalledTimes(1);
+      expect(MockEventSource.instances).toHaveLength(1);
+      hidden.mockReturnValue(false);
+      document.dispatchEvent(new Event('visibilitychange'));
+      expect(MockEventSource.instances).toHaveLength(2);
+      expect(
+        new URL(getLatestEventSource().url).searchParams.get('last_ack_default')
+      ).toBe(String(Date.now()));
+      expect(liveRefreshServiceMock.refresh).toHaveBeenCalledWith({
+        force: true,
+      });
+    });
+
+    it('should clean up timers and listeners on destruction', () => {
+      service.connect();
+      const source = getLatestEventSource();
+      TestBed.resetTestingModule();
+      document.dispatchEvent(new Event('visibilitychange'));
+      jest.advanceTimersByTime(120_000);
+      expect(source.close).toHaveBeenCalledTimes(1);
+      expect(MockEventSource.instances).toHaveLength(1);
+    });
+  });
+
   describe('messages', () => {
     it('should expose fixture update batches', () => {
       const update = createFixturesUpdate(123, 456);
@@ -230,17 +280,21 @@ describe('RealtimeService', () => {
       expect(service.status()).toBe('connecting');
     });
 
-    it('should let EventSource handle reconnect while it is connecting', () => {
+    it('should bound retries even when native EventSource is reconnecting', () => {
       service.connect();
+      for (const delay of [1_000, 2_000, 3_000]) {
+        getLatestEventSource().emitError(MockEventSource.CONNECTING);
+        jest.advanceTimersByTime(delay);
+      }
+      expect(MockEventSource.instances).toHaveLength(3);
+      expect(service.status()).toBe('fallback');
+    });
 
-      const eventSource = getLatestEventSource();
-
-      eventSource.emitError(MockEventSource.CONNECTING);
-
-      jest.advanceTimersByTime(10_000);
-
-      expect(MockEventSource.instances).toHaveLength(1);
-      expect(eventSource.close).not.toHaveBeenCalled();
+    it('should timeout a connection that never opens', () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      service.connect();
+      jest.advanceTimersByTime(76_000);
+      expect(MockEventSource.instances).toHaveLength(2);
     });
 
     it('should use the last received event id when reconnecting', () => {
