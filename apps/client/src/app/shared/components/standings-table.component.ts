@@ -83,7 +83,7 @@ const MOBILE_COLUMNS: readonly StandingsColumn[] = DISPLAYED_COLUMNS.filter(
   ],
   styles: `
     :host {
-      @apply flex w-[calc(100%-1.5rem)] max-w-[450px] bg-rs-button-bg p-rs1 self-center shadow-rs3 overflow-hidden;
+      @apply flex w-[calc(100%-1.5rem)] min-w-[350px] sm:min-w-[400px] max-w-[450px] bg-rs-button-bg p-rs1 self-center shadow-rs3 overflow-hidden;
       border-radius: var(--mat-button-toggle-shape);
     }
 

@@ -21,7 +21,7 @@ import { FixtureStore } from '../../../../../store';
     }
 
     .fixture-data {
-      @apply mx-auto mt-rs1 w-[350px] xs:w-[450px] max-w-[calc(100%-1.5rem)] bg-rs-button-bg shadow-rs3 rounded-border2;
+      @apply mx-auto mt-rs1 w-[400px] xs:w-[450px] max-w-[calc(100%-1.5rem)] bg-rs-button-bg shadow-rs3 rounded-border2;
     }
 
     ul {
@@ -33,7 +33,7 @@ import { FixtureStore } from '../../../../../store';
     }
 
     .item {
-      @apply flex justify-center px-4 gap-6 text-rs-color-text-1;
+      @apply flex justify-center px-8 gap-6 text-rs-color-text-1;
     }
 
     .item > *:not(.key) {
