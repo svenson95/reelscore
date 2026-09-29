@@ -3,18 +3,18 @@ import express from 'express';
 import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 
-import { databaseMiddleware } from './middleware';
 import {
-  fixtureAnalyses,
-  fixtureEvaluations,
+  databaseMiddleware,
   fixtureEvents,
   fixtures,
   fixturesStatistics,
-  livestream,
-  search,
   standings,
   topScorers,
-} from './routes';
+} from './database';
+import { fixtureAnalyses } from './fixture-analyses';
+import { fixtureEvaluations } from './fixture-evaluations';
+import { livestream } from './livestream';
+import { search } from './search';
 
 export const app = express();
 
