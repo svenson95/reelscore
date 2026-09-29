@@ -39,7 +39,7 @@
         "bundle": true,
         "thirdParty": true,
         "generatePackageJson": false,
-        "main": "apps/api/api/index.ts",
+        "main": "apps/api/vercel/index.ts",
         "tsConfig": "apps/api/tsconfig.app.json"
       }
     },

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import type { Observable} from 'rxjs';
+import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
 import type { CompetitionId, TopScorersDTO } from '@lib/models';
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 export abstract class HttpTopScorersService {
   abstract getTopScorersForCompetition(
     id: CompetitionId
-  ): Observable<TopScorersDTO>;
+  ): Observable<TopScorersDTO | null>;
 }
 
 @Injectable()
@@ -19,12 +19,14 @@ export class AbstractedHttpTopScorersService extends HttpTopScorersService {
 
   http = inject(HttpClient);
 
-  getTopScorersForCompetition(id: CompetitionId): Observable<TopScorersDTO> {
+  getTopScorersForCompetition(
+    id: CompetitionId
+  ): Observable<TopScorersDTO | null> {
     const options = {
       params: new HttpParams().set('competition', id),
     };
     return this.http
-      .get<TopScorersDTO>(this.BASE_URL + '/', options)
+      .get<TopScorersDTO | null>(this.BASE_URL + '/', options)
       .pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }
