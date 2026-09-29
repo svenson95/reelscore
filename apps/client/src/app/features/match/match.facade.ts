@@ -14,7 +14,7 @@ import type {
 import type { DateString } from '@lib/shared';
 import { formatDateToYearMonthDay } from '@lib/shared';
 
-import { FixtureStore } from './store';
+import { FixtureStore } from './stores';
 
 @Injectable()
 export class MatchFacade {

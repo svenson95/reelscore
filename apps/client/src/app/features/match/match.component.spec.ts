@@ -21,7 +21,7 @@ import {
   MatchRefreshService,
   SERVICE_PROVIDERS,
 } from './services';
-import { STORE_PROVIDERS } from './store';
+import { STORE_PROVIDERS } from './stores';
 
 import { MatchComponent } from './match.component';
 import { MatchFacade } from './match.facade';

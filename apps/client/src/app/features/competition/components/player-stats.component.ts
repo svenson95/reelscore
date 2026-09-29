@@ -8,7 +8,7 @@ import {
 import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 import type { TopScorer } from '@lib/models';
 
-import { TopScorersStore } from '../store';
+import { TopScorersStore } from '../stores';
 
 @Component({
   selector: 'rs-competition-player-stats',

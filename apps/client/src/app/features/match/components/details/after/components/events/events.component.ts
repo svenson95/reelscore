@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { type EventWithResult, STATUS_TYPES_FINISHED } from '@lib/models';
 
-import { FixtureStore } from '../../../../../store';
+import { FixtureStore } from '../../../../../stores';
 
 import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';

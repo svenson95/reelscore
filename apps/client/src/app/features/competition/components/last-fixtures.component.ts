@@ -14,7 +14,7 @@ import {
 import type { CompetitionId } from '@lib/models';
 import { isCompetitionWithOneFixture } from '@lib/shared';
 
-import { LastFixturesStore } from '../store';
+import { LastFixturesStore } from '../stores';
 
 import { FixturesListComponent } from './fixtures-list.component';
 
