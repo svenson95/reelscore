@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   input,
-  untracked,
 } from '@angular/core';
 
 import {
@@ -113,14 +112,14 @@ export class MatchHighlightsComponent {
   readonly highlights = input.required<FixtureHighlights>();
 
   readonly events = computed<HighlightItem[]>(() => {
-    const highlights = untracked(this.highlights);
-    const fixture = untracked(this.data);
+    const highlights = this.highlights();
+    const fixture = this.data();
 
     return this.mappedEventsWithSpacers(highlights, fixture);
   });
 
   private readonly homeTeamId = computed<TeamId>(
-    () => untracked(this.data).teams.home.id
+    () => this.data().teams.home.id
   );
 
   isHomeEvent = (event: HighlightEvent): boolean =>
