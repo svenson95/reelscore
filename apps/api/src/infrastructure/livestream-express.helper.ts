@@ -80,60 +80,47 @@ const applyWebResponseHeaders = (
   res.flushHeaders();
 };
 
-const writeChunk = async (res: Response, chunk: Uint8Array): Promise<void> => {
-  if (res.write(Buffer.from(chunk))) {
-    return;
-  }
-
-  await once(res, 'drain');
-};
-
-const readResponseBody = async (
-  reader: ReadableStreamDefaultReader<Uint8Array>,
-  res: Response,
-  isDisconnected: () => boolean
-): Promise<void> => {
-  while (!isDisconnected()) {
-    const result = await reader.read();
-
-    if (result.done) {
-      return;
-    }
-
-    await writeChunk(res, result.value);
-  }
-};
-
 const pipeResponseBody = async (
   body: ReadableStream<Uint8Array>,
   res: Response,
-  abortController: AbortController
+  signal: AbortSignal
 ): Promise<void> => {
   const reader = body.getReader();
-
-  let disconnected = false;
-
-  res.on('close', () => {
-    disconnected = true;
-    abortController.abort();
-  });
+  const cancel = (): void => {
+    void reader.cancel().catch(() => undefined);
+  };
+  signal.addEventListener('abort', cancel, { once: true });
 
   try {
-    await readResponseBody(reader, res, () => disconnected);
+    if (signal.aborted) {
+      cancel();
+      return;
+    }
+    while (!signal.aborted) {
+      const result = await reader.read();
+      if (result.done || signal.aborted) {
+        break;
+      }
+      if (!res.write(Buffer.from(result.value))) {
+        await once(res, 'drain', { signal });
+      }
+    }
   } catch (error) {
-    if (!disconnected) {
+    if (!signal.aborted) {
       throw error;
     }
   } finally {
+    signal.removeEventListener('abort', cancel);
+    await reader.cancel().catch(() => undefined);
     reader.releaseLock();
-
-    if (!res.writableEnded) {
+    if (!res.writableEnded && !res.destroyed) {
       res.end();
     }
   }
 };
 
 const isRealtimeEnabled = (): boolean =>
+  process.env['VERCEL_ENV'] !== 'production' &&
   process.env['ENABLE_REALTIME'] === 'true';
 
 export const handleRealtimeRequest = async (
@@ -149,21 +136,35 @@ export const handleRealtimeRequest = async (
 
   const abortController = new AbortController();
 
-  const request = createWebRequest(req, abortController.signal);
+  const onClose = (): void => abortController.abort();
+  res.once('close', onClose);
 
-  const response = await realtimeHandler(request);
+  try {
+    const request = createWebRequest(req, abortController.signal);
+    const response = await realtimeHandler(request);
 
-  if (!response) {
-    res.status(204).end();
-    return;
+    if (abortController.signal.aborted || res.destroyed) {
+      if (response) {
+        await response.body?.cancel();
+      }
+      return;
+    }
+    if (!response) {
+      res.status(204).end();
+      return;
+    }
+    applyWebResponseHeaders(response, res);
+    if (!response.body) {
+      res.end();
+      return;
+    }
+    await pipeResponseBody(response.body, res, abortController.signal);
+  } catch (error) {
+    if (!abortController.signal.aborted) {
+      throw error;
+    }
+  } finally {
+    res.off('close', onClose);
+    abortController.abort();
   }
-
-  applyWebResponseHeaders(response, res);
-
-  if (!response.body) {
-    res.end();
-    return;
-  }
-
-  await pipeResponseBody(response.body, res, abortController);
 };

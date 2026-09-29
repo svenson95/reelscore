@@ -1,4 +1,5 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
 import {
   REALTIME_EVENT,
@@ -78,32 +79,65 @@ const parseFixtureEventsUpdate = (
 
 @Injectable({ providedIn: 'root' })
 export class RealtimeService {
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly liveRefreshService = inject(LiveRefreshService);
 
+  private eventSource?: EventSource;
+  private reconnectTimeout?: ReturnType<typeof setTimeout>;
+  private reconnectAttempts = 0;
+  private pingTimeout?: ReturnType<typeof setTimeout>;
+  private reconnectCursor?: string;
+  private replayEventsSince?: number;
+  private realtimeDisabled = false;
+  private connectionRequested = false;
+
   readonly status = signal<RealtimeStatus>('disconnected');
-
   readonly fixturesUpdate = signal<LiveFixturesUpdateDTO | null>(null);
-
   readonly fixtureEventsUpdate = signal<LiveFixtureEventsBatchUpdateDTO | null>(
     null
   );
 
-  private eventSource?: EventSource;
+  constructor() {
+    this.document.addEventListener('visibilitychange', this.onVisibilityChange);
 
-  private reconnectTimeout?: ReturnType<typeof setTimeout>;
+    this.destroyRef.onDestroy(() => {
+      this.connectionRequested = false;
+      this.document.removeEventListener(
+        'visibilitychange',
+        this.onVisibilityChange
+      );
+      this.closeConnection();
+    });
+  }
 
-  private reconnectAttempts = 0;
+  private readonly onVisibilityChange = (): void => {
+    if (!this.connectionRequested || this.realtimeDisabled) {
+      return;
+    }
 
-  private pingTimeout?: ReturnType<typeof setTimeout>;
+    if (this.document.hidden) {
+      this.closeConnection();
+      this.status.set('disconnected');
+      this.liveRefreshService.start();
+      return;
+    }
 
-  private lastAck?: string;
-
-  private replayEventsSince?: number;
-
-  private realtimeDisabled = false;
+    this.reconnectCursor = undefined;
+    this.replayEventsSince = undefined;
+    void this.liveRefreshService.refresh({ force: true });
+    this.connect();
+  };
 
   connect(replayEventsSince?: number): void {
-    if (this.eventSource || this.realtimeDisabled) {
+    this.connectionRequested = true;
+    if (!environment.realtimeEnabled && !this.realtimeDisabled) {
+      this.fallbackToRefresh();
+    }
+    if (this.document.hidden) {
+      return;
+    }
+    if (this.eventSource || this.reconnectTimeout || this.realtimeDisabled) {
       return;
     }
 
@@ -124,6 +158,7 @@ export class RealtimeService {
     const eventSource = new EventSource(url);
 
     this.eventSource = eventSource;
+    this.resetPingTimeout();
 
     eventSource.onopen = (): void => {
       if (eventSource !== this.eventSource) {
@@ -147,15 +182,12 @@ export class RealtimeService {
         return;
       }
 
-      if (eventSource.readyState === EventSource.CONNECTING) {
-        return;
-      }
-
       this.scheduleReconnect();
     };
   }
 
   disconnect(): void {
+    this.connectionRequested = false;
     this.closeConnection();
 
     this.status.set('disconnected');
@@ -170,7 +202,7 @@ export class RealtimeService {
 
     url.searchParams.append(
       `last_ack_${CHANNEL}`,
-      this.lastAck ?? String(replayEventsSince)
+      this.reconnectCursor ?? String(replayEventsSince)
     );
 
     return url.toString();
@@ -187,7 +219,7 @@ export class RealtimeService {
         return;
       }
 
-      this.lastAck = message.id;
+      this.reconnectCursor = message.id;
       this.markConnectionHealthy();
 
       switch (message.event) {
@@ -223,7 +255,7 @@ export class RealtimeService {
     switch (event.type) {
       case 'connected':
         if (event.cursor) {
-          this.lastAck = event.cursor;
+          this.reconnectCursor = event.cursor;
         }
 
         break;
@@ -294,7 +326,12 @@ export class RealtimeService {
   }
 
   private closeEventSource(): void {
-    this.eventSource?.close();
+    if (this.eventSource) {
+      this.eventSource.onopen = null;
+      this.eventSource.onmessage = null;
+      this.eventSource.onerror = null;
+      this.eventSource.close();
+    }
     this.eventSource = undefined;
   }
 
