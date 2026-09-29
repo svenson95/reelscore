@@ -1,7 +1,11 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { RouteService, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
+import {
+  type CompetitionData,
+  RouteService,
+  SELECT_COMPETITION_DATA_FLAT,
+} from '@app/shared';
 import type {
   CompetitionUrl,
   ExtendedFixtureDTO,
@@ -15,45 +19,67 @@ import { FixtureStore } from './store';
 @Injectable()
 export class MatchFacade {
   private readonly router = inject(Router);
-  private readonly routerService = inject(RouteService);
+  private readonly routeService = inject(RouteService);
 
   private readonly fixtureStore = inject(FixtureStore);
   readonly fixture = this.fixtureStore.fixture;
   readonly isLoading = this.fixtureStore.isLoading;
   readonly error = this.fixtureStore.error;
   readonly isRefreshing = this.fixtureStore.isRefreshing;
-  loadFixture = this.fixtureStore.loadFixture;
-  reloadFixture = this.fixtureStore.reloadFixture;
+
+  readonly loadFixture = (fixtureId: FixtureId): Promise<void> =>
+    this.fixtureStore.loadFixture(fixtureId);
+
+  readonly reloadFixture = (): Promise<void> =>
+    this.fixtureStore.reloadFixture();
 
   readonly data = computed<ExtendedFixtureDTO | null>(
     () => this.fixtureStore.fixture()?.data ?? null
   );
 
   readonly routerDate = computed<DateString | null>(() => {
-    const url = this.routerService.url();
-    if (!url) return null;
-    return url.split('/')[1];
+    const url = this.routeService.url();
+
+    return url?.split('/')[1] || null;
   });
 
-  handleInvalidUrl(url: string): void {
+  handleInvalidUrl(url: CompetitionUrl): void {
     const fixture = this.data();
+
     if (!fixture) return;
-    const data = SELECT_COMPETITION_DATA_FLAT.find((c) => c.url === url);
-    const isCompetitionParamCorrect = !!data;
 
     const fixtureDate = formatDateToYearMonthDay(fixture.fixture.date);
-    const isDateParamCorrect = this.routerDate() === fixtureDate;
 
-    if (isCompetitionParamCorrect && isDateParamCorrect) return;
-    const id = fixture.league.id;
-    const competition = SELECT_COMPETITION_DATA_FLAT.find((d) => d.id === id);
+    if (this.isRouteValid(url, fixtureDate)) return;
+
+    const competition = this.findFixtureCompetition(fixture);
 
     if (!competition) return;
+
     this.redirectTo({
       fixtureDate,
       competitionUrl: competition.url,
       fixtureId: fixture.fixture.id,
     });
+  }
+
+  private isRouteValid(
+    competitionUrl: CompetitionUrl,
+    fixtureDate: DateString
+  ): boolean {
+    const isCompetitionParamValid = SELECT_COMPETITION_DATA_FLAT.some(
+      ({ url }) => url === competitionUrl
+    );
+
+    return isCompetitionParamValid && this.routerDate() === fixtureDate;
+  }
+
+  private findFixtureCompetition(
+    fixture: ExtendedFixtureDTO
+  ): CompetitionData | undefined {
+    return SELECT_COMPETITION_DATA_FLAT.find(
+      ({ id }) => id === fixture.league.id
+    );
   }
 
   private redirectTo({
@@ -64,7 +90,7 @@ export class MatchFacade {
     fixtureDate: DateString;
     competitionUrl: CompetitionUrl;
     fixtureId: FixtureId;
-  }) {
-    this.router.navigate([fixtureDate, competitionUrl, fixtureId]);
+  }): void {
+    void this.router.navigate([fixtureDate, competitionUrl, fixtureId]);
   }
 }

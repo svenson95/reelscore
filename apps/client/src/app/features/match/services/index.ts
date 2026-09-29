@@ -1,4 +1,3 @@
-import { FIXTURE_SERVICE_PROVIDER } from './fixture/fixture.service';
 import { HTTP_FIXTURE_ANALYSES_SERVICE_PROVIDER } from './http/analyses.service';
 import { HTTP_EVALUATIONS_SERVICE_PROVIDER } from './http/evaluation.service';
 import { HTTP_FIXTURE_EVENTS_SERVICE_PROVIDER } from './http/events.service';
@@ -9,7 +8,6 @@ import { HTTP_FIXTURE_STATISTICS_SERVICE_PROVIDER } from './http/statistics.serv
 import { MatchRealtimeService } from './match-realtime.service';
 import { MatchRefreshService } from './match-refresh.service';
 
-export * from './fixture/fixture.service';
 export * from './http/analyses.service';
 export * from './http/evaluation.service';
 export * from './http/events.service';
@@ -21,7 +19,6 @@ export * from './match-realtime.service';
 export * from './match-refresh.service';
 
 export const SERVICE_PROVIDERS = [
-  FIXTURE_SERVICE_PROVIDER,
   HTTP_FIXTURE_SERVICE_PROVIDER,
   HTTP_EVALUATIONS_SERVICE_PROVIDER,
   HTTP_FIXTURE_EVENTS_SERVICE_PROVIDER,
