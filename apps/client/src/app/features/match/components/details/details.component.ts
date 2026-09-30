@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
@@ -21,15 +22,16 @@ import {
   MatchFixtureStandingsComponent,
   MatchLatestFixturesComponent,
 } from './base/components';
+
 import { MatchDetailsFacade } from './details.facade';
 
-const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
+const MAT_MODULES = [MatTabsModule, MatIconModule];
 
 @Component({
   selector: 'section[rs-match-details]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...ANGULAR_MODULES,
+    ...MAT_MODULES,
     PageTitleComponent,
     MatchFixtureDataComponent,
     MatchFixtureStandingsComponent,
@@ -43,7 +45,6 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
   styles: `
     :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
-
 
       .tab-content {
         @apply flex flex-col;
@@ -65,7 +66,7 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
       [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
-      [style.--tab-count]="MATCH_TABS_LENGTH"
+      [style.--tab-count]="tabCount"
       [style.--active-tab-index]="selectedTabIndex()"
     >
       <mat-tab aria-label="Details">
@@ -76,15 +77,18 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
         </ng-template>
 
         <div class="tab-content">
-          <rs-match-fixture-data [isLoading]="detailsLoading()" />
+          <rs-match-fixture-data
+            [fixture]="fixtureData()"
+            [isLoading]="detailsLoading()"
+          />
 
-          @if (!hasNoStandings() && !isKoPhase() && !isQualifyPhase()) {
+          @if (showStandings()) {
           <rs-match-fixture-standings
             [standings]="standings()"
             [isLoading]="isLoadingStandings()"
             [error]="standingsError()"
             [groupCompetition]="hasMultipleGroups()"
-            [competitionName]="fixture()?.data?.league?.name ?? null"
+            [competitionName]="fixtureData()?.league?.name ?? null"
           />
           }
 
@@ -95,7 +99,7 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
           />
           <rs-match-latest-fixtures
             data-testid="match-latest-fixtures"
-            [data]="fixture()?.data ?? null"
+            [data]="fixtureData()"
             [latestFixtures]="latestFixtures()"
             [isLoading]="latestFixturesLoading()"
             [error]="latestFixturesError()"
@@ -103,7 +107,7 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
         </div>
       </mat-tab>
 
-      <mat-tab aria-label="Analysen" [disabled]="!analyses()">
+      <mat-tab aria-label="Analysen" [disabled]="!availableTabs()[1]">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>pageview</mat-icon>
@@ -117,7 +121,7 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
         </div>
       </mat-tab>
 
-      <mat-tab aria-label="Spielbericht" [disabled]="!events()">
+      <mat-tab aria-label="Spielbericht" [disabled]="!availableTabs()[2]">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>article</mat-icon>
@@ -127,13 +131,13 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
         <div class="tab-content">
           <rs-page-title title="Spielbericht" />
 
-          @if (events()) {
-          <rs-match-events [data]="events()!" />
+          @if (events(); as matchEvents) {
+          <rs-match-events [data]="matchEvents" />
           }
         </div>
       </mat-tab>
 
-      <mat-tab aria-label="Statistiken" [disabled]="!statistics()">
+      <mat-tab aria-label="Statistiken" [disabled]="!availableTabs()[3]">
         <ng-template mat-tab-label>
           <div class="tab-label-content">
             <mat-icon>assessment</mat-icon>
@@ -143,8 +147,8 @@ const ANGULAR_MODULES = [MatTabsModule, MatIconModule];
         <div class="tab-content">
           <rs-page-title title="Statistiken" />
 
-          @if (statistics()) {
-          <rs-match-statistics [data]="statistics()!" />
+          @if (statistics(); as matchStatistics) {
+          <rs-match-statistics [data]="matchStatistics" />
           }
         </div>
       </mat-tab>
@@ -159,9 +163,10 @@ export class MatchDetailsComponent {
   readonly events = this.facade.events;
   readonly statistics = this.facade.statistics;
   readonly evaluations = this.facade.evaluations;
-  readonly fixture = this.facade.fixture;
+  protected readonly fixtureData = computed(
+    () => this.facade.fixture()?.data ?? null
+  );
 
-  readonly hasNoStandings = this.facade.hasNoStandings;
   readonly isLoadingStandings = this.facade.standingsLoading;
   readonly detailsLoading = this.facade.detailsLoading;
   readonly evaluationsLoading = this.facade.evaluationsLoading;
@@ -171,25 +176,27 @@ export class MatchDetailsComponent {
   readonly evaluationsError = this.facade.evaluationsError;
   readonly latestFixturesError = this.facade.latestFixturesError;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
-  readonly isKoPhase = this.facade.isKoPhase;
-  readonly isQualifyPhase = this.facade.isQualifyPhase;
 
-  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
-  readonly MATCH_TABS_LENGTH = 4;
+  protected readonly showStandings = computed<boolean>(
+    () =>
+      !this.facade.hasNoStandings() &&
+      !this.facade.isKoPhase() &&
+      !this.facade.isQualifyPhase()
+  );
 
-  readonly selectedTabIndex = signal<number>(0);
+  protected readonly availableTabs = computed<boolean[]>(() => [
+    true,
+    !!this.analyses(),
+    !!this.events(),
+    !!this.statistics(),
+  ]);
 
-  readonly selectedTabEffect = effect(() => {
-    const selectedIndex = this.selectedTabIndex();
+  protected readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+  protected readonly tabCount = this.availableTabs().length;
+  readonly selectedTabIndex = signal(0);
 
-    const tabsAvailable = [
-      true,
-      !!this.analyses(),
-      !!this.events(),
-      !!this.statistics(),
-    ];
-
-    if (!tabsAvailable[selectedIndex]) {
+  private readonly selectedTabEffect = effect(() => {
+    if (!this.availableTabs()[this.selectedTabIndex()]) {
       this.selectedTabIndex.set(0);
     }
   });
