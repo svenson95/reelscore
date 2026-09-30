@@ -2,19 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  inject,
   input,
 } from '@angular/core';
 
-import { PageTitleComponent, RoundLabelPipe } from '@app/shared';
+import { getCompetitionRoundLabel, PageTitleComponent } from '@app/shared';
 import type { ExtendedFixtureDTO } from '@lib/models';
-
-import { FixtureStore } from '../../../../../stores';
 
 @Component({
   selector: 'rs-match-fixture-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, RoundLabelPipe],
+  imports: [PageTitleComponent],
   styles: `
     :host {
       @apply flex flex-col mb-3;
@@ -36,19 +33,19 @@ import { FixtureStore } from '../../../../../stores';
       @apply flex justify-center px-8 gap-6 text-rs-color-text-1;
     }
 
-    .item > *:not(.key) {
-      @apply flex-2 sm:flex-1;
+    .item .value {
+      @apply flex-[3_3_0%] sm:flex-[2_2_0%];
     }
 
-    .key {
-      @apply text-rs-color-text-2 text-right tracking-wider font-extralight flex-1;
+    .item .key {
+      @apply text-rs-color-text-2 text-right tracking-wider font-extralight flex-[2_2_0%];
     }
 
-    span {
+    .item span {
       @apply text-rs-font-size-body-2;
     }
 
-    .list-item-placeholder {
+    .item .list-item-placeholder {
       @apply w-[100px] max-w-full h-[12px];
     }
   `,
@@ -57,112 +54,52 @@ import { FixtureStore } from '../../../../../stores';
 
     <div class="fixture-data" [attr.aria-busy]="isLoading()">
       <ul>
+        @for (item of items(); track item.label) {
         <li>
           <div class="item">
-            <span class="key">Wettbewerb</span>
-
-            @if (visibleData(); as fixture) {
-            <span class="value">{{ fixture.league.name }}</span>
-            } @else {
+            <span class="key">{{ item.label }}</span>
             <span class="value">
+              @if (visibleData()) {
+              {{ item.value }}
+              } @else {
               <span
                 class="rs-skeleton list-item-placeholder"
                 aria-hidden="true"
               ></span>
+              }
             </span>
-            }
           </div>
         </li>
-
-        <li>
-          <div class="item">
-            <span class="key">Spieltag</span>
-
-            @if (visibleData(); as fixture) {
-            <span class="value">
-              {{
-                fixture.league.round
-                  | roundLabel
-                    : {
-                        id: fixture.league.id,
-                        season: fixture.league.season
-                      }
-              }}
-            </span>
-            } @else {
-            <span class="value">
-              <span
-                class="rs-skeleton list-item-placeholder"
-                aria-hidden="true"
-              ></span>
-            </span>
-            }
-          </div>
-        </li>
-
-        <li>
-          <div class="item">
-            <span class="key">Stadion</span>
-
-            @if (visibleData(); as fixture) {
-            <span class="value">{{ fixture.fixture.venue.name }}</span>
-            } @else {
-            <span class="value">
-              <span
-                class="rs-skeleton list-item-placeholder"
-                aria-hidden="true"
-              ></span>
-            </span>
-            }
-          </div>
-        </li>
-
-        <li>
-          <div class="item">
-            <span class="key">Stadt</span>
-
-            @if (visibleData(); as fixture) {
-            <span class="value">{{ fixture.fixture.venue.city }}</span>
-            } @else {
-            <span class="value">
-              <span
-                class="rs-skeleton list-item-placeholder"
-                aria-hidden="true"
-              ></span>
-            </span>
-            }
-          </div>
-        </li>
-
-        <li>
-          <div class="item">
-            <span class="key">Schiedsrichter</span>
-
-            @if (visibleData(); as fixture) {
-            <span class="value">{{ fixture.fixture.referee }}</span>
-            } @else {
-            <span class="value">
-              <span
-                class="rs-skeleton list-item-placeholder"
-                aria-hidden="true"
-              ></span>
-            </span>
-            }
-          </div>
-        </li>
+        }
       </ul>
     </div>
   `,
 })
 export class MatchFixtureDataComponent {
-  readonly isLoading = input(false);
-  readonly visibleData = computed(() =>
-    this.isLoading() ? null : this.data()
+  readonly fixture = input.required<ExtendedFixtureDTO | null>();
+  readonly isLoading = input.required<boolean>();
+
+  protected readonly visibleData = computed<ExtendedFixtureDTO | null>(() =>
+    this.isLoading() ? null : this.fixture()
   );
 
-  private readonly fixtureStore = inject(FixtureStore);
+  protected readonly items = computed(() => {
+    const fixture = this.visibleData();
 
-  readonly data = computed<ExtendedFixtureDTO | null>(
-    () => this.fixtureStore.fixture()?.data ?? null
-  );
+    return [
+      { label: 'Wettbewerb', value: fixture?.league.name },
+      {
+        label: 'Spieltag',
+        value: fixture
+          ? getCompetitionRoundLabel(fixture.league.round, {
+              id: fixture.league.id,
+              season: fixture.league.season,
+            })
+          : undefined,
+      },
+      { label: 'Stadion', value: fixture?.fixture.venue.name },
+      { label: 'Stadt', value: fixture?.fixture.venue.city },
+      { label: 'Schiedsrichter', value: fixture?.fixture.referee },
+    ];
+  });
 }
