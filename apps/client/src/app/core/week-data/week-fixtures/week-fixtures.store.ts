@@ -6,9 +6,7 @@ import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import type { DateString } from '@reelscore-sdk/helpers';
 import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
-import type { FixtureDTO } from '@reelscore-sdk/models';
-
-import type { FixturesWeekData } from '@lib/models';
+import type { FixtureDTO, FixturesWeekData } from '@reelscore-sdk/models';
 
 import { errorHandler, HttpWeekFixturesService } from '@app/shared';
 

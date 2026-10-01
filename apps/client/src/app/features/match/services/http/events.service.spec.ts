@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { of } from 'rxjs';
 
-import type { RapidEventsDTO } from '@lib/models';
+import type { RapidEventsDTO } from '@reelscore-sdk/models';
 
 import { AbstractedHttpFixtureEventsService } from './events.service';
 

@@ -3,13 +3,12 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import type {
+  CompetitionUrl,
   ExtendedFixtureDTO,
   FixtureHighlights,
   FixtureId,
   GetFixtureDTO,
 } from '@reelscore-sdk/models';
-
-import type { CompetitionUrl } from '@lib/models';
 
 import { EXAMPLE_FIXTURE } from '../../../testing/fixtures.mock';
 

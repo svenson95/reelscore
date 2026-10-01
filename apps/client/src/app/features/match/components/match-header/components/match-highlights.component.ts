@@ -5,21 +5,18 @@ import {
   input,
 } from '@angular/core';
 
+import { timeTotal } from '@reelscore-sdk/helpers';
 import type {
   EventDTO,
+  EventResult,
   FixtureDTO,
   FixtureHighlights,
   Goals,
+  HighlightEvent,
+  HighlightItem,
   MatchTeams,
   TeamId,
 } from '@reelscore-sdk/models';
-
-import {
-  type EventResult,
-  type HighlightEvent,
-  type HighlightItem,
-  timeTotal,
-} from '@lib/models';
 
 @Component({
   selector: 'rs-match-highlights',

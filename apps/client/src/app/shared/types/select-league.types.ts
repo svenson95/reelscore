@@ -1,6 +1,8 @@
-import type { CompetitionId, CompetitionName } from '@reelscore-sdk/models';
-
-import type { CompetitionUrl } from '@lib/models';
+import type {
+  CompetitionId,
+  CompetitionName,
+  CompetitionUrl,
+} from '@reelscore-sdk/models';
 
 export type CompetitionData = {
   image: string;

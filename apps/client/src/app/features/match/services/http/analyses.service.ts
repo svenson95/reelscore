@@ -4,9 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { FixtureId } from '@reelscore-sdk/models';
-
-import type { AnalysesDTO } from '@lib/models';
+import type { AnalysesDTO, FixtureId } from '@reelscore-sdk/models';
 
 import { environment } from '../../../../../environments/environment';
 

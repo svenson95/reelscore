@@ -4,9 +4,10 @@ import { inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { FixtureIdParameter } from '@reelscore-sdk/models';
-
-import type { RapidStatisticsDTO } from '@lib/models';
+import type {
+  FixtureIdParameter,
+  RapidStatisticsDTO,
+} from '@reelscore-sdk/models';
 
 import { environment } from '../../../../../environments/environment';
 

@@ -6,9 +6,7 @@ import {
   input,
 } from '@angular/core';
 
-import type { FixtureId } from '@reelscore-sdk/models';
-
-import { type CompetitionUrl } from '@lib/models';
+import type { CompetitionUrl, FixtureId } from '@reelscore-sdk/models';
 
 import {
   MatchDetailsComponent,

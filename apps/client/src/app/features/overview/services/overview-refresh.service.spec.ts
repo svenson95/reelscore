@@ -7,9 +7,10 @@ import {
 import { TestBed } from '@angular/core/testing';
 
 import { formatCalendarWeekKey, getWeekdayIndex } from '@reelscore-sdk/helpers';
-import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
-
-import type { FixturesWeekData } from '@lib/models';
+import type {
+  ExtendedFixtureDTO,
+  FixturesWeekData,
+} from '@reelscore-sdk/models';
 
 import { WeekFixturesStore } from '@app/core';
 

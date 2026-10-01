@@ -9,9 +9,8 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
+import { STATUS_TYPES_PLAYING } from '@reelscore-sdk/constants';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
-
-import { STATUS_TYPES_PLAYING } from '@lib/models';
 
 import {
   type CompetitionWithFixtures,

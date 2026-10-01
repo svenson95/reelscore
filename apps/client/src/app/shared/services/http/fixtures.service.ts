@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject,Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-import { type Observable,shareReplay } from 'rxjs';
+import { type Observable, shareReplay } from 'rxjs';
 
 import type { DateString } from '@reelscore-sdk/helpers';
-
-import type { FixturesWeekData } from '@lib/models';
+import type { FixturesWeekData } from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
 

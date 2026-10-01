@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { RapidStatisticsDTO } from '@lib/models';
+import type { RapidStatisticsDTO } from '@reelscore-sdk/models';
 
 const StatisticsSchema = new mongoose.Schema<RapidStatisticsDTO>({
   parameters: {

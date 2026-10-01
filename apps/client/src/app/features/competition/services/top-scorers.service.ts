@@ -4,9 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { CompetitionId } from '@reelscore-sdk/models';
-
-import type { TopScorersDTO } from '@lib/models';
+import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
 

@@ -1,6 +1,8 @@
-import type { ExtendedFixtureDTO, FixtureDTO } from '@reelscore-sdk/models';
-
-import type { EvaluationTeam } from '@lib/models';
+import type {
+  EvaluationTeam,
+  ExtendedFixtureDTO,
+  FixtureDTO,
+} from '@reelscore-sdk/models';
 
 import {
   FixtureEvaluationsController,

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { TeamDTO } from '@lib/models';
+import type { TeamDTO } from '@reelscore-sdk/models';
 
 const TeamsSchema = new mongoose.Schema<TeamDTO>(
   {

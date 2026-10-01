@@ -1,9 +1,11 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { GetFixtureDTO, LatestFixturesDTO } from '@reelscore-sdk/models';
-
-import type { AnalysesDTO } from '@lib/models';
+import type {
+  AnalysesDTO,
+  GetFixtureDTO,
+  LatestFixturesDTO,
+} from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
 import {

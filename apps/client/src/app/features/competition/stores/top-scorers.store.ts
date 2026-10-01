@@ -3,9 +3,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { CompetitionId } from '@reelscore-sdk/models';
-
-import type { TopScorersDTO } from '@lib/models';
+import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
 import { errorHandler } from '@app/shared';
 

@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { type EventWithResult, STATUS_TYPES_FINISHED } from '@lib/models';
+import { STATUS_TYPES_FINISHED } from '@reelscore-sdk/constants';
+import type { EventWithResult } from '@reelscore-sdk/models';
 
 import { FixtureStore } from '../../../../../stores';
 

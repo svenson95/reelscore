@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@reelscore-sdk/models';
 
 const StandingsSchema = new mongoose.Schema<StandingsDTO>(
   {

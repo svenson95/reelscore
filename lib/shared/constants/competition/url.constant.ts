@@ -1,6 +1,5 @@
 import { CompetitionCode } from '@reelscore-sdk/constants';
-
-import type { CompetitionUrl } from '../../../models/competition.model';
+import type { CompetitionUrl } from '@reelscore-sdk/models';
 
 export const COMPETITION_URL: Record<CompetitionCode, CompetitionUrl> = {
   // Europa

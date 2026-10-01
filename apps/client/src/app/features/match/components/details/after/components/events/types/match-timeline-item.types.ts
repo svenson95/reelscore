@@ -1,4 +1,4 @@
-import type { EventWithResult } from '@lib/models';
+import type { EventWithResult } from '@reelscore-sdk/models';
 
 export type TimelineItemKey = string;
 export type MatchTimelineItem =

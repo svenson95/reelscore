@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
-
 import {
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_HALFTIME,
-} from '@lib/models';
+} from '@reelscore-sdk/constants';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import { COMPETITION_KO_ROUNDS, isTwoLeggedRound } from '@lib/shared';
 
 @Injectable()

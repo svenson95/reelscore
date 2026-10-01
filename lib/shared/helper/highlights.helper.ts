@@ -1,6 +1,5 @@
+import { timeTotal } from '@reelscore-sdk/helpers';
 import type { EventDTO, FixtureHighlights } from '@reelscore-sdk/models';
-
-import { timeTotal } from '../../models';
 
 export const isHighlightGoal = (
   event: Pick<EventDTO, 'type' | 'detail'>,

@@ -1,13 +1,11 @@
 import type {
   CompetitionId,
   CompetitionRound,
+  CompetitionRounds,
+  CompetitionRoundsData,
   CompetitionSeason,
 } from '@reelscore-sdk/models';
 
-import type {
-  CompetitionRounds,
-  CompetitionRoundsData,
-} from '../../models/competition.model';
 import { TWO_LEGGED_COMPETITION_ROUNDS } from '../constants/rounds.data';
 import { SEASONS } from '../constants/season.data';
 

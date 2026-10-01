@@ -6,7 +6,11 @@ import {
   input,
 } from '@angular/core';
 
-import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
+import type {
+  StandingRanks,
+  StandingsDTO,
+  StandingsLeague,
+} from '@reelscore-sdk/models';
 
 import {
   BreakpointObserverService,

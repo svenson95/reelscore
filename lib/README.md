@@ -1,8 +1,8 @@
 # Internal shared library
 
-`internal-shared` is the non-buildable Nx library for code shared by the client
-and API inside this repository. Its sources remain in `lib/models` and
-`lib/shared`; application builds compile them directly.
+`internal-shared` is the non-buildable Nx library for project-specific helpers
+and constants shared by the client and API. Its sources are in `lib/shared`;
+application builds compile them directly.
 
 ```sh
 npx nx test internal-shared
@@ -10,15 +10,19 @@ npx nx lint internal-shared
 npx nx run internal-shared:typecheck
 ```
 
-Existing consumers can keep `@lib/models` and `@lib/shared`. The combined entry
-point is `@reelscore/internal-shared`.
+Local helpers and constants use `@lib/shared`. All models formerly in `lib/models` are generated
+by the separate `reelscore-sdk` package; `@lib/models` has been removed.
 
-Fixture contracts, competition codes and date helpers now come from the separate
-`reelscore-sdk` package. Import migrated symbols directly from the SDK;
-the local barrels export only the remaining project-specific definitions.
-Change those contracts in the SDK's `openapi/fixtures.openapi.json`, regenerate
-and test the SDK, then update the tarball described in `vendor/README.md`.
+```ts
+import type { CompetitionDTO, TeamDTO, FixtureDTO } from '@reelscore-sdk/models';
+import { STATUS_TYPES_FINISHED, REALTIME_EVENT } from '@reelscore-sdk/constants';
+import { timeTotal, getTodayDateString } from '@reelscore-sdk/helpers';
+```
 
-New code should import migrated symbols directly from `@reelscore-sdk/models`,
-`@reelscore-sdk/constants` or `@reelscore-sdk/helpers`. Keep API-only code in the
-API, client-only code in its feature, and cross-repository contracts in the SDK.
+Edit the SDK's domain schemas under `openapi/`, referenced by
+`openapi/reelscore.openapi.json`, then regenerate, test and update the archive
+as described in `vendor/README.md`. The generated bundled schema is available
+for consumers that prefer one OpenAPI file.
+
+No local SDK re-exports or independent model copies are retained. Keep API-only
+implementation in the API and client-only implementation in its feature.

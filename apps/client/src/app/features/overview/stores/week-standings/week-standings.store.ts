@@ -6,8 +6,7 @@ import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import type { DateString } from '@reelscore-sdk/helpers';
 import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
-
-import type { StandingsWeekData } from '@lib/models';
+import type { StandingsWeekData } from '@reelscore-sdk/models';
 
 import { errorHandler, HttpStandingsService } from '@app/shared';
 

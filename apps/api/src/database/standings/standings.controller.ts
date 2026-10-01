@@ -1,9 +1,14 @@
 import type { FilterQuery } from 'mongoose';
 
 import { getDateInTimezone } from '@reelscore-sdk/helpers';
-import type { CompetitionId, CompetitionSeason } from '@reelscore-sdk/models';
+import type {
+  CompetitionId,
+  CompetitionSeason,
+  StandingRanks,
+  StandingsDTO,
+  StandingsFilter,
+} from '@reelscore-sdk/models';
 
-import type { StandingRanks, StandingsDTO, StandingsFilter } from '@lib/models';
 import {
   COMPETITION_ID,
   getSeason,

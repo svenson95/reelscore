@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { FixtureDTO, MatchTeams } from '@reelscore-sdk/models';
-
-import type { LiveFixtureEventsUpdateDTO, RapidEventsDTO } from '@lib/models';
+import type {
+  FixtureDTO,
+  LiveFixtureEventsUpdateDTO,
+  MatchTeams,
+  RapidEventsDTO,
+} from '@reelscore-sdk/models';
 
 import {
   createOperationResponse,

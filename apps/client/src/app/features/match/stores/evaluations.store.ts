@@ -3,9 +3,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { FixtureId } from '@reelscore-sdk/models';
-
-import type { EvaluationDTO } from '@lib/models';
+import type { EvaluationDTO, FixtureId } from '@reelscore-sdk/models';
 
 import { errorHandler } from '@app/shared';
 

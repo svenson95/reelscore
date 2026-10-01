@@ -13,17 +13,28 @@ need Swift models describing the same wire data.
 ## Decision
 
 The separate reelscore-sdk repository owns shared OpenAPI 3.1 contracts and
-generates TypeScript models from them. The first migration covers the complete
-fixture model and its required team, league, status and event definitions.
+generates TypeScript models from them. All contracts formerly in `lib/models` are migrated into domain-specific schemas
+for competitions, teams, coaches, players, standings, fixtures, events, statistics,
+analyses, evaluations, search, responses, live updates and week data.
+`openapi/reelscore.openapi.json` references these sources; generation also produces
+a standalone bundled document. The fixture schemas reference team and competition
+definitions owned by their respective domains.
 Prediction value arrays are generated from schema enums to keep runtime values
-and type declarations synchronized. Competition codes and date helpers are
-ordinary TypeScript source in the SDK.
+and type declarations synchronized. Competition codes, status groups, realtime event names, date helpers and the
+`timeTotal` event helper are ordinary TypeScript source in the SDK.
 
 The remaining `lib/` tree is the non-buildable Nx project `internal-shared`,
-with test, lint and typecheck targets. Existing `@lib/models` and `@lib/shared`
-imports remain available for project-specific definitions. Migrated SDK symbols
+with test, lint and typecheck targets. `@lib/shared` remains available for local
+helpers and constants. `lib/models` and its `@lib/models` alias are removed. Migrated SDK symbols
 are imported directly from `@reelscore-sdk/models`, `@reelscore-sdk/constants`
 or `@reelscore-sdk/helpers` and are not re-exported by local barrels.
+
+The generator preserves existing TypeScript `Date` declarations with an explicit
+schema marker, while OpenAPI describes their JSON date-time serialization.
+Generation does not add runtime parsing. Generic response payloads and numeric
+record keys are preserved through narrowly scoped TypeScript generation markers;
+concrete OpenAPI payloads remain fully described for validation and other languages.
+Compiler tests verify these boundaries.
 
 During this pilot, reelscore installs a versioned npm tarball from `vendor/`.
 The artifact contains compiled ESM/CommonJS, declarations and OpenAPI source.

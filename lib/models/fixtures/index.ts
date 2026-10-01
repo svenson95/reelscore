@@ -1,5 +1,0 @@
-export * from './analyses.model';
-export * from './evaluation.model';
-export * from './events.model';
-export * from './fixture-status.model';
-export * from './statistics.model';

@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
-import type { TopScorer } from '@lib/models';
+import type { TopScorer } from '@reelscore-sdk/models';
 
 import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 

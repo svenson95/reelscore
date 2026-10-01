@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { EvaluationDTO } from '@lib/models';
+import type { EvaluationDTO } from '@reelscore-sdk/models';
 
 import {
   readElementText,

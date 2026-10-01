@@ -1,5 +1,3 @@
-import type { StatusShort } from '@reelscore-sdk/models';
-
 import {
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
@@ -9,8 +7,8 @@ import {
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_HALFTIME,
   STATUS_VALUE_POSTPONED,
-  type StatusTypeScheduled,
-} from '@lib/models';
+} from '@reelscore-sdk/constants';
+import type { StatusShort, StatusTypeScheduled } from '@reelscore-sdk/models';
 
 export interface FixtureStatusState {
   status: StatusShort;

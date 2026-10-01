@@ -1,17 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { FixtureDTO } from '@reelscore-sdk/models';
-
+import { REALTIME_EVENT } from '@reelscore-sdk/constants';
 import type {
+  FixtureDTO,
   LiveFixtureEventsBatchUpdateDTO,
+  LiveFixtureEventsUpdateDTO,
   LiveFixturesUpdateDTO,
+  LiveFixtureUpdateDTO,
   RapidEventsDTO,
-} from '@lib/models';
-import {
-  type LiveFixtureEventsUpdateDTO,
-  type LiveFixtureUpdateDTO,
-  REALTIME_EVENT,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
 import {

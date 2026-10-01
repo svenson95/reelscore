@@ -1,7 +1,7 @@
 import { Component, input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@reelscore-sdk/models';
 
 import { StandingsTableComponent } from '@app/shared';
 

@@ -1,9 +1,10 @@
 import type { PipeTransform } from '@angular/core';
 import { Pipe } from '@angular/core';
 
-import type { CompetitionRound } from '@reelscore-sdk/models';
-
-import type { CompetitionRoundTranslated } from '@lib/models';
+import type {
+  CompetitionRound,
+  CompetitionRoundTranslated,
+} from '@reelscore-sdk/models';
 
 import {
   getCompetitionRoundLabel,

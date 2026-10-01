@@ -15,9 +15,12 @@ import { Router } from '@angular/router';
 
 import { filter, startWith, switchMap, take } from 'rxjs';
 
-import type { FixtureDTO } from '@reelscore-sdk/models';
-
-import type { SearchResult, SearchResultGroup, SearchType } from '@lib/models';
+import type {
+  FixtureDTO,
+  SearchResult,
+  SearchResultGroup,
+  SearchType,
+} from '@reelscore-sdk/models';
 
 import {
   linkToMatch,

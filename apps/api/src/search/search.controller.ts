@@ -3,7 +3,7 @@ import type {
   FixtureSearchResult,
   SearchResult,
   TeamSearchResult,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { Fixtures, Teams } from '../database';
 

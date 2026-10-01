@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 
 import type { DateString } from '@reelscore-sdk/helpers';
 import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
-import type { ExtendedFixtureDTO, FixtureId } from '@reelscore-sdk/models';
-
-import type { CompetitionUrl } from '@lib/models';
+import type {
+  CompetitionUrl,
+  ExtendedFixtureDTO,
+  FixtureId,
+} from '@reelscore-sdk/models';
 
 import {
   type CompetitionData,

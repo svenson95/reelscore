@@ -4,7 +4,7 @@ import { z } from 'zod';
 import type {
   LiveFixtureEventsUpdateDTO,
   LiveFixtureUpdateDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { getRedis } from './redis.helper';
 

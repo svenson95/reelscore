@@ -5,15 +5,14 @@ import {
   input,
 } from '@angular/core';
 
-import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
-
 import {
   STATUS_TYPES_NOT_PLAYED,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
-} from '@lib/models';
+} from '@reelscore-sdk/constants';
+import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
 
 @Component({
   selector: 'rs-result-label',

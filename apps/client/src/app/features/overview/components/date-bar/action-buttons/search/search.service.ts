@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { retry } from 'rxjs';
 
-import type { SearchResult } from '@lib/models';
+import type { SearchResult } from '@reelscore-sdk/models';
 
 import { errorHandler } from '@app/shared';
 

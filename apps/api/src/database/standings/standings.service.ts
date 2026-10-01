@@ -1,6 +1,6 @@
 import type { FilterQuery } from 'mongoose';
 
-import type { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@reelscore-sdk/models';
 
 import { Standings } from './standings.model';
 

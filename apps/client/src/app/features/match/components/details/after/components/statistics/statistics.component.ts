@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import type { StatisticDTO } from '@lib/models';
+import type { StatisticDTO } from '@reelscore-sdk/models';
 
 import { StatisticList } from './types';
 

@@ -14,7 +14,8 @@ import type {
   StandingRanks,
   StandingsLeague,
   StandingsPlayed,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
 import { isCompetitionWithMultipleGroups } from '@lib/shared';
 
 import { TeamNamePipe } from '../pipes';

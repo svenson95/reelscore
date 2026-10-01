@@ -1,15 +1,14 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { FixtureDTO } from '@reelscore-sdk/models';
-
 import type {
+  FixtureDTO,
   LiveFixtureEventsBatchUpdateDTO,
   LiveFixtureEventsUpdateDTO,
   LiveFixturesUpdateDTO,
   LiveFixtureUpdateDTO,
   RapidEventsDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
 

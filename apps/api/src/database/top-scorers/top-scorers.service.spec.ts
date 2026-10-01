@@ -1,4 +1,4 @@
-import type { TopScorersDTO } from '@lib/models';
+import type { TopScorersDTO } from '@reelscore-sdk/models';
 
 import { TopScorers } from './top-scorers.model';
 import { TopScorersService } from './top-scorers.service';

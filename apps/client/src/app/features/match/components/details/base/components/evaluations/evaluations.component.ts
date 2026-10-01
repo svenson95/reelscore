@@ -5,10 +5,11 @@ import {
   input,
 } from '@angular/core';
 
-import type { FixtureResult } from '@reelscore-sdk/models';
-
-import type { FixturePerformance } from '@lib/models';
-import { type EvaluationDTO } from '@lib/models';
+import type {
+  EvaluationDTO,
+  FixturePerformance,
+  FixtureResult,
+} from '@reelscore-sdk/models';
 
 import { PageTitleComponent } from '@app/shared';
 

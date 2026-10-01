@@ -5,9 +5,7 @@ import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
 import type { DateString } from '@reelscore-sdk/helpers';
-import type { CompetitionId } from '@reelscore-sdk/models';
-
-import type { StandingsDTO } from '@lib/models';
+import type { CompetitionId, StandingsDTO } from '@reelscore-sdk/models';
 
 import { environment } from '../../../../../environments/environment';
 

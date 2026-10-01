@@ -7,9 +7,11 @@ import {
 } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 
-import type { FixtureDTO } from '@reelscore-sdk/models';
-
-import type { SearchResult, SearchResultGroup } from '@lib/models';
+import type {
+  FixtureDTO,
+  SearchResult,
+  SearchResultGroup,
+} from '@reelscore-sdk/models';
 
 import {
   getCompetitionLogoSrcSet,

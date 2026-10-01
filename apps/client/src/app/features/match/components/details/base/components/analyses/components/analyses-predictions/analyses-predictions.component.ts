@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import type { AnalysesDTO } from '@lib/models';
+import type { AnalysesDTO } from '@reelscore-sdk/models';
 
 import { PageTitleComponent } from '@app/shared';
 

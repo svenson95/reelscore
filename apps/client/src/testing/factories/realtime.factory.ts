@@ -1,6 +1,5 @@
 import { getNow } from '@reelscore-sdk/helpers';
-
-import type { OperationResponse, RapidEventsDTO } from '@lib/models';
+import type { OperationResponse, RapidEventsDTO } from '@reelscore-sdk/models';
 
 export const createOperationResponse = <T>(
   documents: T[]
