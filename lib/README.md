@@ -14,7 +14,8 @@ Existing consumers can keep `@lib/models` and `@lib/shared`. The combined entry
 point is `@reelscore/internal-shared`.
 
 Fixture contracts, competition codes and date helpers now come from the separate
-`reelscore-sdk` package. Compatibility barrels retain the existing exports.
+`reelscore-sdk` package. Import migrated symbols directly from the SDK;
+the local barrels export only the remaining project-specific definitions.
 Change those contracts in the SDK's `openapi/fixtures.openapi.json`, regenerate
 and test the SDK, then update the tarball described in `vendor/README.md`.
 

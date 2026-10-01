@@ -21,8 +21,9 @@ ordinary TypeScript source in the SDK.
 
 The remaining `lib/` tree is the non-buildable Nx project `internal-shared`,
 with test, lint and typecheck targets. Existing `@lib/models` and `@lib/shared`
-imports remain available. Their barrels re-export migrated SDK symbols; they
-no longer contain independent copies of those definitions.
+imports remain available for project-specific definitions. Migrated SDK symbols
+are imported directly from `@reelscore-sdk/models`, `@reelscore-sdk/constants`
+or `@reelscore-sdk/helpers` and are not re-exported by local barrels.
 
 During this pilot, reelscore installs a versioned npm tarball from `vendor/`.
 The artifact contains compiled ESM/CommonJS, declarations and OpenAPI source.
