@@ -1,7 +1,11 @@
-import { SEASONS } from '../shared/constants/season.data';
-
-import type { MongoDbId } from './mongodb.model';
-import type { Team } from './team.model';
+import type {
+  CompetitionId,
+  CompetitionName,
+  CompetitionRound,
+  CompetitionSeason,
+  MongoDbId,
+  Team,
+} from '@reelscore-sdk/models';
 
 export type StandingsPlayed = {
   played: number;
@@ -29,12 +33,7 @@ export type StandingRanks = {
 export type LeagueType = 'League' | 'Cup' | 'Friendly' | 'International';
 
 export type CompetitionUrl = string;
-export type CompetitionId = number;
-export type CompetitionSeason = (typeof SEASONS)[number];
-export type CompetitionName = string;
 export type CompetitionNameTranslated = string;
-
-export type CompetitionRound = string;
 export type CompetitionRoundTranslated = string;
 export type CompetitionRoundIndex = number;
 export type CompetitionRounds = Record<CompetitionRoundIndex, CompetitionRound>;
@@ -52,11 +51,6 @@ type LeagueBase = {
   flag: string | null;
   season: CompetitionSeason;
 };
-
-export interface FixtureLeague extends LeagueBase {
-  standings?: boolean;
-  round: CompetitionRound;
-}
 
 export interface StandingsLeague extends LeagueBase {
   standings: StandingRanks[][];

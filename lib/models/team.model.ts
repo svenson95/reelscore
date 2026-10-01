@@ -1,10 +1,11 @@
-import type { VenueId } from './fixtures/fixture.model';
-import type { MongoDbId } from './mongodb.model';
+import type {
+  MongoDbId,
+  TeamId,
+  TeamLogo,
+  TeamName,
+  VenueId,
+} from '@reelscore-sdk/models';
 
-export type Team = { id: TeamId; name: TeamName; logo: TeamLogo };
-export type TeamId = number;
-export type TeamName = string;
-export type TeamLogo = string;
 export type TeamDetails = {
   id: TeamId;
   name: TeamName;

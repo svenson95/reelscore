@@ -1,4 +1,3 @@
-export type PlayerName = string;
-export type PlayerId = number;
+import type { PlayerName } from '@reelscore-sdk/models';
 
 export type GoalScorers = Array<PlayerName>;

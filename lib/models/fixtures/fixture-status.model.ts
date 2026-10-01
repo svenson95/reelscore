@@ -1,31 +1,3 @@
-export type StatusLong =
-  | 'Time To Be Defined'
-  | 'Not Started'
-  | 'First Half, Kick Off'
-  | 'Halftime'
-  | 'Second Half, 2nd Half Started'
-  | 'Extra Time'
-  | 'Break Time'
-  | 'Penalty in Progress'
-  | 'Match Suspended'
-  | 'Match Interrupted'
-  | 'Match Finished'
-  | 'Match Postponed'
-  | 'Match Cancelled'
-  | 'Match Abandoned'
-  | 'Technical Loss'
-  | 'WalkOver'
-  | 'In Progress';
-export type StatusShort =
-  | StatusTypeScheduled
-  | StatusTypePlaying
-  | StatusTypeFinished
-  | StatusTypePostponed
-  | StatusTypeCancelled
-  | StatusTypeAbandoned
-  | StatusTypeNotPlayed
-  | 'WO';
-
 export const STATUS_TYPES_SCHEDULED: string[] = ['TBD', 'NS'] as const;
 export type StatusTypeScheduled = (typeof STATUS_TYPES_SCHEDULED)[number];
 

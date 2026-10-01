@@ -1,38 +1,38 @@
 type CoachBirth = {
-  date: String;
-  place: String;
-  country: String;
+  date: string;
+  place: string;
+  country: string;
 };
 
 type CoachTeam = {
-  id: Number;
-  name: String;
-  logo: String;
+  id: number;
+  name: string;
+  logo: string;
 };
 
 type CareerTeam = {
-  id: Number;
-  name: String;
-  logo: String;
+  id: number;
+  name: string;
+  logo: string;
 };
 
 type CareerItem = {
   team: CareerTeam;
-  start: String; // DateString yyyy-MM-dd
-  end: String; // DateString yyyy-MM-dd
+  start: string; // DateString yyyy-MM-dd
+  end: string; // DateString yyyy-MM-dd
 };
 
 export type TeamCoachDTO = {
-  id: Number;
-  name: String;
-  firstname: String;
-  lastname: String;
-  age: Number;
+  id: number;
+  name: string;
+  firstname: string;
+  lastname: string;
+  age: number;
   birth: CoachBirth;
-  nationality: String;
-  height: String;
-  weight: String;
-  photo: String;
+  nationality: string;
+  height: string;
+  weight: string;
+  photo: string;
   team: CoachTeam;
   career: [CareerItem];
 };
