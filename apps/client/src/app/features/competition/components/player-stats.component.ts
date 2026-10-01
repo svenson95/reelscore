@@ -5,8 +5,9 @@ import {
   inject,
 } from '@angular/core';
 
-import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 import type { TopScorer } from '@lib/models';
+
+import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 
 import { TopScorersStore } from '../stores';
 

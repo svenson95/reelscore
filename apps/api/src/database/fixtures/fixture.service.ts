@@ -1,4 +1,4 @@
-import type { ExtendedFixtureDTO, FixtureId } from '@lib/models';
+import type { ExtendedFixtureDTO, FixtureId } from '@reelscore-sdk/models';
 
 import { Fixtures } from './fixtures.model';
 

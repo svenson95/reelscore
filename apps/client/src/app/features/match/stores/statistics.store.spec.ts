@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject } from 'rxjs';
 
 import type { RapidStatisticsDTO, StatisticDTO } from '@lib/models';

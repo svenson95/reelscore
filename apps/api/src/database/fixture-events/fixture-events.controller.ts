@@ -1,8 +1,6 @@
-import {
-  timeTotal,
-  type FixtureIdParameter,
-  type RapidEventsDTO,
-} from '@lib/models';
+import type { FixtureIdParameter } from '@reelscore-sdk/models';
+
+import { type RapidEventsDTO, timeTotal } from '@lib/models';
 
 import { FixtureEventsService } from './fixture-events.service';
 

@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import {
-  SELECT_COMPETITION_DATA_FLAT,
   type CompetitionWithFixtures,
+  SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
 
 import { FilterService } from '../../../services';
 

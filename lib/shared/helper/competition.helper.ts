@@ -1,8 +1,9 @@
-import {
-  type CompetitionId,
-  type CompetitionRound,
-  type CompetitionSeason,
-} from '../../models/competition.model';
+import type {
+  CompetitionId,
+  CompetitionRound,
+  CompetitionSeason,
+} from '@reelscore-sdk/models';
+
 import {
   COMPETITION_WITH_MULTIPLE_GROUPS_IN_SOME_SEASONS,
   COMPETITIONS_WITH_MULTIPLE_GROUPS,

@@ -1,4 +1,5 @@
-import type { FixtureDTO } from './fixtures/fixture.model';
+import type { FixtureDTO } from '@reelscore-sdk/models';
+
 import type { TeamDTO } from './team.model';
 
 export type SearchType = 'fixtures' | 'competitions' | 'teams';

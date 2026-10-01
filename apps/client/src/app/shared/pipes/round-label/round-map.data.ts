@@ -1,4 +1,5 @@
-import type { CompetitionId, CompetitionSeason } from '@lib/models';
+import type { CompetitionId, CompetitionSeason } from '@reelscore-sdk/models';
+
 import { COMPETITION_ID, SEASONS } from '@lib/shared';
 
 import {

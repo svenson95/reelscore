@@ -1,4 +1,6 @@
-import type { EventDTO, FixtureIdParameter, RapidEventsDTO } from '@lib/models';
+import type { EventDTO, FixtureIdParameter } from '@reelscore-sdk/models';
+
+import type { RapidEventsDTO } from '@lib/models';
 import { filterFixtureHighlights } from '@lib/shared';
 
 import { findDocument } from '../mongodb.helper';

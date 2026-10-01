@@ -1,6 +1,6 @@
 import type { Routes } from '@angular/router';
 
-import { getTodayDateString } from '@lib/shared';
+import { getTodayDateString } from '@reelscore-sdk/helpers';
 
 export const routes: Routes = [
   {

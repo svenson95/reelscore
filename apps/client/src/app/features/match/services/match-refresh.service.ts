@@ -1,7 +1,8 @@
 import { computed, inject, Injectable } from '@angular/core';
 
+import type { FixtureId } from '@reelscore-sdk/models';
+
 import { getFixtureStatusState, RefreshRegistryService } from '@app/shared';
-import type { FixtureId } from '@lib/models';
 
 import { MatchFacade } from '../match.facade';
 

@@ -1,10 +1,13 @@
 import type { FlattenMaps } from 'mongoose';
 
+import type {
+  CompetitionId,
+  CompetitionRound,
+  FixtureDateString,
+  FixtureDTO,
+} from '@reelscore-sdk/models';
+
 import {
-  type CompetitionId,
-  type CompetitionRound,
-  type FixtureDateString,
-  type FixtureDTO,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_VALUE_ABANDONED,

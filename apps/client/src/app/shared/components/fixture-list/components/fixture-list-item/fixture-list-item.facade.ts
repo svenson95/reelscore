@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import {
-  type ExtendedFixtureDTO,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,

@@ -1,20 +1,23 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { retry } from 'rxjs/operators';
 
-import { errorHandler, type StateHandler } from '@app/shared';
 import type {
   EventDTO,
   FixtureDTO,
   FixtureId,
   FixtureIdParameter,
   GetFixtureDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
 import {
   filterFixtureHighlights,
   isCompetitionWithoutStandings,
 } from '@lib/shared';
+
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpFixtureService } from '../services';
 

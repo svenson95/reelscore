@@ -1,4 +1,5 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
+
 import { interval, type Subscription } from 'rxjs';
 
 import { RefreshRegistryService } from '../refresh-registry/refresh-registry.service';

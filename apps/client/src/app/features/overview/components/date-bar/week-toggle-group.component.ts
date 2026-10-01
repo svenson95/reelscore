@@ -14,7 +14,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { formatDateToYearMonthDay, type DateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
 
 import { DateNavigationService } from '../../services';
 

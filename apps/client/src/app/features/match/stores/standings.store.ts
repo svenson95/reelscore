@@ -1,10 +1,14 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
+import type { DateString } from '@reelscore-sdk/helpers';
+import type { CompetitionId } from '@reelscore-sdk/models';
+
+import type { StandingsDTO } from '@lib/models';
+
 import { errorHandler, type StateHandler } from '@app/shared';
-import type { CompetitionId, StandingsDTO } from '@lib/models';
-import type { DateString } from '@lib/shared';
 
 import { HttpFixtureStandingsService } from '../services';
 

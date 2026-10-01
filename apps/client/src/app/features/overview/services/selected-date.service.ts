@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import type { DateString } from '@lib/shared';
-import { getTodayDateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { getTodayDateString } from '@reelscore-sdk/helpers';
 
 import { FilterService } from './filter.service';
 

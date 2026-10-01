@@ -1,4 +1,4 @@
-import type { MongoDbId } from './mongodb.model';
+import type { MongoDbId } from '@reelscore-sdk/models';
 
 export interface PlayerBirth {
   date: string;

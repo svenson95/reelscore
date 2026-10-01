@@ -1,4 +1,5 @@
-import type { FixtureDTO, FixtureId } from './fixtures/fixture.model';
+import type { FixtureDTO, FixtureId } from '@reelscore-sdk/models';
+
 import type { RapidEventsDTO } from './rapid-dto.model';
 import type { OperationResponse } from './response.model';
 

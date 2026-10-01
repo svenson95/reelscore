@@ -1,4 +1,5 @@
-import { formatCalendarWeekKey, type DateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
 
 import { getSelectedDayData } from './week-data.helper';
 

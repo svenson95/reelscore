@@ -1,14 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+
 import { defer, of, Subject, throwError } from 'rxjs';
 
-import { HttpStandingsService } from '@app/shared';
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+
 import type { StandingsDTO, StandingsWeekData } from '@lib/models';
-import {
-  COMPETITION_ID,
-  COMPETITION_LABEL,
-  formatCalendarWeekKey,
-} from '@lib/shared';
+import { COMPETITION_ID, COMPETITION_LABEL } from '@lib/shared';
+
+import { HttpStandingsService } from '@app/shared';
 
 import { WeekStandingsStore } from './week-standings.store';
 

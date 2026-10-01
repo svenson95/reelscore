@@ -1,11 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import type {
-  FixtureDTO,
-  LiveFixtureEventsUpdateDTO,
-  MatchTeams,
-  RapidEventsDTO,
-} from '@lib/models';
+import type { FixtureDTO, MatchTeams } from '@reelscore-sdk/models';
+
+import type { LiveFixtureEventsUpdateDTO, RapidEventsDTO } from '@lib/models';
 
 import {
   createOperationResponse,
@@ -13,8 +10,8 @@ import {
 } from '../../../../testing/factories/realtime.factory';
 
 import {
-  type RealtimeUpdateTarget,
   RealtimeUpdateRegistryService,
+  type RealtimeUpdateTarget,
 } from './realtime-update-registry.service';
 
 describe('RealtimeUpdateRegistryService', () => {

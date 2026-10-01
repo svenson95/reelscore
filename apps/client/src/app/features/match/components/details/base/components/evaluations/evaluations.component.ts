@@ -5,9 +5,12 @@ import {
   input,
 } from '@angular/core';
 
-import { PageTitleComponent } from '@app/shared';
-import type { FixturePerformance, FixtureResult } from '@lib/models';
+import type { FixtureResult } from '@reelscore-sdk/models';
+
+import type { FixturePerformance } from '@lib/models';
 import { type EvaluationDTO } from '@lib/models';
+
+import { PageTitleComponent } from '@app/shared';
 
 import { ToKebabCasePipe } from './pipes';
 

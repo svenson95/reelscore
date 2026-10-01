@@ -1,9 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import type { Observable} from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+
+import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { FixtureId, GetFixtureDTO } from '@lib/models';
+import type { FixtureId, GetFixtureDTO } from '@reelscore-sdk/models';
+
 import { environment } from '../../../../../environments/environment';
 
 export abstract class HttpFixtureService {

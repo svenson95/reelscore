@@ -1,10 +1,15 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { StateHandler } from '@app/shared';
+import type { FixtureId } from '@reelscore-sdk/models';
+
+import type { AnalysesDTO } from '@lib/models';
+
 import { errorHandler } from '@app/shared';
-import type { AnalysesDTO, FixtureId } from '@lib/models';
+
+import type { StateHandler } from '@app/shared';
 
 import { HttpFixtureAnalysesService } from '../services';
 

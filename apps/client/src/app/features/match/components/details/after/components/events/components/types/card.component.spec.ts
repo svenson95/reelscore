@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import {
   createMatchEvent,
-  renderComponent,
   readElementText,
+  renderComponent,
 } from '../../../../../../../../../../testing/match-components.testing';
 
 import { EventCardComponent } from './card.component';

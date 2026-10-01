@@ -3,7 +3,7 @@ import type {
   CompetitionName,
   ExtendedFixtureDTO,
   TeamId,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 export interface Competition {
   id: CompetitionId;

@@ -8,7 +8,6 @@ import {
 } from '@lib/shared';
 
 import { environment } from '../../../../../environments/environment';
-
 import {
   AnalysesStore,
   EvaluationsStore,

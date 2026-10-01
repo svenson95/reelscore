@@ -1,7 +1,8 @@
 import { effect, inject, Injectable, Injector } from '@angular/core';
 
+import type { FixtureDTO } from '@reelscore-sdk/models';
+
 import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
-import type { FixtureDTO } from '@lib/models';
 
 import { WeekFixturesStore } from '../week-data';
 

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject, throwError } from 'rxjs';
 
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+import type { ExtendedFixtureDTO, FixtureDTO } from '@reelscore-sdk/models';
+
+import type { FixturesWeekData } from '@lib/models';
+
 import { HttpWeekFixturesService } from '@app/shared';
-import type {
-  ExtendedFixtureDTO,
-  FixtureDTO,
-  FixturesWeekData,
-} from '@lib/models';
-import { formatCalendarWeekKey } from '@lib/shared';
 
 import { WeekFixturesStore } from './week-fixtures.store';
 

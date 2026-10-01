@@ -5,14 +5,15 @@ import {
   input,
 } from '@angular/core';
 
-import { PageTitleComponent } from '@app/shared';
 import type {
   ExtendedFixtureDTO,
   FixtureEvaluation,
   FixtureEvaluations,
   LatestFixturesDTO,
   MatchTeams,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
+import { PageTitleComponent } from '@app/shared';
 
 import { AnalysesEvaluationsComponent } from './components';
 import {

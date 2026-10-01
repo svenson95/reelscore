@@ -6,13 +6,15 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
+import type { CompetitionId } from '@reelscore-sdk/models';
+
+import { isCompetitionWithOneFixture } from '@lib/shared';
+
 import {
   isFirstCompetitionRound,
   LeagueService,
   PageTitleComponent,
 } from '@app/shared';
-import type { CompetitionId } from '@lib/models';
-import { isCompetitionWithOneFixture } from '@lib/shared';
 
 import { LastFixturesStore } from '../stores';
 

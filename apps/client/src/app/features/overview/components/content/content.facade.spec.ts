@@ -1,21 +1,20 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import type {
-  ExtendedFixtureDTO,
   FixturesWeekData,
   StandingsDTO,
   StandingsWeekData,
 } from '@lib/models';
-import {
-  COMPETITION_ID,
-  formatCalendarWeekKey,
-  type DateString,
-} from '@lib/shared';
+import { COMPETITION_ID } from '@lib/shared';
 
 import { WeekFixturesStore } from '@app/core';
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 
+import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekStandingsStore } from '../../stores';
 

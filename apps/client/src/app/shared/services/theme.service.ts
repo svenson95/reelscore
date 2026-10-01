@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import type { Signal } from '@angular/core';
-import { DestroyRef, Injectable, inject, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
 export abstract class ThemeService {
   abstract isSystemDark: Signal<boolean>;

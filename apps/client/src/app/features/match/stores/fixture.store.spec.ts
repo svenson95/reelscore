@@ -1,10 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject } from 'rxjs';
 
-import type { EventDTO, FixtureDTO, GetFixtureDTO } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
+import type {
+  EventDTO,
+  FixtureDTO,
+  GetFixtureDTO,
+} from '@reelscore-sdk/models';
 
+import { COMPETITION_ID } from '@lib/shared';
+
+import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
 import { HttpFixtureService } from '../services';
 
 import { AnalysesStore } from './analyses.store';

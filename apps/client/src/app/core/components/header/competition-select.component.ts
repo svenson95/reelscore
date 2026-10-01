@@ -9,14 +9,15 @@ import type { MatSelectChange } from '@angular/material/select';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import type { CompetitionData } from '@app/shared';
 import {
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   ResponsiveImageComponent,
   SELECT_COMPETITION_DATA,
   ThemeService,
-  getCompetitionLogo,
-  getCompetitionLogoSrcSet,
 } from '@app/shared';
+
+import type { CompetitionData } from '@app/shared';
 
 @Component({
   selector: 'nav[rs-competition-select]',

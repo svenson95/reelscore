@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject, throwError } from 'rxjs';
 
-import { HttpStandingsService } from '@app/shared';
 import type { StandingsDTO } from '@lib/models';
 import { COMPETITION_ID, COMPETITION_LABEL } from '@lib/shared';
+
+import { HttpStandingsService } from '@app/shared';
 
 import { FilteredStandingsStore } from './filtered-standings.store';
 

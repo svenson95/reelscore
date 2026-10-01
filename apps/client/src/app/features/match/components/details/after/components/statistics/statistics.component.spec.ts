@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import {
-  renderComponent,
-  readElementTexts,
-} from '../../../../../../../../testing/match-components.testing';
 import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
+import {
+  readElementTexts,
+  renderComponent,
+} from '../../../../../../../../testing/match-components.testing';
 
 import { MatchStatisticsComponent } from './statistics.component';
 

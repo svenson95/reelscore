@@ -1,13 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { shareReplay, type Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
 
-import type {
-  CompetitionId,
-  StandingsDTO,
-  StandingsWeekData,
-} from '@lib/models';
-import type { DateString } from '@lib/shared';
+import { type Observable, shareReplay } from 'rxjs';
+
+import type { DateString } from '@reelscore-sdk/helpers';
+import type { CompetitionId } from '@reelscore-sdk/models';
+
+import type { StandingsDTO, StandingsWeekData } from '@lib/models';
 
 import { environment } from '../../../../environments/environment';
 

@@ -1,4 +1,4 @@
-import type { FixtureId, FixtureResult } from './fixture.model';
+import type { FixtureId, FixtureResult } from '@reelscore-sdk/models';
 
 export type FixturePerformance =
   | 'MATCH_NOT_STARTED'

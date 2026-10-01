@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { CompetitionId } from '@lib/models';
-import type { DateString } from '@lib/shared';
-import { getTodayDateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { getTodayDateString } from '@reelscore-sdk/helpers';
+import type { CompetitionId } from '@reelscore-sdk/models';
 
 import { FilterService } from './filter.service';
 import { SelectedDateService } from './selected-date.service';

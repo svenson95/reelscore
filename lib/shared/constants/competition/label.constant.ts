@@ -1,6 +1,5 @@
-import type { CompetitionName } from '../../../models/competition.model';
-
-import { CompetitionCode } from './code.constant';
+import { CompetitionCode } from '@reelscore-sdk/constants';
+import type { CompetitionName } from '@reelscore-sdk/models';
 
 export const COMPETITION_LABEL: Record<CompetitionCode, CompetitionName> = {
   // Europa

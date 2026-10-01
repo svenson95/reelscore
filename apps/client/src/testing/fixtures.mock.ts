@@ -1,4 +1,4 @@
-import type { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 export const EXAMPLE_FIXTURE: ExtendedFixtureDTO = {
   _id: '6a033c9a3bcb29078f9860da',

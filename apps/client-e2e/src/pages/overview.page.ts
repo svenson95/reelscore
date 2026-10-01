@@ -5,8 +5,9 @@ import {
   type Request,
 } from '@playwright/test';
 
+import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
+
 import type { FixturesWeekData } from '@lib/models';
-import { formatDateToYearMonthDay } from '@lib/shared';
 
 export class OverviewPage {
   readonly root: Locator;

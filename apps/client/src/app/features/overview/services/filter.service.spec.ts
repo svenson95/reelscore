@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@reelscore-sdk/models';
 
 import { FilterService } from './filter.service';
 

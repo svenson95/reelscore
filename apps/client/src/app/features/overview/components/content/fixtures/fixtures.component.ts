@@ -9,12 +9,15 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
+import { STATUS_TYPES_PLAYING } from '@lib/models';
+
 import {
+  type CompetitionWithFixtures,
   PageTitleActionDirective,
   PageTitleComponent,
-  type CompetitionWithFixtures,
 } from '@app/shared';
-import { STATUS_TYPES_PLAYING, type ExtendedFixtureDTO } from '@lib/models';
 
 import { DateNavigationService, SelectedDateService } from '../../../services';
 

@@ -6,6 +6,8 @@ import {
   input,
 } from '@angular/core';
 
+import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
+
 import {
   BreakpointObserverService,
   hasMultipleGroups,
@@ -13,7 +15,6 @@ import {
   showHomeAndAwayStandings,
   StandingsTableComponent,
 } from '@app/shared';
-import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
 
 @Component({
   selector: 'rs-match-fixture-standings',

@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 
-import type { FixtureId } from '@lib/models';
+import type { FixtureId } from '@reelscore-sdk/models';
 
 import { RealtimeUpdateRegistryService } from '@app/shared';
 

@@ -5,8 +5,9 @@ import {
   inject,
 } from '@angular/core';
 
+import type { CompetitionId } from '@reelscore-sdk/models';
+
 import { LeagueService, PageTitleComponent } from '@app/shared';
-import type { CompetitionId } from '@lib/models';
 
 import { NextFixturesStore } from '../stores';
 

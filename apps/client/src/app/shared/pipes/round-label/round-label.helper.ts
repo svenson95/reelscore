@@ -1,4 +1,7 @@
-import { type CompetitionRound, type CompetitionSeason } from '@lib/models';
+import type {
+  CompetitionRound,
+  CompetitionSeason,
+} from '@reelscore-sdk/models';
 
 import { DEFAULT_ROUND_MAP } from './data';
 import { ROUND_MAP_RULES } from './round-map.data';

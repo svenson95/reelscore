@@ -1,4 +1,5 @@
-import type { ExtendedFixtureDTO } from './fixtures/fixture.model';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import type { StandingsDTO } from './standings/standings.model';
 
 type WeekData<T> = T[][];

@@ -1,6 +1,5 @@
-import type { CompetitionId } from '../../../models/competition.model';
-
-import { CompetitionCode } from './code.constant';
+import { CompetitionCode } from '@reelscore-sdk/constants';
+import type { CompetitionId } from '@reelscore-sdk/models';
 
 export const COMPETITION_ID: Record<CompetitionCode, CompetitionId> = {
   // Europa

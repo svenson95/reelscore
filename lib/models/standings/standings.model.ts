@@ -1,5 +1,6 @@
-import type { CompetitionId, StandingsLeague } from '../competition.model';
-import type { MongoDbId } from '../mongodb.model';
+import type { CompetitionId, MongoDbId } from '@reelscore-sdk/models';
+
+import type { StandingsLeague } from '../competition.model';
 
 export interface StandingsDTO {
   _id: MongoDbId;

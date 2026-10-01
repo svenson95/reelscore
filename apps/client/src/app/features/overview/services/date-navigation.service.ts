@@ -1,13 +1,13 @@
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
+import type { DateString } from '@reelscore-sdk/helpers';
 import {
   addDays,
   formatCalendarWeekKey,
   getTodayDateString,
   getWeekStartFromKey,
-  type DateString,
-} from '@lib/shared';
+} from '@reelscore-sdk/helpers';
 
 import { SelectedDateService } from './selected-date.service';
 

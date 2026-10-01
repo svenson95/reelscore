@@ -4,7 +4,8 @@ import type {
   CompetitionId,
   CompetitionRound,
   CompetitionSeason,
-} from '../../models/competition.model';
+} from '@reelscore-sdk/models';
+
 import { COMPETITION_ID } from './competition';
 
 export const COMPETITION_WITH_MULTIPLE_GROUPS_IN_SOME_SEASONS: CompetitionId[] =

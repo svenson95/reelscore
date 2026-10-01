@@ -5,9 +5,11 @@ import {
   inject,
 } from '@angular/core';
 
+import type { DateString } from '@reelscore-sdk/helpers';
+
 import { WeekFixturesStore } from '@app/core';
+
 import { BreakpointObserverService } from '@app/shared';
-import type { DateString } from '@lib/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekStandingsStore } from '../../stores';

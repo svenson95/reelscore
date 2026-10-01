@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import {
-  renderComponent,
-  readElementText,
-} from '../../../../../../../../../testing/match-components.testing';
 import { EXAMPLE_FIXTURE } from '../../../../../../../../../testing/fixtures.mock';
+import {
+  readElementText,
+  renderComponent,
+} from '../../../../../../../../../testing/match-components.testing';
 
 import { MatchFixturesTableComponent } from './fixtures-table.component';
 

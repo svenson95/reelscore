@@ -1,16 +1,14 @@
 import type { Moment } from 'moment';
 
-import type {
-  CompetitionId,
-  CompetitionSeason,
-} from '../../models/competition.model';
+import { getDateInTimezone, getNow } from '@reelscore-sdk/helpers';
+import type { CompetitionId, CompetitionSeason } from '@reelscore-sdk/models';
+
 import {
   FIXED_SEASON_BY_COMPETITION,
   SEASON_START,
 } from '../constants/season.data';
 
 import { isCompetitionSeason } from './competition.helper';
-import { getDateInTimezone, getNow } from './date.helper';
 
 export const getSeason = (
   competition: CompetitionId | null = null,

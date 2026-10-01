@@ -1,6 +1,7 @@
+import { once } from 'node:events';
+
 import { handle } from '@upstash/realtime';
 import type { Request, Response } from 'express';
-import { once } from 'node:events';
 
 import { getRealtime } from './livestream.helper';
 

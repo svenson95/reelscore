@@ -2,16 +2,16 @@ import { Location } from '@angular/common';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { formatFixtureTime } from '@reelscore-sdk/helpers';
+import type { GetFixtureDTO } from '@reelscore-sdk/models';
+
 import { LiveRefreshService } from '@app/shared';
-import type { GetFixtureDTO } from '@lib/models';
-import { formatFixtureTime } from '@lib/shared';
 
 import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 import {
   readElementText,
   renderComponent,
 } from '../../../../../testing/match-components.testing';
-
 import { MatchFacade } from '../../match.facade';
 
 import { PageHeaderComponent } from './page-header.component';

@@ -1,7 +1,8 @@
-import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
+import { ApplicationRef, DestroyRef, inject,Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { VersionReadyEvent } from '@angular/service-worker';
 import { SwUpdate } from '@angular/service-worker';
+
 import { filter, first, interval, switchMap } from 'rxjs';
 
 const UPDATE_CHECK_INTERVAL = 60 * 60 * 1000; // 1 hour

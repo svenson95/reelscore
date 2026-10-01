@@ -1,11 +1,16 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+import type { FixtureDTO } from '@reelscore-sdk/models';
+
+import type { FixturesWeekData } from '@lib/models';
+
 import { errorHandler, HttpWeekFixturesService } from '@app/shared';
-import type { FixtureDTO, FixturesWeekData } from '@lib/models';
-import { formatCalendarWeekKey, type DateString } from '@lib/shared';
 
 import {
   getWeekRequestStartPatch,

@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 
-import type { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@reelscore-sdk/models';
 
 @Injectable()
 export class FilterService {

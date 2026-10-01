@@ -2,8 +2,9 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 
+import type { ExtendedFixtureDTO, FixtureTeam } from '@reelscore-sdk/models';
+
 import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
-import type { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
 
 import type { AnalysesTeamType, FixtureWithEvaluations } from '../../models';
 import { ANALYSES_TEAM } from '../../models';

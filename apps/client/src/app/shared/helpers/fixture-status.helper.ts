@@ -1,3 +1,5 @@
+import type { StatusShort } from '@reelscore-sdk/models';
+
 import {
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
@@ -7,7 +9,6 @@ import {
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_HALFTIME,
   STATUS_VALUE_POSTPONED,
-  type StatusShort,
   type StatusTypeScheduled,
 } from '@lib/models';
 

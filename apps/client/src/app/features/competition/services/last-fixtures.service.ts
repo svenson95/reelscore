@@ -1,9 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import type { Observable} from 'rxjs';
+
+import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
+import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import { environment } from '../../../../environments/environment';
 
 export abstract class HttpLastFixturesService {

@@ -3,9 +3,10 @@ import type {
   FixtureIdParameter,
   GetFixtureDTO,
   LatestFixturesDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { FixtureEventsService } from '../fixture-events';
+
 import { FixtureService } from './fixture.service';
 import { FixturesService } from './fixtures.service';
 

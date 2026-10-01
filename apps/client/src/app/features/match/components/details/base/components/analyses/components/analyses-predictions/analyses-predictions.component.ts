@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { PageTitleComponent } from '@app/shared';
 import type { AnalysesDTO } from '@lib/models';
+
+import { PageTitleComponent } from '@app/shared';
 
 @Component({
   selector: 'rs-match-fixture-analyses-predictions',

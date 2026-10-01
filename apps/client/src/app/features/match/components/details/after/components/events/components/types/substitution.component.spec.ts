@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-  renderComponent,
   createMatchEvent,
   readElementTexts,
+  renderComponent,
 } from '../../../../../../../../../../testing/match-components.testing';
 
 import { EventSubstitutionComponent } from './substitution.component';

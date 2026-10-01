@@ -1,9 +1,9 @@
 import {
-  type OnDestroy,
-  type OnInit,
   ChangeDetectionStrategy,
   Component,
   inject,
+  type OnDestroy,
+  type OnInit,
 } from '@angular/core';
 
 import { DateBarComponent, OverviewContentComponent } from './components';

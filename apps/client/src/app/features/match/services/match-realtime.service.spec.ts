@@ -1,15 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { of } from 'rxjs';
 
+import type { EventDTO, FixtureDTO } from '@reelscore-sdk/models';
+
 import { RealtimeUpdateRegistryService } from '@app/shared';
-import type { EventDTO, FixtureDTO } from '@lib/models';
+
 import {
   createOperationResponse,
   createRapidEvents,
 } from '../../../../testing/factories/realtime.factory';
 import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
-
 import { MatchEventsComponent } from '../components/details/after/components';
 import { MatchHighlightsComponent } from '../components/match-header/components';
 import {

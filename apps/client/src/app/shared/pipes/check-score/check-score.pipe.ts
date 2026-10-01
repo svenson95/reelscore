@@ -1,7 +1,11 @@
 import type { PipeTransform } from '@angular/core';
 import { Pipe } from '@angular/core';
 
-import type { FixtureResult, FixtureTeam, MatchTeams } from '@lib/models';
+import type {
+  FixtureResult,
+  FixtureTeam,
+  MatchTeams,
+} from '@reelscore-sdk/models';
 
 @Pipe({
   name: 'checkScore',

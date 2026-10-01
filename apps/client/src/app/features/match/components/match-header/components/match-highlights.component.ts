@@ -5,16 +5,19 @@ import {
   input,
 } from '@angular/core';
 
+import type {
+  EventDTO,
+  FixtureDTO,
+  FixtureHighlights,
+  Goals,
+  MatchTeams,
+  TeamId,
+} from '@reelscore-sdk/models';
+
 import {
-  type EventDTO,
   type EventResult,
-  type FixtureDTO,
-  type FixtureHighlights,
-  type Goals,
   type HighlightEvent,
   type HighlightItem,
-  type MatchTeams,
-  type TeamId,
   timeTotal,
 } from '@lib/models';
 

@@ -2,15 +2,14 @@ import { DOCUMENT } from '@angular/common';
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
 import {
-  REALTIME_EVENT,
   type LiveFixtureEventsBatchUpdateDTO,
   type LiveFixtureEventsUpdateDTO,
   type LiveFixturesUpdateDTO,
   type LiveFixtureUpdateDTO,
+  REALTIME_EVENT,
 } from '@lib/models';
 
 import { environment } from '../../../../environments/environment';
-
 import { LiveRefreshService } from '../live-refresh/live-refresh.service';
 
 export type RealtimeStatus =

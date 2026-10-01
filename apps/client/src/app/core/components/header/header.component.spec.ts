@@ -4,8 +4,9 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 
+import { getTodayDateString } from '@reelscore-sdk/helpers';
+
 import { GLOBAL_SERVICE_PROVIDERS, LeagueService } from '@app/shared';
-import { getTodayDateString } from '@lib/shared';
 
 import { routes } from '../../../app.routes';
 

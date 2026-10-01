@@ -1,8 +1,7 @@
-import {
-  CompetitionId,
-  CompetitionRound,
-} from '../../models/competition.model';
+import type { CompetitionId, CompetitionRound } from '@reelscore-sdk/models';
+
 import { buildCompetitionRounds } from '../helper/rounds.helper';
+
 import { COMPETITION_ID } from './competition/id.constant';
 
 const REGULAR_SEASON_STR = 'Regular Season - ';

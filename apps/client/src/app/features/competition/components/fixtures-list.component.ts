@@ -7,15 +7,16 @@ import {
   input,
 } from '@angular/core';
 
+import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import {
   FixtureListComponent,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   ResponsiveImageComponent,
   RoundLabelPipe,
   ThemeService,
-  getCompetitionLogo,
-  getCompetitionLogoSrcSet,
 } from '@app/shared';
-import type { CompetitionId, ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'rs-competition-fixtures-list',

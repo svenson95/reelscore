@@ -9,8 +9,8 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
-import type { ExtendedFixtureDTO } from '@lib/models';
-import { formatFixtureTime } from '@lib/shared';
+import { formatFixtureTime } from '@reelscore-sdk/helpers';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import {
   type FixtureStatusState,

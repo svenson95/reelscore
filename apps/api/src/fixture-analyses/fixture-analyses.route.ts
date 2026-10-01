@@ -1,6 +1,6 @@
 import express from 'express';
 
-import type { FixtureId } from '@lib/models';
+import type { FixtureId } from '@reelscore-sdk/models';
 
 import { FixtureAnalysesController } from './fixture-analyses.controller';
 

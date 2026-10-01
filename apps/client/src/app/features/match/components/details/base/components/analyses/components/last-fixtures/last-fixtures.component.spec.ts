@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import {
-  renderComponent,
-  readElementText,
-  createFixtureAnalysis,
-} from '../../../../../../../../../../testing/match-components.testing';
 import { EXAMPLE_FIXTURE } from '../../../../../../../../../../testing/fixtures.mock';
+import {
+  createFixtureAnalysis,
+  readElementText,
+  renderComponent,
+} from '../../../../../../../../../../testing/match-components.testing';
 
 import { AnalysesLastFixturesComponent } from './last-fixtures.component';
 

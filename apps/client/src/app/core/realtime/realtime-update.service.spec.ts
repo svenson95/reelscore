@@ -1,8 +1,9 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import type { FixtureDTO } from '@reelscore-sdk/models';
+
 import type {
-  FixtureDTO,
   LiveFixtureEventsBatchUpdateDTO,
   LiveFixtureEventsUpdateDTO,
   LiveFixturesUpdateDTO,
@@ -11,11 +12,11 @@ import type {
 } from '@lib/models';
 
 import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
+
 import {
   createOperationResponse,
   createRapidEvents,
 } from '../../../testing/factories/realtime.factory';
-
 import { WeekFixturesStore } from '../week-data';
 
 import { RealtimeUpdateService } from './realtime-update.service';

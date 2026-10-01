@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { GetFixtureDTO } from '@lib/models';
+import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
 import {
@@ -10,7 +10,6 @@ import {
   readElementTexts,
   renderComponent,
 } from '../../../../../../../../testing/match-components.testing';
-
 import { FixtureStore } from '../../../../../stores';
 
 import { MatchEventsComponent } from './events.component';

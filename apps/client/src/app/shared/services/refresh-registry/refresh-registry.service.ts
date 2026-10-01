@@ -1,4 +1,4 @@
-import { computed, Injectable, signal, type Signal } from '@angular/core';
+import { computed, Injectable, type Signal,signal } from '@angular/core';
 
 export type RefreshTarget = {
   id: string;

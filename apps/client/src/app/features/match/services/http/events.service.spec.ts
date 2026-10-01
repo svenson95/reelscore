@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+
 import { of } from 'rxjs';
 
 import type { RapidEventsDTO } from '@lib/models';

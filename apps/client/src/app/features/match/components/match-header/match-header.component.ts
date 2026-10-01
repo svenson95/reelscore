@@ -8,7 +8,10 @@ import {
   input,
 } from '@angular/core';
 
-import type { ExtendedFixtureDTO, FixtureHighlights } from '@lib/models';
+import type {
+  ExtendedFixtureDTO,
+  FixtureHighlights,
+} from '@reelscore-sdk/models';
 
 import {
   CollapsibleScrollSection,

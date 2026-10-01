@@ -1,4 +1,4 @@
-import type { TeamId, TeamLogo, TeamName } from '../team.model';
+import type { TeamId, TeamLogo, TeamName } from '@reelscore-sdk/models';
 
 export type StatisticsTeamDetails = {
   id: TeamId;

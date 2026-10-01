@@ -5,16 +5,17 @@ import {
   input,
 } from '@angular/core';
 
-import {
-  getFixtureStatusState,
-  ResultLabelComponent,
-  type FixtureStatusState,
-} from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import {
-  MatchInfoTeamComponent,
+  type FixtureStatusState,
+  getFixtureStatusState,
+  ResultLabelComponent,
+} from '@app/shared';
+
+import {
   type MatchHeaderTeam,
+  MatchInfoTeamComponent,
 } from './components/match-info-team.component';
 
 @Component({

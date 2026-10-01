@@ -1,7 +1,7 @@
 import type { PipeTransform } from '@angular/core';
 import { Pipe } from '@angular/core';
 
-import type { FixtureTeam } from '@lib/models';
+import type { FixtureTeam } from '@reelscore-sdk/models';
 
 @Pipe({
   name: 'isRelated',

@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-import { TIMEZONE } from '@lib/shared';
+import { TIMEZONE } from '@reelscore-sdk/helpers';
 
 import { Fixtures } from './fixtures.model';
 import { FixturesService } from './fixtures.service';

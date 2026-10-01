@@ -1,18 +1,20 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { StateHandler } from '@app/shared';
-import { errorHandler } from '@app/shared';
 import type {
   EventDTO,
-  EventResult,
-  EventWithResult,
   FixtureIdParameter,
   MatchTeams,
-  RapidEventsDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
+import type { EventResult, EventWithResult, RapidEventsDTO } from '@lib/models';
 import { timeTotal } from '@lib/models';
+
+import { errorHandler } from '@app/shared';
+
+import type { StateHandler } from '@app/shared';
 
 import { HttpFixtureEventsService } from '../services';
 

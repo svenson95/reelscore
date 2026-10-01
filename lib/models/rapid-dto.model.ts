@@ -1,5 +1,5 @@
-import type { EventDTO } from './fixtures/events.model';
-import type { FixtureId } from './fixtures/fixture.model';
+import type { EventDTO, FixtureId } from '@reelscore-sdk/models';
+
 import type { StatisticDTO } from './fixtures/statistics.model';
 
 export type BaseParameters = { fixture: FixtureId };

@@ -1,7 +1,9 @@
 import type { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { EvaluationAnalyses, EventWithResult } from '@lib/models';
+import type { EvaluationAnalyses } from '@reelscore-sdk/models';
+
+import type { EventWithResult } from '@lib/models';
 
 import { EXAMPLE_FIXTURE } from './fixtures.mock';
 

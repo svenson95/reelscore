@@ -5,10 +5,9 @@ import {
   input,
 } from '@angular/core';
 
+import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
+
 import {
-  type FixtureDTO,
-  type FixtureStatus,
-  type Goals,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_ABANDONED,

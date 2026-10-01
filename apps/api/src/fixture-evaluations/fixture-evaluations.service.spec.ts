@@ -1,5 +1,6 @@
+import type { FixtureDTO } from '@reelscore-sdk/models';
+
 import type {
-  FixtureDTO,
   RapidStatisticsDTO,
   StatisticDTO,
   StatisticItemType,

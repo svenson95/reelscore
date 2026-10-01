@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 
 import {
-  PageTitleComponent,
-  StandingsTableComponent,
   hasMultipleGroups,
+  PageTitleComponent,
   showHomeAndAwayStandings,
+  StandingsTableComponent,
 } from '@app/shared';
 
 import { CompetitionStandingsStore } from '../stores';

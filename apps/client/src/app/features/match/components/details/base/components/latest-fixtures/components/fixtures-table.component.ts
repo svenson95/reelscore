@@ -3,14 +3,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
+import type { FixtureDTO, FixtureTeam } from '@reelscore-sdk/models';
+
 import {
   CheckScorePipe,
+  linkToMatch,
   ResultLabelComponent,
   TeamIsRelatedPipe,
   TeamNamePipe,
-  linkToMatch,
 } from '@app/shared';
-import type { FixtureDTO, FixtureTeam } from '@lib/models';
 
 const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 

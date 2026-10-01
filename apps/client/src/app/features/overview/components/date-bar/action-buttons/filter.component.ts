@@ -10,7 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import type { CompetitionId } from '@reelscore-sdk/models';
+
 import { WeekFixturesStore } from '@app/core';
+
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
@@ -19,7 +22,6 @@ import {
   type SelectCompetitionGroup,
   ThemeService,
 } from '@app/shared';
-import type { CompetitionId } from '@lib/models';
 
 import { FilterService, SelectedDateService } from '../../../services';
 import { FilteredStandingsStore, WeekStandingsStore } from '../../../stores';

@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import type {
-  FixtureDTO,
-  FixtureId,
-  LiveFixtureEventsUpdateDTO,
-  MatchTeams,
-  RapidEventsDTO,
-} from '@lib/models';
+import type { FixtureDTO, FixtureId, MatchTeams } from '@reelscore-sdk/models';
+
+import type { LiveFixtureEventsUpdateDTO, RapidEventsDTO } from '@lib/models';
 
 export type RealtimeUpdateTarget = {
   fixtureId: FixtureId;

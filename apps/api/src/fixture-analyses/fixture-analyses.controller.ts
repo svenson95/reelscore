@@ -1,14 +1,17 @@
 import type {
-  AnalysesDTO,
   ExtendedFixtureDTO,
   FixtureDTO,
-  FixtureHomeOrAwayStrong,
   FixtureId,
   FixtureIdParameter,
-  FixturePlayersWithStreak,
-  GoalScorers,
   PlayerName,
   TeamId,
+} from '@reelscore-sdk/models';
+
+import type {
+  AnalysesDTO,
+  FixtureHomeOrAwayStrong,
+  FixturePlayersWithStreak,
+  GoalScorers,
 } from '@lib/models';
 import { isHighlightGoal } from '@lib/shared';
 

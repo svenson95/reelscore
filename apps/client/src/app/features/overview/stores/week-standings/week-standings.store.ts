@@ -1,11 +1,15 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
-import { errorHandler, HttpStandingsService } from '@app/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+
 import type { StandingsWeekData } from '@lib/models';
-import { formatCalendarWeekKey, type DateString } from '@lib/shared';
+
+import { errorHandler, HttpStandingsService } from '@app/shared';
 
 import {
   getWeekRequestStartPatch,

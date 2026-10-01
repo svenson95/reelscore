@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { CompetitionId, FixtureId } from '@lib/models';
+import type { CompetitionId, FixtureId } from '@reelscore-sdk/models';
 
 import { getWeekDatesArray } from '../date.helper';
 

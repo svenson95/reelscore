@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import type { CompetitionWithFixtures } from '@app/shared';
+import type { CompetitionRound } from '@reelscore-sdk/models';
+
 import {
   FixtureListComponent,
   getCompetitionLogo,
@@ -17,7 +18,8 @@ import {
   RoundLabelPipe,
   ThemeService,
 } from '@app/shared';
-import type { CompetitionRound } from '@lib/models';
+
+import type { CompetitionWithFixtures } from '@app/shared';
 
 const EXTERNAL_MODULES = [RouterLink];
 

@@ -1,9 +1,12 @@
 import type {
-  EvaluationTeam,
   FixtureDTO,
   FixtureIdParameter,
-  FixturePerformance,
   FixtureResult,
+} from '@reelscore-sdk/models';
+
+import type {
+  EvaluationTeam,
+  FixturePerformance,
   RapidStatisticsDTO,
   StatisticDTO,
   StatisticItemType,

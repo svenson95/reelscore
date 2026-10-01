@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
+import { AppComponent } from './app.component';
 import {
   FooterComponent,
   HeaderComponent,
@@ -11,8 +12,6 @@ import {
   StartupService,
   VisibilityObserverService,
 } from './shared';
-
-import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;

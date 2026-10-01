@@ -1,12 +1,13 @@
 import { computed, effect, inject, Injectable, untracked } from '@angular/core';
 
-import { WeekFixturesStore } from '@app/core';
+import type { DateString } from '@reelscore-sdk/helpers';
 import {
   addDays,
   formatCalendarWeekKey,
   getWeekStartFromKey,
-  type DateString,
-} from '@lib/shared';
+} from '@reelscore-sdk/helpers';
+
+import { WeekFixturesStore } from '@app/core';
 
 import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekStandingsStore } from '../../stores';

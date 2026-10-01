@@ -1,4 +1,5 @@
-import type { EventDTO } from '@lib/models';
+import type { EventDTO } from '@reelscore-sdk/models';
+
 import { isHighlightGoal } from '@lib/shared';
 
 import { FixtureEventsService } from './fixture-events.service';

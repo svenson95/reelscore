@@ -1,12 +1,13 @@
 import type {
-  EvaluationDTO,
-  EvaluationTeam,
   ExtendedFixtureDTO,
   FixtureDTO,
   FixtureId,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
+import type { EvaluationDTO, EvaluationTeam } from '@lib/models';
 
 import { FixtureService, FixturesService } from '../database';
+
 import { FixtureEvaluationsService } from './fixture-evaluations.service';
 
 export interface FixtureReader {

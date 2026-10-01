@@ -1,7 +1,9 @@
 import type { PipeTransform } from '@angular/core';
 import { Pipe } from '@angular/core';
 
-import type { CompetitionName, CompetitionNameTranslated } from '@lib/models';
+import type { CompetitionName } from '@reelscore-sdk/models';
+
+import type { CompetitionNameTranslated } from '@lib/models';
 
 import { COMPETITION_NAME_MAP } from './name-label.data';
 
