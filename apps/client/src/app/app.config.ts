@@ -1,5 +1,6 @@
 import {
   provideHttpClient,
+  withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import type { ApplicationConfig } from '@angular/core';
@@ -20,7 +21,7 @@ import {
   LOCALE_PROVIDER,
   PWA_PROVIDER,
 } from './config';
-import { CORE_PROVIDERS } from './core';
+import { apiRequestInterceptor, CORE_PROVIDERS } from './core';
 import { GLOBAL_SERVICE_PROVIDERS } from './shared';
 
 import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
@@ -35,7 +36,10 @@ const BASE_PROVIDERS = [
     withPreloading(PreloadAllModules)
   ),
   provideAnimationsAsync(),
-  provideHttpClient(withInterceptorsFromDi()),
+  provideHttpClient(
+    withInterceptors([apiRequestInterceptor]),
+    withInterceptorsFromDi()
+  ),
 ];
 
 const MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER = {
