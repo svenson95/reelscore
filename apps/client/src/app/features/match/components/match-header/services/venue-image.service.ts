@@ -1,11 +1,18 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
+import {
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  Injectable,
+  signal,
+} from '@angular/core';
 
 export const ALLIANZ_ARENA_ID = 20732;
 
 @Injectable()
 export class VenueImageService {
   private readonly activeVenueImageUrl = signal<string | undefined>(undefined);
-  private activeObjectUrl?: string;
+  private activeVenueObjectUrl?: string;
 
   private readonly venueId = signal<number | null>(null);
   readonly hasValidVenueBackground = signal<boolean>(false);
@@ -14,59 +21,79 @@ export class VenueImageService {
   readonly venueBackgroundImage = computed(() => {
     const imageUrl = this.activeVenueImageUrl();
 
-    if (!imageUrl || !this.hasValidVenueBackground()) return undefined;
+    if (!imageUrl || !this.hasValidVenueBackground()) {
+      return undefined;
+    }
 
     return `url("${imageUrl}")`;
   });
 
-  venueImageLoader = effect((onCleanup) => {
-    const controller = new AbortController();
+  private readonly venueImageLoader = effect((onCleanup) => {
+    const abortController = new AbortController();
 
     onCleanup(() => {
-      controller.abort();
+      abortController.abort();
     });
 
-    this.loadVenueImage(controller.signal).catch(() => {
-      if (!controller.signal.aborted) {
+    this.loadVenueImage(abortController.signal).catch(() => {
+      if (!abortController.signal.aborted) {
         this.setVenueBackground(undefined, true);
       }
     });
   });
 
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.revokeActiveObjectUrl());
+  }
+
   setVenueId(venueId: number | null): void {
     this.venueId.set(venueId);
   }
 
-  private async loadVenueImage(signal: AbortSignal): Promise<void> {
-    const id = this.venueId();
+  private async loadVenueImage(abortSignal: AbortSignal): Promise<void> {
+    const selectedVenueId = this.venueId();
 
-    if (!id) {
+    if (!selectedVenueId) {
       this.setVenueBackground(undefined, true);
+
       return;
     }
 
     this.setVenueBackground(undefined, false);
 
-    const imageUrl = this.getVenueImageUrl(id);
-    const validImageUrl = await this.getValidVenueImageUrl(imageUrl, signal);
+    const imageUrl = this.getVenueImageUrl(selectedVenueId);
+    const validImageUrl = await this.getValidVenueImageUrl(
+      imageUrl,
+      abortSignal
+    );
 
-    if (signal.aborted) return;
+    if (abortSignal.aborted) {
+      return;
+    }
 
     this.setVenueBackground(validImageUrl, true);
   }
 
   private async getValidVenueImageUrl(
     imageUrl: string,
-    signal: AbortSignal
+    abortSignal: AbortSignal
   ): Promise<string | undefined> {
-    const objectUrl = await this.loadVenueImageAsObjectUrl(imageUrl, signal);
+    const objectUrl = await this.loadVenueImageAsObjectUrl(
+      imageUrl,
+      abortSignal
+    );
 
     if (objectUrl) {
       return objectUrl;
     }
 
+    if (abortSignal.aborted) {
+      return undefined;
+    }
+
     const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
-    return this.loadVenueImageAsObjectUrl(fallbackImageUrl, signal);
+
+    return this.loadVenueImageAsObjectUrl(fallbackImageUrl, abortSignal);
   }
 
   private getVenueImageUrl(venueId: number): string {
@@ -75,11 +102,13 @@ export class VenueImageService {
 
   private async loadVenueImageAsObjectUrl(
     imageUrl: string,
-    signal: AbortSignal
+    abortSignal: AbortSignal
   ): Promise<string | undefined> {
+    let objectUrl: string | undefined;
+
     try {
       const response = await fetch(imageUrl, {
-        signal,
+        signal: abortSignal,
         referrerPolicy: 'no-referrer',
       });
 
@@ -87,57 +116,91 @@ export class VenueImageService {
         return undefined;
       }
 
-      const blob = await response.blob();
-      const objectUrl = URL.createObjectURL(blob);
+      const imageBlob = await response.blob();
 
-      const isValidImage = await this.validateImageDimensions(objectUrl);
+      if (abortSignal.aborted) {
+        return undefined;
+      }
 
-      if (!isValidImage) {
+      objectUrl = URL.createObjectURL(imageBlob);
+
+      const isValidImage = await this.validateImageDimensions(
+        objectUrl,
+        abortSignal
+      );
+
+      if (!isValidImage || abortSignal.aborted) {
         URL.revokeObjectURL(objectUrl);
+
         return undefined;
       }
 
       return objectUrl;
     } catch {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+
       return undefined;
     }
   }
 
-  private validateImageDimensions(imageUrl: string): Promise<boolean> {
+  private validateImageDimensions(
+    imageUrl: string,
+    abortSignal: AbortSignal
+  ): Promise<boolean> {
     return new Promise((resolve) => {
-      const img = new Image();
+      const venueImage = new Image();
 
-      img.onload = () => {
-        const isPlaceholder =
-          img.naturalWidth <= 200 || img.naturalHeight <= 200;
+      const finishValidation = (hasValidDimensions: boolean) => {
+        venueImage.onload = null;
+        venueImage.onerror = null;
+        abortSignal.removeEventListener('abort', handleAbort);
 
-        resolve(!isPlaceholder);
+        resolve(hasValidDimensions);
       };
 
-      img.onerror = () => {
-        resolve(false);
+      const handleAbort = () => finishValidation(false);
+
+      if (abortSignal.aborted) {
+        finishValidation(false);
+
+        return;
+      }
+
+      abortSignal.addEventListener('abort', handleAbort, { once: true });
+
+      venueImage.onload = () => {
+        // The image provider uses small images as placeholders for unavailable venues.
+        const hasValidDimensions =
+          venueImage.naturalWidth > 200 && venueImage.naturalHeight > 200;
+
+        finishValidation(hasValidDimensions);
       };
 
-      img.src = imageUrl;
+      venueImage.onerror = () => finishValidation(false);
+      venueImage.src = imageUrl;
     });
   }
 
-  private setVenueBackground(imageUrl?: string, loaded = true): void {
+  private setVenueBackground(imageUrl?: string, isLoaded = true): void {
     this.revokeActiveObjectUrl();
 
     this.activeVenueImageUrl.set(imageUrl);
     this.hasValidVenueBackground.set(Boolean(imageUrl));
-    this.venueBackgroundLoaded.set(loaded);
+    this.venueBackgroundLoaded.set(isLoaded);
 
     if (imageUrl?.startsWith('blob:')) {
-      this.activeObjectUrl = imageUrl;
+      this.activeVenueObjectUrl = imageUrl;
     }
   }
 
   private revokeActiveObjectUrl(): void {
-    if (!this.activeObjectUrl) return;
+    if (!this.activeVenueObjectUrl) {
+      return;
+    }
 
-    URL.revokeObjectURL(this.activeObjectUrl);
-    this.activeObjectUrl = undefined;
+    URL.revokeObjectURL(this.activeVenueObjectUrl);
+    this.activeVenueObjectUrl = undefined;
   }
 }

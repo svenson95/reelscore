@@ -1,0 +1,71 @@
+import { Location } from '@angular/common';
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
+import { LiveRefreshService } from '@app/shared';
+import type { GetFixtureDTO } from '@lib/models';
+import { formatFixtureTime } from '@lib/shared';
+
+import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
+import {
+  readElementText,
+  renderComponent,
+} from '../../../../../testing/match-components.testing';
+
+import { MatchFacade } from '../../match.facade';
+
+import { PageHeaderComponent } from './page-header.component';
+
+const fixtureState = signal<GetFixtureDTO | null>(null);
+const locationMock = { back: jest.fn() };
+
+describe('PageHeaderComponent', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [PageHeaderComponent],
+      providers: [
+        {
+          provide: MatchFacade,
+          useValue: { fixture: fixtureState, routerDate: signal('2026-05-30') },
+        },
+        { provide: Location, useValue: locationMock },
+        {
+          provide: LiveRefreshService,
+          useValue: { timer: signal(30), isRunning: signal(false) },
+        },
+      ],
+    });
+  });
+
+  it('shows the route date, navigates back and replaces the kickoff placeholder when fixture data arrives', () => {
+    const componentFixture = renderComponent(PageHeaderComponent, {});
+
+    expect(readElementText(componentFixture.nativeElement)).toContain(
+      '30.05.26'
+    );
+    expect(
+      componentFixture.nativeElement.querySelector('.date-placeholder')
+    ).not.toBeNull();
+
+    componentFixture.nativeElement.querySelector('button').click();
+
+    expect(locationMock.back).toHaveBeenCalledTimes(1);
+
+    fixtureState.set({ data: EXAMPLE_FIXTURE, highlights: [] });
+    componentFixture.detectChanges();
+
+    expect(
+      componentFixture.nativeElement.querySelector('.date-placeholder')
+    ).toBeNull();
+    expect(readElementText(componentFixture.nativeElement)).toContain(
+      formatFixtureTime(EXAMPLE_FIXTURE.fixture.timestamp)
+    );
+
+    fixtureState.set(null);
+    componentFixture.detectChanges();
+
+    expect(
+      componentFixture.nativeElement.querySelector('.date-placeholder')
+    ).not.toBeNull();
+  });
+});

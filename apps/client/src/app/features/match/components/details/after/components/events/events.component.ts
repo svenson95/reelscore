@@ -6,7 +6,6 @@ import {
   inject,
   input,
   signal,
-  untracked,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,15 +15,7 @@ import { FixtureStore } from '../../../../../stores';
 
 import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
-
-type MatchTimelineItem =
-  | { type: 'spacer'; label: string; key: string }
-  | {
-      type: 'event';
-      event: EventWithResult;
-      key: string;
-      shootoutResult?: EventWithResult['result'];
-    };
+import type { MatchTimelineItem, TimelineItemKey } from './types';
 
 @Component({
   selector: 'rs-match-events',
@@ -179,57 +170,27 @@ type MatchTimelineItem =
   `,
 })
 export class MatchEventsComponent {
-  private readonly fixtureStore = inject(FixtureStore);
-
   readonly data = input.required<EventWithResult[]>();
 
+  private readonly fixtureStore = inject(FixtureStore);
+
   private readonly fixture = computed(() => this.fixtureStore.fixture());
-  readonly homeTeamId = computed(
-    () => untracked(this.fixture)?.data.teams.home.id
+  protected readonly homeTeamId = computed(
+    () => this.fixture()?.data.teams.home.id
   );
-  readonly awayTeamId = computed(
-    () => untracked(this.fixture)?.data.teams.away.id
+  protected readonly awayTeamId = computed(
+    () => this.fixture()?.data.teams.away.id
   );
 
   private readonly eventsForTimeline = signal<EventWithResult[]>([]);
-  private readonly newTimelineEventKeys = signal<Set<string>>(new Set());
+  private readonly newTimelineEventKeys = signal<Set<TimelineItemKey>>(
+    new Set()
+  );
 
-  private knownTimelineEventKeys = new Set<string>();
-  private initialTimelineDone = false;
+  private knownTimelineEventKeys = new Set<TimelineItemKey>();
+  private hasInitialTimeline = false;
 
-  newEvent = effect(() => {
-    const events = this.data();
-    const nextKeys = events.map((event) => this.getEventKey(event));
-
-    if (!this.initialTimelineDone && events.length === 0) {
-      this.eventsForTimeline.set(events);
-      this.newTimelineEventKeys.set(new Set());
-      return;
-    }
-
-    if (!this.initialTimelineDone) {
-      this.knownTimelineEventKeys = new Set(nextKeys);
-      this.eventsForTimeline.set(events);
-      this.newTimelineEventKeys.set(new Set());
-      this.initialTimelineDone = true;
-      return;
-    }
-
-    const addedKeys = nextKeys.filter(
-      (key) => !this.knownTimelineEventKeys.has(key)
-    );
-
-    this.knownTimelineEventKeys = new Set(nextKeys);
-
-    this.newTimelineEventKeys.set(new Set(addedKeys));
-    this.eventsForTimeline.set(events);
-
-    window.setTimeout(() => {
-      this.newTimelineEventKeys.set(new Set());
-    }, 700);
-  });
-
-  readonly timeline = computed<MatchTimelineItem[]>(() => {
+  protected readonly timeline = computed<MatchTimelineItem[]>(() => {
     const fixture = this.fixture();
     const fixtureStatus = fixture?.data.fixture.status.short ?? '';
     const isFinished = STATUS_TYPES_FINISHED.includes(fixtureStatus);
@@ -286,7 +247,47 @@ export class MatchEventsComponent {
     return items;
   });
 
-  isNewTimelineItem(item: MatchTimelineItem): boolean {
+  private readonly trackNewTimelineEvents = effect((onCleanup) => {
+    const events = this.data();
+    const currentEventKeys = events.map((event) => this.getEventKey(event));
+
+    if (!this.hasInitialTimeline && events.length === 0) {
+      this.eventsForTimeline.set(events);
+      this.newTimelineEventKeys.set(new Set());
+
+      return;
+    }
+
+    // The first batch represents existing events and should not animate as a live update.
+    if (!this.hasInitialTimeline) {
+      this.knownTimelineEventKeys = new Set(currentEventKeys);
+      this.eventsForTimeline.set(events);
+      this.newTimelineEventKeys.set(new Set());
+      this.hasInitialTimeline = true;
+
+      return;
+    }
+
+    const newEventKeys = currentEventKeys.filter(
+      (key) => !this.knownTimelineEventKeys.has(key)
+    );
+
+    this.knownTimelineEventKeys = new Set(currentEventKeys);
+
+    this.newTimelineEventKeys.set(new Set(newEventKeys));
+    this.eventsForTimeline.set(events);
+
+    if (newEventKeys.length > 0) {
+      const animationTimerId = window.setTimeout(() => {
+        this.newTimelineEventKeys.set(new Set());
+      }, 700);
+
+      // Each update owns its timer so older updates cannot clear a newer animation.
+      onCleanup(() => window.clearTimeout(animationTimerId));
+    }
+  });
+
+  protected isNewTimelineItem(item: MatchTimelineItem): boolean {
     return item.type === 'event' && this.newTimelineEventKeys().has(item.key);
   }
 

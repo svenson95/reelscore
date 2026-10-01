@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 
 import { PageTitleComponent } from '@app/shared';
-import type { EvaluationDTO } from '@lib/models';
+import type { FixturePerformance, FixtureResult } from '@lib/models';
+import { type EvaluationDTO } from '@lib/models';
 
 import { ToKebabCasePipe } from './pipes';
 
@@ -118,8 +119,8 @@ import { ToKebabCasePipe } from './pipes';
               class="rs-skeleton evaluation-placeholder"
               aria-hidden="true"
             ></span>
-            } } @else { @for ( result of [...teams.home.results].reverse();
-            track $index + '-' + result ) {
+            } } @else { @for ( result of homeResultsInDisplayOrder(); track
+            $index + '-' + result ) {
             <span [class]="result | rsToKebabCase">
               @switch (result) { @case ('LOSS') { N } @case ('DRAW') { U } @case
               ('WIN') { S } @case ('NO_RESULT_AVAILABLE') { - } }
@@ -164,9 +165,8 @@ import { ToKebabCasePipe } from './pipes';
               class="rs-skeleton evaluation-placeholder"
               aria-hidden="true"
             ></span>
-            } } @else { @for ( performance of
-            [...teams.home.performances].reverse(); track $index + '-' +
-            performance ) {
+            } } @else { @for ( performance of homePerformancesInDisplayOrder();
+            track $index + '-' + performance ) {
             <span [class]="performance | rsToKebabCase">
               @switch (performance) { @case ('LOW') { S } @case ('MIDDLE') { M }
               @case ('HIGH') { G } @case ('MATCH_NOT_STARTED') { ? } @case
@@ -202,10 +202,10 @@ import { ToKebabCasePipe } from './pipes';
 })
 export class MatchEvaluationsComponent {
   readonly evaluations = input.required<EvaluationDTO | null>();
-
-  readonly isLoading = input(false);
+  readonly isLoading = input<boolean>(false);
   readonly error = input<unknown>(null);
-  readonly hasEvaluations = computed(() => {
+
+  readonly hasEvaluations = computed<boolean>(() => {
     const teams = this.evaluations()?.teams;
     return (
       !!teams &&
@@ -216,6 +216,22 @@ export class MatchEvaluationsComponent {
         teams.away.performances,
       ].some((values) => values.length > 0)
     );
+  });
+
+  protected readonly homeResultsInDisplayOrder = computed<FixtureResult[]>(
+    () => {
+      const homeResults = this.evaluations()?.teams.home.results ?? [];
+
+      return [...homeResults].reverse();
+    }
+  );
+
+  protected readonly homePerformancesInDisplayOrder = computed<
+    FixturePerformance[]
+  >(() => {
+    const homePerformances = this.evaluations()?.teams.home.performances ?? [];
+
+    return [...homePerformances].reverse();
   });
 
   protected readonly PLACEHOLDER_ITEMS = [0, 1, 2, 3, 4];
