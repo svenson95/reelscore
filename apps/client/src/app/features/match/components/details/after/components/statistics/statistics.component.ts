@@ -7,7 +7,7 @@ import {
 
 import type { StatisticDTO } from '@lib/models';
 
-import { StatisticList } from './models';
+import { StatisticList } from './types';
 
 @Component({
   selector: 'rs-match-statistics',

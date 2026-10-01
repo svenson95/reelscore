@@ -3,7 +3,6 @@ import type {
   StatisticItemType,
   StatisticItemValue,
   StatisticKey,
-  TeamStatistics,
 } from '@lib/models';
 
 export type StatisticListItem = {
@@ -11,7 +10,7 @@ export type StatisticListItem = {
   away: StatisticItemValue | undefined;
 };
 
-const statisticTypeMap = {
+const statisticKeysByType = {
   'Ball Possession': 'ballPossession',
   'Total Shots': 'shotsTotal',
   'Shots on Goal': 'shotsOnGoal',
@@ -45,27 +44,19 @@ export class StatisticList {
   }
 
   constructor(data: StatisticDTO[]) {
-    const homeStats = data[0]?.statistics ?? [];
+    const homeStatistics = data[0]?.statistics ?? [];
 
-    homeStats.forEach((homeStat) => {
-      const key = statisticTypeMap[homeStat.type];
-      const awayStats = data[1]?.statistics ?? [];
+    const awayStatistics = data[1]?.statistics ?? [];
+    const awayStatisticValuesByType = new Map(
+      awayStatistics.map((statistic) => [statistic.type, statistic.value])
+    );
 
-      this[key] = this.createValue(
-        homeStat.value,
-        this.statMapper(awayStats).get(homeStat.type)?.value ?? null
-      );
-    });
-  }
+    for (const homeStatistic of homeStatistics) {
+      const statisticKey = statisticKeysByType[homeStatistic.type];
+      const awayValue =
+        awayStatisticValuesByType.get(homeStatistic.type) ?? null;
 
-  private createValue(
-    home: StatisticItemValue,
-    away: StatisticItemValue
-  ): StatisticListItem {
-    return { home, away };
-  }
-
-  private statMapper(statistics: TeamStatistics) {
-    return new Map(statistics.map((stat) => [stat.type, stat]));
+      this[statisticKey] = { home: homeStatistic.value, away: awayValue };
+    }
   }
 }

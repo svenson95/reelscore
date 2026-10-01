@@ -1,15 +1,10 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  untracked,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
 import type { ExtendedFixtureDTO, FixtureTeam } from '@lib/models';
+
 import type { AnalysesTeamType, FixtureWithEvaluations } from '../../models';
 import { ANALYSES_TEAM } from '../../models';
 
@@ -126,7 +121,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
             class="evaluation"
             [analyzedElement]="evaluation"
             [class.is-away]="evaluation.team === ANALYSES_TEAM.AWAY"
-            [class.is-related-team]="isRelatedTeam()(fixture, evaluation.team)"
+            [class.is-related-team]="isRelatedTeam(fixture, evaluation.team)"
           />
           }
         </div>
@@ -136,13 +131,18 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
   `,
 })
 export class AnalysesEvaluationsComponent {
-  readonly ANALYSES_TEAM = ANALYSES_TEAM;
-
   readonly fixtures = input.required<FixtureWithEvaluations[]>();
   readonly relatedTeam = input.required<FixtureTeam>();
 
-  readonly isRelatedTeam = computed(
-    () => (fixture: ExtendedFixtureDTO, team: AnalysesTeamType) =>
-      fixture.teams[team].id === untracked(this.relatedTeam).id
-  );
+  protected readonly ANALYSES_TEAM = ANALYSES_TEAM;
+
+  protected isRelatedTeam(
+    fixture: ExtendedFixtureDTO,
+    team: AnalysesTeamType
+  ): boolean {
+    const analyzedTeamId = fixture.teams[team].id;
+    const relatedTeamId = this.relatedTeam().id;
+
+    return analyzedTeamId === relatedTeamId;
+  }
 }

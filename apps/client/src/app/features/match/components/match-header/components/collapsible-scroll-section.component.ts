@@ -1,11 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   signal,
   ViewChild,
 } from '@angular/core';
+
 import { ScrollService } from '../services';
 
 @Component({
@@ -120,21 +122,31 @@ import { ScrollService } from '../services';
 export class CollapsibleScrollSection {
   private readonly scrollService = inject(ScrollService);
 
+  protected readonly hasVisibleHeight = this.scrollService.hasVisibleHeight;
+
+  protected readonly collapsed = signal<boolean>(false);
+  protected readonly manualAnimating = signal<boolean>(false);
+
+  private animationTimerId?: number;
+
   @ViewChild('animationWrapper', { read: ElementRef })
-  set animationWrapper(ref: ElementRef<HTMLElement> | null) {
-    this.scrollService.setAnimationWrapper(ref);
+  set animationWrapper(wrapperReference: ElementRef<HTMLElement> | null) {
+    this.scrollService.setAnimationWrapper(wrapperReference);
   }
 
-  readonly collapsed = signal<boolean>(false);
-  readonly manualAnimating = signal<boolean>(false);
+  constructor() {
+    inject(DestroyRef).onDestroy(() => {
+      window.clearTimeout(this.animationTimerId);
+      this.scrollService.setAnimationWrapper(null);
+    });
+  }
 
-  readonly hasVisibleHeight = this.scrollService.hasVisibleHeight;
-
-  toggle(): void {
+  protected toggle(): void {
     this.manualAnimating.set(true);
     this.collapsed.update((value) => !value);
 
-    window.setTimeout(() => {
+    window.clearTimeout(this.animationTimerId);
+    this.animationTimerId = window.setTimeout(() => {
       this.manualAnimating.set(false);
     }, 230);
   }

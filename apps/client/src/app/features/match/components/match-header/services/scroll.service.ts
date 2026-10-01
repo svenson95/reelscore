@@ -26,6 +26,10 @@ export class ScrollService {
     return this.highlightsHeight() > 0 && this.highlightsProgress() < 1;
   });
 
+  constructor() {
+    this.destroyRef.onDestroy(() => this.destroy());
+  }
+
   setAnimationWrapper(ref: ElementRef<HTMLElement> | null): void {
     this.wrapper = ref?.nativeElement;
 
@@ -41,6 +45,10 @@ export class ScrollService {
   }
 
   observeScrollPosition(): void {
+    if (this.destroyScrollListener) {
+      return;
+    }
+
     this.ngZone.runOutsideAngular(() => {
       this.initialScrollY = this.getScrollY();
 
@@ -82,8 +90,6 @@ export class ScrollService {
         window.visualViewport?.removeEventListener('scroll', onScroll);
         window.visualViewport?.removeEventListener('resize', onResize);
       };
-
-      this.destroyRef.onDestroy(() => this.destroy());
     });
   }
 
