@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { of, Subject, throwError } from 'rxjs';
+import { defer, of, Subject, throwError } from 'rxjs';
 
 import { HttpStandingsService } from '@app/shared';
 import type { StandingsDTO, StandingsWeekData } from '@lib/models';
@@ -173,6 +174,69 @@ describe('WeekStandingsStore', () => {
     expect(store.isRefreshing()).toBe(false);
     expect(store.isPending()).toBe(false);
     expect(store.error()).toBe(error);
+  });
+
+  it('should stop loading after repeated network failures and allow a new request', async () => {
+    jest.useFakeTimers();
+
+    const networkError = new HttpErrorResponse({ status: 0 });
+    const failedRequest = jest.fn(() => throwError(() => networkError));
+
+    httpMock.getWeekStandings.mockReturnValue(defer(failedRequest));
+
+    store.loadWeekStandings(testDate);
+    await jest.advanceTimersByTimeAsync(3_500);
+
+    expect(failedRequest).toHaveBeenCalledTimes(4);
+    expect(store.isLoading()).toBe(false);
+    expect(store.isPending()).toBe(false);
+    expect(store.error()).toBe(networkError);
+    expect(jest.getTimerCount()).toBe(0);
+
+    const weekStandings = createWeekStandings();
+
+    httpMock.getWeekStandings.mockReturnValue(of(weekStandings));
+
+    store.loadWeekStandings(testDate);
+
+    expect(store.weekStandings()).toBe(weekStandings);
+    expect(store.error()).toBeNull();
+    expect(store.isPending()).toBe(false);
+  });
+
+  it('should retry transient failures with increasing delays and clear loading on success', async () => {
+    jest.useFakeTimers();
+
+    const weekStandings = createWeekStandings();
+    const serverError = new HttpErrorResponse({ status: 503 });
+    const request = jest
+      .fn()
+      .mockReturnValueOnce(throwError(() => serverError))
+      .mockReturnValueOnce(throwError(() => serverError))
+      .mockReturnValueOnce(of(weekStandings));
+
+    httpMock.getWeekStandings.mockReturnValue(defer(request));
+
+    store.loadWeekStandings(testDate);
+    await jest.advanceTimersByTimeAsync(499);
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(store.isPending()).toBe(true);
+
+    await jest.advanceTimersByTimeAsync(1);
+
+    expect(request).toHaveBeenCalledTimes(2);
+
+    await jest.advanceTimersByTimeAsync(999);
+
+    expect(request).toHaveBeenCalledTimes(2);
+
+    await jest.advanceTimersByTimeAsync(1);
+
+    expect(request).toHaveBeenCalledTimes(3);
+    expect(store.weekStandings()).toBe(weekStandings);
+    expect(store.isPending()).toBe(false);
+    expect(store.error()).toBeNull();
   });
 });
 
