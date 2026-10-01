@@ -87,6 +87,7 @@ Abschnitte können weggelassen werden, wenn sie für die jeweilige Entscheidung 
 | [0002](./0002-feature-oriented-client-structure.md)             | Feature-orientierte Client-Struktur verwenden   | Proposed |
 | [0003](./0003-use-sse-for-live-updates.md)                      | Server-Sent Events für Live-Updates verwenden   | Accepted |
 | [0004](./0004-use-unix-timestamps-for-fixture-time-handling.md) | Unix-Timestamps für Fixture-Zeitlogik verwenden | Accepted |
+| [0005](./0005-use-openapi-sdk-for-shared-contracts.md)          | OpenAPI SDK for shared contracts                | Accepted |
 
 ## Änderungen an bestehenden Entscheidungen
 

@@ -5,7 +5,28 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.cjs"],
+      "plugins": ["simple-import-sort"],
       "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^\\u0000"],
+              ["^node:"],
+              ["^@angular/"],
+              ["^@?\\w"],
+              ["^@reelscore-sdk/"],
+              ["^@lib/"],
+              ["^@app/core(?:/|$)"],
+              ["^@app/shared(?:/|$)"],
+              ["^@app/"],
+              ["^\\.\\.(?:/|$)"],
+              ["^\\./"],
+              ["^"]
+            ]
+          }
+        ],
+        "simple-import-sort/exports": "error",
         "@nx/enforce-module-boundaries": [
           "error",
           {

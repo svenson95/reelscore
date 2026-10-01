@@ -16,6 +16,14 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  moduleNameMapper: {
+    '^@reelscore-sdk/models$':
+      '<rootDir>/../../node_modules/reelscore-sdk/dist/cjs/models/index.js',
+    '^@reelscore-sdk/constants$':
+      '<rootDir>/../../node_modules/reelscore-sdk/dist/cjs/shared/constants/index.js',
+    '^@reelscore-sdk/helpers$':
+      '<rootDir>/../../node_modules/reelscore-sdk/dist/cjs/shared/helpers/index.js',
+  },
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

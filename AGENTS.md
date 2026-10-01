@@ -54,7 +54,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 - Run build, lint, test, and serve tasks through Nx so dependency ordering and caching remain effective.
 - For scaffolding, inspect the installed generator with `npx nx generate <generator> --help`, then preview its changes with `--dry-run`. Use workspace generator defaults and review generated code.
 - Respect the dependency graph and ESLint module boundaries. Client code must not import API internals. Shared `lib/` code must not depend on either application's implementation or runtime handles.
-- `lib/` contains shared source folders, not separately configured Nx projects. Do not invent targets for them; validate changes through their consumers.
+- `lib/` is the non-buildable Nx project `internal-shared`, with test, lint, and typecheck targets. Validate shared changes through this library and the affected client/API consumers. Migrated contracts are generated in the separate `reelscore-sdk` repository; update its packaged artifact instead of duplicating definitions locally.
 - `nx.json` disables Nx Cloud connections and analytics. Preserve this choice. AI setup commands can write rules, MCP configuration, and skills; run them only as part of a requested tooling setup.
 - For changes spanning projects, use `run-many` or `affected`. When using `affected`, specify a verified base and head for the intended changes; do not guess the comparison range.
 - Preserve target inputs, outputs, and caching configuration. If Nx infrastructure fails, investigate the actual error before changing workspace configuration or resetting caches.
