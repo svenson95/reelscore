@@ -4,6 +4,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { retry } from 'rxjs/operators';
 
+import { isCompetitionWithoutStandings } from '@reelscore-sdk/helpers';
 import type {
   EventDTO,
   FixtureDTO,
@@ -12,10 +13,7 @@ import type {
   GetFixtureDTO,
 } from '@reelscore-sdk/models';
 
-import {
-  filterFixtureHighlights,
-  isCompetitionWithoutStandings,
-} from '@lib/shared';
+import { filterFixtureHighlights } from '@lib/shared';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 

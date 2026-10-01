@@ -1,19 +1,4 @@
-import type {
-  CompetitionId,
-  CompetitionName,
-  ExtendedFixtureDTO,
-  TeamId,
-} from '@reelscore-sdk/models';
-
-export interface Competition {
-  id: CompetitionId;
-  name: CompetitionName;
-  image: string;
-  url: string[];
-}
-export interface CompetitionWithFixtures extends Competition {
-  fixtures: ExtendedFixtureDTO[];
-}
+import type { CompetitionId, TeamId } from '@reelscore-sdk/models';
 
 type ImageScale = 1 | 2 | 3;
 

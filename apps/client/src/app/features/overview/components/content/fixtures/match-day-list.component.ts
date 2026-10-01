@@ -19,7 +19,7 @@ import {
   ThemeService,
 } from '@app/shared';
 
-import type { CompetitionWithFixtures } from '@app/shared';
+import type { CompetitionWithFixtures } from '../../../types';
 
 const EXTERNAL_MODULES = [RouterLink];
 

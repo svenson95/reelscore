@@ -1,20 +1,20 @@
 import type { FlattenMaps } from 'mongoose';
 
 import {
+  COMPETITION_ROUNDS,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
 } from '@reelscore-sdk/constants';
+import { getSeason } from '@reelscore-sdk/helpers';
 import type {
   CompetitionId,
   CompetitionRound,
   FixtureDateString,
   FixtureDTO,
 } from '@reelscore-sdk/models';
-
-import { COMPETITION_ROUNDS, getSeason } from '@lib/shared';
 
 import { Fixtures } from './fixtures.model';
 import { FixturesService } from './fixtures.service';

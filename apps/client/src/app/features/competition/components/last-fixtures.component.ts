@@ -6,9 +6,8 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
+import { isCompetitionWithOneFixture } from '@reelscore-sdk/helpers';
 import type { CompetitionId } from '@reelscore-sdk/models';
-
-import { isCompetitionWithOneFixture } from '@lib/shared';
 
 import {
   isFirstCompetitionRound,

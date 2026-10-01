@@ -2,12 +2,10 @@ import { inject, Injectable } from '@angular/core';
 
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
-import {
-  type CompetitionWithFixtures,
-  SELECT_COMPETITION_DATA_FLAT,
-} from '@app/shared';
+import { SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
 
 import { FilterService } from '../../../services';
+import type { CompetitionWithFixtures } from '../../../types';
 
 const COMPETITION_BY_ID = new Map(
   SELECT_COMPETITION_DATA_FLAT.map((competition) => [

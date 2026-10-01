@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { defer, of, Subject, throwError } from 'rxjs';
 
+import { COMPETITION_ID } from '@reelscore-sdk/constants';
+import { COMPETITION_LABEL } from '@reelscore-sdk/constants';
 import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
 import type { StandingsDTO, StandingsWeekData } from '@reelscore-sdk/models';
-
-import { COMPETITION_ID, COMPETITION_LABEL } from '@lib/shared';
 
 import { HttpStandingsService } from '@app/shared';
 

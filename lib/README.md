@@ -1,7 +1,7 @@
 # Internal shared library
 
 `internal-shared` is the non-buildable Nx library for project-specific helpers
-and constants shared by the client and API. Its sources are in `lib/shared`;
+and constants shared by the client and API. It retains fixture highlight helpers shared by the client and API in `lib/shared`;
 application builds compile them directly.
 
 ```sh
@@ -26,3 +26,7 @@ for consumers that prefer one OpenAPI file.
 
 No local SDK re-exports or independent model copies are retained. Keep API-only
 implementation in the API and client-only implementation in its feature.
+
+Competition IDs, URL slugs, display labels, season rules and round data/helpers
+are imported directly from the SDK. `COMPETITION_LABEL` preserves reelscore’s
+existing display names; some controller labels currently differ.

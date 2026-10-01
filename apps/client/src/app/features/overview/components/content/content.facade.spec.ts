@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { COMPETITION_ID } from '@reelscore-sdk/constants';
 import type { DateString } from '@reelscore-sdk/helpers';
 import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
 import type {
@@ -9,8 +10,6 @@ import type {
   StandingsDTO,
   StandingsWeekData,
 } from '@reelscore-sdk/models';
-
-import { COMPETITION_ID } from '@lib/shared';
 
 import { WeekFixturesStore } from '@app/core';
 

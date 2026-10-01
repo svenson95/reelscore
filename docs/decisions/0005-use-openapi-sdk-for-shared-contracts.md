@@ -20,12 +20,12 @@ analyses, evaluations, search, responses, live updates and week data.
 a standalone bundled document. The fixture schemas reference team and competition
 definitions owned by their respective domains.
 Prediction value arrays are generated from schema enums to keep runtime values
-and type declarations synchronized. Competition codes, status groups, realtime event names, date helpers and the
+and type declarations synchronized. Competition codes, IDs, URL slugs, display labels, season and round rules, status groups, realtime event names, date and competition helpers and the
 `timeTotal` event helper are ordinary TypeScript source in the SDK.
 
 The remaining `lib/` tree is the non-buildable Nx project `internal-shared`,
 with test, lint and typecheck targets. `@lib/shared` remains available for local
-helpers and constants. `lib/models` and its `@lib/models` alias are removed. Migrated SDK symbols
+helpers (currently fixture highlights shared by the client and API). `lib/models` and its `@lib/models` alias are removed. Migrated SDK symbols
 are imported directly from `@reelscore-sdk/models`, `@reelscore-sdk/constants`
 or `@reelscore-sdk/helpers` and are not re-exported by local barrels.
 

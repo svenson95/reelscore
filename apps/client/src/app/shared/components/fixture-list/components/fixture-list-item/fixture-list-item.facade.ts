@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import {
+  COMPETITION_KO_ROUNDS,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_PLAYING,
   STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_HALFTIME,
 } from '@reelscore-sdk/constants';
+import { isTwoLeggedRound } from '@reelscore-sdk/helpers';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
-
-import { COMPETITION_KO_ROUNDS, isTwoLeggedRound } from '@lib/shared';
 
 @Injectable()
 export class FixtureListItemFacade {

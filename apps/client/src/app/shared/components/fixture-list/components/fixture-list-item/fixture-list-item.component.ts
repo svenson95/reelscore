@@ -15,9 +15,10 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
+  getTeamLogo,
+  getTeamLogoSrcSet,
 } from '../../../../helpers';
 import { TeamNamePipe } from '../../../../pipes';
-import { getTeamLogo, getTeamLogoSrcSet } from '../../../../types';
 import { linkToMatch } from '../../../../utils';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';

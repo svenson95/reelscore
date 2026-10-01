@@ -1,11 +1,8 @@
-import {
-  COMPETITION_ID,
-  COMPETITION_LABEL,
-  COMPETITION_URL,
-} from '@lib/shared';
+import { COMPETITION_ID, COMPETITION_URL } from '@reelscore-sdk/constants';
+import { COMPETITION_LABEL } from '@reelscore-sdk/constants';
 
+import { getCompetitionLogo, getCompetitionLogoSrcSet } from '../helpers';
 import type { SelectCompetitionGroup } from '../types';
-import { getCompetitionLogo, getCompetitionLogoSrcSet } from '../types';
 
 const IMAGE_SIZE = 24;
 
