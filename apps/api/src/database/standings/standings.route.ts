@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { CompetitionId } from '@lib/models';
+import type { CompetitionId } from '@reelscore-sdk/models';
 
 import { getWeekDatesArray } from '../date.helper';
 

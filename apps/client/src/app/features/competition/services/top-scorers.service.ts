@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+
 import type { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs';
 
-import type { CompetitionId, TopScorersDTO } from '@lib/models';
+import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
 

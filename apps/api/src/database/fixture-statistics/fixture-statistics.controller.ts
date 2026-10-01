@@ -1,4 +1,7 @@
-import type { FixtureIdParameter, RapidStatisticsDTO } from '@lib/models';
+import type {
+  FixtureIdParameter,
+  RapidStatisticsDTO,
+} from '@reelscore-sdk/models';
 
 import { findDocument } from '../mongodb.helper';
 

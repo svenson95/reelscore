@@ -1,4 +1,4 @@
-import type { TeamId, VenueId } from '@lib/models';
+import type { TeamId, VenueId } from '@reelscore-sdk/models';
 
 export const VENUE_IDS: Record<TeamId, VenueId> = {
   '1': 173,

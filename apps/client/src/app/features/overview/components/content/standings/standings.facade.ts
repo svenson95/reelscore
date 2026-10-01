@@ -1,6 +1,8 @@
 import { computed, inject, Injectable } from '@angular/core';
 
-import { hasMultipleGroups, showHomeAndAwayStandings } from '@app/shared';
+import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
+
+import { showHomeAndAwayStandings } from '@app/shared';
 
 import { FilterService } from '../../../services';
 import { FilteredStandingsStore } from '../../../stores';
@@ -17,7 +19,10 @@ export class OverviewStandingsFacade {
     const standings = this.dayStandings();
     if (standings === null) return false;
 
-    return hasMultipleGroups(standings);
+    return isCompetitionWithMultipleGroups(
+      standings.league.id,
+      standings.league.season
+    );
   });
 
   readonly showHomeAndAwayStandings = computed<boolean>(() => {

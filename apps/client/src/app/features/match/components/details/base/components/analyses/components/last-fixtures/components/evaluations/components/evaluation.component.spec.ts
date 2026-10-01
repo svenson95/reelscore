@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-  renderComponent,
-  readElementText,
   createFixtureAnalysis,
+  readElementText,
+  renderComponent,
 } from '../../../../../../../../../../../../../testing/match-components.testing';
 
 import { AnalysesEvaluationComponent } from './evaluation.component';

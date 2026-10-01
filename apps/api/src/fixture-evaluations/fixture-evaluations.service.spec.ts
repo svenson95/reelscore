@@ -3,7 +3,7 @@ import type {
   RapidStatisticsDTO,
   StatisticDTO,
   StatisticItemType,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import {
   FixtureEvaluationsService,

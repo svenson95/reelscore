@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject } from 'rxjs';
 
-import type { RapidStatisticsDTO, StatisticDTO } from '@lib/models';
+import type { RapidStatisticsDTO, StatisticDTO } from '@reelscore-sdk/models';
 
 import { HttpFixtureStatisticsService } from '../services';
 

@@ -22,9 +22,8 @@ import {
   PWA_PROVIDER,
 } from './config';
 import { apiRequestInterceptor, CORE_PROVIDERS } from './core';
-import { GLOBAL_SERVICE_PROVIDERS } from './shared';
-
 import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
+import { GLOBAL_SERVICE_PROVIDERS } from './shared';
 
 const BASE_PROVIDERS = [
   provideRouter(

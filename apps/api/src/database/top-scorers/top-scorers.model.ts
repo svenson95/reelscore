@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { TopScorersDTO } from '@lib/models';
+import type { TopScorersDTO } from '@reelscore-sdk/models';
 
 const TopScorersSchema = new mongoose.Schema<TopScorersDTO>(
   {

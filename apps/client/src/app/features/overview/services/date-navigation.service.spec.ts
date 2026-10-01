@@ -2,7 +2,8 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
-import { getTodayDateString, type DateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { getTodayDateString } from '@reelscore-sdk/helpers';
 
 import { DateNavigationService } from './date-navigation.service';
 import { SelectedDateService } from './selected-date.service';

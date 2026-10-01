@@ -7,9 +7,8 @@ import {
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_HALFTIME,
   STATUS_VALUE_POSTPONED,
-  type StatusShort,
-  type StatusTypeScheduled,
-} from '@lib/models';
+} from '@reelscore-sdk/constants';
+import type { StatusShort, StatusTypeScheduled } from '@reelscore-sdk/models';
 
 export interface FixtureStatusState {
   status: StatusShort;

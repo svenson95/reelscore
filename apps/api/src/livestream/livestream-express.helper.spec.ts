@@ -1,5 +1,6 @@
-import type { Request, Response } from 'express';
 import { EventEmitter } from 'node:events';
+
+import type { Request, Response } from 'express';
 
 const handler = jest.fn();
 jest.mock('@upstash/realtime', () => ({ handle: () => handler }));

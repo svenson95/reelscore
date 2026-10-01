@@ -6,7 +6,7 @@ import type {
   LiveFixtureEventsUpdateDTO,
   MatchTeams,
   RapidEventsDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 export type RealtimeUpdateTarget = {
   fixtureId: FixtureId;

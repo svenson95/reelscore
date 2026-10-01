@@ -1,15 +1,20 @@
 import {
   computed,
-  signal,
   type Signal,
+  signal,
   type WritableSignal,
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { formatCalendarWeekKey, getWeekdayIndex } from '@reelscore-sdk/helpers';
+import type {
+  ExtendedFixtureDTO,
+  FixturesWeekData,
+} from '@reelscore-sdk/models';
+
 import { WeekFixturesStore } from '@app/core';
+
 import { RefreshRegistryService, type RefreshTarget } from '@app/shared';
-import type { ExtendedFixtureDTO, FixturesWeekData } from '@lib/models';
-import { formatCalendarWeekKey, getWeekdayIndex } from '@lib/shared';
 
 import { WeekStandingsStore } from '../stores';
 

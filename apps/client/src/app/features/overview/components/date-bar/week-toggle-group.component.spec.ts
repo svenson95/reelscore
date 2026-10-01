@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { By } from '@angular/platform-browser';
 
-import type { DateString } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
 
 import { DateNavigationService } from '../../services';
 

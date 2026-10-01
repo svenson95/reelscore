@@ -1,8 +1,8 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import type { StandingsDTO } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
+import { COMPETITION_ID } from '@reelscore-sdk/constants';
+import type { StandingsDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_STANDINGS } from '../../../../../../testing/standings.mock';
 import { FilterService } from '../../../services';

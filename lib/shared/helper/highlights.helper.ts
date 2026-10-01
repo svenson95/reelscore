@@ -1,8 +1,9 @@
-import { type EventDTO, type FixtureHighlights, timeTotal } from '../../models';
+import { timeTotal } from '@reelscore-sdk/helpers';
+import type { EventDTO, FixtureHighlights } from '@reelscore-sdk/models';
 
 export const isHighlightGoal = (
   event: Pick<EventDTO, 'type' | 'detail'>,
-  includeMissedPenalty: boolean = false
+  includeMissedPenalty = false
 ): boolean =>
   event.type === 'Goal' &&
   (['Normal Goal', 'Own Goal', 'Penalty'].includes(event.detail) ||

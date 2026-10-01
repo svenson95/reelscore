@@ -1,10 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject } from 'rxjs';
 
-import type { EventDTO, FixtureDTO, GetFixtureDTO } from '@lib/models';
-import { COMPETITION_ID } from '@lib/shared';
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
+import { COMPETITION_ID } from '@reelscore-sdk/constants';
+import type {
+  EventDTO,
+  FixtureDTO,
+  GetFixtureDTO,
+} from '@reelscore-sdk/models';
 
+import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
 import { HttpFixtureService } from '../services';
 
 import { AnalysesStore } from './analyses.store';
@@ -116,6 +121,39 @@ describe('FixtureStore', () => {
     expect(store.isRefreshing()).toBe(false);
   });
 
+  it('orders goal and red-card highlights including missed penalties without mutating events', async () => {
+    const fixture = createFixture();
+    httpMock.getFixture.mockReturnValue(of(fixture));
+    await store.loadFixture(42);
+
+    const lateGoal = createEvent('Goal', 'Normal Goal', 90, 4);
+    const yellowCard = createEvent('Card', 'Yellow Card', 15);
+    const redCard = createEvent('Card', 'Red Card', 90, 2);
+    const missedPenalty = createEvent('Goal', 'Missed Penalty', 30);
+    const events = [lateGoal, yellowCard, redCard, missedPenalty];
+
+    store.updateHighlights(events);
+
+    expect(store.fixture()?.highlights).toEqual([
+      missedPenalty,
+      redCard,
+      lateGoal,
+    ]);
+    expect(events).toEqual([lateGoal, yellowCard, redCard, missedPenalty]);
+    expect(fixture.highlights).toEqual([]);
+  });
+
+  it('clears highlights when the fixture has no events', async () => {
+    const fixture = createFixture();
+    httpMock.getFixture.mockReturnValue(of(fixture));
+    await store.loadFixture(42);
+    store.updateHighlights([createEvent('Goal', 'Normal Goal', 20)]);
+
+    store.updateHighlights([]);
+
+    expect(store.fixture()?.highlights).toEqual([]);
+  });
+
   it('should merge matching realtime fixture data and update highlights', async () => {
     const fixture = createFixture();
     httpMock.getFixture.mockReturnValue(of(fixture));
@@ -158,10 +196,11 @@ function createFixture(overrides: Partial<FixtureDTO> = {}): GetFixtureDTO {
 function createEvent(
   type: EventDTO['type'],
   detail: EventDTO['detail'],
-  elapsed: number
+  elapsed: number,
+  extra: number | null = null
 ): EventDTO {
   return {
-    time: { elapsed, extra: null },
+    time: { elapsed, extra },
     team: { ...EXAMPLE_FIXTURE.teams.home, goals: 0 },
     player: { id: 1, name: 'Player' },
     assist: { id: null, name: '' },

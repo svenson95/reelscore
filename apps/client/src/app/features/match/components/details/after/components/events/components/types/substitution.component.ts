@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import type { EventDTO } from '@lib/models';
+import type { EventDTO } from '@reelscore-sdk/models';
 
 @Component({
   selector: 'rs-event-substitution',

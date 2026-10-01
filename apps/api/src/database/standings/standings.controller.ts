@@ -1,18 +1,18 @@
 import type { FilterQuery } from 'mongoose';
 
+import { COMPETITION_ID } from '@reelscore-sdk/constants';
+import {
+  getDateInTimezone,
+  getSeason,
+  isCompetitionWithMultipleGroups,
+} from '@reelscore-sdk/helpers';
 import type {
   CompetitionId,
   CompetitionSeason,
   StandingRanks,
   StandingsDTO,
   StandingsFilter,
-} from '@lib/models';
-import {
-  COMPETITION_ID,
-  getDateInTimezone,
-  getSeason,
-  isCompetitionWithMultipleGroups,
-} from '@lib/shared';
+} from '@reelscore-sdk/models';
 
 import { StandingsService } from './standings.service';
 

@@ -12,19 +12,21 @@ import { MatIconModule } from '@angular/material/icon';
 import type { MatMenuTrigger } from '@angular/material/menu';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
+
 import { filter, startWith, switchMap, take } from 'rxjs';
+
+import type {
+  FixtureDTO,
+  SearchResult,
+  SearchResultGroup,
+  SearchType,
+} from '@reelscore-sdk/models';
 
 import {
   linkToMatch,
   SELECT_COMPETITION_DATA_FLAT,
   TeamNamePipe,
 } from '@app/shared';
-import type {
-  FixtureDTO,
-  SearchResult,
-  SearchResultGroup,
-  SearchType,
-} from '@lib/models';
 
 import { SearchInputComponent } from './search-input.component';
 import { SearchResultsComponent } from './search-results.component';

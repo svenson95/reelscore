@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 
 import {
-  ResponsiveImageComponent,
-  TeamNamePipe,
   getTeamLogo,
   getTeamLogoSrcSet,
+  ResponsiveImageComponent,
+  TeamNamePipe,
 } from '@app/shared';
 
 export type MatchHeaderTeam = {

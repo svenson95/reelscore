@@ -1,17 +1,20 @@
 import type { FlattenMaps } from 'mongoose';
 
 import {
-  type CompetitionId,
-  type CompetitionRound,
-  type FixtureDateString,
-  type FixtureDTO,
+  COMPETITION_ROUNDS,
   STATUS_TYPES_FINISHED,
   STATUS_TYPES_NOT_PLAYED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
-} from '@lib/models';
-import { COMPETITION_ROUNDS, getSeason } from '@lib/shared';
+} from '@reelscore-sdk/constants';
+import { getSeason } from '@reelscore-sdk/helpers';
+import type {
+  CompetitionId,
+  CompetitionRound,
+  FixtureDateString,
+  FixtureDTO,
+} from '@reelscore-sdk/models';
 
 import { Fixtures } from './fixtures.model';
 import { FixturesService } from './fixtures.service';

@@ -5,11 +5,12 @@ import {
   inject,
 } from '@angular/core';
 
+import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
+
 import {
   PageTitleComponent,
-  StandingsTableComponent,
-  hasMultipleGroups,
   showHomeAndAwayStandings,
+  StandingsTableComponent,
 } from '@app/shared';
 
 import { CompetitionStandingsStore } from '../stores';
@@ -82,7 +83,10 @@ export class CompetitionStandingsComponent {
     const standings = this.standings();
     if (standings === null) return false;
 
-    return hasMultipleGroups(standings);
+    return isCompetitionWithMultipleGroups(
+      standings.league.id,
+      standings.league.season
+    );
   });
 
   readonly showHomeAndAwayStandings = computed<boolean>(() => {

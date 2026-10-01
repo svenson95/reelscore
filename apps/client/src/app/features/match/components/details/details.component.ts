@@ -22,7 +22,6 @@ import {
   MatchFixtureStandingsComponent,
   MatchLatestFixturesComponent,
 } from './base/components';
-
 import { MatchDetailsFacade } from './details.facade';
 
 const MAT_MODULES = [MatTabsModule, MatIconModule];

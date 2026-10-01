@@ -6,8 +6,9 @@ import {
   input,
 } from '@angular/core';
 
+import type { StandingsDTO } from '@reelscore-sdk/models';
+
 import { PageTitleComponent, StandingsTableComponent } from '@app/shared';
-import type { StandingsDTO } from '@lib/models';
 
 import { OverviewStandingsFacade } from './standings.facade';
 

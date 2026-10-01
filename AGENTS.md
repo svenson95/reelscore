@@ -26,8 +26,8 @@ The baseline checked on September 30, 2026 is Angular 21.2, Angular Material 21.
 | `apps/api/src/app.ts`           | Express application and middleware composition                      |
 | `apps/api/src/server.ts`        | Local server startup                                                |
 | `apps/api/vercel/index.ts`      | Serverless entry point exporting the Express application            |
-| `lib/models/`                   | Shared domain models and API DTOs                                   |
-| `lib/shared/`                   | Shared domain helpers and constants                                 |
+| `reelscore-sdk/openapi/`        | Shared domain models and API DTOs (separate repository)             |
+| `lib/shared/`                   | Reelscore-specific helpers and constants shared by client and API   |
 | `apps/client-e2e/`              | Playwright browser tests                                            |
 | `apps/api-e2e/`                 | Jest API end-to-end tests                                           |
 | `docs/`                         | Product documentation, architecture, and decisions                  |
@@ -45,7 +45,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 - Follow the surrounding formatting and `.prettierrc`, including single quotes. Format only files touched by the task.
 - Respect existing TypeScript and Angular template strictness. Avoid `any`; narrow `unknown` at untrusted boundaries. Do not silence errors with unsafe casts, non-null assertions, or broad lint suppressions.
 - Prefer inferred types for obvious local values and explicit types for contracts and boundaries. Use separate `import type` declarations as required by ESLint.
-- Reuse the aliases declared in `tsconfig.base.json`: `@app/core`, `@app/shared`, `@lib/models`, and `@lib/shared`. Preserve existing public exports when adding shared code.
+- Reuse the aliases declared in `tsconfig.base.json`: `@app/core`, `@app/shared`, and `@lib/shared`; use `@reelscore-sdk/models`, `/constants`, and `/helpers` for migrated SDK symbols. Preserve existing public exports when adding shared code.
 
 ## Nx and dependency boundaries
 
@@ -54,7 +54,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 - Run build, lint, test, and serve tasks through Nx so dependency ordering and caching remain effective.
 - For scaffolding, inspect the installed generator with `npx nx generate <generator> --help`, then preview its changes with `--dry-run`. Use workspace generator defaults and review generated code.
 - Respect the dependency graph and ESLint module boundaries. Client code must not import API internals. Shared `lib/` code must not depend on either application's implementation or runtime handles.
-- `lib/` contains shared source folders, not separately configured Nx projects. Do not invent targets for them; validate changes through their consumers.
+- `lib/` is the non-buildable Nx project `internal-shared`, with test, lint, and typecheck targets. Validate shared changes through this library and the affected client/API consumers. Migrated contracts are generated in the separate `reelscore-sdk` repository; update its packaged artifact instead of duplicating definitions locally.
 - `nx.json` disables Nx Cloud connections and analytics. Preserve this choice. AI setup commands can write rules, MCP configuration, and skills; run them only as part of a requested tooling setup.
 - For changes spanning projects, use `run-many` or `affected`. When using `affected`, specify a verified base and head for the intended changes; do not guess the comparison range.
 - Preserve target inputs, outputs, and caching configuration. If Nx infrastructure fails, investigate the actual error before changing workspace configuration or resetting caches.
@@ -68,7 +68,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 - Keep presentation, orchestration, state management, and transport responsibilities separate even when their files share a feature folder. Domain-oriented folders alone do not establish full Domain-Driven Design; introduce additional domain boundaries or abstractions when the task and business model justify them.
 - Retain feature-local `types/` folders for TypeScript interfaces, type aliases, union types, and related contracts.
 - Name files containing these declarations `<domain-name>.model.ts`, including files inside `types/`. For example, use `types/match-timeline-item.model.ts` for `MatchTimelineItem`. The `.model.ts` suffix applies to both interfaces and type aliases, including union types.
-- Keep types near the feature or subfeature that owns them. Promote them to a shared location only when they are meaningfully reused across features. Preserve `lib/models/` as the existing location for shared client/API contracts.
+- Keep types near the feature or subfeature that owns them. Promote them to a shared location only when they are meaningfully reused across features. Shared client/API contracts are generated in the separate `reelscore-sdk` repository; do not recreate local `lib/models` copies.
 - Client `types/` folders contain TypeScript contracts, not database schemas. Mongoose models under `apps/api/src/database/` have a separate persistence responsibility; these client conventions do not rename or restructure them.
 
 ### Components and templates
@@ -126,7 +126,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 ## reelscore domain rules
 
 - The application reads football data from its own database. Do not introduce direct API-Football/RapidAPI calls into client or API request flows.
-- Changes to `lib/models/` or `lib/shared/` may need matching changes in the separately maintained admin repository. Preserve compatibility and explicitly report any required admin follow-up; do not claim synchronization without checking that repository.
+- `lib/shared/` belongs to this repository and shares reelscore-specific code between its client and API. Cross-repository contracts, helpers, and constants belong in `reelscore-sdk`.
 - Keep fixture status values, event contracts, prediction rules, and missing-data fallbacks consistent with shared models and existing tests. Missing scores or statistics are not automatically zero.
 - Reuse shared date helpers. Calendar dates use `Europe/Berlin`; fixture timestamps are Unix seconds and require explicit conversion to JavaScript milliseconds. Preserve existing ISO-week and timezone behavior.
 - Read [the live-update decision](docs/decisions/0001-use-sse-for-live-updates.md) before changing realtime logic. Production currently uses 20-second polling; SSE is disabled in the production client and returns HTTP 204 in Vercel Production. Preserve visibility refreshes, retry limits, cooldowns, and the polling fallback unless explicitly requested otherwise.

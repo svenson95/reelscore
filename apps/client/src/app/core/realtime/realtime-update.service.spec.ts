@@ -8,14 +8,14 @@ import type {
   LiveFixturesUpdateDTO,
   LiveFixtureUpdateDTO,
   RapidEventsDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
+
 import {
   createOperationResponse,
   createRapidEvents,
 } from '../../../testing/factories/realtime.factory';
-
 import { WeekFixturesStore } from '../week-data';
 
 import { RealtimeUpdateService } from './realtime-update.service';

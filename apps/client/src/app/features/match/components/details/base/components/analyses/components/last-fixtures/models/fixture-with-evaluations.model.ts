@@ -1,4 +1,7 @@
-import type { EvaluationAnalyses, ExtendedFixtureDTO } from '@lib/models';
+import type {
+  EvaluationAnalyses,
+  ExtendedFixtureDTO,
+} from '@reelscore-sdk/models';
 
 export const ANALYSES_TEAM = {
   HOME: 'home',

@@ -22,8 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import type { DateString } from '@lib/shared';
-import { formatDateToYearMonthDay } from '@lib/shared';
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
 
 const MAT_MODULES = [
   MatButtonModule,

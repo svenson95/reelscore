@@ -1,5 +1,5 @@
 import { signal } from '@angular/core';
-import { TestBed, type ComponentFixture } from '@angular/core/testing';
+import { type ComponentFixture,TestBed } from '@angular/core/testing';
 
 import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../services';
 

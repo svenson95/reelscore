@@ -9,14 +9,13 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import {
-  PageTitleActionDirective,
-  PageTitleComponent,
-  type CompetitionWithFixtures,
-} from '@app/shared';
-import { STATUS_TYPES_PLAYING, type ExtendedFixtureDTO } from '@lib/models';
+import { STATUS_TYPES_PLAYING } from '@reelscore-sdk/constants';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
+import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../../services';
+import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';

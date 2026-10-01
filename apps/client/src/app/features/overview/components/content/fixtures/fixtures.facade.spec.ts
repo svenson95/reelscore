@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import type { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
 import { FilterService } from '../../../services';

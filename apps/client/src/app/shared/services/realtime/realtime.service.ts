@@ -1,16 +1,15 @@
 import { DOCUMENT } from '@angular/common';
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
-import {
-  REALTIME_EVENT,
-  type LiveFixtureEventsBatchUpdateDTO,
-  type LiveFixtureEventsUpdateDTO,
-  type LiveFixturesUpdateDTO,
-  type LiveFixtureUpdateDTO,
-} from '@lib/models';
+import { REALTIME_EVENT } from '@reelscore-sdk/constants';
+import type {
+  LiveFixtureEventsBatchUpdateDTO,
+  LiveFixtureEventsUpdateDTO,
+  LiveFixturesUpdateDTO,
+  LiveFixtureUpdateDTO,
+} from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
-
 import { LiveRefreshService } from '../live-refresh/live-refresh.service';
 
 export type RealtimeStatus =

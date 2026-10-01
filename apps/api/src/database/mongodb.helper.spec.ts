@@ -1,6 +1,6 @@
 import type mongoose from 'mongoose';
 
-import type { RapidEventsDTO } from '@lib/models';
+import type { RapidEventsDTO } from '@reelscore-sdk/models';
 
 import { findDocument } from './mongodb.helper';
 

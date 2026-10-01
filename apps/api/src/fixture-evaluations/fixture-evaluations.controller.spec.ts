@@ -2,7 +2,7 @@ import type {
   EvaluationTeam,
   ExtendedFixtureDTO,
   FixtureDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import {
   FixtureEvaluationsController,

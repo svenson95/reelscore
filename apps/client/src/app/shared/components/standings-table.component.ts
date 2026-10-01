@@ -10,21 +10,21 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
+import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
 import type {
   StandingRanks,
   StandingsLeague,
   StandingsPlayed,
-} from '@lib/models';
-import { isCompetitionWithMultipleGroups } from '@lib/shared';
+} from '@reelscore-sdk/models';
 
-import { TeamNamePipe } from '../pipes';
-import { BreakpointObserverService, ThemeService } from '../services';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   getTeamLogo,
   getTeamLogoSrcSet,
-} from '../types';
+} from '../helpers';
+import { TeamNamePipe } from '../pipes';
+import { BreakpointObserverService, ThemeService } from '../services';
 import { SELECT_COMPETITION_DATA_FLAT } from '../utils';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';

@@ -2,8 +2,10 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import type { GetFixtureDTO } from '@reelscore-sdk/models';
+
 import { RouteService, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
-import type { GetFixtureDTO } from '@lib/models';
+
 import { EXAMPLE_FIXTURE } from '../../../testing/fixtures.mock';
 
 import { MatchFacade } from './match.facade';

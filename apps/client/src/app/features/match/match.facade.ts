@@ -1,18 +1,19 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import type { DateString } from '@reelscore-sdk/helpers';
+import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
+import type {
+  CompetitionUrl,
+  ExtendedFixtureDTO,
+  FixtureId,
+} from '@reelscore-sdk/models';
+
 import {
   type CompetitionData,
   RouteService,
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
-import type {
-  CompetitionUrl,
-  ExtendedFixtureDTO,
-  FixtureId,
-} from '@lib/models';
-import type { DateString } from '@lib/shared';
-import { formatDateToYearMonthDay } from '@lib/shared';
 
 import { FixtureStore } from './stores';
 

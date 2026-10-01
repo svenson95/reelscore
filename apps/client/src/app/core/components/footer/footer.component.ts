@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { getCurrentYear } from '@lib/shared';
+import { getCurrentYear } from '@reelscore-sdk/helpers';
 
 import { LogoComponent } from '../logo/logo.component';
 

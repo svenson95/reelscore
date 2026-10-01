@@ -5,7 +5,7 @@ import type {
   LiveFixtureEventsUpdateDTO,
   MatchTeams,
   RapidEventsDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import {
   createOperationResponse,
@@ -13,8 +13,8 @@ import {
 } from '../../../../testing/factories/realtime.factory';
 
 import {
-  type RealtimeUpdateTarget,
   RealtimeUpdateRegistryService,
+  type RealtimeUpdateTarget,
 } from './realtime-update-registry.service';
 
 describe('RealtimeUpdateRegistryService', () => {

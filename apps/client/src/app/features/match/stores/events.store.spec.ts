@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject } from 'rxjs';
 
-import type { EventDTO, RapidEventsDTO } from '@lib/models';
+import type { EventDTO, RapidEventsDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
-
 import { HttpFixtureEventsService } from '../services';
 
 import { EventsStore } from './events.store';

@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import type {
+  ExtendedFixtureDTO,
+  LatestFixturesDTO,
+} from '@reelscore-sdk/models';
+
 import { PageTitleComponent } from '@app/shared';
-import type { ExtendedFixtureDTO, LatestFixturesDTO } from '@lib/models';
 
 import { MatchFixturesTableComponent } from './components';
 

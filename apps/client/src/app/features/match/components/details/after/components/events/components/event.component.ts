@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 
-import type { EventDTO } from '@lib/models';
+import type { EventDTO } from '@reelscore-sdk/models';
 
 import {
   EventCardComponent,

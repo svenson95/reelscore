@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+
 import { Subject } from 'rxjs';
 
-import type { LatestFixturesDTO } from '@lib/models';
+import type { LatestFixturesDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
-
 import { HttpLatestFixturesService } from '../services';
 
 import { LatestFixturesStore } from './latest-fixtures.store';

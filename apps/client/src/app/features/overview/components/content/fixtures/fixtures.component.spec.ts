@@ -1,12 +1,13 @@
 import { Component, input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import type { CompetitionWithFixtures } from '@app/shared';
-import { type ExtendedFixtureDTO } from '@lib/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
-
 import { DateNavigationService, SelectedDateService } from '../../../services';
+
 import { OverviewFixturesComponent } from './fixtures.component';
 import { OverviewFixturesFacade } from './fixtures.facade';
 import { MatchDayListComponent } from './match-day-list.component';

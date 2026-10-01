@@ -1,4 +1,4 @@
-import type { EventDTO, RapidEventsDTO } from '@lib/models';
+import type { EventDTO, RapidEventsDTO } from '@reelscore-sdk/models';
 
 import {
   FixtureEventsController,

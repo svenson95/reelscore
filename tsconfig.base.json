@@ -16,8 +16,16 @@
     "paths": {
       "@app/shared": ["./apps/client/src/app/shared/index.ts"],
       "@app/core": ["./apps/client/src/app/core/index.ts"],
-      "@lib/models": ["./lib/models/index.ts"],
-      "@lib/shared": ["./lib/shared/index.ts"]
+      "@lib/shared": ["./lib/shared/index.ts"],
+      "@reelscore-sdk/models": [
+        "./node_modules/reelscore-sdk/dist/esm/models/index"
+      ],
+      "@reelscore-sdk/constants": [
+        "./node_modules/reelscore-sdk/dist/esm/shared/constants/index"
+      ],
+      "@reelscore-sdk/helpers": [
+        "./node_modules/reelscore-sdk/dist/esm/shared/helpers/index"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

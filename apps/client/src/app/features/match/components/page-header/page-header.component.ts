@@ -6,8 +6,9 @@ import {
   inject,
 } from '@angular/core';
 
+import { formatFixtureTime } from '@reelscore-sdk/helpers';
+
 import { BackButtonComponent, RefreshTickerComponent } from '@app/shared';
-import { formatFixtureTime } from '@lib/shared';
 
 import { MatchFacade } from '../../match.facade';
 

@@ -6,14 +6,19 @@ import {
   input,
 } from '@angular/core';
 
+import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
+import type {
+  StandingRanks,
+  StandingsDTO,
+  StandingsLeague,
+} from '@reelscore-sdk/models';
+
 import {
   BreakpointObserverService,
-  hasMultipleGroups,
   PageTitleComponent,
   showHomeAndAwayStandings,
   StandingsTableComponent,
 } from '@app/shared';
-import type { StandingRanks, StandingsDTO, StandingsLeague } from '@lib/models';
 
 @Component({
   selector: 'rs-match-fixture-standings',
@@ -162,7 +167,12 @@ export class MatchFixtureStandingsComponent {
   readonly hasMultipleGroups = computed<boolean>(() => {
     const standings = this.standings();
 
-    return standings ? hasMultipleGroups(standings) : false;
+    return standings
+      ? isCompetitionWithMultipleGroups(
+          standings.league.id,
+          standings.league.season
+        )
+      : false;
   });
 
   readonly showHomeAndAwayStandings = computed<boolean>(() => {

@@ -5,8 +5,9 @@ import {
   input,
 } from '@angular/core';
 
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+
 import { getCompetitionRoundLabel, PageTitleComponent } from '@app/shared';
-import type { ExtendedFixtureDTO } from '@lib/models';
 
 @Component({
   selector: 'rs-match-fixture-data',

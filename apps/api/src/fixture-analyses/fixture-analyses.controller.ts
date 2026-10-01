@@ -9,7 +9,8 @@ import type {
   GoalScorers,
   PlayerName,
   TeamId,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
+
 import { isHighlightGoal } from '@lib/shared';
 
 import {

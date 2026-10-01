@@ -1,7 +1,7 @@
-import type { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
-import { Fixtures } from './fixtures.model';
 import { FixtureService } from './fixture.service';
+import { Fixtures } from './fixtures.model';
 
 describe(FixtureService.name, () => {
   afterEach(() => {

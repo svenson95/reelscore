@@ -1,4 +1,5 @@
-import type { CompetitionRound } from '@lib/models';
+import type { CompetitionRound } from '@reelscore-sdk/models';
+
 import { type RoundMapOverride } from '../../round-label.helper';
 
 const groupLabel = (value: CompetitionRound): CompetitionRound => {

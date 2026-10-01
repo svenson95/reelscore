@@ -1,10 +1,10 @@
 import {
   addDays,
+  type DateString,
   formatCalendarWeekKey,
   getWeekdayIndex,
   getWeekStartFromKey,
-  type DateString,
-} from '@lib/shared';
+} from '@reelscore-sdk/helpers';
 
 const EDGE_PREVIOUS_DAY_INDEX = 0;
 const CURRENT_WEEK_START_INDEX = 1;

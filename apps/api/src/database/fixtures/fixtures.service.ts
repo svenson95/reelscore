@@ -1,6 +1,8 @@
 import moment from 'moment';
 import type { FilterQuery } from 'mongoose';
 
+import { COMPETITION_ROUNDS } from '@reelscore-sdk/constants';
+import { getSeason,TIMEZONE } from '@reelscore-sdk/helpers';
 import type {
   CompetitionId,
   CompetitionRound,
@@ -8,8 +10,7 @@ import type {
   FixtureDateString,
   FixtureDTO,
   FixtureId,
-} from '@lib/models';
-import { COMPETITION_ROUNDS, getSeason, TIMEZONE } from '@lib/shared';
+} from '@reelscore-sdk/models';
 
 import { Fixtures } from './fixtures.model';
 

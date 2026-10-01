@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import type { SearchResult } from '@lib/models';
+import type { SearchResult } from '@reelscore-sdk/models';
 
 import { SEARCH_SERVICE_PROVIDER, SearchService } from './search.service';
 

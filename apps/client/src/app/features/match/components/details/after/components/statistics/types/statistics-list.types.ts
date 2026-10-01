@@ -3,7 +3,7 @@ import type {
   StatisticItemType,
   StatisticItemValue,
   StatisticKey,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 export type StatisticListItem = {
   home: StatisticItemValue | undefined;

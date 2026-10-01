@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import {
-  renderComponent,
-  readElementText,
-  createMatchEvent,
-  readElementTexts,
-} from '../../../../../../testing/match-components.testing';
 import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
+import {
+  createMatchEvent,
+  readElementText,
+  readElementTexts,
+  renderComponent,
+} from '../../../../../../testing/match-components.testing';
 
 import { MatchHighlightsComponent } from './match-highlights.component';
 

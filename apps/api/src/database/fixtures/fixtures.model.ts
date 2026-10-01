@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { ExtendedFixtureDTO } from '@lib/models';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 const FixturesSchema = new mongoose.Schema<ExtendedFixtureDTO>({
   fixture: {

@@ -1,10 +1,10 @@
 import { signal } from '@angular/core';
-import { TestBed, type ComponentFixture } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import type { StandingRanks } from '@lib/models';
-import { EXAMPLE_STANDINGS } from '../../../testing/standings.mock';
+import type { StandingRanks } from '@reelscore-sdk/models';
 
+import { EXAMPLE_STANDINGS } from '../../../testing/standings.mock';
 import { BreakpointObserverService, ThemeService } from '../services';
 
 import { StandingsTableComponent } from './standings-table.component';

@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 
-import type { MatchTeams } from '@lib/models';
+import type { MatchTeams } from '@reelscore-sdk/models';
 
 import {
   AnalysesStore,

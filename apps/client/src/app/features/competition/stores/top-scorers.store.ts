@@ -1,10 +1,13 @@
 import { inject } from '@angular/core';
+
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { StateHandler } from '@app/shared';
+import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
+
 import { errorHandler } from '@app/shared';
-import type { CompetitionId, TopScorersDTO } from '@lib/models';
+
+import type { StateHandler } from '@app/shared';
 
 import { HttpTopScorersService } from '../services';
 

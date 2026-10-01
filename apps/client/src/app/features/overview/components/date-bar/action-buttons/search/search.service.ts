@@ -1,10 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+
 import type { Observable } from 'rxjs';
 import { retry } from 'rxjs';
 
+import type { SearchResult } from '@reelscore-sdk/models';
+
 import { errorHandler } from '@app/shared';
-import type { SearchResult } from '@lib/models';
 
 import { environment } from '../../../../../../../environments/environment';
 

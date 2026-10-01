@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+
 import { of, Subject, throwError } from 'rxjs';
 
-import type { AnalysesDTO } from '@lib/models';
+import type { AnalysesDTO } from '@reelscore-sdk/models';
 
 import { HttpFixtureAnalysesService } from '../services';
 

@@ -1,5 +1,6 @@
-import type { RapidDTO } from '@lib/models';
 import mongoose from 'mongoose';
+
+import type { RapidDTO } from '@reelscore-sdk/models';
 
 export async function findDocument<T extends RapidDTO<unknown>>(
   model: mongoose.Model<T>,

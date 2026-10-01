@@ -5,14 +5,13 @@ import type {
   AnalysesDTO,
   GetFixtureDTO,
   LatestFixturesDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
 import {
   readElementText,
   renderComponent,
 } from '../../../../../../../../testing/match-components.testing';
-
 import {
   AnalysesStore,
   FixtureStore,

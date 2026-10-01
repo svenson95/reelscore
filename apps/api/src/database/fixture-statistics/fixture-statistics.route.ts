@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { FixtureIdParameter } from '@lib/models';
+import type { FixtureIdParameter } from '@reelscore-sdk/models';
 
 import { FixtureStatisticsController } from './fixture-statistics.controller';
 

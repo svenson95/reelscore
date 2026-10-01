@@ -1,4 +1,4 @@
-import type { StandingsDTO } from '@lib/models';
+import type { StandingsDTO } from '@reelscore-sdk/models';
 
 export const EXAMPLE_STANDINGS: StandingsDTO = {
   _id: '6a86ce1686fd3afa624fd1e4',

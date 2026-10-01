@@ -1,5 +1,5 @@
-import type { CompetitionId, CompetitionSeason } from '@lib/models';
-import { COMPETITION_ID, SEASONS } from '@lib/shared';
+import { COMPETITION_ID, SEASONS } from '@reelscore-sdk/constants';
+import type { CompetitionId, CompetitionSeason } from '@reelscore-sdk/models';
 
 import {
   CHAMPIONS_LEAGUE_FROM_2025_ROUND_MAP,

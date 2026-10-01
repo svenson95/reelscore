@@ -1,24 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
+import { REALTIME_EVENT } from '@reelscore-sdk/constants';
 import type {
   FixtureDTO,
   LiveFixtureEventsBatchUpdateDTO,
+  LiveFixtureEventsUpdateDTO,
   LiveFixturesUpdateDTO,
+  LiveFixtureUpdateDTO,
   RapidEventsDTO,
-} from '@lib/models';
-import {
-  REALTIME_EVENT,
-  type LiveFixtureEventsUpdateDTO,
-  type LiveFixtureUpdateDTO,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 import { environment } from '../../../../environments/environment';
 import {
   createOperationResponse,
   createRapidEvents,
 } from '../../../../testing/factories/realtime.factory';
-
 import { LiveRefreshService } from '../live-refresh/live-refresh.service';
+
 import { RealtimeService } from './realtime.service';
 
 describe('RealtimeService', () => {

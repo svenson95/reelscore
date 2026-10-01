@@ -9,7 +9,6 @@ import {
 } from '../../../../../../../../testing/match-components.testing';
 
 import { MatchFixturesTableComponent } from './components';
-
 import { MatchLatestFixturesComponent } from './latest-fixtures.component';
 
 describe('MatchLatestFixturesComponent', () => {

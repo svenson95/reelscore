@@ -5,10 +5,9 @@ import {
   isCompetitionWithoutStandings,
   isKoPhase,
   isQualifyPhase,
-} from '@lib/shared';
+} from '@reelscore-sdk/helpers';
 
 import { environment } from '../../../../../environments/environment';
-
 import {
   AnalysesStore,
   EvaluationsStore,

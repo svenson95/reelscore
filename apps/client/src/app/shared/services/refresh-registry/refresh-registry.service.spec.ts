@@ -1,4 +1,4 @@
-import { signal, type Signal } from '@angular/core';
+import { type Signal,signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import {

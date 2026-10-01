@@ -2,7 +2,7 @@ import type {
   CompetitionId,
   CompetitionName,
   CompetitionUrl,
-} from '@lib/models';
+} from '@reelscore-sdk/models';
 
 export type CompetitionData = {
   image: string;

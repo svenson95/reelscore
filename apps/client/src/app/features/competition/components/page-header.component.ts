@@ -7,11 +7,11 @@ import {
 
 import {
   BackButtonComponent,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   LeagueService,
   ResponsiveImageComponent,
   ThemeService,
-  getCompetitionLogo,
-  getCompetitionLogoSrcSet,
 } from '@app/shared';
 
 @Component({

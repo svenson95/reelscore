@@ -10,7 +10,6 @@ import { PageTitleComponent } from '@app/shared';
 import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 
 import { MatchFixtureDataComponent } from './base/components';
-
 import { MatchDetailsComponent } from './details.component';
 import { MatchDetailsFacade } from './details.facade';
 
