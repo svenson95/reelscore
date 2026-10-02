@@ -1,4 +1,4 @@
-name: Update README Architecture Diagram
+name: Update Architecture Diagram
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  update-readme-architecture:
+  update-architecture-diagram:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
