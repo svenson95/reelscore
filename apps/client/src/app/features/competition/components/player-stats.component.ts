@@ -5,11 +5,13 @@ import {
   inject,
 } from '@angular/core';
 
-import type { TopScorer } from '@reelscore-sdk/models';
-
 import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 
-import { TopScorersStore } from '../stores';
+import { TopScorersStore } from '../state';
+import {
+  getAssistProviders,
+  getGoalScorers,
+} from '../utils/player-statistics.utils';
 
 @Component({
   selector: 'rs-competition-player-stats',
@@ -34,6 +36,7 @@ import { TopScorersStore } from '../stores';
     <div class="column">
       <rs-page-title title="Torschützen"></rs-page-title>
 
+      @if (goalScorer().length > 0) {
       <div class="stats">
         @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -52,11 +55,15 @@ import { TopScorersStore } from '../stores';
         </div>
         }
       </div>
+      } @else {
+      <p class="no-data">Keine Torschützen vorhanden</p>
+      }
     </div>
 
     <div class="column">
       <rs-page-title title="Vorlagengeber"></rs-page-title>
 
+      @if (assists().length > 0) {
       <div class="stats">
         @for (stat of assists(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -75,9 +82,14 @@ import { TopScorersStore } from '../stores';
         </div>
         }
       </div>
+      } @else {
+      <p class="no-data">Keine Vorlagengeber vorhanden</p>
+      }
     </div>
     } @else if (isLoading()) {
     <p class="no-data">Spieler-Statistiken werden geladen ...</p>
+    } @else if (error()) {
+    <p class="no-data">Spieler-Statistiken konnten nicht geladen werden.</p>
     } @else {
     <p class="no-data">Keine Daten gefunden</p>
     }
@@ -88,56 +100,15 @@ export class PlayerStatsComponent {
 
   readonly topScorers = this.store.topScorers;
   readonly isLoading = this.store.isLoading;
-
-  private getTopScorers(): TopScorer[] {
-    return [...(this.topScorers()?.response ?? [])];
-  }
+  readonly error = this.store.error;
 
   readonly goalScorer = computed(() =>
-    this.getTopScorers()
-      .sort(this.sortGoals)
-      .filter((stat) => this.getStats(stat).goals > 0)
+    getGoalScorers(this.topScorers()?.response ?? [])
   );
 
   readonly assists = computed(() =>
-    this.getTopScorers()
-      .sort(this.sortAssists)
-      .filter((stat) => this.getStats(stat).assists > 0)
+    getAssistProviders(this.topScorers()?.response ?? [])
   );
 
   readonly isDataLoaded = computed<boolean>(() => this.topScorers() !== null);
-
-  private sortGoals = (a: TopScorer, b: TopScorer): number => {
-    const aStats = this.getStats(a);
-    const bStats = this.getStats(b);
-
-    return (
-      bStats.goals - aStats.goals ||
-      aStats.penaltyGoals - bStats.penaltyGoals ||
-      bStats.assists - aStats.assists ||
-      aStats.minutes - bStats.minutes
-    );
-  };
-
-  private sortAssists = (a: TopScorer, b: TopScorer): number => {
-    const aStats = this.getStats(a);
-    const bStats = this.getStats(b);
-
-    return (
-      bStats.assists - aStats.assists ||
-      bStats.goals - aStats.goals ||
-      aStats.minutes - bStats.minutes
-    );
-  };
-
-  private getStats(stat: TopScorer) {
-    const statistics = stat.statistics[0];
-
-    return {
-      goals: statistics.goals.total ?? 0,
-      penaltyGoals: statistics.penalty.scored ?? 0,
-      assists: statistics.goals.assists ?? 0,
-      minutes: statistics.games.minutes ?? 0,
-    };
-  }
 }

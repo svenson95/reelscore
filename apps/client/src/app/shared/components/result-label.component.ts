@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 
 import {
-  STATUS_TYPES_NOT_PLAYED,
-  STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
+  STATUS_VALUES_NOT_PLAYED,
+  STATUS_VALUES_SCHEDULED,
 } from '@reelscore-sdk/constants';
 import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
 
@@ -40,7 +40,7 @@ export class ResultLabelComponent {
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
 
   readonly isScheduled = computed<boolean>(() =>
-    STATUS_TYPES_SCHEDULED.includes(this.status().short)
+    STATUS_VALUES_SCHEDULED.includes(this.status().short)
   );
 
   readonly isPenaltyShootout = computed<boolean>(() => {
@@ -53,7 +53,7 @@ export class ResultLabelComponent {
       status === STATUS_VALUE_POSTPONED ||
       status === STATUS_VALUE_CANCELLED ||
       status === STATUS_VALUE_ABANDONED ||
-      STATUS_TYPES_NOT_PLAYED.includes(status)
+      STATUS_VALUES_NOT_PLAYED.includes(status)
     );
   });
 

@@ -1,12 +1,12 @@
 import {
-  STATUS_TYPES_FINISHED,
-  STATUS_TYPES_NOT_PLAYED,
-  STATUS_TYPES_PLAYING,
-  STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_HALFTIME,
   STATUS_VALUE_POSTPONED,
+  STATUS_VALUES_FINISHED,
+  STATUS_VALUES_NOT_PLAYED,
+  STATUS_VALUES_PLAYING,
+  STATUS_VALUES_SCHEDULED,
 } from '@reelscore-sdk/constants';
 import type { StatusShort, StatusTypeScheduled } from '@reelscore-sdk/models';
 
@@ -22,11 +22,11 @@ export interface FixtureStatusState {
 }
 
 export function getFixtureStatusState(status: StatusShort): FixtureStatusState {
-  const isScheduled = STATUS_TYPES_SCHEDULED.includes(
+  const isScheduled = STATUS_VALUES_SCHEDULED.includes(
     status as StatusTypeScheduled
   );
 
-  const isPlaying = STATUS_TYPES_PLAYING.includes(status);
+  const isPlaying = STATUS_VALUES_PLAYING.includes(status);
   const isHalftime = status === STATUS_VALUE_HALFTIME;
   const isPenalty = status === 'P';
 
@@ -34,9 +34,9 @@ export function getFixtureStatusState(status: StatusShort): FixtureStatusState {
     status === STATUS_VALUE_POSTPONED ||
     status === STATUS_VALUE_CANCELLED ||
     status === STATUS_VALUE_ABANDONED ||
-    STATUS_TYPES_NOT_PLAYED.includes(status);
+    STATUS_VALUES_NOT_PLAYED.includes(status);
 
-  const isFinished = STATUS_TYPES_FINISHED.includes(status) || isNotPlayed;
+  const isFinished = STATUS_VALUES_FINISHED.includes(status) || isNotPlayed;
 
   const isLive = isPlaying || isHalftime || isPenalty;
 

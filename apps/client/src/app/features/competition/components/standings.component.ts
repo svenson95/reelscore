@@ -13,7 +13,7 @@ import {
   StandingsTableComponent,
 } from '@app/shared';
 
-import { CompetitionStandingsStore } from '../stores';
+import { CompetitionStandingsStore } from '../state';
 
 @Component({
   selector: 'rs-competition-standings',
@@ -61,6 +61,8 @@ import { CompetitionStandingsStore } from '../stores';
       </div>
       } } } @else if (isLoading()) {
       <p class="no-data">Tabelle wird geladen ...</p>
+      } @else if (error()) {
+      <p class="no-data">Die Tabelle konnte nicht geladen werden.</p>
       } @else {
       <p class="no-data">Keine Tabelle vorhanden</p>
       }
@@ -72,6 +74,7 @@ export class CompetitionStandingsComponent {
 
   private readonly standings = this.store.standings;
   readonly isLoading = this.store.isLoading;
+  readonly error = this.store.error;
 
   readonly league = computed(() => this.standings()?.league ?? null);
 

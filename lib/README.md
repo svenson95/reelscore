@@ -15,7 +15,7 @@ by the separate `reelscore-sdk` package; `@lib/models` has been removed.
 
 ```ts
 import type { CompetitionDTO, TeamDTO, FixtureDTO } from '@reelscore-sdk/models';
-import { STATUS_TYPES_FINISHED, REALTIME_EVENT } from '@reelscore-sdk/constants';
+import { STATUS_VALUES_FINISHED, REALTIME_EVENT } from '@reelscore-sdk/constants';
 import { timeTotal, getTodayDateString } from '@reelscore-sdk/helpers';
 ```
 

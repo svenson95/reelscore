@@ -9,7 +9,7 @@ import { errorHandler } from '@app/shared';
 
 import type { StateHandler } from '@app/shared';
 
-import { HttpLastFixturesService } from '../services';
+import { HttpLastFixturesService } from '../data-access';
 
 type LastFixturesState = StateHandler<{
   fixtures: ExtendedFixtureDTO[][] | null;

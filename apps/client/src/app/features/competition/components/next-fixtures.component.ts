@@ -9,7 +9,7 @@ import type { CompetitionId } from '@reelscore-sdk/models';
 
 import { LeagueService, PageTitleComponent } from '@app/shared';
 
-import { NextFixturesStore } from '../stores';
+import { NextFixturesStore } from '../state';
 
 import { FixturesListComponent } from './fixtures-list.component';
 
@@ -31,7 +31,6 @@ import { FixturesListComponent } from './fixtures-list.component';
       <rs-competition-fixtures-list
         [fixtures]="fixtureGroup"
         [competition]="competitionId()"
-        [isLoading]="isLoading()"
       />
       }
     </div>
@@ -39,6 +38,8 @@ import { FixturesListComponent } from './fixtures-list.component';
     <p class="no-data">Keine anstehenden Spiele</p>
     } } @else if (isLoading()) {
     <p class="no-data">Spiele werden geladen ...</p>
+    } @else if (error()) {
+    <p class="no-data">Der Spielplan konnte nicht geladen werden.</p>
     }
   `,
 })
@@ -48,6 +49,7 @@ export class NextFixturesComponent {
 
   readonly fixtures = this.store.fixtures;
   readonly isLoading = this.store.isLoading;
+  readonly error = this.store.error;
 
   private readonly competition = this.leagueService.selectedLeague;
 

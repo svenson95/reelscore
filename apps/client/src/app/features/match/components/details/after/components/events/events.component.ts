@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { STATUS_TYPES_FINISHED } from '@reelscore-sdk/constants';
+import { STATUS_VALUES_FINISHED } from '@reelscore-sdk/constants';
 import type { EventWithResult } from '@reelscore-sdk/models';
 
 import { FixtureStore } from '../../../../../stores';
@@ -194,7 +194,7 @@ export class MatchEventsComponent {
   protected readonly timeline = computed<MatchTimelineItem[]>(() => {
     const fixture = this.fixture();
     const fixtureStatus = fixture?.data.fixture.status.short ?? '';
-    const isFinished = STATUS_TYPES_FINISHED.includes(fixtureStatus);
+    const isFinished = STATUS_VALUES_FINISHED.includes(fixtureStatus);
 
     const events = [...this.eventsForTimeline()].sort(
       (a, b) => this.getTotalMinute(b) - this.getTotalMinute(a)

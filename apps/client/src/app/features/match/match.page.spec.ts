@@ -24,8 +24,8 @@ import {
 } from './services';
 import { STORE_PROVIDERS } from './stores';
 
-import { MatchComponent } from './match.component';
 import { MatchFacade } from './match.facade';
+import { MatchPage } from './match.page';
 
 @Component({
   selector: 'nav[rs-page-header]',
@@ -48,8 +48,8 @@ class MatchHeaderStubComponent {
 })
 class MatchDetailsStubComponent {}
 
-describe('MatchComponent', () => {
-  let componentFixture: ComponentFixture<MatchComponent>;
+describe('MatchPage', () => {
+  let componentFixture: ComponentFixture<MatchPage>;
 
   const fixture = signal<GetFixtureDTO | null>(null);
   const data = signal<ExtendedFixtureDTO | null>(null);
@@ -81,9 +81,9 @@ describe('MatchComponent', () => {
     jest.clearAllMocks();
 
     await TestBed.configureTestingModule({
-      imports: [MatchComponent],
+      imports: [MatchPage],
     })
-      .overrideComponent(MatchComponent, {
+      .overrideComponent(MatchPage, {
         remove: {
           imports: [
             PageHeaderComponent,
@@ -117,8 +117,8 @@ describe('MatchComponent', () => {
   }: {
     fixtureId?: FixtureId;
     competitionUrl?: CompetitionUrl;
-  } = {}): ComponentFixture<MatchComponent> => {
-    componentFixture = TestBed.createComponent(MatchComponent);
+  } = {}): ComponentFixture<MatchPage> => {
+    componentFixture = TestBed.createComponent(MatchPage);
     componentFixture.componentRef.setInput('fixtureId', fixtureId);
     componentFixture.componentRef.setInput('competitionUrl', competitionUrl);
     componentFixture.detectChanges();

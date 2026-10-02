@@ -11,7 +11,7 @@ import { FixtureListItemComponent } from './fixture-list-item.component';
 @Component({
   template: '',
 })
-class TestMatchComponent {}
+class TestMatchPage {}
 
 describe('FixtureListItemComponent', () => {
   beforeEach(async () => {
@@ -21,7 +21,7 @@ describe('FixtureListItemComponent', () => {
         provideRouter([
           {
             path: '**',
-            component: TestMatchComponent,
+            component: TestMatchPage,
           },
         ]),
       ],

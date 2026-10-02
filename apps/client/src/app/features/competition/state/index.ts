@@ -3,6 +3,7 @@ import { NextFixturesStore } from './next-fixtures.store';
 import { CompetitionStandingsStore } from './standings.store';
 import { TopScorersStore } from './top-scorers.store';
 
+export * from './competition-route-context';
 export * from './last-fixtures.store';
 export * from './next-fixtures.store';
 export * from './standings.store';

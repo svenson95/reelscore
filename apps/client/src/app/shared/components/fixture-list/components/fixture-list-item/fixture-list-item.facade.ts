@@ -2,20 +2,20 @@ import { Injectable } from '@angular/core';
 
 import {
   COMPETITION_KO_ROUNDS,
-  STATUS_TYPES_FINISHED,
-  STATUS_TYPES_PLAYING,
-  STATUS_TYPES_SCHEDULED,
   STATUS_VALUE_HALFTIME,
+  STATUS_VALUES_FINISHED,
+  STATUS_VALUES_PLAYING,
+  STATUS_VALUES_SCHEDULED,
 } from '@reelscore-sdk/constants';
 import { isTwoLeggedRound } from '@reelscore-sdk/helpers';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 @Injectable()
 export class FixtureListItemFacade {
-  readonly scheduled = [...STATUS_TYPES_SCHEDULED];
+  readonly scheduled = [...STATUS_VALUES_SCHEDULED];
   readonly halfTime = [STATUS_VALUE_HALFTIME];
-  readonly playing = [...STATUS_TYPES_PLAYING];
-  readonly finished = [...STATUS_TYPES_FINISHED];
+  readonly playing = [...STATUS_VALUES_PLAYING];
+  readonly finished = [...STATUS_VALUES_FINISHED];
 
   isTeamEliminated(
     fixture: ExtendedFixtureDTO,
