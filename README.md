@@ -6,30 +6,11 @@ The project is organized as an [Nx](https://nx.dev) monorepo and contains the re
 
 Architectural decisions and technical details are documented in [/docs](./docs/README.md).
 
-## Tech Stack
-
-### Client
-
-- Angular
-- Angular Material
-- Tailwind
-
-### API
-
-- Node.js
-- Express
-- TypeScript
-- MongoDB & Mongoose
-
-### Tooling
-
-- Nx
-- GitHub Actions
-
 ## Requirements
 
-- Node.js
+- Node.js 24
 - npm
+- Docker (for running the local test dependencies)
 
 Install all dependencies:
 
@@ -37,10 +18,64 @@ Install all dependencies:
 npm install
 ```
 
-## Architecture
+### Environment Variables
 
-The diagram below is generated from the Nx project graph. It shows dependencies
-between Reelscore applications, end-to-end projects and libraries.
+The applications require environment-specific configuration.
+
+```env
+API_PORT=
+MONGODB_USER=
+MONGODB_PASSWORD=
+MONGODB_CLUSTER=
+MONGODB_DATABASE=
+```
+
+## Project Overview
+
+### Tech Stack
+
+| Technology       | Used for          | Version |
+| ---------------- | ----------------- | ------- |
+| Node.js          | Runtime           | `24.x`  |
+| Nx               | Workspace tooling | `22.x`  |
+| Angular          | Client            | `21.x`  |
+| Angular Material | Client UI         | `21.x`  |
+| NgRx             | Client state      | `21.x`  |
+| Tailwind CSS     | Client styling    | `3.x`   |
+| Express          | API               | `4.x`   |
+| Mongoose         | API database      | `8.x`   |
+| TypeScript       | Client and API    | `5.x`   |
+
+### Repository Structure
+
+The main applications are located under `apps/`:
+
+```text
+apps/
+├── api/
+└── client/
+```
+
+Project-specific helpers shared by the client and API are stored under
+`lib/shared/`.
+Shared API models, constants and helpers are maintained in the separate
+[`reelscore-sdk`](https://github.com/svenson95/reelscore-sdk) package and installed
+here as a versioned npm tarball. To update them, change the SDK source and
+regenerate, test and pack a new version; then update this project's package
+artifact and lockfile.
+
+Additional project documentation and architectural decisions are stored under:
+
+```text
+docs/
+└── decisions/
+```
+
+### Nx project dependencies
+
+This diagram is generated from the Nx project graph. It shows dependencies
+between Reelscore applications, end-to-end projects and Nx libraries. It does not
+show the folders or files inside an application.
 
 <!-- nx-architecture:start -->
 
@@ -64,6 +99,20 @@ To open the interactive Nx project graph locally, run:
 ```bash
 npx nx graph
 ```
+
+## Infrastructure
+
+### Data Source
+
+Football data is provided by [API-Football](https://www.api-football.com/) through RapidAPI.
+
+This project does not communicate with API-Football directly. All application data is retrieved exclusively from the project's own database.
+
+### Hosting
+
+The client and API are both hosted on Vercel.
+
+The Angular client is built and deployed as a static web application. The Node.js/Express API is deployed as Vercel Serverless Functions.
 
 ## Development
 
@@ -123,7 +172,7 @@ npx nx run-many -t build -p client api
 
 ## Testing
 
-Run tests for a specific project:
+Run unit and component tests for a project:
 
 ```bash
 npx nx test <project>
@@ -135,7 +184,7 @@ Example:
 npx nx test client
 ```
 
-Run tests for multiple projects:
+Run tests for all configured projects:
 
 ```bash
 npx nx run-many -t test
@@ -143,108 +192,40 @@ npx nx run-many -t test
 
 ### End-to-End Tests
 
-> Add the final E2E commands here once the Playwright setup has been finalized.
-
-Example:
+The API E2E suite needs the environment variables listed above:
 
 ```bash
-npx nx e2e <project>
+npx nx e2e api-e2e
 ```
 
-## Nx Commands
-
-Nx tasks follow this general syntax:
+The client E2E suite also needs the environment variables above and Playwright
+Chromium. Install the browser once with:
 
 ```bash
-npx nx <target> <project> <options>
+npx playwright install chromium
 ```
 
-Examples:
+Then run the browser tests with the API on port `3333`:
 
 ```bash
-npx nx serve client
-npx nx build client
-npx nx test client
-```
-
-Run a target for multiple projects:
-
-```bash
-npx nx run-many -t <target> -p <project1> <project2>
-```
-
-Example:
-
-```bash
-npx nx run-many -t build -p client api
+API_PORT=3333 npx nx e2e client-e2e --project=chromium
 ```
 
 ## Code Quality
 
-Run linting:
+Run linting for a project:
 
 ```bash
 npx nx lint <project>
 ```
 
-Or for multiple projects:
+Or lint all configured projects:
 
 ```bash
 npx nx run-many -t lint
 ```
 
 Formatting and linting should be checked before creating a pull request.
-
-## Environment Variables
-
-The applications require environment-specific configuration.
-
-```env
-API_PORT=
-MONGODB_USER=
-MONGODB_PASSWORD=
-MONGODB_CLUSTER=
-MONGODB_DATABASE=
-```
-
-## Project Structure
-
-The main applications are located under `apps/`:
-
-```text
-apps/
-├── api/
-└── client/
-```
-
-Shared models, helper and constants are stored under `lib/`:
-
-```text
-lib/
-├── models/
-└── shared/
-```
-
-The shared libraries under `lib` are maintained separately in this project and in the admin project. There is currently no shared package or automated synchronization between the repositories. Changes to models, helpers, or constants must therefore be mirrored in the corresponding libraries of the admin application.
-
-Additional project documentation and architectural decisions are stored under:
-
-```text
-docs/
-└── decisions/
-```
-
-## Data Source
-
-Football data is provided by [API-Football](https://www.api-football.com/) through RapidAPI.
-
-This project does not communicate with API-Football directly. All application data is retrieved exclusively from the project's own database.
-
-## Hosting
-
-The client and API are both hosted on Vercel.
-
-The Angular client is built and deployed as a static web application. The Node.js/Express API is deployed as Vercel Serverless Functions.
 
 ## Scripts
 
@@ -364,17 +345,3 @@ The generated `.imageset` directories can then be copied into the corresponding 
 > If an `.imageset` with the same generated name already exists in the output directory, it is deleted and recreated.
 
 The script also reports missing `1x`, `2x` or `3x` variants in the console. Review these warnings before copying the generated assets into Xcode.
-
-## Versions (as of August 7, 2026)
-
-| Technology       | Version |
-| ---------------- | ------- |
-| Node.js          | `22.x`  |
-| Nx               | `22.x`  |
-| Angular          | `21.x`  |
-| Angular Material | `21.x`  |
-| NgRx             | `21.x`  |
-| Tailwind CSS     | `3.x`   |
-| Express          | `4.x`   |
-| Mongoose         | `8.x`   |
-| TypeScript       | `5.x`   |
