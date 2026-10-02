@@ -42,6 +42,7 @@ const ANGULAR_PROVIDERS = [
   LOCALE_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
+  PWA_PROVIDER,
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -51,6 +52,5 @@ export const appConfig: ApplicationConfig = {
     ...SHARED_PROVIDERS,
     ...OVERVIEW_STORE_PROVIDERS,
     APP_INITIALIZER_PROVIDER,
-    PWA_PROVIDER,
   ],
 };
