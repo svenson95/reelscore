@@ -13,12 +13,17 @@ concurrency:
   group: cd-production
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   deploy-api:
     name: Deploy API to Production
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
 
     environment:
       name: Production – reelscore-api
@@ -62,6 +67,8 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
 
     environment:
       name: Production – reelscore-client
@@ -95,3 +102,8 @@ jobs:
 
       - name: Deploy to Production
         run: npx vercel deploy --prebuilt --prod --archive=tgz --yes --token="$VERCEL_TOKEN"
+
+  update-architecture-diagram:
+    name: Update Architecture Diagram
+    if: github.event.workflow_run.conclusion == 'success'
+    uses: ./.github/workflows/update-architecture-diagram.yml
