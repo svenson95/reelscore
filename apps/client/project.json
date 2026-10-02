@@ -22,6 +22,14 @@
           "apps/client/src/manifest.webmanifest"
         ],
         "styles": [
+          "@fontsource/roboto/300.css",
+          "@fontsource/roboto/400.css",
+          "@fontsource/roboto/500.css",
+          "@fontsource/ibm-plex-sans/400.css",
+          "@fontsource/ibm-plex-sans/500.css",
+          "@fontsource/ibm-plex-sans/600.css",
+          "@fontsource/ibm-plex-sans/700.css",
+          "material-icons/iconfont/material-icons.css",
           "@angular/material/prebuilt-themes/azure-blue.css",
           "apps/client/src/styles/styles.scss"
         ],
