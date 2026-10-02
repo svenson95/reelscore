@@ -4,8 +4,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import type { ApplicationConfig } from '@angular/core';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
   provideRouter,
@@ -19,13 +17,14 @@ import {
   APP_INITIALIZER_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   LOCALE_PROVIDER,
+  MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
   PWA_PROVIDER,
 } from './config';
 import { apiRequestInterceptor, CORE_PROVIDERS } from './core';
 import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
-import { GLOBAL_SERVICE_PROVIDERS } from './shared';
+import { SHARED_PROVIDERS } from './shared';
 
-const BASE_PROVIDERS = [
+const ANGULAR_PROVIDERS = [
   provideRouter(
     routes,
     withComponentInputBinding(),
@@ -34,33 +33,22 @@ const BASE_PROVIDERS = [
     }),
     withPreloading(PreloadAllModules)
   ),
-  provideAnimationsAsync(),
   provideHttpClient(
     withInterceptors([apiRequestInterceptor]),
     withInterceptorsFromDi()
   ),
+  LOCALE_PROVIDER,
+  CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
+  MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
 ];
-
-const MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER = {
-  provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
-  useValue: {
-    showDelay: 400,
-    hideDelay: 0,
-    touchGestures: 'auto',
-    touchendHideDelay: 2000,
-  },
-};
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    PWA_PROVIDER,
-    ...BASE_PROVIDERS,
-    APP_INITIALIZER_PROVIDER,
-    LOCALE_PROVIDER,
-    CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
-    ...GLOBAL_SERVICE_PROVIDERS,
-    MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
+    ...ANGULAR_PROVIDERS,
     ...CORE_PROVIDERS,
+    ...SHARED_PROVIDERS,
     ...OVERVIEW_STORE_PROVIDERS,
+    APP_INITIALIZER_PROVIDER,
+    PWA_PROVIDER,
   ],
 };
