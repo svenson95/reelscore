@@ -14,9 +14,7 @@ export class FixtureEventsService {
   async findById(
     fixtureId: FixtureIdParameter
   ): Promise<RapidEventsDTO | null> {
-    const events = await findDocument(FixtureEvents, {
-      'parameters.fixture': fixtureId,
-    });
+    const events = await findDocument(FixtureEvents, fixtureId);
 
     return events;
   }

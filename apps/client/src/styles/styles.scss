@@ -1,16 +1,5 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
-@use './theme-colors' as themeColors;
-
-@use 'material.scss';
-@use 'root.scss';
-@use 'skeleton.scss';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import '@fontsource/roboto/300.css';
 @import '@fontsource/roboto/400.css';
 @import '@fontsource/roboto/500.css';
@@ -21,6 +10,17 @@
 @import '@fontsource/ibm-plex-sans/700.css';
 
 @import 'material-icons/iconfont/material-icons.css';
+
+@use '@angular/material' as mat;
+@use './theme-colors' as themeColors;
+
+@use 'material.scss';
+@use 'root.scss';
+@use 'skeleton.scss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html {
   @include mat.theme(

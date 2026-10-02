@@ -13,9 +13,7 @@ import type {
   RapidEventsDTO,
 } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpFixtureEventsService } from '../services';
 

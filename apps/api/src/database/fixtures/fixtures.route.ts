@@ -34,7 +34,13 @@ fixtures.get('/match-latest', async (req, res) => {
 fixtures.get(
   '/by-date',
   async (req: Request, res: Response): Promise<Response> => {
-    const date = String(req.query.date);
+    const date = req.query.date;
+    if (typeof date !== 'string') {
+      return res.status(400).json({
+        message: 'Invalid date query parameter',
+      });
+    }
+
     const withEdgeDays = req.query.withEdgeDays === 'true';
 
     const dates = getWeekDatesArray(date, withEdgeDays);

@@ -11,9 +11,7 @@ export class FixtureStatisticsController {
   async getById(
     fixtureId: FixtureIdParameter
   ): Promise<RapidStatisticsDTO | null> {
-    const statistics = await findDocument(FixturesStatistics, {
-      'parameters.fixture': fixtureId,
-    });
+    const statistics = await findDocument(FixturesStatistics, fixtureId);
     return statistics;
   }
 }

@@ -5,9 +5,7 @@ import { retry } from 'rxjs';
 
 import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpNextFixturesService } from '../data-access';
 
@@ -24,7 +22,7 @@ const initialState: NextFixturesState = {
 export const NextFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpNextFixturesService)) => ({
-    async loadNextFixtures(id: CompetitionId): Promise<void> {
+    loadNextFixtures(id: CompetitionId): void {
       patchState(store, { isLoading: true });
 
       http

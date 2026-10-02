@@ -1,6 +1,6 @@
 import type mongoose from 'mongoose';
 
-import type { RapidEventsDTO } from '@reelscore-sdk/models';
+import type { FixtureIdParameter, RapidEventsDTO } from '@reelscore-sdk/models';
 
 import { findDocument } from './mongodb.helper';
 
@@ -11,27 +11,21 @@ describe(findDocument.name, () => {
     const model = {
       findOne: jest.fn().mockReturnValue({ lean }),
     } as unknown as mongoose.Model<RapidEventsDTO>;
-    const filter = { 'parameters.fixture': '42' };
-
-    await expect(findDocument(model, filter)).resolves.toBe(document);
-    expect(model.findOne).toHaveBeenCalledWith(filter);
+    await expect(findDocument(model, '42')).resolves.toBe(document);
+    expect(model.findOne).toHaveBeenCalledWith({ 'parameters.fixture': '42' });
     expect(lean).toHaveBeenCalledTimes(1);
   });
 
-  it('wraps query operators in the filter to prevent selector injection', async () => {
+  it('rejects object selectors instead of using them as fixture ids', async () => {
     const lean = jest.fn().mockResolvedValue(null);
     const model = {
       findOne: jest.fn().mockReturnValue({ lean }),
     } as unknown as mongoose.Model<RapidEventsDTO>;
-    const filter: mongoose.FilterQuery<RapidEventsDTO> = {
-      'parameters.fixture': { $ne: null },
-    };
+    const maliciousFixtureId = { $ne: null } as unknown as FixtureIdParameter;
 
-    await findDocument(model, filter);
+    await expect(findDocument(model, maliciousFixtureId)).resolves.toBeNull();
 
-    expect(model.findOne).toHaveBeenCalledWith({
-      'parameters.fixture': { $eq: { $ne: null } },
-    });
+    expect(model.findOne).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -43,6 +37,7 @@ describe(findDocument.name, () => {
       findOne: jest.fn().mockReturnValue({ lean }),
     } as unknown as mongoose.Model<RapidEventsDTO>;
 
-    await expect(findDocument(model, {})).resolves.toBeNull();
+    await expect(findDocument(model, '42')).resolves.toBeNull();
+    expect(model.findOne).toHaveBeenCalledWith({ 'parameters.fixture': '42' });
   });
 });

@@ -4,9 +4,7 @@ import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { REALTIME_EVENT } from '@reelscore-sdk/constants';
 import type {
   LiveFixtureEventsBatchUpdateDTO,
-  LiveFixtureEventsUpdateDTO,
   LiveFixturesUpdateDTO,
-  LiveFixtureUpdateDTO,
 } from '@reelscore-sdk/models';
 
 import { environment } from '@app/environment';
@@ -57,19 +55,9 @@ const PING_TIMEOUT_MS = 75_000;
 const parseOperationTime = (time: Date | string): Date =>
   time instanceof Date ? time : new Date(time);
 
-const parseFixtureUpdate = (
-  update: LiveFixtureUpdateDTO
-): LiveFixtureUpdateDTO => ({
-  ...update,
-  operation: {
-    ...update.operation,
-    time: parseOperationTime(update.operation.time),
-  },
-});
-
-const parseFixtureEventsUpdate = (
-  update: LiveFixtureEventsUpdateDTO
-): LiveFixtureEventsUpdateDTO => ({
+const parseFixtureUpdate = <T extends { operation: { time: Date | string } }>(
+  update: T
+) => ({
   ...update,
   operation: {
     ...update.operation,
@@ -237,7 +225,7 @@ export class RealtimeService {
           const update = message.data as LiveFixtureEventsBatchUpdateDTO;
 
           this.fixtureEventsUpdate.set({
-            updates: update.updates.map(parseFixtureEventsUpdate),
+            updates: update.updates.map(parseFixtureUpdate),
           });
 
           break;

@@ -1,7 +1,7 @@
 // Usage: node resize-logos.script.js
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const sharp = require('sharp');
 
 const baseSize = 14;
@@ -64,4 +64,7 @@ async function processImages() {
   console.log('Done.');
 }
 
-processImages();
+void processImages().catch((error) => {
+  console.error('Failed to process logo images:', error);
+  process.exitCode = 1;
+});

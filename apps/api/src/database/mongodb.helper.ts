@@ -1,11 +1,18 @@
 import mongoose from 'mongoose';
 
-import type { RapidDTO } from '@reelscore-sdk/models';
+import type { FixtureIdParameter, RapidDTO } from '@reelscore-sdk/models';
 
 export async function findDocument<T extends RapidDTO<unknown>>(
   model: mongoose.Model<T>,
-  filter: mongoose.FilterQuery<T>
+  fixtureId: FixtureIdParameter
 ): Promise<T | null> {
+  if (typeof fixtureId !== 'string' && typeof fixtureId !== 'number') {
+    return null;
+  }
+
+  const filter: mongoose.FilterQuery<T> = {
+    'parameters.fixture': fixtureId,
+  };
   const sanitizedFilter = mongoose.sanitizeFilter(filter);
   const document = await model.findOne(sanitizedFilter).lean<T>();
   if (!document?.response.length) return null;

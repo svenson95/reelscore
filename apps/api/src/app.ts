@@ -17,14 +17,14 @@ import { search } from './search';
 
 export const app = express();
 
-const allowedOrigins = [
+const allowedOrigins = new Set([
   'http://localhost:4200',
   'https://reelscore.vercel.app',
-].filter((origin): origin is string => Boolean(origin));
+]);
 
 const corsOptions: CorsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.has(origin)) {
       return callback(null, true);
     }
 

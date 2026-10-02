@@ -13,7 +13,6 @@ import type {
 } from '@reelscore-sdk/models';
 
 import { WeekFixturesStore } from '@app/core';
-
 import { RefreshRegistryService, type RefreshTarget } from '@app/shared';
 
 import { WeekStandingsStore } from '../stores';

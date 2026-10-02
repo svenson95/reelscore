@@ -10,7 +10,7 @@ import { Fixtures, Teams } from '../database';
 import { SearchService } from './search.service';
 
 export class SearchController {
-  private searchService = new SearchService();
+  private readonly searchService = new SearchService();
 
   async getBySearchTerm(searchTerm: string): Promise<SearchResult[]> {
     const normalizedSearchTerm = searchTerm.trim();

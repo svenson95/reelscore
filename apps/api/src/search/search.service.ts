@@ -2,7 +2,7 @@ import { TEAM_NAME_SEARCH_VALUES } from './search-values.data';
 
 export class SearchService {
   escapeRegex(value: string): string {
-    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return value.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
   }
 
   createTeamSearchRegex(searchTerm: string): RegExp {

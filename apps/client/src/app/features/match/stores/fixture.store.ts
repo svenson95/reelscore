@@ -55,14 +55,26 @@ export const FixtureStore = signalStore(
   withMethods(
     (
       store,
-      http = inject(HttpFixtureService),
-      standingsStore = inject(FixtureStandingsStore),
-      evaluationsStore = inject(EvaluationsStore),
-      eventsStore = inject(EventsStore),
-      statisticsStore = inject(StatisticsStore),
-      latestFixturesStore = inject(LatestFixturesStore),
-      analysesStore = inject(AnalysesStore)
+      dependencies = {
+        http: inject(HttpFixtureService),
+        standingsStore: inject(FixtureStandingsStore),
+        evaluationsStore: inject(EvaluationsStore),
+        eventsStore: inject(EventsStore),
+        statisticsStore: inject(StatisticsStore),
+        latestFixturesStore: inject(LatestFixturesStore),
+        analysesStore: inject(AnalysesStore),
+      }
     ) => {
+      const {
+        http,
+        standingsStore,
+        evaluationsStore,
+        eventsStore,
+        statisticsStore,
+        latestFixturesStore,
+        analysesStore,
+      } = dependencies;
+
       const patchLoadingState = (isRefresh: boolean): void => {
         patchState(
           store,

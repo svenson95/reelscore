@@ -5,9 +5,7 @@ import { retry } from 'rxjs';
 
 import type { AnalysesDTO, FixtureId } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpFixtureAnalysesService } from '../services';
 
@@ -43,7 +41,7 @@ export const AnalysesStore = signalStore(
             }),
         });
     },
-    async reset(): Promise<void> {
+    reset(): void {
       patchState(store, initialState);
     },
   }))

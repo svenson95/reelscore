@@ -5,9 +5,7 @@ import { retry } from 'rxjs';
 
 import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpTopScorersService } from '../data-access';
 
@@ -24,7 +22,7 @@ const initialState: TopScorersState = {
 export const TopScorersStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpTopScorersService)) => ({
-    async loadTopScorers(id: CompetitionId): Promise<void> {
+    loadTopScorers(id: CompetitionId): void {
       patchState(store, { isLoading: true });
 
       http

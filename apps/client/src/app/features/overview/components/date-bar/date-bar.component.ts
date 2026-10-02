@@ -8,7 +8,6 @@ import {
 import type { DateString } from '@reelscore-sdk/helpers';
 
 import { WeekFixturesStore } from '@app/core';
-
 import { BreakpointObserverService } from '@app/shared';
 
 import { DateNavigationService, SelectedDateService } from '../../services';

@@ -11,9 +11,9 @@ import { FixtureService } from './fixture.service';
 import { FixturesService } from './fixtures.service';
 
 export class FixtureController {
-  private fixtureService = new FixtureService();
-  private fixturesService = new FixturesService();
-  private eventsService = new FixtureEventsService();
+  private readonly fixtureService = new FixtureService();
+  private readonly fixturesService = new FixturesService();
+  private readonly eventsService = new FixtureEventsService();
 
   async getByIdWithHighlights(fixtureId: FixtureId): Promise<GetFixtureDTO> {
     const data = await this.fixturesService.findById(fixtureId);

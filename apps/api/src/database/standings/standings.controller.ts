@@ -17,7 +17,7 @@ import type {
 import { StandingsService } from './standings.service';
 
 export class StandingsController {
-  private standingsService = new StandingsService();
+  private readonly standingsService = new StandingsService();
 
   async getByCompetitionAndDate(
     id: CompetitionId,

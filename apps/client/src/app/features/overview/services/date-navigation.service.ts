@@ -52,7 +52,7 @@ export class DateNavigationService {
     const dateRoute = date.substring(0, 10);
 
     if (currentRoute !== dateRoute) {
-      this.router.navigate([dateRoute]);
+      void this.router.navigate([dateRoute]);
     }
   }
 

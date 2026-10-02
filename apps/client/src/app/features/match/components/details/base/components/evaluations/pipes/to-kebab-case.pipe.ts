@@ -6,6 +6,6 @@ import { Pipe } from '@angular/core';
 })
 export class ToKebabCasePipe implements PipeTransform {
   transform(value: string): string {
-    return value.toLowerCase().split('_').join('-');
+    return value.toLowerCase().replaceAll('_', '-');
   }
 }
