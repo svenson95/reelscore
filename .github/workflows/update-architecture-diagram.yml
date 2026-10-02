@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  update-architecture-diagram:
+  update-readme:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
