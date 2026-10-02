@@ -7,7 +7,6 @@ import { retry } from 'rxjs';
 import type { SearchResult } from '@reelscore-sdk/models';
 
 import { environment } from '@app/environment';
-
 import { errorHandler } from '@app/shared';
 
 export abstract class SearchService {

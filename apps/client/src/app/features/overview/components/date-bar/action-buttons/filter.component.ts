@@ -13,7 +13,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import type { CompetitionId } from '@reelscore-sdk/models';
 
 import { WeekFixturesStore } from '@app/core';
-
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,

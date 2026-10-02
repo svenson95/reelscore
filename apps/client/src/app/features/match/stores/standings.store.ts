@@ -21,11 +21,11 @@ const initialState: FixtureStandingsState = {
 export const FixtureStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixtureStandingsService)) => ({
-    async loadFixtureStandings(
+    loadFixtureStandings(
       teamIds: string,
       competition: CompetitionId,
       date: DateString
-    ): Promise<void> {
+    ): void {
       patchState(store, { isLoading: true, error: null });
 
       http

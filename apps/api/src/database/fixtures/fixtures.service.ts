@@ -2,7 +2,7 @@ import moment from 'moment';
 import type { FilterQuery } from 'mongoose';
 
 import { COMPETITION_ROUNDS } from '@reelscore-sdk/constants';
-import { getSeason,TIMEZONE } from '@reelscore-sdk/helpers';
+import { getSeason, TIMEZONE } from '@reelscore-sdk/helpers';
 import type {
   CompetitionId,
   CompetitionRound,
@@ -72,9 +72,7 @@ export class FixturesService {
       const lastRound = rounds[rounds.length - 1];
       const currentRound = rounds.length > 1 ? lastRound : firstRound;
 
-      const currentRoundIndex = allRounds.findIndex(
-        (round) => round === currentRound
-      );
+      const currentRoundIndex = allRounds.indexOf(currentRound);
 
       const finishedRounds = allRounds.filter(
         (_, index) => index <= currentRoundIndex

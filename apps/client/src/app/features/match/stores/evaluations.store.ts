@@ -5,9 +5,7 @@ import { retry } from 'rxjs';
 
 import type { EvaluationDTO, FixtureId } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpEvaluationsService } from '../services';
 
@@ -22,7 +20,7 @@ const initialState: EvaluationsState = {
 export const EvaluationsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpEvaluationsService)) => ({
-    async loadEvaluations(fixtureId: FixtureId): Promise<void> {
+    loadEvaluations(fixtureId: FixtureId): void {
       patchState(store, { isLoading: true, error: null });
 
       http

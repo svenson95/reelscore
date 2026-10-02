@@ -18,9 +18,6 @@
               ["^@reelscore-sdk/"],
               ["^@testing/client(?:/|$)"],
               ["^@lib/"],
-              ["^@app/environment(?:/|$)"],
-              ["^@app/core(?:/|$)"],
-              ["^@app/shared(?:/|$)"],
               ["^@app/"],
               ["^\\.\\.(?:/|$)"],
               ["^\\./[^./]+/"],
@@ -47,7 +44,7 @@
           "error",
           {
             "prefer": "type-imports",
-            "fixStyle": "separate-type-imports"
+            "fixStyle": "inline-type-imports"
           }
         ]
       }

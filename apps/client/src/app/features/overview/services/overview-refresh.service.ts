@@ -3,7 +3,6 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { getTodayDateString } from '@reelscore-sdk/helpers';
 
 import { WeekFixturesStore } from '@app/core';
-
 import { getFixtureStatusState, RefreshRegistryService } from '@app/shared';
 
 import { getSelectedDayData } from '../helpers';

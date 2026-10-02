@@ -163,7 +163,7 @@ function createEdgeWeekData<T>(
   index: number,
   edgeDayData: T | undefined
 ): Array<T | undefined> {
-  const weekData = Array<T | undefined>(UI_DAYS_PER_WEEK).fill(undefined);
+  const weekData = new Array<T | undefined>(UI_DAYS_PER_WEEK).fill(undefined);
   weekData[index] = edgeDayData;
 
   return weekData;

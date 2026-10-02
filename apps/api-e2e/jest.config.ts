@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
   displayName: 'api-e2e',
   verbose: true,

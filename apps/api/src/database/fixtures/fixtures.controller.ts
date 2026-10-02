@@ -34,9 +34,9 @@ const NON_UPCOMING_STATES = [
 ];
 
 export class FixturesController {
-  private fixturesService = new FixturesService();
+  private readonly fixturesService = new FixturesService();
 
-  private getFixturesWithResultQuery = () => ({
+  private readonly getFixturesWithResultQuery = () => ({
     $or: [
       {
         'fixture.status.short': {
@@ -59,7 +59,7 @@ export class FixturesController {
     ],
   });
 
-  private getFixturesWithoutResultQuery = () => ({
+  private readonly getFixturesWithoutResultQuery = () => ({
     $and: [
       {
         'fixture.status.short': {
@@ -89,7 +89,7 @@ export class FixturesController {
     return fixtures;
   }
 
-  private hasMultipleRoundsWithSameNumber = (
+  private readonly hasMultipleRoundsWithSameNumber = (
     round: CompetitionRound,
     rounds: Array<CompetitionRound>
   ): boolean => {
@@ -98,7 +98,7 @@ export class FixturesController {
     return rounds.filter((r) => r.endsWith(roundNumber)).length > 1;
   };
 
-  private getLastResultRound = async (
+  private readonly getLastResultRound = async (
     competitionId: CompetitionId
   ): Promise<CompetitionRound | null> => {
     const fixture = await Fixtures.findOne({
@@ -112,7 +112,7 @@ export class FixturesController {
     return fixture?.league.round ?? null;
   };
 
-  private getNextUpcomingRound = async (
+  private readonly getNextUpcomingRound = async (
     competitionId: CompetitionId
   ): Promise<CompetitionRound | null> => {
     const fixture = await Fixtures.findOne({
@@ -126,7 +126,7 @@ export class FixturesController {
     return fixture?.league.round ?? null;
   };
 
-  private getOneRoundCompetitionFixtures = async (
+  private readonly getOneRoundCompetitionFixtures = async (
     competitionId: CompetitionId,
     type: CompetitionRequestType
   ): Promise<FlattenMaps<FixtureDTO>[][]> => {

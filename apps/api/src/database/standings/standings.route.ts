@@ -10,9 +10,15 @@ import { StandingsController } from './standings.controller';
 export const standings = express.Router();
 
 standings.get('/standings-by-id', async (req, res) => {
+  const queryDate = req.query.date;
+  if (typeof queryDate !== 'string') {
+    return res.status(400).json({
+      message: 'Invalid date query parameter',
+    });
+  }
+
   const standingsController = new StandingsController();
   const competitionId: CompetitionId = Number(req.query.competition);
-  const queryDate = String(req.query.date);
   const doc = await standingsController.getByCompetitionAndDate(
     competitionId,
     queryDate
@@ -23,7 +29,13 @@ standings.get('/standings-by-id', async (req, res) => {
 standings.get(
   '/start-top-five',
   async (req: Request, res: Response): Promise<Response> => {
-    const date = String(req.query.date);
+    const date = req.query.date;
+    if (typeof date !== 'string') {
+      return res.status(400).json({
+        message: 'Invalid date query parameter',
+      });
+    }
+
     const withEdgeDays = req.query.withEdgeDays === 'true';
     const standingsController = new StandingsController();
     const weekDates = getWeekDatesArray(date, withEdgeDays);
@@ -35,10 +47,16 @@ standings.get(
 );
 
 standings.get('/match-standings', async (req, res) => {
+  const teamIds = req.query.teamIds;
+  const date = req.query.date;
+  if (typeof teamIds !== 'string' || typeof date !== 'string') {
+    return res.status(400).json({
+      message: 'Invalid query parameters',
+    });
+  }
+
   const standingsController = new StandingsController();
-  const teamIds = String(req.query.teamIds); // comma separated team ids
   const competitionId = Number(req.query.competition);
-  const date = String(req.query.date);
   const doc = await standingsController.getFixtureStandings(
     teamIds,
     competitionId,

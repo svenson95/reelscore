@@ -124,17 +124,14 @@ export class CompetitionPage extends CompetitionRouteContext {
   readonly COMPETITION_TABS_LENGTH = 4;
   readonly selectedTabIndex = signal<number>(0);
 
-  private readonly leagueEffect = effect(async () => {
+  private readonly leagueEffect = effect(() => {
     const competition = this.leagueService.selectedLeague();
 
     if (!competition) return;
 
-    await this.lastFixturesStore.loadLastFixtures(competition.id);
-    await this.nextFixturesStore.loadNextFixtures(competition.id);
-    await this.standingsStore.loadStandings(
-      competition.id,
-      new Date().toISOString()
-    );
-    await this.topScorersStore.loadTopScorers(competition.id);
+    this.lastFixturesStore.loadLastFixtures(competition.id);
+    this.nextFixturesStore.loadNextFixtures(competition.id);
+    this.standingsStore.loadStandings(competition.id, new Date().toISOString());
+    this.topScorersStore.loadTopScorers(competition.id);
   });
 }

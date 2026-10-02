@@ -5,9 +5,7 @@ import { retry } from 'rxjs';
 
 import type { FixtureId, LatestFixturesDTO } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
-
-import type { StateHandler } from '@app/shared';
+import { errorHandler, type StateHandler } from '@app/shared';
 
 import { HttpLatestFixturesService } from '../services';
 

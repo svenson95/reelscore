@@ -21,9 +21,7 @@ export class FixtureListItemFacade {
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
-    const isFinished = this.finished.some(
-      (status) => status === fixture.fixture.status.short
-    );
+    const isFinished = this.finished.includes(fixture.fixture.status.short);
     if (!isFinished) return false;
 
     const isKoEliminated = this.isKoEliminated(fixture, team);

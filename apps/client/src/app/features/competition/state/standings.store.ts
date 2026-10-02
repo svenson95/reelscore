@@ -25,7 +25,7 @@ const initialState: CompetitionStandingsState = {
 export const CompetitionStandingsStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpStandingsService)) => ({
-    async loadStandings(id: CompetitionId, date: DateString): Promise<void> {
+    loadStandings(id: CompetitionId, date: DateString): void {
       patchState(store, { isLoading: true });
 
       http
