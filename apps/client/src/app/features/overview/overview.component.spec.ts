@@ -1,7 +1,8 @@
-import { type ComponentFixture,TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { OverviewRefreshService } from './services';
 
 import { OverviewComponent } from './overview.component';
-import { OverviewRefreshService } from './services';
 
 describe('OverviewComponent', () => {
   let fixture: ComponentFixture<OverviewComponent>;

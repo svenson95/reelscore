@@ -6,7 +6,7 @@ import { shareReplay } from 'rxjs';
 
 import type { AnalysesDTO, FixtureId } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@app/environment';
 
 export abstract class HttpFixtureAnalysesService {
   abstract getFixtureAnalyses(id: FixtureId): Observable<AnalysesDTO>;

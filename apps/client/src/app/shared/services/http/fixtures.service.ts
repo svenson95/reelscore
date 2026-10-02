@@ -6,7 +6,7 @@ import { type Observable, shareReplay } from 'rxjs';
 import type { DateString } from '@reelscore-sdk/helpers';
 import type { FixturesWeekData } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '@app/environment';
 
 export abstract class HttpWeekFixturesService {
   abstract getWeekFixtures(date: DateString): Observable<FixturesWeekData>;

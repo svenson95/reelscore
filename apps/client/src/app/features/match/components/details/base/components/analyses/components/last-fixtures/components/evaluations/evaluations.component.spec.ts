@@ -2,11 +2,11 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TestBed } from '@angular/core/testing';
 import { MatExpansionPanelHarness } from '@angular/material/expansion/testing';
 
-import { EXAMPLE_FIXTURE } from '../../../../../../../../../../../../testing/fixtures.mock';
 import {
   createFixtureAnalysis,
+  EXAMPLE_FIXTURE,
   renderComponent,
-} from '../../../../../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
 
 import { AnalysesEvaluationsComponent } from './evaluations.component';
 

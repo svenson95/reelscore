@@ -7,11 +7,12 @@ import type {
   LatestFixturesDTO,
 } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
 import {
+  EXAMPLE_FIXTURE,
   readElementText,
   renderComponent,
-} from '../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
+
 import {
   AnalysesStore,
   FixtureStore,

@@ -16,7 +16,12 @@
     "paths": {
       "@app/shared": ["./apps/client/src/app/shared/index.ts"],
       "@app/core": ["./apps/client/src/app/core/index.ts"],
+      "@app/environment": ["./apps/client/src/environments/environment.ts"],
+      "@app/environment/prod": [
+        "./apps/client/src/environments/environment.prod.ts"
+      ],
       "@lib/shared": ["./lib/shared/index.ts"],
+      "@testing/client": ["./apps/client/src/testing/index.ts"],
       "@reelscore-sdk/models": [
         "./node_modules/reelscore-sdk/dist/esm/models/index"
       ],

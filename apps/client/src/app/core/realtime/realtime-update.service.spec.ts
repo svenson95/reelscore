@@ -10,12 +10,10 @@ import type {
   RapidEventsDTO,
 } from '@reelscore-sdk/models';
 
+import { createOperationResponse, createRapidEvents } from '@testing/client';
+
 import { RealtimeService, RealtimeUpdateRegistryService } from '@app/shared';
 
-import {
-  createOperationResponse,
-  createRapidEvents,
-} from '../../../testing/factories/realtime.factory';
 import { WeekFixturesStore } from '../week-data';
 
 import { RealtimeUpdateService } from './realtime-update.service';

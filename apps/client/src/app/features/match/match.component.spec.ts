@@ -10,21 +10,22 @@ import type {
   GetFixtureDTO,
 } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../testing/fixtures.mock';
+import { EXAMPLE_FIXTURE } from '@testing/client';
 
 import {
   MatchDetailsComponent,
   MatchHeaderComponent,
   PageHeaderComponent,
 } from './components';
-import { MatchComponent } from './match.component';
-import { MatchFacade } from './match.facade';
 import {
   MatchRealtimeService,
   MatchRefreshService,
   SERVICE_PROVIDERS,
 } from './services';
 import { STORE_PROVIDERS } from './stores';
+
+import { MatchComponent } from './match.component';
+import { MatchFacade } from './match.facade';
 
 @Component({
   selector: 'nav[rs-page-header]',

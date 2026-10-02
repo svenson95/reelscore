@@ -4,7 +4,8 @@ import { provideRouter } from '@angular/router';
 
 import type { StandingRanks } from '@reelscore-sdk/models';
 
-import { EXAMPLE_STANDINGS } from '../../../testing/standings.mock';
+import { EXAMPLE_STANDINGS } from '@testing/client';
+
 import { BreakpointObserverService, ThemeService } from '../services';
 
 import { StandingsTableComponent } from './standings-table.component';

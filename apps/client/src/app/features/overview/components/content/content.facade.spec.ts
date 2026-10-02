@@ -11,9 +11,10 @@ import type {
   StandingsWeekData,
 } from '@reelscore-sdk/models';
 
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { WeekFixturesStore } from '@app/core';
 
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 import { DateNavigationService, SelectedDateService } from '../../services';
 import { WeekStandingsStore } from '../../stores';
 

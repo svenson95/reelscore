@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 
 import type { LatestFixturesDTO } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { HttpLatestFixturesService } from '../services';
 
 import { LatestFixturesStore } from './latest-fixtures.store';

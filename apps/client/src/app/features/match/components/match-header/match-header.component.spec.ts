@@ -1,11 +1,11 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
-import { renderComponent } from '../../../../../testing/match-components.testing';
+import { EXAMPLE_FIXTURE, renderComponent } from '@testing/client';
+
+import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
 
 import { MatchHeaderComponent } from './match-header.component';
-import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
 import { VENUE_IDS } from './venue-ids.data';
 
 const scrollServiceMock = {

@@ -7,6 +7,7 @@ import {
   LEAGUE_RELEGATION_ROUND_MAP,
   NATIONS_LEAGUE_FROM_2024_ROUND_MAP,
 } from './data';
+
 import type { RoundMap, RoundMapRule } from './round-label.helper';
 
 const RELEGATION_COMPETITION_IDS = [

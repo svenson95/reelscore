@@ -5,13 +5,14 @@ import { TestBed } from '@angular/core/testing';
 import { formatFixtureTime } from '@reelscore-sdk/helpers';
 import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
-import { LiveRefreshService } from '@app/shared';
-
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
 import {
+  EXAMPLE_FIXTURE,
   readElementText,
   renderComponent,
-} from '../../../../../testing/match-components.testing';
+} from '@testing/client';
+
+import { LiveRefreshService } from '@app/shared';
+
 import { MatchFacade } from '../../match.facade';
 
 import { PageHeaderComponent } from './page-header.component';

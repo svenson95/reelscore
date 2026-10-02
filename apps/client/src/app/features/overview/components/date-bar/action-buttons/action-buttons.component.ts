@@ -7,8 +7,9 @@ import { RefreshTickerComponent } from '@app/shared';
 
 import { DateNavigationService } from '../../../services';
 
-import { FilterComponent } from './filter.component';
 import { SearchComponent } from './search/search.component';
+
+import { FilterComponent } from './filter.component';
 
 const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
 @Component({

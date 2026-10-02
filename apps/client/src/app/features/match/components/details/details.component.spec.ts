@@ -5,11 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { PageTitleComponent } from '@app/shared';
 
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
-
 import { MatchFixtureDataComponent } from './base/components';
+
 import { MatchDetailsComponent } from './details.component';
 import { MatchDetailsFacade } from './details.facade';
 

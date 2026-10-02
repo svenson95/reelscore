@@ -4,7 +4,7 @@ import {
   createMatchEvent,
   readElementTexts,
   renderComponent,
-} from '../../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
 
 import { MatchEventComponent } from './event.component';
 

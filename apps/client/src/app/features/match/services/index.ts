@@ -5,6 +5,7 @@ import { HTTP_FIXTURE_SERVICE_PROVIDER } from './http/fixture.service';
 import { HTTP_LATEST_FIXTURES_SERVICE_PROVIDER } from './http/latest-fixtures.service';
 import { HTTP_FIXTURE_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
 import { HTTP_FIXTURE_STATISTICS_SERVICE_PROVIDER } from './http/statistics.service';
+
 import { MatchRealtimeService } from './match-realtime.service';
 import { MatchRefreshService } from './match-refresh.service';
 

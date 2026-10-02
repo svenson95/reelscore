@@ -7,7 +7,7 @@ import { shareReplay } from 'rxjs';
 import type { DateString } from '@reelscore-sdk/helpers';
 import type { CompetitionId, StandingsDTO } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@app/environment';
 
 export abstract class HttpFixtureStandingsService {
   abstract getFixtureStandings(

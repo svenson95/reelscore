@@ -12,7 +12,8 @@ import {
   withPreloading,
 } from '@angular/router';
 
-import { routes } from './app.routes';
+import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
+
 import {
   APP_INITIALIZER_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
@@ -21,8 +22,9 @@ import {
   PWA_PROVIDER,
 } from './config';
 import { apiRequestInterceptor, CORE_PROVIDERS } from './core';
-import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
 import { SHARED_PROVIDERS } from './shared';
+
+import { routes } from './app.routes';
 
 const ANGULAR_PROVIDERS = [
   provideRouter(
@@ -40,6 +42,7 @@ const ANGULAR_PROVIDERS = [
   LOCALE_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,
+  PWA_PROVIDER,
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -49,6 +52,5 @@ export const appConfig: ApplicationConfig = {
     ...SHARED_PROVIDERS,
     ...OVERVIEW_STORE_PROVIDERS,
     APP_INITIALIZER_PROVIDER,
-    PWA_PROVIDER,
   ],
 };

@@ -4,7 +4,8 @@ import { of, Subject } from 'rxjs';
 
 import type { EventDTO, RapidEventsDTO } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { HttpFixtureEventsService } from '../services';
 
 import { EventsStore } from './events.store';
