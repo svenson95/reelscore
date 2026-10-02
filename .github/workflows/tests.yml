@@ -14,7 +14,7 @@ on:
 
 jobs:
   test-api:
-    name: Run API Tests
+    name: API
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -41,7 +41,7 @@ jobs:
         run: npx nx lint api
 
       - name: Run Unit, Component and Integration Tests
-        run: npx nx test api --coverage --skip-nx-cache --outputStyle=stream-without-prefixes
+        run: npx nx test api --configuration=ci --coverageReporters=lcov --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Upload API Coverage
         uses: actions/upload-artifact@v4
@@ -54,7 +54,7 @@ jobs:
         run: npx nx e2e api-e2e --skip-nx-cache --outputStyle=stream-without-prefixes
 
   test-client:
-    name: Run Client Tests
+    name: Client
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -82,7 +82,7 @@ jobs:
         run: npx nx lint client
 
       - name: Run Unit, Component and Integration Tests
-        run: npx nx test client --coverage --skip-nx-cache --outputStyle=stream-without-prefixes
+        run: npx nx test client --configuration=ci --coverageReporters=lcov --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Upload Client Coverage
         uses: actions/upload-artifact@v4
@@ -107,7 +107,7 @@ jobs:
           if-no-files-found: ignore
 
   test-shared:
-    name: Run Shared Library Tests
+    name: Shared Library
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -131,7 +131,7 @@ jobs:
         run: npx nx typecheck internal-shared
 
       - name: Run Shared Library Tests with Coverage
-        run: npx nx test internal-shared --coverage --skip-nx-cache --outputStyle=stream-without-prefixes
+        run: npx nx test internal-shared --configuration=ci --coverageReporters=lcov --skip-nx-cache --outputStyle=stream-without-prefixes
 
       - name: Upload Shared Library Coverage
         uses: actions/upload-artifact@v4
