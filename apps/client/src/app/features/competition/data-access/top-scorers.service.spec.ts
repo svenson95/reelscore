@@ -40,6 +40,8 @@ describe('Top scorers service', () => {
           String(COMPETITION_ID.GERMANY_BUNDESLIGA)
     );
 
+    expect(request.request.method).toBe('GET');
+
     request.flush(null);
   });
 });

@@ -18,6 +18,22 @@ describe(findDocument.name, () => {
     expect(lean).toHaveBeenCalledTimes(1);
   });
 
+  it('wraps query operators in the filter to prevent selector injection', async () => {
+    const lean = jest.fn().mockResolvedValue(null);
+    const model = {
+      findOne: jest.fn().mockReturnValue({ lean }),
+    } as unknown as mongoose.Model<RapidEventsDTO>;
+    const filter: mongoose.FilterQuery<RapidEventsDTO> = {
+      'parameters.fixture': { $ne: null },
+    };
+
+    await findDocument(model, filter);
+
+    expect(model.findOne).toHaveBeenCalledWith({
+      'parameters.fixture': { $eq: { $ne: null } },
+    });
+  });
+
   it.each([
     ['no document', null],
     ['an empty response', { response: [] }],

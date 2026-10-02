@@ -155,7 +155,7 @@ function getVisibleWeekData<T>(
       );
 
     case 'unavailable':
-      return Array(UI_DAYS_PER_WEEK).fill(undefined);
+      return Array.from({ length: UI_DAYS_PER_WEEK }, () => undefined);
   }
 }
 

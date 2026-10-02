@@ -67,7 +67,7 @@ export class MatchPage {
   readonly error = this.facade.error;
 
   private readonly loadFixtureEffect = effect(() => {
-    this.facade.loadFixture(this.fixtureId());
+    void this.facade.loadFixture(this.fixtureId());
   });
 
   private readonly liveUpdatesEffect = effect((onCleanup) => {

@@ -16,7 +16,7 @@ import { FixtureStore } from '../../../../../stores';
 
 import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
-import type { MatchTimelineItem, TimelineItemKey } from './types';
+import type { MatchTimelineItem } from './types';
 
 @Component({
   selector: 'rs-match-events',
@@ -184,11 +184,9 @@ export class MatchEventsComponent {
   );
 
   private readonly eventsForTimeline = signal<EventWithResult[]>([]);
-  private readonly newTimelineEventKeys = signal<Set<TimelineItemKey>>(
-    new Set()
-  );
+  private readonly newTimelineEventKeys = signal<Set<string>>(new Set());
 
-  private knownTimelineEventKeys = new Set<TimelineItemKey>();
+  private knownTimelineEventKeys = new Set<string>();
   private hasInitialTimeline = false;
 
   protected readonly timeline = computed<MatchTimelineItem[]>(() => {

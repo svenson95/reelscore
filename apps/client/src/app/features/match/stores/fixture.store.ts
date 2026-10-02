@@ -185,10 +185,7 @@ export const FixtureStore = signalStore(
         updateFixture(fixture: FixtureDTO): void {
           const currentFixture = store.fixture();
 
-          if (
-            !currentFixture ||
-            currentFixture.data.fixture.id !== fixture.fixture.id
-          ) {
+          if (currentFixture?.data.fixture.id !== fixture.fixture.id) {
             return;
           }
 

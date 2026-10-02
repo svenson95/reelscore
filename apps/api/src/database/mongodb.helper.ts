@@ -6,7 +6,8 @@ export async function findDocument<T extends RapidDTO<unknown>>(
   model: mongoose.Model<T>,
   filter: mongoose.FilterQuery<T>
 ): Promise<T | null> {
-  const document = await model.findOne(filter).lean<T>();
+  const sanitizedFilter = mongoose.sanitizeFilter(filter);
+  const document = await model.findOne(sanitizedFilter).lean<T>();
   if (!document?.response.length) return null;
 
   return document;
