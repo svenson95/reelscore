@@ -8,7 +8,7 @@ on:
 
 jobs:
   analyze:
-    name: Run Scanner
+    name: SonarCloud
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
