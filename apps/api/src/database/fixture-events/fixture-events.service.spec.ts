@@ -2,7 +2,14 @@ import type { EventDTO } from '@reelscore-sdk/models';
 
 import { isHighlightGoal } from '@lib/shared';
 
+import { findDocument } from '../mongodb.helper';
+
+import { FixtureEvents } from './fixture-events.model';
 import { FixtureEventsService } from './fixture-events.service';
+
+jest.mock('../mongodb.helper', () => ({
+  findDocument: jest.fn(),
+}));
 
 describe('Fixture highlight filtering', () => {
   it.each<EventDTO['detail']>(['Normal Goal', 'Own Goal', 'Penalty'])(
@@ -53,5 +60,17 @@ describe('Fixture highlight filtering', () => {
     ]);
     expect(events).toEqual([goal, redCard, yellowCard, missedPenalty]);
     expect(service.filterHighlights(undefined)).toEqual([]);
+  });
+
+  it('looks up event data by the fixture ID', async () => {
+    const fixtureId = '42';
+    const mockedFindDocument = jest.mocked(findDocument);
+    mockedFindDocument.mockResolvedValue(null);
+
+    await expect(new FixtureEventsService().findById(fixtureId)).resolves.toBe(
+      null
+    );
+
+    expect(mockedFindDocument).toHaveBeenCalledWith(FixtureEvents, fixtureId);
   });
 });
