@@ -86,7 +86,6 @@ import {
 export class FixturesListComponent {
   readonly competition = input.required<CompetitionId>();
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
-  readonly isLoading = input.required<boolean>();
 
   private readonly themeService = inject(ThemeService);
 

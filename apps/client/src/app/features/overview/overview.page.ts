@@ -28,7 +28,7 @@ import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './services';
     <section rs-overview-content data-testid="overview-page"></section>
   `,
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewPage implements OnInit, OnDestroy {
   private readonly refreshService = inject(OverviewRefreshService);
 
   ngOnInit(): void {

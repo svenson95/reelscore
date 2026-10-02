@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { type ComponentFixture,TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
   LeagueService,
@@ -12,7 +12,7 @@ import { CompetitionRouteContext } from './competition-route-context';
 @Component({
   template: '',
 })
-class TestCompetitionComponent extends CompetitionRouteContext {}
+class TestCompetitionPage extends CompetitionRouteContext {}
 
 describe('CompetitionRouteContext', () => {
   const route = signal<string | undefined>(undefined);
@@ -26,14 +26,14 @@ describe('CompetitionRouteContext', () => {
     url: route.asReadonly(),
   };
 
-  let fixture: ComponentFixture<TestCompetitionComponent>;
+  let fixture: ComponentFixture<TestCompetitionPage>;
 
   beforeEach(() => {
     route.set(undefined);
     leagueServiceMock.setSelectedLeague.mockClear();
 
     TestBed.configureTestingModule({
-      imports: [TestCompetitionComponent],
+      imports: [TestCompetitionPage],
       providers: [
         {
           provide: LeagueService,
@@ -46,7 +46,7 @@ describe('CompetitionRouteContext', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(TestCompetitionComponent);
+    fixture = TestBed.createComponent(TestCompetitionPage);
 
     TestBed.tick();
   });

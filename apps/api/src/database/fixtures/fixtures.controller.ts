@@ -2,11 +2,12 @@ import type { FlattenMaps } from 'mongoose';
 
 import {
   COMPETITION_ROUNDS,
-  STATUS_TYPES_FINISHED,
-  STATUS_TYPES_NOT_PLAYED,
   STATUS_VALUE_ABANDONED,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
+  STATUS_VALUES_FINISHED,
+  STATUS_VALUES_NOT_PLAYED,
+  STATUS_VALUES_PLAYING,
 } from '@reelscore-sdk/constants';
 import { getSeason } from '@reelscore-sdk/helpers';
 import type {
@@ -22,13 +23,14 @@ import { FixturesService } from './fixtures.service';
 export type CompetitionRequestType = 'last' | 'next';
 
 const ONE_ROUND_REVERSED_COMPETITION = 10 as CompetitionId;
-const FINISHED_STATES = STATUS_TYPES_FINISHED;
+const FINISHED_STATES = STATUS_VALUES_FINISHED;
 const NON_UPCOMING_STATES = [
-  ...FINISHED_STATES,
+  ...STATUS_VALUES_FINISHED,
+  ...STATUS_VALUES_PLAYING,
   STATUS_VALUE_CANCELLED,
   STATUS_VALUE_POSTPONED,
   STATUS_VALUE_ABANDONED,
-  ...STATUS_TYPES_NOT_PLAYED,
+  ...STATUS_VALUES_NOT_PLAYED,
 ];
 
 export class FixturesController {
@@ -39,6 +41,11 @@ export class FixturesController {
       {
         'fixture.status.short': {
           $in: FINISHED_STATES,
+        },
+      },
+      {
+        'fixture.status.short': {
+          $in: STATUS_VALUES_PLAYING,
         },
       },
       {

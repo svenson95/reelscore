@@ -2,10 +2,10 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverviewRefreshService } from './services';
 
-import { OverviewComponent } from './overview.component';
+import { OverviewPage } from './overview.page';
 
-describe('OverviewComponent', () => {
-  let fixture: ComponentFixture<OverviewComponent>;
+describe('OverviewPage', () => {
+  let fixture: ComponentFixture<OverviewPage>;
 
   const overviewRefreshServiceMock = {
     init: jest.fn(),
@@ -17,10 +17,10 @@ describe('OverviewComponent', () => {
     overviewRefreshServiceMock.destroy.mockReset();
 
     TestBed.configureTestingModule({
-      imports: [OverviewComponent],
+      imports: [OverviewPage],
     });
 
-    TestBed.overrideComponent(OverviewComponent, {
+    TestBed.overrideComponent(OverviewPage, {
       set: {
         imports: [],
         providers: [
@@ -33,7 +33,7 @@ describe('OverviewComponent', () => {
       },
     });
 
-    fixture = TestBed.createComponent(OverviewComponent);
+    fixture = TestBed.createComponent(OverviewPage);
   });
 
   describe('lifecycle', () => {

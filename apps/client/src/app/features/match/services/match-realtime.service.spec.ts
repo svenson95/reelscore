@@ -39,7 +39,7 @@ import { MatchRealtimeService } from './match-realtime.service';
     />
   `,
 })
-class TestMatchComponent {
+class TestMatchPage {
   readonly fixture = inject(FixtureStore);
   readonly events = inject(EventsStore);
 }
@@ -58,7 +58,7 @@ describe('Match realtime report and highlights', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [TestMatchComponent],
+      imports: [TestMatchPage],
       providers: [
         MatchRealtimeService,
         FixtureStore,
@@ -125,7 +125,7 @@ describe('Match realtime report and highlights', () => {
   };
 
   it('renders new events, corrections and removals without duplicates', () => {
-    const view = TestBed.createComponent(TestMatchComponent);
+    const view = TestBed.createComponent(TestMatchPage);
     view.detectChanges();
     const root: HTMLElement = view.nativeElement;
 
@@ -172,7 +172,7 @@ describe('Match realtime report and highlights', () => {
 
   it('updates report phases and highlight separators on fixture-only updates', () => {
     updateEvents([goal, { ...goal, time: { elapsed: 40, extra: null } }]);
-    const view = TestBed.createComponent(TestMatchComponent);
+    const view = TestBed.createComponent(TestMatchPage);
     view.detectChanges();
     const root: HTMLElement = view.nativeElement;
     expect(root.querySelector('rs-match-events')?.textContent).not.toContain(

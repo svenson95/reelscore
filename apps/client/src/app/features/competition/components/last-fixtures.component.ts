@@ -15,7 +15,7 @@ import {
   PageTitleComponent,
 } from '@app/shared';
 
-import { LastFixturesStore } from '../stores';
+import { LastFixturesStore } from '../state';
 
 import { FixturesListComponent } from './fixtures-list.component';
 
@@ -38,7 +38,6 @@ import { FixturesListComponent } from './fixtures-list.component';
       <rs-competition-fixtures-list
         [fixtures]="fixtureGroup"
         [competition]="competitionId()"
-        [isLoading]="isLoading()"
       />
       }
     </div>
@@ -50,6 +49,8 @@ import { FixturesListComponent } from './fixtures-list.component';
     </button>
     } } @else if (isLoading()) {
     <p class="no-data">Spiele werden geladen ...</p>
+    } @else if (error()) {
+    <p class="no-data">Ergebnisse konnten nicht geladen werden.</p>
     }
   `,
 })
@@ -60,6 +61,7 @@ export class LastFixturesComponent {
   readonly fixturesData = this.store.fixtures;
 
   readonly isLoading = this.store.isLoading;
+  readonly error = this.store.error;
   private readonly showAll = this.store.showAll;
 
   readonly competition = this.leagueService.selectedLeague;

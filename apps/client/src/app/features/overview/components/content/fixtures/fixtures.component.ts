@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { STATUS_TYPES_PLAYING } from '@reelscore-sdk/constants';
+import { STATUS_VALUES_PLAYING } from '@reelscore-sdk/constants';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
@@ -108,7 +108,7 @@ export class OverviewFixturesComponent {
     }
 
     return this.filteredFixtures().filter((fixture) =>
-      STATUS_TYPES_PLAYING.includes(fixture.fixture.status.short)
+      STATUS_VALUES_PLAYING.includes(fixture.fixture.status.short)
     );
   });
 

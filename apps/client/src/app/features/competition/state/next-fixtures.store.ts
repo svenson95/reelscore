@@ -3,43 +3,43 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
+import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { errorHandler } from '@app/shared';
 
 import type { StateHandler } from '@app/shared';
 
-import { HttpTopScorersService } from '../services';
+import { HttpNextFixturesService } from '../data-access';
 
-type TopScorersState = StateHandler<{
-  topScorers: TopScorersDTO | null;
+type NextFixturesState = StateHandler<{
+  fixtures: ExtendedFixtureDTO[][] | null;
 }>;
 
-const initialState: TopScorersState = {
-  topScorers: null,
+const initialState: NextFixturesState = {
+  fixtures: null,
   isLoading: false,
   error: null,
 };
 
-export const TopScorersStore = signalStore(
+export const NextFixturesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpTopScorersService)) => ({
-    async loadTopScorers(id: CompetitionId): Promise<void> {
+  withMethods((store, http = inject(HttpNextFixturesService)) => ({
+    async loadNextFixtures(id: CompetitionId): Promise<void> {
       patchState(store, { isLoading: true });
 
       http
-        .getTopScorersForCompetition(id)
+        .getNextFixturesForCompetition(id)
         .pipe(retry(errorHandler))
         .subscribe({
-          next: (topScorers) =>
+          next: (fixtures) =>
             patchState(store, {
-              topScorers,
+              fixtures,
               isLoading: false,
-              error: topScorers ? null : 'TopScorers not found',
+              error: fixtures ? null : 'Next Fixtures not found',
             }),
           error: (error) =>
             patchState(store, {
-              topScorers: null,
+              fixtures: null,
               isLoading: false,
               error,
             }),

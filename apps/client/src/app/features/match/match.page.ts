@@ -54,7 +54,7 @@ import { MatchFacade } from './match.facade';
     }
   `,
 })
-export class MatchComponent {
+export class MatchPage {
   readonly fixtureId = input.required<FixtureId>();
   readonly competitionUrl = input.required<CompetitionUrl>();
 

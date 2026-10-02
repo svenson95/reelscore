@@ -10,7 +10,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { LeagueService, MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
-import { CompetitionRouteContext } from './competition-route-context';
+import { CompetitionRouteContext } from './state/competition-route-context';
+
 import {
   CompetitionStandingsComponent,
   LastFixturesComponent,
@@ -18,14 +19,14 @@ import {
   PageHeaderComponent,
   PlayerStatsComponent,
 } from './components';
-import { SERVICE_PROVIDERS } from './services';
+import { SERVICE_PROVIDERS } from './data-access';
 import {
   CompetitionStandingsStore,
   LastFixturesStore,
   NextFixturesStore,
   STORE_PROVIDERS,
   TopScorersStore,
-} from './stores';
+} from './state';
 
 @Component({
   selector: 'rs-competition-page',
@@ -54,7 +55,7 @@ import {
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
 
-    <section class="competition-data">
+    <section class="competition-data" data-testid="competition-page">
       <mat-tab-group
         [animationDuration]="animationDuration"
         [style.--tab-count]="COMPETITION_TABS_LENGTH"
@@ -63,7 +64,7 @@ import {
       >
         <mat-tab>
           <ng-template mat-tab-label>
-            <div class="tab-label-content">
+            <div class="tab-label-content" aria-label="Ergebnisse">
               <mat-icon>playlist_add_check</mat-icon>
             </div>
           </ng-template>
@@ -73,7 +74,7 @@ import {
 
         <mat-tab>
           <ng-template mat-tab-label>
-            <div class="tab-label-content">
+            <div class="tab-label-content" aria-label="Spielplan">
               <mat-icon>playlist_play</mat-icon>
             </div>
           </ng-template>
@@ -85,7 +86,7 @@ import {
 
         <mat-tab>
           <ng-template mat-tab-label>
-            <div class="tab-label-content">
+            <div class="tab-label-content" aria-label="Tabellen">
               <mat-icon>format_list_numbered</mat-icon>
             </div>
           </ng-template>
@@ -97,7 +98,7 @@ import {
 
         <mat-tab>
           <ng-template mat-tab-label>
-            <div class="tab-label-content">
+            <div class="tab-label-content" aria-label="Spieler-Statistiken">
               <mat-icon>format_list_numbered_rtl</mat-icon>
             </div>
           </ng-template>
@@ -110,7 +111,7 @@ import {
     </section>
   `,
 })
-export class CompetitionComponent extends CompetitionRouteContext {
+export class CompetitionPage extends CompetitionRouteContext {
   private readonly leagueService = inject(LeagueService);
 
   private readonly lastFixturesStore = inject(LastFixturesStore);

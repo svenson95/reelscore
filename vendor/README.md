@@ -1,6 +1,6 @@
 # Local SDK pilot
 
-`reelscore-sdk-0.3.1.tgz` is built from the sibling `reelscore-sdk` repository.
+`reelscore-sdk-0.3.2.tgz` is built from the sibling `reelscore-sdk` repository.
 It contains all former `lib/models` contracts as domain-specific OpenAPI schemas,
 generated TypeScript models, shared competition/status/realtime constants and date/event/competition helpers.
 `reelscore-sdk/openapi` exports the generated standalone schema for other languages. The archive is deliberately committed for
