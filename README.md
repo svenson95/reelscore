@@ -37,6 +37,34 @@ Install all dependencies:
 npm install
 ```
 
+## Architecture
+
+The diagram below is generated from the Nx project graph. It shows dependencies
+between Reelscore applications, end-to-end projects and libraries.
+
+<!-- nx-architecture:start -->
+
+```mermaid
+flowchart LR
+  api["api"]
+  api_e2e["api-e2e"]
+  client["client"]
+  client_e2e["client-e2e"]
+  internal_shared["internal-shared"]
+  api_e2e --> api
+  api --> internal_shared
+  client_e2e --> client
+  client --> internal_shared
+```
+
+<!-- nx-architecture:end -->
+
+To open the interactive Nx project graph locally, run:
+
+```bash
+npx nx graph
+```
+
 ## Development
 
 ### Start client and API
@@ -150,16 +178,6 @@ Example:
 ```bash
 npx nx run-many -t build -p client api
 ```
-
-## Project Graph
-
-Nx can visualize dependencies between applications and libraries:
-
-```bash
-npx nx graph
-```
-
-This opens the interactive Nx project graph in the browser.
 
 ## Code Quality
 
