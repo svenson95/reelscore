@@ -6,16 +6,35 @@ const FEATURE_SECTIONS = [
     name: 'COMPONENTS',
   },
   {
+    // TODO rename ‘helpers' directories to 'utils'
     path: 'helpers',
     name: 'HELPERS',
   },
   {
+    // TODO rename ‘stores' directories to 'state'
     path: 'stores',
     name: 'STORES',
   },
   {
+    // TODO rename 'services' directories to 'data-access'
     path: 'services',
     name: 'SERVICES',
+  },
+  {
+    path: 'data-access',
+    name: 'DATA ACCESS',
+  },
+  {
+    path: 'state',
+    name: 'STATE',
+  },
+  {
+    path: 'utils',
+    name: 'UTILS',
+  },
+  {
+    path: 'types',
+    name: 'TYPES',
   },
 ];
 
@@ -28,6 +47,14 @@ const TEST_GROUPS = [
       path.includes('/app.routes.spec.'),
   },
   {
+    name: 'CORE',
+    path: '/core/',
+  },
+  {
+    name: 'SHARED',
+    path: '/shared/',
+  },
+  {
     name: 'OVERVIEW',
     path: '/features/overview/',
   },
@@ -38,10 +65,6 @@ const TEST_GROUPS = [
   {
     name: 'COMPETITION',
     path: '/features/competition/',
-  },
-  {
-    name: 'SHARED',
-    path: '/shared/',
   },
 ];
 
