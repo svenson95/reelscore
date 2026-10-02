@@ -1,4 +1,4 @@
-import { computed, Injectable, type Signal,signal } from '@angular/core';
+import { computed, Injectable, type Signal, signal } from '@angular/core';
 
 export type RefreshTarget = {
   id: string;
@@ -55,7 +55,7 @@ export class RefreshRegistryService {
     }
 
     const results = await Promise.allSettled(
-      refreshTargets.map((target) => target.refresh())
+      refreshTargets.map(async (target) => target.refresh())
     );
 
     results.forEach((result, index) => {

@@ -12,10 +12,11 @@ import {
 
 const fixture = (
   homeGoals: number | null,
-  awayGoals: number | null
+  awayGoals: number | null,
+  status = 'FT'
 ): FixtureDTO =>
   ({
-    fixture: { id: 10, status: { short: 'FT' } },
+    fixture: { id: 10, status: { short: status } },
     teams: { home: { id: 1 }, away: { id: 2 } },
     goals: { home: homeGoals, away: awayGoals },
   } as FixtureDTO);
@@ -83,4 +84,98 @@ describe(FixtureEvaluationsService.name, () => {
     expect(result.performances[0]).toBe('NO_STATISTICS_AVAILABLE');
     expect(result.results[0]).toBe('NO_RESULT_AVAILABLE');
   });
+
+  it.each([
+    ['not started', 'NS', 'MATCH_NOT_STARTED'],
+    ['undetermined', 'TBD', 'MATCH_NOT_STARTED'],
+    ['postponed', 'PST', 'MATCH_POSTPONED'],
+  ])(
+    'returns the right performance for a %s fixture',
+    async (_, status, expected) => {
+      const statisticsReader: FixtureStatisticsReader = {
+        findById: jest.fn().mockResolvedValue({
+          response: [
+            statistics(1, {
+              'Shots on Goal': 5,
+              'Total Shots': 9,
+              'Ball Possession': 50,
+            } as Record<StatisticItemType, number>),
+          ],
+        } as RapidStatisticsDTO),
+      };
+
+      const result = await new FixtureEvaluationsService(
+        statisticsReader
+      ).analyzeFixtures(1, [fixture(1, 0, status)]);
+
+      expect(result.performances[0]).toBe(expected);
+    }
+  );
+
+  it.each([
+    [8, 12, 1, 'MIDDLE'],
+    [4, 8, 1, 'MIDDLE'],
+    [3, 7, 0, 'LOW'],
+    [4, 8, 2, 'HIGH'],
+  ])(
+    'classifies performance for %i shots on goal, %i total shots and %i goals',
+    async (shotsOnGoal, shotsTotal, goals, expected) => {
+      const statisticsReader: FixtureStatisticsReader = {
+        findById: jest.fn().mockResolvedValue({
+          response: [
+            statistics(1, {
+              'Shots on Goal': shotsOnGoal,
+              'Total Shots': shotsTotal,
+              'Ball Possession': 50,
+            } as Record<StatisticItemType, number>),
+          ],
+        } as RapidStatisticsDTO),
+      };
+
+      const result = await new FixtureEvaluationsService(
+        statisticsReader
+      ).analyzeFixtures(1, [fixture(goals, 0)]);
+
+      expect(result.performances[0]).toBe(expected);
+    }
+  );
+
+  it('treats zero possession as missing performance data', async () => {
+    const statisticsReader: FixtureStatisticsReader = {
+      findById: jest.fn().mockResolvedValue({
+        response: [
+          statistics(1, {
+            'Shots on Goal': 8,
+            'Total Shots': 12,
+            'Ball Possession': 0,
+          } as Record<StatisticItemType, number>),
+        ],
+      } as RapidStatisticsDTO),
+    };
+
+    const result = await new FixtureEvaluationsService(
+      statisticsReader
+    ).analyzeFixtures(1, [fixture(2, 0)]);
+
+    expect(result.performances[0]).toBe('NO_STATISTICS_AVAILABLE');
+  });
+
+  it.each([
+    [1, 2, 2, 'DRAW'],
+    [1, 1, 2, 'LOSS'],
+    [2, 1, 2, 'WIN'],
+  ])(
+    'returns %s team result for %i-%i goals',
+    async (teamId, homeGoals, awayGoals, expected) => {
+      const statisticsReader: FixtureStatisticsReader = {
+        findById: jest.fn().mockResolvedValue(null),
+      };
+
+      const result = await new FixtureEvaluationsService(
+        statisticsReader
+      ).analyzeFixtures(teamId, [fixture(homeGoals, awayGoals)]);
+
+      expect(result.results[0]).toBe(expected);
+    }
+  );
 });

@@ -47,7 +47,7 @@ export class OverviewPage {
 
     await calendar
       .locator('.mat-calendar-body-cell')
-      .filter({ hasText: new RegExp(`^\\s*${day}\\s*$`) })
+      .filter({ hasText: new RegExp(String.raw`^\s*${day}\s*$`) })
       .click();
   }
 
@@ -75,7 +75,7 @@ export class OverviewPage {
     const timer = Number(value);
 
     if (Number.isNaN(timer)) {
-      throw new Error(`Invalid refresh timer value: "${value}"`);
+      throw new TypeError(`Invalid refresh timer value: "${value}"`);
     }
 
     return timer;

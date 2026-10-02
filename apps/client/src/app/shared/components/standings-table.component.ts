@@ -308,7 +308,9 @@ export class StandingsTableComponent {
       return round
         .replace('League', 'Liga')
         .replace('Group', 'Gruppe')
-        .replace(/\s*,\s*/, ' ')
+        .split(',')
+        .map((part) => part.trim())
+        .join(' ')
         .trim();
     }
 

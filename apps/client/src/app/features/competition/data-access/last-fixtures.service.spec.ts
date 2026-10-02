@@ -42,6 +42,8 @@ describe('Last fixtures service', () => {
         candidate.params.get('showAll') === 'true'
     );
 
+    expect(request.request.method).toBe('GET');
+
     request.flush([]);
   });
 });

@@ -26,10 +26,8 @@ export class FixtureEvaluationsService {
     teamId: number,
     fixtures: FixtureDTO[]
   ): Promise<EvaluationTeam> {
-    const [performances, results] = await Promise.all([
-      this.analyzePerformances(teamId, fixtures),
-      this.analyzeResults(teamId, fixtures),
-    ]);
+    const results = this.analyzeResults(teamId, fixtures);
+    const performances = await this.analyzePerformances(teamId, fixtures);
 
     return { performances, results };
   }
@@ -126,8 +124,9 @@ export class FixtureEvaluationsService {
   private padToFixtureCount<T>(items: T[], fallback: T): T[] {
     return [
       ...items,
-      ...Array<T>(Math.max(0, EVALUATION_FIXTURE_COUNT - items.length)).fill(
-        fallback
+      ...Array.from(
+        { length: Math.max(0, EVALUATION_FIXTURE_COUNT - items.length) },
+        () => fallback
       ),
     ];
   }

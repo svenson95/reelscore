@@ -28,9 +28,7 @@ export class DateNavigationService {
   );
 
   readonly selectedTabIndex = computed<number>(() =>
-    this.weekdays().findIndex(
-      (day) => day === this.selectedDateService.selectedDay()
-    )
+    this.weekdays().indexOf(this.selectedDateService.selectedDay())
   );
 
   readonly isToday = computed<boolean>(

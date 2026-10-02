@@ -42,6 +42,8 @@ describe('Next fixtures service', () => {
         !candidate.params.has('showAll')
     );
 
+    expect(request.request.method).toBe('GET');
+
     request.flush([]);
   });
 });
