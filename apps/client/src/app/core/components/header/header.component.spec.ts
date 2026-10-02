@@ -6,7 +6,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { getTodayDateString } from '@reelscore-sdk/helpers';
 
-import { GLOBAL_SERVICE_PROVIDERS, LeagueService } from '@app/shared';
+import { LeagueService, SHARED_PROVIDERS } from '@app/shared';
 
 import { routes } from '../../../app.routes';
 
@@ -21,7 +21,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
-      providers: [provideRouter(routes), ...GLOBAL_SERVICE_PROVIDERS],
+      providers: [provideRouter(routes), ...SHARED_PROVIDERS],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

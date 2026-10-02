@@ -9,7 +9,7 @@ import { ROUTE_SERVICE_PROVIDER } from './route.service';
 import { STARTUP_SERVICE_PROVIDER } from './startup/startup.service';
 import { THEME_SERVICE_PROVIDER } from './theme.service';
 
-export const GLOBAL_SERVICE_PROVIDERS = [
+export const SHARED_PROVIDERS = [
   APP_UPDATE_SERVICE_PROVIDER,
   BREAKPOINT_OBSERVER_SERVICE_PROVIDER,
   HTTP_WEEK_FIXTURES_SERVICE_PROVIDER,
