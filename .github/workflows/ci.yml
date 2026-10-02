@@ -24,7 +24,7 @@ jobs:
       MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
 
   sonarcloud:
-    name: Analyze Code with SonarCloud
+    name: Analyze Code
     needs: tests
     if: ${{ vars.SONAR_ORGANIZATION != '' && vars.SONAR_PROJECT_KEY != '' }}
     uses: ./.github/workflows/sonarcloud.yml
