@@ -6,7 +6,7 @@ import { shareReplay } from 'rxjs';
 
 import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '@app/environment';
 
 export abstract class HttpTopScorersService {
   abstract getTopScorersForCompetition(

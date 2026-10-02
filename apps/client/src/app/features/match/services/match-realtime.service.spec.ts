@@ -5,15 +5,15 @@ import { of } from 'rxjs';
 
 import type { EventDTO, FixtureDTO } from '@reelscore-sdk/models';
 
-import { RealtimeUpdateRegistryService } from '@app/shared';
-
 import {
   createOperationResponse,
   createRapidEvents,
-} from '../../../../testing/factories/realtime.factory';
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
-import { MatchEventsComponent } from '../components/details/after/components';
-import { MatchHighlightsComponent } from '../components/match-header/components';
+  EXAMPLE_FIXTURE,
+} from '@testing/client';
+
+import { RealtimeUpdateRegistryService } from '@app/shared';
+
+import { MatchEventsComponent, MatchHighlightsComponent } from '../components';
 import {
   AnalysesStore,
   EvaluationsStore,
@@ -26,6 +26,7 @@ import {
 
 import { HttpFixtureEventsService } from './http/events.service';
 import { HttpFixtureService } from './http/fixture.service';
+
 import { MatchRealtimeService } from './match-realtime.service';
 
 @Component({

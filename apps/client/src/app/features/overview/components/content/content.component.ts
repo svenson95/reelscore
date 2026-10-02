@@ -10,9 +10,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { MAT_TAB_ANIMATION_DURATION } from '@app/shared';
 
-import { OverviewContentFacade } from './content.facade';
 import { OverviewFixturesComponent } from './fixtures/fixtures.component';
 import { OverviewStandingsComponent } from './standings/standings.component';
+
+import { OverviewContentFacade } from './content.facade';
 
 const MAT_MODULES = [MatTabsModule];
 

@@ -4,7 +4,7 @@ import {
   createFixtureAnalysis,
   readElementText,
   renderComponent,
-} from '../../../../../../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
 
 import { AnalysesEvaluationComponent } from './evaluation.component';
 

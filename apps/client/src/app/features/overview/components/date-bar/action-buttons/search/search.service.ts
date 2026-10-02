@@ -6,9 +6,9 @@ import { retry } from 'rxjs';
 
 import type { SearchResult } from '@reelscore-sdk/models';
 
-import { errorHandler } from '@app/shared';
+import { environment } from '@app/environment';
 
-import { environment } from '../../../../../../../environments/environment';
+import { errorHandler } from '@app/shared';
 
 export abstract class SearchService {
   abstract getBySearchTerm(searchTerm: string): Observable<SearchResult[]>;

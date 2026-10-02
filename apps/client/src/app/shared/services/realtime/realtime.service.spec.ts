@@ -10,11 +10,10 @@ import type {
   RapidEventsDTO,
 } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../environments/environment';
-import {
-  createOperationResponse,
-  createRapidEvents,
-} from '../../../../testing/factories/realtime.factory';
+import { createOperationResponse, createRapidEvents } from '@testing/client';
+
+import { environment } from '@app/environment';
+
 import { LiveRefreshService } from '../live-refresh/live-refresh.service';
 
 import { RealtimeService } from './realtime.service';

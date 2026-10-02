@@ -6,7 +6,7 @@ import {
   readElementText,
   readElementTexts,
   renderComponent,
-} from '../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
 
 import { MatchEvaluationsComponent } from './evaluations.component';
 

@@ -13,13 +13,14 @@ import {
   MatchHeaderComponent,
   PageHeaderComponent,
 } from './components';
-import { MatchFacade } from './match.facade';
 import {
   MatchRealtimeService,
   MatchRefreshService,
   SERVICE_PROVIDERS,
 } from './services';
 import { STORE_PROVIDERS } from './stores';
+
+import { MatchFacade } from './match.facade';
 
 @Component({
   selector: 'rs-match-page',

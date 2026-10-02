@@ -7,7 +7,8 @@ import {
   isQualifyPhase,
 } from '@reelscore-sdk/helpers';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@app/environment';
+
 import {
   AnalysesStore,
   EvaluationsStore,

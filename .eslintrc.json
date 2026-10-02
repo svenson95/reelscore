@@ -16,12 +16,15 @@
               ["^@angular/"],
               ["^@?\\w"],
               ["^@reelscore-sdk/"],
+              ["^@testing/client(?:/|$)"],
               ["^@lib/"],
+              ["^@app/environment(?:/|$)"],
               ["^@app/core(?:/|$)"],
               ["^@app/shared(?:/|$)"],
               ["^@app/"],
               ["^\\.\\.(?:/|$)"],
-              ["^\\./"],
+              ["^\\./[^./]+/"],
+              ["^\\./[^./]+$"],
               ["^"]
             ]
           }
@@ -31,7 +34,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["@app", "@lib"],
+            "allow": ["@app", "@lib", "@testing"],
             "depConstraints": [
               {
                 "sourceTag": "*",

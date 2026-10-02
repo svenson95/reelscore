@@ -1,7 +1,8 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { renderComponent } from '../../../../../../testing/match-components.testing';
+import { renderComponent } from '@testing/client';
+
 import { ScrollService } from '../services';
 
 import { CollapsibleScrollSection } from './collapsible-scroll-section.component';

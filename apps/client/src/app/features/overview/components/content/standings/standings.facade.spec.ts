@@ -4,7 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { COMPETITION_ID } from '@reelscore-sdk/constants';
 import type { StandingsDTO } from '@reelscore-sdk/models';
 
-import { EXAMPLE_STANDINGS } from '../../../../../../testing/standings.mock';
+import { EXAMPLE_STANDINGS } from '@testing/client';
+
 import { FilterService } from '../../../services';
 import { FilteredStandingsStore } from '../../../stores';
 

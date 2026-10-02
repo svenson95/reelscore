@@ -9,7 +9,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '@app/environment';
 
 import { apiRequestInterceptor } from './api-request.interceptor';
 

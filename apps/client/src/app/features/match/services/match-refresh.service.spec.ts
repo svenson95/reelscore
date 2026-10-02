@@ -3,9 +3,10 @@ import { TestBed } from '@angular/core/testing';
 
 import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { RefreshRegistryService, type RefreshTarget } from '@app/shared';
 
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
 import { MatchFacade } from '../match.facade';
 
 import { MatchRefreshService } from './match-refresh.service';

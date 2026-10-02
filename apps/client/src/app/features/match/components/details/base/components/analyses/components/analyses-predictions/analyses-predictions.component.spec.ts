@@ -4,7 +4,7 @@ import {
   readElementText,
   readElementTexts,
   renderComponent,
-} from '../../../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
 
 import { AnalysesPredictionsComponent } from './analyses-predictions.component';
 

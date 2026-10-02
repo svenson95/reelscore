@@ -10,7 +10,7 @@ import type {
   StandingsWeekData,
 } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '@app/environment';
 
 type StandingsParams = CompetitionId | null;
 

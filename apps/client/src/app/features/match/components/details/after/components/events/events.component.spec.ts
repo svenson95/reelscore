@@ -3,13 +3,14 @@ import { TestBed } from '@angular/core/testing';
 
 import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../../../../../testing/fixtures.mock';
 import {
   createMatchEvent,
+  EXAMPLE_FIXTURE,
   readElementText,
   readElementTexts,
   renderComponent,
-} from '../../../../../../../../testing/match-components.testing';
+} from '@testing/client';
+
 import { FixtureStore } from '../../../../../stores';
 
 import { MatchEventsComponent } from './events.component';

@@ -2,13 +2,13 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { BreakpointObserverService, ThemeService } from '@app/shared';
-
 import {
+  EXAMPLE_STANDINGS,
   readElementText,
   renderComponent,
-} from '../../../../../../../../testing/match-components.testing';
-import { EXAMPLE_STANDINGS } from '../../../../../../../../testing/standings.mock';
+} from '@testing/client';
+
+import { BreakpointObserverService, ThemeService } from '@app/shared';
 
 import { MatchFixtureStandingsComponent } from './standings.component';
 

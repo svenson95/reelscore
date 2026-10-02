@@ -1,6 +1,6 @@
 import type { HttpInterceptorFn } from '@angular/common/http';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '@app/environment';
 
 const API_REQUEST_TIMEOUT_MS = 10_000;
 

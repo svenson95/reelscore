@@ -6,7 +6,7 @@ import { shareReplay } from 'rxjs';
 
 import type { FixtureId, LatestFixturesDTO } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@app/environment';
 
 export abstract class HttpLatestFixturesService {
   abstract getLatestFixtures(

@@ -1,12 +1,13 @@
-import { APP_UPDATE_SERVICE_PROVIDER } from './app-update.service';
-import { BREAKPOINT_OBSERVER_SERVICE_PROVIDER } from './breakpoint-observer.service';
 import { HTTP_WEEK_FIXTURES_SERVICE_PROVIDER } from './http/fixtures.service';
 import { HTTP_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
 import { LEAGUE_SERVICE_PROVIDER } from './league/league.service';
+import { STARTUP_SERVICE_PROVIDER } from './startup/startup.service';
+
+import { APP_UPDATE_SERVICE_PROVIDER } from './app-update.service';
+import { BREAKPOINT_OBSERVER_SERVICE_PROVIDER } from './breakpoint-observer.service';
 import { HTTP_INTERCEPTOR_PROVIDER } from './loading.interceptor';
 import { LOADING_SERVICE_PROVIDER } from './loading.service';
 import { ROUTE_SERVICE_PROVIDER } from './route.service';
-import { STARTUP_SERVICE_PROVIDER } from './startup/startup.service';
 import { THEME_SERVICE_PROVIDER } from './theme.service';
 
 export const SHARED_PROVIDERS = [

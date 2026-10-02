@@ -19,6 +19,7 @@ import {
   MatchInfoComponent,
 } from './components';
 import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
+
 import { VENUE_IDS } from './venue-ids.data';
 
 @Component({

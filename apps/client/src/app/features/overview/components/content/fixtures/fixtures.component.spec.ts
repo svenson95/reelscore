@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
-import type { CompetitionWithFixtures } from '@app/shared';
+import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { EXAMPLE_FIXTURE } from '../../../../../../testing/fixtures.mock';
 import { DateNavigationService, SelectedDateService } from '../../../services';
+import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesComponent } from './fixtures.component';
 import { OverviewFixturesFacade } from './fixtures.facade';

@@ -3,8 +3,10 @@ import { TestBed } from '@angular/core/testing';
 
 import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
-import { environment } from '../../../../../environments/environment';
-import { EXAMPLE_FIXTURE } from '../../../../../testing/fixtures.mock';
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
+import { environment } from '@app/environment';
+
 import {
   AnalysesStore,
   EvaluationsStore,

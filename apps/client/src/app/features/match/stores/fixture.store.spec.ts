@@ -9,7 +9,8 @@ import type {
   GetFixtureDTO,
 } from '@reelscore-sdk/models';
 
-import { EXAMPLE_FIXTURE } from '../../../../testing/fixtures.mock';
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { HttpFixtureService } from '../services';
 
 import { AnalysesStore } from './analyses.store';

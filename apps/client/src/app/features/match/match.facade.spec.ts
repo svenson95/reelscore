@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 
 import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
+import { EXAMPLE_FIXTURE } from '@testing/client';
+
 import { RouteService, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
 
-import { EXAMPLE_FIXTURE } from '../../../testing/fixtures.mock';
+import { FixtureStore } from './stores';
 
 import { MatchFacade } from './match.facade';
-import { FixtureStore } from './stores';
 
 describe('MatchFacade', () => {
   const routeUrl = signal<string | undefined>(undefined);
