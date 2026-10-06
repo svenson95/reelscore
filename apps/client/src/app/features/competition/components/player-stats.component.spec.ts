@@ -1,31 +1,40 @@
 import { type Provider, signal, type Type } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopScorersStore } from '../state';
+import { TopAssistsStore, TopScorersStore } from '../state';
 
 import { PlayerStatsComponent } from './player-stats.component';
 
 describe('PlayerStatsComponent', () => {
   it('shows loading, no-data, and error states for player statistics', () => {
     const topScorers = signal<{ response: never[] } | null>(null);
-    const store = {
+    const topAssists = signal<{ response: never[] } | null>(null);
+    const topScorersStore = {
       topScorers,
       isLoading: signal(true),
       error: signal<unknown>(null),
     };
+    const topAssistsStore = {
+      topAssists,
+      isLoading: signal(true),
+      error: signal<unknown>(null),
+    };
     const fixture = createPanel(PlayerStatsComponent, [
-      { provide: TopScorersStore, useValue: store },
+      { provide: TopScorersStore, useValue: topScorersStore },
+      { provide: TopAssistsStore, useValue: topAssistsStore },
     ]);
 
     expect(fixture.nativeElement.textContent).toContain(
       'Spieler-Statistiken werden geladen'
     );
 
-    store.isLoading.set(false);
+    topScorersStore.isLoading.set(false);
+    topAssistsStore.isLoading.set(false);
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Keine Daten gefunden');
 
     topScorers.set({ response: [] });
+    topAssists.set({ response: [] });
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain(
       'Keine Torschützen vorhanden'
@@ -35,7 +44,7 @@ describe('PlayerStatsComponent', () => {
     );
 
     topScorers.set(null);
-    store.error.set(new Error('Request failed'));
+    topScorersStore.error.set(new Error('Request failed'));
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain(
       'Spieler-Statistiken konnten nicht geladen werden'

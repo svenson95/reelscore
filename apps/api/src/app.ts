@@ -8,6 +8,7 @@ import {
   fixtures,
   fixturesStatistics,
   standings,
+  topAssists,
   topScorers,
 } from './database';
 import { fixtureAnalyses } from './fixture-analyses';
@@ -51,6 +52,7 @@ app.use(databaseMiddleware);
 
 app.use('/standings', standings);
 app.use('/top-scorers', topScorers);
+app.use('/top-assists', topAssists);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
 app.use('/fixture-events', fixtureEvents);

@@ -7,4 +7,5 @@ export * from './fixtures';
 export * from './mongodb.helper';
 export * from './standings';
 export * from './teams';
+export * from './top-assists';
 export * from './top-scorers';
