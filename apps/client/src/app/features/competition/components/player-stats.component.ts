@@ -5,13 +5,12 @@ import {
   inject,
 } from '@angular/core';
 
+import { type TopScorer } from '@reelscore-sdk/models';
+
 import { PageTitleComponent, TeamNamePipe } from '@app/shared';
 
-import { TopScorersStore } from '../state';
-import {
-  getAssistProviders,
-  getGoalScorers,
-} from '../utils/player-statistics.utils';
+import { TopAssistsStore, TopScorersStore } from '../state';
+import { getAssistProviders, getGoalScorers } from '../utils';
 
 @Component({
   selector: 'rs-competition-player-stats',
@@ -96,19 +95,29 @@ import {
   `,
 })
 export class PlayerStatsComponent {
-  private readonly store = inject(TopScorersStore);
+  private readonly topScorersStore = inject(TopScorersStore);
+  private readonly topAssistsStore = inject(TopAssistsStore);
 
-  readonly topScorers = this.store.topScorers;
-  readonly isLoading = this.store.isLoading;
-  readonly error = this.store.error;
+  private readonly topScorers = this.topScorersStore.topScorers;
+  private readonly topAssists = this.topAssistsStore.topAssists;
 
-  readonly goalScorer = computed(() =>
+  protected readonly isLoading = computed<boolean>(
+    () => this.topScorersStore.isLoading() || this.topAssistsStore.isLoading()
+  );
+
+  protected readonly error = computed<string | null>(() =>
+    this.topScorersStore.error()
+  );
+
+  readonly goalScorer = computed<TopScorer[]>(() =>
     getGoalScorers(this.topScorers()?.response ?? [])
   );
 
-  readonly assists = computed(() =>
-    getAssistProviders(this.topScorers()?.response ?? [])
+  readonly assists = computed<TopScorer[]>(() =>
+    getAssistProviders(this.topAssists()?.response ?? [])
   );
 
-  readonly isDataLoaded = computed<boolean>(() => this.topScorers() !== null);
+  readonly isDataLoaded = computed<boolean>(
+    () => this.topScorers() !== null && !this.topAssistsStore.isLoading()
+  );
 }

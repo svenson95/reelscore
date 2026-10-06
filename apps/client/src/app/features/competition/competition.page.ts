@@ -25,6 +25,7 @@ import {
   LastFixturesStore,
   NextFixturesStore,
   STORE_PROVIDERS,
+  TopAssistsStore,
   TopScorersStore,
 } from './state';
 
@@ -118,6 +119,7 @@ export class CompetitionPage extends CompetitionRouteContext {
   private readonly nextFixturesStore = inject(NextFixturesStore);
   private readonly standingsStore = inject(CompetitionStandingsStore);
   private readonly topScorersStore = inject(TopScorersStore);
+  private readonly topAssistsStore = inject(TopAssistsStore);
 
   readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
@@ -133,5 +135,6 @@ export class CompetitionPage extends CompetitionRouteContext {
     this.nextFixturesStore.loadNextFixtures(competition.id);
     this.standingsStore.loadStandings(competition.id, new Date().toISOString());
     this.topScorersStore.loadTopScorers(competition.id);
+    this.topAssistsStore.loadTopAssists(competition.id);
   });
 }
