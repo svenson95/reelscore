@@ -50,6 +50,31 @@ describe('PlayerStatsComponent', () => {
       'Spieler-Statistiken konnten nicht geladen werden'
     );
   });
+
+  it('shows an error when top assists cannot be loaded', () => {
+    const fixture = createPanel(PlayerStatsComponent, [
+      {
+        provide: TopScorersStore,
+        useValue: {
+          topScorers: signal<{ response: never[] } | null>(null),
+          isLoading: signal(false),
+          error: signal<unknown>(null),
+        },
+      },
+      {
+        provide: TopAssistsStore,
+        useValue: {
+          topAssists: signal<{ response: never[] } | null>(null),
+          isLoading: signal(false),
+          error: signal<unknown>(new Error('Top assists request failed')),
+        },
+      },
+    ]);
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'Spieler-Statistiken konnten nicht geladen werden'
+    );
+  });
 });
 
 function createPanel<TComponent>(

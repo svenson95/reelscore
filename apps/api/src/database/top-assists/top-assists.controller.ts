@@ -1,11 +1,9 @@
-import type { TopAssistsDTO } from '@reelscore-sdk/models';
+import type { CompetitionId, TopAssistsDTO } from '@reelscore-sdk/models';
 
 import { TopAssistsService } from './top-assists.service';
 
 export interface TopAssistsReader {
-  findByFilter(
-    filter: Parameters<TopAssistsService['findByFilter']>[0]
-  ): Promise<TopAssistsDTO | null>;
+  findByLeague(competitionId: CompetitionId): Promise<TopAssistsDTO | null>;
 }
 
 export class TopAssistsController {
@@ -13,9 +11,7 @@ export class TopAssistsController {
     private readonly topAssistsService: TopAssistsReader = new TopAssistsService()
   ) {}
 
-  getById(competitionId: string): Promise<TopAssistsDTO | null> {
-    return this.topAssistsService.findByFilter({
-      'parameters.league': competitionId,
-    });
+  getById(competitionId: CompetitionId): Promise<TopAssistsDTO | null> {
+    return this.topAssistsService.findByLeague(competitionId);
   }
 }

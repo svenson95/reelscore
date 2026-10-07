@@ -38,6 +38,17 @@ test.describe('Competition Page', () => {
         },
       })
     );
+    await page.route('**/top-assists/**', (route) =>
+      route.fulfill({
+        json: {
+          _id: 'empty-assists',
+          parameters: { league: '78', season: '2026' },
+          response: [],
+          createdAt: '2026-10-02T00:00:00.000Z',
+          updatedAt: '2026-10-02T00:00:00.000Z',
+        },
+      })
+    );
 
     const competitionPage = new CompetitionPage(page);
 
