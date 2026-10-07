@@ -5,8 +5,18 @@ import { TopAssistsController } from './top-assists.controller';
 export const topAssists = express.Router();
 
 topAssists.get('/', async (req, res) => {
-  const competitionId = req.query.competition;
-  if (typeof competitionId !== 'string') {
+  const competitionParameter = req.query.competition;
+  if (
+    typeof competitionParameter !== 'string' ||
+    !/^\d+$/.test(competitionParameter)
+  ) {
+    return res.status(400).json({
+      message: 'Invalid competition query parameter',
+    });
+  }
+
+  const competitionId = Number(competitionParameter);
+  if (!Number.isSafeInteger(competitionId) || competitionId <= 0) {
     return res.status(400).json({
       message: 'Invalid competition query parameter',
     });

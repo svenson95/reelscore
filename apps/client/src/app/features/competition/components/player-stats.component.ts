@@ -106,7 +106,7 @@ export class PlayerStatsComponent {
   );
 
   protected readonly error = computed<string | null>(() =>
-    this.topScorersStore.error()
+    this.topScorersStore.error() ?? this.topAssistsStore.error()
   );
 
   readonly goalScorer = computed<TopScorer[]>(() =>
@@ -118,6 +118,6 @@ export class PlayerStatsComponent {
   );
 
   readonly isDataLoaded = computed<boolean>(
-    () => this.topScorers() !== null && !this.topAssistsStore.isLoading()
+    () => this.topScorers() !== null && this.topAssists() !== null
   );
 }
