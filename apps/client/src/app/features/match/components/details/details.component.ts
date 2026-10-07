@@ -21,6 +21,7 @@ import {
   MatchFixtureDataComponent,
   MatchFixtureStandingsComponent,
   MatchLatestFixturesComponent,
+  MatchTeamCoachesComponent,
 } from './base/components';
 
 import { MatchDetailsFacade } from './details.facade';
@@ -37,6 +38,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
     MatchFixtureStandingsComponent,
     MatchEvaluationsComponent,
     MatchLatestFixturesComponent,
+    MatchTeamCoachesComponent,
     MatchFixtureAnalysesComponent,
     MatchEventsComponent,
     MatchStatisticsComponent,
@@ -48,6 +50,10 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
 
       .tab-content {
         @apply flex flex-col;
+      }
+
+      .detail-sections {
+        @apply gap-6 sm:gap-8;
       }
 
       ::ng-deep {
@@ -76,10 +82,16 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
           </div>
         </ng-template>
 
-        <div class="tab-content">
+        <div class="tab-content detail-sections">
           <rs-match-fixture-data
             [fixture]="fixtureData()"
             [isLoading]="detailsLoading()"
+          />
+          <rs-match-team-coaches
+            [fixture]="fixtureData()"
+            [coaches]="teamCoaches()"
+            [isLoading]="teamCoachesLoading()"
+            [error]="teamCoachesError()"
           />
 
           @if (showStandings()) {
@@ -163,6 +175,9 @@ export class MatchDetailsComponent {
   readonly events = this.facade.events;
   readonly statistics = this.facade.statistics;
   readonly evaluations = this.facade.evaluations;
+  readonly teamCoaches = this.facade.teamCoaches;
+  readonly teamCoachesLoading = this.facade.teamCoachesLoading;
+  readonly teamCoachesError = this.facade.teamCoachesError;
   protected readonly fixtureData = computed(
     () => this.facade.fixture()?.data ?? null
   );

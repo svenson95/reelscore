@@ -15,7 +15,7 @@ import { getCompetitionRoundLabel, PageTitleComponent } from '@app/shared';
   imports: [PageTitleComponent],
   styles: `
     :host {
-      @apply flex flex-col mb-3;
+      @apply flex flex-col;
     }
 
     .fixture-data {

@@ -8,6 +8,7 @@ import {
   fixtures,
   fixturesStatistics,
   standings,
+  teamCoaches,
   topAssists,
   topScorers,
 } from './database';
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
 app.use(databaseMiddleware);
 
 app.use('/standings', standings);
+app.use('/team-coaches', teamCoaches);
 app.use('/top-scorers', topScorers);
 app.use('/top-assists', topAssists);
 app.use('/fixtures', fixtures);

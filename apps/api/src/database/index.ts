@@ -6,6 +6,7 @@ export * from './fixture-statistics';
 export * from './fixtures';
 export * from './mongodb.helper';
 export * from './standings';
+export * from './team-coaches';
 export * from './teams';
 export * from './top-assists';
 export * from './top-scorers';

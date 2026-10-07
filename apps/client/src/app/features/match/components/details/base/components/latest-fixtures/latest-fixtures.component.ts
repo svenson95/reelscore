@@ -15,7 +15,7 @@ import { MatchFixturesTableComponent } from './components';
   imports: [PageTitleComponent, MatchFixturesTableComponent],
   styles: `
     :host {
-      @apply flex flex-col my-3;
+      @apply flex flex-col;
     }
 
     .latest-fixtures-container {
