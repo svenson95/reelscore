@@ -32,10 +32,11 @@ describe(MatchTeamCoachesComponent.name, () => {
   });
 
   it('shows current coaches and formatted dates for their teams', () => {
-    const coach = createCoach(85, '2024-03-06');
+    const homeCoach = createCoach(85, '2024-03-06');
+    const awayCoach = createCoach(42, '2024-03-06');
     const componentFixture = renderComponent(MatchTeamCoachesComponent, {
       fixture: EXAMPLE_FIXTURE,
-      coaches: [coach],
+      coaches: [homeCoach, awayCoach],
       isLoading: false,
     });
 
@@ -47,7 +48,7 @@ describe(MatchTeamCoachesComponent.name, () => {
     expect(renderedText).toContain('🇩🇪 Deutschland');
     expect(renderedText).toContain('Im Amt seit 06.03.2024');
     expect(rootElement.querySelectorAll('.team-card')).toHaveLength(2);
-    expect(rootElement.querySelectorAll('.coach')).toHaveLength(1);
+    expect(rootElement.querySelectorAll('.coach')).toHaveLength(2);
     expect(rootElement.querySelector('.coach-away')).not.toBeNull();
   });
 
