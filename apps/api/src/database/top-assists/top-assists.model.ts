@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-
 import type { TopAssistsDTO } from '@reelscore-sdk/models';
 
-const TopAssistsSchema = new mongoose.Schema<TopAssistsDTO>(
+import { customModel } from '../mongodb.helper';
+
+export const TopAssists = customModel<TopAssistsDTO>(
+  'competition-top-assists',
   {
     parameters: {
       league: String,
@@ -32,9 +33,4 @@ const TopAssistsSchema = new mongoose.Schema<TopAssistsDTO>(
     ],
   },
   { timestamps: true }
-);
-
-export const TopAssists = mongoose.model(
-  'competition-top-assists',
-  TopAssistsSchema
 );

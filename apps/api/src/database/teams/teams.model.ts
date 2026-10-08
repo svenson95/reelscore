@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-
 import type { TeamDTO } from '@reelscore-sdk/models';
 
-const TeamsSchema = new mongoose.Schema<TeamDTO>(
+import { customModel } from '../mongodb.helper';
+
+export const Teams = customModel<TeamDTO>(
+  'teams',
   {
     team: {
       id: Number,
@@ -25,5 +26,3 @@ const TeamsSchema = new mongoose.Schema<TeamDTO>(
   },
   { timestamps: true }
 );
-
-export const Teams = mongoose.model('teams', TeamsSchema);

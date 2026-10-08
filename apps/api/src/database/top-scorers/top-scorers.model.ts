@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-
 import type { TopScorersDTO } from '@reelscore-sdk/models';
 
-const TopScorersSchema = new mongoose.Schema<TopScorersDTO>(
+import { customModel } from '../mongodb.helper';
+
+export const TopScorers = customModel<TopScorersDTO>(
+  'competition-top-scorers',
   {
     parameters: {
       league: String,
@@ -32,9 +33,4 @@ const TopScorersSchema = new mongoose.Schema<TopScorersDTO>(
     ],
   },
   { timestamps: true }
-);
-
-export const TopScorers = mongoose.model(
-  'competition-top-scorers',
-  TopScorersSchema
 );
