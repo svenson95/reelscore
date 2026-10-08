@@ -42,7 +42,7 @@ describe(MatchTeamCoachesComponent.name, () => {
     const rootElement = componentFixture.nativeElement as HTMLElement;
     const renderedText = readElementText(rootElement);
 
-    expect(renderedText).toContain('Alex Coach');
+    expect(renderedText).toContain('Alex Manager');
     expect(renderedText).toContain('45 Jahre');
     expect(renderedText).toContain('🇩🇪 Deutschland');
     expect(renderedText).toContain('Im Amt seit 06.03.2024');
