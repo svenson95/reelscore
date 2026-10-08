@@ -44,7 +44,7 @@ describe(MatchTeamCoachesComponent.name, () => {
 
     expect(renderedText).toContain('Alex Coach');
     expect(renderedText).toContain('45 Jahre');
-    expect(renderedText).toContain('🇩🇪 Germany');
+    expect(renderedText).toContain('🇩🇪 Deutschland');
     expect(renderedText).toContain('Im Amt seit 06.03.2024');
     expect(rootElement.querySelectorAll('.team-card')).toHaveLength(2);
     expect(rootElement.querySelectorAll('.coach')).toHaveLength(1);
