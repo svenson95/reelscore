@@ -52,6 +52,33 @@ describe(MatchTeamCoachesComponent.name, () => {
     expect(rootElement.querySelector('.coach-away')).not.toBeNull();
   });
 
+  it('uses the coach name and hides unavailable metadata', () => {
+    const incompleteCoach = {
+      ...createCoach(85, '2025-08-01'),
+      name: 'Lars Kornetka',
+      firstname: null,
+      lastname: null,
+      age: null,
+      nationality: null,
+    } as unknown as TeamCoachDTO;
+
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: EXAMPLE_FIXTURE,
+      coaches: [incompleteCoach],
+      isLoading: false,
+    });
+
+    const homeTeamCard = componentFixture.nativeElement.querySelector(
+      '.team-card[aria-label="Trainer des Heimteams"]'
+    ) as HTMLElement;
+
+    expect(homeTeamCard.querySelector('.coach-name')?.textContent?.trim()).toBe(
+      'Lars Kornetka'
+    );
+    expect(homeTeamCard.querySelector('.coach-meta')).toBeNull();
+    expect(homeTeamCard.textContent).not.toContain('Jahre');
+  });
+
   it('shows the error state for teams without coach data', () => {
     const componentFixture = renderComponent(MatchTeamCoachesComponent, {
       fixture: EXAMPLE_FIXTURE,
