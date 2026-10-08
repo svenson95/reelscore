@@ -20,6 +20,7 @@ import { FixtureStore } from './fixture.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
+import { TeamCoachesStore } from './team-coaches.store';
 
 describe('FixtureStore', () => {
   let store: InstanceType<typeof FixtureStore>;
@@ -31,6 +32,7 @@ describe('FixtureStore', () => {
   const statisticsStoreMock = { loadStatistics: jest.fn() };
   const latestFixturesStoreMock = { loadLatestFixtures: jest.fn() };
   const analysesStoreMock = { loadAnalyses: jest.fn() };
+  const teamCoachesStoreMock = { loadTeamCoaches: jest.fn() };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -44,6 +46,7 @@ describe('FixtureStore', () => {
         { provide: StatisticsStore, useValue: statisticsStoreMock },
         { provide: LatestFixturesStore, useValue: latestFixturesStoreMock },
         { provide: AnalysesStore, useValue: analysesStoreMock },
+        { provide: TeamCoachesStore, useValue: teamCoachesStoreMock },
       ],
     });
     store = TestBed.inject(FixtureStore);

@@ -22,6 +22,7 @@ import {
   FixtureStore,
   LatestFixturesStore,
   StatisticsStore,
+  TeamCoachesStore,
 } from '../stores';
 
 import { HttpFixtureEventsService } from './http/events.service';
@@ -93,6 +94,7 @@ describe('Match realtime report and highlights', () => {
           FixtureStandingsStore,
           LatestFixturesStore,
           StatisticsStore,
+          TeamCoachesStore,
         ].map((provide) => ({
           provide,
           useValue: {
@@ -101,6 +103,7 @@ describe('Match realtime report and highlights', () => {
             loadFixtureStandings: jest.fn(),
             loadLatestFixtures: jest.fn(),
             loadStatistics: jest.fn(),
+            loadTeamCoaches: jest.fn(),
           },
         })),
       ],

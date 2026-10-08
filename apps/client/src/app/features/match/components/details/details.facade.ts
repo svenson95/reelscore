@@ -17,6 +17,7 @@ import {
   FixtureStore,
   LatestFixturesStore,
   StatisticsStore,
+  TeamCoachesStore,
 } from '../../stores';
 
 @Injectable()
@@ -26,6 +27,7 @@ export class MatchDetailsFacade {
   private readonly latestFixturesStore = inject(LatestFixturesStore);
   private readonly eventsStore = inject(EventsStore);
   private readonly statisticsStore = inject(StatisticsStore);
+  private readonly teamCoachesStore = inject(TeamCoachesStore);
   private readonly evaluationsStore = inject(EvaluationsStore);
   private readonly fixtureStore = inject(FixtureStore);
 
@@ -36,6 +38,11 @@ export class MatchDetailsFacade {
   public readonly latestFixturesError = this.latestFixturesStore.error;
   public readonly events = this.eventsStore.events;
   public readonly statistics = this.statisticsStore.statistics;
+  public readonly teamCoaches = computed(
+    () => this.teamCoachesStore.teamCoaches()?.data ?? []
+  );
+  public readonly teamCoachesLoading = this.teamCoachesStore.isLoading;
+  public readonly teamCoachesError = this.teamCoachesStore.error;
   public readonly evaluations = this.evaluationsStore.evaluations;
   public readonly evaluationsError = this.evaluationsStore.error;
   public readonly fixture = this.fixtureStore.fixture;

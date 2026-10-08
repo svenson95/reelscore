@@ -15,6 +15,7 @@ import {
   FixtureStore,
   LatestFixturesStore,
   StatisticsStore,
+  TeamCoachesStore,
 } from '../../stores';
 
 import { MatchDetailsFacade } from './details.facade';
@@ -59,6 +60,14 @@ describe('MatchDetailsFacade', () => {
         { provide: AnalysesStore, useValue: { analyses: signal(null) } },
         { provide: EventsStore, useValue: { events: signal(null) } },
         { provide: StatisticsStore, useValue: { statistics: signal(null) } },
+        {
+          provide: TeamCoachesStore,
+          useValue: {
+            teamCoaches: signal(null),
+            isLoading: signal(false),
+            error: signal(null),
+          },
+        },
       ],
     });
   };

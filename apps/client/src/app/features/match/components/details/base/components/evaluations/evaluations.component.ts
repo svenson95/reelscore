@@ -21,7 +21,7 @@ import { ToKebabCasePipe } from './pipes';
   imports: [PageTitleComponent, ToKebabCasePipe],
   styles: `
     :host {
-      @apply flex flex-col my-3;
+      @apply flex flex-col;
     }
 
     .content {
