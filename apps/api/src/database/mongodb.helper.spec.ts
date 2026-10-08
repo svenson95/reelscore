@@ -1,8 +1,35 @@
-import type mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 import type { FixtureIdParameter, RapidEventsDTO } from '@reelscore-sdk/models';
 
-import { findDocument } from './mongodb.helper';
+import { createMongooseModel, findDocument } from './mongodb.helper';
+
+describe(createMongooseModel.name, () => {
+  afterEach(() => {
+    mongoose.deleteModel(/test-model-/);
+  });
+
+  it('uses timestamps by default', () => {
+    const modelName = `test-model-${Date.now()}`;
+    const model = createMongooseModel<{ name: string }>(modelName, {
+      name: String,
+    });
+
+    expect(model.schema.options.timestamps).toBe(true);
+  });
+
+  it('preserves explicit schema options', () => {
+    const modelName = `test-model-${Date.now()}`;
+    const model = createMongooseModel<{ name: string }>(
+      modelName,
+      { name: String },
+      { timestamps: false, collection: 'custom-models' }
+    );
+
+    expect(model.schema.options.timestamps).toBe(false);
+    expect(model.collection.name).toBe('custom-models');
+  });
+});
 
 describe(findDocument.name, () => {
   it('returns the matching document', async () => {

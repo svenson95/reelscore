@@ -45,6 +45,12 @@ jobs:
           name: shared-library-coverage
           path: coverage/lib
 
+      - name: Download Python Coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: python-coverage
+          path: coverage/python
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v7
         env:
@@ -53,3 +59,4 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.qualitygate.wait=true
