@@ -297,8 +297,14 @@ export class MatchTeamCoachesComponent {
     if (!countryCode) return '';
 
     return String.fromCodePoint(
-      ...[...countryCode].map((character) => 127397 + character.charCodeAt(0))
+      ...[...countryCode].map((character) => this.toRegionalIndicator(character))
     );
+  }
+
+  private toRegionalIndicator(character: string): number {
+    const codePoint = character.codePointAt(0);
+
+    return codePoint === undefined ? 0 : 127397 + codePoint;
   }
 
   protected coachStartDate(coach: TeamCoachDTO): string | null {

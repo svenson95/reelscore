@@ -66,12 +66,29 @@ def create_contents_json(images):
 
 
 def generate_assets(input_dir: Path, output_group_dir: Path, prefix: str):
+    validate_input_directory(input_dir)
+    validate_prefix(prefix)
+
+    output_group_dir = prepare_output_directory(output_group_dir)
+    grouped_images = collect_images(input_dir)
+
+    print(f"Gefundene Teams: {len(grouped_images)}")
+
+    for team_id, scale_files in sorted(grouped_images.items(), key=sort_team_ids):
+        write_imageset(output_group_dir, prefix, team_id, scale_files)
+
+
+def validate_input_directory(input_dir: Path):
     if not input_dir.exists():
         raise FileNotFoundError(f"Input-Ordner existiert nicht: {input_dir}")
 
+
+def validate_prefix(prefix: str):
     if not SAFE_ASSET_NAME.fullmatch(prefix):
         raise ValueError("Prefix darf nur Buchstaben, Zahlen, '_' und '-' enthalten.")
 
+
+def prepare_output_directory(output_group_dir: Path) -> Path:
     working_directory = Path.cwd().resolve()
     resolved_output_dir = output_group_dir.resolve()
 
@@ -85,12 +102,7 @@ def generate_assets(input_dir: Path, output_group_dir: Path, prefix: str):
     output_group_dir = resolved_output_dir
     output_group_dir.mkdir(parents=True, exist_ok=True)
 
-    grouped = collect_images(input_dir)
-
-    print(f"Gefundene Teams: {len(grouped)}")
-
-    for team_id, scale_files in sorted(grouped.items(), key=sort_team_ids):
-        write_imageset(output_group_dir, prefix, team_id, scale_files)
+    return output_group_dir
 
 
 def collect_images(input_dir: Path):
