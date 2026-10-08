@@ -1,8 +1,8 @@
 import type { TopAssistsDTO } from '@reelscore-sdk/models';
 
-import { customModel } from '../mongodb.helper';
+import { createMongooseModel } from '../mongodb.helper';
 
-export const TopAssists = customModel<TopAssistsDTO>(
+export const TopAssists = createMongooseModel<TopAssistsDTO>(
   'competition-top-assists',
   {
     parameters: {
