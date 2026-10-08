@@ -27,25 +27,29 @@ describe(MatchTeamCoachesComponent.name, () => {
     const rootElement = componentFixture.nativeElement as HTMLElement;
 
     expect(rootElement.querySelector('[aria-busy="true"]')).not.toBeNull();
-    expect(rootElement.querySelectorAll('.placeholder')).toHaveLength(2);
+    expect(rootElement.querySelectorAll('.coach-loading')).toHaveLength(2);
+    expect(rootElement.querySelectorAll('.loading-photo')).toHaveLength(2);
   });
 
   it('shows current coaches and formatted dates for their teams', () => {
-    const coach = createCoach(85, '2024-03-06');
+    const homeCoach = createCoach(85, '2024-03-06');
+    const awayCoach = createCoach(42, '2024-03-06');
     const componentFixture = renderComponent(MatchTeamCoachesComponent, {
       fixture: EXAMPLE_FIXTURE,
-      coaches: [coach],
+      coaches: [homeCoach, awayCoach],
       isLoading: false,
     });
 
     const rootElement = componentFixture.nativeElement as HTMLElement;
     const renderedText = readElementText(rootElement);
 
-    expect(renderedText).toContain('Alex Coach');
-    expect(renderedText).toContain('geb. 04.05.1980');
+    expect(renderedText).toContain('Alex Manager');
+    expect(renderedText).toContain('45 Jahre');
+    expect(renderedText).toContain('🇩🇪 Deutschland');
     expect(renderedText).toContain('Im Amt seit 06.03.2024');
     expect(rootElement.querySelectorAll('.team-card')).toHaveLength(2);
-    expect(rootElement.querySelectorAll('.coach')).toHaveLength(1);
+    expect(rootElement.querySelectorAll('.coach')).toHaveLength(2);
+    expect(rootElement.querySelector('.coach-away')).not.toBeNull();
   });
 
   it('shows the error state for teams without coach data', () => {

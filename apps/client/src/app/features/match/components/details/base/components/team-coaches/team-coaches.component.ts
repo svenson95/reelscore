@@ -26,49 +26,92 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs3 rounded-border2 sm:gap-4 sm:p-5;
     }
 
-    .team-heading {
-      @apply flex min-w-0 items-center gap-2 border-b border-rs-border-color-1 pb-2 pl-2 text-base font-semibold text-rs-color-text-1 sm:gap-3 sm:pb-3 sm:text-lg;
-    }
-
-    .team-logo {
-      @apply h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8;
-    }
-
     .coach {
-      @apply grid min-w-0 grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-4;
+      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-3;
+    }
+
+    .coach-away {
+      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem];
     }
 
     .coach-photo {
-      @apply aspect-square w-14 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs2 sm:w-20;
+      @apply aspect-square w-11 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs2 sm:w-16;
     }
 
     .coach-details {
       @apply flex min-w-0 flex-col gap-1 text-xs text-rs-color-text-1 sm:gap-2 sm:text-rs-font-size-body-2;
     }
 
+    .coach-details-away {
+      @apply items-end text-right;
+    }
+
     .coach-name {
       @apply block break-words text-sm font-semibold leading-tight sm:text-base;
     }
 
-    .coach-birth,
     .coach-tenure {
       @apply text-rs-color-text-2;
     }
 
-    .coach-team {
-      @apply inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border border-rs-border-color-1 px-2 py-0.5 sm:gap-2 sm:px-3 sm:py-1;
+    .coach-meta {
+      @apply flex flex-wrap items-center gap-2;
     }
 
-    .coach-team-logo {
-      @apply h-4 w-4 shrink-0 object-contain sm:h-5 sm:w-5;
+    .coach-meta-away {
+      @apply flex-row-reverse justify-end;
     }
 
-    .coach-team-name {
+    .coach-nationality {
+      @apply inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border border-rs-border-color-1 px-2 py-0.5 sm:gap-2 sm:px-3 sm:py-0.5;
+    }
+
+    .coach-flag {
+      @apply shrink-0 text-sm leading-none sm:text-base;
+    }
+
+    .coach-nationality-name {
       @apply min-w-0 break-words font-medium;
     }
 
-    .placeholder {
-      @apply h-3 w-28 max-w-full sm:h-4 sm:w-36;
+    .coach-skeleton {
+      @apply rounded;
+    }
+
+    .coach-loading {
+      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-3;
+    }
+
+    .coach-loading-away {
+      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem];
+    }
+
+    .loading-photo {
+      @apply aspect-square w-11 rounded-full sm:w-16;
+    }
+
+    .loading-details {
+      @apply flex min-w-0 flex-col gap-2;
+    }
+
+    .loading-name {
+      @apply h-4 w-3/4 max-w-40;
+    }
+
+    .loading-meta {
+      @apply flex items-center gap-2;
+    }
+
+    .loading-age {
+      @apply h-3 w-14;
+    }
+
+    .loading-nationality {
+      @apply h-6 w-20 rounded-full sm:h-5;
+    }
+
+    .loading-tenure {
+      @apply h-3 w-28 max-w-full;
     }
   `,
   template: `
@@ -77,43 +120,68 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     <div class="coaches-grid" [attr.aria-busy]="isLoading()">
       @for (team of teams(); track team.id) {
       <section class="team-card" [attr.aria-label]="team.label">
-        <h3 class="team-heading">
-          <img class="team-logo" [src]="team.logo" alt="" loading="lazy" />
-          <span>{{ team.name | teamName }}</span>
-        </h3>
-
         @if (isLoading()) {
-        <span class="rs-skeleton placeholder" aria-hidden="true"></span>
+        <div
+          class="coach-loading"
+          [class.coach-loading-away]="$index === 1"
+          aria-hidden="true"
+        >
+          @if ($index === 0) {
+          <span class="rs-skeleton coach-skeleton loading-photo"></span>
+          }
+          <div class="loading-details" [class.items-end]="$index === 1">
+            <span class="rs-skeleton coach-skeleton loading-name"></span>
+            <div class="loading-meta" [class.flex-row-reverse]="$index === 1">
+              <span class="rs-skeleton coach-skeleton loading-age"></span>
+              <span
+                class="rs-skeleton coach-skeleton loading-nationality"
+              ></span>
+            </div>
+            <span class="rs-skeleton coach-skeleton loading-tenure"></span>
+          </div>
+          @if ($index === 1) {
+          <span class="rs-skeleton coach-skeleton loading-photo"></span>
+          }
+        </div>
         } @else if (team.coach; as coach) {
-        <article class="coach">
+        <article class="coach" [class.coach-away]="$index === 1">
+          @if ($index === 0) {
           <img
             class="coach-photo"
             [src]="coach.photo"
-            [alt]="coach.firstname + ' ' + coach.name"
+            [alt]="coach.firstname + ' ' + coach.lastname"
             loading="lazy"
           />
-          <div class="coach-details">
-            <strong class="coach-name"
-              >{{ coach.firstname }} {{ coach.name }}</strong
-            >
-            <span class="coach-birth">
-              {{ coach.age }} Jahre · geb. {{ formatDate(coach.birth.date) }}
-            </span>
-            <span class="coach-team">
-              <img
-                class="coach-team-logo"
-                [src]="coach.team.logo"
-                alt=""
-                loading="lazy"
-              />
-              <span class="coach-team-name">{{ coach.team.name | teamName }}</span>
+          }
+          <div class="coach-details" [class.coach-details-away]="$index === 1">
+            <strong class="coach-name">
+              {{ coach.firstname }} {{ coach.lastname }}
+            </strong>
+            <span class="coach-meta" [class.coach-meta-away]="$index === 1">
+              <span>{{ coach.age }} Jahre</span>
+              <span class="coach-nationality">
+                @if (nationalityFlag(coach.nationality); as flag) {
+                <span class="coach-flag" aria-hidden="true">{{ flag }}</span>
+                }
+                <span class="coach-nationality-name">
+                  {{ coach.nationality | teamName }}
+                </span>
+              </span>
             </span>
             @if (coachStartDate(coach); as startDate) {
-            <span class="coach-tenure"
-              >Im Amt seit {{ formatDate(startDate) }}</span
-            >
+            <span class="coach-tenure">
+              Im Amt seit {{ formatDate(startDate) }}
+            </span>
             }
           </div>
+          @if ($index === 1) {
+          <img
+            class="coach-photo"
+            [src]="coach.photo"
+            [alt]="coach.firstname + ' ' + coach.lastname"
+            loading="lazy"
+          />
+          }
         </article>
         } @else if (error()) {
         <p role="status">Trainer konnten nicht geladen werden.</p>
@@ -139,15 +207,11 @@ export class MatchTeamCoachesComponent {
       {
         id: fixtureTeams.home.id,
         label: 'Trainer des Heimteams',
-        name: fixtureTeams.home.name,
-        logo: fixtureTeams.home.logo,
         coach: this.getCurrentCoach(fixtureTeams.home.id),
       },
       {
         id: fixtureTeams.away.id,
         label: 'Trainer des Auswärtsteams',
-        name: fixtureTeams.away.name,
-        logo: fixtureTeams.away.logo,
         coach: this.getCurrentCoach(fixtureTeams.away.id),
       },
     ];
@@ -164,6 +228,77 @@ export class MatchTeamCoachesComponent {
   protected formatDate(date: string): string {
     const [year, month, day] = date.split('-');
     return year && month && day ? `${day}.${month}.${year}` : date;
+  }
+
+  protected nationalityFlag(nationality: string): string {
+    const countryCodes: Record<string, string> = {
+      argentina: 'AR',
+      argentinian: 'AR',
+      austria: 'AT',
+      austrian: 'AT',
+      belgian: 'BE',
+      belgium: 'BE',
+      brazil: 'BR',
+      brazilian: 'BR',
+      canada: 'CA',
+      canadian: 'CA',
+      croatia: 'HR',
+      croatian: 'HR',
+      denmark: 'DK',
+      danish: 'DK',
+      england: 'GB',
+      english: 'GB',
+      france: 'FR',
+      french: 'FR',
+      germany: 'DE',
+      german: 'DE',
+      ghana: 'GH',
+      ghanaian: 'GH',
+      italy: 'IT',
+      italian: 'IT',
+      japan: 'JP',
+      japanese: 'JP',
+      mexico: 'MX',
+      mexican: 'MX',
+      morocco: 'MA',
+      moroccan: 'MA',
+      netherlands: 'NL',
+      dutch: 'NL',
+      nigeria: 'NG',
+      nigerian: 'NG',
+      norway: 'NO',
+      norwegian: 'NO',
+      poland: 'PL',
+      polish: 'PL',
+      portugal: 'PT',
+      portuguese: 'PT',
+      scotland: 'GB',
+      scottish: 'GB',
+      senegal: 'SN',
+      senegalese: 'SN',
+      serbia: 'RS',
+      serbian: 'RS',
+      spain: 'ES',
+      spanish: 'ES',
+      sweden: 'SE',
+      swedish: 'SE',
+      switzerland: 'CH',
+      swiss: 'CH',
+      turkey: 'TR',
+      turkish: 'TR',
+      ukraine: 'UA',
+      ukrainian: 'UA',
+      'united states': 'US',
+      american: 'US',
+      uruguay: 'UY',
+      uruguayan: 'UY',
+    };
+    const countryCode = countryCodes[nationality.trim().toLowerCase()];
+    if (!countryCode) return '';
+
+    return String.fromCodePoint(
+      ...[...countryCode].map((character) => 127397 + character.charCodeAt(0))
+    );
   }
 
   protected coachStartDate(coach: TeamCoachDTO): string | null {
