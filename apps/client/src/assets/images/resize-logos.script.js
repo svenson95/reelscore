@@ -16,9 +16,8 @@ const sizes = [
 const inputDir = './team-logo';
 const outputBaseDir = `./team-logo-responsive/${baseSize}x${baseSize}`;
 
-const createOutputPath = (file, scale) => {
+const createOutputPath = (file, scale, outputDir) => {
   const parsed = path.parse(file);
-  const outputDir = outputBaseDir;
   const outputFile = `${parsed.name}@${scale}x.png`;
 
   return {
@@ -38,8 +37,11 @@ const resizeLogo = async (inputPath, outputPath, size) => {
     .toFile(outputPath);
 };
 
-async function processImages() {
-  const files = fs.readdirSync(inputDir);
+async function processImages(
+  sourceDirectory = inputDir,
+  destinationDirectory = outputBaseDir
+) {
+  const files = fs.readdirSync(sourceDirectory);
   const fileBatches = [];
 
   for (
@@ -53,7 +55,7 @@ async function processImages() {
   }
 
   const processFile = async (file) => {
-    const inputPath = path.join(inputDir, file);
+    const inputPath = path.join(sourceDirectory, file);
     const stat = fs.statSync(inputPath);
 
     if (!stat.isFile()) return;
@@ -61,7 +63,11 @@ async function processImages() {
     try {
       await Promise.all(
         sizes.map(async ({ scale, size }) => {
-          const { outputDir, outputPath } = createOutputPath(file, scale);
+          const { outputDir, outputPath } = createOutputPath(
+            file,
+            scale,
+            destinationDirectory
+          );
 
           fs.mkdirSync(outputDir, { recursive: true });
 
@@ -89,7 +95,17 @@ async function processImages() {
   console.log('Done.');
 }
 
-void processImages().catch((error) => {
-  console.error('Failed to process logo images:', error);
-  process.exitCode = 1;
-});
+const runCli = (run = processImages) =>
+  run().catch((error) => {
+    console.error('Failed to process logo images:', error);
+    process.exitCode = 1;
+  });
+
+const runWhenInvokedAsScript = (
+  isMain = require.main === module,
+  run = processImages
+) => (isMain ? runCli(run) : Promise.resolve());
+
+void runWhenInvokedAsScript();
+
+module.exports = { processImages, runCli, runWhenInvokedAsScript };
