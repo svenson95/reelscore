@@ -71,7 +71,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-flag {
-      @apply h-3 w-5 shrink-0 rounded-sm object-cover shadow-sm;
+      @apply h-[16px] w-[20px] shrink-0 rounded-sm object-cover shadow-rs3;
     }
 
     .coach-nationality-name {
