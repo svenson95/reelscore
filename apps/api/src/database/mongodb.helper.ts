@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 
 import type { FixtureIdParameter, RapidDTO } from '@reelscore-sdk/models';
 
-const DEFAULT_MONGOOSE_SCHEMA_OPTIONS: mongoose.SchemaOptions = {
+type MongooseSchemaOptions<T> = NonNullable<
+  ConstructorParameters<typeof mongoose.Schema<T>>[1]
+>;
+
+const DEFAULT_MONGOOSE_SCHEMA_OPTIONS = {
   timestamps: true,
 };
 
@@ -27,7 +31,7 @@ export async function findDocument<T extends RapidDTO<unknown>>(
 export function createMongooseModel<T>(
   key: string,
   definition: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<T>>,
-  options: mongoose.SchemaOptions = DEFAULT_MONGOOSE_SCHEMA_OPTIONS
+  options: MongooseSchemaOptions<T> = DEFAULT_MONGOOSE_SCHEMA_OPTIONS
 ): mongoose.Model<T> {
   const mongooseSchema = new mongoose.Schema<T>(definition, options);
 
