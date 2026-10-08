@@ -3,39 +3,39 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { EvaluationDTO, FixtureId } from '@reelscore-sdk/models';
+import type { AnalysesDTO, FixtureId } from '@reelscore-sdk/models';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpEvaluationsService } from '../services';
+import { HttpFixtureAnalysesService } from '../data-access';
 
-type EvaluationsState = StateHandler<{ evaluations: EvaluationDTO | null }>;
+type AnalysesState = StateHandler<{ analyses: AnalysesDTO | null }>;
 
-const initialState: EvaluationsState = {
+const initialState: AnalysesState = {
+  analyses: null,
   isLoading: false,
   error: null,
-  evaluations: null,
 };
 
-export const EvaluationsStore = signalStore(
+export const AnalysesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpEvaluationsService)) => ({
-    loadEvaluations(fixtureId: FixtureId): void {
-      patchState(store, { isLoading: true, error: null });
+  withMethods((store, http = inject(HttpFixtureAnalysesService)) => ({
+    loadAnalyses(id: FixtureId): void {
+      patchState(store, { isLoading: true });
 
       http
-        .getEvaluations(fixtureId)
+        .getFixtureAnalyses(id)
         .pipe(retry(errorHandler))
         .subscribe({
-          next: (evaluations) =>
+          next: (analyses) =>
             patchState(store, {
-              evaluations,
+              analyses,
               isLoading: false,
               error: null,
             }),
           error: (error) =>
             patchState(store, {
-              evaluations: null,
+              analyses: null,
               isLoading: false,
               error,
             }),

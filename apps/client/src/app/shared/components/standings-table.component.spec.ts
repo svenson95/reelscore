@@ -6,7 +6,7 @@ import type { StandingRanks } from '@reelscore-sdk/models';
 
 import { EXAMPLE_STANDINGS } from '@testing/client';
 
-import { BreakpointObserverService, ThemeService } from '../services';
+import { BreakpointObserverService, ThemeService } from '../data-access';
 
 import { StandingsTableComponent } from './standings-table.component';
 

@@ -3,39 +3,39 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { retry } from 'rxjs';
 
-import type { AnalysesDTO, FixtureId } from '@reelscore-sdk/models';
+import type { FixtureIdParameter, StatisticDTO } from '@reelscore-sdk/models';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpFixtureAnalysesService } from '../services';
+import { HttpFixtureStatisticsService } from '../data-access';
 
-type AnalysesState = StateHandler<{ analyses: AnalysesDTO | null }>;
+type StatisticsState = StateHandler<{ statistics: StatisticDTO[] | null }>;
 
-const initialState: AnalysesState = {
-  analyses: null,
+const initialState: StatisticsState = {
+  statistics: null,
   isLoading: false,
   error: null,
 };
 
-export const AnalysesStore = signalStore(
+export const StatisticsStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpFixtureAnalysesService)) => ({
-    loadAnalyses(id: FixtureId): void {
+  withMethods((store, http = inject(HttpFixtureStatisticsService)) => ({
+    loadStatistics(id: FixtureIdParameter): void {
       patchState(store, { isLoading: true });
 
       http
-        .getFixtureAnalyses(id)
+        .getFixtureStatistics(id)
         .pipe(retry(errorHandler))
         .subscribe({
-          next: (analyses) =>
+          next: (statistics) =>
             patchState(store, {
-              analyses,
+              statistics: statistics?.response,
               isLoading: false,
-              error: null,
+              error: statistics?.response ? null : 'Statistics not found',
             }),
           error: (error) =>
             patchState(store, {
-              analyses: null,
+              statistics: null,
               isLoading: false,
               error,
             }),

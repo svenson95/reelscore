@@ -4,7 +4,7 @@ import { Subject, throwError } from 'rxjs';
 
 import type { StandingsDTO } from '@reelscore-sdk/models';
 
-import { HttpFixtureStandingsService } from '../services';
+import { HttpFixtureStandingsService } from '../data-access';
 
 import { FixtureStandingsStore } from './standings.store';
 

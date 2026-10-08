@@ -16,7 +16,7 @@ import {
   LatestFixturesStore,
   StatisticsStore,
   TeamCoachesStore,
-} from '../../stores';
+} from '../../state';
 
 import { MatchDetailsFacade } from './details.facade';
 

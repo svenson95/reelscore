@@ -15,7 +15,7 @@ import type {
 import { WeekFixturesStore } from '@app/core';
 import { RefreshRegistryService, type RefreshTarget } from '@app/shared';
 
-import { WeekStandingsStore } from '../stores';
+import { WeekStandingsStore } from '../state';
 
 import { DateNavigationService } from './date-navigation.service';
 import { OverviewRefreshService } from './overview-refresh.service';

@@ -5,8 +5,8 @@ import { getTodayDateString } from '@reelscore-sdk/helpers';
 import { WeekFixturesStore } from '@app/core';
 import { getFixtureStatusState, RefreshRegistryService } from '@app/shared';
 
-import { getSelectedDayData } from '../helpers';
-import { WeekStandingsStore } from '../stores';
+import { WeekStandingsStore } from '../state';
+import { getSelectedDayData } from '../utils';
 
 import { DateNavigationService } from './date-navigation.service';
 import { SelectedDateService } from './selected-date.service';

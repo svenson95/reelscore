@@ -17,8 +17,8 @@ import {
   MatchRealtimeService,
   MatchRefreshService,
   SERVICE_PROVIDERS,
-} from './services';
-import { STORE_PROVIDERS } from './stores';
+} from './data-access';
+import { STORE_PROVIDERS } from './state';
 
 import { MatchFacade } from './match.facade';
 

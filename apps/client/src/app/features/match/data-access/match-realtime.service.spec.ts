@@ -23,7 +23,7 @@ import {
   LatestFixturesStore,
   StatisticsStore,
   TeamCoachesStore,
-} from '../stores';
+} from '../state';
 
 import { HttpFixtureEventsService } from './http/events.service';
 import { HttpFixtureService } from './http/fixture.service';

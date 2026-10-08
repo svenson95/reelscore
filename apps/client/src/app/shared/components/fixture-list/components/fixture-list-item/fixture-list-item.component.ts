@@ -12,13 +12,13 @@ import { RouterModule } from '@angular/router';
 import { formatFixtureTime } from '@reelscore-sdk/helpers';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
+import { TeamNamePipe } from '../../../../pipes';
 import {
   type FixtureStatusState,
   getFixtureStatusState,
   getTeamLogo,
   getTeamLogoSrcSet,
-} from '../../../../helpers';
-import { TeamNamePipe } from '../../../../pipes';
+} from '../../../../utils';
 import { linkToMatch } from '../../../../utils';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';

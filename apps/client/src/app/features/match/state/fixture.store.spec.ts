@@ -11,7 +11,7 @@ import type {
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { HttpFixtureService } from '../services';
+import { HttpFixtureService } from '../data-access';
 
 import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';

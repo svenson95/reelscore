@@ -5,7 +5,7 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { DateNavigationService, SelectedDateService } from '../../../services';
+import { DateNavigationService, SelectedDateService } from '../../../data-access';
 import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesComponent } from './fixtures.component';

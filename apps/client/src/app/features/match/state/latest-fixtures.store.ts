@@ -7,7 +7,7 @@ import type { FixtureId, LatestFixturesDTO } from '@reelscore-sdk/models';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpLatestFixturesService } from '../services';
+import { HttpLatestFixturesService } from '../data-access';
 
 type LatestFixturesState = StateHandler<{
   latestFixtures: LatestFixturesDTO | null;

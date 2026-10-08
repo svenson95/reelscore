@@ -17,7 +17,7 @@ import { filterFixtureHighlights } from '@lib/shared';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpFixtureService } from '../services';
+import { HttpFixtureService } from '../data-access';
 
 import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';

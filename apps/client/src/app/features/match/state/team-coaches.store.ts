@@ -7,7 +7,7 @@ import type { GetAllTeamCoachesDTO } from '@reelscore-sdk/models';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpTeamCoachesService } from '../services';
+import { HttpTeamCoachesService } from '../data-access';
 
 type TeamCoachesState = StateHandler<{
   teamCoaches: GetAllTeamCoachesDTO | null;

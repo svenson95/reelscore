@@ -4,7 +4,7 @@ import { of, Subject, throwError } from 'rxjs';
 
 import type { EvaluationDTO } from '@reelscore-sdk/models';
 
-import { HttpEvaluationsService } from '../services';
+import { HttpEvaluationsService } from '../data-access';
 
 import { EvaluationsStore } from './evaluations.store';
 

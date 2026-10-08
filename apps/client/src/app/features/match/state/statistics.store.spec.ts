@@ -4,7 +4,7 @@ import { of, Subject } from 'rxjs';
 
 import type { RapidStatisticsDTO, StatisticDTO } from '@reelscore-sdk/models';
 
-import { HttpFixtureStatisticsService } from '../services';
+import { HttpFixtureStatisticsService } from '../data-access';
 
 import { StatisticsStore } from './statistics.store';
 

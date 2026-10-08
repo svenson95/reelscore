@@ -9,8 +9,8 @@ import {
 
 import { WeekFixturesStore } from '@app/core';
 
-import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekStandingsStore } from '../../stores';
+import { DateNavigationService, SelectedDateService } from '../../data-access';
+import { WeekStandingsStore } from '../../state';
 
 const EDGE_PREVIOUS_DAY_INDEX = 0;
 const CURRENT_WEEK_START_INDEX = 1;

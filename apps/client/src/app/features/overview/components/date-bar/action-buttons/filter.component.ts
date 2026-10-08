@@ -22,8 +22,8 @@ import {
   ThemeService,
 } from '@app/shared';
 
-import { FilterService, SelectedDateService } from '../../../services';
-import { FilteredStandingsStore, WeekStandingsStore } from '../../../stores';
+import { FilterService, SelectedDateService } from '../../../data-access';
+import { FilteredStandingsStore, WeekStandingsStore } from '../../../state';
 
 const MAT_MODULES = [
   MatButtonModule,

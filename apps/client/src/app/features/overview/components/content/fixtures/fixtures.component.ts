@@ -14,7 +14,7 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
 
-import { DateNavigationService, SelectedDateService } from '../../../services';
+import { DateNavigationService, SelectedDateService } from '../../../data-access';
 import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesFacade } from './fixtures.facade';

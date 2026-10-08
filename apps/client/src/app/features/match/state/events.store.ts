@@ -15,7 +15,7 @@ import type {
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpFixtureEventsService } from '../services';
+import { HttpFixtureEventsService } from '../data-access';
 
 type EventsState = StateHandler<{ events: EventWithResult[] | null }>;
 

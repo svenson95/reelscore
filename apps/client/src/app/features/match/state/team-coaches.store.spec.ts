@@ -4,7 +4,7 @@ import { Subject, throwError } from 'rxjs';
 
 import type { GetAllTeamCoachesDTO } from '@reelscore-sdk/models';
 
-import { HttpTeamCoachesService } from '../services';
+import { HttpTeamCoachesService } from '../data-access';
 
 import { TeamCoachesStore } from './team-coaches.store';
 

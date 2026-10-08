@@ -18,7 +18,7 @@ import {
   MatchHighlightsComponent,
   MatchInfoComponent,
 } from './components';
-import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
+import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './data-access';
 
 import { VENUE_IDS } from './venue-ids.data';
 

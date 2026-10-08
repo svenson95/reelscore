@@ -11,7 +11,7 @@ import {
   renderComponent,
 } from '@testing/client';
 
-import { FixtureStore } from '../../../../../stores';
+import { FixtureStore } from '../../../../../state';
 
 import { MatchEventsComponent } from './events.component';
 

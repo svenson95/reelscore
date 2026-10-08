@@ -15,8 +15,8 @@ import { EXAMPLE_FIXTURE } from '@testing/client';
 
 import { WeekFixturesStore } from '@app/core';
 
-import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekStandingsStore } from '../../stores';
+import { DateNavigationService, SelectedDateService } from '../../data-access';
+import { WeekStandingsStore } from '../../state';
 
 import { OverviewContentFacade } from './content.facade';
 

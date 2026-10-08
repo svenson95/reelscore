@@ -6,7 +6,7 @@ import type { EventDTO, RapidEventsDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { HttpFixtureEventsService } from '../services';
+import { HttpFixtureEventsService } from '../data-access';
 
 import { EventsStore } from './events.store';
 

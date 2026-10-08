@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { STATUS_VALUES_FINISHED } from '@reelscore-sdk/constants';
 import type { EventWithResult } from '@reelscore-sdk/models';
 
-import { FixtureStore } from '../../../../../stores';
+import { FixtureStore } from '../../../../../state';
 
 import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
