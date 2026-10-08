@@ -87,38 +87,74 @@ const pipeResponseBody = async (
   signal: AbortSignal
 ): Promise<void> => {
   const reader = body.getReader();
-  const cancel = (): void => {
+  const cancelReader = (): void => {
     void reader.cancel().catch(() => undefined);
   };
-  signal.addEventListener('abort', cancel, { once: true });
+  signal.addEventListener('abort', cancelReader, { once: true });
 
   try {
-    if (signal.aborted) {
-      cancel();
-      return;
-    }
-    while (!signal.aborted) {
-      const result = await reader.read();
-      if (result.done || signal.aborted) {
-        break;
-      }
-      if (!res.write(Buffer.from(result.value))) {
-        await once(res, 'drain', { signal });
-      }
-    }
+    await transferResponseBody(reader, res, signal);
   } catch (error) {
     if (!signal.aborted) {
       throw error;
     }
   } finally {
-    signal.removeEventListener('abort', cancel);
+    signal.removeEventListener('abort', cancelReader);
     await reader.cancel().catch(() => undefined);
     reader.releaseLock();
+
     if (!res.writableEnded && !res.destroyed) {
       res.end();
     }
   }
 };
+
+const transferResponseBody = (
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  res: Response,
+  signal: AbortSignal
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const readNextChunk = (): void => {
+      if (signal.aborted) {
+        resolve();
+        return;
+      }
+
+      void reader
+        .read()
+        .then(({ done, value }) => {
+          if (done || signal.aborted) {
+            resolve();
+            return;
+          }
+
+          if (res.write(Buffer.from(value))) {
+            readNextChunk();
+            return;
+          }
+
+          void once(res, 'drain', { signal }).then(readNextChunk, (error) => {
+            if (signal.aborted) {
+              resolve();
+              return;
+            }
+
+            reject(error);
+          });
+        })
+        .catch((error: unknown) => {
+          if (signal.aborted) {
+            resolve();
+            return;
+          }
+
+          reject(error);
+        });
+    };
+
+    readNextChunk();
+  });
 
 const isRealtimeEnabled = (): boolean =>
   process.env['VERCEL_ENV'] !== 'production' &&

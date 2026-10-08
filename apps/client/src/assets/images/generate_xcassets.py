@@ -12,6 +12,8 @@ import shutil
 import sys
 from pathlib import Path
 
+SAFE_ASSET_NAME = re.compile(r"^[A-Za-z0-9_-]+$")
+
 
 def parse_file(file_path: Path):
     """
@@ -67,11 +69,34 @@ def generate_assets(input_dir: Path, output_group_dir: Path, prefix: str):
     if not input_dir.exists():
         raise FileNotFoundError(f"Input-Ordner existiert nicht: {input_dir}")
 
+    if not SAFE_ASSET_NAME.fullmatch(prefix):
+        raise ValueError("Prefix darf nur Buchstaben, Zahlen, '_' und '-' enthalten.")
+
+    working_directory = Path.cwd().resolve()
+    resolved_output_dir = output_group_dir.resolve()
+
+    try:
+        resolved_output_dir.relative_to(working_directory)
+    except ValueError as error:
+        raise ValueError(
+            "Output-Ordner muss innerhalb des aktuellen Ordners liegen."
+        ) from error
+
+    output_group_dir = resolved_output_dir
     output_group_dir.mkdir(parents=True, exist_ok=True)
 
+    grouped = collect_images(input_dir)
+
+    print(f"Gefundene Teams: {len(grouped)}")
+
+    for team_id, scale_files in sorted(grouped.items(), key=sort_team_ids):
+        write_imageset(output_group_dir, prefix, team_id, scale_files)
+
+
+def collect_images(input_dir: Path):
     grouped = {}
 
-    # rglob, damit es auch funktioniert, falls Unterordner existieren
+    # rglob supports input directories that contain nested folders.
     for file_path in input_dir.rglob("*.png"):
         parsed = parse_file(file_path)
 
@@ -80,44 +105,57 @@ def generate_assets(input_dir: Path, output_group_dir: Path, prefix: str):
             continue
 
         team_id, scale = parsed
+
+        if not SAFE_ASSET_NAME.fullmatch(team_id):
+            print(f"Übersprungen: Ungültige Asset-ID in {file_path.name}")
+            continue
+
         grouped.setdefault(team_id, {})[scale] = file_path
 
-    print(f"Gefundene Teams: {len(grouped)}")
+    return grouped
 
-    for team_id, scale_files in sorted(grouped.items(), key=lambda item: int(item[0]) if item[0].isdigit() else item[0]):
-        asset_name = f"{prefix}_{team_id}"
 
-        imageset_dir = output_group_dir / f"{asset_name}.imageset"
+def sort_team_ids(item):
+    team_id = item[0]
 
-        if imageset_dir.exists():
-            shutil.rmtree(imageset_dir)
+    if team_id.isdigit():
+        return 0, int(team_id)
 
-        imageset_dir.mkdir(parents=True, exist_ok=True)
+    return 1, team_id
 
-        images_for_json = {}
 
-        for scale, source_file in scale_files.items():
-            if scale == "1x":
-                target_filename = f"{asset_name}.png"
-            else:
-                target_filename = f"{asset_name}@{scale}.png"
+def write_imageset(
+    output_group_dir: Path,
+    prefix: str,
+    team_id: str,
+    scale_files: dict[str, Path],
+):
+    asset_name = f"{prefix}_{team_id}"
+    imageset_dir = output_group_dir / f"{asset_name}.imageset"
 
-            target_file = imageset_dir / target_filename
-            shutil.copy2(source_file, target_file)
+    if imageset_dir.exists():
+        shutil.rmtree(imageset_dir)
 
-            images_for_json[scale] = target_filename
+    imageset_dir.mkdir(parents=True, exist_ok=True)
+    images_for_json = {}
 
-        contents = create_contents_json(images_for_json)
+    for scale, source_file in scale_files.items():
+        target_filename = f"{asset_name}.png" if scale == "1x" else f"{asset_name}@{scale}.png"
+        target_file = imageset_dir / target_filename
+        shutil.copy2(source_file, target_file)
+        images_for_json[scale] = target_filename
 
-        with open(imageset_dir / "Contents.json", "w", encoding="utf-8") as f:
-            json.dump(contents, f, indent=2, ensure_ascii=False)
+    contents = create_contents_json(images_for_json)
 
-        missing = [scale for scale in ["1x", "2x", "3x"] if scale not in scale_files]
+    with open(imageset_dir / "Contents.json", "w", encoding="utf-8") as contents_file:
+        json.dump(contents, contents_file, indent=2, ensure_ascii=False)
 
-        if missing:
-            print(f"⚠️  {asset_name}: fehlt {', '.join(missing)}")
-        else:
-            print(f"✅ {asset_name}")
+    missing = [scale for scale in ["1x", "2x", "3x"] if scale not in scale_files]
+
+    if missing:
+        print(f"⚠️  {asset_name}: fehlt {', '.join(missing)}")
+    else:
+        print(f"✅ {asset_name}")
 
 
 def main():

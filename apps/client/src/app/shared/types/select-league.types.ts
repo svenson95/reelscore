@@ -10,7 +10,6 @@ export type CompetitionData = {
   label: CompetitionName;
   id: CompetitionId;
   url: CompetitionUrl;
-  size: number;
 };
 
 export type SelectCompetitionGroup = {

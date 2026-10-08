@@ -22,7 +22,7 @@ const initialState: LatestFixturesState = {
 export const LatestFixturesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpLatestFixturesService)) => ({
-    async loadLatestFixtures(fixtureId: FixtureId): Promise<void> {
+    loadLatestFixtures(fixtureId: FixtureId): void {
       patchState(store, { isLoading: true, error: null });
       if (!fixtureId) {
         return patchState(store, {
@@ -50,7 +50,7 @@ export const LatestFixturesStore = signalStore(
             }),
         });
     },
-    async reset(): Promise<void> {
+    reset(): void {
       patchState(store, initialState);
     },
   }))

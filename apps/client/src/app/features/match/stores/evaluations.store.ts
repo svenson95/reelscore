@@ -41,7 +41,7 @@ export const EvaluationsStore = signalStore(
             }),
         });
     },
-    async reset(): Promise<void> {
+    reset(): void {
       patchState(store, initialState);
     },
   }))

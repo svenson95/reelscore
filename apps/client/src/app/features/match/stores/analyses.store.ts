@@ -20,7 +20,7 @@ const initialState: AnalysesState = {
 export const AnalysesStore = signalStore(
   withState(initialState),
   withMethods((store, http = inject(HttpFixtureAnalysesService)) => ({
-    async loadAnalyses(id: FixtureId): Promise<void> {
+    loadAnalyses(id: FixtureId): void {
       patchState(store, { isLoading: true });
 
       http

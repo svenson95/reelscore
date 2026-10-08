@@ -13,28 +13,28 @@ declare global {
 const STARTUP_TIMEOUT_MS = 30_000;
 const POLL_INTERVAL_MS = 250;
 
-const waitForApi = async (): Promise<void> => {
-  const startedAt = Date.now();
+const waitForApi = async (startedAt = Date.now()): Promise<void> => {
+  try {
+    const response = await fetch(API_E2E_URL);
 
-  while (Date.now() - startedAt < STARTUP_TIMEOUT_MS) {
-    try {
-      const response = await fetch(API_E2E_URL);
-
-      if (response.ok) {
-        return;
-      }
-    } catch {
-      /* empty */
+    if (response.ok) {
+      return;
     }
-
-    await new Promise<void>((resolve) => {
-      setTimeout(resolve, POLL_INTERVAL_MS);
-    });
+  } catch {
+    /* The API process may not be listening yet. */
   }
 
-  throw new Error(
-    `API did not become available at ${API_E2E_URL} within ${STARTUP_TIMEOUT_MS}ms`
-  );
+  if (Date.now() - startedAt >= STARTUP_TIMEOUT_MS) {
+    throw new Error(
+      `API did not become available at ${API_E2E_URL} within ${STARTUP_TIMEOUT_MS}ms`
+    );
+  }
+
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, POLL_INTERVAL_MS);
+  });
+
+  return waitForApi(startedAt);
 };
 
 export default async function globalSetup(): Promise<void> {

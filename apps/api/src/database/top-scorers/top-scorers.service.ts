@@ -1,4 +1,4 @@
-import type { FilterQuery } from 'mongoose';
+import mongoose, { type FilterQuery } from 'mongoose';
 
 import type { TopScorersDTO } from '@reelscore-sdk/models';
 
@@ -8,6 +8,8 @@ export class TopScorersService {
   findByFilter(
     filter: FilterQuery<TopScorersDTO>
   ): Promise<TopScorersDTO | null> {
-    return TopScorers.findOne(filter).sort({ createdAt: -1 }).lean();
+    const sanitizedFilter = mongoose.sanitizeFilter(filter);
+
+    return TopScorers.findOne(sanitizedFilter).sort({ createdAt: -1 }).lean();
   }
 }

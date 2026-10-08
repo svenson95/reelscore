@@ -6,11 +6,11 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../coverage/apps/client',
   transform: {
-    '^.+\\.(ts|mjs|js|html)$': [
+    [String.raw`^.+\.(ts|mjs|js|html)$`]: [
       'jest-preset-angular',
       {
         tsconfig: '<rootDir>/tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.(html|svg)$',
+        stringifyContentPathRegex: String.raw`\.(html|svg)$`,
       },
     ],
   },
