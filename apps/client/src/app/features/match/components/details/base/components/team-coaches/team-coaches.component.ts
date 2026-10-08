@@ -27,11 +27,11 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach {
-      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-3;
+      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] items-center gap-3 ml-2;
     }
 
     .coach-away {
-      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem];
+      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem] mr-2;
     }
 
     .coach-photo {
@@ -39,7 +39,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-details {
-      @apply flex min-w-0 flex-col gap-1 text-xs text-rs-color-text-1 sm:gap-2 sm:text-rs-font-size-body-2;
+      @apply flex min-w-0 flex-col gap-1 text-xs text-rs-color-text-1 sm:text-rs-font-size-body-2;
     }
 
     .coach-details-away {
@@ -130,13 +130,13 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           <span class="rs-skeleton coach-skeleton loading-photo"></span>
           }
           <div class="loading-details" [class.items-end]="$index === 1">
-            <span class="rs-skeleton coach-skeleton loading-name"></span>
             <div class="loading-meta" [class.flex-row-reverse]="$index === 1">
               <span class="rs-skeleton coach-skeleton loading-age"></span>
               <span
                 class="rs-skeleton coach-skeleton loading-nationality"
               ></span>
             </div>
+            <span class="rs-skeleton coach-skeleton loading-name"></span>
             <span class="rs-skeleton coach-skeleton loading-tenure"></span>
           </div>
           @if ($index === 1) {
@@ -154,9 +154,6 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           />
           }
           <div class="coach-details" [class.coach-details-away]="$index === 1">
-            <strong class="coach-name">
-              {{ coach.firstname }} {{ coach.lastname }}
-            </strong>
             <span class="coach-meta" [class.coach-meta-away]="$index === 1">
               <span>{{ coach.age }} Jahre</span>
               <span class="coach-nationality">
@@ -167,6 +164,10 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
                   {{ coach.nationality | teamName }}
                 </span>
               </span>
+            </span>
+
+            <span class="coach-name">
+              {{ coach.firstname }} {{ coach.lastname }}
             </span>
             @if (coachStartDate(coach); as startDate) {
             <span class="coach-tenure">
@@ -297,7 +298,9 @@ export class MatchTeamCoachesComponent {
     if (!countryCode) return '';
 
     return String.fromCodePoint(
-      ...[...countryCode].map((character) => this.toRegionalIndicator(character))
+      ...[...countryCode].map((character) =>
+        this.toRegionalIndicator(character)
+      )
     );
   }
 
