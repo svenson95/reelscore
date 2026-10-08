@@ -17,7 +17,7 @@ import {
   AnalysesStore,
   FixtureStore,
   LatestFixturesStore,
-} from '../../../../../stores';
+} from '../../../../../state';
 
 import { MatchFixtureAnalysesComponent } from './analyses.component';
 

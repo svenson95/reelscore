@@ -4,7 +4,7 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { FilterService } from '../../../services';
+import { FilterService } from '../../../data-access';
 
 import { OverviewFixturesFacade } from './fixtures.facade';
 

@@ -12,7 +12,7 @@ import {
   withPreloading,
 } from '@angular/router';
 
-import { OVERVIEW_STORE_PROVIDERS } from './features/overview/stores';
+import { OVERVIEW_STORE_PROVIDERS } from './features/overview/state';
 
 import {
   APP_INITIALIZER_PROVIDER,

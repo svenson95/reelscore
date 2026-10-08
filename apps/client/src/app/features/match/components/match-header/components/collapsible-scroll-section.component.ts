@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { ScrollService } from '../services';
+import { ScrollService } from '../data-access';
 
 @Component({
   selector: 'rs-collapsible-scroll-section',

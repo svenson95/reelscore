@@ -20,14 +20,12 @@ export async function findDocument<T extends RapidDTO<unknown>>(
   return document;
 }
 
-// TODO use this util for mongoose models
 export function customModel<T>(
   key: string,
-  definition: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<T>>
+  definition: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<T>>,
+  options: { timestamps?: boolean } = { timestamps: true }
 ): mongoose.Model<T> {
-  const mongooseSchema = new mongoose.Schema<T>(definition, {
-    timestamps: true,
-  });
+  const mongooseSchema = new mongoose.Schema<T>(definition, options);
 
   return mongoose.model<T>(key, mongooseSchema);
 }

@@ -6,21 +6,6 @@ const FEATURE_SECTIONS = [
     name: 'COMPONENTS',
   },
   {
-    // TODO rename ‘helpers' directories to 'utils'
-    path: 'helpers',
-    name: 'HELPERS',
-  },
-  {
-    // TODO rename ‘stores' directories to 'state'
-    path: 'stores',
-    name: 'STORES',
-  },
-  {
-    // TODO rename 'services' directories to 'data-access'
-    path: 'services',
-    name: 'SERVICES',
-  },
-  {
     path: 'data-access',
     name: 'DATA ACCESS',
   },

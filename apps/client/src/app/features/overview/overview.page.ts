@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { DateBarComponent, OverviewContentComponent } from './components';
-import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './services';
+import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './data-access';
 
 @Component({
   selector: 'rs-overview-page',

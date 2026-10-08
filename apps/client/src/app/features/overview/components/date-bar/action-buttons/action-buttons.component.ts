@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RefreshTickerComponent } from '@app/shared';
 
-import { DateNavigationService } from '../../../services';
+import { DateNavigationService } from '../../../data-access';
 
 import { SearchComponent } from './search/search.component';
 

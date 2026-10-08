@@ -17,7 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import type { DateString } from '@reelscore-sdk/helpers';
 import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
 
-import { DateNavigationService } from '../../services';
+import { DateNavigationService } from '../../data-access';
 
 @Pipe({ name: 'isToday' })
 export class IsTodayPipe implements PipeTransform {

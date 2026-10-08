@@ -1,6 +1,6 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OverviewRefreshService } from './services';
+import { OverviewRefreshService } from './data-access';
 
 import { OverviewPage } from './overview.page';
 

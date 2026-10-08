@@ -6,8 +6,8 @@ import type { StandingsDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_STANDINGS } from '@testing/client';
 
-import { FilterService } from '../../../services';
-import { FilteredStandingsStore } from '../../../stores';
+import { FilterService } from '../../../data-access';
+import { FilteredStandingsStore } from '../../../state';
 
 import { OverviewStandingsFacade } from './standings.facade';
 

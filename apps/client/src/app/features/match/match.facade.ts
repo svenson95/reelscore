@@ -15,7 +15,7 @@ import {
   SELECT_COMPETITION_DATA_FLAT,
 } from '@app/shared';
 
-import { FixtureStore } from './stores';
+import { FixtureStore } from './state';
 
 @Injectable()
 export class MatchFacade {

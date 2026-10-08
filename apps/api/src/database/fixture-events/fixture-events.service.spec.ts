@@ -8,6 +8,7 @@ import { FixtureEvents } from './fixture-events.model';
 import { FixtureEventsService } from './fixture-events.service';
 
 jest.mock('../mongodb.helper', () => ({
+  ...jest.requireActual('../mongodb.helper'),
   findDocument: jest.fn(),
 }));
 

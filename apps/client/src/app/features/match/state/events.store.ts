@@ -15,7 +15,7 @@ import type {
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpFixtureEventsService } from '../services';
+import { HttpFixtureEventsService } from '../data-access';
 
 type EventsState = StateHandler<{ events: EventWithResult[] | null }>;
 
@@ -38,13 +38,13 @@ export const EventsStore = signalStore(
     };
 
     return {
-      async loadEvents({
+      loadEvents({
         fixtureId,
         teams,
       }: {
         fixtureId: FixtureIdParameter;
         teams: MatchTeams;
-      }): Promise<void> {
+      }): void {
         patchState(store, {
           isLoading: true,
         });
@@ -81,7 +81,7 @@ export const EventsStore = signalStore(
         patchEvents(events, teams);
       },
 
-      async reset(): Promise<void> {
+      reset(): void {
         patchState(store, initialState);
       },
     };

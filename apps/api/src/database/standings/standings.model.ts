@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-
 import type { StandingsDTO } from '@reelscore-sdk/models';
 
-const StandingsSchema = new mongoose.Schema<StandingsDTO>(
+import { customModel } from '../mongodb.helper';
+
+export const Standings = customModel<StandingsDTO>(
+  'standings',
   {
     league: {
       id: Number,
@@ -65,5 +66,3 @@ const StandingsSchema = new mongoose.Schema<StandingsDTO>(
   },
   { timestamps: true }
 );
-
-export const Standings = mongoose.model('standings', StandingsSchema);

@@ -10,8 +10,8 @@ import type { DateString } from '@reelscore-sdk/helpers';
 import { WeekFixturesStore } from '@app/core';
 import { BreakpointObserverService } from '@app/shared';
 
-import { DateNavigationService, SelectedDateService } from '../../services';
-import { WeekStandingsStore } from '../../stores';
+import { DateNavigationService, SelectedDateService } from '../../data-access';
+import { WeekStandingsStore } from '../../state';
 
 import { ActionButtonsComponent } from './action-buttons/action-buttons.component';
 

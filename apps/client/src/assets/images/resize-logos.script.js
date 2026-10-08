@@ -5,6 +5,7 @@ const path = require('node:path');
 const sharp = require('sharp');
 
 const baseSize = 14;
+const maximumConcurrentFiles = 4;
 
 const sizes = [
   { scale: 1, size: baseSize },
@@ -39,27 +40,51 @@ const resizeLogo = async (inputPath, outputPath, size) => {
 
 async function processImages() {
   const files = fs.readdirSync(inputDir);
+  const fileBatches = [];
 
-  for (const file of files) {
+  for (
+    let startIndex = 0;
+    startIndex < files.length;
+    startIndex += maximumConcurrentFiles
+  ) {
+    fileBatches.push(
+      files.slice(startIndex, startIndex + maximumConcurrentFiles)
+    );
+  }
+
+  const processFile = async (file) => {
     const inputPath = path.join(inputDir, file);
     const stat = fs.statSync(inputPath);
 
-    if (!stat.isFile()) continue;
+    if (!stat.isFile()) return;
 
     try {
-      for (const { scale, size } of sizes) {
-        const { outputDir, outputPath } = createOutputPath(file, scale);
+      await Promise.all(
+        sizes.map(async ({ scale, size }) => {
+          const { outputDir, outputPath } = createOutputPath(file, scale);
 
-        fs.mkdirSync(outputDir, { recursive: true });
+          fs.mkdirSync(outputDir, { recursive: true });
 
-        await resizeLogo(inputPath, outputPath, size);
-      }
+          await resizeLogo(inputPath, outputPath, size);
+        })
+      );
 
       console.log(`✓ ${file}`);
     } catch (err) {
       console.error(`Error at ${file}:`, err.message);
     }
-  }
+  };
+
+  const processBatches = async (batches) => {
+    const [batch, ...remainingBatches] = batches;
+
+    if (!batch) return;
+
+    await Promise.all(batch.map(processFile));
+    await processBatches(remainingBatches);
+  };
+
+  await processBatches(fileBatches);
 
   console.log('Done.');
 }

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-
 import type { TeamCoachDTO } from '@reelscore-sdk/models';
+
+import { customModel } from '../mongodb.helper';
 
 type TeamCoachesDocument = {
   parameters: {
@@ -10,7 +10,8 @@ type TeamCoachesDocument = {
   lastFetchedAt?: Date;
 };
 
-const TeamCoachesSchema = new mongoose.Schema<TeamCoachesDocument>(
+export const TeamCoaches = customModel<TeamCoachesDocument>(
+  'team-coaches',
   {
     parameters: {
       team: String,
@@ -53,5 +54,3 @@ const TeamCoachesSchema = new mongoose.Schema<TeamCoachesDocument>(
   },
   { timestamps: true }
 );
-
-export const TeamCoaches = mongoose.model('team-coaches', TeamCoachesSchema);

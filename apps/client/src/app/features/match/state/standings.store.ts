@@ -8,7 +8,7 @@ import type { CompetitionId, StandingsDTO } from '@reelscore-sdk/models';
 
 import { errorHandler, type StateHandler } from '@app/shared';
 
-import { HttpFixtureStandingsService } from '../services';
+import { HttpFixtureStandingsService } from '../data-access';
 
 type FixtureStandingsState = StateHandler<{ standings: StandingsDTO | null }>;
 

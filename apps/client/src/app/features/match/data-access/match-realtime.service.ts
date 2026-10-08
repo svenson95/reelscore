@@ -4,7 +4,7 @@ import type { FixtureId } from '@reelscore-sdk/models';
 
 import { RealtimeUpdateRegistryService } from '@app/shared';
 
-import { EventsStore, FixtureStore } from '../stores';
+import { EventsStore, FixtureStore } from '../state';
 
 @Injectable()
 export class MatchRealtimeService {

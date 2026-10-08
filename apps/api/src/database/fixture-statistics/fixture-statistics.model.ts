@@ -1,24 +1,23 @@
-import mongoose from 'mongoose';
-
 import type { RapidStatisticsDTO } from '@reelscore-sdk/models';
 
-const StatisticsSchema = new mongoose.Schema<RapidStatisticsDTO>({
-  parameters: {
-    fixture: String,
-  },
-  response: [
-    {
-      team: {
-        id: Number,
-        name: String,
-        logo: String,
-      },
-      statistics: [],
-    },
-  ],
-});
+import { customModel } from '../mongodb.helper';
 
-export const FixturesStatistics = mongoose.model(
+export const FixturesStatistics = customModel<RapidStatisticsDTO>(
   'fixtures-statistics',
-  StatisticsSchema
+  {
+    parameters: {
+      fixture: String,
+    },
+    response: [
+      {
+        team: {
+          id: Number,
+          name: String,
+          logo: String,
+        },
+        statistics: [],
+      },
+    ],
+  },
+  { timestamps: false }
 );

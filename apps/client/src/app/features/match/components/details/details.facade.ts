@@ -18,7 +18,7 @@ import {
   LatestFixturesStore,
   StatisticsStore,
   TeamCoachesStore,
-} from '../../stores';
+} from '../../state';
 
 @Injectable()
 export class MatchDetailsFacade {

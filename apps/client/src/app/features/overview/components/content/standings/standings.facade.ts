@@ -4,8 +4,8 @@ import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
 
 import { showHomeAndAwayStandings } from '@app/shared';
 
-import { FilterService } from '../../../services';
-import { FilteredStandingsStore } from '../../../stores';
+import { FilterService } from '../../../data-access';
+import { FilteredStandingsStore } from '../../../state';
 
 @Injectable()
 export class OverviewStandingsFacade {

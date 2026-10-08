@@ -1,7 +1,7 @@
 import type { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { LOADING_SERVICE_PROVIDER } from '../../../shared/services';
+import { LOADING_SERVICE_PROVIDER } from '../../../shared/data-access';
 
 import { FooterComponent } from './footer.component';
 

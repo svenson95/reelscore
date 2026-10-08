@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EXAMPLE_FIXTURE, renderComponent } from '@testing/client';
 
-import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './services';
+import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './data-access';
 
 import { MatchHeaderComponent } from './match-header.component';
 import { VENUE_IDS } from './venue-ids.data';

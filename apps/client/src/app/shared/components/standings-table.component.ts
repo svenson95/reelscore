@@ -17,14 +17,14 @@ import type {
   StandingsPlayed,
 } from '@reelscore-sdk/models';
 
+import { BreakpointObserverService, ThemeService } from '../data-access';
+import { TeamNamePipe } from '../pipes';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   getTeamLogo,
   getTeamLogoSrcSet,
-} from '../helpers';
-import { TeamNamePipe } from '../pipes';
-import { BreakpointObserverService, ThemeService } from '../services';
+} from '../utils';
 import { SELECT_COMPETITION_DATA_FLAT } from '../utils';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';

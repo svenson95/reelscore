@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { renderComponent } from '@testing/client';
 
-import { ScrollService } from '../services';
+import { ScrollService } from '../data-access';
 
 import { CollapsibleScrollSection } from './collapsible-scroll-section.component';
 

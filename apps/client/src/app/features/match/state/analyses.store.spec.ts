@@ -4,7 +4,7 @@ import { of, Subject, throwError } from 'rxjs';
 
 import type { AnalysesDTO } from '@reelscore-sdk/models';
 
-import { HttpFixtureAnalysesService } from '../services';
+import { HttpFixtureAnalysesService } from '../data-access';
 
 import { AnalysesStore } from './analyses.store';
 

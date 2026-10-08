@@ -6,7 +6,7 @@ import type { LatestFixturesDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { HttpLatestFixturesService } from '../services';
+import { HttpLatestFixturesService } from '../data-access';
 
 import { LatestFixturesStore } from './latest-fixtures.store';
 

@@ -8,7 +8,7 @@ import { EXAMPLE_FIXTURE } from '@testing/client';
 
 import { RouteService, SELECT_COMPETITION_DATA_FLAT } from '@app/shared';
 
-import { FixtureStore } from './stores';
+import { FixtureStore } from './state';
 
 import { MatchFacade } from './match.facade';
 

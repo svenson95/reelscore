@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import type { DateString } from '@reelscore-sdk/helpers';
 
-import { DateNavigationService } from '../../services';
+import { DateNavigationService } from '../../data-access';
 
 import { WeekToggleGroupComponent } from './week-toggle-group.component';
 
