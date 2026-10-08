@@ -27,7 +27,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach {
-      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] items-center gap-3 ml-2;
+      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] items-center gap-4 ml-2;
     }
 
     .coach-away {
@@ -55,19 +55,23 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-meta {
-      @apply flex flex-wrap items-center gap-2;
+      @apply flex flex-wrap items-center;
     }
 
     .coach-meta-away {
-      @apply flex-row-reverse justify-end;
+      @apply justify-end;
     }
 
     .coach-nationality {
-      @apply inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border border-rs-border-color-1 px-2 py-0.5 sm:gap-2 sm:px-3 sm:py-0.5;
+      @apply inline-flex w-fit max-w-full items-center gap-2;
+    }
+
+    .coach-meta-separator {
+      @apply text-rs-color-text-2 mx-1.5;
     }
 
     .coach-flag {
-      @apply shrink-0 text-sm leading-none sm:text-base;
+      @apply h-3 w-5 shrink-0 rounded-sm object-cover shadow-sm;
     }
 
     .coach-nationality-name {
@@ -155,17 +159,32 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           }
           <div class="coach-details" [class.coach-details-away]="$index === 1">
             @if (hasCoachMeta(coach)) {
-            <span class="coach-meta" [class.coach-meta-away]="$index === 1">
+            <span
+              class="coach-meta"
+              [class.coach-meta-away]="$index === 1"
+              [class.flex-row-reverse]="$index === 1"
+            >
               @if (coach.age !== null && coach.age !== undefined) {
               <span>{{ coach.age }} Jahre</span>
-              } @if (coach.nationality; as nationality) {
-              <span class="coach-nationality">
-                @if (nationalityFlag(nationality); as flag) {
-                <span class="coach-flag" aria-hidden="true">{{ flag }}</span>
-                }
+              } @if (coach.nationality; as nationality) { @if (coach.age !==
+              null && coach.age !== undefined) {
+              <span class="coach-meta-separator">{{ ' · ' }}</span>
+              }
+              <span
+                class="coach-nationality"
+                [class.flex-row-reverse]="$index === 1"
+              >
                 <span class="coach-nationality-name">
                   {{ nationality | teamName }}
                 </span>
+                @if (nationalityFlagUrl(nationality); as flagUrl) {
+                <img
+                  class="coach-flag"
+                  [src]="flagUrl"
+                  alt=""
+                  aria-hidden="true"
+                />
+                }
               </span>
               }
             </span>
@@ -223,10 +242,23 @@ export class MatchTeamCoachesComponent {
   });
 
   private getCurrentCoach(teamId: number): TeamCoachDTO | null {
+    const currentCoaches = this.coaches().filter((coach) =>
+      coach.career.some((career) => career.team.id === teamId && !career.end)
+    );
+
     return (
-      this.coaches().find((coach) =>
-        coach.career.some((career) => career.team.id === teamId && !career.end)
-      ) ?? null
+      currentCoaches
+        .map((coach) => ({
+          coach,
+          currentCareer: coach.career.find(
+            (career) => career.team.id === teamId && !career.end
+          ),
+        }))
+        .sort((first, second) =>
+          (second.currentCareer?.start ?? '').localeCompare(
+            first.currentCareer?.start ?? ''
+          )
+        )[0]?.coach ?? null
     );
   }
 
@@ -236,11 +268,7 @@ export class MatchTeamCoachesComponent {
   }
 
   protected coachName(coach: TeamCoachDTO): string {
-    const fullName = [coach.firstname, coach.lastname]
-      .filter(Boolean)
-      .join(' ');
-
-    return fullName || coach.name || '';
+    return coach.name || '';
   }
 
   protected hasCoachMeta(coach: TeamCoachDTO): boolean {
@@ -250,7 +278,7 @@ export class MatchTeamCoachesComponent {
     return hasAge || hasNationality;
   }
 
-  protected nationalityFlag(nationality: string | null | undefined): string {
+  protected nationalityFlagUrl(nationality: string | null | undefined): string {
     if (!nationality) return '';
 
     const countryCodes: Record<string, string> = {
@@ -294,6 +322,8 @@ export class MatchTeamCoachesComponent {
       polish: 'PL',
       portugal: 'PT',
       portuguese: 'PT',
+      romania: 'RO',
+      romanian: 'RO',
       scotland: 'GB',
       scottish: 'GB',
       senegal: 'SN',
@@ -318,17 +348,7 @@ export class MatchTeamCoachesComponent {
     const countryCode = countryCodes[nationality.trim().toLowerCase()];
     if (!countryCode) return '';
 
-    return String.fromCodePoint(
-      ...[...countryCode].map((character) =>
-        this.toRegionalIndicator(character)
-      )
-    );
-  }
-
-  private toRegionalIndicator(character: string): number {
-    const codePoint = character.codePointAt(0);
-
-    return codePoint === undefined ? 0 : 127397 + codePoint;
+    return `https://media.api-sports.io/flags/${countryCode.toLowerCase()}.svg`;
   }
 
   protected coachStartDate(coach: TeamCoachDTO): string | null {

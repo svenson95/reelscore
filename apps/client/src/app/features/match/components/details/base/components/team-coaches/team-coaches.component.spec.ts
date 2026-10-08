@@ -33,7 +33,9 @@ describe(MatchTeamCoachesComponent.name, () => {
 
   it('shows current coaches and formatted dates for their teams', () => {
     const homeCoach = createCoach(85, '2024-03-06');
+    homeCoach.name = 'Manuel Baum';
     const awayCoach = createCoach(42, '2024-03-06');
+    awayCoach.name = 'Vincent Kompany';
     const componentFixture = renderComponent(MatchTeamCoachesComponent, {
       fixture: EXAMPLE_FIXTURE,
       coaches: [homeCoach, awayCoach],
@@ -43,13 +45,75 @@ describe(MatchTeamCoachesComponent.name, () => {
     const rootElement = componentFixture.nativeElement as HTMLElement;
     const renderedText = readElementText(rootElement);
 
-    expect(renderedText).toContain('Alex Manager');
-    expect(renderedText).toContain('45 Jahre');
-    expect(renderedText).toContain('🇩🇪 Deutschland');
+    expect(renderedText).toContain('Manuel Baum');
+    expect(renderedText).not.toContain('Alex Manager');
+    expect(renderedText).toContain('45 Jahre · Deutschland');
     expect(renderedText).toContain('Im Amt seit 06.03.2024');
     expect(rootElement.querySelectorAll('.team-card')).toHaveLength(2);
     expect(rootElement.querySelectorAll('.coach')).toHaveLength(2);
     expect(rootElement.querySelector('.coach-away')).not.toBeNull();
+    expect(
+      rootElement
+        .querySelector('.coach-meta-away')
+        ?.classList.contains('flex-row-reverse')
+    ).toBe(true);
+    expect(
+      rootElement
+        .querySelector('.coach-away .coach-nationality')
+        ?.classList.contains('flex-row-reverse')
+    ).toBe(true);
+    expect(
+      rootElement
+        .querySelector('.coach-nationality .coach-flag')
+        ?.getAttribute('src')
+    ).toBe('https://media.api-sports.io/flags/de.svg');
+  });
+
+  it('prefers the latest active coaching spell when API data has multiple active entries', () => {
+    const formerBayernCoach = createCoach(85, '2013-06-01');
+    formerBayernCoach.name = 'Jupp Heynckes';
+    formerBayernCoach.firstname = 'Jupp';
+    formerBayernCoach.lastname = 'Heynckes';
+
+    const currentBayernCoach = createCoach(85, '2024-07-01');
+    currentBayernCoach.name = 'Vincent Kompany';
+    currentBayernCoach.firstname = 'Vincent';
+    currentBayernCoach.lastname = 'Kompany';
+
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: EXAMPLE_FIXTURE,
+      coaches: [formerBayernCoach, currentBayernCoach],
+      isLoading: false,
+    });
+
+    const homeTeamCard = componentFixture.nativeElement.querySelector(
+      '.team-card[aria-label="Trainer des Heimteams"]'
+    ) as HTMLElement;
+
+    expect(homeTeamCard.querySelector('.coach-name')?.textContent?.trim()).toBe(
+      'Vincent Kompany'
+    );
+  });
+
+  it('shows the Romanian flag for Romanian nationality values', () => {
+    const romanianCoach = createCoach(85, '2025-06-01');
+    romanianCoach.name = 'Cristian Chivu';
+    romanianCoach.nationality = 'Romania';
+
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: EXAMPLE_FIXTURE,
+      coaches: [romanianCoach],
+      isLoading: false,
+    });
+
+    const coachCard = componentFixture.nativeElement.querySelector(
+      '.team-card[aria-label="Trainer des Heimteams"]'
+    ) as HTMLElement;
+
+    expect(readElementText(coachCard)).toContain('Rumänien');
+    expect(coachCard.querySelector('.coach-flag')?.getAttribute('src')).toBe(
+      'https://media.api-sports.io/flags/ro.svg'
+    );
   });
 
   it('uses the coach name and hides unavailable metadata', () => {
@@ -77,6 +141,7 @@ describe(MatchTeamCoachesComponent.name, () => {
     );
     expect(homeTeamCard.querySelector('.coach-meta')).toBeNull();
     expect(homeTeamCard.textContent).not.toContain('Jahre');
+    expect(homeTeamCard.textContent).not.toContain('·');
   });
 
   it('shows the error state for teams without coach data', () => {
