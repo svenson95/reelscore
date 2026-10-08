@@ -1,8 +1,8 @@
 import type { TeamDTO } from '@reelscore-sdk/models';
 
-import { customModel } from '../mongodb.helper';
+import { createMongooseModel } from '../mongodb.helper';
 
-export const Teams = customModel<TeamDTO>(
+export const Teams = createMongooseModel<TeamDTO>(
   'teams',
   {
     team: {

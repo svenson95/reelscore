@@ -1,8 +1,8 @@
 import type { TopScorersDTO } from '@reelscore-sdk/models';
 
-import { customModel } from '../mongodb.helper';
+import { createMongooseModel } from '../mongodb.helper';
 
-export const TopScorers = customModel<TopScorersDTO>(
+export const TopScorers = createMongooseModel<TopScorersDTO>(
   'competition-top-scorers',
   {
     parameters: {

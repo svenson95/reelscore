@@ -1,8 +1,8 @@
 import type { RapidEventsDTO } from '@reelscore-sdk/models';
 
-import { customModel } from '../mongodb.helper';
+import { createMongooseModel } from '../mongodb.helper';
 
-export const FixtureEvents = customModel<RapidEventsDTO>(
+export const FixtureEvents = createMongooseModel<RapidEventsDTO>(
   'fixture-events',
   {
     parameters: {

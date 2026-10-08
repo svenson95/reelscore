@@ -20,7 +20,7 @@ export async function findDocument<T extends RapidDTO<unknown>>(
   return document;
 }
 
-export function customModel<T>(
+export function createMongooseModel<T>(
   key: string,
   definition: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<T>>,
   options: { timestamps?: boolean } = { timestamps: true }
