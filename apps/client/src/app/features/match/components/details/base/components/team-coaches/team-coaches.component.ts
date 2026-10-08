@@ -149,25 +149,29 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           <img
             class="coach-photo"
             [src]="coach.photo"
-            [alt]="coach.firstname + ' ' + coach.lastname"
+            [alt]="coachName(coach)"
             loading="lazy"
           />
           }
           <div class="coach-details" [class.coach-details-away]="$index === 1">
+            @if (hasCoachMeta(coach)) {
             <span class="coach-meta" [class.coach-meta-away]="$index === 1">
+              @if (coach.age !== null && coach.age !== undefined) {
               <span>{{ coach.age }} Jahre</span>
+              } @if (coach.nationality; as nationality) {
               <span class="coach-nationality">
-                @if (nationalityFlag(coach.nationality); as flag) {
+                @if (nationalityFlag(nationality); as flag) {
                 <span class="coach-flag" aria-hidden="true">{{ flag }}</span>
                 }
                 <span class="coach-nationality-name">
-                  {{ coach.nationality | teamName }}
+                  {{ nationality | teamName }}
                 </span>
               </span>
+              }
             </span>
-
+            }
             <span class="coach-name">
-              {{ coach.firstname }} {{ coach.lastname }}
+              {{ coachName(coach) }}
             </span>
             @if (coachStartDate(coach); as startDate) {
             <span class="coach-tenure">
@@ -179,7 +183,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           <img
             class="coach-photo"
             [src]="coach.photo"
-            [alt]="coach.firstname + ' ' + coach.lastname"
+            [alt]="coachName(coach)"
             loading="lazy"
           />
           }
@@ -231,7 +235,24 @@ export class MatchTeamCoachesComponent {
     return year && month && day ? `${day}.${month}.${year}` : date;
   }
 
-  protected nationalityFlag(nationality: string): string {
+  protected coachName(coach: TeamCoachDTO): string {
+    const fullName = [coach.firstname, coach.lastname]
+      .filter(Boolean)
+      .join(' ');
+
+    return fullName || coach.name || '';
+  }
+
+  protected hasCoachMeta(coach: TeamCoachDTO): boolean {
+    const hasAge = coach.age !== null && coach.age !== undefined;
+    const hasNationality = Boolean(coach.nationality);
+
+    return hasAge || hasNationality;
+  }
+
+  protected nationalityFlag(nationality: string | null | undefined): string {
+    if (!nationality) return '';
+
     const countryCodes: Record<string, string> = {
       argentina: 'AR',
       argentinian: 'AR',
