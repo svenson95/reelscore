@@ -1,4 +1,3 @@
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,7 +5,6 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 
 import type {
   EvaluationDTO,
@@ -22,6 +20,8 @@ import {
   PageTitleComponent,
   ResponsiveImageComponent,
 } from '@app/shared';
+
+import { PerformanceInfoComponent } from './performance-info.component';
 
 interface FormItem<T> {
   value: T | null;
@@ -44,9 +44,7 @@ interface TeamForm {
   imports: [
     PageTitleComponent,
     ResponsiveImageComponent,
-    MatIconModule,
-    CdkConnectedOverlay,
-    CdkOverlayOrigin,
+    PerformanceInfoComponent,
   ],
   styles: `
     :host {
@@ -159,35 +157,6 @@ interface TeamForm {
       @apply whitespace-nowrap text-rs-font-size-small text-rs-color-text-2;
     }
 
-    .info-button {
-      @apply inline-flex h-6 w-6 items-center justify-center rounded-full text-rs-color-text-1;
-    }
-
-    .info-button:hover,
-    .info-button:focus-visible {
-      @apply bg-rs-alt-bg;
-    }
-
-    .info-button mat-icon {
-      @apply h-5 w-5 text-[20px];
-    }
-
-    .performance-menu {
-      @apply z-50 max-w-[min(22rem,calc(100vw-2rem))] rounded-border2 bg-rs-color-primary p-4 text-black shadow-rs3;
-    }
-
-    .performance-menu-title {
-      @apply mb-3 block font-semibold;
-    }
-
-    .performance-rule {
-      @apply grid grid-cols-[1.75rem_minmax(0,1fr)] items-center gap-2 py-1 text-rs-font-size-small;
-    }
-
-    .performance-rule .evaluation-item {
-      @apply h-7 w-7 text-xs;
-    }
-
     .no-data {
       @apply m-auto;
     }
@@ -248,70 +217,12 @@ interface TeamForm {
         <section class="form-section" aria-label="Performance">
           <h3 class="section-heading performance-heading">
             Performance
-            <button
-              class="info-button"
-              type="button"
-              aria-label="Erklärung der Performance-Bewertung anzeigen"
-              [attr.aria-expanded]="activeInfoTeam() === team.id"
-              [attr.aria-controls]="'performance-info-' + team.id"
-              [attr.aria-describedby]="
-                activeInfoTeam() === team.id
-                  ? 'performance-info-' + team.id
-                  : null
-              "
-              cdkOverlayOrigin
-              #infoOrigin="cdkOverlayOrigin"
-              (click)="togglePerformanceInfo(team.id)"
-              (keydown.escape)="activeInfoTeam.set(null)"
-            >
-              <mat-icon aria-hidden="true">info_outline</mat-icon>
-            </button>
-            <ng-template
-              cdkConnectedOverlay
-              [cdkConnectedOverlayOrigin]="infoOrigin"
-              [cdkConnectedOverlayOpen]="activeInfoTeam() === team.id"
-              [cdkConnectedOverlayPositions]="
-                team.side === 'away' ? awayInfoPositions : infoPositions
-              "
-              (overlayOutsideClick)="activeInfoTeam.set(null)"
-            >
-              <aside
-                class="performance-menu"
-                [id]="'performance-info-' + team.id"
-                role="tooltip"
-              >
-                <strong class="performance-menu-title">
-                  So wird die Performance bewertet
-                </strong>
-                <div class="performance-rule">
-                  <span class="evaluation-item high">G</span>
-                  <span>
-                    <strong>Gut:</strong> mindestens 2 Tore und mindestens 4
-                    Schüsse aufs Tor sowie 8 Abschlüsse
-                  </span>
-                </div>
-                <div class="performance-rule">
-                  <span class="evaluation-item middle">M</span>
-                  <span>
-                    <strong>Mittelmäßig:</strong> mindestens 4 Schüsse aufs Tor
-                    und 8 Abschlüsse, aber weniger als 2 Tore
-                  </span>
-                </div>
-                <div class="performance-rule">
-                  <span class="evaluation-item low">S</span>
-                  <span>
-                    <strong>Schlecht:</strong> weniger als 4 Schüsse aufs Tor
-                    oder weniger als 8 Abschlüsse
-                  </span>
-                </div>
-                <div class="performance-rule">
-                  <span class="evaluation-item no-statistics-available">—</span>
-                  <span>
-                    Bei unvollständigen Datensätzen ist keine Bewertung möglich
-                  </span>
-                </div>
-              </aside>
-            </ng-template>
+            <rs-performance-info
+              [side]="team.side"
+              [menuId]="'performance-info-' + team.id"
+              [isOpen]="activeInfoTeam() === team.id"
+              (openChange)="setPerformanceInfo(team.id, $event)"
+            />
           </h3>
           <div class="timeline">
             @for (item of team.performances; track $index) {
@@ -341,40 +252,7 @@ export class MatchEvaluationsComponent {
   readonly latestFixtures = input<LatestFixturesDTO | null>(null);
   readonly isLoading = input<boolean>(false);
   readonly error = input<unknown>(null);
-
   protected readonly activeInfoTeam = signal<number | null>(null);
-  protected readonly infoPositions = [
-    {
-      originX: 'start' as const,
-      originY: 'bottom' as const,
-      overlayX: 'start' as const,
-      overlayY: 'top' as const,
-      offsetY: 8,
-    },
-    {
-      originX: 'start' as const,
-      originY: 'top' as const,
-      overlayX: 'start' as const,
-      overlayY: 'bottom' as const,
-      offsetY: -8,
-    },
-  ];
-  protected readonly awayInfoPositions = [
-    {
-      originX: 'end' as const,
-      originY: 'bottom' as const,
-      overlayX: 'end' as const,
-      overlayY: 'top' as const,
-      offsetY: 8,
-    },
-    {
-      originX: 'end' as const,
-      originY: 'top' as const,
-      overlayX: 'end' as const,
-      overlayY: 'bottom' as const,
-      offsetY: -8,
-    },
-  ];
 
   readonly hasEvaluations = computed<boolean>(() => {
     const teams = this.evaluations()?.teams;
@@ -434,12 +312,6 @@ export class MatchEvaluationsComponent {
       };
     });
   });
-
-  protected togglePerformanceInfo(teamId: number): void {
-    this.activeInfoTeam.update((activeTeam) =>
-      activeTeam === teamId ? null : teamId
-    );
-  }
 
   protected evaluationClasses(
     value: FixtureResult | FixturePerformance | null
@@ -507,6 +379,10 @@ export class MatchEvaluationsComponent {
       default:
         return 'Keine Performance-Daten verfügbar';
     }
+  }
+
+  protected setPerformanceInfo(teamId: number, isOpen: boolean): void {
+    this.activeInfoTeam.set(isOpen ? teamId : null);
   }
 
   private createTimeline<T>(
