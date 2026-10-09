@@ -47,7 +47,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-name {
-      @apply block break-words text-sm font-semibold leading-tight sm:text-base;
+      @apply block break-words text-rs-font-size-body-1 font-semibold leading-tight;
     }
 
     .coach-tenure {
@@ -55,7 +55,11 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-meta {
-      @apply flex flex-wrap items-center;
+      display: flex;
+      height: 1.2em;
+      flex: 0 0 1.2em;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .coach-meta-away {
@@ -82,40 +86,24 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @apply rounded;
     }
 
-    .coach-loading {
-      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-3;
-    }
-
-    .coach-loading-away {
-      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem];
-    }
-
     .loading-photo {
       @apply aspect-square w-11 rounded-full sm:w-16;
     }
 
-    .loading-details {
-      @apply flex min-w-0 flex-col gap-2;
-    }
-
     .loading-name {
-      @apply h-4 w-3/4 max-w-40;
-    }
-
-    .loading-meta {
-      @apply flex items-center gap-2;
+      @apply h-[18.75px] w-3/4 max-w-40;
     }
 
     .loading-age {
-      @apply h-3 w-14;
+      @apply h-3 w-12;
     }
 
     .loading-nationality {
-      @apply h-6 w-20 rounded-full sm:h-5;
+      @apply h-3 w-16;
     }
 
     .loading-tenure {
-      @apply h-3 w-28 max-w-full;
+      @apply h-4 w-28 max-w-full;
     }
   `,
   template: `
@@ -124,41 +112,54 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     <div class="coaches-grid" [attr.aria-busy]="isLoading()">
       @for (team of teams(); track team.id) {
       <section class="team-card" [attr.aria-label]="team.label">
-        @if (isLoading()) {
-        <div
-          class="coach-loading"
-          [class.coach-loading-away]="$index === 1"
-          aria-hidden="true"
+        @if (isLoading() || team.coach) {
+        <article
+          class="coach"
+          [class.coach-away]="$index === 1"
+          [attr.aria-hidden]="isLoading() ? 'true' : null"
         >
-          @if ($index === 0) {
-          <span class="rs-skeleton coach-skeleton loading-photo"></span>
-          }
-          <div class="loading-details" [class.items-end]="$index === 1">
-            <div class="loading-meta" [class.flex-row-reverse]="$index === 1">
-              <span class="rs-skeleton coach-skeleton loading-age"></span>
-              <span
-                class="rs-skeleton coach-skeleton loading-nationality"
-              ></span>
-            </div>
-            <span class="rs-skeleton coach-skeleton loading-name"></span>
-            <span class="rs-skeleton coach-skeleton loading-tenure"></span>
-          </div>
-          @if ($index === 1) {
-          <span class="rs-skeleton coach-skeleton loading-photo"></span>
-          }
-        </div>
-        } @else if (team.coach; as coach) {
-        <article class="coach" [class.coach-away]="$index === 1">
-          @if ($index === 0) {
+          @if ($index === 0) { @if (isLoading()) {
+          <span
+            class="rs-skeleton coach-skeleton loading-photo"
+            aria-hidden="true"
+          ></span>
+          } @else if (team.coach; as coach) {
           <img
             class="coach-photo"
             [src]="coach.photo"
             [alt]="coachName(coach)"
             loading="lazy"
           />
-          }
-          <div class="coach-details" [class.coach-details-away]="$index === 1">
-            @if (hasCoachMeta(coach)) {
+          } }
+          <div
+            class="coach-details"
+            [class.coach-details-away]="$index === 1"
+            [attr.aria-hidden]="isLoading() ? 'true' : null"
+          >
+            @if (isLoading()) {
+            <span
+              class="coach-meta"
+              [class.coach-meta-away]="$index === 1"
+              [class.flex-row-reverse]="$index === 1"
+            >
+              <span class="rs-skeleton coach-skeleton loading-age"></span>
+              <span class="coach-meta-separator">{{ ' · ' }}</span>
+              <span
+                class="coach-nationality"
+                [class.flex-row-reverse]="$index === 1"
+              >
+                <span
+                  class="coach-nationality-name rs-skeleton coach-skeleton loading-nationality"
+                ></span>
+              </span>
+            </span>
+            <span
+              class="coach-name rs-skeleton coach-skeleton loading-name"
+            ></span>
+            <span
+              class="coach-tenure rs-skeleton coach-skeleton loading-tenure"
+            ></span>
+            } @else if (team.coach; as coach) {
             <span
               class="coach-meta"
               [class.coach-meta-away]="$index === 1"
@@ -188,7 +189,6 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
               </span>
               }
             </span>
-            }
             <span class="coach-name">
               {{ coachName(coach) }}
             </span>
@@ -196,16 +196,21 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
             <span class="coach-tenure">
               Im Amt seit {{ formatDate(startDate) }}
             </span>
-            }
+            } }
           </div>
-          @if ($index === 1) {
+          @if ($index === 1) { @if (isLoading()) {
+          <span
+            class="rs-skeleton coach-skeleton loading-photo"
+            aria-hidden="true"
+          ></span>
+          } @else if (team.coach; as coach) {
           <img
             class="coach-photo"
             [src]="coach.photo"
             [alt]="coachName(coach)"
             loading="lazy"
           />
-          }
+          } }
         </article>
         } @else if (error()) {
         <p role="status">Trainer konnten nicht geladen werden.</p>
@@ -269,13 +274,6 @@ export class MatchTeamCoachesComponent {
 
   protected coachName(coach: TeamCoachDTO): string {
     return coach.name || '';
-  }
-
-  protected hasCoachMeta(coach: TeamCoachDTO): boolean {
-    const hasAge = coach.age !== null && coach.age !== undefined;
-    const hasNationality = Boolean(coach.nationality);
-
-    return hasAge || hasNationality;
   }
 
   protected nationalityFlagUrl(nationality: string | null | undefined): string {

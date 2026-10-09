@@ -27,14 +27,16 @@ import { MatchFixturesTableComponent } from './components';
       @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2;
     }
     .skeleton-row {
-      @apply flex items-center p-2 gap-2;
-      min-height: 37px;
+      @apply flex items-center gap-2 px-2;
+      min-height: 35px;
     }
     .skeleton-row + .skeleton-row { @apply border-t; }
     .skeleton-row .rs-skeleton { height: 13px; }
     .skeleton-date { width: 40px; }
     .skeleton-team { flex: 1; }
-    .skeleton-score { width: 42px; }
+    .skeleton-team:nth-child(2) { margin-left: 2rem; }
+    .skeleton-team:nth-child(4) { margin-right: 2rem; }
+    .skeleton-score { width: 30px; }
 
     .no-data {
       @apply m-auto;

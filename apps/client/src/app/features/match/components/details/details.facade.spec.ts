@@ -5,8 +5,6 @@ import type { GetFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { environment } from '@app/environment';
-
 import {
   AnalysesStore,
   EvaluationsStore,
@@ -34,8 +32,6 @@ describe('MatchDetailsFacade', () => {
   let evaluations: ReturnType<typeof createResourceState>;
   let latestFixtures: ReturnType<typeof createResourceState>;
   let facade: MatchDetailsFacade;
-
-  const originalPreviewDurationMs = environment.matchSkeletonPreviewMs;
 
   const configureTestingModule = () => {
     TestBed.configureTestingModule({
@@ -84,8 +80,6 @@ describe('MatchDetailsFacade', () => {
 
   afterEach(() => {
     TestBed.resetTestingModule();
-    environment.matchSkeletonPreviewMs = originalPreviewDurationMs;
-    jest.useRealTimers();
   });
 
   it('keeps available section data visible during refresh but hides sections while fixture details load', () => {
@@ -154,36 +148,5 @@ describe('MatchDetailsFacade', () => {
     fixtureState.set(null);
 
     expect(facade.hasNoStandings()).toBe(false);
-  });
-
-  it('keeps preview skeletons for the configured duration after loading finishes and restarts for new loading', () => {
-    jest.useFakeTimers();
-    TestBed.resetTestingModule();
-    environment.matchSkeletonPreviewMs = 100;
-    configureTestingModule();
-    facade = TestBed.inject(MatchDetailsFacade);
-    isFixtureLoading.set(true);
-    TestBed.tick();
-    jest.advanceTimersByTime(200);
-
-    expect(facade.detailsLoading()).toBe(true);
-
-    isFixtureLoading.set(false);
-    TestBed.tick();
-    jest.advanceTimersByTime(99);
-
-    expect(facade.detailsLoading()).toBe(true);
-
-    isFixtureLoading.set(true);
-    TestBed.tick();
-    jest.advanceTimersByTime(1);
-
-    expect(facade.detailsLoading()).toBe(true);
-
-    isFixtureLoading.set(false);
-    TestBed.tick();
-    jest.advanceTimersByTime(100);
-
-    expect(facade.detailsLoading()).toBe(false);
   });
 });

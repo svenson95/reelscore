@@ -4,6 +4,7 @@ import {
   computed,
   effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -101,6 +102,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
             [error]="standingsError()"
             [groupCompetition]="hasMultipleGroups()"
             [competitionName]="fixtureData()?.league?.name ?? null"
+            [competitionId]="fixtureData()?.league?.id ?? null"
           />
           }
 
@@ -168,7 +170,11 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
   `,
 })
 export class MatchDetailsComponent {
+  readonly forceLoading = input<boolean>(false);
+
   private readonly facade = inject(MatchDetailsFacade);
+
+  protected readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
   readonly standings = this.facade.standings;
   readonly analyses = this.facade.analyses;
@@ -176,21 +182,38 @@ export class MatchDetailsComponent {
   readonly statistics = this.facade.statistics;
   readonly evaluations = this.facade.evaluations;
   readonly teamCoaches = this.facade.teamCoaches;
-  readonly teamCoachesLoading = this.facade.teamCoachesLoading;
   readonly teamCoachesError = this.facade.teamCoachesError;
-  protected readonly fixtureData = computed(
-    () => this.facade.fixture()?.data ?? null
-  );
-
-  readonly isLoadingStandings = this.facade.standingsLoading;
-  readonly detailsLoading = this.facade.detailsLoading;
-  readonly evaluationsLoading = this.facade.evaluationsLoading;
-  readonly latestFixturesLoading = this.facade.latestFixturesLoading;
   readonly latestFixtures = this.facade.latestFixtures;
   readonly standingsError = this.facade.standingsError;
   readonly evaluationsError = this.facade.evaluationsError;
   readonly latestFixturesError = this.facade.latestFixturesError;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
+
+  readonly selectedTabIndex = signal<number>(0);
+
+  readonly teamCoachesLoading = computed<boolean>(
+    () => this.detailsLoading() || this.facade.teamCoachesLoading()
+  );
+
+  protected readonly fixtureData = computed(
+    () => this.facade.fixture()?.data ?? null
+  );
+
+  readonly detailsLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.detailsLoading()
+  );
+
+  readonly isLoadingStandings = computed<boolean>(
+    () => this.forceLoading() || this.facade.standingsLoading()
+  );
+
+  readonly evaluationsLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.evaluationsLoading()
+  );
+
+  readonly latestFixturesLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.latestFixturesLoading()
+  );
 
   protected readonly showStandings = computed<boolean>(
     () =>
@@ -206,9 +229,7 @@ export class MatchDetailsComponent {
     !!this.statistics(),
   ]);
 
-  protected readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
   protected readonly tabCount = this.availableTabs().length;
-  readonly selectedTabIndex = signal(0);
 
   private readonly selectedTabEffect = effect(() => {
     if (!this.availableTabs()[this.selectedTabIndex()]) {

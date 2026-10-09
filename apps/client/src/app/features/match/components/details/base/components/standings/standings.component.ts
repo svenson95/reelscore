@@ -15,15 +15,23 @@ import type {
 
 import {
   BreakpointObserverService,
+  getCompetitionLogo,
+  getCompetitionLogoSrcSet,
   PageTitleComponent,
+  ResponsiveImageComponent,
   showHomeAndAwayStandings,
   StandingsTableComponent,
+  ThemeService,
 } from '@app/shared';
 
 @Component({
   selector: 'rs-match-fixture-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, StandingsTableComponent],
+  imports: [
+    PageTitleComponent,
+    ResponsiveImageComponent,
+    StandingsTableComponent,
+  ],
   styles: `
     :host {
       rs-standings-table, .standings-skeleton {
@@ -33,15 +41,18 @@ import {
       .standings-container {
         @apply flex flex-col px-3 py-rs1 gap-rs1;
       }
+
       .standings-skeleton {
-        @apply w-[calc(100%-1.5rem)] max-w-[450px] self-center p-rs1 bg-rs-button-bg;
+        @apply w-[calc(100%-1.5rem)] min-w-[350px] sm:min-w-[400px] max-w-[450px] self-center p-rs1 bg-rs-button-bg shadow-rs3;
         border-radius: var(--mat-button-toggle-shape);
+        box-sizing: border-box;
       }
+
       .skeleton-row {
         display: grid;
-        grid-template-columns: 30px minmax(50px, 1fr) repeat(5, minmax(16px, 25px));
+        grid-template-columns: 40px minmax(0, 1fr) repeat(4, 24px) 40px;
         align-items: center;
-        gap: 10px;
+        column-gap: 0;
         min-height: 33px;
         margin-inline: 5px;
 
@@ -49,19 +60,51 @@ import {
           border-bottom: 1px solid var(--rs-button-border-color);
         }
       }
+
       .skeleton-row.with-goal-difference {
-        grid-template-columns: 30px minmax(50px, 1fr) repeat(6, minmax(16px, 25px));
+        grid-template-columns: 40px minmax(0, 1fr) repeat(5, 24px) 40px;
       }
+
+      @media (min-width: 1024px) {
+        .skeleton-row {
+          grid-template-columns: 40px minmax(0, 1fr) repeat(4, 40px) 36px;
+        }
+        .skeleton-row.with-goal-difference {
+          grid-template-columns: 40px minmax(0, 1fr) repeat(5, 40px) 36px;
+        }
+      }
+
       .skeleton-row.header {
         min-height: 41px;
         @apply text-rs-font-size-body-2 font-medium;
       }
-      .skeleton-row.header > span { text-align: center; }
-      .skeleton-row.header .table-title { text-align: left; }
+
+      .skeleton-row.header > span {
+        display: flex;
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .skeleton-row.header .table-title {
+        display: block;
+        text-align: left;
+        padding-inline: var(--rs-box-spacing-1);
+      }
+
+      .competition-logo { width: 24px; height: 24px; justify-self: center; }
+      .team-skeleton {
+        @apply flex min-w-0 items-center gap-2;
+        padding-inline: var(--rs-box-spacing-1);
+      }
+      .team-logo-skeleton { width: 14px; height: 14px; flex: 0 0 14px; border-radius: 50%; }
+      .team-name-skeleton { width: 100%; max-width: 115px; }
+      .value-skeleton { width: 14px; justify-self: center; }
       @media (max-width: 399px) {
-        .skeleton-row { gap: 4px; margin-inline: 0; }
+        .skeleton-row { margin-inline: 0; }
       }
       .skeleton-row .rs-skeleton { height: 12px; }
+      .skeleton-row .team-logo-skeleton { height: 14px; }
     }
   `,
   template: `
@@ -76,7 +119,14 @@ import {
           class="skeleton-row header"
           [class.with-goal-difference]="!isMobile()"
         >
-          <span aria-label="Platz">#</span>
+          <rs-responsive-image
+            class="competition-logo"
+            [source]="competitionLogo()"
+            [sourceSet]="competitionLogoSet()"
+            altText=""
+            [width]="24"
+            [height]="24"
+          />
           <span class="table-title">{{
             tableIndex === 1
               ? 'Heimtabelle'
@@ -94,8 +144,14 @@ import {
           [class.with-goal-difference]="!isMobile()"
           aria-hidden="true"
         >
-          @for (cell of skeletonColumns(); track cell) {
-          <span class="rs-skeleton"></span> }
+          @for (cell of skeletonColumns(); track cell) { @if (cell === 1) {
+          <span class="team-skeleton">
+            <span class="rs-skeleton team-logo-skeleton"></span>
+            <span class="rs-skeleton team-name-skeleton"></span>
+          </span>
+          } @else {
+          <span class="rs-skeleton value-skeleton"></span>
+          } }
         </div>
         }
       </div>
@@ -131,13 +187,36 @@ export class MatchFixtureStandingsComponent {
 
   readonly groupCompetition = input<boolean>(false);
   readonly competitionName = input<string | null>(null);
+  readonly competitionId = input<StandingsLeague['id'] | null>(null);
   readonly error = input<unknown>(null);
 
-  private readonly breakpoint: BreakpointObserverService = inject(
-    BreakpointObserverService
-  );
+  private readonly breakpoint = inject(BreakpointObserverService);
+  private readonly themeService = inject(ThemeService);
 
   protected readonly isMobile = this.breakpoint.isMobile;
+
+  protected readonly competitionLogo = computed<string>(() => {
+    const competitionId = this.competitionId() ?? this.league()?.id;
+    return competitionId
+      ? getCompetitionLogo(
+          competitionId,
+          24,
+          1,
+          this.themeService.isSystemDark()
+        )
+      : '';
+  });
+
+  protected readonly competitionLogoSet = computed<string | undefined>(() => {
+    const competitionId = this.competitionId() ?? this.league()?.id;
+    return competitionId
+      ? getCompetitionLogoSrcSet(
+          competitionId,
+          24,
+          this.themeService.isSystemDark()
+        )
+      : undefined;
+  });
 
   protected readonly skeletonColumns = computed<number[]>(() =>
     this.isMobile() ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4, 5, 6, 7]
