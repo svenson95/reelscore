@@ -108,7 +108,6 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
             data-testid="match-latest-fixtures"
             [data]="fixtureData()"
             [latestFixtures]="latestFixtures()"
-            [evaluations]="evaluations()"
             [isLoading]="latestFixturesLoading()"
             [error]="latestFixturesError()"
           />
