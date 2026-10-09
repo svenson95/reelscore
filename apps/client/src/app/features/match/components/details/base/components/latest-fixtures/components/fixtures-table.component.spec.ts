@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-
 import {
   EXAMPLE_FIXTURE,
   readElementText,
@@ -85,6 +84,7 @@ describe('MatchFixturesTableComponent', () => {
       'Keine Spiele gefunden'
     );
   });
+
   it.each([
     ['MIDDLE', 'M', 'middle', 'Mittelmäßig gespielt'],
     ['MATCH_NOT_STARTED', '?', 'unknown', 'Spiel noch nicht gestartet'],
@@ -114,5 +114,4 @@ describe('MatchFixturesTableComponent', () => {
       expect(values[0].getAttribute('aria-label')).toContain(label);
     }
   );
-
 });
