@@ -108,6 +108,8 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
 
           <rs-match-evaluations
             [evaluations]="evaluations()"
+            [fixture]="fixtureData()"
+            [latestFixtures]="latestFixtures()"
             [isLoading]="evaluationsLoading()"
             [error]="evaluationsError()"
           />
