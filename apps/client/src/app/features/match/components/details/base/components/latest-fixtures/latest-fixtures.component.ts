@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import type {
+  EvaluationDTO,
   ExtendedFixtureDTO,
   LatestFixturesDTO,
 } from '@reelscore-sdk/models';

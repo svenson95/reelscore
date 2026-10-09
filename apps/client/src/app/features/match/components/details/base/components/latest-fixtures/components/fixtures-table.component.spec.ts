@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
+import type { EvaluationDTO } from '@reelscore-sdk/models';
+
 import {
   EXAMPLE_FIXTURE,
   readElementText,
