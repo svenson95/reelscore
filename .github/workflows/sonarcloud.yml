@@ -28,24 +28,28 @@ jobs:
         run: npm ci
 
       - name: Download API Coverage
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: api-coverage
           path: coverage/apps/api
 
       - name: Download Client Coverage
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: client-coverage
           path: coverage/apps/client
 
       - name: Download Shared Library Coverage
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: shared-library-coverage
           path: coverage/lib
 
       - name: Download Python Coverage
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: python-coverage

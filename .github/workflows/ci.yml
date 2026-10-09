@@ -25,7 +25,6 @@ jobs:
 
   sonarcloud:
     name: Analyze Code
-    needs: tests
     uses: ./.github/workflows/sonarcloud.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
