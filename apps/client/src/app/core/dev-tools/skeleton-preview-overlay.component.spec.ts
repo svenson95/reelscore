@@ -11,7 +11,7 @@ describe(SkeletonPreviewOverlayComponent.name, () => {
   });
 
   it('toggles the preview state when the button is clicked', () => {
-    jest.replaceProperty(environment, 'matchSkeletonPreview', true);
+    jest.replaceProperty(environment, 'skeletonPreview', true);
 
     const fixture = TestBed.createComponent(SkeletonPreviewOverlayComponent);
     const preview = TestBed.inject(SkeletonPreviewService);
