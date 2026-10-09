@@ -13,7 +13,7 @@ import { FixturesService } from './fixtures.service';
 
 const createFixture = (
   id: number,
-  evaluations?: ExtendedFixtureDTO['evaluations']
+  evaluations?: Partial<ExtendedFixtureDTO['evaluations']>
 ): ExtendedFixtureDTO =>
   ({
     fixture: { id, timestamp: id, status: { short: 'FT' } },
@@ -21,8 +21,8 @@ const createFixture = (
       home: { id: 1, name: 'Home' },
       away: { id: 2, name: 'Away' },
     },
-    evaluations,
-  }) as ExtendedFixtureDTO;
+    evaluations: evaluations as ExtendedFixtureDTO['evaluations'],
+  } as ExtendedFixtureDTO);
 
 describe(FixtureController.name, () => {
   afterEach(() => jest.restoreAllMocks());
@@ -44,10 +44,7 @@ describe(FixtureController.name, () => {
     });
     const fixtureWithoutStoredPerformances = createFixture(13);
 
-    const homeFixtures = [
-      sharedFixture,
-      fixtureWithStoredAwayPerformance,
-    ];
+    const homeFixtures = [sharedFixture, fixtureWithStoredAwayPerformance];
     const awayFixtures = [sharedFixture, fixtureWithoutStoredPerformances];
 
     jest
@@ -76,9 +73,17 @@ describe(FixtureController.name, () => {
     ]);
     const analyzeFixturePerformances = jest
       .spyOn(FixtureEvaluationsService.prototype, 'analyzeFixturePerformances')
-      .mockImplementation(async (fixture) =>
-        performanceByFixture.get(fixture.fixture.id as number)!
-      );
+      .mockImplementation(async (fixture) => {
+        const performances = performanceByFixture.get(
+          fixture.fixture.id as number
+        );
+        if (!performances) {
+          throw new Error(
+            `Missing performance result for fixture ${fixture.fixture.id}`
+          );
+        }
+        return performances;
+      });
 
     const result = await new FixtureController().getLatest(1 as FixtureId);
 
