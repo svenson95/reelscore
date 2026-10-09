@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import type { EvaluationDTO } from '@reelscore-sdk/models';
 
 import {
   EXAMPLE_FIXTURE,
@@ -86,4 +85,34 @@ describe('MatchFixturesTableComponent', () => {
       'Keine Spiele gefunden'
     );
   });
+  it.each([
+    ['MIDDLE', 'M', 'middle', 'Mittelmäßig gespielt'],
+    ['MATCH_NOT_STARTED', '?', 'unknown', 'Spiel noch nicht gestartet'],
+    ['MATCH_POSTPONED', '-', 'unknown', 'Spiel verschoben'],
+  ] as const)(
+    'shows the %s performance symbol and accessible label',
+    (performance, symbol, className, label) => {
+      const fixtureWithPerformance = {
+        ...EXAMPLE_FIXTURE,
+        evaluations: {
+          home: { performance, analyses: [] },
+          away: { performance, analyses: [] },
+        },
+      };
+
+      const componentFixture = renderComponent(MatchFixturesTableComponent, {
+        fixtures: [fixtureWithPerformance],
+        team: EXAMPLE_FIXTURE.teams.home,
+        side: 'home',
+      });
+      const values =
+        componentFixture.nativeElement.querySelectorAll('.evaluation-value');
+
+      expect(values).toHaveLength(2);
+      expect(values[0].textContent.trim()).toBe(symbol);
+      expect(values[0].classList.contains(className)).toBe(true);
+      expect(values[0].getAttribute('aria-label')).toContain(label);
+    }
+  );
+
 });
