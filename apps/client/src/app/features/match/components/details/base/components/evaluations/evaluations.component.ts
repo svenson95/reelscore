@@ -3,211 +3,256 @@ import {
   Component,
   computed,
   input,
+  signal,
 } from '@angular/core';
 
 import type {
   EvaluationDTO,
+  ExtendedFixtureDTO,
   FixturePerformance,
   FixtureResult,
+  LatestFixturesDTO,
 } from '@reelscore-sdk/models';
 
-import { PageTitleComponent } from '@app/shared';
+import {
+  getTeamLogo,
+  getTeamLogoSrcSet,
+  PageTitleComponent,
+  ResponsiveImageComponent,
+} from '@app/shared';
 
-import { ToKebabCasePipe } from './pipes';
+import { PerformanceInfoComponent } from './performance-info.component';
+
+interface FormItem<T> {
+  value: T | null;
+  date: string | null;
+}
+
+interface TeamForm {
+  id: number;
+  side: 'home' | 'away';
+  name: string;
+  logo: string;
+  logoSet: string;
+  results: FormItem<FixtureResult>[];
+  performances: FormItem<FixturePerformance>[];
+}
 
 @Component({
   selector: 'rs-match-evaluations',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, ToKebabCasePipe],
+  imports: [
+    PageTitleComponent,
+    ResponsiveImageComponent,
+    PerformanceInfoComponent,
+  ],
   styles: `
     :host {
       @apply flex flex-col;
     }
 
-    .content {
-      @apply max-w-[calc(100%-1.5rem)] flex flex-col gap-10 mt-rs1 mx-auto p-6 xs:p-8 shadow-rs3 bg-rs-button-bg;
-      border-radius: var(--mat-button-toggle-shape);
+    .team-grid {
+      @apply mt-rs1 grid grid-cols-1 gap-3 px-3 sm:grid-cols-2 sm:gap-4;
     }
 
-    .content > .teams-form {
-      @apply flex flex-col gap-5 mx-auto;
+    .team-card {
+      @apply flex min-w-0 flex-col gap-2 rounded-border2 bg-rs-button-bg p-4 shadow-rs3 sm:gap-5 sm:p-5;
+    }
 
-      .header {
-        @apply w-full flex justify-between m-auto;
+    .team-card:nth-child(1) {
+      @apply max-sm:mr-6;
+    }
+
+    .team-card:nth-child(2) {
+      @apply max-sm:ml-6;
+    }
+
+    .team-header-away {
+      @apply flex-row-reverse justify-start text-right;
+    }
+
+    .team-header-away .team-name {
+      @apply text-right;
+    }
+
+    .team-header {
+      @apply flex min-w-0 items-center gap-3 border-b border-rs-button-border pb-4;
+    }
+
+    .team-logo {
+      @apply h-6 w-6 shrink-0 object-contain;
+    }
+
+    .team-name {
+      @apply min-w-0 break-words text-rs-font-size-body-1 font-semibold text-rs-color-text-1 sm:text-rs-font-size-body-2;
+    }
+
+    .form-section {
+      @apply flex flex-col gap-3;
+    }
+
+    .form-section + .form-section {
+      @apply border-t border-rs-button-border pt-4;
+    }
+
+    .section-heading {
+      @apply flex items-center gap-2 text-rs-font-size-body-2 font-medium text-rs-color-text-1;
+    }
+
+    .timeline {
+      @apply grid grid-cols-5 gap-1 xs:gap-2;
+    }
+
+    .team-card-away .form-section {
+      @apply w-full;
+    }
+
+    .team-card-away .section-heading {
+      @apply justify-end text-right;
+    }
+
+    .team-card-away .performance-heading {
+      @apply flex-row-reverse justify-start;
+    }
+
+    .team-card-away .timeline {
+      width: calc(100% - 1rem);
+      margin-left: auto;
+    }
+
+    .timeline-item {
+      @apply flex min-w-0 flex-col items-center gap-2;
+    }
+
+    .evaluation-item,
+    .item-skeleton {
+      @apply flex h-7 w-7 items-center justify-center rounded shadow-rs2 text-rs-font-size-body-2 font-semibold leading-none sm:h-8 sm:w-8;
+    }
+
+    .evaluation-item {
+      &.loss,
+      &.low {
+        @apply bg-rs-color-red text-white;
       }
 
-      .form-hints {
-        @apply flex gap-3 items-center text-rs-color-text-2;
+      &.draw,
+      &.middle {
+        @apply bg-gray-200 text-black;
       }
 
-      .form-title {
-        @apply text-rs-font-size-body-2 xs:text-rs-font-size-body-1 text-rs-color-text-1;
+      &.win,
+      &.high {
+        @apply bg-rs-color-green text-white;
+      }
+
+      &.match-postponed,
+      &.match-not-started,
+      &.no-statistics-available,
+      &.no-result-available {
+        @apply bg-gray-500 text-white;
       }
     }
 
-    .form-hints,
-    .today {
-      @apply text-rs-font-size-small xs:text-rs-font-size-body-2;
+    .item-date {
+      @apply whitespace-nowrap text-rs-font-size-small text-rs-color-text-2;
     }
 
-    .evaluation {
-      @apply flex gap-5 text-rs-font-size-small xs:text-rs-font-size-body-2;
-
-      .team {
-        @apply flex flex-1 gap-1 xs:gap-2;
-
-        &:first-of-type {
-          @apply justify-end;
-        }
-      }
-
-      .today {
-        @apply self-center text-rs-color-text-1;
-      }
-
-      span,
-      .evaluation-placeholder {
-        @apply w-[19px] h-[19px] xs:w-[24px] xs:h-[24px] flex items-center justify-center leading-[19px] xs:leading-[24px] shadow-rs3;
-      }
-
-      span {
-        &.loss,
-        &.low {
-          @apply bg-rs-color-red text-white;
-        }
-
-        &.draw,
-        &.middle {
-          @apply bg-gray-200 text-black;
-        }
-
-        &.win,
-        &.high {
-          @apply bg-rs-color-green text-white;
-        }
-
-        &.match-postponed,
-        &.match-not-started,
-        &.no-statistics-available,
-        &.no-result-available {
-          @apply bg-gray-500 text-white font-bold;
-        }
-      }
+    .no-data {
+      @apply m-auto;
     }
   `,
   template: `
     <rs-page-title title="Aktuelle Form" />
 
-    <div class="content" [attr.aria-busy]="isLoading()">
+    <div class="team-grid" [attr.aria-busy]="isLoading()">
       @if (!isLoading() && error() && !hasEvaluations()) {
       <p class="no-data" role="status">Fehler beim Laden der aktuellen Form</p>
       } @else if (!isLoading() && !hasEvaluations()) {
       <p class="no-data">Keine Formdaten verfügbar</p>
-      } @else { @let teams = isLoading() ? null : evaluations()?.teams;
+      } @else { @for (team of teams(); track team.id) {
+      <article
+        class="team-card"
+        [class.team-card-away]="team.side === 'away'"
+        [attr.aria-label]="team.name"
+      >
+        <header
+          class="team-header"
+          [class.team-header-away]="team.side === 'away'"
+        >
+          @if (!isLoading() && team.logo) {
+          <rs-responsive-image
+            class="team-logo"
+            [source]="team.logo"
+            [sourceSet]="team.logoSet"
+            altText=""
+            [width]="24"
+            [height]="24"
+          />
+          } @else {
+          <span class="rs-skeleton team-logo" aria-hidden="true"></span>
+          }
+          <span class="team-name">{{ team.name }}</span>
+        </header>
 
-      <div class="teams-form results">
-        <div class="header">
-          <span class="form-title">Ergebnisse</span>
-
-          <div class="form-hints">
-            <span>Niederlage</span>
-            <span>Unentschieden</span>
-            <span>Sieg</span>
-          </div>
-        </div>
-
-        <div class="evaluation">
-          <div class="team">
-            @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span
-              class="rs-skeleton evaluation-placeholder"
-              aria-hidden="true"
-            ></span>
-            } } @else { @for ( result of homeResultsInDisplayOrder(); track
-            $index + '-' + result ) {
-            <span [class]="result | rsToKebabCase">
-              @switch (result) { @case ('LOSS') { N } @case ('DRAW') { U } @case
-              ('WIN') { S } @case ('NO_RESULT_AVAILABLE') { - } }
-            </span>
-            } }
-          </div>
-
-          <div class="today">Heute</div>
-
-          <div class="team">
-            @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span
-              class="rs-skeleton evaluation-placeholder"
-              aria-hidden="true"
-            ></span>
-            } } @else { @for ( result of teams.away.results; track $index + '-'
-            + result ) {
-            <span [class]="result | rsToKebabCase">
-              @switch (result) { @case ('LOSS') { N } @case ('DRAW') { U } @case
-              ('WIN') { S } @case ('NO_RESULT_AVAILABLE') { - } }
-            </span>
-            } }
-          </div>
-        </div>
-      </div>
-
-      <div class="teams-form performance">
-        <div class="header">
-          <span class="form-title">Performance</span>
-
-          <div class="form-hints">
-            <span>Schlecht</span>
-            <span>Mittelmäßig</span>
-            <span>Gut</span>
-          </div>
-        </div>
-
-        <div class="evaluation">
-          <div class="team">
-            @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span
-              class="rs-skeleton evaluation-placeholder"
-              aria-hidden="true"
-            ></span>
-            } } @else { @for ( performance of homePerformancesInDisplayOrder();
-            track $index + '-' + performance ) {
-            <span [class]="performance | rsToKebabCase">
-              @switch (performance) { @case ('LOW') { S } @case ('MIDDLE') { M }
-              @case ('HIGH') { G } @case ('MATCH_NOT_STARTED') { ? } @case
-              ('MATCH_POSTPONED') { - } @case ('NO_STATISTICS_AVAILABLE') { - }
+        <section class="form-section" aria-label="Ergebnisse">
+          <h3 class="section-heading">Ergebnisse</h3>
+          <div class="timeline">
+            @for (item of team.results; track $index) {
+            <div class="timeline-item">
+              @if (isLoading()) {
+              <span class="rs-skeleton item-skeleton" aria-hidden="true"></span>
+              } @else {
+              <span
+                [class]="evaluationClasses(item.value)"
+                [attr.aria-label]="resultDescription(item.value)"
+                >{{ resultLabel(item.value) }}</span
+              >
               }
-            </span>
-            } }
+              <time class="item-date">{{ item.date ?? '—' }}</time>
+            </div>
+            }
           </div>
+        </section>
 
-          <div class="today">Heute</div>
-
-          <div class="team">
-            @if (!teams) { @for (item of PLACEHOLDER_ITEMS; track $index) {
-            <span
-              class="rs-skeleton evaluation-placeholder"
-              aria-hidden="true"
-            ></span>
-            } } @else { @for ( performance of teams.away.performances; track
-            $index + '-' + performance ) {
-            <span [class]="performance | rsToKebabCase">
-              @switch (performance) { @case ('LOW') { S } @case ('MIDDLE') { M }
-              @case ('HIGH') { G } @case ('MATCH_NOT_STARTED') { ? } @case
-              ('MATCH_POSTPONED') { - } @case ('NO_STATISTICS_AVAILABLE') { - }
+        <section class="form-section" aria-label="Performance">
+          <h3 class="section-heading performance-heading">
+            Performance
+            <rs-performance-info
+              [side]="team.side"
+              [menuId]="'performance-info-' + team.id"
+              [isOpen]="activeInfoTeam() === team.id"
+              (openChange)="setPerformanceInfo(team.id, $event)"
+            />
+          </h3>
+          <div class="timeline">
+            @for (item of team.performances; track $index) {
+            <div class="timeline-item">
+              @if (isLoading()) {
+              <span class="rs-skeleton item-skeleton" aria-hidden="true"></span>
+              } @else {
+              <span
+                [class]="evaluationClasses(item.value)"
+                [attr.aria-label]="performanceDescription(item.value)"
+                >{{ performanceLabel(item.value) }}</span
+              >
               }
-            </span>
-            } }
+              <time class="item-date">{{ item.date ?? '—' }}</time>
+            </div>
+            }
           </div>
-        </div>
-      </div>
-      }
+        </section>
+      </article>
+      } }
     </div>
   `,
 })
 export class MatchEvaluationsComponent {
   readonly evaluations = input.required<EvaluationDTO | null>();
+  readonly fixture = input<ExtendedFixtureDTO | null>(null);
+  readonly latestFixtures = input<LatestFixturesDTO | null>(null);
   readonly isLoading = input<boolean>(false);
   readonly error = input<unknown>(null);
+  protected readonly activeInfoTeam = signal<number | null>(null);
 
   readonly hasEvaluations = computed<boolean>(() => {
     const teams = this.evaluations()?.teams;
@@ -222,21 +267,150 @@ export class MatchEvaluationsComponent {
     );
   });
 
-  protected readonly homeResultsInDisplayOrder = computed<FixtureResult[]>(
-    () => {
-      const homeResults = this.evaluations()?.teams.home.results ?? [];
+  protected readonly teams = computed<TeamForm[]>(() => {
+    const fixture = this.fixture();
+    const evaluations = this.evaluations()?.teams;
+    const latestFixtures = this.latestFixtures();
 
-      return [...homeResults].reverse();
+    if (!fixture) {
+      return [
+        {
+          id: -1,
+          side: 'home',
+          name: 'Heimteam',
+          logo: '',
+          logoSet: '',
+          results: this.emptyTimeline<FixtureResult>(),
+          performances: this.emptyTimeline<FixturePerformance>(),
+        },
+        {
+          id: -2,
+          side: 'away',
+          name: 'Auswärtsteam',
+          logo: '',
+          logoSet: '',
+          results: this.emptyTimeline<FixtureResult>(),
+          performances: this.emptyTimeline<FixturePerformance>(),
+        },
+      ];
     }
-  );
 
-  protected readonly homePerformancesInDisplayOrder = computed<
-    FixturePerformance[]
-  >(() => {
-    const homePerformances = this.evaluations()?.teams.home.performances ?? [];
+    return (['home', 'away'] as const).map((side) => {
+      const team = fixture.teams[side];
+      const history = latestFixtures?.[side] ?? [];
+      const results = evaluations?.[side].results ?? [];
+      const performances = evaluations?.[side].performances ?? [];
 
-    return [...homePerformances].reverse();
+      return {
+        id: team.id,
+        side,
+        name: team.name,
+        logo: getTeamLogo(team.id, 48),
+        logoSet: getTeamLogoSrcSet(team.id, 48),
+        results: this.createTimeline(results, history),
+        performances: this.createTimeline(performances, history),
+      };
+    });
   });
 
-  protected readonly PLACEHOLDER_ITEMS = [0, 1, 2, 3, 4];
+  protected evaluationClasses(
+    value: FixtureResult | FixturePerformance | null
+  ): string {
+    const classes = ['evaluation-item'];
+
+    if (value) classes.push(value.toLowerCase().replaceAll('_', '-'));
+
+    return classes.join(' ');
+  }
+
+  protected resultLabel(value: FixtureResult | null): string {
+    switch (value) {
+      case 'WIN':
+        return 'S';
+      case 'DRAW':
+        return 'U';
+      case 'LOSS':
+        return 'N';
+      default:
+        return '—';
+    }
+  }
+
+  protected performanceLabel(value: FixturePerformance | null): string {
+    switch (value) {
+      case 'HIGH':
+        return 'G';
+      case 'MIDDLE':
+        return 'M';
+      case 'LOW':
+        return 'S';
+      case 'MATCH_NOT_STARTED':
+        return '?';
+      default:
+        return '—';
+    }
+  }
+
+  protected resultDescription(value: FixtureResult | null): string {
+    switch (value) {
+      case 'WIN':
+        return 'Sieg';
+      case 'DRAW':
+        return 'Unentschieden';
+      case 'LOSS':
+        return 'Niederlage';
+      default:
+        return 'Kein Ergebnis verfügbar';
+    }
+  }
+
+  protected performanceDescription(value: FixturePerformance | null): string {
+    switch (value) {
+      case 'HIGH':
+        return 'Gute Performance';
+      case 'MIDDLE':
+        return 'Mittlere Performance';
+      case 'LOW':
+        return 'Schlechte Performance';
+      case 'MATCH_NOT_STARTED':
+        return 'Spiel hat noch nicht begonnen';
+      case 'MATCH_POSTPONED':
+        return 'Spiel verschoben';
+      default:
+        return 'Keine Performance-Daten verfügbar';
+    }
+  }
+
+  protected setPerformanceInfo(teamId: number, isOpen: boolean): void {
+    this.activeInfoTeam.set(isOpen ? teamId : null);
+  }
+
+  private createTimeline<T>(
+    values: T[],
+    fixtures: ExtendedFixtureDTO[]
+  ): FormItem<T>[] {
+    const historyItems = Array.from({ length: 5 }, (_, index) => ({
+      value: values[index] ?? null,
+      date: this.formatDate(fixtures[index]?.fixture.timestamp),
+    })).reverse();
+
+    return historyItems;
+  }
+
+  private emptyTimeline<T>(): FormItem<T>[] {
+    return Array.from({ length: 5 }, () => ({
+      value: null,
+      date: null,
+    }));
+  }
+
+  private formatDate(timestamp?: number): string | null {
+    if (timestamp === undefined) return null;
+
+    return new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      timeZone: 'UTC',
+    }).format(timestamp * 1000);
+  }
 }
