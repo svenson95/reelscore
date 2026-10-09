@@ -6,8 +6,8 @@ import { environment } from '@app/environment';
 export class SkeletonPreviewService {
   readonly enabled =
     !environment.production &&
-    'matchSkeletonPreview' in environment &&
-    environment.matchSkeletonPreview === true;
+    'skeletonPreview' in environment &&
+    environment.skeletonPreview === true;
 
   private readonly previewActive = signal<boolean>(false);
 
