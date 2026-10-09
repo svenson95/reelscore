@@ -178,4 +178,45 @@ describe(FixtureEvaluationsService.name, () => {
       expect(result.results[0]).toBe(expected);
     }
   );
+
+  it('returns unavailable performances when fixture statistics are missing', async () => {
+    const statisticsReader: FixtureStatisticsReader = {
+      findById: jest.fn().mockResolvedValue(null),
+    };
+
+    await expect(
+      new FixtureEvaluationsService(
+        statisticsReader
+      ).analyzeFixturePerformances(fixture(1, 0))
+    ).resolves.toEqual({
+      home: 'NO_STATISTICS_AVAILABLE',
+      away: 'NO_STATISTICS_AVAILABLE',
+    });
+
+    expect(statisticsReader.findById).toHaveBeenCalledWith('10');
+  });
+
+  it('analyzes performances for both teams from one fixture statistics response', async () => {
+    const response = [
+      statistics(1, {
+        'Shots on Goal': 3,
+        'Total Shots': 7,
+        'Ball Possession': 42,
+      } as Record<StatisticItemType, number>),
+      statistics(2, {
+        'Shots on Goal': 8,
+        'Total Shots': 12,
+        'Ball Possession': 58,
+      } as Record<StatisticItemType, number>),
+    ];
+    const statisticsReader: FixtureStatisticsReader = {
+      findById: jest.fn().mockResolvedValue({ response } as RapidStatisticsDTO),
+    };
+
+    await expect(
+      new FixtureEvaluationsService(
+        statisticsReader
+      ).analyzeFixturePerformances(fixture(0, 2))
+    ).resolves.toEqual({ home: 'LOW', away: 'HIGH' });
+  });
 });

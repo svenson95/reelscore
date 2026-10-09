@@ -9,10 +9,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import type {
-  EvaluationDTO,
   ExtendedFixtureDTO,
   FixturePerformance,
-  FixtureResult,
   FixtureTeam,
 } from '@reelscore-sdk/models';
 
@@ -49,39 +47,23 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b font-semibold text-rs-font-size-body-1; }
     .team-header.away { @apply flex-row-reverse text-right; }
     a {
-      @apply grid items-center p-2 gap-1;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      @apply flex flex-col p-2 gap-1;
     }
     a + a { @apply border-t; }
     a:last-of-type { @apply rounded-b-border2; }
     .match-row {
-      display: contents;
+      @apply grid items-center gap-x-2;
+      grid-template-columns: minmax(0, 1fr) 17px auto 17px minmax(0, 1fr);
     }
-    .fixture-header { @apply col-span-3 flex items-start justify-between gap-2 text-rs-font-size-small text-rs-color-text-2; }
+    .fixture-header { @apply flex items-start justify-between gap-2 text-rs-font-size-small text-rs-color-text-2; }
     .date { @apply shrink-0 whitespace-nowrap; }
     .team { @apply min-w-0 content-center leading-[13px]; }
     .home { @apply text-right; }
     .competition { @apply flex flex-wrap gap-x-2; }
     .result { @apply text-center whitespace-nowrap; }
-    .evaluations {
-      @apply relative flex items-center justify-center gap-1;
-      grid-column: 2;
-    }
-    .evaluation-label { @apply text-rs-font-size-small text-rs-color-text-2 whitespace-nowrap; }
-    .evaluation-label:first-child {
-      @apply absolute;
-      right: calc(100% + 6px);
-    }
-    .evaluation-label:last-child {
-      @apply absolute;
-      left: calc(100% + 6px);
-    }
     .evaluation-value { @apply w-[17px] h-[17px] rounded-[4px] flex items-center justify-center; font-size: 10px; }
-    .evaluation-value.loss,
     .evaluation-value.low { @apply bg-rs-color-red text-white; }
-    .evaluation-value.draw,
     .evaluation-value.middle { @apply bg-gray-200 text-black; }
-    .evaluation-value.win,
     .evaluation-value.high { @apply bg-rs-color-green text-white; }
     .evaluation-value.unknown { @apply bg-gray-500 text-white; }
     .is-related { @apply underline decoration-2 font-bold; }
@@ -101,7 +83,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
       <span>{{ team().name | teamName }}</span>
     </div>
 
-    @for(match of fixtures(); track match.fixture.id; let index = $index) {
+    @for(match of fixtures(); track match.fixture.id) {
     <a
       mat-ripple
       [routerLink]="linkToMatch(match)"
@@ -129,42 +111,37 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
           </span>
         </div>
 
+        <span
+          class="evaluation-value"
+          [class.low]="performanceClass(match, 'home') === 'low'"
+          [class.middle]="performanceClass(match, 'home') === 'middle'"
+          [class.high]="performanceClass(match, 'home') === 'high'"
+          [class.unknown]="performanceClass(match, 'home') === 'unknown'"
+          [attr.aria-label]="performanceLabel(match, 'home')"
+          [title]="performanceLabel(match, 'home')"
+          >{{ performanceSymbol(match, 'home') }}</span
+        >
+
         <div class="result">
           <rs-result-label [fixture]="match" />
         </div>
+
+        <span
+          class="evaluation-value"
+          [class.low]="performanceClass(match, 'away') === 'low'"
+          [class.middle]="performanceClass(match, 'away') === 'middle'"
+          [class.high]="performanceClass(match, 'away') === 'high'"
+          [class.unknown]="performanceClass(match, 'away') === 'unknown'"
+          [attr.aria-label]="performanceLabel(match, 'away')"
+          [title]="performanceLabel(match, 'away')"
+          >{{ performanceSymbol(match, 'away') }}</span
+        >
 
         <div class="team">
           <span [class.is-related]="match.teams.away | isRelated : team()">
             {{ match.teams.away.name | teamName : 'short' }}
           </span>
         </div>
-      </div>
-
-      <div class="evaluations" aria-label="Ergebnis und Performance">
-        <span class="evaluation-label">Ergebnis</span>
-        <span
-          class="evaluation-value"
-          [class.win]="resultClass(index) === 'win'"
-          [class.draw]="resultClass(index) === 'draw'"
-          [class.loss]="resultClass(index) === 'loss'"
-          [class.unknown]="resultClass(index) === 'unknown'"
-          [attr.aria-label]="resultLabel(index)"
-          [title]="resultLabel(index)"
-        >
-          {{ resultSymbol(index) }}
-        </span>
-        <span
-          class="evaluation-value"
-          [class.low]="performanceClass(index) === 'low'"
-          [class.middle]="performanceClass(index) === 'middle'"
-          [class.high]="performanceClass(index) === 'high'"
-          [class.unknown]="performanceClass(index) === 'unknown'"
-          [attr.aria-label]="performanceLabel(index)"
-          [title]="performanceLabel(index)"
-        >
-          {{ performanceSymbol(index) }}
-        </span>
-        <span class="evaluation-label">Performance</span>
       </div>
     </a>
     } @empty {
@@ -176,7 +153,6 @@ export class MatchFixturesTableComponent {
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
   readonly team = input.required<FixtureTeam>();
   readonly side = input.required<'home' | 'away'>();
-  readonly evaluations = input.required<EvaluationDTO | null>();
 
   protected readonly linkToMatch = linkToMatch;
   protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 48));
@@ -184,50 +160,18 @@ export class MatchFixturesTableComponent {
     getTeamLogoSrcSet(this.team().id, 48)
   );
 
-  private resultAt(index: number): FixtureResult | undefined {
-    const teamEvaluations = this.evaluations()?.teams[this.side()];
-    if (!teamEvaluations) return undefined;
-
-    return teamEvaluations.results[index];
+  private performanceAt(
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): FixturePerformance | undefined {
+    return fixture.evaluations?.[team]?.performance;
   }
 
-  protected resultClass(index: number): string {
-    const result = this.resultAt(index);
-    return result && result !== 'NO_RESULT_AVAILABLE'
-      ? result.toLowerCase()
-      : 'unknown';
-  }
-
-  protected resultSymbol(index: number): string {
-    const result = this.resultAt(index);
-    if (result === 'WIN') return 'S';
-    if (result === 'DRAW') return 'U';
-    if (result === 'LOSS') return 'N';
-    return '-';
-  }
-
-  protected resultLabel(index: number): string {
-    switch (this.resultAt(index)) {
-      case 'WIN':
-        return 'Sieg';
-      case 'DRAW':
-        return 'Unentschieden';
-      case 'LOSS':
-        return 'Niederlage';
-      default:
-        return 'Kein Ergebnis verfügbar';
-    }
-  }
-
-  private performanceAt(index: number): FixturePerformance | undefined {
-    const teamEvaluations = this.evaluations()?.teams[this.side()];
-    if (!teamEvaluations) return undefined;
-
-    return teamEvaluations.performances[index];
-  }
-
-  protected performanceClass(index: number): string {
-    const performance = this.performanceAt(index);
+  protected performanceClass(
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): string {
+    const performance = this.performanceAt(fixture, team);
     if (
       performance === 'HIGH' ||
       performance === 'MIDDLE' ||
@@ -239,7 +183,10 @@ export class MatchFixturesTableComponent {
     return 'unknown';
   }
 
-  protected performanceSymbol(index: number): string {
+  protected performanceSymbol(
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): string {
     const symbols: Record<FixturePerformance, string> = {
       MATCH_NOT_STARTED: '?',
       MATCH_POSTPONED: '-',
@@ -248,24 +195,28 @@ export class MatchFixturesTableComponent {
       MIDDLE: 'M',
       HIGH: 'G',
     };
-    const performance = this.performanceAt(index);
+    const performance = this.performanceAt(fixture, team);
     return performance ? symbols[performance] : '-';
   }
 
-  protected performanceLabel(index: number): string {
-    switch (this.performanceAt(index)) {
+  protected performanceLabel(
+    fixture: ExtendedFixtureDTO,
+    team: 'home' | 'away'
+  ): string {
+    const teamName = fixture.teams[team].name;
+    switch (this.performanceAt(fixture, team)) {
       case 'HIGH':
-        return 'Performance: Gut gespielt';
+        return `${teamName}: Gut gespielt`;
       case 'MIDDLE':
-        return 'Performance: Mittelmäßig gespielt';
+        return `${teamName}: Mittelmäßig gespielt`;
       case 'LOW':
-        return 'Performance: Schlecht gespielt';
+        return `${teamName}: Schlecht gespielt`;
       case 'MATCH_NOT_STARTED':
-        return 'Performance: Spiel noch nicht gestartet';
+        return `${teamName}: Spiel noch nicht gestartet`;
       case 'MATCH_POSTPONED':
-        return 'Performance: Spiel verschoben';
+        return `${teamName}: Spiel verschoben`;
       default:
-        return 'Performance: Keine Bewertung verfügbar';
+        return `${teamName}: Keine Bewertung verfügbar`;
     }
   }
 }

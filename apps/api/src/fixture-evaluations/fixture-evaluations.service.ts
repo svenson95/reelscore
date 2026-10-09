@@ -32,6 +32,34 @@ export class FixtureEvaluationsService {
     return { performances, results };
   }
 
+  async analyzeFixturePerformances(
+    fixture: FixtureDTO
+  ): Promise<{ home: FixturePerformance; away: FixturePerformance }> {
+    const fixtureId: FixtureIdParameter = fixture.fixture.id.toString();
+    const stats = await this.statisticsService.findById(fixtureId);
+    const teams = stats?.response;
+
+    if (!teams?.length) {
+      return {
+        home: 'NO_STATISTICS_AVAILABLE',
+        away: 'NO_STATISTICS_AVAILABLE',
+      };
+    }
+
+    return {
+      home: this.analyzeTeamPerformanceForFixture(
+        fixture.teams.home.id,
+        fixture,
+        teams
+      ),
+      away: this.analyzeTeamPerformanceForFixture(
+        fixture.teams.away.id,
+        fixture,
+        teams
+      ),
+    };
+  }
+
   private async analyzePerformances(
     teamId: number,
     fixtures: FixtureDTO[]
@@ -49,7 +77,18 @@ export class FixtureEvaluationsService {
   ): Promise<FixturePerformance> {
     const fixtureId: FixtureIdParameter = fixture.fixture.id.toString();
     const stats = await this.statisticsService.findById(fixtureId);
-    const teams = stats?.response;
+    return this.analyzeTeamPerformanceForFixture(
+      teamId,
+      fixture,
+      stats?.response
+    );
+  }
+
+  private analyzeTeamPerformanceForFixture(
+    teamId: number,
+    fixture: FixtureDTO,
+    teams: StatisticDTO[] | undefined
+  ): FixturePerformance {
     if (!teams?.length) return 'NO_STATISTICS_AVAILABLE';
 
     if (['TBD', 'NS'].includes(fixture.fixture.status.short)) {
