@@ -36,25 +36,31 @@ describe('MatchFixtureStandingsComponent', () => {
       standings: null,
       isLoading: true,
       competitionName: 'League',
+      competitionId: EXAMPLE_STANDINGS.league.id,
     });
 
     expect(
       componentFixture.nativeElement.querySelectorAll('.standings-skeleton')
     ).toHaveLength(3);
     expect(readElementText(componentFixture.nativeElement)).toContain('League');
+    expect(
+      componentFixture.nativeElement.querySelectorAll(
+        '.standings-skeleton .competition-logo img'
+      )
+    ).toHaveLength(3);
     expect(readElementText(componentFixture.nativeElement)).toContain(
       'Heimtabelle'
     );
     expect(
       componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
-    ).toHaveLength(32);
+    ).toHaveLength(36);
 
     isMobile.set(true);
     componentFixture.detectChanges();
 
     expect(
       componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
-    ).toHaveLength(28);
+    ).toHaveLength(32);
 
     componentFixture.componentRef.setInput('groupCompetition', true);
     componentFixture.detectChanges();

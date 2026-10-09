@@ -3,5 +3,5 @@ export const environment = {
   api: 'http://localhost:3333/',
   isAdmin: true,
   realtimeEnabled: true,
-  matchSkeletonPreviewMs: 0, // Minimum skeleton preview duration; set to 0 to disable.
+  matchSkeletonPreview: false, // Show the development overlay for toggling skeletons.
 };

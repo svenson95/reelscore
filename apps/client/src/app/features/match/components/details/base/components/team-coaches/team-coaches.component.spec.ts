@@ -27,8 +27,10 @@ describe(MatchTeamCoachesComponent.name, () => {
     const rootElement = componentFixture.nativeElement as HTMLElement;
 
     expect(rootElement.querySelector('[aria-busy="true"]')).not.toBeNull();
-    expect(rootElement.querySelectorAll('.coach-loading')).toHaveLength(2);
-    expect(rootElement.querySelectorAll('.loading-photo')).toHaveLength(2);
+    expect(rootElement.querySelectorAll('.coach')).toHaveLength(2);
+    expect(rootElement.querySelectorAll('.coach .loading-photo')).toHaveLength(
+      2
+    );
   });
 
   it('shows current coaches and formatted dates for their teams', () => {
@@ -139,7 +141,10 @@ describe(MatchTeamCoachesComponent.name, () => {
     expect(homeTeamCard.querySelector('.coach-name')?.textContent?.trim()).toBe(
       'Lars Kornetka'
     );
-    expect(homeTeamCard.querySelector('.coach-meta')).toBeNull();
+    const coachMeta = homeTeamCard.querySelector('.coach-meta');
+
+    expect(coachMeta).not.toBeNull();
+    expect(coachMeta?.textContent?.trim()).toBe('');
     expect(homeTeamCard.textContent).not.toContain('Jahre');
     expect(homeTeamCard.textContent).not.toContain('·');
   });

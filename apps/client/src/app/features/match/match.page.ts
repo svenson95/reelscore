@@ -8,6 +8,8 @@ import {
 
 import type { CompetitionUrl, FixtureId } from '@reelscore-sdk/models';
 
+import { SkeletonPreviewService } from '@app/core';
+
 import {
   MatchDetailsComponent,
   MatchHeaderComponent,
@@ -50,7 +52,7 @@ import { MatchFacade } from './match.facade';
       [highlights]="fixture()?.highlights ?? null"
     ></section>
 
-    <section rs-match-details></section>
+    <section rs-match-details [forceLoading]="forceSkeletons()"></section>
     }
   `,
 })
@@ -61,10 +63,13 @@ export class MatchPage {
   private readonly facade = inject(MatchFacade);
   private readonly refreshService = inject(MatchRefreshService);
   private readonly matchRealtimeService = inject(MatchRealtimeService);
+  private readonly skeletonPreviewService = inject(SkeletonPreviewService);
 
   readonly fixture = this.facade.fixture;
   readonly data = this.facade.data;
   readonly error = this.facade.error;
+
+  readonly forceSkeletons = this.skeletonPreviewService.showLoading;
 
   private readonly loadFixtureEffect = effect(() => {
     void this.facade.loadFixture(this.fixtureId());

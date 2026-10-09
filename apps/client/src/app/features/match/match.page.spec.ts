@@ -46,7 +46,9 @@ class MatchHeaderStubComponent {
   selector: 'section[rs-match-details]',
   template: '',
 })
-class MatchDetailsStubComponent {}
+class MatchDetailsStubComponent {
+  readonly forceLoading = input(false);
+}
 
 describe('MatchPage', () => {
   let componentFixture: ComponentFixture<MatchPage>;

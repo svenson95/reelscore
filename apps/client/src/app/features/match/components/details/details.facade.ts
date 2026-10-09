@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 
 import {
   isCompetitionWithMultipleGroups,
@@ -6,8 +6,6 @@ import {
   isKoPhase,
   isQualifyPhase,
 } from '@reelscore-sdk/helpers';
-
-import { environment } from '@app/environment';
 
 import {
   AnalysesStore,
@@ -47,18 +45,7 @@ export class MatchDetailsFacade {
   public readonly evaluationsError = this.evaluationsStore.error;
   public readonly fixture = this.fixtureStore.fixture;
 
-  private readonly previewDurationMs: number =
-    !environment.production &&
-    'matchSkeletonPreviewMs' in environment &&
-    typeof environment.matchSkeletonPreviewMs === 'number'
-      ? environment.matchSkeletonPreviewMs
-      : 0;
-
-  private readonly preview = signal<boolean>(this.previewDurationMs > 0);
-
-  public readonly detailsLoading = computed<boolean>(
-    () => this.preview() || this.fixtureStore.isLoading()
-  );
+  public readonly detailsLoading = this.fixtureStore.isLoading;
 
   public readonly standingsLoading = computed<boolean>(
     () =>
@@ -103,17 +90,5 @@ export class MatchDetailsFacade {
           fixture.data.league.season
         )
       : false;
-  });
-
-  private readonly previewEffect = effect((onCleanup): void => {
-    const loading = this.fixtureStore.isLoading();
-    if (this.previewDurationMs <= 0) return;
-    this.preview.set(true);
-    if (loading) return;
-    const timer = setTimeout(
-      () => this.preview.set(false),
-      this.previewDurationMs
-    );
-    onCleanup(() => clearTimeout(timer));
   });
 }
