@@ -26,6 +26,14 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs3 rounded-border2 sm:gap-4 sm:p-5;
     }
 
+    .team-card:nth-child(1) {
+      @apply max-sm:mr-6;
+    }
+
+    .team-card:nth-child(2) {
+      @apply max-sm:ml-6;
+    }
+
     .coach {
       @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] items-center gap-4 ml-2;
     }
