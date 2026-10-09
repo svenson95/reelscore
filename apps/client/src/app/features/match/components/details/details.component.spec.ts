@@ -32,10 +32,8 @@ describe('MatchDetailsComponent', () => {
     hasMultipleGroups: signal(false),
     detailsLoading: signal(false),
     standingsLoading: signal(false),
-    evaluationsLoading: signal(false),
     latestFixturesLoading: signal(false),
     standingsError: signal(null),
-    evaluationsError: signal(null),
     latestFixturesError: signal(null),
   });
   let facadeMock: ReturnType<typeof createFacadeMock>;

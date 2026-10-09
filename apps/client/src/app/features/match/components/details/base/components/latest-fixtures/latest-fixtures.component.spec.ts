@@ -1,4 +1,6 @@
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TestBed } from '@angular/core/testing';
+import { MatMenuHarness } from '@angular/material/menu/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 
@@ -32,6 +34,12 @@ describe('MatchLatestFixturesComponent', () => {
     expect(
       componentFixture.nativeElement.querySelectorAll('.skeleton-row')
     ).toHaveLength(10);
+    expect(
+      componentFixture.nativeElement.querySelectorAll('.skeleton-team-header')
+    ).toHaveLength(2);
+    expect(
+      componentFixture.nativeElement.querySelectorAll('.skeleton-form-value')
+    ).toHaveLength(20);
 
     componentFixture.componentRef.setInput('isLoading', false);
     componentFixture.detectChanges();
@@ -68,6 +76,37 @@ describe('MatchLatestFixturesComponent', () => {
     expect(teamTables[0].nativeElement.querySelectorAll('a')).toHaveLength(1);
     expect(readElementText(teamTables[1].nativeElement)).toContain(
       'Keine Spiele gefunden'
+    );
+  });
+
+  it('opens the performance explanation and restores the info button colors after closing', async () => {
+    const view = renderComponent(MatchLatestFixturesComponent, {});
+    const menu = await TestbedHarnessEnvironment.loader(view).getHarness(
+      MatMenuHarness
+    );
+    const button = view.nativeElement.querySelector(
+      'button[aria-label="Performance-Bewertung erklären"]'
+    );
+
+    await menu.open();
+
+    expect(await menu.isOpen()).toBe(true);
+    expect(
+      document.body.querySelector('.performance-info')?.textContent
+    ).toContain('Gut gespielt');
+    expect(button.style.getPropertyValue('--rs-button-bg-color')).toBe(
+      'var(--rs-color-primary)'
+    );
+    expect(button.style.getPropertyValue('--mat-icon-color')).toBe(
+      'var(--rs-color-text-3)'
+    );
+
+    await menu.close();
+
+    expect(await menu.isOpen()).toBe(false);
+    expect(button.style.getPropertyValue('--rs-button-bg-color')).toBe('');
+    expect(button.style.getPropertyValue('--mat-icon-color')).toBe(
+      'var(--rs-color-text-1)'
     );
   });
 });
