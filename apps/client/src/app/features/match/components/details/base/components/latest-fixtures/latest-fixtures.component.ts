@@ -1,18 +1,35 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import type {
+  EvaluationDTO,
   ExtendedFixtureDTO,
   LatestFixturesDTO,
 } from '@reelscore-sdk/models';
 
-import { PageTitleComponent } from '@app/shared';
+import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
 
 import { MatchFixturesTableComponent } from './components';
+
+const MAT_MODULES = [
+  MatButtonModule,
+  MatIconModule,
+  MatMenuModule,
+  MatTooltipModule,
+];
 
 @Component({
   selector: 'rs-match-latest-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, MatchFixturesTableComponent],
+  imports: [
+    ...MAT_MODULES,
+    PageTitleComponent,
+    PageTitleActionDirective,
+    MatchFixturesTableComponent,
+  ],
   styles: `
     :host {
       @apply flex flex-col;
@@ -26,24 +43,92 @@ import { MatchFixturesTableComponent } from './components';
     .fixtures-skeleton {
       @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2;
     }
-    .skeleton-row {
-      @apply flex items-center gap-2 px-2;
-      min-height: 35px;
-    }
+    .skeleton-team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b; }
+    .skeleton-team-header.away { @apply flex-row-reverse; }
+    .skeleton-logo { @apply w-8 h-8 rounded-full; }
+    .skeleton-team-name { @apply w-32 h-4; }
+    .skeleton-row { @apply flex flex-col gap-2 p-2; }
     .skeleton-row + .skeleton-row { @apply border-t; }
     .skeleton-row .rs-skeleton { height: 13px; }
+    .skeleton-fixture-header { @apply flex justify-between gap-2; }
+    .skeleton-competition { @apply w-36; }
     .skeleton-date { width: 40px; }
+    .skeleton-match-row { @apply flex items-center gap-2; }
     .skeleton-team { flex: 1; }
-    .skeleton-team:nth-child(2) { margin-left: 2rem; }
-    .skeleton-team:nth-child(4) { margin-right: 2rem; }
-    .skeleton-score { width: 30px; }
+    .skeleton-score { @apply w-[38px]; }
+    .skeleton-form { @apply flex justify-center gap-1; }
+    .skeleton-row .skeleton-form-value { @apply w-[17px]; height: 17px; }
 
     .no-data {
       @apply m-auto;
     }
+
+    .performance-info { @apply px-4 py-3 text-rs-font-size-body-2; }
+    .performance-info h3 { @apply m-0 mb-2 font-semibold; }
+    .performance-info p { @apply m-0 mb-3; }
+    .performance-legend { @apply flex flex-col gap-2 m-0; }
+    .performance-legend > div { @apply flex items-center gap-2; }
+    .performance-legend dt { @apply flex items-center justify-center w-6 h-6 rounded font-semibold; }
+    .performance-legend dd { @apply m-0; }
+    .high { @apply bg-rs-color-green text-white; }
+    .middle { @apply bg-gray-200 text-black; }
+    .low { @apply bg-rs-color-red text-white; }
+    .unavailable { @apply bg-gray-500 text-white; }
   `,
   template: `
-    <rs-page-title title="Letzte Spiele" />
+    <rs-page-title title="Letzte Spiele">
+      <button
+        rsPageTitleAction
+        mat-icon-button
+        #performanceMenuTrigger="matMenuTrigger"
+        [style.--rs-button-bg-color]="
+          performanceMenuTrigger.menuOpen ? 'var(--rs-color-primary)' : null
+        "
+        [style.--mat-icon-color]="
+          performanceMenuTrigger.menuOpen
+            ? 'var(--rs-color-text-3)'
+            : 'var(--rs-color-text-1)'
+        "
+        type="button"
+        aria-label="Performance-Bewertung erklären"
+        matTooltip="Informationen zur Performance"
+        [matMenuTriggerFor]="performanceMenu"
+      >
+        <mat-icon>info</mat-icon>
+      </button>
+    </rs-page-title>
+
+    <mat-menu #performanceMenu="matMenu" xPosition="before">
+      <div class="performance-info">
+        <h3>Performance</h3>
+        <p>
+          Die Bewertung zeigt die Spielleistung anhand von Schüssen, Torschüssen
+          und erzielten Toren. Sie kann vom Spielergebnis abweichen.
+        </p>
+        <dl class="performance-legend">
+          <div>
+            <dt class="high">G</dt>
+            <dd>Gut gespielt</dd>
+          </div>
+          <div>
+            <dt class="middle">M</dt>
+            <dd>Mittelmäßig gespielt</dd>
+          </div>
+          <div>
+            <dt class="low">S</dt>
+            <dd>Schlecht gespielt</dd>
+          </div>
+          <div>
+            <dt class="unavailable">-</dt>
+            <dd>Keine Bewertung verfügbar</dd>
+          </div>
+          <div>
+            <dt class="unavailable">?</dt>
+            <dd>Spiel noch nicht gestartet</dd>
+          </div>
+        </dl>
+      </div>
+    </mat-menu>
 
     <div class="latest-fixtures-container" [attr.aria-busy]="isLoading()">
       @let latest = latestFixtures(); @let fixture = data(); @if (latest &&
@@ -51,20 +136,37 @@ import { MatchFixturesTableComponent } from './components';
       <rs-match-fixtures-table
         [team]="fixture.teams.home"
         [fixtures]="latest.home"
+        [side]="'home'"
+        [evaluations]="evaluations()"
       />
 
       <rs-match-fixtures-table
         [team]="fixture.teams.away"
         [fixtures]="latest.away"
+        [side]="'away'"
+        [evaluations]="evaluations()"
       />
       } @else if (isLoading()) { @for (team of [0, 1]; track team) {
       <div class="fixtures-skeleton" aria-hidden="true">
+        <div class="skeleton-team-header" [class.away]="team === 1">
+          <span class="rs-skeleton skeleton-logo"></span>
+          <span class="rs-skeleton skeleton-team-name"></span>
+        </div>
         @for (row of [0, 1, 2, 3, 4]; track row) {
         <div class="skeleton-row">
-          <span class="rs-skeleton skeleton-date"></span>
-          <span class="rs-skeleton skeleton-team"></span>
-          <span class="rs-skeleton skeleton-score"></span>
-          <span class="rs-skeleton skeleton-team"></span>
+          <div class="skeleton-fixture-header">
+            <span class="rs-skeleton skeleton-competition"></span>
+            <span class="rs-skeleton skeleton-date"></span>
+          </div>
+          <div class="skeleton-match-row">
+            <span class="rs-skeleton skeleton-team"></span>
+            <span class="rs-skeleton skeleton-score"></span>
+            <span class="rs-skeleton skeleton-team"></span>
+          </div>
+          <div class="skeleton-form">
+            <span class="rs-skeleton skeleton-form-value"></span>
+            <span class="rs-skeleton skeleton-form-value"></span>
+          </div>
         </div>
         }
       </div>
@@ -79,6 +181,7 @@ import { MatchFixturesTableComponent } from './components';
 export class MatchLatestFixturesComponent {
   readonly data = input<ExtendedFixtureDTO | null>(null);
   readonly latestFixtures = input<LatestFixturesDTO | null>(null);
-  readonly isLoading = input(false);
+  readonly evaluations = input<EvaluationDTO | null>(null);
+  readonly isLoading = input<boolean>(false);
   readonly error = input<unknown>(null);
 }

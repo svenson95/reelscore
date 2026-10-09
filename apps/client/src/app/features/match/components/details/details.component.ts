@@ -17,7 +17,6 @@ import {
   MatchStatisticsComponent,
 } from './after/components';
 import {
-  MatchEvaluationsComponent,
   MatchFixtureAnalysesComponent,
   MatchFixtureDataComponent,
   MatchFixtureStandingsComponent,
@@ -37,7 +36,6 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
     PageTitleComponent,
     MatchFixtureDataComponent,
     MatchFixtureStandingsComponent,
-    MatchEvaluationsComponent,
     MatchLatestFixturesComponent,
     MatchTeamCoachesComponent,
     MatchFixtureAnalysesComponent,
@@ -106,17 +104,11 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
           />
           }
 
-          <rs-match-evaluations
-            [evaluations]="evaluations()"
-            [fixture]="fixtureData()"
-            [latestFixtures]="latestFixtures()"
-            [isLoading]="evaluationsLoading()"
-            [error]="evaluationsError()"
-          />
           <rs-match-latest-fixtures
             data-testid="match-latest-fixtures"
             [data]="fixtureData()"
             [latestFixtures]="latestFixtures()"
+            [evaluations]="evaluations()"
             [isLoading]="latestFixturesLoading()"
             [error]="latestFixturesError()"
           />
@@ -187,7 +179,6 @@ export class MatchDetailsComponent {
   readonly teamCoachesError = this.facade.teamCoachesError;
   readonly latestFixtures = this.facade.latestFixtures;
   readonly standingsError = this.facade.standingsError;
-  readonly evaluationsError = this.facade.evaluationsError;
   readonly latestFixturesError = this.facade.latestFixturesError;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
 
@@ -207,10 +198,6 @@ export class MatchDetailsComponent {
 
   readonly isLoadingStandings = computed<boolean>(
     () => this.forceLoading() || this.facade.standingsLoading()
-  );
-
-  readonly evaluationsLoading = computed<boolean>(
-    () => this.forceLoading() || this.facade.evaluationsLoading()
   );
 
   readonly latestFixturesLoading = computed<boolean>(
