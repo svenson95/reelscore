@@ -100,10 +100,10 @@ const MAT_MODULES = [
 
     <mat-menu #performanceMenu="matMenu" xPosition="before">
       <div class="performance-info">
-        <h3>Performance</h3>
+        <h3>Performance-Bewertung</h3>
         <p>
-          Die Bewertung zeigt die Spielleistung anhand von Schüssen, Torschüssen
-          und erzielten Toren. Sie kann vom Spielergebnis abweichen.
+          Die Performance zeigt die Spielleistung anhand von Schüssen,
+          Torschüssen und erzielten Toren. Sie kann vom Spielergebnis abweichen.
         </p>
         <dl class="performance-legend">
           <div>
