@@ -54,7 +54,6 @@ import {
         align-items: center;
         column-gap: 0;
         min-height: 33px;
-        margin-inline: 5px;
 
         &:not(:last-child) {
           border-bottom: 1px solid var(--rs-button-border-color);

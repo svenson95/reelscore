@@ -2,10 +2,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 import type {
-  EvaluationDTO,
   ExtendedFixtureDTO,
   LatestFixturesDTO,
 } from '@reelscore-sdk/models';
@@ -14,12 +12,7 @@ import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
 
 import { MatchFixturesTableComponent } from './components';
 
-const MAT_MODULES = [
-  MatButtonModule,
-  MatIconModule,
-  MatMenuModule,
-  MatTooltipModule,
-];
+const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
 
 @Component({
   selector: 'rs-match-latest-fixtures',
@@ -36,7 +29,7 @@ const MAT_MODULES = [
     }
 
     .latest-fixtures-container {
-      @apply flex flex-col md:flex-row mt-rs1 mx-3 gap-rs2;
+      @apply flex flex-col md:flex-row mt-rs1 mx-3 pb-3 gap-rs2;
       border-radius: var(--mat-button-toggle-shape);
     }
 
@@ -47,17 +40,22 @@ const MAT_MODULES = [
     .skeleton-team-header.away { @apply flex-row-reverse; }
     .skeleton-logo { @apply w-8 h-8 rounded-full; }
     .skeleton-team-name { @apply w-32 h-4; }
-    .skeleton-row { @apply flex flex-col gap-2 p-2; }
+    .skeleton-row { @apply flex flex-col gap-1 p-2; }
     .skeleton-row + .skeleton-row { @apply border-t; }
     .skeleton-row .rs-skeleton { height: 13px; }
-    .skeleton-fixture-header { @apply flex justify-between gap-2; }
+    .skeleton-fixture-header { @apply flex justify-between gap-2; min-height: 15px; }
     .skeleton-competition { @apply w-36; }
     .skeleton-date { width: 40px; }
-    .skeleton-match-row { @apply flex items-center gap-2; }
-    .skeleton-team { flex: 1; }
-    .skeleton-score { @apply w-[38px]; }
-    .skeleton-form { @apply flex justify-center gap-1; }
-    .skeleton-row .skeleton-form-value { @apply w-[17px]; height: 17px; }
+    .skeleton-match-row {
+      @apply grid items-center gap-x-2;
+      min-height: 18px;
+      grid-template-columns: minmax(0, 1fr) 17px 24px 17px minmax(0, 1fr);
+    }
+    .skeleton-team { @apply min-w-0 w-[70%]; }
+    .skeleton-team.home { @apply justify-self-end; }
+    .skeleton-team.away { @apply justify-self-start; }
+    .skeleton-score { @apply w-[24px]; }
+    .skeleton-row .skeleton-performance { @apply w-[17px] h-[17px] rounded; }
 
     .no-data {
       @apply m-auto;
@@ -91,7 +89,6 @@ const MAT_MODULES = [
         "
         type="button"
         aria-label="Performance-Bewertung erklären"
-        matTooltip="Informationen zur Performance"
         [matMenuTriggerFor]="performanceMenu"
       >
         <mat-icon>info</mat-icon>
@@ -137,14 +134,12 @@ const MAT_MODULES = [
         [team]="fixture.teams.home"
         [fixtures]="latest.home"
         [side]="'home'"
-        [evaluations]="evaluations()"
       />
 
       <rs-match-fixtures-table
         [team]="fixture.teams.away"
         [fixtures]="latest.away"
         [side]="'away'"
-        [evaluations]="evaluations()"
       />
       } @else if (isLoading()) { @for (team of [0, 1]; track team) {
       <div class="fixtures-skeleton" aria-hidden="true">
@@ -159,13 +154,11 @@ const MAT_MODULES = [
             <span class="rs-skeleton skeleton-date"></span>
           </div>
           <div class="skeleton-match-row">
-            <span class="rs-skeleton skeleton-team"></span>
+            <span class="rs-skeleton skeleton-team home"></span>
+            <span class="rs-skeleton skeleton-performance"></span>
             <span class="rs-skeleton skeleton-score"></span>
-            <span class="rs-skeleton skeleton-team"></span>
-          </div>
-          <div class="skeleton-form">
-            <span class="rs-skeleton skeleton-form-value"></span>
-            <span class="rs-skeleton skeleton-form-value"></span>
+            <span class="rs-skeleton skeleton-performance"></span>
+            <span class="rs-skeleton skeleton-team away"></span>
           </div>
         </div>
         }
@@ -181,7 +174,6 @@ const MAT_MODULES = [
 export class MatchLatestFixturesComponent {
   readonly data = input<ExtendedFixtureDTO | null>(null);
   readonly latestFixtures = input<LatestFixturesDTO | null>(null);
-  readonly evaluations = input<EvaluationDTO | null>(null);
   readonly isLoading = input<boolean>(false);
   readonly error = input<unknown>(null);
 }

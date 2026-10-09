@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import type { EvaluationDTO } from '@reelscore-sdk/models';
-
 import {
   EXAMPLE_FIXTURE,
   readElementText,
@@ -20,19 +18,18 @@ describe('MatchFixturesTableComponent', () => {
   });
 
   it('renders match links, marks the related team and distinguishes wins from losses', () => {
-    const evaluations: EvaluationDTO = {
-      fixture: EXAMPLE_FIXTURE.fixture.id,
-      teams: {
-        home: { results: ['WIN'], performances: ['LOW'] },
-        away: { results: ['LOSS'], performances: ['HIGH'] },
+    const fixtureWithPerformances = {
+      ...EXAMPLE_FIXTURE,
+      evaluations: {
+        home: { performance: 'LOW' as const, analyses: [] },
+        away: { performance: 'HIGH' as const, analyses: [] },
       },
     };
 
     const componentFixture = renderComponent(MatchFixturesTableComponent, {
-      fixtures: [EXAMPLE_FIXTURE],
+      fixtures: [fixtureWithPerformances],
       team: EXAMPLE_FIXTURE.teams.home,
       side: 'home',
-      evaluations,
     });
     const link = componentFixture.nativeElement.querySelector('a');
 
@@ -47,8 +44,7 @@ describe('MatchFixturesTableComponent', () => {
       componentFixture.nativeElement.querySelectorAll('.evaluation-value')
     ).toHaveLength(2);
     expect(
-      componentFixture.nativeElement.querySelector('.evaluations .low')
-        .textContent
+      componentFixture.nativeElement.querySelector('.low').textContent
     ).toContain('S');
     expect(
       componentFixture.nativeElement.querySelector('.home .is-related')
@@ -61,14 +57,13 @@ describe('MatchFixturesTableComponent', () => {
     expect(link.classList.contains('is-loser')).toBe(true);
     expect(link.classList.contains('is-winner')).toBe(false);
     expect(
-      componentFixture.nativeElement.querySelector('.evaluations .high')
-        .textContent
+      componentFixture.nativeElement.querySelector('.high').textContent
     ).toContain('G');
     expect(
       componentFixture.nativeElement.querySelector('.home .is-related')
     ).toBeNull();
 
-    componentFixture.componentRef.setInput('evaluations', null);
+    componentFixture.componentRef.setInput('fixtures', [EXAMPLE_FIXTURE]);
     componentFixture.detectChanges();
 
     const missingValues = componentFixture.nativeElement.querySelectorAll(

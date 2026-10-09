@@ -108,7 +108,6 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
             data-testid="match-latest-fixtures"
             [data]="fixtureData()"
             [latestFixtures]="latestFixtures()"
-            [evaluations]="evaluations()"
             [isLoading]="latestFixturesLoading()"
             [error]="latestFixturesError()"
           />
@@ -174,7 +173,6 @@ export class MatchDetailsComponent {
   readonly analyses = this.facade.analyses;
   readonly events = this.facade.events;
   readonly statistics = this.facade.statistics;
-  readonly evaluations = this.facade.evaluations;
   readonly teamCoaches = this.facade.teamCoaches;
   readonly teamCoachesError = this.facade.teamCoachesError;
   readonly latestFixtures = this.facade.latestFixtures;

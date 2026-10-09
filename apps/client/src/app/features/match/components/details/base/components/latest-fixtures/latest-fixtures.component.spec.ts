@@ -38,7 +38,7 @@ describe('MatchLatestFixturesComponent', () => {
       componentFixture.nativeElement.querySelectorAll('.skeleton-team-header')
     ).toHaveLength(2);
     expect(
-      componentFixture.nativeElement.querySelectorAll('.skeleton-form-value')
+      componentFixture.nativeElement.querySelectorAll('.skeleton-performance')
     ).toHaveLength(20);
 
     componentFixture.componentRef.setInput('isLoading', false);
