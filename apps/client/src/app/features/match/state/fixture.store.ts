@@ -82,6 +82,8 @@ export const FixtureStore = signalStore(
       analysesStore,
     } = dependencies;
 
+    let currentLoadId = 0;
+
     const patchLoadingState = (isRefresh: boolean): void => {
       patchState(
         store,
@@ -155,6 +157,7 @@ export const FixtureStore = signalStore(
       options: LoadFixtureOptions
     ): Promise<void> => {
       const { isRefresh } = options;
+      const loadId = ++currentLoadId;
 
       patchLoadingState(isRefresh);
 
@@ -163,9 +166,17 @@ export const FixtureStore = signalStore(
           http.getFixture(id).pipe(retry(errorHandler))
         );
 
+        if (loadId !== currentLoadId) {
+          return;
+        }
+
         patchFixtureLoaded(fixture);
         loadRelatedFixtureData(fixture);
       } catch {
+        if (loadId !== currentLoadId) {
+          return;
+        }
+
         patchFixtureError(isRefresh);
       }
     };
