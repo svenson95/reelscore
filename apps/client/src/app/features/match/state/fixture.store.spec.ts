@@ -125,6 +125,47 @@ describe('FixtureStore', () => {
     expect(store.isRefreshing()).toBe(false);
   });
 
+  it('should clear the previous fixture while loading another match', async () => {
+    const previousFixture = createFixture();
+    const nextFixture = createFixture({ goals: { home: 1, away: 0 } });
+    const nextFixtureResponse$ = new Subject<GetFixtureDTO>();
+
+    httpMock.getFixture
+      .mockReturnValueOnce(of(previousFixture))
+      .mockReturnValueOnce(nextFixtureResponse$);
+    await store.loadFixture(42);
+
+    const nextLoad = store.loadFixture(84);
+
+    expect(store.fixture()).toBeNull();
+    expect(store.isLoading()).toBe(true);
+
+    nextFixtureResponse$.next(nextFixture);
+    nextFixtureResponse$.complete();
+    await nextLoad;
+
+    expect(store.fixture()).toBe(nextFixture);
+    expect(store.isLoading()).toBe(false);
+  });
+
+  it('should ignore an older match response after navigating to another match', async () => {
+    const previousFixtureResponse$ = new Subject<GetFixtureDTO>();
+    const nextFixture = createFixture({ goals: { home: 1, away: 0 } });
+
+    httpMock.getFixture
+      .mockReturnValueOnce(previousFixtureResponse$)
+      .mockReturnValueOnce(of(nextFixture));
+
+    const previousLoad = store.loadFixture(42);
+    await store.loadFixture(84);
+
+    previousFixtureResponse$.next(createFixture());
+    previousFixtureResponse$.complete();
+    await previousLoad;
+
+    expect(store.fixture()).toBe(nextFixture);
+  });
+
   it('orders goal and red-card highlights including missed penalties without mutating events', async () => {
     const fixture = createFixture();
     httpMock.getFixture.mockReturnValue(of(fixture));
