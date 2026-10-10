@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { COMPETITION_ID } from '@reelscore-sdk/constants';
 import type {
@@ -164,6 +164,35 @@ describe('FixtureStore', () => {
     await previousLoad;
 
     expect(store.fixture()).toBe(nextFixture);
+  });
+
+  it('should ignore an older match error after navigating to another match', async () => {
+    const previousFixtureResponse$ = new Subject<GetFixtureDTO>();
+    const nextFixture = createFixture({ goals: { home: 1, away: 0 } });
+
+    httpMock.getFixture
+      .mockReturnValueOnce(previousFixtureResponse$)
+      .mockReturnValueOnce(of(nextFixture));
+
+    const previousLoad = store.loadFixture(42);
+    await store.loadFixture(84);
+
+    previousFixtureResponse$.error(new Error('Old request failed'));
+    await previousLoad;
+
+    expect(store.fixture()).toBe(nextFixture);
+    expect(store.isLoading()).toBe(false);
+  });
+
+  it('should finish loading when the current match request fails', async () => {
+    httpMock.getFixture.mockReturnValue(
+      throwError(() => new Error('Current request failed'))
+    );
+
+    await store.loadFixture(42);
+
+    expect(store.fixture()).toBeNull();
+    expect(store.isLoading()).toBe(false);
   });
 
   it('orders goal and red-card highlights including missed penalties without mutating events', async () => {
