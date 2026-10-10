@@ -66,6 +66,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .evaluation-value.middle { @apply bg-gray-200 text-black; }
     .evaluation-value.high { @apply bg-rs-color-green text-white; }
     .evaluation-value.unknown { @apply bg-gray-500 text-white; }
+    .evaluation-value.not-relevant { opacity: 0.4; }
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
@@ -113,6 +114,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
         <span
           class="evaluation-value"
+          [class.not-relevant]="!(match.teams.home | isRelated : team())"
           [class.low]="performanceClass(match, 'home') === 'low'"
           [class.middle]="performanceClass(match, 'home') === 'middle'"
           [class.high]="performanceClass(match, 'home') === 'high'"
@@ -128,6 +130,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
 
         <span
           class="evaluation-value"
+          [class.not-relevant]="!(match.teams.away | isRelated : team())"
           [class.low]="performanceClass(match, 'away') === 'low'"
           [class.middle]="performanceClass(match, 'away') === 'middle'"
           [class.high]="performanceClass(match, 'away') === 'high'"
