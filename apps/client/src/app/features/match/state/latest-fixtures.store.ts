@@ -25,9 +25,13 @@ export const LatestFixturesStore = signalStore(
     let latestRequestId = 0;
 
     return {
-      loadLatestFixtures(fixtureId: FixtureId): void {
+      loadLatestFixtures(fixtureId: FixtureId, silent = false): void {
         const requestId = ++latestRequestId;
-        patchState(store, { isLoading: true, error: null });
+        patchState(store, {
+          ...(silent ? {} : { latestFixtures: null }),
+          isLoading: !silent,
+          error: null,
+        });
 
         if (!fixtureId) {
           patchState(store, {
@@ -59,7 +63,7 @@ export const LatestFixturesStore = signalStore(
               }
 
               patchState(store, {
-                latestFixtures: null,
+                latestFixtures: silent ? store.latestFixtures() : null,
                 isLoading: false,
                 error,
               });

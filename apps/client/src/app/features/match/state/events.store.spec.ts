@@ -66,6 +66,16 @@ describe('EventsStore', () => {
     expect(store.events()).toHaveLength(1);
     expect(store.error()).toBeNull();
   });
+
+  it('treats an empty event list as an empty state', () => {
+    httpMock.getFixtureEvents.mockReturnValue(of(createResponse([])));
+
+    store.loadEvents({ fixtureId: '42', teams: EXAMPLE_FIXTURE.teams });
+
+    expect(store.events()).toBeNull();
+    expect(store.error()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+  });
 });
 
 function createEvent(

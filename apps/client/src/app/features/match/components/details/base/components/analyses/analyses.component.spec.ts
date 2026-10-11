@@ -97,4 +97,36 @@ describe('MatchFixtureAnalysesComponent', () => {
       )
     ).toBeNull();
   });
+
+  it('renders the analyses title once across loading, error, and empty states', () => {
+    const componentFixture = renderComponent(MatchFixtureAnalysesComponent, {
+      isLoading: true,
+    });
+    const hostElement = componentFixture.nativeElement as HTMLElement;
+    const getAnalysesTitles = (): HTMLHeadingElement[] =>
+      Array.from(
+        hostElement.querySelectorAll<HTMLHeadingElement>('rs-page-title h2')
+      ).filter((title) => title.textContent?.trim() === 'Analysen');
+
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.analyses-skeleton[aria-busy="true"]'
+      )
+    ).not.toBeNull();
+    expect(getAnalysesTitles()).toHaveLength(1);
+
+    componentFixture.componentRef.setInput('isLoading', false);
+    componentFixture.componentRef.setInput(
+      'error',
+      new Error('Request failed')
+    );
+    componentFixture.detectChanges();
+
+    expect(getAnalysesTitles()).toHaveLength(1);
+
+    componentFixture.componentRef.setInput('error', null);
+    componentFixture.detectChanges();
+
+    expect(getAnalysesTitles()).toHaveLength(1);
+  });
 });

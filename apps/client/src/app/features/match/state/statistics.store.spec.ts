@@ -47,8 +47,17 @@ describe('StatisticsStore', () => {
     httpMock.getFixtureStatistics.mockReturnValue(of(null));
     store.loadStatistics('42');
 
-    expect(store.statistics()).toBeUndefined();
+    expect(store.statistics()).toBeNull();
     expect(store.isLoading()).toBe(false);
+    expect(store.error()).toBe('Statistics not found');
+  });
+
+  it('treats an empty response as missing statistics', () => {
+    httpMock.getFixtureStatistics.mockReturnValue(of(createResponse([])));
+
+    store.loadStatistics('42');
+
+    expect(store.statistics()).toBeNull();
     expect(store.error()).toBe('Statistics not found');
   });
 });

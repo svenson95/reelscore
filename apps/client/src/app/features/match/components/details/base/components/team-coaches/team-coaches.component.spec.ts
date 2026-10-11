@@ -33,6 +33,22 @@ describe(MatchTeamCoachesComponent.name, () => {
     );
   });
 
+  it('shows both team placeholders before the initial fixture has loaded', () => {
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: null,
+      coaches: [],
+      isLoading: true,
+    });
+
+    const rootElement = componentFixture.nativeElement as HTMLElement;
+
+    expect(rootElement.querySelectorAll('.team-card')).toHaveLength(2);
+    expect(rootElement.querySelectorAll('.coach .loading-photo')).toHaveLength(
+      2
+    );
+    expect(rootElement.querySelector('[aria-busy="true"]')).not.toBeNull();
+  });
+
   it('shows current coaches and formatted dates for their teams', () => {
     const homeCoach = createCoach(85, '2024-03-06');
     homeCoach.name = 'Manuel Baum';
@@ -194,6 +210,6 @@ function createCoach(teamId: number, startDate: string): TeamCoachDTO {
     weight: '75 kg',
     photo: 'coach.png',
     team,
-    career: [{ team, start: startDate, end: null }],
+    career: [{ team, start: startDate, end: '' }],
   };
 }

@@ -70,7 +70,6 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     .is-related { @apply underline decoration-2 font-bold; }
     .is-winner .is-related { @apply decoration-rs-color-green; }
     .is-loser .is-related { @apply decoration-rs-color-red; }
-    .no-data { @apply bg-rs-button-bg border shadow-rs3; }
   `,
   template: `
     <div class="team-header" [class.away]="side() === 'away'">

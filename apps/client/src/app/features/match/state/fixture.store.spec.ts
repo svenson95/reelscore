@@ -26,13 +26,19 @@ describe('FixtureStore', () => {
   let store: InstanceType<typeof FixtureStore>;
 
   const httpMock = { getFixture: jest.fn() };
-  const standingsStoreMock = { loadFixtureStandings: jest.fn() };
-  const evaluationsStoreMock = { loadEvaluations: jest.fn() };
-  const eventsStoreMock = { loadEvents: jest.fn() };
-  const statisticsStoreMock = { loadStatistics: jest.fn() };
-  const latestFixturesStoreMock = { loadLatestFixtures: jest.fn() };
-  const analysesStoreMock = { loadAnalyses: jest.fn() };
-  const teamCoachesStoreMock = { loadTeamCoaches: jest.fn() };
+  const standingsStoreMock = {
+    loadFixtureStandings: jest.fn(),
+    reset: jest.fn(),
+  };
+  const evaluationsStoreMock = { loadEvaluations: jest.fn(), reset: jest.fn() };
+  const eventsStoreMock = { loadEvents: jest.fn(), reset: jest.fn() };
+  const statisticsStoreMock = { loadStatistics: jest.fn(), reset: jest.fn() };
+  const latestFixturesStoreMock = {
+    loadLatestFixtures: jest.fn(),
+    reset: jest.fn(),
+  };
+  const analysesStoreMock = { loadAnalyses: jest.fn(), reset: jest.fn() };
+  const teamCoachesStoreMock = { loadTeamCoaches: jest.fn(), reset: jest.fn() };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -66,20 +72,37 @@ describe('FixtureStore', () => {
 
     expect(store.fixture()).toBe(fixture);
     expect(store.isLoading()).toBe(false);
+    expect(
+      [
+        standingsStoreMock.reset,
+        evaluationsStoreMock.reset,
+        eventsStoreMock.reset,
+        statisticsStoreMock.reset,
+        teamCoachesStoreMock.reset,
+        latestFixturesStoreMock.reset,
+        analysesStoreMock.reset,
+      ].every((reset) => reset.mock.calls.length === 1)
+    ).toBe(true);
     expect(standingsStoreMock.loadFixtureStandings).toHaveBeenCalledWith(
       `${EXAMPLE_FIXTURE.teams.home.id},${EXAMPLE_FIXTURE.teams.away.id}`,
       EXAMPLE_FIXTURE.league.id,
-      '2026-05-30'
+      '2026-05-30',
+      false
     );
     expect(evaluationsStoreMock.loadEvaluations).toHaveBeenCalledWith(
-      EXAMPLE_FIXTURE.fixture.id
+      EXAMPLE_FIXTURE.fixture.id,
+      false
     );
-    expect(eventsStoreMock.loadEvents).toHaveBeenCalledWith({
-      fixtureId: String(EXAMPLE_FIXTURE.fixture.id),
-      teams: EXAMPLE_FIXTURE.teams,
-    });
+    expect(eventsStoreMock.loadEvents).toHaveBeenCalledWith(
+      {
+        fixtureId: String(EXAMPLE_FIXTURE.fixture.id),
+        teams: EXAMPLE_FIXTURE.teams,
+      },
+      false
+    );
     expect(statisticsStoreMock.loadStatistics).toHaveBeenCalledWith(
-      String(EXAMPLE_FIXTURE.fixture.id)
+      String(EXAMPLE_FIXTURE.fixture.id),
+      false
     );
   });
 
@@ -113,6 +136,7 @@ describe('FixtureStore', () => {
     expect(store.fixture()).toBe(fixture);
     expect(store.isLoading()).toBe(false);
     expect(store.isRefreshing()).toBe(true);
+    expect(latestFixturesStoreMock.reset).toHaveBeenCalledTimes(1);
 
     const refreshedFixture = createFixture({
       goals: { home: 2, away: 1 },
@@ -123,6 +147,38 @@ describe('FixtureStore', () => {
 
     expect(store.fixture()).toBe(refreshedFixture);
     expect(store.isRefreshing()).toBe(false);
+    expect(standingsStoreMock.loadFixtureStandings).toHaveBeenLastCalledWith(
+      expect.any(String),
+      EXAMPLE_FIXTURE.league.id,
+      '2026-05-30',
+      true
+    );
+    expect(evaluationsStoreMock.loadEvaluations).toHaveBeenLastCalledWith(
+      EXAMPLE_FIXTURE.fixture.id,
+      true
+    );
+    expect(eventsStoreMock.loadEvents).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        fixtureId: String(EXAMPLE_FIXTURE.fixture.id),
+      }),
+      true
+    );
+    expect(statisticsStoreMock.loadStatistics).toHaveBeenLastCalledWith(
+      String(EXAMPLE_FIXTURE.fixture.id),
+      true
+    );
+    expect(teamCoachesStoreMock.loadTeamCoaches).toHaveBeenLastCalledWith(
+      `${EXAMPLE_FIXTURE.teams.home.id},${EXAMPLE_FIXTURE.teams.away.id}`,
+      true
+    );
+    expect(latestFixturesStoreMock.loadLatestFixtures).toHaveBeenLastCalledWith(
+      EXAMPLE_FIXTURE.fixture.id,
+      true
+    );
+    expect(analysesStoreMock.loadAnalyses).toHaveBeenLastCalledWith(
+      EXAMPLE_FIXTURE.fixture.id,
+      true
+    );
   });
 
   it('should clear the previous fixture while loading another match', async () => {
@@ -193,6 +249,7 @@ describe('FixtureStore', () => {
 
     expect(store.fixture()).toBeNull();
     expect(store.isLoading()).toBe(false);
+    expect(store.error()).toBe('Current request failed');
   });
 
   it('orders goal and red-card highlights including missed penalties without mutating events', async () => {

@@ -2,12 +2,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import type { AnalysesDTO } from '@reelscore-sdk/models';
 
-import { PageTitleComponent } from '@app/shared';
-
 @Component({
   selector: 'rs-match-fixture-analyses-predictions',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent],
   styles: `
     :host {
       @apply flex flex-col;
@@ -64,8 +61,6 @@ import { PageTitleComponent } from '@app/shared';
     }
   `,
   template: `
-    <rs-page-title title="Analysen" />
-
     <div class="fixture-analyse">
       <div class="playersWithStreak">
         <div class="home">

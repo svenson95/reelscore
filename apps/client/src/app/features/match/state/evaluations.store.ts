@@ -19,30 +19,42 @@ const initialState: EvaluationsState = {
 
 export const EvaluationsStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpEvaluationsService)) => ({
-    loadEvaluations(fixtureId: FixtureId): void {
-      patchState(store, { isLoading: true, error: null });
+  withMethods((store, http = inject(HttpEvaluationsService)) => {
+    let latestRequestId = 0;
 
-      http
-        .getEvaluations(fixtureId)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (evaluations) =>
-            patchState(store, {
-              evaluations,
-              isLoading: false,
-              error: null,
-            }),
-          error: (error) =>
-            patchState(store, {
-              evaluations: null,
-              isLoading: false,
-              error,
-            }),
+    return {
+      loadEvaluations(fixtureId: FixtureId, silent = false): void {
+        const requestId = ++latestRequestId;
+        patchState(store, {
+          ...(silent ? {} : { evaluations: null }),
+          isLoading: !silent,
+          error: null,
         });
-    },
-    reset(): void {
-      patchState(store, initialState);
-    },
-  }))
+
+        http
+          .getEvaluations(fixtureId)
+          .pipe(retry(errorHandler))
+          .subscribe({
+            next: (evaluations) => {
+              if (requestId !== latestRequestId) return;
+
+              patchState(store, { evaluations, isLoading: false, error: null });
+            },
+            error: (error) => {
+              if (requestId !== latestRequestId) return;
+
+              patchState(store, {
+                evaluations: silent ? store.evaluations() : null,
+                isLoading: false,
+                error,
+              });
+            },
+          });
+      },
+      reset(): void {
+        latestRequestId++;
+        patchState(store, initialState);
+      },
+    };
+  })
 );

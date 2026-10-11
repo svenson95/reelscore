@@ -29,7 +29,7 @@ export type MatchHeaderTeam = {
       @apply flex m-auto;
     }
     .team-name {
-      @apply leading-[16px] text-center flex-1 font-semibold text-balance max-w-[180px] self-center;
+      @apply leading-[16px] text-center flex-1 font-semibold text-balance max-w-[180px] self-center min-h-[48px] sm:min-h-0;
     }
     .team-name-placeholder {
       @apply block w-[100px] h-[16px] rounded m-auto;

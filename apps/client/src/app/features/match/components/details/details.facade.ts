@@ -32,10 +32,22 @@ export class MatchDetailsFacade {
   public readonly standings = this.standingsStore.standings;
   public readonly standingsError = this.standingsStore.error;
   public readonly analyses = this.analysesStore.analyses;
+  public readonly analysesError = this.analysesStore.error;
+  public readonly analysesLoading = computed<boolean>(
+    () => this.detailsLoading() || this.analysesStore.isLoading()
+  );
   public readonly latestFixtures = this.latestFixturesStore.latestFixtures;
   public readonly latestFixturesError = this.latestFixturesStore.error;
   public readonly events = this.eventsStore.events;
+  public readonly eventsError = this.eventsStore.error;
+  public readonly eventsLoading = computed<boolean>(
+    () => this.detailsLoading() || this.eventsStore.isLoading()
+  );
   public readonly statistics = this.statisticsStore.statistics;
+  public readonly statisticsError = this.statisticsStore.error;
+  public readonly statisticsLoading = computed<boolean>(
+    () => this.detailsLoading() || this.statisticsStore.isLoading()
+  );
   public readonly teamCoaches = computed(
     () => this.teamCoachesStore.teamCoaches()?.data ?? []
   );
