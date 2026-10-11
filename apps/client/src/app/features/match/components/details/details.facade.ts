@@ -60,9 +60,7 @@ export class MatchDetailsFacade {
   );
 
   public readonly latestFixturesLoading = computed<boolean>(
-    () =>
-      this.detailsLoading() ||
-      (this.latestFixturesStore.isLoading() && !this.latestFixtures())
+    () => this.detailsLoading() || this.latestFixturesStore.isLoading()
   );
 
   public readonly hasNoStandings = computed<boolean>(() => {

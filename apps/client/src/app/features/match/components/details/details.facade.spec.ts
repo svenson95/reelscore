@@ -82,7 +82,7 @@ describe('MatchDetailsFacade', () => {
     TestBed.resetTestingModule();
   });
 
-  it('keeps available section data visible during refresh but hides sections while fixture details load', () => {
+  it('shows latest fixture skeletons during a refresh even while previous data exists', () => {
     standings.isLoading.set(true);
     evaluations.isLoading.set(true);
     latestFixtures.isLoading.set(true);
@@ -101,7 +101,11 @@ describe('MatchDetailsFacade', () => {
       facade.standingsLoading(),
       facade.evaluationsLoading(),
       facade.latestFixturesLoading(),
-    ]).toEqual([false, false, false]);
+    ]).toEqual([false, false, true]);
+
+    latestFixtures.isLoading.set(false);
+
+    expect(facade.latestFixturesLoading()).toBe(false);
 
     isFixtureLoading.set(true);
 

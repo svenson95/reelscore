@@ -21,37 +21,55 @@ const initialState: LatestFixturesState = {
 
 export const LatestFixturesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpLatestFixturesService)) => ({
-    loadLatestFixtures(fixtureId: FixtureId): void {
-      patchState(store, { isLoading: true, error: null });
-      if (!fixtureId) {
-        return patchState(store, {
-          latestFixtures: null,
-          isLoading: false,
-          error: 'FixtureId in fixture store not defined',
-        });
-      }
+  withMethods((store, http = inject(HttpLatestFixturesService)) => {
+    let latestRequestId = 0;
 
-      http
-        .getLatestFixtures(fixtureId)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (latestFixtures) =>
-            patchState(store, {
-              latestFixtures,
-              isLoading: false,
-              error: null,
-            }),
-          error: (error) =>
-            patchState(store, {
-              latestFixtures: null,
-              isLoading: false,
-              error,
-            }),
-        });
-    },
-    reset(): void {
-      patchState(store, initialState);
-    },
-  }))
+    return {
+      loadLatestFixtures(fixtureId: FixtureId): void {
+        const requestId = ++latestRequestId;
+        patchState(store, { isLoading: true, error: null });
+
+        if (!fixtureId) {
+          patchState(store, {
+            latestFixtures: null,
+            isLoading: false,
+            error: 'FixtureId in fixture store not defined',
+          });
+          return;
+        }
+
+        http
+          .getLatestFixtures(fixtureId)
+          .pipe(retry(errorHandler))
+          .subscribe({
+            next: (latestFixtures) => {
+              if (requestId !== latestRequestId) {
+                return;
+              }
+
+              patchState(store, {
+                latestFixtures,
+                isLoading: false,
+                error: null,
+              });
+            },
+            error: (error) => {
+              if (requestId !== latestRequestId) {
+                return;
+              }
+
+              patchState(store, {
+                latestFixtures: null,
+                isLoading: false,
+                error,
+              });
+            },
+          });
+      },
+      reset(): void {
+        latestRequestId++;
+        patchState(store, initialState);
+      },
+    };
+  })
 );
