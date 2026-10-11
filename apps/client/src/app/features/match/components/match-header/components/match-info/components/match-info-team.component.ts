@@ -23,7 +23,7 @@ export type MatchHeaderTeam = {
   imports: [ResponsiveImageComponent, TeamNamePipe],
   styles: `
     :host {
-      @apply flex min-h-[100px] flex-1 flex-col justify-center gap-1 text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
+      @apply flex min-h-[104px] flex-1 flex-col justify-center gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
     }
     .team-logo {
       @apply flex mx-auto;
