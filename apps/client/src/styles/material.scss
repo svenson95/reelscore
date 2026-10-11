@@ -151,6 +151,10 @@ button {
     background-color: var(--rs-button-bg-color);
   }
 
+  &:active {
+    box-shadow: none;
+  }
+
   &.mdc-button,
   &.mdc-icon-button {
     --mat-icon-button-disabled-icon-color: var(--rs-border-color-2);
