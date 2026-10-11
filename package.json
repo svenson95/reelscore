@@ -107,5 +107,18 @@
     "ts-node": "10.9.1",
     "typescript": "~5.9.3",
     "vercel": "60.0.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.15.8": true,
+    "esbuild@0.27.0": true,
+    "esbuild@0.27.7": true,
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.2": true,
+    "fsevents@2.3.3": true,
+    "lmdb@3.5.1": true,
+    "msgpackr-extract@3.0.4": true,
+    "nx@22.7.5": true,
+    "unrs-resolver@1.12.2": true
   }
 }

@@ -73,7 +73,14 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
 
     .result:not(.is-upcoming) {
       background-color: var(--mat-sys-surface);
-      box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+
+      @media (prefers-color-scheme: dark) {
+        box-shadow: rgba(0,0,0,.3) 0px 2px 4px 0px inset;
+      }
+
+      @media (prefers-color-scheme: light) {
+        box-shadow: rgba(0,0,0,.15) 0px 2px 4px 0px inset;
+      }
     }
 
     .teams {
