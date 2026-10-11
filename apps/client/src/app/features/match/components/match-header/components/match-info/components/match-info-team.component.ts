@@ -23,13 +23,13 @@ export type MatchHeaderTeam = {
   imports: [ResponsiveImageComponent, TeamNamePipe],
   styles: `
     :host {
-      @apply flex flex-1 flex-col gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
+      @apply flex min-h-[104px] flex-1 flex-col justify-center gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
     }
     .team-logo {
       @apply flex mx-auto;
     }
     .team-name {
-      @apply leading-[16px] text-center flex-1 font-semibold text-balance max-w-[180px] self-center min-h-[48px] sm:min-h-0;
+      @apply flex min-h-[48px] items-center justify-center leading-[16px] text-center font-semibold text-balance max-w-[180px] self-center;
     }
     .team-name-placeholder {
       @apply block w-[100px] h-[16px] rounded m-auto;
