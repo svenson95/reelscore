@@ -238,7 +238,22 @@ export class MatchTeamCoachesComponent {
 
   protected readonly teams = computed(() => {
     const fixtureTeams = this.fixture()?.teams;
-    if (!fixtureTeams) return [];
+    if (!fixtureTeams) {
+      if (!this.isLoading()) return [];
+
+      return [
+        {
+          id: 'home',
+          label: 'Trainer des Heimteams',
+          coach: null,
+        },
+        {
+          id: 'away',
+          label: 'Trainer des Auswärtsteams',
+          coach: null,
+        },
+      ];
+    }
 
     return [
       {

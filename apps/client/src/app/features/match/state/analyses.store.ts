@@ -19,30 +19,42 @@ const initialState: AnalysesState = {
 
 export const AnalysesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpFixtureAnalysesService)) => ({
-    loadAnalyses(id: FixtureId): void {
-      patchState(store, { isLoading: true });
+  withMethods((store, http = inject(HttpFixtureAnalysesService)) => {
+    let latestRequestId = 0;
 
-      http
-        .getFixtureAnalyses(id)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (analyses) =>
-            patchState(store, {
-              analyses,
-              isLoading: false,
-              error: null,
-            }),
-          error: (error) =>
-            patchState(store, {
-              analyses: null,
-              isLoading: false,
-              error,
-            }),
+    return {
+      loadAnalyses(id: FixtureId, silent = false): void {
+        const requestId = ++latestRequestId;
+        patchState(store, {
+          ...(silent ? {} : { analyses: null }),
+          isLoading: !silent,
+          error: null,
         });
-    },
-    reset(): void {
-      patchState(store, initialState);
-    },
-  }))
+
+        http
+          .getFixtureAnalyses(id)
+          .pipe(retry(errorHandler))
+          .subscribe({
+            next: (analyses) => {
+              if (requestId !== latestRequestId) return;
+
+              patchState(store, { analyses, isLoading: false, error: null });
+            },
+            error: (error) => {
+              if (requestId !== latestRequestId) return;
+
+              patchState(store, {
+                analyses: silent ? store.analyses() : null,
+                isLoading: false,
+                error,
+              });
+            },
+          });
+      },
+      reset(): void {
+        latestRequestId++;
+        patchState(store, initialState);
+      },
+    };
+  })
 );

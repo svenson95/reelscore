@@ -35,11 +35,16 @@ import { MatchFacade } from './match.facade';
     }
   `,
   template: `
-    @if (error()) {
+    @if (error() && !data()) {
     <section class="page-error">
       <p class="no-data">Es ist ein Fehler aufgetreten.</p>
     </section>
-    } @else {
+    } @else { @if (error()) {
+    <p class="page-error" role="status">
+      Aktualisierung fehlgeschlagen. Die zuletzt geladenen Spieldaten bleiben
+      sichtbar.
+    </p>
+    }
     <nav
       aria-label="Page-Header Navigation"
       rs-page-header
@@ -48,8 +53,8 @@ import { MatchFacade } from './match.facade';
 
     <section
       rs-match-header
-      [data]="data()"
-      [highlights]="fixture()?.highlights ?? null"
+      [data]="forceSkeletons() ? null : data()"
+      [highlights]="forceSkeletons() ? null : fixture()?.highlights ?? null"
     ></section>
 
     <section rs-match-details [forceLoading]="forceSkeletons()"></section>

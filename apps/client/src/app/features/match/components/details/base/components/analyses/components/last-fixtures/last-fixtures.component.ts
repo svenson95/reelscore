@@ -28,6 +28,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PageTitleComponent, AnalysesEvaluationsComponent],
   styles: `
+    :host {
+      @apply mt-rs2;
+    }
+
     .latest-fixtures {
       @apply grid grid-cols-1 md:grid-cols-2
         gap-3 mx-3 mb-3 mt-rs1;

@@ -84,6 +84,16 @@ export const FixtureStore = signalStore(
 
     let currentLoadId = 0;
 
+    const resetRelatedFixtureData = (): void => {
+      standingsStore.reset();
+      evaluationsStore.reset();
+      eventsStore.reset();
+      statisticsStore.reset();
+      teamCoachesStore.reset();
+      latestFixturesStore.reset();
+      analysesStore.reset();
+    };
+
     const patchLoadingState = (isRefresh: boolean): void => {
       patchState(
         store,
@@ -99,6 +109,10 @@ export const FixtureStore = signalStore(
               isRefreshing: false,
             }
       );
+
+      if (!isRefresh) {
+        resetRelatedFixtureData();
+      }
     };
 
     const patchFixtureLoaded = (fixture: GetFixtureDTO): void => {
@@ -110,16 +124,19 @@ export const FixtureStore = signalStore(
       });
     };
 
-    const patchFixtureError = (isRefresh: boolean): void => {
+    const patchFixtureError = (isRefresh: boolean, error: unknown): void => {
       patchState(store, {
         fixture: isRefresh ? store.fixture() : null,
         isLoading: false,
         isRefreshing: false,
-        error: null,
+        error: error instanceof Error ? error.message : String(error),
       });
     };
 
-    const loadFixtureStandings = (fixture: GetFixtureDTO): void => {
+    const loadFixtureStandings = (
+      fixture: GetFixtureDTO,
+      options: LoadFixtureOptions
+    ): void => {
       const competitionId = fixture.data.league.id;
 
       if (isCompetitionWithoutStandings(competitionId)) {
@@ -129,27 +146,41 @@ export const FixtureStore = signalStore(
       const teamIds = getFixtureTeamIds(fixture);
       const date = getFixtureDate(fixture);
 
-      standingsStore.loadFixtureStandings(teamIds, competitionId, date);
+      standingsStore.loadFixtureStandings(
+        teamIds,
+        competitionId,
+        date,
+        options.isRefresh
+      );
     };
 
-    const loadRelatedFixtureData = (fixture: GetFixtureDTO): void => {
+    const loadRelatedFixtureData = (
+      fixture: GetFixtureDTO,
+      options: LoadFixtureOptions
+    ): void => {
       const fixtureId = fixture.data.fixture.id;
       const fixtureIdParameter = getFixtureIdParameter(fixtureId);
 
-      loadFixtureStandings(fixture);
+      loadFixtureStandings(fixture, options);
 
-      evaluationsStore.loadEvaluations(fixtureId);
-      void latestFixturesStore.loadLatestFixtures(fixtureId);
-      void analysesStore.loadAnalyses(fixtureId);
+      evaluationsStore.loadEvaluations(fixtureId, options.isRefresh);
+      latestFixturesStore.loadLatestFixtures(fixtureId, options.isRefresh);
+      analysesStore.loadAnalyses(fixtureId, options.isRefresh);
 
-      void eventsStore.loadEvents({
-        fixtureId: fixtureIdParameter,
-        teams: fixture.data.teams,
-      });
+      eventsStore.loadEvents(
+        {
+          fixtureId: fixtureIdParameter,
+          teams: fixture.data.teams,
+        },
+        options.isRefresh
+      );
 
-      void statisticsStore.loadStatistics(fixtureIdParameter);
+      statisticsStore.loadStatistics(fixtureIdParameter, options.isRefresh);
 
-      teamCoachesStore.loadTeamCoaches(getFixtureTeamIds(fixture));
+      teamCoachesStore.loadTeamCoaches(
+        getFixtureTeamIds(fixture),
+        options.isRefresh
+      );
     };
 
     const loadFixtureData = async (
@@ -171,13 +202,13 @@ export const FixtureStore = signalStore(
         }
 
         patchFixtureLoaded(fixture);
-        loadRelatedFixtureData(fixture);
-      } catch {
+        loadRelatedFixtureData(fixture, options);
+      } catch (error) {
         if (loadId !== currentLoadId) {
           return;
         }
 
-        patchFixtureError(isRefresh);
+        patchFixtureError(isRefresh, error);
       }
     };
 

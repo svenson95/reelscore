@@ -55,6 +55,14 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
         @apply gap-6 sm:gap-8;
       }
 
+      .state-skeleton {
+        @apply mx-3 mt-rs1 mb-3 rounded-border2 bg-rs-button-bg p-rs2 shadow-rs3;
+      }
+
+      .state-skeleton-row {
+        @apply flex min-h-9 items-center justify-between gap-4 border-b py-2 last:border-b-0;
+      }
+
       ::ng-deep {
         .mat-mdc-tab-body.mat-mdc-tab-body-active {
           @apply flex flex-col gap-2;
@@ -122,9 +130,10 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
         </ng-template>
 
         <div class="tab-content">
-          @if (analyses()) {
-          <rs-match-fixture-analyses />
-          }
+          <rs-match-fixture-analyses
+            [isLoading]="analysesLoading()"
+            [error]="analysesError() ?? latestFixturesError()"
+          />
         </div>
       </mat-tab>
 
@@ -138,8 +147,28 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
         <div class="tab-content">
           <rs-page-title title="Spielbericht" />
 
-          @if (events(); as matchEvents) {
+          @if (events(); as matchEvents) { @if (!eventsLoading()) {
           <rs-match-events [data]="matchEvents" />
+          } } @else if (eventsLoading()) {
+          <div
+            class="state-skeleton"
+            aria-label="Spielbericht wird geladen"
+            aria-busy="true"
+          >
+            @for (row of [0, 1, 2, 3, 4, 5]; track row) {
+            <div class="state-skeleton-row" aria-hidden="true">
+              <span class="rs-skeleton h-3 w-1/4"></span>
+              <span class="rs-skeleton h-3 w-8"></span>
+              <span class="rs-skeleton h-3 w-1/4"></span>
+            </div>
+            }
+          </div>
+          } @else if (eventsError()) {
+          <p class="no-data" role="status">
+            Fehler beim Laden des Spielberichts
+          </p>
+          } @else {
+          <p class="no-data">Kein Spielbericht verfügbar</p>
           }
         </div>
       </mat-tab>
@@ -154,8 +183,26 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
         <div class="tab-content">
           <rs-page-title title="Statistiken" />
 
-          @if (statistics(); as matchStatistics) {
+          @if (statistics(); as matchStatistics) { @if (!statisticsLoading()) {
           <rs-match-statistics [data]="matchStatistics" />
+          } } @else if (statisticsLoading()) {
+          <div
+            class="state-skeleton"
+            aria-label="Statistiken werden geladen"
+            aria-busy="true"
+          >
+            @for (row of [0, 1, 2, 3, 4]; track row) {
+            <div class="state-skeleton-row" aria-hidden="true">
+              <span class="rs-skeleton h-3 w-1/3"></span>
+              <span class="rs-skeleton h-3 w-1/4"></span>
+              <span class="rs-skeleton h-3 w-1/4"></span>
+            </div>
+            }
+          </div>
+          } @else if (statisticsError()) {
+          <p class="no-data" role="status">Fehler beim Laden der Statistiken</p>
+          } @else {
+          <p class="no-data">Keine Statistiken verfügbar</p>
           }
         </div>
       </mat-tab>
@@ -178,6 +225,9 @@ export class MatchDetailsComponent {
   readonly latestFixtures = this.facade.latestFixtures;
   readonly standingsError = this.facade.standingsError;
   readonly latestFixturesError = this.facade.latestFixturesError;
+  readonly analysesError = this.facade.analysesError;
+  readonly eventsError = this.facade.eventsError;
+  readonly statisticsError = this.facade.statisticsError;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
 
   readonly selectedTabIndex = signal<number>(0);
@@ -202,6 +252,18 @@ export class MatchDetailsComponent {
     () => this.forceLoading() || this.facade.latestFixturesLoading()
   );
 
+  readonly analysesLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.analysesLoading()
+  );
+
+  readonly eventsLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.eventsLoading()
+  );
+
+  readonly statisticsLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.statisticsLoading()
+  );
+
   protected readonly showStandings = computed<boolean>(
     () =>
       !this.facade.hasNoStandings() &&
@@ -211,10 +273,30 @@ export class MatchDetailsComponent {
 
   protected readonly availableTabs = computed<boolean[]>(() => [
     true,
-    !!this.analyses(),
-    !!this.events(),
-    !!this.statistics(),
+    this.isOptionalTabAvailable(
+      this.analyses(),
+      this.analysesLoading(),
+      this.analysesError()
+    ),
+    this.isOptionalTabAvailable(
+      this.events(),
+      this.eventsLoading(),
+      this.eventsError()
+    ),
+    this.isOptionalTabAvailable(
+      this.statistics(),
+      this.statisticsLoading(),
+      this.statisticsError()
+    ),
   ]);
+
+  private isOptionalTabAvailable(
+    data: unknown,
+    isLoading: boolean,
+    error: unknown
+  ): boolean {
+    return this.forceLoading() || isLoading || data != null || error != null;
+  }
 
   protected readonly tabCount = this.availableTabs().length;
 

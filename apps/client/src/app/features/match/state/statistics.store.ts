@@ -19,30 +19,49 @@ const initialState: StatisticsState = {
 
 export const StatisticsStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpFixtureStatisticsService)) => ({
-    loadStatistics(id: FixtureIdParameter): void {
-      patchState(store, { isLoading: true });
+  withMethods((store, http = inject(HttpFixtureStatisticsService)) => {
+    let latestRequestId = 0;
 
-      http
-        .getFixtureStatistics(id)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (statistics) =>
-            patchState(store, {
-              statistics: statistics?.response,
-              isLoading: false,
-              error: statistics?.response ? null : 'Statistics not found',
-            }),
-          error: (error) =>
-            patchState(store, {
-              statistics: null,
-              isLoading: false,
-              error,
-            }),
+    return {
+      loadStatistics(id: FixtureIdParameter, silent = false): void {
+        const requestId = ++latestRequestId;
+        patchState(store, {
+          ...(silent ? {} : { statistics: null }),
+          isLoading: !silent,
+          error: null,
         });
-    },
-    reset(): void {
-      patchState(store, initialState);
-    },
-  }))
+
+        http
+          .getFixtureStatistics(id)
+          .pipe(retry(errorHandler))
+          .subscribe({
+            next: (statistics) => {
+              if (requestId !== latestRequestId) return;
+
+              const response = statistics?.response;
+              const hasStatistics = Boolean(response?.length);
+
+              patchState(store, {
+                statistics: hasStatistics ? response : null,
+                isLoading: false,
+                error: hasStatistics ? null : 'Statistics not found',
+              });
+            },
+            error: (error) => {
+              if (requestId !== latestRequestId) return;
+
+              patchState(store, {
+                statistics: silent ? store.statistics() : null,
+                isLoading: false,
+                error,
+              });
+            },
+          });
+      },
+      reset(): void {
+        latestRequestId++;
+        patchState(store, initialState);
+      },
+    };
+  })
 );

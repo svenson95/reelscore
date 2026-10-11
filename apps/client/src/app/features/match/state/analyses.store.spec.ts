@@ -58,4 +58,50 @@ describe('AnalysesStore', () => {
     expect(store.isLoading()).toBe(false);
     expect(store.error()).toBe(error);
   });
+
+  it('ignores analyses responses from an earlier fixture', () => {
+    const previousResponse$ = new Subject<AnalysesDTO>();
+    const currentAnalyses = {
+      playersWithStreak: { home: ['Current'], away: [] },
+      homeOrAwayStrong: null,
+    } as AnalysesDTO;
+    httpMock.getFixtureAnalyses
+      .mockReturnValueOnce(previousResponse$)
+      .mockReturnValueOnce(of(currentAnalyses));
+
+    store.loadAnalyses(42);
+    store.loadAnalyses(84);
+    previousResponse$.next({
+      playersWithStreak: { home: ['Previous'], away: [] },
+      homeOrAwayStrong: null,
+    } as AnalysesDTO);
+
+    expect(store.analyses()).toBe(currentAnalyses);
+  });
+
+  it('keeps existing analyses visible during a silent refresh', () => {
+    const previousAnalyses = {
+      playersWithStreak: { home: ['Previous'], away: [] },
+      homeOrAwayStrong: null,
+    } as AnalysesDTO;
+    const updatedAnalyses = {
+      playersWithStreak: { home: ['Updated'], away: [] },
+      homeOrAwayStrong: null,
+    } as AnalysesDTO;
+    const refreshResponse$ = new Subject<AnalysesDTO>();
+    httpMock.getFixtureAnalyses
+      .mockReturnValueOnce(of(previousAnalyses))
+      .mockReturnValueOnce(refreshResponse$);
+
+    store.loadAnalyses(42);
+    store.loadAnalyses(42, true);
+
+    expect(store.analyses()).toBe(previousAnalyses);
+    expect(store.isLoading()).toBe(false);
+
+    refreshResponse$.next(updatedAnalyses);
+
+    expect(store.analyses()).toBe(updatedAnalyses);
+    expect(store.isLoading()).toBe(false);
+  });
 });

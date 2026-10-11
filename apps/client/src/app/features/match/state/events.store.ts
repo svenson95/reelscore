@@ -29,6 +29,8 @@ export const EventsStore = signalStore(
   withState(initialState),
 
   withMethods((store, http = inject(HttpFixtureEventsService)) => {
+    let latestRequestId = 0;
+
     const patchEvents = (events: RapidEventsDTO, teams: MatchTeams): void => {
       patchState(store, {
         events: mappedEvents(events, teams),
@@ -38,15 +40,21 @@ export const EventsStore = signalStore(
     };
 
     return {
-      loadEvents({
-        fixtureId,
-        teams,
-      }: {
-        fixtureId: FixtureIdParameter;
-        teams: MatchTeams;
-      }): void {
+      loadEvents(
+        {
+          fixtureId,
+          teams,
+        }: {
+          fixtureId: FixtureIdParameter;
+          teams: MatchTeams;
+        },
+        silent = false
+      ): void {
+        const requestId = ++latestRequestId;
         patchState(store, {
-          isLoading: true,
+          ...(silent ? {} : { events: null }),
+          isLoading: !silent,
+          error: null,
         });
 
         http
@@ -54,11 +62,23 @@ export const EventsStore = signalStore(
           .pipe(retry(errorHandler))
           .subscribe({
             next: (events) => {
+              if (requestId !== latestRequestId) return;
+
               if (!events || !teams) {
                 patchState(store, {
                   events: null,
                   isLoading: false,
-                  error: 'Events not found',
+                  error: silent ? store.error() : 'Events not found',
+                });
+
+                return;
+              }
+
+              if (!events.response.length) {
+                patchState(store, {
+                  events: null,
+                  isLoading: false,
+                  error: silent ? store.error() : null,
                 });
 
                 return;
@@ -68,8 +88,10 @@ export const EventsStore = signalStore(
             },
 
             error: (error) => {
+              if (requestId !== latestRequestId) return;
+
               patchState(store, {
-                events: null,
+                events: silent ? store.events() : null,
                 isLoading: false,
                 error,
               });
@@ -82,6 +104,7 @@ export const EventsStore = signalStore(
       },
 
       reset(): void {
+        latestRequestId++;
         patchState(store, initialState);
       },
     };

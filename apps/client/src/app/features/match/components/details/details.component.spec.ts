@@ -19,8 +19,14 @@ describe('MatchDetailsComponent', () => {
     fixture: signal({ data: EXAMPLE_FIXTURE, highlights: [] }),
     standings: signal(null),
     analyses: signal<unknown>(null),
+    analysesError: signal(null),
+    analysesLoading: signal(false),
     events: signal<unknown>(null),
+    eventsError: signal(null),
+    eventsLoading: signal(false),
     statistics: signal<unknown>(null),
+    statisticsError: signal(null),
+    statisticsLoading: signal(false),
     evaluations: signal(null),
     latestFixtures: signal(null),
     teamCoaches: signal([]),
@@ -124,6 +130,32 @@ describe('MatchDetailsComponent', () => {
       false,
       false,
     ]);
+  });
+
+  it('allows navigation through all optional tabs when skeleton preview is forced', async () => {
+    const view = createComponent();
+    view.componentRef.setInput('forceLoading', true);
+    view.detectChanges();
+
+    const group = await TestbedHarnessEnvironment.loader(view).getHarness(
+      MatTabGroupHarness
+    );
+    const tabs = await group.getTabs();
+
+    expect(await Promise.all(tabs.map((tab) => tab.isDisabled()))).toEqual([
+      false,
+      false,
+      false,
+      false,
+    ]);
+    await tabs[1].select();
+    expect(await tabs[1].isSelected()).toBe(true);
+
+    await tabs[2].select();
+    expect(await tabs[2].isSelected()).toBe(true);
+
+    await tabs[3].select();
+    expect(await tabs[3].isSelected()).toBe(true);
   });
 
   it.each([

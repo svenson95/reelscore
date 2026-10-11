@@ -25,9 +25,13 @@ export const TeamCoachesStore = signalStore(
     let latestRequestId = 0;
 
     return {
-      loadTeamCoaches(teamIds: string): void {
+      loadTeamCoaches(teamIds: string, silent = false): void {
         const requestId = ++latestRequestId;
-        patchState(store, { teamCoaches: null, isLoading: true, error: null });
+        patchState(store, {
+          ...(silent ? {} : { teamCoaches: null }),
+          isLoading: !silent,
+          error: null,
+        });
 
         http
           .getTeamCoaches(teamIds)
@@ -42,12 +46,16 @@ export const TeamCoachesStore = signalStore(
               if (requestId !== latestRequestId) return;
 
               patchState(store, {
-                teamCoaches: null,
+                teamCoaches: silent ? store.teamCoaches() : null,
                 isLoading: false,
                 error,
               });
             },
           });
+      },
+      reset(): void {
+        latestRequestId++;
+        patchState(store, initialState);
       },
     };
   })

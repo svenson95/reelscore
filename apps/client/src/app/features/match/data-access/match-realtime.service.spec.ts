@@ -104,6 +104,7 @@ describe('Match realtime report and highlights', () => {
             loadLatestFixtures: jest.fn(),
             loadStatistics: jest.fn(),
             loadTeamCoaches: jest.fn(),
+            reset: jest.fn(),
           },
         })),
       ],
@@ -209,10 +210,10 @@ describe('Match realtime report and highlights', () => {
   it('ignores other fixtures and unregisters on cleanup', () => {
     const unregister = TestBed.inject(MatchRealtimeService).register(fixtureId);
     updateEvents([goal], fixtureId + 1);
-    expect(TestBed.inject(EventsStore).events()).toEqual([]);
+    expect(TestBed.inject(EventsStore).events()).toBeNull();
     unregister();
     updateEvents([goal]);
-    expect(TestBed.inject(EventsStore).events()).toEqual([]);
+    expect(TestBed.inject(EventsStore).events()).toBeNull();
     expect(TestBed.inject(FixtureStore).fixture()?.highlights).toEqual([]);
   });
 });
