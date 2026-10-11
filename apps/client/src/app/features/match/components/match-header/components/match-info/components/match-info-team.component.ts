@@ -26,7 +26,7 @@ export type MatchHeaderTeam = {
       @apply flex flex-1 flex-col gap-2 text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
     }
     .team-logo {
-      @apply flex m-auto;
+      @apply flex mx-auto;
     }
     .team-name {
       @apply leading-[16px] text-center flex-1 font-semibold text-balance max-w-[180px] self-center min-h-[48px] sm:min-h-0;
