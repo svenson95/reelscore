@@ -22,6 +22,7 @@ describe('RealtimeService', () => {
   let service: RealtimeService;
 
   let originalEventSource: typeof EventSource;
+  const originalRealtimeEnabled = environment.realtimeEnabled;
 
   const liveRefreshServiceMock = {
     start: jest.fn(),
@@ -31,6 +32,7 @@ describe('RealtimeService', () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
+    environment.realtimeEnabled = true;
 
     originalEventSource = globalThis.EventSource;
 
@@ -62,6 +64,7 @@ describe('RealtimeService', () => {
 
   afterEach(() => {
     jest.useRealTimers();
+    environment.realtimeEnabled = originalRealtimeEnabled;
 
     jest.restoreAllMocks();
 

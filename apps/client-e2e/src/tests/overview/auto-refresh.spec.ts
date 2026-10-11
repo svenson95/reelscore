@@ -22,10 +22,17 @@ test.describe('Overview Page', () => {
     });
   });
 
-  test('keeps polling disabled while realtime is connected', async ({
+  test('keeps polling active while realtime is disabled in development', async ({
     page,
   }) => {
     const overviewPage = new OverviewPage(page);
+    const realtimeRequests: string[] = [];
+
+    page.on('request', (request) => {
+      if (request.url().includes('/livestream')) {
+        realtimeRequests.push(request.url());
+      }
+    });
 
     await mockRealtimeConnected(page);
     await overviewPage.mockSelectedDayAsPlaying(testDate);
@@ -33,11 +40,13 @@ test.describe('Overview Page', () => {
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
 
-    await overviewPage.expectRefreshTimerStopped();
+    await overviewPage.expectRefreshTimerRunning();
 
-    expect(await overviewPage.getRefreshTimerValue()).toBe(
-      AUTO_REFRESH_INTERVAL_SECONDS
-    );
+    await expect
+      .poll(() => overviewPage.getRefreshTimerValue())
+      .toBeLessThan(AUTO_REFRESH_INTERVAL_SECONDS);
+
+    expect(realtimeRequests).toEqual([]);
   });
 
   test('uses polling fallback while a fixture is playing', async ({ page }) => {
