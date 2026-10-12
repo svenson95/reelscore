@@ -1,4 +1,4 @@
-import { spawn, type ChildProcess } from 'node:child_process';
+import { type ChildProcess, spawn } from 'node:child_process';
 import { join } from 'node:path';
 
 import { workspaceRoot } from '@nx/devkit';
@@ -6,7 +6,6 @@ import { workspaceRoot } from '@nx/devkit';
 import { API_E2E_PORT, API_E2E_URL } from './test-environment';
 
 declare global {
-  // eslint-disable-next-line no-var
   var __API_PROCESS__: ChildProcess | undefined;
 }
 

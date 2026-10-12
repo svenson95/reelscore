@@ -53,3 +53,5 @@ Thumbs.db
 .nx/self-healing
 .vercel
 .env*
+
+.nx/migrate-runs
