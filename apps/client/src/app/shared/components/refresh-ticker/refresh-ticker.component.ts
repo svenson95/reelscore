@@ -9,7 +9,10 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 
-import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../data-access';
+import {
+  LiveRefreshService,
+  REFRESH_INTERVAL_SECONDS,
+} from '../../data-access';
 
 @Component({
   selector: 'rs-refresh-ticker',
@@ -33,7 +36,7 @@ import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../data-access'
     $tickerBg: var(--rs-button-bg-color);
 
     .ticker {
-      @apply relative flex size-9 items-center justify-center overflow-hidden rounded-border2;
+      @apply relative flex size-9 items-center justify-center overflow-hidden rounded-border2 shadow-rs3;
       background-color: $tickerBg;
     }
 
