@@ -1,4 +1,5 @@
 import request from 'supertest';
+
 import { API_E2E_URL } from '../support/test-environment';
 
 describe('Fixtures API', () => {

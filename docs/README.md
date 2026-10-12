@@ -18,3 +18,7 @@
 ## Decisions
 
 See [Architecture Decision Records](./decisions/README.md).
+
+## Maintenance
+
+- [Dependency maintenance and audit](./maintenance/dependencies.md)
