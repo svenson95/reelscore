@@ -85,6 +85,7 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
     >
       <div
         class="search-menu-content"
+        tabindex="-1"
         (click)="$event.stopPropagation()"
         (keydown)="$event.stopPropagation()"
       >

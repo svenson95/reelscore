@@ -41,7 +41,11 @@ import { getAssistProviders, getGoalScorers } from '../utils';
         <div class="player-stat">
           <div class="player-row">
             <span class="stat-rank">{{ idx + 1 }}</span>
-            <img [src]="stat.player.photo" />
+            <img
+              alt="Spieler-Foto"
+              [src]="stat.player.photo"
+              referrerpolicy="no-referrer"
+            />
             <span class="player-name">{{ stat.player.name }}</span>
             <span class="team-name">
               {{ stat.statistics[0].team.name | teamName : 'short' }}
@@ -68,7 +72,11 @@ import { getAssistProviders, getGoalScorers } from '../utils';
         <div class="player-stat">
           <div class="player-row">
             <span class="stat-rank">{{ idx + 1 }}</span>
-            <img [src]="stat.player.photo" referrerpolicy="no-referrer" />
+            <img
+              alt="Spieler-Foto"
+              [src]="stat.player.photo"
+              referrerpolicy="no-referrer"
+            />
             <span class="player-name">{{ stat.player.name }}</span>
             <span class="team-name">
               {{ stat.statistics[0].team.name | teamName : 'short' }}
@@ -105,8 +113,8 @@ export class PlayerStatsComponent {
     () => this.topScorersStore.isLoading() || this.topAssistsStore.isLoading()
   );
 
-  protected readonly error = computed<string | null>(() =>
-    this.topScorersStore.error() ?? this.topAssistsStore.error()
+  protected readonly error = computed<string | null>(
+    () => this.topScorersStore.error() ?? this.topAssistsStore.error()
   );
 
   readonly goalScorer = computed<TopScorer[]>(() =>

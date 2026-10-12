@@ -66,9 +66,9 @@ const MAT_MODULES = [MatListModule];
     @for (group of groups(); track group.type) {
     <section class="group">
       <div class="group-title">{{ group.label }}</div>
-      <mat-nav-list class="results-list">
+      <mat-action-list class="results-list">
         @for (result of group.results; track result.id) {
-        <a mat-list-item (click)="clickEvent.emit(result)">
+        <button mat-list-item type="button" (click)="clickEvent.emit(result)">
           <div class="result-icon" matListItemIcon>
             <rs-responsive-image
               [source]="getCompetitionLogo(result)"
@@ -96,9 +96,9 @@ const MAT_MODULES = [MatListModule];
               </span>
             </div>
           </div>
-        </a>
+        </button>
         }
-      </mat-nav-list>
+      </mat-action-list>
     </section>
     }
   `,

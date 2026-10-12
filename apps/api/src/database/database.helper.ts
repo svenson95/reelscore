@@ -13,7 +13,6 @@ type MongoCache = {
 };
 
 declare global {
-  // eslint-disable-next-line no-var
   var mongoCache: MongoCache | undefined;
 }
 

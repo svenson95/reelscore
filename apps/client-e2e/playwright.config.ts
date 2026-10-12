@@ -16,16 +16,16 @@ export default defineConfig({
 
   webServer: [
     {
-      command: 'npx nx serve api --configuration=development',
+      command: 'npx nx run api:serve:development',
       url: 'http://localhost:3333',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env['CI'],
       cwd: workspaceRoot,
       timeout: 120_000,
     },
     {
-      command: 'npx nx serve client --configuration=development',
+      command: 'npx nx run client:serve:development',
       url: baseURL,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env['CI'],
       cwd: workspaceRoot,
       timeout: 120_000,
     },
