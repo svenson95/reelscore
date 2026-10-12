@@ -1,7 +1,10 @@
 import { signal } from '@angular/core';
-import { type ComponentFixture,TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LiveRefreshService, REFRESH_INTERVAL_SECONDS } from '../../data-access';
+import {
+  LiveRefreshService,
+  REFRESH_INTERVAL_SECONDS,
+} from '../../data-access';
 
 import { RefreshTickerComponent } from './refresh-ticker.component';
 
@@ -79,8 +82,9 @@ describe('RefreshTickerComponent', () => {
 
     fixture.detectChanges();
 
-    const expectedProgress =
-      ((REFRESH_INTERVAL_SECONDS - timer()) / REFRESH_INTERVAL_SECONDS) * 100;
+    const expectedProgress = Math.round(
+      ((REFRESH_INTERVAL_SECONDS - timer()) / REFRESH_INTERVAL_SECONDS) * 100
+    );
 
     expect(element.style.getPropertyValue('--refresh-progress')).toBe(
       `${expectedProgress}%`
@@ -93,12 +97,12 @@ describe('RefreshTickerComponent', () => {
 
     fixture.detectChanges();
 
-    expect(element.style.getPropertyValue('--refresh-progress')).toBe('40%');
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('20%');
 
     timer.set(9);
     fixture.detectChanges();
 
-    expect(element.style.getPropertyValue('--refresh-progress')).toBe('55%');
+    expect(element.style.getPropertyValue('--refresh-progress')).toBe('40%');
   });
 
   it('should show full progress when timer reaches zero', () => {
@@ -150,8 +154,9 @@ describe('RefreshTickerComponent', () => {
 
     expect(element.classList.contains('is-active')).toBe(true);
 
-    const expectedProgress =
-      ((REFRESH_INTERVAL_SECONDS - 5) / REFRESH_INTERVAL_SECONDS) * 100;
+    const expectedProgress = Math.round(
+      ((REFRESH_INTERVAL_SECONDS - 5) / REFRESH_INTERVAL_SECONDS) * 100
+    );
 
     expect(element.style.getPropertyValue('--refresh-progress')).toBe(
       `${expectedProgress}%`

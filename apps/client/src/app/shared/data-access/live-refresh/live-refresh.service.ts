@@ -4,8 +4,8 @@ import { interval, type Subscription } from 'rxjs';
 
 import { RefreshRegistryService } from '../refresh-registry/refresh-registry.service';
 
-const REFRESH_INTERVAL = 20_000;
-const MIN_REFRESH_INTERVAL = 20_000;
+const REFRESH_INTERVAL = 15_000;
+const REFRESH_COOLDOWN_MS = REFRESH_INTERVAL;
 
 export const REFRESH_INTERVAL_SECONDS = REFRESH_INTERVAL / 1000;
 
@@ -115,6 +115,6 @@ export class LiveRefreshService {
       return false;
     }
 
-    return Date.now() - this.lastRefreshAt < MIN_REFRESH_INTERVAL;
+    return Date.now() - this.lastRefreshAt < REFRESH_COOLDOWN_MS;
   }
 }
