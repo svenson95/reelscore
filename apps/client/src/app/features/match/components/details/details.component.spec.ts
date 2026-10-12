@@ -19,13 +19,13 @@ describe('MatchDetailsComponent', () => {
     fixture: signal({ data: EXAMPLE_FIXTURE, highlights: [] }),
     standings: signal(null),
     analyses: signal<unknown>(null),
-    analysesError: signal(null),
+    analysesError: signal<unknown>(null),
     analysesLoading: signal(false),
     events: signal<unknown>(null),
-    eventsError: signal(null),
+    eventsError: signal<unknown>(null),
     eventsLoading: signal(false),
     statistics: signal<unknown>(null),
-    statisticsError: signal(null),
+    statisticsError: signal<unknown>(null),
     statisticsLoading: signal(false),
     evaluations: signal(null),
     latestFixtures: signal(null),
@@ -129,6 +129,25 @@ describe('MatchDetailsComponent', () => {
       false,
       false,
       false,
+    ]);
+  });
+
+  it('should keep optional tabs disabled when loading failed without data', async () => {
+    facadeMock.analysesError.set(new Error('Analyses unavailable'));
+    facadeMock.eventsError.set(new Error('Events unavailable'));
+    facadeMock.statisticsError.set(new Error('Statistics unavailable'));
+
+    const view = createComponent();
+    const group = await TestbedHarnessEnvironment.loader(view).getHarness(
+      MatTabGroupHarness
+    );
+    const tabs = await group.getTabs();
+
+    expect(await Promise.all(tabs.map((tab) => tab.isDisabled()))).toEqual([
+      false,
+      true,
+      true,
+      true,
     ]);
   });
 

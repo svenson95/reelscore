@@ -18,6 +18,12 @@ Install all dependencies:
 npm install
 ```
 
+The version-specific `allowScripts` entries enable the existing native build
+dependencies to initialize during installation with npm's script policy.
+
+If esbuild reports a deadlock in a restricted execution environment, rerun the
+same build with the required execution permissions before changing dependencies.
+
 ### Environment Variables
 
 The applications require environment-specific configuration.
