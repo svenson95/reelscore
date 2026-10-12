@@ -273,13 +273,13 @@ export class MatchDetailsComponent {
 
   protected readonly availableTabs = computed<boolean[]>(() => [
     true,
-    this.isOptionalTabAvailable(this.analyses(), this.analysesLoading()),
-    this.isOptionalTabAvailable(this.events(), this.eventsLoading()),
-    this.isOptionalTabAvailable(this.statistics(), this.statisticsLoading()),
+    this.isOptionalTabAvailable(this.analyses()),
+    this.isOptionalTabAvailable(this.events()),
+    this.isOptionalTabAvailable(this.statistics()),
   ]);
 
-  private isOptionalTabAvailable(data: unknown, isLoading: boolean): boolean {
-    return this.forceLoading() || isLoading || data != null;
+  private isOptionalTabAvailable(data: unknown): boolean {
+    return this.forceLoading() || data != null;
   }
 
   protected readonly tabCount = this.availableTabs().length;
