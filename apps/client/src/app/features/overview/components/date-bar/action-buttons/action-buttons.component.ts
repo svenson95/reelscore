@@ -27,7 +27,9 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
     }
   `,
   template: `
-    <rs-refresh-ticker [active]="isToday()" />
+    <button rsRefreshTicker [active]="isToday()">
+      <!-- The component renders its own button content. -->
+    </button>
     <rs-filter />
     <rs-search />
   `,

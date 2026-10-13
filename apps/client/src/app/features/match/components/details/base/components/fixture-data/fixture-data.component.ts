@@ -7,7 +7,7 @@ import {
 
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
-import { getCompetitionRoundLabel, PageTitleComponent } from '@app/shared';
+import { PageTitleComponent } from '@app/shared';
 
 @Component({
   selector: 'rs-match-fixture-data',
@@ -88,16 +88,6 @@ export class MatchFixtureDataComponent {
     const fixture = this.visibleData();
 
     return [
-      { label: 'Wettbewerb', value: fixture?.league.name },
-      {
-        label: 'Spieltag',
-        value: fixture
-          ? getCompetitionRoundLabel(fixture.league.round, {
-              id: fixture.league.id,
-              season: fixture.league.season,
-            })
-          : undefined,
-      },
       { label: 'Stadion', value: fixture?.fixture.venue.name },
       { label: 'Stadt', value: fixture?.fixture.venue.city },
       { label: 'Schiedsrichter', value: fixture?.fixture.referee },

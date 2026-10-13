@@ -3,7 +3,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { EXAMPLE_FIXTURE, renderComponent } from '@testing/client';
 
-import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './data-access';
+import {
+  ALLIANZ_ARENA_ID,
+  ScrollService,
+  VenueImageService,
+} from './data-access';
 
 import { MatchHeaderComponent } from './match-header.component';
 import { VENUE_IDS } from './venue-ids.data';
@@ -111,6 +115,18 @@ describe('MatchHeaderComponent', () => {
     expect(
       componentFixture.nativeElement.querySelector('rs-match-highlights')
     ).toBeNull();
+  });
+
+  it('shows the competition and translated round above the team header', () => {
+    const componentFixture = renderComponent(MatchHeaderComponent, {
+      data: EXAMPLE_FIXTURE,
+      highlights: null,
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelector('.competition-label')
+        ?.textContent
+    ).toContain('UEFA Champions League · Finale');
   });
 
   it('applies the background only when it is loaded and valid', () => {
