@@ -4,7 +4,9 @@ on:
   workflow_call:
 
 permissions:
+  actions: write
   contents: write
+  pull-requests: write
 
 jobs:
   update-readme:
@@ -15,7 +17,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,7 +37,9 @@ jobs:
           node scripts/generate-architecture-diagram.cjs
           /tmp/nx-project-graph.json README.md
 
-      - name: Commit changed README
+      - name: Create or update README pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if git diff --quiet -- README.md; then
             echo "README architecture diagram is already up to date."
@@ -45,4 +50,21 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md
           git commit -m "docs: update generated architecture diagram"
-          git push origin "HEAD:${{ github.event.workflow_run.head_branch }}"
+
+          branch="bot/update-architecture-diagram"
+          git push --force origin "HEAD:refs/heads/$branch"
+
+          pull_request_number=$(gh pr list --base main --head "$branch" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pull_request_number" ]; then
+            gh pr create \
+              --base main \
+              --head "$branch" \
+              --title "docs: update generated architecture diagram" \
+              --body "Updates the generated Nx architecture diagram after a successful production deployment."
+          else
+            gh pr edit "$pull_request_number" \
+              --title "docs: update generated architecture diagram" \
+              --body "Updates the generated Nx architecture diagram after a successful production deployment."
+          fi
+
+          gh workflow run ci.yml --ref "$branch"
