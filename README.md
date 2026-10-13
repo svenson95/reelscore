@@ -96,6 +96,7 @@ flowchart LR
   api_e2e --> api
   api --> internal_shared
   client_e2e --> client
+  client_e2e --> client
   client --> internal_shared
 ```
 
