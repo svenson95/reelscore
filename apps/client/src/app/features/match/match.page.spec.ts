@@ -145,6 +145,16 @@ describe('MatchPage', () => {
     ).toBeNull();
   });
 
+  it('should animate the match header while skeletons are visible', () => {
+    const view = createComponent();
+
+    expect(
+      view.nativeElement
+        .querySelector('section[rs-match-header]')
+        .classList.contains('animate-fade-in')
+    ).toBe(true);
+  });
+
   it('should pass fixture data and highlights to the match header', () => {
     const highlights: FixtureHighlights = [];
     const getFixture: GetFixtureDTO = {
@@ -155,6 +165,11 @@ describe('MatchPage', () => {
     data.set(EXAMPLE_FIXTURE);
 
     const view = createComponent();
+    expect(
+      view.nativeElement
+        .querySelector('section[rs-match-header]')
+        .classList.contains('animate-fade-in')
+    ).toBe(true);
     const header = view.debugElement.query(
       By.directive(MatchHeaderStubComponent)
     ).componentInstance as MatchHeaderStubComponent;

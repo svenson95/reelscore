@@ -20,7 +20,7 @@ describe('MatchInfoComponent', () => {
 
     expect(
       componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
-    ).toHaveLength(4);
+    ).toHaveLength(6);
     expect(componentFixture.nativeElement.querySelector('.status')).toBeNull();
   });
 

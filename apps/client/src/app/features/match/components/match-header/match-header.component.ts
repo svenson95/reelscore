@@ -73,7 +73,15 @@ import { VENUE_IDS } from './venue-ids.data';
     }
 
     .competition-label {
-      @apply mb-4 text-center text-rs-font-size-small font-medium text-rs-color-text-1;
+      @apply mb-4 flex min-h-[49px] items-center justify-center text-rs-font-size-small font-medium leading-4 text-rs-color-text-1 md:min-h-[16px];
+    }
+
+    .competition-label-content {
+      @apply block w-full text-center;
+    }
+
+    .competition-label-placeholder {
+      @apply h-[12px] w-[160px] rounded;
     }
   `,
   template: `
@@ -89,19 +97,26 @@ import { VENUE_IDS } from './venue-ids.data';
       @let matchInfo = data();
       <div class="competition-label">
         @if (matchInfo) {
-        {{ matchInfo.league.name }} ·
-        {{
+        <span class="competition-label-content">
+          {{ matchInfo.league.name }} ·
+          {{
           getCompetitionRoundLabel(matchInfo.league.round, {
             id: matchInfo.league.id,
             season: matchInfo.league.season,
           })
-        }}
+          }}
+        </span>
+        } @else {
+        <span
+          class="rs-skeleton competition-label-placeholder"
+          aria-hidden="true"
+        ></span>
         }
       </div>
 
       <rs-match-info [data]="matchInfo" />
 
-      @if (highlights() && hasGoalsOrPenalty() && matchInfo) {
+      @if (highlights()?.length && hasGoalsOrPenalty() && matchInfo) {
       <rs-collapsible-scroll-section>
         <div class="toggle-highlights-row">
           <div class="divider"></div>

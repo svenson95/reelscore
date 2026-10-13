@@ -53,6 +53,7 @@ import { MatchFacade } from './match.facade';
 
     <section
       rs-match-header
+      class="animate-fade-in"
       [data]="forceSkeletons() ? null : data()"
       [highlights]="forceSkeletons() ? null : fixture()?.highlights ?? null"
     ></section>

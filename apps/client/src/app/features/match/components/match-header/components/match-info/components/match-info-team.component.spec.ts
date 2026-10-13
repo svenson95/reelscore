@@ -20,6 +20,11 @@ describe('MatchInfoTeamComponent', () => {
 
     expect(
       componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
+    ).toHaveLength(3);
+    expect(
+      componentFixture.nativeElement.querySelectorAll(
+        '.team-name-placeholder-line'
+      )
     ).toHaveLength(2);
 
     componentFixture.componentRef.setInput('team', EXAMPLE_FIXTURE.teams.away);
@@ -43,6 +48,6 @@ describe('MatchInfoTeamComponent', () => {
 
     expect(
       componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 });

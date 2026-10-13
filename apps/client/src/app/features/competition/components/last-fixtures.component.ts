@@ -33,7 +33,7 @@ import { FixturesListComponent } from './fixtures-list.component';
 
     @let fixtureGroups = fixturesData(); @if (fixtureGroups !== null) { @if
     (fixtureGroups.length > 0) {
-    <div class="list-container">
+    <div class="list-container animate-fade-in">
       @for (fixtureGroup of fixtureGroups; track $index) {
       <rs-competition-fixtures-list
         [fixtures]="fixtureGroup"

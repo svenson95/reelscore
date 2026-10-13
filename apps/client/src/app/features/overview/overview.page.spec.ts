@@ -29,7 +29,9 @@ describe('OverviewPage', () => {
             useValue: overviewRefreshServiceMock,
           },
         ],
-        template: '',
+        template: `
+          <nav [class.animate-drop-from-top]="animateNavigation()"></nav>
+        `,
       },
     });
 
@@ -49,6 +51,25 @@ describe('OverviewPage', () => {
       fixture.destroy();
 
       expect(overviewRefreshServiceMock.destroy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not replay the navigation animation after route reuse', () => {
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement
+          .querySelector('nav')
+          ?.classList.contains('animate-drop-from-top')
+      ).toBe(true);
+
+      fixture.componentInstance.onRouteDetach();
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement
+          .querySelector('nav')
+          ?.classList.contains('animate-drop-from-top')
+      ).toBe(false);
     });
   });
 });
