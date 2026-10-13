@@ -10,7 +10,11 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { MAT_TAB_ANIMATION_DURATION, PageTitleComponent } from '@app/shared';
+import {
+  MAT_TAB_ANIMATION_DURATION,
+  PageTitleComponent,
+  ReplayAnimationOnNavigationDirective,
+} from '@app/shared';
 
 import {
   MatchEventsComponent,
@@ -34,6 +38,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
   imports: [
     ...MAT_MODULES,
     PageTitleComponent,
+    ReplayAnimationOnNavigationDirective,
     MatchFixtureDataComponent,
     MatchFixtureStandingsComponent,
     MatchLatestFixturesComponent,
@@ -77,6 +82,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
   template: `
     <mat-tab-group
       class="animate-fade-in"
+      rsReplayAnimationOnNavigation
       [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"

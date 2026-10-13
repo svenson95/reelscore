@@ -9,6 +9,7 @@ import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
 
 import {
   PageTitleComponent,
+  ReplayAnimationOnNavigationDirective,
   showHomeAndAwayStandings,
   StandingsTableComponent,
 } from '@app/shared';
@@ -18,7 +19,11 @@ import { CompetitionStandingsStore } from '../state';
 @Component({
   selector: 'rs-competition-standings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, StandingsTableComponent],
+  imports: [
+    PageTitleComponent,
+    StandingsTableComponent,
+    ReplayAnimationOnNavigationDirective,
+  ],
   styles: `
     :host {
       @apply flex flex-col gap-rs1;
@@ -43,12 +48,14 @@ import { CompetitionStandingsStore } from '../state';
       (multipleStanding of groups; track $index) {
       <rs-standings-table
         class="animate-fade-in"
+        rsReplayAnimationOnNavigation
         [ranks]="multipleStanding"
         [league]="leagueData"
       />
       } } @else {
       <rs-standings-table
         class="animate-fade-in"
+        rsReplayAnimationOnNavigation
         [ranks]="groups[0]"
         [league]="leagueData"
       />
@@ -57,6 +64,7 @@ import { CompetitionStandingsStore } from '../state';
       <div class="home-and-away-standings">
         <rs-standings-table
           class="animate-fade-in"
+          rsReplayAnimationOnNavigation
           [ranks]="groups[1]"
           [league]="leagueData"
           header="Heimtabelle"
@@ -64,6 +72,7 @@ import { CompetitionStandingsStore } from '../state';
 
         <rs-standings-table
           class="animate-fade-in"
+          rsReplayAnimationOnNavigation
           [ranks]="groups[2]"
           [league]="leagueData"
           header="Auswärtstabelle"

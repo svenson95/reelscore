@@ -9,6 +9,7 @@ import {
 import type { CompetitionUrl, FixtureId } from '@reelscore-sdk/models';
 
 import { SkeletonPreviewService } from '@app/core';
+import { ReplayAnimationOnNavigationDirective } from '@app/shared';
 
 import {
   MatchDetailsComponent,
@@ -27,7 +28,12 @@ import { MatchFacade } from './match.facade';
 @Component({
   selector: 'rs-match-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageHeaderComponent, MatchHeaderComponent, MatchDetailsComponent],
+  imports: [
+    PageHeaderComponent,
+    MatchHeaderComponent,
+    MatchDetailsComponent,
+    ReplayAnimationOnNavigationDirective,
+  ],
   providers: [MatchFacade, ...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
     :host {
@@ -49,11 +55,13 @@ import { MatchFacade } from './match.facade';
       aria-label="Page-Header Navigation"
       rs-page-header
       class="animate-drop-from-top"
+      rsReplayAnimationOnNavigation
     ></nav>
 
     <section
       rs-match-header
       class="animate-fade-in"
+      rsReplayAnimationOnNavigation
       [data]="forceSkeletons() ? null : data()"
       [highlights]="forceSkeletons() ? null : fixture()?.highlights ?? null"
     ></section>

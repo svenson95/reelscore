@@ -50,5 +50,14 @@ describe('OverviewPage', () => {
 
       expect(overviewRefreshServiceMock.destroy).toHaveBeenCalledTimes(1);
     });
+
+    it('should animate navigation again after the cached route is reattached', () => {
+      fixture.componentInstance.onRouteDetach();
+      expect(fixture.componentInstance.animateNavigation()).toBe(false);
+
+      fixture.componentInstance.onRouteAttach();
+
+      expect(fixture.componentInstance.animateNavigation()).toBe(true);
+    });
   });
 });
