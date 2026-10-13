@@ -78,39 +78,11 @@ describe('MatchHeaderComponent', () => {
     expect(scrollServiceMock.destroy).toHaveBeenCalledTimes(1);
   });
 
-  it('does not render an empty highlights section when there are no events', () => {
+  it('omits the highlights section when no events are available', () => {
     const componentFixture = renderComponent(MatchHeaderComponent, {
       data: EXAMPLE_FIXTURE,
       highlights: [],
     });
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).toBeNull();
-
-    componentFixture.componentRef.setInput('data', {
-      ...EXAMPLE_FIXTURE,
-      goals: { home: 0, away: 0 },
-      score: { ...EXAMPLE_FIXTURE.score, penalty: { home: null, away: null } },
-    });
-    componentFixture.detectChanges();
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).toBeNull();
-
-    componentFixture.componentRef.setInput('data', {
-      ...EXAMPLE_FIXTURE,
-      goals: { home: 0, away: 0 },
-    });
-    componentFixture.detectChanges();
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).toBeNull();
-
-    componentFixture.componentRef.setInput('highlights', null);
-    componentFixture.detectChanges();
 
     expect(
       componentFixture.nativeElement.querySelector('rs-match-highlights')

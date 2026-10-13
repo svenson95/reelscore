@@ -76,6 +76,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
   `,
   template: `
     <mat-tab-group
+      class="animate-fade-in"
       [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
@@ -89,7 +90,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
           </div>
         </ng-template>
 
-        <div class="tab-content detail-sections animate-fade-in">
+        <div class="tab-content detail-sections">
           <rs-match-fixture-data
             [fixture]="fixtureData()"
             [isLoading]="detailsLoading()"

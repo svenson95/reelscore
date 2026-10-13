@@ -56,7 +56,15 @@ for (const teamNamesForCase of teamNameCases) {
         'rs-match-info-team .team-name-placeholder'
       );
 
-      await expect(matchHeader).toHaveClass(/animate-fade-in/);
+      const matchDetails = page.locator('section[rs-match-details]');
+      await expect
+        .poll(() => hasAnimation(matchHeader, 'rs-fade-in'))
+        .toBe(true);
+      await expect
+        .poll(() =>
+          hasAnimation(matchDetails.locator('mat-tab-group'), 'rs-fade-in')
+        )
+        .toBe(true);
       await expect(
         matchHeader.locator('.competition-label-placeholder')
       ).toBeVisible();
@@ -114,4 +122,21 @@ async function getMatchHeaderLayout(matchHeader: Locator): Promise<number[][]> {
       return [x, y, width, height].map((value) => Number(value.toFixed(2)));
     });
   });
+}
+
+async function hasAnimation(
+  element: Locator,
+  animationName: string
+): Promise<boolean> {
+  return element.evaluate(
+    (node, expectedName) =>
+      node
+        .getAnimations()
+        .some(
+          (animation) =>
+            'animationName' in animation &&
+            animation.animationName === expectedName
+        ),
+    animationName
+  );
 }
