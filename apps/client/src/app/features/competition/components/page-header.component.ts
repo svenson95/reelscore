@@ -10,6 +10,7 @@ import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   LeagueService,
+  ReplayAnimationOnNavigationDirective,
   ResponsiveImageComponent,
   ThemeService,
 } from '@app/shared';
@@ -17,7 +18,11 @@ import {
 @Component({
   selector: 'nav[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResponsiveImageComponent, BackButtonComponent],
+  imports: [
+    ResponsiveImageComponent,
+    BackButtonComponent,
+    ReplayAnimationOnNavigationDirective,
+  ],
   styles: `
     :host { @apply relative; }
     rs-back-button { @apply absolute top-3 left-3 z-10; }
@@ -25,7 +30,10 @@ import {
     .image-wrapper { @apply flex w-fit bg-rs-button-bg mx-auto my-5 rounded-full shadow-rs; }
   `,
   template: `
-    <rs-back-button class="animate-drop-from-top" />
+    <rs-back-button
+      class="animate-drop-from-top"
+      rsReplayAnimationOnNavigation
+    />
     <div class="image-wrapper">
       <rs-responsive-image
         class="page-header-image"

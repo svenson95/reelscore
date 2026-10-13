@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
@@ -21,27 +22,44 @@ const initialState: NextFixturesState = {
 
 export const NextFixturesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpNextFixturesService)) => ({
-    loadNextFixtures(id: CompetitionId): void {
-      patchState(store, { isLoading: true });
+  withMethods((store, http = inject(HttpNextFixturesService)) => {
+    let activeCompetitionId: CompetitionId | null = null;
 
-      http
-        .getNextFixturesForCompetition(id)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (fixtures) =>
-            patchState(store, {
-              fixtures,
-              isLoading: false,
-              error: fixtures ? null : 'Next Fixtures not found',
-            }),
-          error: (error) =>
-            patchState(store, {
-              fixtures: null,
-              isLoading: false,
-              error,
-            }),
-        });
-    },
-  }))
+    const load = rxMethod<CompetitionId>(
+      pipe(
+        tap((id) => {
+          const competitionChanged = activeCompetitionId !== id;
+          activeCompetitionId = id;
+
+          patchState(store, {
+            ...(competitionChanged ? { fixtures: null } : {}),
+            isLoading: true,
+            error: null,
+          });
+        }),
+        switchMap((id) =>
+          http.getNextFixturesForCompetition(id).pipe(
+            retry(errorHandler),
+            tap((fixtures) =>
+              patchState(store, {
+                fixtures,
+                isLoading: false,
+                error: fixtures ? null : 'Next Fixtures not found',
+              })
+            ),
+            catchError((error) => {
+              patchState(store, { fixtures: null, isLoading: false, error });
+              return EMPTY;
+            })
+          )
+        )
+      )
+    );
+
+    return {
+      loadNextFixtures(id: CompetitionId): void {
+        load(id);
+      },
+    };
+  })
 );

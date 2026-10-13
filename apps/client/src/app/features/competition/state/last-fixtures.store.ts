@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import type { CompetitionId, ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
@@ -24,27 +25,45 @@ const initialState: LastFixturesState = {
 
 export const LastFixturesStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpLastFixturesService)) => ({
-    loadLastFixtures(id: CompetitionId, showAll = false): void {
-      patchState(store, { isLoading: true, showAll });
+  withMethods((store, http = inject(HttpLastFixturesService)) => {
+    let activeCompetitionId: CompetitionId | null = null;
 
-      http
-        .getLastFixturesForCompetition(id, showAll)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (fixtures) =>
-            patchState(store, {
-              fixtures,
-              isLoading: false,
-              error: fixtures ? null : 'Last Fixtures not found',
-            }),
-          error: (error) =>
-            patchState(store, {
-              fixtures: null,
-              isLoading: false,
-              error,
-            }),
-        });
-    },
-  }))
+    const load = rxMethod<{ id: CompetitionId; showAll: boolean }>(
+      pipe(
+        tap(({ id, showAll }) => {
+          const competitionChanged = activeCompetitionId !== id;
+          activeCompetitionId = id;
+
+          patchState(store, {
+            ...(competitionChanged ? { fixtures: null } : {}),
+            isLoading: true,
+            error: null,
+            showAll,
+          });
+        }),
+        switchMap(({ id, showAll }) =>
+          http.getLastFixturesForCompetition(id, showAll).pipe(
+            retry(errorHandler),
+            tap((fixtures) =>
+              patchState(store, {
+                fixtures,
+                isLoading: false,
+                error: fixtures ? null : 'Last Fixtures not found',
+              })
+            ),
+            catchError((error) => {
+              patchState(store, { fixtures: null, isLoading: false, error });
+              return EMPTY;
+            })
+          )
+        )
+      )
+    );
+
+    return {
+      loadLastFixtures(id: CompetitionId, showAll = false): void {
+        load({ id, showAll });
+      },
+    };
+  })
 );

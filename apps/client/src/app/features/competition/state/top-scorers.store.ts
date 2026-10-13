@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { retry } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { catchError, EMPTY, pipe, retry, switchMap, tap } from 'rxjs';
 
 import type { CompetitionId, TopScorersDTO } from '@reelscore-sdk/models';
 
@@ -21,27 +22,44 @@ const initialState: TopScorersState = {
 
 export const TopScorersStore = signalStore(
   withState(initialState),
-  withMethods((store, http = inject(HttpTopScorersService)) => ({
-    loadTopScorers(id: CompetitionId): void {
-      patchState(store, { isLoading: true });
+  withMethods((store, http = inject(HttpTopScorersService)) => {
+    let activeCompetitionId: CompetitionId | null = null;
 
-      http
-        .getTopScorersForCompetition(id)
-        .pipe(retry(errorHandler))
-        .subscribe({
-          next: (topScorers) =>
-            patchState(store, {
-              topScorers,
-              isLoading: false,
-              error: topScorers ? null : 'TopScorers not found',
-            }),
-          error: (error) =>
-            patchState(store, {
-              topScorers: null,
-              isLoading: false,
-              error,
-            }),
-        });
-    },
-  }))
+    const load = rxMethod<CompetitionId>(
+      pipe(
+        tap((id) => {
+          const competitionChanged = activeCompetitionId !== id;
+          activeCompetitionId = id;
+
+          patchState(store, {
+            ...(competitionChanged ? { topScorers: null } : {}),
+            isLoading: true,
+            error: null,
+          });
+        }),
+        switchMap((id) =>
+          http.getTopScorersForCompetition(id).pipe(
+            retry(errorHandler),
+            tap((topScorers) =>
+              patchState(store, {
+                topScorers,
+                isLoading: false,
+                error: topScorers ? null : 'TopScorers not found',
+              })
+            ),
+            catchError((error) => {
+              patchState(store, { topScorers: null, isLoading: false, error });
+              return EMPTY;
+            })
+          )
+        )
+      )
+    );
+
+    return {
+      loadTopScorers(id: CompetitionId): void {
+        load(id);
+      },
+    };
+  })
 );

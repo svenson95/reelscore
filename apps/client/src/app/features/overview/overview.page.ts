@@ -50,4 +50,8 @@ export class OverviewPage implements OnInit, OnDestroy, RouteReuseLifecycle {
   onRouteDetach(): void {
     this.animateNavigation.set(false);
   }
+
+  onRouteAttach(): void {
+    this.animateNavigation.set(true);
+  }
 }

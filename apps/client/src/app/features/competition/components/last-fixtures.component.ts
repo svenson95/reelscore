@@ -13,6 +13,7 @@ import {
   isFirstCompetitionRound,
   LeagueService,
   PageTitleComponent,
+  ReplayAnimationOnNavigationDirective,
 } from '@app/shared';
 
 import { LastFixturesStore } from '../state';
@@ -22,7 +23,12 @@ import { FixturesListComponent } from './fixtures-list.component';
 @Component({
   selector: 'rs-competition-last-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, PageTitleComponent, FixturesListComponent],
+  imports: [
+    MatButtonModule,
+    PageTitleComponent,
+    FixturesListComponent,
+    ReplayAnimationOnNavigationDirective,
+  ],
   styles: `
     :host { @apply flex flex-col gap-rs1 overflow-hidden; }
     .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
@@ -33,7 +39,7 @@ import { FixturesListComponent } from './fixtures-list.component';
 
     @let fixtureGroups = fixturesData(); @if (fixtureGroups !== null) { @if
     (fixtureGroups.length > 0) {
-    <div class="list-container animate-fade-in">
+    <div class="list-container animate-fade-in" rsReplayAnimationOnNavigation>
       @for (fixtureGroup of fixtureGroups; track $index) {
       <rs-competition-fixtures-list
         [fixtures]="fixtureGroup"

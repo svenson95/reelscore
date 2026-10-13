@@ -7,7 +7,11 @@ import {
 
 import type { CompetitionId } from '@reelscore-sdk/models';
 
-import { LeagueService, PageTitleComponent } from '@app/shared';
+import {
+  LeagueService,
+  PageTitleComponent,
+  ReplayAnimationOnNavigationDirective,
+} from '@app/shared';
 
 import { NextFixturesStore } from '../state';
 
@@ -16,7 +20,11 @@ import { FixturesListComponent } from './fixtures-list.component';
 @Component({
   selector: 'rs-competition-next-fixtures',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PageTitleComponent, FixturesListComponent],
+  imports: [
+    PageTitleComponent,
+    FixturesListComponent,
+    ReplayAnimationOnNavigationDirective,
+  ],
   styles: `
     :host { @apply flex flex-col gap-rs1; }
     .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
@@ -26,7 +34,7 @@ import { FixturesListComponent } from './fixtures-list.component';
 
     @let fixtureGroups = fixtures(); @if (fixtureGroups !== null) { @if
     (fixtureGroups.length > 0) {
-    <div class="list-container animate-fade-in">
+    <div class="list-container animate-fade-in" rsReplayAnimationOnNavigation>
       @for (fixtureGroup of fixtureGroups; track $index) {
       <rs-competition-fixtures-list
         [fixtures]="fixtureGroup"

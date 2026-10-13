@@ -2,6 +2,7 @@ export * from './back-button/back-button.component';
 export * from './fixture-list/fixture-list.component';
 export * from './page-title.component';
 export * from './refresh-ticker/refresh-ticker.component';
+export * from './replay-animation-on-navigation.directive';
 export * from './responsive-image/responsive-image.component';
 export * from './result-label.component';
 export * from './standings-table.component';
