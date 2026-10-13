@@ -28,6 +28,7 @@ import {
       @apply relative flex flex-1 items-center justify-center gap-1 text-rs-font-size-body-1 sm:text-rs-font-size-body-1;
     }
     .result-label { @apply font-semibold; }
+    .result-placeholder { @apply h-[1.2em] w-12 rounded; }
     .status { @apply absolute top-[-10px] py-[.15rem] px-2 text-rs-font-size-small rounded-full; text-shadow: none; }
     .status.is-playing { @apply bg-rs-color-green text-white; }
     .status.is-finished { @apply bg-rs-button-bg text-rs-color-text-1; }
@@ -53,6 +54,11 @@ import {
         [fixture]="fixture"
         [showNotPlayedText]="true"
       />
+      } @else {
+      <span
+        class="rs-skeleton result-placeholder"
+        aria-hidden="true"
+      ></span>
       }
     </div>
 

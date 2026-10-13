@@ -18,14 +18,14 @@ import type {
 } from '@reelscore-sdk/models';
 
 import { BreakpointObserverService, ThemeService } from '../data-access';
-import { TeamNamePipe } from '../pipes';
+import { NameLabelPipe, TeamNamePipe } from '../pipes';
 import {
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
   getTeamLogo,
   getTeamLogoSrcSet,
+  SELECT_COMPETITION_DATA_FLAT,
 } from '../utils';
-import { SELECT_COMPETITION_DATA_FLAT } from '../utils';
 
 import { ResponsiveImageComponent } from './responsive-image/responsive-image.component';
 
@@ -80,6 +80,7 @@ const MOBILE_COLUMNS: readonly StandingsColumn[] = DISPLAYED_COLUMNS.filter(
     TeamNamePipe,
     GetTeamLogoPipe,
     GetTeamLogoSetPipe,
+    NameLabelPipe,
   ],
   styles: `
     :host {
@@ -152,7 +153,7 @@ const MOBILE_COLUMNS: readonly StandingsColumn[] = DISPLAYED_COLUMNS.filter(
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef class="name-column">
           <a [routerLink]="competitionLink()">
-            {{ title() }}
+            {{ title() | nameLabel }}
           </a>
         </th>
         <td mat-cell *matCellDef="let element" class="name-column">
