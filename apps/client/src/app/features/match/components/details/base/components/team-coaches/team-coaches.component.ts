@@ -47,7 +47,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-details {
-      @apply flex min-w-0 flex-col gap-1 text-xs text-rs-color-text-1 sm:text-rs-font-size-body-2;
+      @apply flex min-w-0 flex-col gap-1 text-rs-color-text-1 text-rs-font-size-small sm:text-rs-font-size-body-2;
     }
 
     .coach-details-away {
@@ -55,18 +55,18 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-name {
-      @apply block break-words text-rs-font-size-body-1 font-semibold leading-tight;
+      @apply block break-words font-semibold leading-tight text-rs-font-size-body-2 sm:text-rs-font-size-body-1;
     }
 
     .coach-tenure {
-      @apply text-rs-color-text-2;
+      @apply text-rs-color-text-2 text-rs-font-size-small sm:text-rs-font-size-body-2;
     }
 
     .coach-meta {
       display: flex;
-      height: 1.2em;
       flex: 0 0 1.2em;
-      flex-wrap: wrap;
+      height: 1.2em;
+      flex-wrap: nowrap;
       align-items: center;
     }
 
@@ -83,7 +83,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-flag {
-      @apply h-[16px] w-[20px] shrink-0 rounded-sm object-cover shadow-rs;
+      @apply h-3 w-4 shrink-0 rounded-sm object-cover shadow-rs;
     }
 
     .coach-nationality-name {
@@ -98,20 +98,24 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @apply aspect-square w-11 rounded-full sm:w-16;
     }
 
+    .coach-details-loading .coach-meta {
+      flex-basis: 1.2em;
+    }
+
     .loading-name {
-      @apply h-[18.75px] w-3/4 max-w-40;
+      @apply h-[1.5em] w-3/4 max-w-40;
     }
 
     .loading-age {
-      @apply h-3 w-12;
+      @apply h-[1.2em] w-12;
     }
 
     .loading-nationality {
-      @apply h-3 w-16;
+      @apply h-[1.2em] w-16;
     }
 
     .loading-tenure {
-      @apply h-4 w-28 max-w-full;
+      @apply h-[1.2em] w-28 max-w-full;
     }
   `,
   template: `
@@ -142,6 +146,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
           <div
             class="coach-details"
             [class.coach-details-away]="$index === 1"
+            [class.coach-details-loading]="isLoading()"
             [attr.aria-hidden]="isLoading() ? 'true' : null"
           >
             @if (isLoading()) {

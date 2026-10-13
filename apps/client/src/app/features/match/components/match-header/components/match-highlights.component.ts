@@ -64,7 +64,7 @@ import type {
     }
 
     .highlight-spacer-label {
-      @apply text-[0.65rem] uppercase tracking-wide;
+      @apply text-rs-font-size-small uppercase tracking-wide;
     }
   `,
   template: `
