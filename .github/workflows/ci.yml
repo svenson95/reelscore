@@ -20,13 +20,9 @@ concurrency:
 jobs:
   tests:
     name: Run Tests
-    if: >-
-      github.ref_name != 'bot/update-architecture-diagram' &&
-      (
-        github.event_name != 'pull_request' ||
-        !contains(github.event.pull_request.labels.*.name, 'skip-tests')
-      )
     uses: ./.github/workflows/tests.yml
+    with:
+      skip_tests: ${{ github.ref_name == 'bot/update-architecture-diagram' || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'skip-tests')) }}
     secrets:
       MONGODB_USER: ${{ secrets.MONGODB_USER }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
@@ -35,12 +31,7 @@ jobs:
 
   sonarcloud:
     name: Analyze Code
-    if: >-
-      github.ref_name != 'bot/update-architecture-diagram' &&
-      (
-        github.event_name != 'pull_request' ||
-        !contains(github.event.pull_request.labels.*.name, 'skip-tests')
-      )
+    if: ${{ always() && needs.tests.result != 'failure' && needs.tests.result != 'cancelled' && github.ref_name != 'bot/update-architecture-diagram' }}
     needs: tests
     uses: ./.github/workflows/sonarcloud.yml
     secrets:
