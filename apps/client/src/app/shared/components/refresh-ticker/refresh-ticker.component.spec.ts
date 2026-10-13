@@ -59,6 +59,41 @@ describe('RefreshTickerComponent', () => {
     expect(showTooltip).toHaveBeenCalled();
   });
 
+  it('should show the status tooltip on touch release without a long press', () => {
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const showTooltip = jest.spyOn(tooltip, 'show');
+    const pointerUpEvent = Object.assign(new Event('pointerup'), {
+      pointerType: 'touch',
+    });
+
+    element.dispatchEvent(pointerUpEvent);
+
+    expect(tooltip.touchGestures).toBe('off');
+    expect(showTooltip).toHaveBeenCalled();
+  });
+
+  it('should ignore the synthetic click after a touch release', () => {
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const showTooltip = jest.spyOn(tooltip, 'show');
+    const clickEvent = new MouseEvent('click', { detail: 1 });
+
+    element.dispatchEvent(clickEvent);
+
+    expect(showTooltip).not.toHaveBeenCalled();
+  });
+
+  it('should not open the tooltip on a non-touch pointer release', () => {
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const showTooltip = jest.spyOn(tooltip, 'show');
+    const pointerUpEvent = Object.assign(new Event('pointerup'), {
+      pointerType: 'mouse',
+    });
+
+    element.dispatchEvent(pointerUpEvent);
+
+    expect(showTooltip).not.toHaveBeenCalled();
+  });
+
   it('should expose the current timer value', () => {
     timer.set(10);
     fixture.detectChanges();
