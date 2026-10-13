@@ -4,10 +4,16 @@ import {
   inject,
   type OnDestroy,
   type OnInit,
+  signal,
 } from '@angular/core';
 
+import type { RouteReuseLifecycle } from '../../config';
+
 import { DateBarComponent, OverviewContentComponent } from './components';
-import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './data-access';
+import {
+  OVERVIEW_SERVICE_PROVIDERS,
+  OverviewRefreshService,
+} from './data-access';
 
 @Component({
   selector: 'rs-overview-page',
@@ -22,13 +28,15 @@ import { OVERVIEW_SERVICE_PROVIDERS, OverviewRefreshService } from './data-acces
     <nav
       aria-label="Date-Bar Navigation"
       rs-date-bar
-      class="animate-drop-from-top"
+      [class.animate-drop-from-top]="animateNavigation()"
     ></nav>
 
     <section rs-overview-content data-testid="overview-page"></section>
   `,
 })
-export class OverviewPage implements OnInit, OnDestroy {
+export class OverviewPage implements OnInit, OnDestroy, RouteReuseLifecycle {
+  readonly animateNavigation = signal<boolean>(true);
+
   private readonly refreshService = inject(OverviewRefreshService);
 
   ngOnInit(): void {
@@ -37,5 +45,9 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.refreshService.destroy();
+  }
+
+  onRouteDetach(): void {
+    this.animateNavigation.set(false);
   }
 }

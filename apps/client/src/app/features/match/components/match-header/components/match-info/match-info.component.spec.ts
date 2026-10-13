@@ -18,9 +18,16 @@ describe('MatchInfoComponent', () => {
       data: null,
     });
 
-    expect(
-      componentFixture.nativeElement.querySelectorAll('.rs-skeleton')
-    ).toHaveLength(4);
+    const teamHeaders =
+      componentFixture.nativeElement.querySelectorAll('rs-match-info-team');
+
+    expect(teamHeaders).toHaveLength(2);
+    for (const teamHeader of teamHeaders) {
+      expect(teamHeader.querySelectorAll('.rs-skeleton')).toHaveLength(3);
+      expect(
+        teamHeader.querySelectorAll('.team-name-placeholder-line')
+      ).toHaveLength(2);
+    }
     expect(componentFixture.nativeElement.querySelector('.status')).toBeNull();
   });
 

@@ -76,6 +76,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
   `,
   template: `
     <mat-tab-group
+      class="animate-fade-in"
       [animationDuration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"

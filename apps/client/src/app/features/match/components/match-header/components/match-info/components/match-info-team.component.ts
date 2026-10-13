@@ -32,7 +32,10 @@ export type MatchHeaderTeam = {
       @apply flex h-[48px] max-w-[180px] self-center items-start justify-center overflow-hidden text-center font-semibold leading-[16px] text-balance line-clamp-3;
     }
     .team-name-placeholder {
-      @apply block w-[100px] h-[16px] rounded m-auto;
+      @apply flex h-[48px] w-[100px] flex-col items-center justify-center gap-1 m-auto;
+    }
+    .team-name-placeholder-line {
+      @apply h-[12px] rounded;
     }
     .team-logo-placeholder {
       @apply w-[48px] h-[48px] rounded-full self-center;
@@ -57,7 +60,10 @@ export type MatchHeaderTeam = {
       @if (team(); as teamData) {
       {{ teamData.name | teamName }}
       } @else {
-      <span class="rs-skeleton team-name-placeholder" aria-hidden="true"></span>
+      <span class="team-name-placeholder" aria-hidden="true">
+        <span class="rs-skeleton team-name-placeholder-line w-full"></span>
+        <span class="rs-skeleton team-name-placeholder-line w-2/3"></span>
+      </span>
       }
     </span>
   `,

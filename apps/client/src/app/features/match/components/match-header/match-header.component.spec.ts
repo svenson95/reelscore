@@ -78,39 +78,11 @@ describe('MatchHeaderComponent', () => {
     expect(scrollServiceMock.destroy).toHaveBeenCalledTimes(1);
   });
 
-  it('shows highlights only when data and regular or penalty goals exist', () => {
+  it('omits the highlights section when no events are available', () => {
     const componentFixture = renderComponent(MatchHeaderComponent, {
       data: EXAMPLE_FIXTURE,
       highlights: [],
     });
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).not.toBeNull();
-
-    componentFixture.componentRef.setInput('data', {
-      ...EXAMPLE_FIXTURE,
-      goals: { home: 0, away: 0 },
-      score: { ...EXAMPLE_FIXTURE.score, penalty: { home: null, away: null } },
-    });
-    componentFixture.detectChanges();
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).toBeNull();
-
-    componentFixture.componentRef.setInput('data', {
-      ...EXAMPLE_FIXTURE,
-      goals: { home: 0, away: 0 },
-    });
-    componentFixture.detectChanges();
-
-    expect(
-      componentFixture.nativeElement.querySelector('rs-match-highlights')
-    ).not.toBeNull();
-
-    componentFixture.componentRef.setInput('highlights', null);
-    componentFixture.detectChanges();
 
     expect(
       componentFixture.nativeElement.querySelector('rs-match-highlights')
@@ -119,10 +91,24 @@ describe('MatchHeaderComponent', () => {
 
   it('shows the competition and translated round above the team header', () => {
     const componentFixture = renderComponent(MatchHeaderComponent, {
-      data: EXAMPLE_FIXTURE,
+      data: null,
       highlights: null,
     });
 
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.competition-label-placeholder'
+      )
+    ).not.toBeNull();
+
+    componentFixture.componentRef.setInput('data', EXAMPLE_FIXTURE);
+    componentFixture.detectChanges();
+
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.competition-label-placeholder'
+      )
+    ).toBeNull();
     expect(
       componentFixture.nativeElement.querySelector('.competition-label')
         ?.textContent

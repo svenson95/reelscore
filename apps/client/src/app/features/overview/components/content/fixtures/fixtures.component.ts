@@ -14,7 +14,10 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { PageTitleActionDirective, PageTitleComponent } from '@app/shared';
 
-import { DateNavigationService, SelectedDateService } from '../../../data-access';
+import {
+  DateNavigationService,
+  SelectedDateService,
+} from '../../../data-access';
 import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesFacade } from './fixtures.facade';
@@ -74,7 +77,10 @@ type FixturesViewState = 'loading' | 'error' | 'empty' | null;
 
     @if (competitions().length > 0) { @for ( competition of competitions();
     track getCompetitionKey(competition) ) {
-    <rs-start-match-day-list [competition]="competition" />
+    <rs-start-match-day-list
+      class="animate-fade-in"
+      [competition]="competition"
+    />
     } } @else { @switch (viewState()) { @case ('loading') {
     <p class="no-data" data-testid="fixtures-loading">
       Spiele werden geladen ...

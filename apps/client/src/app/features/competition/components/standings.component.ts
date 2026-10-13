@@ -41,19 +41,29 @@ import { CompetitionStandingsStore } from '../state';
       @let leagueData = league(); @let groups = standingGroups(); @if
       (leagueData && groups.length) { @if (hasMultipleGroups()) { @for
       (multipleStanding of groups; track $index) {
-      <rs-standings-table [ranks]="multipleStanding" [league]="leagueData" />
+      <rs-standings-table
+        class="animate-fade-in"
+        [ranks]="multipleStanding"
+        [league]="leagueData"
+      />
       } } @else {
-      <rs-standings-table [ranks]="groups[0]" [league]="leagueData" />
+      <rs-standings-table
+        class="animate-fade-in"
+        [ranks]="groups[0]"
+        [league]="leagueData"
+      />
 
       @if (showHomeAndAwayStandings()) {
       <div class="home-and-away-standings">
         <rs-standings-table
+          class="animate-fade-in"
           [ranks]="groups[1]"
           [league]="leagueData"
           header="Heimtabelle"
         />
 
         <rs-standings-table
+          class="animate-fade-in"
           [ranks]="groups[2]"
           [league]="leagueData"
           header="Auswärtstabelle"
