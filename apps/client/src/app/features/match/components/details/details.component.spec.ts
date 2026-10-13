@@ -78,7 +78,7 @@ describe('MatchDetailsComponent', () => {
     view.detectChanges();
 
     expect(view.nativeElement.textContent).not.toContain('Puskas Arena');
-    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(5);
+    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(3);
   });
 
   it.each(['hasNoStandings', 'isKoPhase', 'isQualifyPhase'] as const)(

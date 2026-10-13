@@ -29,7 +29,7 @@ import { MatchFacade } from '../../match.facade';
       @apply ml-[1px];
     }
 
-    rs-refresh-ticker {
+    button[rsRefreshTicker] {
       @apply ml-px;
     }
 
@@ -48,7 +48,9 @@ import { MatchFacade } from '../../match.facade';
       {{ routerDate() | date : 'dd.MM.yy' }}
     </span>
 
-    <rs-refresh-ticker />
+    <button rsRefreshTicker>
+      <!-- The component renders its own button content. -->
+    </button>
 
     <div class="spacer"></div>
 

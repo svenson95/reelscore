@@ -13,12 +13,18 @@ import type {
   FixtureHighlights,
 } from '@reelscore-sdk/models';
 
+import { getCompetitionRoundLabel } from '@app/shared';
+
 import {
   CollapsibleScrollSection,
   MatchHighlightsComponent,
   MatchInfoComponent,
 } from './components';
-import { ALLIANZ_ARENA_ID, ScrollService, VenueImageService } from './data-access';
+import {
+  ALLIANZ_ARENA_ID,
+  ScrollService,
+  VenueImageService,
+} from './data-access';
 
 import { VENUE_IDS } from './venue-ids.data';
 
@@ -65,6 +71,10 @@ import { VENUE_IDS } from './venue-ids.data';
         @apply w-full h-[1px] bg-rs-border-color-2;
       }
     }
+
+    .competition-label {
+      @apply mb-4 text-center text-rs-font-size-small font-medium text-rs-color-text-1;
+    }
   `,
   template: `
     <div class="wrapper">
@@ -75,8 +85,22 @@ import { VENUE_IDS } from './venue-ids.data';
         "
         [style.background-image]="venueBackgroundImage()"
       ></div>
+
       @let matchInfo = data();
+      <div class="competition-label">
+        @if (matchInfo) {
+        {{ matchInfo.league.name }} ·
+        {{
+          getCompetitionRoundLabel(matchInfo.league.round, {
+            id: matchInfo.league.id,
+            season: matchInfo.league.season,
+          })
+        }}
+        }
+      </div>
+
       <rs-match-info [data]="matchInfo" />
+
       @if (highlights() && hasGoalsOrPenalty() && matchInfo) {
       <rs-collapsible-scroll-section>
         <div class="toggle-highlights-row">
@@ -99,6 +123,8 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
 
   private readonly scrollService = inject(ScrollService);
   private readonly venueImageService = inject(VenueImageService);
+
+  protected readonly getCompetitionRoundLabel = getCompetitionRoundLabel;
 
   readonly hasValidVenueBackground =
     this.venueImageService.hasValidVenueBackground;
@@ -130,10 +156,6 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
     return hasRegularGoals || hasPenaltyGoals;
   });
 
-  venueServiceEffect = effect(() => {
-    this.venueImageService.setVenueId(this.venueId());
-  });
-
   ngAfterViewInit(): void {
     this.scrollService.observeScrollPosition();
   }
@@ -141,4 +163,8 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.scrollService.destroy();
   }
+
+  private readonly venueServiceEffect = effect(() => {
+    this.venueImageService.setVenueId(this.venueId());
+  });
 }

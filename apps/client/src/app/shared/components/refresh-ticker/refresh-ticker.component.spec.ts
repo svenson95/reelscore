@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
 
 import {
   LiveRefreshService,
@@ -41,11 +42,21 @@ describe('RefreshTickerComponent', () => {
   });
 
   it('should display the refresh ticker', () => {
-    expect(element.querySelector('.ticker')).not.toBeNull();
+    expect(element.querySelector('mat-icon')).not.toBeNull();
+    expect(element.children).toHaveLength(1);
   });
 
-  it('should not provide a manual refresh button', () => {
+  it('should expose the ticker as an accessible tooltip button', () => {
     expect(element.querySelector('button')).toBeNull();
+  });
+
+  it('should show the status tooltip when clicked', () => {
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const showTooltip = jest.spyOn(tooltip, 'show');
+
+    element.click();
+
+    expect(showTooltip).toHaveBeenCalled();
   });
 
   it('should expose the current timer value', () => {

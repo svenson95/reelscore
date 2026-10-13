@@ -25,12 +25,10 @@ describe('MatchFixtureDataComponent', () => {
       row.querySelector('.value')?.textContent?.trim(),
     ]);
 
-  it('should render fixture details in order with a translated round', () => {
+  it('should render venue and referee details', () => {
     const view = createComponent();
 
     expect(readRows(view.nativeElement)).toEqual([
-      ['Wettbewerb', 'UEFA Champions League'],
-      ['Spieltag', 'Finale'],
       ['Stadion', 'Puskas Arena'],
       ['Stadt', 'Budapest'],
       ['Schiedsrichter', 'D. Siebert'],
@@ -46,7 +44,7 @@ describe('MatchFixtureDataComponent', () => {
   it('should hide fixture values while loading and reveal them when loading finishes', () => {
     const view = createComponent(true);
 
-    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(5);
+    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(3);
     expect(
       readRows(view.nativeElement).every(([, value]) => value === '')
     ).toBe(true);
@@ -69,7 +67,7 @@ describe('MatchFixtureDataComponent', () => {
     view.componentRef.setInput('fixture', null);
     view.detectChanges();
 
-    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(5);
+    expect(view.nativeElement.querySelectorAll('.rs-skeleton')).toHaveLength(3);
     expect(
       readRows(view.nativeElement).every(([, value]) => value === '')
     ).toBe(true);
@@ -78,25 +76,5 @@ describe('MatchFixtureDataComponent', () => {
         .querySelector('.fixture-data')
         .getAttribute('aria-busy')
     ).toBe('false');
-  });
-
-  it('should update the round translation for a changed competition and season', () => {
-    const view = createComponent();
-
-    view.componentRef.setInput('fixture', {
-      ...EXAMPLE_FIXTURE,
-      league: {
-        ...EXAMPLE_FIXTURE.league,
-        id: 78,
-        season: 2026,
-        round: 'Regular Season - 3',
-      },
-    });
-    view.detectChanges();
-
-    expect(readRows(view.nativeElement)[1]).toEqual([
-      'Spieltag',
-      '3. Spieltag',
-    ]);
   });
 });
