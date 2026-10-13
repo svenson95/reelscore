@@ -60,11 +60,13 @@ jobs:
               --base main \
               --head "$branch" \
               --title "docs: update generated architecture diagram" \
-              --body "Updates the generated Nx architecture diagram after a successful production deployment."
+              --body "Updates the generated Nx architecture diagram after a successful production deployment." \
+              --label "skip-tests"
           else
             gh pr edit "$pull_request_number" \
               --title "docs: update generated architecture diagram" \
-              --body "Updates the generated Nx architecture diagram after a successful production deployment."
+              --body "Updates the generated Nx architecture diagram after a successful production deployment." \
+              --add-label "skip-tests"
           fi
 
           gh workflow run ci.yml --ref "$branch"
