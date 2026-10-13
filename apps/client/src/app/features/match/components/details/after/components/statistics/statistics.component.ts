@@ -17,7 +17,7 @@ import { StatisticList } from './types';
     :host {
       @apply flex flex-col
         mx-3 mb-3 mt-rs1 gap-5 py-rs2
-        bg-rs-button-bg rounded-border2 shadow-rs3;
+        bg-rs-button-bg rounded-border2 shadow-rs;
     }
 
     :host > div { @apply flex; }

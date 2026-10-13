@@ -34,7 +34,7 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatMenuModule];
     }
 
     .fixtures-skeleton {
-      @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2;
+      @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-border2;
     }
     .skeleton-team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b; }
     .skeleton-team-header.away { @apply flex-row-reverse; }

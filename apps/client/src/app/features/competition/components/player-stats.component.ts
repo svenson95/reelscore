@@ -20,7 +20,7 @@ import { getAssistProviders, getGoalScorers } from '../utils';
     :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap pb-4; }
     .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
     .column { @apply flex-1 flex flex-col gap-rs1; }
-    .stats { @apply flex flex-col p-rs1 mx-3 bg-rs-button-bg shadow-rs3 rounded-border2; }
+    .stats { @apply flex flex-col p-rs1 mx-3 bg-rs-button-bg shadow-rs rounded-border2; }
     .player-stat { @apply flex justify-between bg-rs-button-bg p-2; }
     .player-stat:not(:last-child) { @apply border-b; }
     img { @apply inline-block w-[24px] h-[24px] mx-3 rounded-full; }

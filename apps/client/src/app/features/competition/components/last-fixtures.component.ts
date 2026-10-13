@@ -26,7 +26,7 @@ import { FixturesListComponent } from './fixtures-list.component';
   styles: `
     :host { @apply flex flex-col gap-rs1 overflow-hidden; }
     .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
-    button { @apply shadow-rs3; }
+    button { @apply shadow-rs; }
   `,
   template: `
     <rs-page-title title="Ergebnisse"></rs-page-title>

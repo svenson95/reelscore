@@ -42,7 +42,7 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
   ],
   styles: `
     :host {
-      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs3 rounded-border2 text-rs-font-size-body-3;
+      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-border2 text-rs-font-size-body-3;
     }
     .team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b font-semibold text-rs-font-size-body-1; }
     .team-header.away { @apply flex-row-reverse text-right; }
