@@ -87,6 +87,7 @@ show the folders or files inside an application.
 
 ```mermaid
 flowchart LR
+  _reelscore_source["@reelscore/source"]
   api["api"]
   api_e2e["api-e2e"]
   client["client"]
