@@ -27,7 +27,8 @@ import {
     '[class.is-reset]': 'isReset()',
     '[style.--refresh-progress]': 'progress()',
     '[attr.data-timer]': 'timer()',
-    '(click)': 'showTooltip()',
+    '(click)': 'onClick($event)',
+    '(pointerup)': 'onPointerUp($event)',
     'data-testid': 'refresh-timer',
   },
   styles: `
@@ -147,7 +148,20 @@ export class RefreshTickerComponent {
 
   private readonly tooltipConfig = (() => {
     this.tooltip.tooltipClass = 'refresh-tooltip';
+    this.tooltip.touchGestures = 'off';
   })();
+
+  protected onClick(event: MouseEvent): void {
+    if (event.detail === 0) {
+      this.showTooltip();
+    }
+  }
+
+  protected onPointerUp(event: PointerEvent): void {
+    if (event.pointerType === 'touch') {
+      this.showTooltip();
+    }
+  }
 
   protected showTooltip(): void {
     this.tooltip.show();
