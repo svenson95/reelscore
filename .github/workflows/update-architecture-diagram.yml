@@ -4,7 +4,9 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
+  pull-requests: write
 
 jobs:
   update-readme:
@@ -12,20 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.README_AUTOMATION_APP_ID }}
-          private-key: ${{ secrets.README_AUTOMATION_APP_PRIVATE_KEY }}
-          permission-contents: write
-          permission-pull-requests: write
-
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           ref: main
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,7 +39,7 @@ jobs:
 
       - name: Create or update README pull request
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if git diff --quiet -- README.md; then
             echo "README architecture diagram is already up to date."
@@ -75,3 +68,5 @@ jobs:
               --body "Updates the generated Nx architecture diagram after a successful production deployment." \
               --add-label "skip-tests"
           fi
+
+          gh workflow run ci.yml --ref "$branch"
