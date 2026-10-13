@@ -1,11 +1,7 @@
 name: Continuous Deployment
 
 on:
-  workflow_run:
-    workflows:
-      - Continuous Integration
-    types:
-      - completed
+  push:
     branches:
       - main
 
@@ -21,7 +17,6 @@ permissions:
 jobs:
   deploy-api:
     name: Deploy API to Production
-    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -40,7 +35,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.sha }}
 
       - name: Set Up Node.js
         uses: actions/setup-node@v4
@@ -66,7 +61,6 @@ jobs:
 
   deploy-client:
     name: Deploy Client to Production
-    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -85,7 +79,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.sha }}
 
       - name: Set Up Node.js
         uses: actions/setup-node@v4
@@ -107,5 +101,4 @@ jobs:
 
   update-architecture-diagram:
     name: Update Architecture Diagram
-    if: github.event.workflow_run.conclusion == 'success'
     uses: ./.github/workflows/update-architecture-diagram.yml
