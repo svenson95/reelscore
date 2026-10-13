@@ -35,7 +35,7 @@ import {
     }
 
     .analyses-skeleton {
-      @apply mx-3 mb-3 mt-rs1 flex flex-col gap-rs2 rounded-border2 bg-rs-button-bg p-5 shadow-rs3;
+      @apply mx-3 mb-3 mt-rs1 flex flex-col gap-rs2 rounded-border2 bg-rs-button-bg p-5 shadow-rs;
     }
 
     .analyses-skeleton-row {
@@ -47,7 +47,7 @@ import {
     }
 
     .no-data {
-      @apply mx-3 rounded-border2 bg-rs-button-bg p-rs2 text-center shadow-rs3;
+      @apply mx-3 rounded-border2 bg-rs-button-bg p-rs2 text-center shadow-rs;
     }
   `,
   template: `

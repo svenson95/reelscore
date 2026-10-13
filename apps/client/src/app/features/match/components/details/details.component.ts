@@ -56,7 +56,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
       }
 
       .state-skeleton {
-        @apply mx-3 mt-rs1 mb-3 rounded-border2 bg-rs-button-bg p-rs2 shadow-rs3;
+        @apply mx-3 mt-rs1 mb-3 rounded-border2 bg-rs-button-bg p-rs2 shadow-rs;
       }
 
       .state-skeleton-row {

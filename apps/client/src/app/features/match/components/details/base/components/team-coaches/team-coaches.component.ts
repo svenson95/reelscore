@@ -23,7 +23,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .team-card {
-      @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs3 rounded-border2 sm:gap-4 sm:p-5;
+      @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs rounded-border2 sm:gap-4 sm:p-5;
     }
 
     .team-card:nth-child(1) {
@@ -43,7 +43,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-photo {
-      @apply aspect-square w-11 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs2 sm:w-16;
+      @apply aspect-square w-11 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs sm:w-16;
     }
 
     .coach-details {
@@ -83,7 +83,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach-flag {
-      @apply h-[16px] w-[20px] shrink-0 rounded-sm object-cover shadow-rs3;
+      @apply h-[16px] w-[20px] shrink-0 rounded-sm object-cover shadow-rs;
     }
 
     .coach-nationality-name {

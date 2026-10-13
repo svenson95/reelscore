@@ -35,7 +35,7 @@ import {
   styles: `
     :host {
       rs-standings-table, .standings-skeleton {
-        @apply sm:min-w-[450px] sm:mx-auto shadow-rs3;
+        @apply sm:min-w-[450px] sm:mx-auto shadow-rs;
       }
 
       .standings-container {
@@ -43,7 +43,7 @@ import {
       }
 
       .standings-skeleton {
-        @apply w-[calc(100%-1.5rem)] min-w-[350px] sm:min-w-[400px] max-w-[450px] self-center p-rs1 bg-rs-button-bg shadow-rs3;
+        @apply w-[calc(100%-1.5rem)] min-w-[350px] sm:min-w-[400px] max-w-[450px] self-center p-rs1 bg-rs-button-bg shadow-rs;
         border-radius: var(--mat-button-toggle-shape);
         box-sizing: border-box;
       }

@@ -79,7 +79,7 @@ const EXTERNAL_MODULES = [
       isolation: isolate;
 
       @apply flex flex-1 mx-px overflow-visible border-none;
-      @apply bg-rs-button-bg shadow-rs3;
+      @apply bg-rs-button-bg shadow-rs;
 
       border-radius: var(--rs-size-border-radius-2);
 

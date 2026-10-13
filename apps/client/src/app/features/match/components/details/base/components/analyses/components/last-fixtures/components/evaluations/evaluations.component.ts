@@ -29,7 +29,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
       @apply flex flex-col;
 
       mat-expansion-panel {
-        @apply mb-px shadow-rs3;
+        @apply mb-px shadow-rs;
 
         ::ng-deep {
           .mat-expansion-panel-header-title { @apply flex-grow-0 text-rs-font-size-small; }

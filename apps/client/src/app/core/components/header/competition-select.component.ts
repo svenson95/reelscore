@@ -55,7 +55,7 @@ import {
     }
 
     mat-form-field.mat-mdc-form-field-type-mat-select {
-      @apply shadow-rs3;
+      @apply shadow-rs;
     }
 
     mat-select {

@@ -19,7 +19,7 @@ import { PageTitleComponent } from '@app/shared';
     }
 
     .fixture-data {
-      @apply mx-auto mt-rs1 w-[400px] xs:w-[450px] max-w-[calc(100%-1.5rem)] bg-rs-button-bg shadow-rs3 rounded-border2;
+      @apply mx-auto mt-rs1 w-[400px] xs:w-[450px] max-w-[calc(100%-1.5rem)] bg-rs-button-bg shadow-rs rounded-border2;
     }
 
     ul {

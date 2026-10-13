@@ -12,7 +12,7 @@ import type { AnalysesDTO } from '@reelscore-sdk/models';
 
     .fixture-analyse {
       @apply mx-3 mb-3 mt-rs1 p-5
-        bg-rs-button-bg rounded-border2 shadow-rs3
+        bg-rs-button-bg rounded-border2 shadow-rs
         text-rs-color-text-1 text-rs-font-size-body-2;
     }
 

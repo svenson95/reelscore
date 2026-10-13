@@ -42,7 +42,7 @@ import {
     }
 
     .no-data {
-      @apply bg-rs-button-bg rounded-border2 shadow-rs3;
+      @apply bg-rs-button-bg rounded-border2 shadow-rs;
     }
   `,
   template: `

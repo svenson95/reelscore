@@ -22,7 +22,7 @@ import { MatchFacade } from '../../match.facade';
     }
 
     .header-label {
-      @apply inline-flex h-9 min-w-16 px-4 items-center justify-center rounded-border2 bg-rs-button-bg shadow-rs3 text-rs-font-size-body-2 font-medium;
+      @apply inline-flex h-9 min-w-16 px-4 items-center justify-center rounded-border2 bg-rs-button-bg shadow-rs text-rs-font-size-body-2 font-medium;
     }
 
     .header-label + .header-label {
