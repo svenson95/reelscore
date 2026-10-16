@@ -91,6 +91,38 @@ import type { AnalysesDTO } from '@reelscore-sdk/models';
         @apply border-b-2 border-rs-color-primary;
       }
     }
+
+    @media (max-width: 640px) {
+      .fixture-analyse {
+        @apply p-4;
+      }
+
+      .playersWithStreak .home,
+      .playersWithStreak .away,
+      .playersWithStreak .analysis {
+        @apply min-w-0;
+      }
+
+      .scorer-stat {
+        @apply gap-0.5;
+      }
+
+      .player {
+        @apply text-xs;
+      }
+
+      .goal-sequence {
+        @apply gap-0.5;
+      }
+
+      .goal-count {
+        @apply min-w-4 px-0 text-xs leading-5;
+      }
+
+      .playersWithStreak .analysis span:nth-child(2) {
+        @apply text-xs;
+      }
+    }
   `,
   template: `
     <div class="fixture-analyse">
