@@ -18,6 +18,18 @@ describe('goal scorer identity', () => {
     ).toEqual(scorer);
   });
 
+  it('keeps a streak in the three latest games when older games have no goals', () => {
+    const scorer = { id: 192032, name: 'Iván Romero' };
+    const abbreviatedScorer = { id: 192032, name: 'I. Romero' };
+
+    expect(
+      getPlayerWithGoalStreak(
+        [[scorer], [scorer], [abbreviatedScorer], [], []],
+        scorer
+      )
+    ).toEqual(scorer);
+  });
+
   it('does not merge different players with similar names when IDs exist', () => {
     const firstPlayer = { id: 42, name: 'Ivan Romero' };
     const secondPlayer = { id: 84, name: 'I. Romero' };

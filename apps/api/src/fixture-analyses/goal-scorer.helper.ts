@@ -31,16 +31,22 @@ export function getPlayerWithGoalStreak(
   player: GoalScorer
 ): GoalScorer | null {
   const LAST_FIXTURES_AMOUNT = 5;
-  const STREAK_FAIL_AT_AMOUNT = 2;
-  let streakFail = 0;
-  const score = games.slice(0, LAST_FIXTURES_AMOUNT).reduce((acc, game) => {
+  const REQUIRED_CONSECUTIVE_FIXTURES = 3;
+  let consecutiveFixturesScored = 0;
+
+  for (const game of games.slice(0, LAST_FIXTURES_AMOUNT)) {
     const playerScored = game.some((scorer) =>
       isSameGoalScorer(scorer, player)
     );
-    if (!playerScored) streakFail++;
-    if (streakFail === STREAK_FAIL_AT_AMOUNT) return 0;
-    return acc + (playerScored ? 1 : 0);
-  }, 0);
 
-  return score >= 3 ? player : null;
+    consecutiveFixturesScored = playerScored
+      ? consecutiveFixturesScored + 1
+      : 0;
+
+    if (consecutiveFixturesScored >= REQUIRED_CONSECUTIVE_FIXTURES) {
+      return player;
+    }
+  }
+
+  return null;
 }
