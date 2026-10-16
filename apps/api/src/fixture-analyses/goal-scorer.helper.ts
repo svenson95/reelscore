@@ -51,7 +51,8 @@ export function getGoalScorerGoalsByMatch(
         goalsByScorer.set(key, scorerGoals);
       }
 
-      scorerGoals.goalsByMatch[gameIndex] += 1;
+      const oldestToNewestIndex = games.length - gameIndex - 1;
+      scorerGoals.goalsByMatch[oldestToNewestIndex] += 1;
     }
   });
 
@@ -59,7 +60,7 @@ export function getGoalScorerGoalsByMatch(
     .filter(([key]) => !scorerKeys || scorerKeys.has(key))
     .map(([, { name, goalsByMatch }]) => ({
       name,
-      goalsByMatch: goalsByMatch.reverse(),
+      goalsByMatch,
     }));
 }
 
