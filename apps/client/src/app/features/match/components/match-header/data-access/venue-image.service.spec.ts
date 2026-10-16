@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ALLIANZ_ARENA_ID, VenueImageService } from './venue-image.service';
+import { ALLIANZ_ARENA_ID } from '@app/shared';
+
+import { VenueImageService } from './venue-image.service';
 
 describe('VenueImageService', () => {
   let venueImageService: VenueImageService;
@@ -114,6 +116,22 @@ describe('VenueImageService', () => {
     expect(revokeObjectUrlMock).toHaveBeenCalledWith('blob:venue-1');
   });
 
+  it('displays a prepared image immediately without fetching it again', async () => {
+    venueImageService.setPreparedVenueImage(123, 'blob:prepared-venue');
+
+    expect(venueImageService.venueBackgroundImage()).toBe(
+      'url("blob:prepared-venue")'
+    );
+    expect(venueImageService.venueBackgroundLoaded()).toBe(true);
+
+    await flushImageLoading();
+
+    expect(fetchVenueImageMock).not.toHaveBeenCalled();
+    expect(venueImageService.venueBackgroundImage()).toBe(
+      'url("blob:prepared-venue")'
+    );
+  });
+
   it('rejects placeholder dimensions and loads the fallback venue', async () => {
     venueImageService.setVenueId(123);
     await flushImageLoading();
@@ -143,6 +161,17 @@ describe('VenueImageService', () => {
     expect(fetchVenueImageMock).toHaveBeenCalledTimes(2);
     expect(venueImageService.venueBackgroundLoaded()).toBe(true);
     expect(venueImageService.hasValidVenueBackground()).toBe(false);
+    expect(venueImageService.venueBackgroundImage()).toBeUndefined();
+  });
+
+  it('does not request the fallback twice when it is already selected', async () => {
+    fetchVenueImageMock.mockResolvedValue(createImageResponse(false));
+
+    venueImageService.setVenueId(ALLIANZ_ARENA_ID);
+    await flushImageLoading();
+
+    expect(fetchVenueImageMock).toHaveBeenCalledTimes(1);
+    expect(venueImageService.venueBackgroundLoaded()).toBe(true);
     expect(venueImageService.venueBackgroundImage()).toBeUndefined();
   });
 
