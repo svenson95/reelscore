@@ -38,6 +38,7 @@ class PageHeaderStubComponent {}
   template: '',
 })
 class MatchHeaderStubComponent {
+  readonly fixtureId = input.required<FixtureId>();
   readonly data = input.required<ExtendedFixtureDTO | null>();
   readonly highlights = input.required<FixtureHighlights | null>();
 }

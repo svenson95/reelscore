@@ -3,10 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import type {
   ExtendedFixtureDTO,
@@ -19,6 +20,7 @@ import {
   getTeamLogo,
   getTeamLogoSrcSet,
   linkToMatch,
+  navigateToFixtureAfterVenueImage,
   ResponsiveImageComponent,
   ResultLabelComponent,
   RoundLabelPipe,
@@ -26,7 +28,7 @@ import {
   TeamNamePipe,
 } from '@app/shared';
 
-const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
+const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
 
 @Component({
   selector: 'rs-match-fixtures-table',
@@ -86,7 +88,8 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
     @for(match of fixtures(); track match.fixture.id) {
     <a
       mat-ripple
-      [routerLink]="linkToMatch(match)"
+      [href]="fixtureHref(match)"
+      (click)="navigateToMatch($event, match)"
       [class.is-winner]="match.teams | checkScore : team() : 'WIN'"
       [class.is-loser]="match.teams | checkScore : team() : 'LOSS'"
     >
@@ -152,15 +155,33 @@ const EXTERNAL_MODULES = [RouterModule, DatePipe, MatRippleModule];
   `,
 })
 export class MatchFixturesTableComponent {
+  private readonly router = inject(Router);
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
   readonly team = input.required<FixtureTeam>();
   readonly side = input.required<'home' | 'away'>();
 
-  protected readonly linkToMatch = linkToMatch;
   protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 48));
   protected readonly teamLogoSet = computed(() =>
     getTeamLogoSrcSet(this.team().id, 48)
   );
+
+  protected fixtureHref(fixture: ExtendedFixtureDTO): string {
+    return this.router.serializeUrl(
+      this.router.createUrlTree(linkToMatch(fixture))
+    );
+  }
+
+  protected navigateToMatch(
+    event: MouseEvent,
+    fixture: ExtendedFixtureDTO
+  ): void {
+    void navigateToFixtureAfterVenueImage(
+      event,
+      fixture,
+      linkToMatch(fixture),
+      this.router
+    );
+  }
 
   private performanceAt(
     fixture: ExtendedFixtureDTO,

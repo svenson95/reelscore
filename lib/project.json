@@ -6,10 +6,7 @@
   "tags": [],
   "targets": {
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "lib/jest.config.cts",
         "passWithNoTests": false
       }
     },

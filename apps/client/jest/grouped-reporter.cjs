@@ -60,7 +60,7 @@ class GroupedReporter {
     this.results.push(testResult);
   }
 
-  onRunComplete(_testContexts, aggregatedResult) {
+  async onRunComplete(_testContexts, aggregatedResult) {
     const groupedResults = Map.groupBy(
       this.results,
       (result) => this.getGroup(result.testFilePath).name
@@ -83,6 +83,9 @@ class GroupedReporter {
     }
 
     this.printSummary(aggregatedResult);
+
+    // Nx can exit immediately after Jest returns; flush piped CI output first.
+    await new Promise((resolve) => process.stdout.write('', resolve));
   }
 
   getPathDepth(path, groupName) {

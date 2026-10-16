@@ -5,14 +5,16 @@ import {
   inject,
   Injectable,
   signal,
+  untracked,
 } from '@angular/core';
 
-export const ALLIANZ_ARENA_ID = 20732;
+import { ALLIANZ_ARENA_ID } from '@app/shared';
 
 @Injectable()
 export class VenueImageService {
   private readonly activeVenueImageUrl = signal<string | undefined>(undefined);
   private activeVenueObjectUrl?: string;
+  private activeVenueId: number | null = null;
 
   private readonly venueId = signal<number | null>(null);
   readonly hasValidVenueBackground = signal<boolean>(false);
@@ -50,8 +52,23 @@ export class VenueImageService {
     this.venueId.set(venueId);
   }
 
+  setPreparedVenueImage(venueId: number, imageUrl: string): void {
+    this.venueId.set(venueId);
+    this.activeVenueId = venueId;
+    this.setVenueBackground(imageUrl, true);
+  }
+
   private async loadVenueImage(abortSignal: AbortSignal): Promise<void> {
     const selectedVenueId = this.venueId();
+
+    if (
+      selectedVenueId === this.activeVenueId &&
+      untracked(this.hasValidVenueBackground)
+    ) {
+      return;
+    }
+
+    this.activeVenueId = selectedVenueId;
 
     if (!selectedVenueId) {
       this.setVenueBackground(undefined, true);
@@ -68,6 +85,10 @@ export class VenueImageService {
     );
 
     if (abortSignal.aborted) {
+      if (validImageUrl) {
+        URL.revokeObjectURL(validImageUrl);
+      }
+
       return;
     }
 
@@ -87,11 +108,11 @@ export class VenueImageService {
       return objectUrl;
     }
 
-    if (abortSignal.aborted) {
+    const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
+
+    if (abortSignal.aborted || imageUrl === fallbackImageUrl) {
       return undefined;
     }
-
-    const fallbackImageUrl = this.getVenueImageUrl(ALLIANZ_ARENA_ID);
 
     return this.loadVenueImageAsObjectUrl(fallbackImageUrl, abortSignal);
   }
