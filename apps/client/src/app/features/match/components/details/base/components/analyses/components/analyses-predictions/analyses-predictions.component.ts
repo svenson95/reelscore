@@ -55,30 +55,114 @@ import type { AnalysesDTO } from '@reelscore-sdk/models';
       }
     }
 
+    .playersWithStreak {
+      .home,
+      .away {
+        @apply flex flex-col gap-3;
+      }
+    }
+
     .player,
     .strongTeam {
       @apply text-rs-color-primary font-semibold;
+    }
+
+    .scorer-stat {
+      @apply flex flex-col gap-1;
+    }
+
+    .goal-sequence {
+      @apply flex gap-1;
+    }
+
+    .home .goal-sequence {
+      @apply justify-end;
+    }
+
+    .away .goal-sequence {
+      @apply justify-start;
+    }
+
+    .goal-count {
+      @apply min-w-6 rounded px-1 py-0.5 text-center text-rs-color-text-1;
+      background-color: var(--rs-color-bg);
+
+      &:last-child {
+        @apply border-b-2 border-rs-color-primary;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .fixture-analyse {
+        @apply p-4;
+      }
+
+      .playersWithStreak .home,
+      .playersWithStreak .away,
+      .playersWithStreak .analysis {
+        @apply min-w-0;
+      }
+
+      .scorer-stat {
+        @apply gap-0.5;
+      }
+
+      .player {
+        @apply text-xs;
+      }
+
+      .goal-sequence {
+        @apply gap-0.5;
+      }
+
+      .goal-count {
+        @apply min-w-4 px-0 text-xs leading-5;
+      }
+
+      .playersWithStreak .analysis span:nth-child(2) {
+        @apply text-xs;
+      }
     }
   `,
   template: `
     <div class="fixture-analyse">
       <div class="playersWithStreak">
         <div class="home">
-          @if (analyses().playersWithStreak.home.length > 0) { @for ( player of
+          @if (analyses().playersWithStreak.home.length > 0) { @for ( scorer of
           analyses().playersWithStreak.home; track $index ) {
-          <div class="player">{{ player }}</div>
+          <div class="scorer-stat">
+            <div class="player">{{ scorer.name }}</div>
+            <div
+              class="goal-sequence"
+              aria-label="Tore pro Spiel, vom ältesten zum neuesten"
+            >
+              @for (goals of scorer.goalsByMatch; track $index) {
+              <span class="goal-count">{{ goals }}</span>
+              }
+            </div>
+          </div>
           } } @else { - }
         </div>
 
         <div class="analysis">
           <span>Torjäger</span>
-          <span>3+ Spiele in Folge getroffen</span>
+          <span>3+ Spiele in Folge (letzte 5)</span>
         </div>
 
         <div class="away">
-          @if (analyses().playersWithStreak.away.length > 0) { @for ( player of
+          @if (analyses().playersWithStreak.away.length > 0) { @for ( scorer of
           analyses().playersWithStreak.away; track $index ) {
-          <div class="player">{{ player }}</div>
+          <div class="scorer-stat">
+            <div class="player">{{ scorer.name }}</div>
+            <div
+              class="goal-sequence"
+              aria-label="Tore pro Spiel, vom ältesten zum neuesten"
+            >
+              @for (goals of scorer.goalsByMatch; track $index) {
+              <span class="goal-count">{{ goals }}</span>
+              }
+            </div>
+          </div>
           } } @else { - }
         </div>
       </div>

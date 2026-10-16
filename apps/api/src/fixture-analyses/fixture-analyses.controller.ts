@@ -6,8 +6,6 @@ import type {
   FixtureId,
   FixtureIdParameter,
   FixturePlayersWithStreak,
-  GoalScorers,
-  PlayerName,
   TeamId,
 } from '@reelscore-sdk/models';
 
@@ -18,6 +16,15 @@ import {
   FixtureService,
   FixturesService,
 } from '../database';
+
+import {
+  getGoalScorerGoalsByMatch,
+  getGoalScorerKey,
+  getPlayerWithGoalStreak,
+  type GoalScorer,
+} from './goal-scorer.helper';
+
+type GoalScorersByGame = GoalScorer[][];
 
 export class FixtureAnalysesController {
   private readonly fixtureService = new FixtureService();
@@ -30,49 +37,52 @@ export class FixtureAnalysesController {
       throw new Error(`Fixture with id ${fixtureId} not found`);
     }
 
-    const playersWithStreak = await this.getPlayersWithStreak(fixture);
+    const [homeScorersByGame, awayScorersByGame] = await Promise.all([
+      this.getTeamScorersByGame(fixture, 'home'),
+      this.getTeamScorersByGame(fixture, 'away'),
+    ]);
+    const playersWithStreak: FixturePlayersWithStreak = {
+      home: this.getPlayersWithStreak(homeScorersByGame),
+      away: this.getPlayersWithStreak(awayScorersByGame),
+    };
     const homeOrAwayStrong = await this.getHomeOrAwayStrong(fixture);
 
     return { playersWithStreak, homeOrAwayStrong };
   }
 
-  private async getPlayersWithStreak(
-    fixture: ExtendedFixtureDTO
-  ): Promise<FixturePlayersWithStreak> {
-    const home = await this.getPlayersWithStreakForTeam(fixture, 'home');
-    const away = await this.getPlayersWithStreakForTeam(fixture, 'away');
-
-    return { home, away };
-  }
-
-  private async getPlayersWithStreakForTeam(
+  private async getTeamScorersByGame(
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
-  ): Promise<GoalScorers> {
+  ): Promise<GoalScorersByGame> {
     const games = await this.fixturesService.findByFixtureAndTeamType(
       fixture,
       team
     );
-    const scorers = await this.getGameScorers(games, fixture.teams[team].id);
-    const players = scorers.filter((scorers) => scorers.length > 0);
+    return this.getGameScorers(games, fixture.teams[team].id);
+  }
 
-    return [
-      ...new Set(
-        players
-          .flatMap((sc) =>
-            sc.flatMap((scorer) =>
-              this.getPlayerWithGoalStreak(scorers, scorer)
-            )
-          )
-          .filter((scorer) => scorer !== null)
-      ),
-    ];
+  private getPlayersWithStreak(
+    games: GoalScorersByGame
+  ): FixturePlayersWithStreak['home'] {
+    const players = games.filter((scorers) => scorers.length > 0);
+    const uniqueScorers = new Map<string, GoalScorer>();
+    for (const scorer of players.flat()) {
+      uniqueScorers.set(getGoalScorerKey(scorer), scorer);
+    }
+
+    const scorersWithStreak = new Set(
+      [...uniqueScorers.entries()]
+        .filter(([, scorer]) => getPlayerWithGoalStreak(games, scorer))
+        .map(([key]) => key)
+    );
+
+    return getGoalScorerGoalsByMatch(games, scorersWithStreak);
   }
 
   private async getGameScorers(
     games: ExtendedFixtureDTO[],
     team: TeamId
-  ): Promise<GoalScorers[]> {
+  ): Promise<GoalScorersByGame> {
     return Promise.all(
       games.map(async (game) => {
         const { home, away } = game.teams;
@@ -85,7 +95,7 @@ export class FixtureAnalysesController {
   private async getGameGoals(
     fixtureId: FixtureId,
     teamId: TeamId
-  ): Promise<GoalScorers> {
+  ): Promise<GoalScorer[]> {
     const id: FixtureIdParameter = fixtureId.toString();
     const events = await this.eventsService.findById(id);
     if (!events) return [];
@@ -93,24 +103,9 @@ export class FixtureAnalysesController {
     return events.response
       .filter((event) => isHighlightGoal(event))
       .filter(({ team }) => team.id === teamId)
-      .map(({ player }) => player.name);
-  }
-
-  private getPlayerWithGoalStreak(
-    games: GoalScorers[],
-    player: PlayerName
-  ): PlayerName | null {
-    const LAST_FIXTURES_AMOUNT = 5;
-    const STREAK_FAIL_AT_AMOUNT = 2;
-    let streakFail = 0;
-    const score = games.slice(0, LAST_FIXTURES_AMOUNT).reduce((acc, game) => {
-      const playerScore = game.filter((scorer) => scorer === player);
-      const playerScored = playerScore.length > 0;
-      if (!playerScored) streakFail++;
-      if (streakFail === STREAK_FAIL_AT_AMOUNT) return 0;
-      return acc + (playerScored ? 1 : 0);
-    }, 0);
-    return score >= 3 ? player : null;
+      .flatMap(({ player }) =>
+        player?.name ? [{ id: player.id, name: player.name }] : []
+      );
   }
 
   private async getHomeOrAwayStrong(

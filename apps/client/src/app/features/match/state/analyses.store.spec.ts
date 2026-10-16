@@ -62,7 +62,10 @@ describe('AnalysesStore', () => {
   it('ignores analyses responses from an earlier fixture', () => {
     const previousResponse$ = new Subject<AnalysesDTO>();
     const currentAnalyses = {
-      playersWithStreak: { home: ['Current'], away: [] },
+      playersWithStreak: {
+        home: [{ name: 'Current', goalsByMatch: [1, 0] }],
+        away: [],
+      },
       homeOrAwayStrong: null,
     } as AnalysesDTO;
     httpMock.getFixtureAnalyses
@@ -72,7 +75,10 @@ describe('AnalysesStore', () => {
     store.loadAnalyses(42);
     store.loadAnalyses(84);
     previousResponse$.next({
-      playersWithStreak: { home: ['Previous'], away: [] },
+      playersWithStreak: {
+        home: [{ name: 'Previous', goalsByMatch: [0, 1] }],
+        away: [],
+      },
       homeOrAwayStrong: null,
     } as AnalysesDTO);
 
@@ -81,11 +87,17 @@ describe('AnalysesStore', () => {
 
   it('keeps existing analyses visible during a silent refresh', () => {
     const previousAnalyses = {
-      playersWithStreak: { home: ['Previous'], away: [] },
+      playersWithStreak: {
+        home: [{ name: 'Previous', goalsByMatch: [0, 1] }],
+        away: [],
+      },
       homeOrAwayStrong: null,
     } as AnalysesDTO;
     const updatedAnalyses = {
-      playersWithStreak: { home: ['Updated'], away: [] },
+      playersWithStreak: {
+        home: [{ name: 'Updated', goalsByMatch: [1] }],
+        away: [],
+      },
       homeOrAwayStrong: null,
     } as AnalysesDTO;
     const refreshResponse$ = new Subject<AnalysesDTO>();

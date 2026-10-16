@@ -55,7 +55,10 @@ describe('MatchFixtureAnalysesComponent', () => {
     ).toBeNull();
 
     analysesState.set({
-      playersWithStreak: { home: ['Striker'], away: [] },
+      playersWithStreak: {
+        home: [{ name: 'Striker', goalsByMatch: [1, 0, 2] }],
+        away: [],
+      },
       homeOrAwayStrong: null,
     });
     componentFixture.detectChanges();
