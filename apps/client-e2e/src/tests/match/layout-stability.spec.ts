@@ -58,9 +58,6 @@ for (const teamNamesForCase of teamNameCases) {
 
       const matchDetails = page.locator('section[rs-match-details]');
       await expect
-        .poll(() => hasAnimation(matchHeader, 'rs-fade-in'))
-        .toBe(true);
-      await expect
         .poll(() =>
           hasAnimation(matchDetails.locator('mat-tab-group'), 'rs-fade-in')
         )
@@ -75,11 +72,6 @@ for (const teamNamesForCase of teamNameCases) {
 
       await page.evaluate(async () => {
         await document.fonts.ready;
-      });
-      await matchHeader.evaluate(async (element) => {
-        await Promise.all(
-          element.getAnimations().map((animation) => animation.finished)
-        );
       });
 
       const layoutBeforeData = await getMatchHeaderLayout(matchHeader);

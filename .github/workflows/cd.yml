@@ -51,7 +51,7 @@ jobs:
           npx vercel env run -e production
           --token="$VERCEL_TOKEN"
           --
-          npx nx run api:build-vercel --skip-nx-cache
+          npx nx run api:build-vercel
 
       - name: Create Vercel Build Output
         run: node apps/api/scripts/build-vercel-output.cjs
