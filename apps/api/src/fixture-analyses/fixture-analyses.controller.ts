@@ -6,7 +6,6 @@ import type {
   FixtureId,
   FixtureIdParameter,
   FixturePlayersWithStreak,
-  PlayerName,
   TeamId,
 } from '@reelscore-sdk/models';
 
@@ -19,6 +18,7 @@ import {
 } from '../database';
 
 import {
+  getGoalScorerGoalsByMatch,
   getGoalScorerKey,
   getPlayerWithGoalStreak,
   type GoalScorer,
@@ -37,41 +37,46 @@ export class FixtureAnalysesController {
       throw new Error(`Fixture with id ${fixtureId} not found`);
     }
 
-    const playersWithStreak = await this.getPlayersWithStreak(fixture);
+    const [homeScorersByGame, awayScorersByGame] = await Promise.all([
+      this.getTeamScorersByGame(fixture, 'home'),
+      this.getTeamScorersByGame(fixture, 'away'),
+    ]);
+    const playersWithStreak: FixturePlayersWithStreak = {
+      home: this.getPlayersWithStreak(homeScorersByGame),
+      away: this.getPlayersWithStreak(awayScorersByGame),
+    };
     const homeOrAwayStrong = await this.getHomeOrAwayStrong(fixture);
 
     return { playersWithStreak, homeOrAwayStrong };
   }
 
-  private async getPlayersWithStreak(
-    fixture: ExtendedFixtureDTO
-  ): Promise<FixturePlayersWithStreak> {
-    const home = await this.getPlayersWithStreakForTeam(fixture, 'home');
-    const away = await this.getPlayersWithStreakForTeam(fixture, 'away');
-
-    return { home, away };
-  }
-
-  private async getPlayersWithStreakForTeam(
+  private async getTeamScorersByGame(
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
-  ): Promise<PlayerName[]> {
+  ): Promise<GoalScorersByGame> {
     const games = await this.fixturesService.findByFixtureAndTeamType(
       fixture,
       team
     );
-    const scorers = await this.getGameScorers(games, fixture.teams[team].id);
-    const players = scorers.filter((scorers) => scorers.length > 0);
+    return this.getGameScorers(games, fixture.teams[team].id);
+  }
 
+  private getPlayersWithStreak(
+    games: GoalScorersByGame
+  ): FixturePlayersWithStreak['home'] {
+    const players = games.filter((scorers) => scorers.length > 0);
     const uniqueScorers = new Map<string, GoalScorer>();
     for (const scorer of players.flat()) {
       uniqueScorers.set(getGoalScorerKey(scorer), scorer);
     }
 
-    return [...uniqueScorers.values()]
-      .map((scorer) => getPlayerWithGoalStreak(scorers, scorer))
-      .filter((scorer): scorer is GoalScorer => scorer !== null)
-      .map(({ name }) => name);
+    const scorersWithStreak = new Set(
+      [...uniqueScorers.entries()]
+        .filter(([, scorer]) => getPlayerWithGoalStreak(games, scorer))
+        .map(([key]) => key)
+    );
+
+    return getGoalScorerGoalsByMatch(games, scorersWithStreak);
   }
 
   private async getGameScorers(

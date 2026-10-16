@@ -1,4 +1,5 @@
 import {
+  getGoalScorerGoalsByMatch,
   getGoalScorerKey,
   getPlayerWithGoalStreak,
   isSameGoalScorer,
@@ -54,5 +55,51 @@ describe('goal scorer identity', () => {
     expect(getGoalScorerKey({ id: Number.NaN, name: 'Ivan Romero' })).toBe(
       'name:Ivan Romero'
     );
+  });
+});
+
+describe('goal counts by match', () => {
+  it('groups name variants by player ID and returns oldest-to-newest counts', () => {
+    expect(
+      getGoalScorerGoalsByMatch([
+        [
+          { id: 42, name: 'I. Romero' },
+          { id: 42, name: 'I. Romero' },
+          { id: 84, name: 'Ivan Romera' },
+        ],
+        [],
+        [{ id: 42, name: 'Ivan Romero' }],
+      ])
+    ).toEqual([
+      { name: 'I. Romero', goalsByMatch: [1, 0, 2] },
+      { name: 'Ivan Romera', goalsByMatch: [0, 0, 1] },
+    ]);
+  });
+
+  it('keeps similar names separate and uses exact names when IDs are missing', () => {
+    expect(
+      getGoalScorerGoalsByMatch([
+        [
+          { id: 42, name: 'Ivan Romero' },
+          { id: 84, name: 'I. Romero' },
+          { name: 'Paco Cortes' },
+        ],
+        [{ name: 'Paco Cortes' }],
+      ])
+    ).toEqual([
+      { name: 'Ivan Romero', goalsByMatch: [0, 1] },
+      { name: 'I. Romero', goalsByMatch: [0, 1] },
+      { name: 'Paco Cortes', goalsByMatch: [1, 1] },
+    ]);
+  });
+
+  it('uses a unique stable ID for exact-name events where the ID is missing', () => {
+    expect(
+      getGoalScorerGoalsByMatch([
+        [{ id: 42, name: 'Ivan Romero' }],
+        [{ name: 'Ivan Romero' }],
+        [{ id: 42, name: 'Ivan Romero' }],
+      ])
+    ).toEqual([{ name: 'Ivan Romero', goalsByMatch: [1, 1, 1] }]);
   });
 });
