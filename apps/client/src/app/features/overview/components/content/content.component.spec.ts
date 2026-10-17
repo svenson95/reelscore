@@ -1,5 +1,6 @@
 import { Component, input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { MatTabGroup } from '@angular/material/tabs';
 import { MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -136,6 +137,18 @@ describe('OverviewContentComponent', () => {
     expect(
       fixture.debugElement.query(By.directive(OverviewStandingsStubComponent))
     ).not.toBeNull();
+  });
+
+  it('should use dynamic tab height to avoid an internal tab scrollbar', () => {
+    const fixture = TestBed.createComponent(OverviewContentComponent);
+
+    fixture.detectChanges();
+
+    const tabGroup = fixture.debugElement.query(
+      By.directive(MatTabGroup)
+    ).componentInstance as MatTabGroup;
+
+    expect(tabGroup.dynamicHeight).toBe(true);
   });
 
   it('should render fixtures while the selected week is loading without cached data', () => {

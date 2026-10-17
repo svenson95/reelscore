@@ -84,6 +84,8 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
       class="animate-fade-in"
       rsReplayAnimationOnNavigation
       [animationDuration]="animationDuration"
+      [dynamicHeight]="true"
+      [style.--mat-tab-animation-duration]="animationDuration"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
       [style.--tab-count]="tabCount"
