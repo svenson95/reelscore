@@ -17,6 +17,7 @@ export class OverviewPage {
   readonly fixturesTitle: Locator;
   readonly fixturesLoading: Locator;
   readonly standingsLoading: Locator;
+  readonly nextDayButton: Locator;
 
   constructor(private readonly page: Page) {
     this.root = page.getByTestId('overview-page');
@@ -27,6 +28,7 @@ export class OverviewPage {
     this.fixturesTitle = page.getByTestId('fixtures-title');
     this.fixturesLoading = page.getByTestId('fixtures-loading');
     this.standingsLoading = page.getByTestId('standings-loading');
+    this.nextDayButton = page.getByTestId('week-toggle-next-btn');
   }
 
   async goto(date: string): Promise<void> {

@@ -59,6 +59,7 @@ import {
     <section class="competition-data" data-testid="competition-page">
       <mat-tab-group
         [animationDuration]="animationDuration"
+        [dynamicHeight]="true"
         [style.--tab-count]="COMPETITION_TABS_LENGTH"
         [style.--active-tab-index]="selectedTabIndex()"
         (selectedIndexChange)="selectedTabIndex.set($event)"

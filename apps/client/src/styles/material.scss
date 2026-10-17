@@ -297,6 +297,10 @@ mat-optgroup.mat-mdc-optgroup .mat-mdc-option:not(.mat-mdc-option-multiple) {
   }
 }
 
+.mat-mdc-tab-group.mat-mdc-tab-group-dynamic-height .mat-mdc-tab-body-wrapper {
+  transition-duration: var(--mat-tab-animation-duration, 500ms);
+}
+
 // mat-datepicker
 .mat-datepicker-content {
   touch-action: pan-x pan-y;

@@ -45,10 +45,6 @@ export class HideHeaderDirective implements OnInit {
       @apply w-full max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap py-3 gap-rs2 mx-auto;
     }
 
-    :host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active .tab-content {
-      animation: rs-fade-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    }
-
     .fixtures-container, .standings-container {
       @apply w-full min-w-[200px];
     }
@@ -56,6 +52,7 @@ export class HideHeaderDirective implements OnInit {
   template: `
     <mat-tab-group
       [animationDuration]="animationDuration"
+      [dynamicHeight]="true"
       [selectedIndex]="tabIndex()"
       rsHideHeader
     >
