@@ -7,7 +7,7 @@ import {
   untracked,
 } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { formatFixtureTime } from '@reelscore-sdk/helpers';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
@@ -18,14 +18,15 @@ import {
   getFixtureStatusState,
   getTeamLogo,
   getTeamLogoSrcSet,
+  linkToMatch,
+  navigateToFixtureAfterVenueImage,
 } from '../../../../utils';
-import { linkToMatch } from '../../../../utils';
 import { ResponsiveImageComponent } from '../../../responsive-image/responsive-image.component';
 import { ResultLabelComponent } from '../../../result-label.component';
 
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
-const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
+const EXTERNAL_MODULES = [MatRippleModule];
 
 @Component({
   selector: 'rs-fixture-list-item',
@@ -104,7 +105,12 @@ const EXTERNAL_MODULES = [MatRippleModule, RouterModule];
   `,
   template: `
     @let match = fixture();
-    <a matRipple [routerLink]="fixtureLink()" data-testid="fixture-list-item">
+    <a
+      matRipple
+      [href]="fixtureHref()"
+      (click)="navigateToMatch($event)"
+      data-testid="fixture-list-item"
+    >
       <div
         class="time"
         [class.is-upcoming]="statusState().isScheduled"
@@ -162,6 +168,8 @@ export class FixtureListItemComponent {
   readonly fixture = input.required<ExtendedFixtureDTO>();
 
   private readonly facade = inject(FixtureListItemFacade);
+  private readonly router = inject(Router);
+
   readonly scheduled = this.facade.scheduled;
   readonly playing = this.facade.playing;
   readonly finished = this.facade.finished;
@@ -215,7 +223,17 @@ export class FixtureListItemComponent {
   readonly awayLogoSrcSet = computed<string>(() =>
     getTeamLogoSrcSet(untracked(this.fixture).teams.away.id, 14)
   );
-  readonly fixtureLink = computed<string[]>(() =>
-    linkToMatch(untracked(this.fixture))
+  readonly fixtureLink = computed<string[]>(() => linkToMatch(this.fixture()));
+  readonly fixtureHref = computed(() =>
+    this.router.serializeUrl(this.router.createUrlTree(this.fixtureLink()))
   );
+
+  protected navigateToMatch(event: MouseEvent): void {
+    void navigateToFixtureAfterVenueImage(
+      event,
+      this.fixture(),
+      this.fixtureLink(),
+      this.router
+    );
+  }
 }

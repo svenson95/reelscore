@@ -5,13 +5,17 @@
   "implicitDependencies": ["api"],
   "targets": {
     "e2e": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/api-e2e"],
+      "dependsOn": ["api:build"],
       "options": {
-        "jestConfig": "apps/api-e2e/jest.config.ts",
         "passWithNoTests": true
       },
-      "dependsOn": ["api:build"]
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "coverage": true
+        }
+      }
     }
   }
 }

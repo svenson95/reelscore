@@ -5,28 +5,30 @@ import {
   computed,
   effect,
   inject,
+  Input,
   input,
+  signal,
 } from '@angular/core';
 
 import type {
   ExtendedFixtureDTO,
   FixtureHighlights,
+  FixtureId,
 } from '@reelscore-sdk/models';
 
-import { getCompetitionRoundLabel } from '@app/shared';
+import {
+  ALLIANZ_ARENA_ID,
+  getCompetitionRoundLabel,
+  takePreparedFixtureVenueImage,
+  VENUE_IDS,
+} from '@app/shared';
 
 import {
   CollapsibleScrollSection,
   MatchHighlightsComponent,
   MatchInfoComponent,
 } from './components';
-import {
-  ALLIANZ_ARENA_ID,
-  ScrollService,
-  VenueImageService,
-} from './data-access';
-
-import { VENUE_IDS } from './venue-ids.data';
+import { ScrollService, VenueImageService } from './data-access';
 
 @Component({
   selector: 'section[rs-match-header]',
@@ -56,7 +58,6 @@ import { VENUE_IDS } from './venue-ids.data';
       position: absolute;
       top: 0;
       left: 0;
-      transition: opacity 150ms ease-in-out;
 
       &--loaded {
         opacity: 0.2;
@@ -138,6 +139,22 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
 
   private readonly scrollService = inject(ScrollService);
   private readonly venueImageService = inject(VenueImageService);
+  private readonly selectedFixtureId = signal<number | null>(null);
+  private readonly preparedVenueId = signal<number | null>(null);
+
+  @Input()
+  set fixtureId(fixtureId: FixtureId) {
+    this.selectedFixtureId.set(Number(fixtureId));
+    const preparedImage = takePreparedFixtureVenueImage(fixtureId);
+    this.preparedVenueId.set(preparedImage?.venueId ?? null);
+
+    if (preparedImage) {
+      this.venueImageService.setPreparedVenueImage(
+        preparedImage.venueId,
+        preparedImage.imageUrl
+      );
+    }
+  }
 
   protected readonly getCompetitionRoundLabel = getCompetitionRoundLabel;
 
@@ -148,7 +165,16 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
 
   readonly venueId = computed<number | null>(() => {
     const data = this.data();
-    if (!data) return null;
+    const selectedFixtureId = this.selectedFixtureId();
+
+    if (
+      !data ||
+      (selectedFixtureId !== null &&
+        Number(data.fixture.id) !== selectedFixtureId)
+    ) {
+      return this.preparedVenueId();
+    }
+
     return VENUE_IDS[data.teams.home.id] ?? ALLIANZ_ARENA_ID;
   });
 

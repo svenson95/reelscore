@@ -3,14 +3,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { EXAMPLE_FIXTURE, renderComponent } from '@testing/client';
 
-import {
-  ALLIANZ_ARENA_ID,
-  ScrollService,
-  VenueImageService,
-} from './data-access';
+import { ALLIANZ_ARENA_ID, VENUE_IDS } from '@app/shared';
+
+import { ScrollService, VenueImageService } from './data-access';
 
 import { MatchHeaderComponent } from './match-header.component';
-import { VENUE_IDS } from './venue-ids.data';
 
 const scrollServiceMock = {
   observeScrollPosition: jest.fn(),

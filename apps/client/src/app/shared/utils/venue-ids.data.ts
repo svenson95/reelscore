@@ -1,5 +1,7 @@
 import type { TeamId, VenueId } from '@reelscore-sdk/models';
 
+export const ALLIANZ_ARENA_ID = 20732;
+
 export const VENUE_IDS: Record<TeamId, VenueId> = {
   '1': 173,
   '2': 20332,
