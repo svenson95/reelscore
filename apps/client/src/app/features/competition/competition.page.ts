@@ -60,6 +60,7 @@ import {
       <mat-tab-group
         [animationDuration]="animationDuration"
         [dynamicHeight]="true"
+        [style.--mat-tab-animation-duration]="animationDuration"
         [style.--tab-count]="COMPETITION_TABS_LENGTH"
         [style.--active-tab-index]="selectedTabIndex()"
         (selectedIndexChange)="selectedTabIndex.set($event)"
@@ -81,9 +82,7 @@ import {
             </div>
           </ng-template>
 
-          <ng-template matTabContent>
-            <rs-competition-next-fixtures />
-          </ng-template>
+          <rs-competition-next-fixtures />
         </mat-tab>
 
         <mat-tab>
@@ -93,9 +92,7 @@ import {
             </div>
           </ng-template>
 
-          <ng-template matTabContent>
-            <rs-competition-standings />
-          </ng-template>
+          <rs-competition-standings />
         </mat-tab>
 
         <mat-tab>
@@ -105,9 +102,7 @@ import {
             </div>
           </ng-template>
 
-          <ng-template matTabContent>
-            <rs-competition-player-stats />
-          </ng-template>
+          <rs-competition-player-stats />
         </mat-tab>
       </mat-tab-group>
     </section>

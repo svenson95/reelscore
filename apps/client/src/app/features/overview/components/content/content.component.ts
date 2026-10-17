@@ -53,6 +53,7 @@ export class HideHeaderDirective implements OnInit {
     <mat-tab-group
       [animationDuration]="animationDuration"
       [dynamicHeight]="true"
+      [style.--mat-tab-animation-duration]="animationDuration"
       [selectedIndex]="tabIndex()"
       rsHideHeader
     >
