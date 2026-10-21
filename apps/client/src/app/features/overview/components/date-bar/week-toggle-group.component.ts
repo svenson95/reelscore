@@ -173,7 +173,7 @@ const EXTERNAL_MODULES = [
         [style.--day-count]="weekdays().length"
         (valueChange)="toggleValueChange($event)"
       >
-        @for (day of weekdays(); track day) {
+        @for (day of weekdays(); track $index) {
         <mat-button-toggle
           [disabled]="isLoading()"
           [value]="day"

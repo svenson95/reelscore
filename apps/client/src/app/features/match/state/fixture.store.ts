@@ -7,6 +7,7 @@ import { retry } from 'rxjs/operators';
 import { isCompetitionWithoutStandings } from '@reelscore-sdk/helpers';
 import type {
   EventDTO,
+  ExtendedFixtureDTO,
   FixtureDTO,
   FixtureId,
   FixtureIdParameter,
@@ -217,6 +218,18 @@ export const FixtureStore = signalStore(
         return loadFixtureData(id, {
           isRefresh: false,
         });
+      },
+
+      loadFixtureFromList(fixture: ExtendedFixtureDTO): void {
+        currentLoadId += 1;
+        resetRelatedFixtureData();
+
+        const loadedFixture: GetFixtureDTO = {
+          data: fixture,
+          highlights: [],
+        };
+        patchFixtureLoaded(loadedFixture);
+        loadRelatedFixtureData(loadedFixture, { isRefresh: false });
       },
 
       reloadFixture(): Promise<void> {

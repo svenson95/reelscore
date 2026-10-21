@@ -106,6 +106,21 @@ describe('FixtureStore', () => {
     );
   });
 
+  it('should use fixture data from a list without requesting fixture details', () => {
+    store.loadFixtureFromList(EXAMPLE_FIXTURE);
+
+    expect(store.fixture()?.data).toBe(EXAMPLE_FIXTURE);
+    expect(httpMock.getFixture).not.toHaveBeenCalled();
+    expect(evaluationsStoreMock.loadEvaluations).toHaveBeenCalledWith(
+      EXAMPLE_FIXTURE.fixture.id,
+      false
+    );
+    expect(latestFixturesStoreMock.loadLatestFixtures).toHaveBeenCalledWith(
+      EXAMPLE_FIXTURE.fixture.id,
+      false
+    );
+  });
+
   it('should skip standings for competitions without standings', async () => {
     const fixture = createFixture({
       league: {

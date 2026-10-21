@@ -50,6 +50,7 @@ export type MatchHeaderTeam = {
         [altText]="teamData.name + ' logo'"
         [width]="48"
         [height]="48"
+        loading="eager"
       />
       } @else {
       <div class="rs-skeleton team-logo-placeholder" aria-hidden="true"></div>
