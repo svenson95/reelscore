@@ -1,32 +1,41 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  signal,
+} from '@angular/core';
 
 @Component({
   selector: 'rs-responsive-image',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host { @apply flex flex-col items-center; }
+    .missing-image-placeholder {
+      @apply block bg-gray-400;
+      clip-path: polygon(50% 0, 100% 20%, 90% 70%, 50% 100%, 10% 70%, 0 20%);
+    }
   `,
   template: `
-    @if (sourceSet(); as set) {
-    <img
-      class="responsive-image"
-      [src]="source()"
-      [srcset]="set"
-      [alt]="altText()"
-      [width]="width()"
-      [height]="height()"
-      loading="eager"
-      decoding="async"
-    />
+    @if (imageFailed()) {
+    <span
+      class="missing-image-placeholder"
+      role="img"
+      [attr.aria-label]="altText()"
+      [style.width.px]="width()"
+      [style.height.px]="height()"
+    ></span>
     } @else {
     <img
       class="responsive-image"
       [src]="source()"
+      [attr.srcset]="sourceSet() || null"
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      loading="eager"
+      [attr.loading]="loading()"
       decoding="async"
+      (error)="handleImageError()"
     />
     }
   `,
@@ -37,4 +46,15 @@ export class ResponsiveImageComponent {
   readonly altText = input.required<string>();
   readonly width = input.required<number>();
   readonly height = input.required<number>();
+  readonly loading = input<'eager' | 'lazy'>('lazy');
+
+  private readonly failedSource = signal<string | null>(null);
+
+  protected readonly imageFailed = computed<boolean>(
+    () => this.failedSource() === this.source()
+  );
+
+  protected handleImageError(): void {
+    this.failedSource.set(this.source());
+  }
 }

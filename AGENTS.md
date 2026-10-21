@@ -154,6 +154,7 @@ Choose checks according to the changed behavior. Start with focused tests, then 
 - Prefer a small number of tests for observable behavior, business rules, and critical failures or lifecycle cases. Do not mirror private implementation details or add brittle snapshots to inflate coverage.
 - For regressions, cover the failing behavior. For stream/subscription changes, cover relevant disconnect, cancellation, teardown, or fallback scenarios.
 - Mock external boundaries in unit/component tests. Existing E2E suites require the documented environment and database configuration; do not substitute production writes or invent missing secrets.
+- Docker Desktop must be running in the background before running either E2E suite; it provides the local test dependencies documented in `README.md`.
 - The Playwright configuration starts both servers and expects the API at port 3333; local API startup otherwise defaults to port 3000. Chromium must be installed for browser E2E.
 - Shared `lib/` changes require checks of the affected client/API consumers. Serverless entry or bundling changes require the serverless build as well.
 - Do not disable strictness, lint rules, build budgets, or assertions to make checks pass. Distinguish existing failures from regressions introduced by the task.

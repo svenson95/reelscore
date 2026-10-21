@@ -129,7 +129,8 @@ export const navigateToFixtureAfterVenueImage = async (
 
     try {
       navigationSucceeded = await router.navigateByUrl(
-        router.createUrlTree(fixtureLink)
+        router.createUrlTree(fixtureLink),
+        { state: { preloadedFixture: fixture } }
       );
     } finally {
       if (!navigationSucceeded && preparedFixtureVenueImage === preparedImage) {

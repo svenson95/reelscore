@@ -200,6 +200,8 @@ npx nx run-many -t test
 
 ### End-to-End Tests
 
+Start Docker Desktop and leave it running in the background before running either E2E suite; the local test dependencies run through Docker.
+
 The API E2E suite needs the environment variables listed above:
 
 ```bash

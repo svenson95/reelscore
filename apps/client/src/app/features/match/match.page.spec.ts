@@ -63,6 +63,7 @@ describe('MatchPage', () => {
     data,
     error,
     loadFixture: jest.fn<void, [FixtureId]>(),
+    loadFixtureFromList: jest.fn<void, [ExtendedFixtureDTO]>(),
     handleInvalidUrl: jest.fn<void, [CompetitionUrl]>(),
   };
 
@@ -81,6 +82,7 @@ describe('MatchPage', () => {
     fixture.set(null);
     data.set(null);
     error.set(null);
+    window.history.replaceState({}, '', window.location.href);
     jest.clearAllMocks();
 
     await TestBed.configureTestingModule({
@@ -162,6 +164,30 @@ describe('MatchPage', () => {
 
     expect(header.data()).toBe(EXAMPLE_FIXTURE);
     expect(header.highlights()).toBe(highlights);
+  });
+
+  it('should preload fixture data when the route ID is a string', () => {
+    window.history.replaceState(
+      { preloadedFixture: EXAMPLE_FIXTURE },
+      '',
+      window.location.href
+    );
+
+    createComponent({ fixtureId: String(EXAMPLE_FIXTURE.fixture.id) });
+
+    expect(facadeMock.loadFixtureFromList).toHaveBeenCalledWith(
+      EXAMPLE_FIXTURE
+    );
+    expect(facadeMock.loadFixture).not.toHaveBeenCalled();
+  });
+
+  it('should fetch fixture details when opened without navigation state', () => {
+    createComponent({ fixtureId: EXAMPLE_FIXTURE.fixture.id });
+
+    expect(facadeMock.loadFixture).toHaveBeenCalledWith(
+      EXAMPLE_FIXTURE.fixture.id
+    );
+    expect(facadeMock.loadFixtureFromList).not.toHaveBeenCalled();
   });
 
   it('should clean up updates before registering a changed fixture', () => {

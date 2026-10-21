@@ -122,6 +122,7 @@ describe('FixtureListItemComponent', () => {
 
     const fixture = TestBed.createComponent(TestHostComponent);
     const router = TestBed.inject(Router);
+    const navigateByUrl = jest.spyOn(router, 'navigateByUrl');
 
     fixture.detectChanges();
 
@@ -145,6 +146,12 @@ describe('FixtureListItemComponent', () => {
     await fixture.whenStable();
 
     expect(router.url).toBe(expectedUrl);
+    expect(navigateByUrl).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        state: { preloadedFixture: EXAMPLE_FIXTURE },
+      })
+    );
     expect(globalThis.fetch).toHaveBeenCalledTimes(1);
     expect(firstHeaderBackground).toContain('blob:venue-preload');
   });

@@ -31,6 +31,9 @@ export class MatchFacade {
   readonly loadFixture = (fixtureId: FixtureId): Promise<void> =>
     this.fixtureStore.loadFixture(fixtureId);
 
+  readonly loadFixtureFromList = (fixture: ExtendedFixtureDTO): void =>
+    this.fixtureStore.loadFixtureFromList(fixture);
+
   readonly reloadFixture = (): Promise<void> =>
     this.fixtureStore.reloadFixture();
 

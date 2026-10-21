@@ -3,7 +3,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { COMPETITION_ID } from '@reelscore-sdk/constants';
 import type { DateString } from '@reelscore-sdk/helpers';
-import { formatCalendarWeekKey } from '@reelscore-sdk/helpers';
+import {
+  addDays,
+  formatCalendarWeekKey,
+  getWeekStartFromKey,
+} from '@reelscore-sdk/helpers';
 import type {
   ExtendedFixtureDTO,
   FixturesWeekData,
@@ -156,6 +160,74 @@ describe('OverviewContentFacade', () => {
 
       expect(fixturesStoreMock.loadWeekFixtures).not.toHaveBeenCalled();
       expect(standingsStoreMock.loadWeekStandings).not.toHaveBeenCalled();
+    });
+
+    it('keeps fixture and standings store state aligned during consecutive day navigation', () => {
+      const facade = TestBed.inject(OverviewContentFacade);
+      TestBed.tick();
+
+      const navigationDates: DateString[] = [
+        '2026-09-30',
+        '2026-10-01',
+        '2026-10-02',
+        '2026-10-03',
+        '2026-10-04',
+        '2026-10-05',
+        '2026-10-06',
+        '2026-10-07',
+        '2026-10-08',
+        '2026-10-09',
+        '2026-10-10',
+        '2026-10-11',
+        '2026-10-12',
+        '2026-10-13',
+      ];
+      let previousWeekKey: string | null = null;
+      let loadedWeekIndex = 0;
+
+      for (const date of navigationDates) {
+        selectedDay.set(date);
+        TestBed.tick();
+
+        const weekKey = formatCalendarWeekKey(date);
+
+        if (weekKey !== previousWeekKey) {
+          expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenLastCalledWith(
+            date
+          );
+          expect(standingsStoreMock.loadWeekStandings).toHaveBeenLastCalledWith(
+            date
+          );
+
+          const weekData = createIndexedFixturesWeekData(loadedWeekIndex * 100);
+          fixturesStoreMock.weekFixtures.set(weekData);
+          fixturesStoreMock.weekKey.set(weekKey);
+          standingsStoreMock.weekKey.set(weekKey);
+          markWeekAsCached(date);
+
+          previousWeekKey = weekKey;
+          loadedWeekIndex += 1;
+          TestBed.tick();
+        }
+
+        const weekStart = getWeekStartFromKey(weekKey);
+        const visibleWeekdays = Array.from({ length: 7 }, (_, index) =>
+          addDays(weekStart, index)
+        );
+        const selectedWeekdayIndex = visibleWeekdays.indexOf(date);
+        const expectedFixtureId =
+          (loadedWeekIndex - 1) * 100 + selectedWeekdayIndex + 1;
+
+        expect(facade.hasFixturesDataForSelectedDay()).toBe(true);
+        expect(facade.hasStandingsDataForSelectedDay()).toBe(true);
+        expect(
+          facade.weekFixtures()[selectedWeekdayIndex]?.[0]?.fixture.id
+        ).toBe(expectedFixtureId);
+      }
+
+      expect(fixturesStoreMock.loadWeekFixtures).toHaveBeenCalledTimes(4);
+      expect(standingsStoreMock.loadWeekStandings).toHaveBeenCalledTimes(4);
+      expect(selectedDay()).toBe('2026-10-13');
     });
   });
 

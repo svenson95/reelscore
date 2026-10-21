@@ -85,7 +85,25 @@ export class MatchPage {
   readonly forceSkeletons = this.skeletonPreviewService.showLoading;
 
   private readonly loadFixtureEffect = effect(() => {
-    void this.facade.loadFixture(this.fixtureId());
+    const fixtureId = this.fixtureId();
+    const preloadedFixture = window.history.state?.preloadedFixture;
+    const navigationEntries =
+      window.performance.getEntriesByType?.('navigation');
+    const isPageReload = (navigationEntries ?? []).some(
+      (entry) => (entry as PerformanceNavigationTiming).type === 'reload'
+    );
+
+    const preloadedFixtureId = preloadedFixture?.fixture?.id;
+    const hasMatchingPreloadedFixture =
+      preloadedFixtureId != null &&
+      String(preloadedFixtureId) === String(fixtureId);
+
+    if (!isPageReload && hasMatchingPreloadedFixture) {
+      this.facade.loadFixtureFromList(preloadedFixture);
+      return;
+    }
+
+    void this.facade.loadFixture(fixtureId);
   });
 
   private readonly liveUpdatesEffect = effect((onCleanup) => {

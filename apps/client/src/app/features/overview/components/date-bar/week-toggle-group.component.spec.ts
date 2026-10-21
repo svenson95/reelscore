@@ -3,6 +3,11 @@ import { MatButtonToggle } from '@angular/material/button-toggle';
 import { By } from '@angular/platform-browser';
 
 import type { DateString } from '@reelscore-sdk/helpers';
+import {
+  addDays,
+  formatCalendarWeekKey,
+  getWeekStartFromKey,
+} from '@reelscore-sdk/helpers';
 
 import { DateNavigationService } from '../../data-access';
 
@@ -101,4 +106,45 @@ describe('WeekToggleGroupComponent', () => {
     expect(selectedToggle).toBeDefined();
     expect(selectedToggle?.componentInstance.checked).toBe(true);
   });
+
+  it('keeps the selected weekday aligned while toggling across week boundaries', () => {
+    let selectedDay: DateString = '2026-09-30';
+    const fixture = createComponent(selectedDay);
+    const initialToggleElements = fixture.debugElement
+      .queryAll(By.directive(MatButtonToggle))
+      .map((toggle) => toggle.nativeElement);
+    const emittedDates: DateString[] = [];
+
+    fixture.componentInstance.dateSelected.subscribe((date) => {
+      selectedDay = date;
+      emittedDates.push(date);
+
+      fixture.componentRef.setInput('selectedDay', selectedDay);
+      fixture.componentRef.setInput('weekdays', getWeekdays(selectedDay));
+      fixture.detectChanges();
+    });
+
+    const nextButton = fixture.nativeElement.querySelector(
+      '[data-testid="week-toggle-next-btn"]'
+    ) as HTMLButtonElement;
+
+    for (let dayOffset = 0; dayOffset < 13; dayOffset += 1) {
+      nextButton.click();
+    }
+
+    expect(emittedDates[0]).toBe('2026-10-01');
+    expect(selectedDay).toBe('2026-10-13');
+    expect(fixture.componentInstance.activeDayIndex()).toBe(1);
+    expect(
+      fixture.debugElement
+        .queryAll(By.directive(MatButtonToggle))
+        .map((toggle) => toggle.nativeElement)
+    ).toEqual(initialToggleElements);
+  });
 });
+
+function getWeekdays(date: DateString): DateString[] {
+  const weekStart = getWeekStartFromKey(formatCalendarWeekKey(date));
+
+  return Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
+}
