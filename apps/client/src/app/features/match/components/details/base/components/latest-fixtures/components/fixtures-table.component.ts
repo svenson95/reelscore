@@ -74,6 +74,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
     .is-loser .is-related { @apply decoration-rs-color-red; }
   `,
   template: `
+    @if (showTeamHeader()) {
     <div class="team-header" [class.away]="side() === 'away'">
       <rs-responsive-image
         [source]="teamLogo()"
@@ -84,8 +85,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
       />
       <span>{{ team().name | teamName }}</span>
     </div>
-
-    @for(match of fixtures(); track match.fixture.id) {
+    } @for(match of fixtures(); track match.fixture.id) {
     <a
       mat-ripple
       [href]="fixtureHref(match)"
@@ -159,6 +159,7 @@ export class MatchFixturesTableComponent {
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
   readonly team = input.required<FixtureTeam>();
   readonly side = input.required<'home' | 'away'>();
+  readonly showTeamHeader = input<boolean>(true);
 
   protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 48));
   protected readonly teamLogoSet = computed(() =>

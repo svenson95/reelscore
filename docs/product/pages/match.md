@@ -195,6 +195,19 @@ Für jedes Spiel werden unter anderem angezeigt:
 
 Die Spiele des Heim- und Auswärtsteams werden getrennt dargestellt.
 
+### Letzte Begegnungen
+
+Die Section **Letzte Begegnungen** zeigt bis zu fünf abgeschlossene direkte Duelle zwischen den beiden Teams. Die neueste Begegnung steht zuerst.
+
+Jeder Eintrag enthält:
+
+- Heim- und Auswärtsteam
+- Endergebnis
+- Wettbewerb
+- Datum
+
+Das Ergebnis wird pro Team farblich als Sieg, Unentschieden oder Niederlage gekennzeichnet. Ein Eintrag öffnet bei Auswahl die Match Page der historischen Begegnung. Wenn keine abgeschlossenen Duelle vorliegen, erscheint ein entsprechender Leerzustand.
+
 ## Analysen
 
 Der Tab **Analysen** enthält Auswertungen und Vergleiche auf Basis vergangener Spiele der beiden Teams.

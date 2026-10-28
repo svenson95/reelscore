@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 
 import { TIMEZONE } from '@reelscore-sdk/helpers';
+import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { Fixtures } from './fixtures.model';
 import { FixturesService } from './fixtures.service';
@@ -97,6 +98,40 @@ describe('FixturesService', () => {
         (startOfNextDay.unix() - startOfDay.unix()) / 60 / 60;
 
       expect(dayLengthInHours).toBe(25);
+    });
+  });
+
+  describe('findHeadToHeadFixtures', () => {
+    it('queries the five newest finished meetings', async () => {
+      const fixture = {
+        fixture: { timestamp: 100 },
+        teams: { home: { id: 1 }, away: { id: 2 } },
+      } as ExtendedFixtureDTO;
+      const exec = jest.fn().mockResolvedValue([]);
+      const headToHeadLean = jest.fn().mockReturnValue({ exec });
+      const headToHeadLimit = jest
+        .fn()
+        .mockReturnValue({ lean: headToHeadLean });
+      const headToHeadSort = jest
+        .fn()
+        .mockReturnValue({ limit: headToHeadLimit });
+      jest
+        .spyOn(Fixtures, 'find')
+        .mockReturnValue({ sort: headToHeadSort } as never);
+
+      await service.findHeadToHeadFixtures(fixture);
+
+      expect(Fixtures.find).toHaveBeenCalledWith({
+        'fixture.status.short': { $in: ['FT', 'AET', 'PEN'] },
+        'score.fulltime.home': { $ne: null },
+        'score.fulltime.away': { $ne: null },
+        $or: [
+          { 'teams.home.id': 1, 'teams.away.id': 2 },
+          { 'teams.home.id': 2, 'teams.away.id': 1 },
+        ],
+      });
+      expect(headToHeadSort).toHaveBeenCalledWith({ 'fixture.timestamp': -1 });
+      expect(headToHeadLimit).toHaveBeenCalledWith(5);
     });
   });
 });

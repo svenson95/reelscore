@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
 import type { CompetitionId, FixtureId } from '@reelscore-sdk/models';
@@ -30,6 +30,31 @@ fixtures.get('/match-latest', async (req, res) => {
   const latestFixtures = await fixtureController.getLatest(fixtureId);
   return res.json(latestFixtures);
 });
+
+fixtures.get(
+  '/head-to-head',
+  async (req: Request, res: Response, next: NextFunction) => {
+    const fixture = req.query.fixture;
+    const parsedFixtureId =
+      typeof fixture === 'string' ? Number(fixture) : Number.NaN;
+    if (!Number.isSafeInteger(parsedFixtureId) || parsedFixtureId <= 0) {
+      return res.status(400).json({
+        message: 'Invalid fixture query parameter',
+      });
+    }
+
+    try {
+      const fixtureId: FixtureId = parsedFixtureId;
+      const fixtureController = new FixtureController();
+      const headToHeadFixtures = await fixtureController.getHeadToHead(
+        fixtureId
+      );
+      return res.json(headToHeadFixtures);
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
 
 fixtures.get(
   '/by-date',

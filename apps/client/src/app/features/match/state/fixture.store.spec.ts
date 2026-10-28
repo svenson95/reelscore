@@ -17,6 +17,7 @@ import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { FixtureStore } from './fixture.store';
+import { HeadToHeadFixturesStore } from './head-to-head-fixtures.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
@@ -37,6 +38,10 @@ describe('FixtureStore', () => {
     loadLatestFixtures: jest.fn(),
     reset: jest.fn(),
   };
+  const headToHeadFixturesStoreMock = {
+    loadHeadToHeadFixtures: jest.fn(),
+    reset: jest.fn(),
+  };
   const analysesStoreMock = { loadAnalyses: jest.fn(), reset: jest.fn() };
   const teamCoachesStoreMock = { loadTeamCoaches: jest.fn(), reset: jest.fn() };
 
@@ -51,6 +56,10 @@ describe('FixtureStore', () => {
         { provide: EventsStore, useValue: eventsStoreMock },
         { provide: StatisticsStore, useValue: statisticsStoreMock },
         { provide: LatestFixturesStore, useValue: latestFixturesStoreMock },
+        {
+          provide: HeadToHeadFixturesStore,
+          useValue: headToHeadFixturesStoreMock,
+        },
         { provide: AnalysesStore, useValue: analysesStoreMock },
         { provide: TeamCoachesStore, useValue: teamCoachesStoreMock },
       ],
@@ -80,6 +89,7 @@ describe('FixtureStore', () => {
         statisticsStoreMock.reset,
         teamCoachesStoreMock.reset,
         latestFixturesStoreMock.reset,
+        headToHeadFixturesStoreMock.reset,
         analysesStoreMock.reset,
       ].every((reset) => reset.mock.calls.length === 1)
     ).toBe(true);
@@ -119,6 +129,9 @@ describe('FixtureStore', () => {
       EXAMPLE_FIXTURE.fixture.id,
       false
     );
+    expect(
+      headToHeadFixturesStoreMock.loadHeadToHeadFixtures
+    ).toHaveBeenCalledWith(EXAMPLE_FIXTURE.fixture.id, false);
   });
 
   it('should skip standings for competitions without standings', async () => {
@@ -190,6 +203,9 @@ describe('FixtureStore', () => {
       EXAMPLE_FIXTURE.fixture.id,
       true
     );
+    expect(
+      headToHeadFixturesStoreMock.loadHeadToHeadFixtures
+    ).toHaveBeenLastCalledWith(EXAMPLE_FIXTURE.fixture.id, true);
     expect(analysesStoreMock.loadAnalyses).toHaveBeenLastCalledWith(
       EXAMPLE_FIXTURE.fixture.id,
       true
