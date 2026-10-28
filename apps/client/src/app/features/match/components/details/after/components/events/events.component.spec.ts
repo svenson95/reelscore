@@ -200,7 +200,7 @@ describe('MatchEventsComponent', () => {
         ...EXAMPLE_FIXTURE,
         score: {
           ...EXAMPLE_FIXTURE.score,
-          extratime: { home: 2, away: 1 },
+          extratime: { home: null, away: null },
           penalty: { home: 5, away: 4 },
         },
       },
@@ -211,6 +211,7 @@ describe('MatchEventsComponent', () => {
       data: [
         createMatchEvent({ time: { elapsed: 20, extra: null } }),
         createMatchEvent({ time: { elapsed: 90, extra: 3 } }),
+        createMatchEvent({ time: { elapsed: 91, extra: null } }),
         createMatchEvent({ time: { elapsed: 105, extra: 2 } }),
         createMatchEvent({
           detail: 'Penalty',
