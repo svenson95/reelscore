@@ -311,6 +311,24 @@ describe('OverviewFixturesComponent', () => {
       );
     });
 
+    it('should keep the view state unset when filtered competition groups remain', () => {
+      const competition: CompetitionWithFixtures = {
+        id: playingFixture.league.id,
+        name: playingFixture.league.name,
+        image: playingFixture.league.flag || 'error',
+        url: ['/', 'competition', 'champions-league'],
+        fixtures: [playingFixture],
+      };
+
+      facadeMock.groupFixturesByCompetition.mockReturnValue([competition]);
+
+      const fixture = createComponent({
+        fixtures: [playingFixture],
+      });
+
+      expect(fixture.componentInstance.viewState()).toBeNull();
+    });
+
     it('should hide the live filter when the selected day is not today', () => {
       isToday.set(false);
 
