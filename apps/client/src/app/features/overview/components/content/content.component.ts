@@ -52,6 +52,7 @@ export class HideHeaderDirective implements OnInit {
   template: `
     <mat-tab-group
       [animationDuration]="animationDuration"
+      [disablePagination]="true"
       [dynamicHeight]="true"
       [style.--mat-tab-animation-duration]="animationDuration"
       [selectedIndex]="tabIndex()"
@@ -59,26 +60,28 @@ export class HideHeaderDirective implements OnInit {
     >
       @for (weekday of weekdays; track $index; let idx = $index) {
       <mat-tab [label]="weekday">
-        <div class="tab-content">
-          @let fixtures = weekFixtures()[idx] ?? []; @let standings =
-          weekStandings()[idx] ?? [];
+        <ng-template matTabContent>
+          <div class="tab-content">
+            @let fixtures = weekFixtures()[idx] ?? []; @let standings =
+            weekStandings()[idx] ?? [];
 
-          <rs-overview-fixtures
-            class="fixtures-container"
-            [filteredFixtures]="fixtures"
-            [isLoading]="fixturesLoading()"
-            [hasDataForSelectedDay]="hasFixturesDataForSelectedDay()"
-            [error]="fixturesError()"
-          />
+            <rs-overview-fixtures
+              class="fixtures-container"
+              [filteredFixtures]="fixtures"
+              [isLoading]="fixturesLoading()"
+              [hasDataForSelectedDay]="hasFixturesDataForSelectedDay()"
+              [error]="fixturesError()"
+            />
 
-          <rs-overview-standings
-            class="standings-container"
-            [weekStandings]="standings"
-            [isLoading]="standingsLoading()"
-            [hasDataForSelectedDay]="hasStandingsDataForSelectedDay()"
-            [error]="standingsError()"
-          />
-        </div>
+            <rs-overview-standings
+              class="standings-container"
+              [weekStandings]="standings"
+              [isLoading]="standingsLoading()"
+              [hasDataForSelectedDay]="hasStandingsDataForSelectedDay()"
+              [error]="standingsError()"
+            />
+          </div>
+        </ng-template>
       </mat-tab>
       }
     </mat-tab-group>

@@ -28,13 +28,13 @@ import {
     } @else {
     <img
       class="responsive-image"
-      [src]="source()"
-      [attr.srcset]="sourceSet() || null"
+      [attr.loading]="loading()"
+      decoding="async"
       [alt]="altText()"
       [width]="width()"
       [height]="height()"
-      [attr.loading]="loading()"
-      decoding="async"
+      [attr.srcset]="sourceSet() || null"
+      [src]="source()"
       (error)="handleImageError()"
     />
     }
