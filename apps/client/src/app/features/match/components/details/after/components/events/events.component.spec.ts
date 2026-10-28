@@ -232,7 +232,7 @@ describe('MatchEventsComponent', () => {
 
   it.each([
     ['subst', 'Substitution', 'sync', ''],
-    ['Var', 'Goal cancelled', 'visibility', ''],
+    ['Var', 'Goal cancelled', 'live_tv', ''],
   ] as const)(
     'renders %s / %s with its timeline icon',
     (type, detail, expectedIconName, expectedIconClass) => {

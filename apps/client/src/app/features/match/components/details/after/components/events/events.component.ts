@@ -197,7 +197,7 @@ import {
         } @else {
         <mat-icon aria-hidden="true">
           @switch(event.type) { @case('subst') { sync } @case('Card') { style }
-          @case('Var') { visibility } }
+          @case('Var') { live_tv } }
         </mat-icon>
         }
       </div>
