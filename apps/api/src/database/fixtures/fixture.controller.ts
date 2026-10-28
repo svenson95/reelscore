@@ -1,5 +1,6 @@
 import type {
   EvaluationPerformance,
+  ExtendedFixtureDTO,
   FixtureId,
   FixtureIdParameter,
   FixturePerformance,
@@ -97,6 +98,49 @@ export class FixtureController {
     ]);
 
     return { home: homeWithPerformances, away: awayWithPerformances };
+  }
+
+  async getHeadToHead(fixtureId: FixtureId): Promise<ExtendedFixtureDTO[]> {
+    const fixture = await this.fixtureService.findById(fixtureId);
+    if (!fixture) {
+      throw new Error(`Fixture with id ${fixtureId} not found`);
+    }
+
+    const headToHeadFixtures =
+      await this.fixturesService.findHeadToHeadFixtures(fixture);
+
+    return Promise.all(
+      headToHeadFixtures.map(async (headToHeadFixture) => {
+        const performances =
+          await this.evaluationsService.analyzeFixturePerformances(
+            headToHeadFixture
+          );
+        const homePerformance =
+          getEvaluationPerformance(performances.home) ??
+          headToHeadFixture.evaluations?.home?.performance;
+        const awayPerformance =
+          getEvaluationPerformance(performances.away) ??
+          headToHeadFixture.evaluations?.away?.performance;
+
+        const evaluations =
+          homePerformance && awayPerformance
+            ? {
+                home: {
+                  ...headToHeadFixture.evaluations?.home,
+                  performance: homePerformance,
+                  analyses: headToHeadFixture.evaluations?.home?.analyses ?? [],
+                },
+                away: {
+                  ...headToHeadFixture.evaluations?.away,
+                  performance: awayPerformance,
+                  analyses: headToHeadFixture.evaluations?.away?.analyses ?? [],
+                },
+              }
+            : headToHeadFixture.evaluations;
+
+        return { ...headToHeadFixture, evaluations };
+      })
+    );
   }
 }
 
