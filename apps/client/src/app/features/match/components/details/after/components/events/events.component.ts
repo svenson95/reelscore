@@ -41,10 +41,12 @@ import {
     }
 
     .event-row { @apply flex gap-4 items-center; }
-    .event-row > .team { @apply flex-1; }
+    .event-row > .team { @apply flex flex-1 items-center; }
+    .event-content-home,
+    .event-content-away { @apply flex-1; }
     .event-icon { @apply flex min-w-8 shrink-0 items-center justify-center; }
 
-    .home { @apply text-right; }
+    .home { @apply justify-end text-right; }
     .time { @apply text-rs-font-size-body-3; }
     .result { @apply text-rs-font-size-body-3; }
 
@@ -72,19 +74,17 @@ import {
       @apply relative inline-block h-5 w-4 overflow-hidden;
     }
 
-    .card-stack::before,
-    .card-stack::after {
-      content: '';
+    .card-stack .card-icon {
       @apply absolute h-4 w-2.5 rounded-[2px] border border-black/10;
+    }
+
+    .card-stack .yellow-card {
+      @apply left-0 top-0 z-0;
       transform: rotate(-8deg);
     }
 
-    .card-stack::before {
-      @apply left-[-7px] top-0 z-0 bg-yellow-400;
-    }
-
-    .card-stack::after {
-      @apply right-0 bottom-0 z-10 bg-rs-color-red;
+    .card-stack .red-card {
+      @apply bottom-0 right-0 z-10;
       transform: rotate(8deg);
     }
 
@@ -175,7 +175,10 @@ import {
         } @else if (event.detail === 'Missed Penalty') {
         <mat-icon>close</mat-icon>
         } @else if (event.type === 'Card' && isSecondYellowCard(event)) {
-        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte"></span>
+        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte">
+          <span class="card-icon yellow-card" aria-hidden="true"></span>
+          <span class="card-icon red-card" aria-hidden="true"></span>
+        </span>
         } @else if (event.type === 'Card' && event.detail === 'Yellow Card') {
         <span
           class="card-icon yellow-card"

@@ -301,5 +301,11 @@ describe('MatchEventsComponent', () => {
         .querySelector('.card-stack')
         ?.getAttribute('aria-label')
     ).toBe('Gelb-Rote Karte');
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack .yellow-card')
+    ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack .red-card')
+    ).not.toBeNull();
   });
 });
