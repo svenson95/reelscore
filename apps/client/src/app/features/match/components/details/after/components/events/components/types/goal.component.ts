@@ -13,7 +13,7 @@ import { EventPlayerPhotoComponent } from '../event-player-photo.component';
       .goal-content { @apply flex w-full min-w-0 flex-col gap-0.5; }
       .scorer-row { @apply flex w-full min-w-0 items-center gap-2; }
       :host-context(.is-home) .scorer-row { @apply flex-row-reverse; }
-      .player { @apply min-w-0 flex-1; }
+      .player { @apply min-w-0 flex-1 leading-tight; }
       :host-context(.is-home) .player { @apply text-right; }
       .bottom { @apply flex w-full text-rs-font-size-small text-rs-color-text-2; }
       :host-context(.is-home) .bottom { @apply justify-end text-right; }

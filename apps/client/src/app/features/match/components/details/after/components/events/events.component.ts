@@ -71,20 +71,23 @@ import {
     .red-card { @apply bg-rs-color-red; }
 
     .card-stack {
-      @apply relative inline-block h-5 w-4 overflow-hidden;
+      @apply relative inline-block h-5 w-5;
     }
 
     .card-stack .card-icon {
       @apply absolute h-4 w-2.5 rounded-[2px] border border-black/10;
+      transform: rotate(-8deg);
     }
 
     .card-stack .yellow-card {
       @apply left-0 top-0 z-0;
-      transform: rotate(-8deg);
     }
 
     .card-stack .red-card {
-      @apply bottom-0 right-0 z-10;
+      @apply left-1 top-1 z-10;
+    }
+
+    .event-icon.away-card .card-icon {
       transform: rotate(8deg);
     }
 
@@ -159,7 +162,7 @@ import {
         }
       </div>
 
-      <div class="event-icon">
+      <div class="event-icon" [class.away-card]="event.team.id === awayId">
         @if (event.type === 'Goal' && event.detail !== 'Missed Penalty') { @let
         eventResult = item.shootoutResult ?? event.result;
 

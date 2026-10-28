@@ -266,6 +266,23 @@ describe('MatchEventsComponent', () => {
     expect(componentFixture.nativeElement.querySelector('mat-icon')).toBeNull();
   });
 
+  it('rotates away team card icons to the right', () => {
+    const awayCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+      team: { ...EXAMPLE_FIXTURE.teams.away, goals: 0 },
+    });
+    const componentFixture = renderComponent(MatchEventsComponent, {
+      data: [awayCard],
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.event-icon.away-card .card-icon'
+      )
+    ).not.toBeNull();
+  });
+
   it('renders a second yellow card as one yellow-red card event', () => {
     const yellowCard = createMatchEvent({
       type: 'Card',
