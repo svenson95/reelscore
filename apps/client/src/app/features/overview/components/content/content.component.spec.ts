@@ -11,6 +11,9 @@ import {
 } from './content.component';
 import { OverviewContentFacade } from './content.facade';
 
+const fixturesInitialized = jest.fn();
+const standingsInitialized = jest.fn();
+
 @Component({
   selector: 'rs-overview-fixtures',
   standalone: true,
@@ -21,6 +24,10 @@ class OverviewFixturesStubComponent {
   readonly isLoading = input.required<boolean>();
   readonly hasDataForSelectedDay = input.required<boolean>();
   readonly error = input.required<string | null>();
+
+  constructor() {
+    fixturesInitialized();
+  }
 }
 
 @Component({
@@ -33,6 +40,10 @@ class OverviewStandingsStubComponent {
   readonly isLoading = input.required<boolean>();
   readonly hasDataForSelectedDay = input.required<boolean>();
   readonly error = input.required<string | null>();
+
+  constructor() {
+    standingsInitialized();
+  }
 }
 
 describe('OverviewContentComponent', () => {
@@ -68,6 +79,9 @@ describe('OverviewContentComponent', () => {
   };
 
   beforeEach(async () => {
+    fixturesInitialized.mockClear();
+    standingsInitialized.mockClear();
+
     tabIndex.set(0);
 
     weekFixtures.set(Array(7).fill(undefined));
@@ -101,6 +115,56 @@ describe('OverviewContentComponent', () => {
         },
       })
       .compileComponents();
+  });
+
+  it('initializes only the selected day and renders another day when selected', async () => {
+    const selectedFixtures = [{ id: 'selected-fixture' }];
+    const nextFixtures = [{ id: 'next-fixture' }];
+    const selectedStandings = [{ id: 'selected-standing' }];
+    const nextStandings = [{ id: 'next-standing' }];
+
+    tabIndex.set(3);
+    weekFixtures.set([[], [], [], selectedFixtures, nextFixtures, [], []]);
+    weekStandings.set([[], [], [], selectedStandings, nextStandings, [], []]);
+
+    const fixture = TestBed.createComponent(OverviewContentComponent);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixturesInitialized).toHaveBeenCalledTimes(1);
+    expect(standingsInitialized).toHaveBeenCalledTimes(1);
+
+    const selectedFixturesComponent = fixture.debugElement.query(
+      By.directive(OverviewFixturesStubComponent)
+    ).componentInstance as OverviewFixturesStubComponent;
+    const selectedStandingsComponent = fixture.debugElement.query(
+      By.directive(OverviewStandingsStubComponent)
+    ).componentInstance as OverviewStandingsStubComponent;
+
+    expect(selectedFixturesComponent.filteredFixtures()).toEqual(
+      selectedFixtures
+    );
+    expect(selectedStandingsComponent.weekStandings()).toEqual(
+      selectedStandings
+    );
+
+    tabIndex.set(4);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixturesInitialized).toHaveBeenCalledTimes(2);
+    expect(standingsInitialized).toHaveBeenCalledTimes(2);
+
+    const nextFixturesComponent = fixture.debugElement.query(
+      By.directive(OverviewFixturesStubComponent)
+    ).componentInstance as OverviewFixturesStubComponent;
+    const nextStandingsComponent = fixture.debugElement.query(
+      By.directive(OverviewStandingsStubComponent)
+    ).componentInstance as OverviewStandingsStubComponent;
+
+    expect(nextFixturesComponent.filteredFixtures()).toEqual(nextFixtures);
+    expect(nextStandingsComponent.weekStandings()).toEqual(nextStandings);
   });
 
   it('should render fixtures and standings for cached selected-day data', () => {
@@ -139,16 +203,16 @@ describe('OverviewContentComponent', () => {
     ).not.toBeNull();
   });
 
-  it('should use dynamic tab height to avoid an internal tab scrollbar', () => {
+  it('keeps height dynamic and disables pagination for the hidden tab header', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
 
-    const tabGroup = fixture.debugElement.query(
-      By.directive(MatTabGroup)
-    ).componentInstance as MatTabGroup;
+    const tabGroup = fixture.debugElement.query(By.directive(MatTabGroup))
+      .componentInstance as MatTabGroup;
 
     expect(tabGroup.dynamicHeight).toBe(true);
+    expect(tabGroup.disablePagination).toBe(true);
   });
 
   it('should render fixtures while the selected week is loading without cached data', () => {
