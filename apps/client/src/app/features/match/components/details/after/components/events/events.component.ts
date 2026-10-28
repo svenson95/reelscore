@@ -18,6 +18,11 @@ import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
 import type { MatchTimelineItem } from './types';
 
+import {
+  mergeSecondYellowCardEvents,
+  SECOND_YELLOW_CARD_COMMENT,
+} from './second-yellow-card.helper';
+
 @Component({
   selector: 'rs-match-events',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +56,26 @@ import type { MatchTimelineItem } from './types';
 
       &.yellow-card { @apply text-yellow-500; }
       &.red-card { @apply text-rs-color-red; }
+    }
+
+    .card-stack {
+      @apply relative inline-block h-5 w-4 overflow-hidden;
+    }
+
+    .card-stack::before,
+    .card-stack::after {
+      content: '';
+      @apply absolute h-4 w-2.5 rounded-[2px] border border-black/10;
+      transform: rotate(-8deg);
+    }
+
+    .card-stack::before {
+      @apply left-[-7px] top-0 bg-yellow-400;
+    }
+
+    .card-stack::after {
+      @apply right-0 bottom-0 bg-rs-color-red;
+      transform: rotate(8deg);
     }
 
     .event-row-new {
@@ -139,6 +164,8 @@ import type { MatchTimelineItem } from './types';
         </span>
         } @else if (event.detail === 'Missed Penalty') {
         <mat-icon>close</mat-icon>
+        } @else { @if (isSecondYellowCard(event)) {
+        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte"></span>
         } @else {
         <mat-icon
           [class.yellow-card]="
@@ -151,7 +178,7 @@ import type { MatchTimelineItem } from './types';
           @switch(event.type) { @case('subst') { sync } @case('Card') { style }
           @case('Var') { visibility } }
         </mat-icon>
-        }
+        } }
       </div>
 
       <div class="team away">
@@ -194,7 +221,7 @@ export class MatchEventsComponent {
     const fixtureStatus = fixture?.data.fixture.status.short ?? '';
     const isFinished = STATUS_VALUES_FINISHED.includes(fixtureStatus);
 
-    const events = [...this.eventsForTimeline()].sort(
+    const events = mergeSecondYellowCardEvents(this.eventsForTimeline()).sort(
       (a, b) => this.getTotalMinute(b) - this.getTotalMinute(a)
     );
 
@@ -248,7 +275,9 @@ export class MatchEventsComponent {
 
   private readonly trackNewTimelineEvents = effect((onCleanup) => {
     const events = this.data();
-    const currentEventKeys = events.map((event) => this.getEventKey(event));
+    const currentEventKeys = mergeSecondYellowCardEvents(events).map((event) =>
+      this.getEventKey(event)
+    );
 
     if (!this.hasInitialTimeline && events.length === 0) {
       this.eventsForTimeline.set(events);
@@ -290,6 +319,12 @@ export class MatchEventsComponent {
     return item.type === 'event' && this.newTimelineEventKeys().has(item.key);
   }
 
+  protected isSecondYellowCard(event: EventWithResult): boolean {
+    return (
+      event.type === 'Card' && event.comments === SECOND_YELLOW_CARD_COMMENT
+    );
+  }
+
   private getEventKey(event: EventWithResult): string {
     return [
       event.time.elapsed,
@@ -299,6 +334,7 @@ export class MatchEventsComponent {
       event.assist?.id ?? event.assist?.name ?? '',
       event.type,
       event.detail,
+      event.comments,
     ].join('|');
   }
 

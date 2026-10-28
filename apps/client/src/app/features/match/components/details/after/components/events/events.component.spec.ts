@@ -215,4 +215,41 @@ describe('MatchEventsComponent', () => {
       }
     }
   );
+
+  it('renders a second yellow card as one yellow-red card event', () => {
+    const yellowCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+    });
+    const redCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Red Card',
+    });
+
+    const componentFixture = renderComponent(MatchEventsComponent, {
+      data: [yellowCard],
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack')
+    ).toBeNull();
+
+    componentFixture.componentRef.setInput('data', [yellowCard, redCard]);
+    componentFixture.detectChanges();
+
+    expect(
+      componentFixture.nativeElement.querySelectorAll('.event-row')
+    ).toHaveLength(1);
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack')
+    ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector('.event-row-new')
+    ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement
+        .querySelector('.card-stack')
+        ?.getAttribute('aria-label')
+    ).toBe('Gelb-Rote Karte');
+  });
 });
