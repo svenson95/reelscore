@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import type { EventDTO } from '@reelscore-sdk/models';
 
+import translations from '../../event-translations.json';
+
 @Component({
   selector: 'rs-event-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,18 +15,19 @@ import type { EventDTO } from '@reelscore-sdk/models';
   template: `
     @if (event(); as event) {
     <span>{{ event.player.name }}</span>
-    <span>
-      @switch (event.comments) { @case('Tripping') { Foul durch Beinstellen }
-      @case('Roughing') { Grobes Foul } @case("Argument") { Auseinandersetzung }
-      @case("Holding") { Festhalten } @case("Delay of game") { Zeitspiel }
-      @case("Elbowing") { Ellbogenstoß } @case("Unsportsmanlike conduct") {
-      Unsportliches Verhalten } @case("Serious foul") { Schweres Foul }
-      @case("Diving") { Schwalbe } @case("misses next match") { Gelbsperre -
-      Fehlt im nächsten Spiel } @default { {{ event.comments }} } }
-    </span>
-    }
+    @if (event.comments) {
+    <span>&nbsp;{{ translateComment(event.comments) }}</span>
+    } }
   `,
 })
 export class EventCardComponent {
   event = input.required<EventDTO>();
+
+  protected translateComment(comment: string): string {
+    return (
+      translations.cardComments[
+        comment as keyof typeof translations.cardComments
+      ] ?? comment
+    );
+  }
 }

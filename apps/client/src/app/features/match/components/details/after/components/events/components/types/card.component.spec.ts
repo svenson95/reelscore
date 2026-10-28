@@ -24,8 +24,8 @@ describe('EventCardComponent', () => {
     ['Serious foul', 'Schweres Foul'],
     ['Diving', 'Schwalbe'],
     ['misses next match', 'Gelbsperre - Fehlt im nächsten Spiel'],
-    ['Unknown reason', 'Unknown reason'],
     ['', ''],
+    ['Unknown reason', 'Unknown reason'],
   ])(
     'translates the card reason %s with a fallback for unknown comments',
     (comments, label) => {
@@ -42,4 +42,18 @@ describe('EventCardComponent', () => {
       );
     }
   );
+
+  it('shows the translated second-yellow-card detail', () => {
+    const componentFixture = renderComponent(EventCardComponent, {
+      event: createMatchEvent({
+        type: 'Card',
+        detail: 'Red Card',
+        comments: 'Second Yellow Card',
+      }),
+    });
+
+    expect(readElementText(componentFixture.nativeElement)).toBe(
+      'Scorer Gelb-Rote Karte'
+    );
+  });
 });

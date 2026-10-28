@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "NX_TUI=false nx run-many --parallel --target=serve --projects=api,client",
+    "audit:fixture-event-translations": "node scripts/audit-fixture-event-translations.mjs",
     "allow-buffer": "git config http.postBuffer 524288000",
     "reset-buffer": "git config --unset http.postBuffer"
   },
