@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, NgZone, signal } from '@angular/core';
 
 import { interval, type Subscription } from 'rxjs';
 
@@ -15,6 +15,7 @@ type RefreshOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class LiveRefreshService {
+  private readonly ngZone = inject(NgZone);
   private readonly registry = inject(RefreshRegistryService);
 
   readonly timer = signal<number>(REFRESH_INTERVAL_SECONDS);
@@ -81,9 +82,11 @@ export class LiveRefreshService {
 
     this.isRunning.set(true);
 
-    this.refreshSubscription = interval(1000).subscribe(() => {
-      this.tick();
-    });
+    this.refreshSubscription = this.ngZone.runOutsideAngular(() =>
+      interval(1000).subscribe(() => {
+        this.tick();
+      })
+    );
   }
 
   private stopTimer(): void {
