@@ -13,7 +13,7 @@ describe('EventGoalComponent', () => {
     TestBed.configureTestingModule({ imports: [EventGoalComponent] });
   });
 
-  it('shows a distinct assisting player and removes the assist on an input update', () => {
+  it('shows the assist below the scorer row and removes it on an input update', () => {
     const componentFixture = renderComponent(EventGoalComponent, {
       event: createMatchEvent({ assist: { id: 11, name: 'Assist' } }),
     });
@@ -24,9 +24,15 @@ describe('EventGoalComponent', () => {
     expect(
       readElementText(componentFixture.nativeElement.querySelector('.assist'))
     ).toBe('Vorlage: Assist');
-    expect(
-      componentFixture.nativeElement.querySelector('.assist').parentElement
-    ).toBe(componentFixture.nativeElement.querySelector('.details'));
+    const goalContent =
+      componentFixture.nativeElement.querySelector('.goal-content');
+    const scorerRow =
+      componentFixture.nativeElement.querySelector('.scorer-row');
+    const assistRow = componentFixture.nativeElement.querySelector('.assist');
+
+    expect(scorerRow.querySelector('rs-event-player-photo')).not.toBeNull();
+    expect(assistRow.parentElement).toBe(goalContent);
+    expect(assistRow.previousElementSibling).toBe(scorerRow);
 
     componentFixture.componentRef.setInput(
       'event',

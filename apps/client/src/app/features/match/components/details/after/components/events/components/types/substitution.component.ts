@@ -6,7 +6,7 @@ import type { EventDTO } from '@reelscore-sdk/models';
   selector: 'rs-event-substitution',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host { @apply flex flex-col gap-1; }
+    :host { @apply flex flex-col; }
     :host-context(.is-home) { @apply items-end text-right; }
     span:first-child { @apply text-rs-color-green; }
     span:last-child { @apply text-rs-color-red text-rs-font-size-small; }

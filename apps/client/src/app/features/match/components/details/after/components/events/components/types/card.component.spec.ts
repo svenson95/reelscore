@@ -38,9 +38,15 @@ describe('EventCardComponent', () => {
       });
 
       expect(readElementText(componentFixture.nativeElement)).toBe(
-        ('Scorer ' + label).trim()
+        ('Scorer' + label).trim()
       );
       expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
+
+      if (comments) {
+        expect(
+          componentFixture.nativeElement.querySelector('.comment').textContent
+        ).toBe(label);
+      }
     }
   );
 
@@ -62,8 +68,8 @@ describe('EventCardComponent', () => {
     });
 
     expect(readElementText(componentFixture.nativeElement)).toBe(
-      'Scorer Gelb-Rote Karte'
+      'ScorerGelb-Rote Karte'
     );
-    expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
+    expect(componentFixture.nativeElement.querySelector('img')).not.toBeNull();
   });
 });
