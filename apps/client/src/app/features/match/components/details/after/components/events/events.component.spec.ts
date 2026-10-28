@@ -194,9 +194,43 @@ describe('MatchEventsComponent', () => {
     );
   });
 
+  it('separates extra time, the penalty shootout and the first half', () => {
+    fixtureState.set({
+      data: {
+        ...EXAMPLE_FIXTURE,
+        score: {
+          ...EXAMPLE_FIXTURE.score,
+          extratime: { home: 2, away: 1 },
+          penalty: { home: 5, away: 4 },
+        },
+      },
+      highlights: [],
+    });
+
+    const componentFixture = renderComponent(MatchEventsComponent, {
+      data: [
+        createMatchEvent({ time: { elapsed: 20, extra: null } }),
+        createMatchEvent({ time: { elapsed: 90, extra: 3 } }),
+        createMatchEvent({ time: { elapsed: 105, extra: 2 } }),
+        createMatchEvent({
+          detail: 'Penalty',
+          time: { elapsed: 120, extra: 1 },
+        }),
+      ],
+    });
+
+    expect(
+      readElementTexts(componentFixture.nativeElement, '.spacer-row')
+    ).toEqual([
+      'ENDE',
+      'ELFMETERSCHIESSEN',
+      'VERLÄNGERUNG',
+      'HALBZEIT',
+      'ANPFIFF',
+    ]);
+  });
+
   it.each([
-    ['Card', 'Yellow Card', 'style', 'yellow-card'],
-    ['Card', 'Red Card', 'style', 'red-card'],
     ['subst', 'Substitution', 'sync', ''],
     ['Var', 'Goal cancelled', 'visibility', ''],
   ] as const)(
@@ -215,6 +249,22 @@ describe('MatchEventsComponent', () => {
       }
     }
   );
+
+  it.each([
+    ['Yellow Card', 'yellow-card', 'Gelbe Karte'],
+    ['Red Card', 'red-card', 'Rote Karte'],
+  ] as const)('renders a CSS %s card icon', (detail, className, label) => {
+    const componentFixture = renderComponent(MatchEventsComponent, {
+      data: [createMatchEvent({ type: 'Card', detail })],
+    });
+    const cardIcon = componentFixture.nativeElement.querySelector(
+      `.card-icon.${className}`
+    );
+
+    expect(cardIcon).not.toBeNull();
+    expect(cardIcon.getAttribute('aria-label')).toBe(label);
+    expect(componentFixture.nativeElement.querySelector('mat-icon')).toBeNull();
+  });
 
   it('renders a second yellow card as one yellow-red card event', () => {
     const yellowCard = createMatchEvent({

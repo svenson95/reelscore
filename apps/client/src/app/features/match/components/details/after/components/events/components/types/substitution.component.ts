@@ -5,16 +5,18 @@ import type { EventDTO } from '@reelscore-sdk/models';
 @Component({
   selector: 'rs-event-substitution',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   styles: `
-    :host { @apply flex flex-col; }
+    :host { @apply flex flex-col gap-1; }
+    :host-context(.is-home) { @apply items-end text-right; }
     span:first-child { @apply text-rs-color-green; }
     span:last-child { @apply text-rs-color-red text-rs-font-size-small; }
+    .substitution-player { @apply inline-flex; }
+    .outgoing { @apply text-rs-color-red text-rs-font-size-small; }
   `,
   template: `
     @if (event(); as event) {
-    <span>{{ event.assist.name }}</span>
-    <span>{{ event.player.name }}</span>
+    <span class="substitution-player incoming">{{ event.assist.name }}</span>
+    <span class="substitution-player outgoing">{{ event.player.name }}</span>
     }
   `,
 })

@@ -13,6 +13,12 @@ import { STATUS_VALUES_FINISHED } from '@reelscore-sdk/constants';
 import type { EventWithResult } from '@reelscore-sdk/models';
 
 import { FixtureStore } from '../../../../../state';
+import {
+  hasFirstHalfEvents,
+  isExtraTimeEvent,
+  isPenaltyShootoutEvent,
+  isSecondHalfEvent,
+} from '../../../../../utils/event-timeline.helper';
 
 import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
@@ -31,11 +37,12 @@ import {
     :host {
       @apply flex flex-col
         bg-rs-button-bg rounded-border2 shadow-rs
-        mx-3 mb-3 mt-rs1 gap-3 py-rs2;
+        mx-3 mb-3 mt-rs1 gap-2 py-rs2;
     }
 
-    .event-row { @apply flex gap-5 items-center; }
+    .event-row { @apply flex gap-4 items-center; }
     .event-row > .team { @apply flex-1; }
+    .event-icon { @apply flex min-w-8 shrink-0 items-center justify-center; }
 
     .home { @apply text-right; }
     .time { @apply text-rs-font-size-body-3; }
@@ -51,12 +58,15 @@ import {
       @apply flex-1 border-t mx-3;
     }
 
-    mat-icon {
-      @apply align-middle;
+    mat-icon { @apply align-middle; }
 
-      &.yellow-card { @apply text-yellow-500; }
-      &.red-card { @apply text-rs-color-red; }
+    .card-icon {
+      @apply relative inline-block h-4 w-2.5 rounded-[2px] border border-black/10;
+      transform: rotate(-8deg);
     }
+
+    .yellow-card { @apply bg-yellow-400; }
+    .red-card { @apply bg-rs-color-red; }
 
     .card-stack {
       @apply relative inline-block h-5 w-4 overflow-hidden;
@@ -70,11 +80,11 @@ import {
     }
 
     .card-stack::before {
-      @apply left-[-7px] top-0 bg-yellow-400;
+      @apply left-[-7px] top-0 z-0 bg-yellow-400;
     }
 
     .card-stack::after {
-      @apply right-0 bottom-0 bg-rs-color-red;
+      @apply right-0 bottom-0 z-10 bg-rs-color-red;
       transform: rotate(8deg);
     }
 
@@ -164,21 +174,26 @@ import {
         </span>
         } @else if (event.detail === 'Missed Penalty') {
         <mat-icon>close</mat-icon>
-        } @else { @if (isSecondYellowCard(event)) {
+        } @else if (event.type === 'Card' && isSecondYellowCard(event)) {
         <span class="card-stack" role="img" aria-label="Gelb-Rote Karte"></span>
+        } @else if (event.type === 'Card' && event.detail === 'Yellow Card') {
+        <span
+          class="card-icon yellow-card"
+          role="img"
+          aria-label="Gelbe Karte"
+        ></span>
+        } @else if (event.type === 'Card' && event.detail === 'Red Card') {
+        <span
+          class="card-icon red-card"
+          role="img"
+          aria-label="Rote Karte"
+        ></span>
         } @else {
-        <mat-icon
-          [class.yellow-card]="
-            event.type === 'Card' && event.detail === 'Yellow Card'
-          "
-          [class.red-card]="
-            event.type === 'Card' && event.detail === 'Red Card'
-          "
-        >
+        <mat-icon aria-hidden="true">
           @switch(event.type) { @case('subst') { sync } @case('Card') { style }
           @case('Var') { visibility } }
         </mat-icon>
-        } }
+        }
       </div>
 
       <div class="team away">
@@ -227,6 +242,10 @@ export class MatchEventsComponent {
 
     const shootoutResults = this.getShootoutResults(events);
     const items: MatchTimelineItem[] = [];
+    const hasFirstHalf = hasFirstHalfEvents(
+      events,
+      fixture?.data.score.penalty
+    );
 
     if (isFinished) {
       items.push({ type: 'spacer', label: 'ENDE', key: 'end' });
@@ -238,8 +257,8 @@ export class MatchEventsComponent {
 
       if (
         previousEvent &&
-        this.isPenaltyShootoutEvent(previousEvent) &&
-        !this.isPenaltyShootoutEvent(event)
+        isPenaltyShootoutEvent(previousEvent, fixture?.data.score.penalty) &&
+        !isPenaltyShootoutEvent(event, fixture?.data.score.penalty)
       ) {
         items.push({
           type: 'spacer',
@@ -250,8 +269,37 @@ export class MatchEventsComponent {
 
       if (
         previousEvent &&
-        this.getTotalMinute(previousEvent) > 45 &&
-        this.getTotalMinute(event) <= 45
+        isExtraTimeEvent(
+          previousEvent,
+          fixture?.data.score.extratime,
+          fixture?.data.score.penalty
+        ) &&
+        !isExtraTimeEvent(
+          event,
+          fixture?.data.score.extratime,
+          fixture?.data.score.penalty
+        )
+      ) {
+        items.push({
+          type: 'spacer',
+          label: 'VERLÄNGERUNG',
+          key: 'extra-time',
+        });
+      }
+
+      if (
+        previousEvent &&
+        hasFirstHalf &&
+        isSecondHalfEvent(
+          previousEvent,
+          fixture?.data.score.halftime,
+          fixture?.data.score.penalty
+        ) &&
+        !isSecondHalfEvent(
+          event,
+          fixture?.data.score.halftime,
+          fixture?.data.score.penalty
+        )
       ) {
         items.push({
           type: 'spacer',
@@ -344,7 +392,9 @@ export class MatchEventsComponent {
     const resultMap = new Map<EventWithResult, EventWithResult['result']>();
 
     const shootoutEventsAsc = eventsDesc
-      .filter((event) => this.isPenaltyShootoutEvent(event))
+      .filter((event) =>
+        isPenaltyShootoutEvent(event, this.fixture()?.data.score.penalty)
+      )
       .reverse();
 
     let home = 0;
@@ -370,28 +420,9 @@ export class MatchEventsComponent {
 
   private isSuccessfulShootoutPenalty(event: EventWithResult): boolean {
     return (
-      this.isPenaltyShootoutEvent(event) &&
+      isPenaltyShootoutEvent(event, this.fixture()?.data.score.penalty) &&
       event.type === 'Goal' &&
       event.detail !== 'Missed Penalty'
-    );
-  }
-
-  private isPenaltyShootoutEvent(event: EventWithResult): boolean {
-    const fixture = this.fixture();
-    const penaltyScore = fixture?.data.score?.penalty;
-
-    const hasPenaltyShootout =
-      penaltyScore?.home !== null || penaltyScore?.away !== null;
-
-    if (!hasPenaltyShootout) {
-      return false;
-    }
-
-    const detail = event.detail.toLowerCase();
-
-    return (
-      this.getTotalMinute(event) >= 120 &&
-      (detail === 'penalty' || detail === 'missed penalty')
     );
   }
 

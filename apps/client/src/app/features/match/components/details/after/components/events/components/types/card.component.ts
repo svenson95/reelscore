@@ -3,25 +3,45 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { EventDTO } from '@reelscore-sdk/models';
 
 import translations from '../../event-translations.json';
+import { SECOND_YELLOW_CARD_COMMENT } from '../../second-yellow-card.helper';
+import { EventPlayerPhotoComponent } from '../event-player-photo.component';
 
 @Component({
   selector: 'rs-event-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [EventPlayerPhotoComponent],
   styles: `
-    :host { @apply flex flex-col; }
-    span:last-child { @apply text-rs-font-size-small text-rs-color-text-2; }
+    :host { @apply flex items-center gap-2; }
+    :host-context(.is-home) { @apply flex-row-reverse; }
+    .details { @apply flex min-w-0 flex-col; }
+    :host-context(.is-home) .details { @apply text-right; }
+    .player { @apply min-w-0; }
+    .comment { @apply text-rs-font-size-small text-rs-color-text-2; }
   `,
   template: `
-    @if (event(); as event) {
-    <span>{{ event.player.name }}</span>
-    @if (event.comments) {
-    <span>&nbsp;{{ translateComment(event.comments) }}</span>
-    } }
+    @if (event(); as event) { @if (shouldShowPlayerPhoto(event)) {
+    <rs-event-player-photo [playerId]="event.player.id" />
+    }
+    <div class="details">
+      <span class="player">{{ event.player.name }}</span>
+      @if (event.comments) {
+      <span class="comment">&nbsp;{{ translateComment(event.comments) }}</span>
+      }
+    </div>
+    }
   `,
 })
 export class EventCardComponent {
   event = input.required<EventDTO>();
+  protected readonly secondYellowCardComment = SECOND_YELLOW_CARD_COMMENT;
+
+  protected shouldShowPlayerPhoto(event: EventDTO): boolean {
+    return (
+      event.player.id > 0 &&
+      event.detail === 'Red Card' &&
+      event.comments !== this.secondYellowCardComment
+    );
+  }
 
   protected translateComment(comment: string): string {
     return (

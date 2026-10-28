@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { NgZone, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { RefreshRegistryService } from '../refresh-registry/refresh-registry.service';
@@ -79,6 +79,23 @@ describe('LiveRefreshService', () => {
       await jest.advanceTimersByTimeAsync(1_000);
 
       expect(service.timer()).toBe(REFRESH_INTERVAL_SECONDS - 1);
+    });
+
+    it('should trigger refreshes outside the Angular zone', async () => {
+      let refreshRanInAngularZone = true;
+      refreshRegistryMock.refresh.mockImplementation(() => {
+        refreshRanInAngularZone = NgZone.isInAngularZone();
+        return Promise.resolve(false);
+      });
+
+      hasLiveTargets.set(true);
+      service.start();
+      TestBed.tick();
+
+      await jest.advanceTimersByTimeAsync(REFRESH_INTERVAL_SECONDS * 1000);
+
+      expect(refreshRegistryMock.refresh).toHaveBeenCalled();
+      expect(refreshRanInAngularZone).toBe(false);
     });
 
     it('should disable, stop and reset the timer', async () => {
