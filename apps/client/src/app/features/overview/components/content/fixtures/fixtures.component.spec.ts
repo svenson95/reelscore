@@ -5,7 +5,10 @@ import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 import { EXAMPLE_FIXTURE } from '@testing/client';
 
-import { DateNavigationService, SelectedDateService } from '../../../data-access';
+import {
+  DateNavigationService,
+  SelectedDateService,
+} from '../../../data-access';
 import type { CompetitionWithFixtures } from '../../../types';
 
 import { OverviewFixturesComponent } from './fixtures.component';
@@ -290,6 +293,21 @@ describe('OverviewFixturesComponent', () => {
 
       expect(fixture.nativeElement.textContent).not.toContain(
         'Es finden keine Spiele statt.'
+      );
+    });
+
+    it('should display a live empty state when competition filtering removes all playing fixtures', () => {
+      facadeMock.groupFixturesByCompetition.mockReturnValue([]);
+
+      const fixture = createComponent({
+        fixtures: [playingFixture],
+      });
+
+      fixture.componentInstance.liveOnly.set(true);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain(
+        'Aktuell finden keine Live-Spiele statt.'
       );
     });
 
