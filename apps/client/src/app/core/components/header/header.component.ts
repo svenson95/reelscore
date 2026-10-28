@@ -21,7 +21,7 @@ const MAT_MODULES = [MatButtonModule];
   ],
   styles: `
     :host {
-      @apply relative z-[200] border-b-[1px] border-rs-color-primary p-3;
+      @apply relative z-[200] border-b-[1px] p-3;
     }
 
     .wrapper {
