@@ -14,10 +14,9 @@ import type { EventWithResult } from '@reelscore-sdk/models';
 
 import { FixtureStore } from '../../../../../state';
 import {
-  hasFirstHalfEvents,
-  isExtraTimeEvent,
+  buildEventTimeline,
+  type EventTimelineBoundary,
   isPenaltyShootoutEvent,
-  isSecondHalfEvent,
 } from '../../../../../utils/event-timeline.helper';
 
 import { MatchEventComponent } from './components';
@@ -28,6 +27,18 @@ import {
   mergeSecondYellowCardEvents,
   SECOND_YELLOW_CARD_COMMENT,
 } from './second-yellow-card.helper';
+
+const TIMELINE_BOUNDARIES: Record<
+  EventTimelineBoundary,
+  { label: string; key: string }
+> = {
+  halftime: { label: 'HALBZEIT', key: 'half-time' },
+  'extra-time': { label: 'VERLÄNGERUNG', key: 'extra-time' },
+  'penalty-shootout': {
+    label: 'ELFMETERSCHIESSEN',
+    key: 'penalty-shootout',
+  },
+};
 
 @Component({
   selector: 'rs-match-events',
@@ -242,83 +253,41 @@ export class MatchEventsComponent {
     const fixtureStatus = fixture?.data.fixture.status.short ?? '';
     const isFinished = STATUS_VALUES_FINISHED.includes(fixtureStatus);
 
-    const events = mergeSecondYellowCardEvents(this.eventsForTimeline()).sort(
-      (a, b) => this.getTotalMinute(b) - this.getTotalMinute(a)
-    );
+    const events = mergeSecondYellowCardEvents(this.eventsForTimeline());
+    const scores = fixture?.data.score ?? {
+      halftime: undefined,
+      penalty: undefined,
+    };
+    const timelineEntries = buildEventTimeline(events, scores, 'descending');
+    const orderedEvents = timelineEntries
+      .filter((entry) => entry.type === 'event')
+      .map((entry) => entry.event);
 
-    const shootoutResults = this.getShootoutResults(events);
+    const shootoutResults = this.getShootoutResults(orderedEvents);
     const items: MatchTimelineItem[] = [];
-    const hasFirstHalf = hasFirstHalfEvents(
-      events,
-      fixture?.data.score.penalty
-    );
 
     if (isFinished) {
       items.push({ type: 'spacer', label: 'ENDE', key: 'end' });
     }
 
-    for (let index = 0; index < events.length; index++) {
-      const event = events[index];
-      const previousEvent = events[index - 1];
+    for (const entry of timelineEntries) {
+      if (entry.type === 'spacer') {
+        const boundary = TIMELINE_BOUNDARIES[entry.boundary];
 
-      if (
-        previousEvent &&
-        isPenaltyShootoutEvent(previousEvent, fixture?.data.score.penalty) &&
-        !isPenaltyShootoutEvent(event, fixture?.data.score.penalty)
-      ) {
         items.push({
           type: 'spacer',
-          label: 'ELFMETERSCHIESSEN',
-          key: 'penalty-shootout',
+          label: boundary.label,
+          key: boundary.key,
         });
-      }
 
-      if (
-        previousEvent &&
-        isExtraTimeEvent(
-          previousEvent,
-          fixture?.data.score.extratime,
-          fixture?.data.score.penalty
-        ) &&
-        !isExtraTimeEvent(
-          event,
-          fixture?.data.score.extratime,
-          fixture?.data.score.penalty
-        )
-      ) {
-        items.push({
-          type: 'spacer',
-          label: 'VERLÄNGERUNG',
-          key: 'extra-time',
-        });
-      }
-
-      if (
-        previousEvent &&
-        hasFirstHalf &&
-        isSecondHalfEvent(
-          previousEvent,
-          fixture?.data.score.halftime,
-          fixture?.data.score.penalty
-        ) &&
-        !isSecondHalfEvent(
-          event,
-          fixture?.data.score.halftime,
-          fixture?.data.score.penalty
-        )
-      ) {
-        items.push({
-          type: 'spacer',
-          label: 'HALBZEIT',
-          key: 'half-time',
-        });
+        continue;
       }
 
       items.push({
         type: 'event',
-        event,
-        shootoutResult: shootoutResults.get(event),
-        key: this.getEventKey(event),
+        event: entry.event,
+        shootoutResult: shootoutResults.get(entry.event),
+        key: this.getEventKey(entry.event),
       });
     }
 
@@ -430,9 +399,5 @@ export class MatchEventsComponent {
       event.type === 'Goal' &&
       event.detail !== 'Missed Penalty'
     );
-  }
-
-  private getTotalMinute(event: EventWithResult): number {
-    return event.time.elapsed + (event.time.extra ?? 0);
   }
 }

@@ -43,4 +43,23 @@ describe('fixture highlights', () => {
   it('returns no highlights when no events are available', () => {
     expect(filterFixtureHighlights()).toEqual([]);
   });
+
+  it('preserves source order for events in the same minute', () => {
+    const firstPenalty = createEvent('Goal', 'Penalty', 120);
+    const secondPenalty = createEvent('Goal', 'Penalty', 120);
+
+    expect(filterFixtureHighlights([firstPenalty, secondPenalty])).toEqual([
+      firstPenalty,
+      secondPenalty,
+    ]);
+  });
+
+  it('places first-half extra-time events after regulation stoppage time', () => {
+    const regulationStoppageGoal = createEvent('Goal', 'Normal Goal', 90, 4);
+    const firstExtraTimeGoal = createEvent('Goal', 'Normal Goal', 91);
+
+    expect(
+      filterFixtureHighlights([firstExtraTimeGoal, regulationStoppageGoal])
+    ).toEqual([regulationStoppageGoal, firstExtraTimeGoal]);
+  });
 });
