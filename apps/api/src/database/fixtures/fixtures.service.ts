@@ -1,7 +1,10 @@
 import moment from 'moment';
 import type { FilterQuery } from 'mongoose';
 
-import { COMPETITION_ROUNDS } from '@reelscore-sdk/constants';
+import {
+  COMPETITION_ROUNDS,
+  STATUS_VALUES_FINISHED,
+} from '@reelscore-sdk/constants';
 import { getSeason, TIMEZONE } from '@reelscore-sdk/helpers';
 import type {
   CompetitionId,
@@ -102,6 +105,34 @@ export class FixturesService {
         $lt: date,
       },
       $or: [{ 'teams.home.id': teamId }, { 'teams.away.id': teamId }],
+    })
+      .sort({ 'fixture.timestamp': -1 })
+      .limit(limit)
+      .lean<ExtendedFixtureDTO[]>()
+      .exec();
+  }
+
+  async findHeadToHeadFixtures(
+    fixture: ExtendedFixtureDTO,
+    limit = 5
+  ): Promise<ExtendedFixtureDTO[]> {
+    const homeTeamId = fixture.teams.home.id;
+    const awayTeamId = fixture.teams.away.id;
+
+    return Fixtures.find({
+      'fixture.status.short': { $in: STATUS_VALUES_FINISHED },
+      'score.fulltime.home': { $ne: null },
+      'score.fulltime.away': { $ne: null },
+      $or: [
+        {
+          'teams.home.id': homeTeamId,
+          'teams.away.id': awayTeamId,
+        },
+        {
+          'teams.home.id': awayTeamId,
+          'teams.away.id': homeTeamId,
+        },
+      ],
     })
       .sort({ 'fixture.timestamp': -1 })
       .limit(limit)

@@ -131,7 +131,7 @@ export class OverviewFixturesComponent {
       return 'error';
     }
 
-    if (this.visibleFixtures().length === 0) {
+    if (this.competitions().length === 0) {
       return 'empty';
     }
 

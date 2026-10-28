@@ -13,6 +13,7 @@ import {
   EventsStore,
   FixtureStandingsStore,
   FixtureStore,
+  HeadToHeadFixturesStore,
   LatestFixturesStore,
   StatisticsStore,
   TeamCoachesStore,
@@ -23,6 +24,7 @@ export class MatchDetailsFacade {
   private readonly standingsStore = inject(FixtureStandingsStore);
   private readonly analysesStore = inject(AnalysesStore);
   private readonly latestFixturesStore = inject(LatestFixturesStore);
+  private readonly headToHeadFixturesStore = inject(HeadToHeadFixturesStore);
   private readonly eventsStore = inject(EventsStore);
   private readonly statisticsStore = inject(StatisticsStore);
   private readonly teamCoachesStore = inject(TeamCoachesStore);
@@ -37,6 +39,9 @@ export class MatchDetailsFacade {
     () => this.detailsLoading() || this.analysesStore.isLoading()
   );
   public readonly latestFixtures = this.latestFixturesStore.latestFixtures;
+  public readonly headToHeadFixtures =
+    this.headToHeadFixturesStore.headToHeadFixtures;
+  public readonly headToHeadFixturesError = this.headToHeadFixturesStore.error;
   public readonly latestFixturesError = this.latestFixturesStore.error;
   public readonly events = this.eventsStore.events;
   public readonly eventsError = this.eventsStore.error;
@@ -73,6 +78,10 @@ export class MatchDetailsFacade {
 
   public readonly latestFixturesLoading = computed<boolean>(
     () => this.detailsLoading() || this.latestFixturesStore.isLoading()
+  );
+
+  public readonly headToHeadFixturesLoading = computed<boolean>(
+    () => this.detailsLoading() || this.headToHeadFixturesStore.isLoading()
   );
 
   public readonly hasNoStandings = computed<boolean>(() => {
