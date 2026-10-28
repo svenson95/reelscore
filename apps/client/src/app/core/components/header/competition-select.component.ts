@@ -7,7 +7,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import type { MatSelectChange } from '@angular/material/select';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import type { CompetitionData } from '@app/shared';
 import {
@@ -21,12 +21,7 @@ import {
 @Component({
   selector: 'nav[rs-competition-select]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ResponsiveImageComponent,
-  ],
+  imports: [MatFormFieldModule, MatSelectModule, ResponsiveImageComponent],
   styles: `
     :host ::ng-deep mat-form-field.mat-mdc-form-field-type-mat-select {
       .mat-mdc-form-field-subscript-wrapper { @apply hidden; }
@@ -77,13 +72,16 @@ import {
         hideSingleSelectionIndicator
         panelClass="competitionSelectMenu"
         [value]="selectedCompetition()?.url ?? null"
-        (selectionChange)="removeFocus($event)"
+        (selectionChange)="navigateToCompetition($event)"
       >
         @for (group of groups; track group.label) {
         <mat-optgroup [label]="group.label">
           @for (c of group.competitions; track c.id) {
           <mat-option [value]="c.url">
-            <a [routerLink]="['competition', c.url]">
+            <a
+              [attr.href]="competitionHref(c.url)"
+              (click)="handleCompetitionLinkClick($event)"
+            >
               <rs-responsive-image
                 class="competition-logo"
                 [source]="competitionLogo(c)"
@@ -105,11 +103,34 @@ import {
 export class CompetitionSelectComponent {
   readonly selectedCompetition = input.required<CompetitionData | undefined>();
 
+  private readonly router = inject(Router);
   private readonly themeService = inject(ThemeService);
 
   readonly groups = SELECT_COMPETITION_DATA;
 
-  removeFocus = (e: MatSelectChange) => e.source.close();
+  navigateToCompetition(event: MatSelectChange): void {
+    event.source.close();
+
+    void this.router.navigate(['competition', event.value]);
+  }
+
+  competitionHref(competitionUrl: string): string {
+    const urlTree = this.router.createUrlTree(['/competition', competitionUrl]);
+
+    return this.router.serializeUrl(urlTree);
+  }
+
+  handleCompetitionLinkClick(event: MouseEvent): void {
+    const hasModifierKey =
+      event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
+
+    if (event.button !== 0 || hasModifierKey) {
+      event.stopPropagation();
+      return;
+    }
+
+    event.preventDefault();
+  }
 
   competitionLogo = (c: CompetitionData) =>
     getCompetitionLogo(c.id, 24, 1, this.themeService.isSystemDark());
