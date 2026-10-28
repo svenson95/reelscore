@@ -51,4 +51,36 @@ describe('CompetitionSelectComponent', () => {
 
     expect(competitionLink).not.toBeNull();
   });
+
+  it('prevents the browser default for a regular left click', () => {
+    const event = new MouseEvent('click', {
+      button: 0,
+      cancelable: true,
+    });
+    const stopPropagation = jest.spyOn(event, 'stopPropagation');
+
+    fixture.componentInstance.handleCompetitionLinkClick(event);
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(stopPropagation).not.toHaveBeenCalled();
+  });
+
+  it('preserves modified and non-primary link clicks', () => {
+    const browserLinkClicks = [
+      new MouseEvent('click', { button: 0, ctrlKey: true }),
+      new MouseEvent('click', { button: 0, metaKey: true }),
+      new MouseEvent('click', { button: 0, shiftKey: true }),
+      new MouseEvent('click', { button: 0, altKey: true }),
+      new MouseEvent('click', { button: 1 }),
+    ];
+
+    for (const event of browserLinkClicks) {
+      const stopPropagation = jest.spyOn(event, 'stopPropagation');
+
+      fixture.componentInstance.handleCompetitionLinkClick(event);
+
+      expect(event.defaultPrevented).toBe(false);
+      expect(stopPropagation).toHaveBeenCalled();
+    }
+  });
 });
