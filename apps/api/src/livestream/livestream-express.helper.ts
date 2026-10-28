@@ -109,52 +109,23 @@ const pipeResponseBody = async (
   }
 };
 
-const transferResponseBody = (
+const transferResponseBody = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
   res: Response,
   signal: AbortSignal
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    const readNextChunk = (): void => {
-      if (signal.aborted) {
-        resolve();
-        return;
-      }
+): Promise<void> => {
+  while (!signal.aborted) {
+    const { done, value } = await reader.read();
 
-      void reader
-        .read()
-        .then(({ done, value }) => {
-          if (done || signal.aborted) {
-            resolve();
-            return;
-          }
+    if (done || signal.aborted) {
+      return;
+    }
 
-          if (res.write(Buffer.from(value))) {
-            readNextChunk();
-            return;
-          }
-
-          void once(res, 'drain', { signal }).then(readNextChunk, (error) => {
-            if (signal.aborted) {
-              resolve();
-              return;
-            }
-
-            reject(error);
-          });
-        })
-        .catch((error: unknown) => {
-          if (signal.aborted) {
-            resolve();
-            return;
-          }
-
-          reject(error);
-        });
-    };
-
-    readNextChunk();
-  });
+    if (!res.write(Buffer.from(value))) {
+      await once(res, 'drain', { signal });
+    }
+  }
+};
 
 const isRealtimeEnabled = (): boolean =>
   process.env['VERCEL_ENV'] !== 'production' &&

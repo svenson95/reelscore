@@ -71,10 +71,13 @@ describe('GET / team coaches', () => {
       }
     );
 
-    await request(app)
+    const response = await request(app)
       .get('/')
       .query({ teams: '85,42' })
       .expect(500)
       .expect({ message: 'Database error' });
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ message: 'Database error' });
   });
 });

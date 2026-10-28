@@ -14,7 +14,7 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  transformIgnorePatterns: [String.raw`node_modules/(?!.*\.mjs$)`],
   moduleNameMapper: {
     '^@reelscore-sdk/models$':
       '<rootDir>/../../node_modules/reelscore-sdk/dist/cjs/models/index.js',
