@@ -167,4 +167,27 @@ describe('event timeline helpers', () => {
         .map((entry) => entry.boundary)
     ).toEqual(['halftime', 'extra-time', 'penalty-shootout']);
   });
+
+  it('reverses source order for events in the same minute in report order', () => {
+    const firstPenalty = createMatchEvent({
+      time: { elapsed: 124, extra: null },
+      player: { id: 1, name: 'A. Hakimi' },
+    });
+    const secondPenalty = createMatchEvent({
+      time: { elapsed: 124, extra: null },
+      player: { id: 2, name: 'G. Martinelli' },
+    });
+    const events = [firstPenalty, secondPenalty];
+    const scores = { halftime: undefined, penalty: { home: 4, away: 3 } };
+
+    const ascendingEvents = buildEventTimeline(events, scores, 'ascending')
+      .filter((entry) => entry.type === 'event')
+      .map((entry) => entry.event);
+    const descendingEvents = buildEventTimeline(events, scores, 'descending')
+      .filter((entry) => entry.type === 'event')
+      .map((entry) => entry.event);
+
+    expect(ascendingEvents).toEqual([firstPenalty, secondPenalty]);
+    expect(descendingEvents).toEqual([secondPenalty, firstPenalty]);
+  });
 });

@@ -103,7 +103,7 @@ export function buildEventTimeline<TEvent extends EventWithResult>(
 
       return order === 'ascending'
         ? minuteDifference || sourceOrderDifference
-        : -minuteDifference || sourceOrderDifference;
+        : -minuteDifference || -sourceOrderDifference;
     })
     .map(({ event }) => event);
 
