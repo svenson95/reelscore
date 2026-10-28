@@ -11,6 +11,7 @@ import {
   EventsStore,
   FixtureStandingsStore,
   FixtureStore,
+  HeadToHeadFixturesStore,
   LatestFixturesStore,
   StatisticsStore,
   TeamCoachesStore,
@@ -31,6 +32,7 @@ describe('MatchDetailsFacade', () => {
   let standings: ReturnType<typeof createResourceState>;
   let evaluations: ReturnType<typeof createResourceState>;
   let latestFixtures: ReturnType<typeof createResourceState>;
+  let headToHeadFixtures: ReturnType<typeof createResourceState>;
   let analyses: ReturnType<typeof createResourceState>;
   let events: ReturnType<typeof createResourceState>;
   let statistics: ReturnType<typeof createResourceState>;
@@ -55,6 +57,13 @@ describe('MatchDetailsFacade', () => {
         {
           provide: LatestFixturesStore,
           useValue: { latestFixtures: latestFixtures.value, ...latestFixtures },
+        },
+        {
+          provide: HeadToHeadFixturesStore,
+          useValue: {
+            headToHeadFixtures: headToHeadFixtures.value,
+            ...headToHeadFixtures,
+          },
         },
         {
           provide: AnalysesStore,
@@ -83,6 +92,7 @@ describe('MatchDetailsFacade', () => {
     standings = createResourceState();
     evaluations = createResourceState();
     latestFixtures = createResourceState();
+    headToHeadFixtures = createResourceState();
     analyses = createResourceState();
     events = createResourceState();
     statistics = createResourceState();
@@ -98,6 +108,7 @@ describe('MatchDetailsFacade', () => {
     standings.isLoading.set(true);
     evaluations.isLoading.set(true);
     latestFixtures.isLoading.set(true);
+    headToHeadFixtures.isLoading.set(true);
     analyses.isLoading.set(true);
     events.isLoading.set(true);
     statistics.isLoading.set(true);
@@ -106,10 +117,11 @@ describe('MatchDetailsFacade', () => {
       facade.standingsLoading(),
       facade.evaluationsLoading(),
       facade.latestFixturesLoading(),
+      facade.headToHeadFixturesLoading(),
       facade.analysesLoading(),
       facade.eventsLoading(),
       facade.statisticsLoading(),
-    ]).toEqual([true, true, true, true, true, true]);
+    ]).toEqual([true, true, true, true, true, true, true]);
 
     standings.value.set({});
     evaluations.value.set({});

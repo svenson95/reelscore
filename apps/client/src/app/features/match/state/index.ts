@@ -2,6 +2,7 @@ import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { FixtureStore } from './fixture.store';
+import { HeadToHeadFixturesStore } from './head-to-head-fixtures.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
 import { StatisticsStore } from './statistics.store';
@@ -11,6 +12,7 @@ export * from './analyses.store';
 export * from './evaluations.store';
 export * from './events.store';
 export * from './fixture.store';
+export * from './head-to-head-fixtures.store';
 export * from './latest-fixtures.store';
 export * from './standings.store';
 export * from './statistics.store';
@@ -20,6 +22,7 @@ export const STORE_PROVIDERS = [
   EvaluationsStore,
   EventsStore,
   FixtureStore,
+  HeadToHeadFixturesStore,
   LatestFixturesStore,
   AnalysesStore,
   FixtureStandingsStore,

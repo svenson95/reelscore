@@ -35,6 +35,39 @@ describe(FixtureController.name, () => {
     ).rejects.toThrow('Fixture with id 404 not found');
   });
 
+  it('returns previous direct encounters for the requested fixture', async () => {
+    const fixture = createFixture(42);
+    const previousFixtures = [createFixture(41)];
+    jest.spyOn(FixtureService.prototype, 'findById').mockResolvedValue(fixture);
+    const findHeadToHeadFixtures = jest
+      .spyOn(FixturesService.prototype, 'findHeadToHeadFixtures')
+      .mockResolvedValue(previousFixtures);
+    jest
+      .spyOn(FixtureEvaluationsService.prototype, 'analyzeFixturePerformances')
+      .mockResolvedValue({ home: 'HIGH', away: 'LOW' });
+
+    await expect(
+      new FixtureController().getHeadToHead(42 as FixtureId)
+    ).resolves.toEqual([
+      {
+        ...previousFixtures[0],
+        evaluations: {
+          home: { performance: 'HIGH', analyses: [] },
+          away: { performance: 'LOW', analyses: [] },
+        },
+      },
+    ]);
+    expect(findHeadToHeadFixtures).toHaveBeenCalledWith(fixture);
+  });
+
+  it('throws when head-to-head fixture data cannot be found', async () => {
+    jest.spyOn(FixtureService.prototype, 'findById').mockResolvedValue(null);
+
+    await expect(
+      new FixtureController().getHeadToHead(404 as FixtureId)
+    ).rejects.toThrow('Fixture with id 404 not found');
+  });
+
   it('adds both team performances and reuses analysis for shared fixtures', async () => {
     const sharedFixture = createFixture(11, {
       home: { performance: 'MIDDLE', analyses: [] },

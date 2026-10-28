@@ -24,6 +24,7 @@ import {
   MatchFixtureAnalysesComponent,
   MatchFixtureDataComponent,
   MatchFixtureStandingsComponent,
+  MatchHeadToHeadComponent,
   MatchLatestFixturesComponent,
   MatchTeamCoachesComponent,
 } from './base/components';
@@ -42,6 +43,7 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
     MatchFixtureDataComponent,
     MatchFixtureStandingsComponent,
     MatchLatestFixturesComponent,
+    MatchHeadToHeadComponent,
     MatchTeamCoachesComponent,
     MatchFixtureAnalysesComponent,
     MatchEventsComponent,
@@ -127,6 +129,13 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
             [latestFixtures]="latestFixtures()"
             [isLoading]="latestFixturesLoading()"
             [error]="latestFixturesError()"
+          />
+
+          <rs-match-head-to-head
+            [fixture]="fixtureData()"
+            [fixtures]="headToHeadFixtures()"
+            [isLoading]="headToHeadFixturesLoading()"
+            [error]="headToHeadFixturesError()"
           />
         </div>
       </mat-tab>
@@ -232,6 +241,8 @@ export class MatchDetailsComponent {
   readonly teamCoaches = this.facade.teamCoaches;
   readonly teamCoachesError = this.facade.teamCoachesError;
   readonly latestFixtures = this.facade.latestFixtures;
+  readonly headToHeadFixtures = this.facade.headToHeadFixtures;
+  readonly headToHeadFixturesError = this.facade.headToHeadFixturesError;
   readonly standingsError = this.facade.standingsError;
   readonly latestFixturesError = this.facade.latestFixturesError;
   readonly analysesError = this.facade.analysesError;
@@ -259,6 +270,10 @@ export class MatchDetailsComponent {
 
   readonly latestFixturesLoading = computed<boolean>(
     () => this.forceLoading() || this.facade.latestFixturesLoading()
+  );
+
+  readonly headToHeadFixturesLoading = computed<boolean>(
+    () => this.forceLoading() || this.facade.headToHeadFixturesLoading()
   );
 
   readonly analysesLoading = computed<boolean>(
