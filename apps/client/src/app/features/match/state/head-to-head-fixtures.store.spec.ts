@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
@@ -50,5 +50,42 @@ describe('HeadToHeadFixturesStore', () => {
 
     expect(store.headToHeadFixtures()).toBeNull();
     expect(store.isLoading()).toBe(false);
+  });
+
+  it('ignores an error from a previous match after resetting', () => {
+    const response$ = new Subject<ExtendedFixtureDTO[]>();
+    httpMock.getHeadToHeadFixtures.mockReturnValue(response$);
+
+    store.loadHeadToHeadFixtures(42);
+    store.reset();
+    response$.error(new Error('Obsolete request failed'));
+
+    expect(store.error()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+  });
+
+  it('keeps existing encounters and exposes an error when a refresh fails', () => {
+    const fixtures = [EXAMPLE_FIXTURE];
+    httpMock.getHeadToHeadFixtures.mockReturnValueOnce(of(fixtures));
+    store.loadHeadToHeadFixtures(42);
+
+    const error = new Error('Head-to-head request failed');
+    httpMock.getHeadToHeadFixtures.mockReturnValueOnce(throwError(() => error));
+    store.loadHeadToHeadFixtures(42, true);
+
+    expect(store.headToHeadFixtures()).toBe(fixtures);
+    expect(store.isLoading()).toBe(false);
+    expect(store.error()).toBe(error);
+  });
+
+  it('clears encounters and exposes an error when the initial request fails', () => {
+    const error = new Error('Head-to-head request failed');
+    httpMock.getHeadToHeadFixtures.mockReturnValue(throwError(() => error));
+
+    store.loadHeadToHeadFixtures(42);
+
+    expect(store.headToHeadFixtures()).toBeNull();
+    expect(store.isLoading()).toBe(false);
+    expect(store.error()).toBe(error);
   });
 });

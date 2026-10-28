@@ -60,6 +60,27 @@ describe(FixtureController.name, () => {
     expect(findHeadToHeadFixtures).toHaveBeenCalledWith(fixture);
   });
 
+  it('preserves stored performances when statistics are unavailable', async () => {
+    const fixture = createFixture(42);
+    const previousFixture = createFixture(41, {
+      home: { performance: 'HIGH', analyses: [] },
+    });
+    jest.spyOn(FixtureService.prototype, 'findById').mockResolvedValue(fixture);
+    jest
+      .spyOn(FixturesService.prototype, 'findHeadToHeadFixtures')
+      .mockResolvedValue([previousFixture]);
+    jest
+      .spyOn(FixtureEvaluationsService.prototype, 'analyzeFixturePerformances')
+      .mockResolvedValue({
+        home: 'NO_STATISTICS_AVAILABLE',
+        away: 'NO_STATISTICS_AVAILABLE',
+      });
+
+    const result = await new FixtureController().getHeadToHead(42 as FixtureId);
+
+    expect(result[0].evaluations).toBe(previousFixture.evaluations);
+  });
+
   it('throws when head-to-head fixture data cannot be found', async () => {
     jest.spyOn(FixtureService.prototype, 'findById').mockResolvedValue(null);
 

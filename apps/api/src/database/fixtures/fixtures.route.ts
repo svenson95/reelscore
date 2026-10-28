@@ -35,7 +35,8 @@ fixtures.get(
   '/head-to-head',
   async (req: Request, res: Response, next: NextFunction) => {
     const fixture = req.query.fixture;
-    const parsedFixtureId = typeof fixture === 'string' ? Number(fixture) : NaN;
+    const parsedFixtureId =
+      typeof fixture === 'string' ? Number(fixture) : Number.NaN;
     if (!Number.isSafeInteger(parsedFixtureId) || parsedFixtureId <= 0) {
       return res.status(400).json({
         message: 'Invalid fixture query parameter',

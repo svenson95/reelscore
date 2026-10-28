@@ -61,6 +61,17 @@ describe('GET /head-to-head', () => {
       .expect({ message: 'Invalid fixture query parameter' });
 
     expect(FixtureController).not.toHaveBeenCalled();
+
+    await request(app)
+      .get('/head-to-head')
+      .expect(400)
+      .expect({ message: 'Invalid fixture query parameter' });
+
+    await request(app)
+      .get('/head-to-head')
+      .query({ fixture: '-42' })
+      .expect(400)
+      .expect({ message: 'Invalid fixture query parameter' });
   });
 
   it('returns previous direct encounters for a valid fixture id', async () => {
@@ -71,5 +82,20 @@ describe('GET /head-to-head', () => {
       .expect([]);
 
     expect(FixtureController).toHaveBeenCalledTimes(1);
+  });
+
+  it('delegates controller errors to Express error handling', async () => {
+    const error = new Error('Head-to-head lookup failed');
+    jest.mocked(FixtureController).mockImplementationOnce(
+      () =>
+        ({
+          getHeadToHead: jest.fn().mockRejectedValue(error),
+        } as never)
+    );
+
+    await request(app)
+      .get('/head-to-head')
+      .query({ fixture: '42' })
+      .expect(500);
   });
 });
