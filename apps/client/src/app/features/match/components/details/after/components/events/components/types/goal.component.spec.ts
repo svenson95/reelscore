@@ -19,11 +19,14 @@ describe('EventGoalComponent', () => {
     });
 
     expect(
-      readElementText(componentFixture.nativeElement.querySelector('.top'))
+      readElementText(componentFixture.nativeElement.querySelector('.player'))
     ).toBe('Scorer');
     expect(
       readElementText(componentFixture.nativeElement.querySelector('.assist'))
     ).toBe('Vorlage: Assist');
+    expect(
+      componentFixture.nativeElement.querySelector('.assist').parentElement
+    ).toBe(componentFixture.nativeElement.querySelector('.details'));
 
     componentFixture.componentRef.setInput(
       'event',
@@ -44,7 +47,7 @@ describe('EventGoalComponent', () => {
     });
 
     expect(
-      readElementText(componentFixture.nativeElement.querySelector('.top'))
+      readElementText(componentFixture.nativeElement.querySelector('.player'))
     ).toBe('Scorer');
     expect(
       readElementText(componentFixture.nativeElement.querySelector('.bottom'))

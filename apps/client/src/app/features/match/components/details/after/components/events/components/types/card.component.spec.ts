@@ -40,8 +40,17 @@ describe('EventCardComponent', () => {
       expect(readElementText(componentFixture.nativeElement)).toBe(
         ('Scorer ' + label).trim()
       );
+      expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
     }
   );
+
+  it('shows the player image for a red card', () => {
+    const componentFixture = renderComponent(EventCardComponent, {
+      event: createMatchEvent({ type: 'Card', detail: 'Red Card' }),
+    });
+
+    expect(componentFixture.nativeElement.querySelector('img')).not.toBeNull();
+  });
 
   it('shows the translated second-yellow-card detail', () => {
     const componentFixture = renderComponent(EventCardComponent, {
@@ -55,5 +64,6 @@ describe('EventCardComponent', () => {
     expect(readElementText(componentFixture.nativeElement)).toBe(
       'Scorer Gelb-Rote Karte'
     );
+    expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
   });
 });

@@ -29,7 +29,7 @@ describe('mergeSecondYellowCardEvents', () => {
     }
   );
 
-  it('leaves cards from different players or minutes separate', () => {
+  it('marks a later dismissal for the previously cautioned player only', () => {
     const yellowCard = createMatchEvent({
       type: 'Card',
       detail: 'Yellow Card',
@@ -51,7 +51,11 @@ describe('mergeSecondYellowCardEvents', () => {
         differentPlayerRedCard,
         laterRedCard,
       ])
-    ).toEqual([yellowCard, differentPlayerRedCard, laterRedCard]);
+    ).toEqual([
+      yellowCard,
+      differentPlayerRedCard,
+      { ...laterRedCard, comments: SECOND_YELLOW_CARD_COMMENT },
+    ]);
   });
 
   it('does not merge different teams, non-card events, or unidentified players', () => {
@@ -101,6 +105,24 @@ describe('mergeSecondYellowCardEvents', () => {
 
     expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
       { ...yellowCard, comments: SECOND_YELLOW_CARD_COMMENT },
+    ]);
+  });
+
+  it('marks a later red card as second yellow when the same player was cautioned earlier', () => {
+    const yellowCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+      time: { elapsed: 45, extra: null },
+    });
+    const redCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Red Card',
+      time: { elapsed: 91, extra: null },
+    });
+
+    expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
+      yellowCard,
+      { ...redCard, comments: SECOND_YELLOW_CARD_COMMENT },
     ]);
   });
 

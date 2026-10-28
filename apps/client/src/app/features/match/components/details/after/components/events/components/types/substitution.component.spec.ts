@@ -26,6 +26,7 @@ describe('EventSubstitutionComponent', () => {
       'Incoming',
       'Scorer',
     ]);
+    expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
 
     componentFixture.componentRef.setInput(
       'event',
@@ -40,5 +41,6 @@ describe('EventSubstitutionComponent', () => {
       'Replacement',
       'Outgoing',
     ]);
+    expect(componentFixture.nativeElement.querySelector('img')).toBeNull();
   });
 });

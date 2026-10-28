@@ -33,7 +33,30 @@ export function mergeSecondYellowCardEvents(
     });
   }
 
-  return mergedEvents;
+  return mergedEvents.map((event) => {
+    if (
+      event.type !== 'Card' ||
+      event.detail !== 'Red Card' ||
+      event.comments === SECOND_YELLOW_CARD_COMMENT
+    ) {
+      return event;
+    }
+
+    const playerIdentifier = getPlayerIdentifier(event);
+    const hasEarlierYellowCard = events.some(
+      (candidate) =>
+        candidate.type === 'Card' &&
+        candidate.detail === 'Yellow Card' &&
+        candidate.team.id === event.team.id &&
+        playerIdentifier !== null &&
+        getPlayerIdentifier(candidate) === playerIdentifier &&
+        getTotalMinute(candidate) < getTotalMinute(event)
+    );
+
+    return hasEarlierYellowCard
+      ? { ...event, comments: SECOND_YELLOW_CARD_COMMENT }
+      : event;
+  });
 }
 
 function isSecondYellowCardPair(

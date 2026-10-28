@@ -11,12 +11,22 @@ import type {
   EventResult,
   FixtureDTO,
   FixtureHighlights,
-  Goals,
   HighlightEvent,
   HighlightItem,
   MatchTeams,
   TeamId,
 } from '@reelscore-sdk/models';
+
+import {
+  hasFirstHalfEvents,
+  isExtraTimeEvent,
+  isPenaltyShootoutEvent,
+  isSecondHalfEvent,
+} from '../../../utils/event-timeline.helper';
+
+type MatchHighlightItem =
+  | HighlightItem
+  | { kind: 'spacer'; type: 'extra-time'; label: string };
 
 @Component({
   selector: 'rs-match-highlights',
@@ -30,7 +40,7 @@ import type {
     }
 
     .team-column {
-      @apply flex-1;
+      @apply flex min-w-0 flex-1 items-center gap-2 overflow-hidden;
     }
 
     .result-column {
@@ -38,11 +48,15 @@ import type {
     }
 
     .event-time {
-      @apply text-rs-color-text-2;
+      @apply shrink-0 text-rs-color-text-2;
+    }
+
+    .event-player {
+      @apply min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
     }
 
     .team-column:first-of-type {
-      @apply text-right;
+      @apply justify-end text-right;
     }
 
     .red-card {
@@ -77,7 +91,6 @@ import type {
       <div class="team-column">
         @if (isHomeEvent(item)) {
         <span class="event-player">{{ item.player.name }}</span>
-        &nbsp;
         <span class="event-time">
           {{ item.time.elapsed + (item.time.extra ?? 0) }}'
         </span>
@@ -99,7 +112,6 @@ import type {
         <span class="event-time">
           {{ item.time.elapsed + (item.time.extra ?? 0) }}'
         </span>
-        &nbsp;
         <span class="event-player">{{ item.player.name }}</span>
         }
       </div>
@@ -111,7 +123,7 @@ export class MatchHighlightsComponent {
   readonly data = input.required<FixtureDTO>();
   readonly highlights = input.required<FixtureHighlights>();
 
-  readonly events = computed<HighlightItem[]>(() => {
+  readonly events = computed<MatchHighlightItem[]>(() => {
     const highlights = this.highlights();
     const fixture = this.data();
 
@@ -128,30 +140,27 @@ export class MatchHighlightsComponent {
   isMissedPenalty = (event: HighlightEvent): boolean =>
     event.type === 'Goal' && event.detail === 'Missed Penalty';
 
-  private hasFirstHalfEvents(events: EventDTO[]): boolean {
-    return events.some(
-      (e) => e.time.elapsed <= 45 && !this.isPenaltyShootoutEvent(e)
-    );
-  }
-
   private mappedEventsWithSpacers(
     events: EventDTO[],
     fixture: FixtureDTO
-  ): HighlightItem[] {
+  ): MatchHighlightItem[] {
     const mappedEvents = this.eventsWithResult(events, fixture.teams);
     const halftime = fixture.score.halftime;
+    const extraTimeScore = fixture.score.extratime;
+    const penaltyScore = fixture.score.penalty;
 
-    const hasFirstHalfEvents = this.hasFirstHalfEvents(mappedEvents);
+    const hasFirstHalf = hasFirstHalfEvents(mappedEvents, penaltyScore);
 
-    const result: HighlightItem[] = [];
+    const result: MatchHighlightItem[] = [];
     let hasHalftimeSpacer = false;
     let hasPenaltyShootoutSpacer = false;
+    let hasExtraTimeSpacer = false;
 
     for (const event of mappedEvents) {
       if (
-        hasFirstHalfEvents &&
+        hasFirstHalf &&
         !hasHalftimeSpacer &&
-        this.isSecondHalfEvent(event, halftime)
+        isSecondHalfEvent(event, halftime, penaltyScore)
       ) {
         result.push({
           kind: 'spacer',
@@ -162,7 +171,10 @@ export class MatchHighlightsComponent {
         hasHalftimeSpacer = true;
       }
 
-      if (!hasPenaltyShootoutSpacer && this.isPenaltyShootoutEvent(event)) {
+      if (
+        !hasPenaltyShootoutSpacer &&
+        isPenaltyShootoutEvent(event, penaltyScore)
+      ) {
         result.push({
           kind: 'spacer',
           type: 'penalty-shootout',
@@ -170,6 +182,18 @@ export class MatchHighlightsComponent {
         });
 
         hasPenaltyShootoutSpacer = true;
+      }
+
+      if (
+        isExtraTimeEvent(event, extraTimeScore, penaltyScore) &&
+        !hasExtraTimeSpacer
+      ) {
+        result.push({
+          kind: 'spacer',
+          type: 'extra-time',
+          label: 'Verlängerung',
+        });
+        hasExtraTimeSpacer = true;
       }
 
       result.push(event);
@@ -189,38 +213,6 @@ export class MatchHighlightsComponent {
     }));
   }
 
-  private isPossibleSecondHalfBoundaryEvent(event: HighlightEvent): boolean {
-    return (
-      event.type === 'Goal' &&
-      event.time.elapsed >= 35 &&
-      event.time.elapsed <= 50
-    );
-  }
-
-  private isResultAfterHalftime(result: EventResult, halftime: Goals): boolean {
-    if (halftime.home === null || halftime.away === null) return false;
-
-    return result.home > halftime.home || result.away > halftime.away;
-  }
-
-  private isSecondHalfEvent(event: HighlightEvent, halftime: Goals): boolean {
-    if (this.isPenaltyShootoutEvent(event)) return false;
-
-    if (event.time.elapsed > 45) return true;
-
-    if (!this.isPossibleSecondHalfBoundaryEvent(event)) return false;
-
-    return this.isResultAfterHalftime(event.result, halftime);
-  }
-
-  private isPenaltyShootoutEvent(event: EventDTO): boolean {
-    return (
-      event.time.elapsed >= 120 &&
-      event.type === 'Goal' &&
-      ['Penalty', 'Missed Penalty'].includes(event.detail)
-    );
-  }
-
   private getTeamGoals(
     events: EventDTO[],
     event: EventDTO,
@@ -229,7 +221,7 @@ export class MatchHighlightsComponent {
   ): EventResult {
     if (teams === undefined) throw new Error('Teams not found in fixture');
 
-    if (this.isPenaltyShootoutEvent(event)) {
+    if (isPenaltyShootoutEvent(event, this.data().score.penalty)) {
       return this.getPenaltyShootoutGoals(events, eventIndex, teams);
     }
 
@@ -245,7 +237,7 @@ export class MatchHighlightsComponent {
       (e) =>
         e.type === 'Goal' &&
         e.detail !== 'Missed Penalty' &&
-        !this.isPenaltyShootoutEvent(e)
+        !isPenaltyShootoutEvent(e, this.data().score.penalty)
     );
 
     const elapsed = goals.filter((e) => timeTotal(e) <= timeTotal(event));
@@ -265,7 +257,7 @@ export class MatchHighlightsComponent {
       .slice(0, eventIndex + 1)
       .filter(
         (event) =>
-          this.isPenaltyShootoutEvent(event) &&
+          isPenaltyShootoutEvent(event, this.data().score.penalty) &&
           event.detail !== 'Missed Penalty'
       );
 

@@ -90,4 +90,32 @@ describe('MatchHighlightsComponent', () => {
       componentFixture.nativeElement.querySelector('.event-row')
     ).toBeNull();
   });
+
+  it('separates extra-time and shootout highlights', () => {
+    const componentFixture = renderComponent(MatchHighlightsComponent, {
+      data: {
+        ...EXAMPLE_FIXTURE,
+        score: {
+          ...EXAMPLE_FIXTURE.score,
+          extratime: { home: 2, away: 1 },
+          penalty: { home: 5, away: 4 },
+        },
+      },
+      highlights: [
+        createMatchEvent({ time: { elapsed: 90, extra: 2 } }),
+        createMatchEvent({ time: { elapsed: 105, extra: 1 } }),
+        createMatchEvent({
+          detail: 'Penalty',
+          time: { elapsed: 120, extra: 1 },
+        }),
+      ],
+    });
+
+    expect(
+      readElementTexts(
+        componentFixture.nativeElement,
+        '.highlight-spacer-label'
+      )
+    ).toEqual(['Verlängerung', 'Elfmeterschießen']);
+  });
 });
