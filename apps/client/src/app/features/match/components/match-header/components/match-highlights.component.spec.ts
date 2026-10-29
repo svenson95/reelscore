@@ -8,6 +8,8 @@ import {
   renderComponent,
 } from '@testing/client';
 
+import { filterFixtureHighlights } from '@lib/shared';
+
 import { MatchHighlightsComponent } from './match-highlights.component';
 
 describe('MatchHighlightsComponent', () => {
@@ -97,12 +99,13 @@ describe('MatchHighlightsComponent', () => {
         ...EXAMPLE_FIXTURE,
         score: {
           ...EXAMPLE_FIXTURE.score,
-          extratime: { home: 2, away: 1 },
+          extratime: { home: null, away: null },
           penalty: { home: 5, away: 4 },
         },
       },
       highlights: [
         createMatchEvent({ time: { elapsed: 90, extra: 2 } }),
+        createMatchEvent({ time: { elapsed: 91, extra: null } }),
         createMatchEvent({ time: { elapsed: 105, extra: 1 } }),
         createMatchEvent({
           detail: 'Penalty',
@@ -117,5 +120,31 @@ describe('MatchHighlightsComponent', () => {
         '.highlight-spacer-label'
       )
     ).toEqual(['Verlängerung', 'Elfmeterschießen']);
+  });
+
+  it('keeps same-minute shootout kicks in provider order', () => {
+    const componentFixture = renderComponent(MatchHighlightsComponent, {
+      data: {
+        ...EXAMPLE_FIXTURE,
+        score: {
+          ...EXAMPLE_FIXTURE.score,
+          penalty: { home: 5, away: 4 },
+        },
+      },
+      highlights: filterFixtureHighlights([
+        createMatchEvent({
+          time: { elapsed: 120, extra: null },
+          player: { id: 1, name: 'Hakimi' },
+        }),
+        createMatchEvent({
+          time: { elapsed: 120, extra: null },
+          player: { id: 2, name: 'Martinelli' },
+        }),
+      ]),
+    });
+
+    expect(
+      readElementTexts(componentFixture.nativeElement, '.event-player')
+    ).toEqual(['Hakimi', 'Martinelli']);
   });
 });

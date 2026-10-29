@@ -14,10 +14,9 @@ import type { EventWithResult } from '@reelscore-sdk/models';
 
 import { FixtureStore } from '../../../../../state';
 import {
-  hasFirstHalfEvents,
-  isExtraTimeEvent,
+  buildEventTimeline,
+  type EventTimelineBoundary,
   isPenaltyShootoutEvent,
-  isSecondHalfEvent,
 } from '../../../../../utils/event-timeline.helper';
 
 import { MatchEventComponent } from './components';
@@ -28,6 +27,18 @@ import {
   mergeSecondYellowCardEvents,
   SECOND_YELLOW_CARD_COMMENT,
 } from './second-yellow-card.helper';
+
+const TIMELINE_BOUNDARIES: Record<
+  EventTimelineBoundary,
+  { label: string; key: string }
+> = {
+  halftime: { label: 'HALBZEIT', key: 'half-time' },
+  'extra-time': { label: 'VERLÄNGERUNG', key: 'extra-time' },
+  'penalty-shootout': {
+    label: 'ELFMETERSCHIESSEN',
+    key: 'penalty-shootout',
+  },
+};
 
 @Component({
   selector: 'rs-match-events',
@@ -41,10 +52,12 @@ import {
     }
 
     .event-row { @apply flex gap-4 items-center; }
-    .event-row > .team { @apply flex-1; }
+    .event-row > .team { @apply flex flex-1 items-center; }
+    .event-content-home,
+    .event-content-away { @apply flex-1; }
     .event-icon { @apply flex min-w-8 shrink-0 items-center justify-center; }
 
-    .home { @apply text-right; }
+    .home { @apply justify-end text-right; }
     .time { @apply text-rs-font-size-body-3; }
     .result { @apply text-rs-font-size-body-3; }
 
@@ -69,22 +82,23 @@ import {
     .red-card { @apply bg-rs-color-red; }
 
     .card-stack {
-      @apply relative inline-block h-5 w-4 overflow-hidden;
+      @apply relative inline-block h-5 w-5;
     }
 
-    .card-stack::before,
-    .card-stack::after {
-      content: '';
+    .card-stack .card-icon {
       @apply absolute h-4 w-2.5 rounded-[2px] border border-black/10;
       transform: rotate(-8deg);
     }
 
-    .card-stack::before {
-      @apply left-[-7px] top-0 z-0 bg-yellow-400;
+    .card-stack .yellow-card {
+      @apply left-0 top-0 z-0;
     }
 
-    .card-stack::after {
-      @apply right-0 bottom-0 z-10 bg-rs-color-red;
+    .card-stack .red-card {
+      @apply left-1 top-1 z-10;
+    }
+
+    .event-icon.away-card .card-icon {
       transform: rotate(8deg);
     }
 
@@ -159,7 +173,7 @@ import {
         }
       </div>
 
-      <div class="event-icon">
+      <div class="event-icon" [class.away-card]="event.team.id === awayId">
         @if (event.type === 'Goal' && event.detail !== 'Missed Penalty') { @let
         eventResult = item.shootoutResult ?? event.result;
 
@@ -175,7 +189,10 @@ import {
         } @else if (event.detail === 'Missed Penalty') {
         <mat-icon>close</mat-icon>
         } @else if (event.type === 'Card' && isSecondYellowCard(event)) {
-        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte"></span>
+        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte">
+          <span class="card-icon yellow-card" aria-hidden="true"></span>
+          <span class="card-icon red-card" aria-hidden="true"></span>
+        </span>
         } @else if (event.type === 'Card' && event.detail === 'Yellow Card') {
         <span
           class="card-icon yellow-card"
@@ -191,7 +208,7 @@ import {
         } @else {
         <mat-icon aria-hidden="true">
           @switch(event.type) { @case('subst') { sync } @case('Card') { style }
-          @case('Var') { visibility } }
+          @case('Var') { live_tv } }
         </mat-icon>
         }
       </div>
@@ -236,83 +253,41 @@ export class MatchEventsComponent {
     const fixtureStatus = fixture?.data.fixture.status.short ?? '';
     const isFinished = STATUS_VALUES_FINISHED.includes(fixtureStatus);
 
-    const events = mergeSecondYellowCardEvents(this.eventsForTimeline()).sort(
-      (a, b) => this.getTotalMinute(b) - this.getTotalMinute(a)
-    );
+    const events = mergeSecondYellowCardEvents(this.eventsForTimeline());
+    const scores = fixture?.data.score ?? {
+      halftime: undefined,
+      penalty: undefined,
+    };
+    const timelineEntries = buildEventTimeline(events, scores, 'descending');
+    const orderedEvents = timelineEntries
+      .filter((entry) => entry.type === 'event')
+      .map((entry) => entry.event);
 
-    const shootoutResults = this.getShootoutResults(events);
+    const shootoutResults = this.getShootoutResults(orderedEvents);
     const items: MatchTimelineItem[] = [];
-    const hasFirstHalf = hasFirstHalfEvents(
-      events,
-      fixture?.data.score.penalty
-    );
 
     if (isFinished) {
       items.push({ type: 'spacer', label: 'ENDE', key: 'end' });
     }
 
-    for (let index = 0; index < events.length; index++) {
-      const event = events[index];
-      const previousEvent = events[index - 1];
+    for (const entry of timelineEntries) {
+      if (entry.type === 'spacer') {
+        const boundary = TIMELINE_BOUNDARIES[entry.boundary];
 
-      if (
-        previousEvent &&
-        isPenaltyShootoutEvent(previousEvent, fixture?.data.score.penalty) &&
-        !isPenaltyShootoutEvent(event, fixture?.data.score.penalty)
-      ) {
         items.push({
           type: 'spacer',
-          label: 'ELFMETERSCHIESSEN',
-          key: 'penalty-shootout',
+          label: boundary.label,
+          key: boundary.key,
         });
-      }
 
-      if (
-        previousEvent &&
-        isExtraTimeEvent(
-          previousEvent,
-          fixture?.data.score.extratime,
-          fixture?.data.score.penalty
-        ) &&
-        !isExtraTimeEvent(
-          event,
-          fixture?.data.score.extratime,
-          fixture?.data.score.penalty
-        )
-      ) {
-        items.push({
-          type: 'spacer',
-          label: 'VERLÄNGERUNG',
-          key: 'extra-time',
-        });
-      }
-
-      if (
-        previousEvent &&
-        hasFirstHalf &&
-        isSecondHalfEvent(
-          previousEvent,
-          fixture?.data.score.halftime,
-          fixture?.data.score.penalty
-        ) &&
-        !isSecondHalfEvent(
-          event,
-          fixture?.data.score.halftime,
-          fixture?.data.score.penalty
-        )
-      ) {
-        items.push({
-          type: 'spacer',
-          label: 'HALBZEIT',
-          key: 'half-time',
-        });
+        continue;
       }
 
       items.push({
         type: 'event',
-        event,
-        shootoutResult: shootoutResults.get(event),
-        key: this.getEventKey(event),
+        event: entry.event,
+        shootoutResult: shootoutResults.get(entry.event),
+        key: this.getEventKey(entry.event),
       });
     }
 
@@ -424,9 +399,5 @@ export class MatchEventsComponent {
       event.type === 'Goal' &&
       event.detail !== 'Missed Penalty'
     );
-  }
-
-  private getTotalMinute(event: EventWithResult): number {
-    return event.time.elapsed + (event.time.extra ?? 0);
   }
 }

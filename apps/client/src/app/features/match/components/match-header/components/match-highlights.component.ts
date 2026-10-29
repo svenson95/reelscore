@@ -12,21 +12,25 @@ import type {
   FixtureDTO,
   FixtureHighlights,
   HighlightEvent,
-  HighlightItem,
   MatchTeams,
   TeamId,
 } from '@reelscore-sdk/models';
 
 import {
-  hasFirstHalfEvents,
-  isExtraTimeEvent,
+  buildEventTimeline,
+  type EventTimelineBoundary,
   isPenaltyShootoutEvent,
-  isSecondHalfEvent,
 } from '../../../utils/event-timeline.helper';
 
 type MatchHighlightItem =
-  | HighlightItem
-  | { kind: 'spacer'; type: 'extra-time'; label: string };
+  | HighlightEvent
+  | { kind: 'spacer'; type: EventTimelineBoundary; label: string };
+
+const TIMELINE_BOUNDARY_LABELS: Record<EventTimelineBoundary, string> = {
+  halftime: 'Halbzeit',
+  'extra-time': 'Verlängerung',
+  'penalty-shootout': 'Elfmeterschießen',
+};
 
 @Component({
   selector: 'rs-match-highlights',
@@ -145,61 +149,17 @@ export class MatchHighlightsComponent {
     fixture: FixtureDTO
   ): MatchHighlightItem[] {
     const mappedEvents = this.eventsWithResult(events, fixture.teams);
-    const halftime = fixture.score.halftime;
-    const extraTimeScore = fixture.score.extratime;
-    const penaltyScore = fixture.score.penalty;
 
-    const hasFirstHalf = hasFirstHalfEvents(mappedEvents, penaltyScore);
-
-    const result: MatchHighlightItem[] = [];
-    let hasHalftimeSpacer = false;
-    let hasPenaltyShootoutSpacer = false;
-    let hasExtraTimeSpacer = false;
-
-    for (const event of mappedEvents) {
-      if (
-        hasFirstHalf &&
-        !hasHalftimeSpacer &&
-        isSecondHalfEvent(event, halftime, penaltyScore)
-      ) {
-        result.push({
-          kind: 'spacer',
-          type: 'halftime',
-          label: 'Halbzeit',
-        });
-
-        hasHalftimeSpacer = true;
-      }
-
-      if (
-        !hasPenaltyShootoutSpacer &&
-        isPenaltyShootoutEvent(event, penaltyScore)
-      ) {
-        result.push({
-          kind: 'spacer',
-          type: 'penalty-shootout',
-          label: 'Elfmeterschießen',
-        });
-
-        hasPenaltyShootoutSpacer = true;
-      }
-
-      if (
-        isExtraTimeEvent(event, extraTimeScore, penaltyScore) &&
-        !hasExtraTimeSpacer
-      ) {
-        result.push({
-          kind: 'spacer',
-          type: 'extra-time',
-          label: 'Verlängerung',
-        });
-        hasExtraTimeSpacer = true;
-      }
-
-      result.push(event);
-    }
-
-    return result;
+    return buildEventTimeline(mappedEvents, fixture.score, 'ascending').map(
+      (entry) =>
+        entry.type === 'spacer'
+          ? {
+              kind: 'spacer',
+              type: entry.boundary,
+              label: TIMELINE_BOUNDARY_LABELS[entry.boundary],
+            }
+          : entry.event
+    );
   }
 
   private eventsWithResult(
