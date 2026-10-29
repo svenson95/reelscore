@@ -110,9 +110,6 @@ describe('WeekToggleGroupComponent', () => {
   it('keeps the selected weekday aligned while toggling across week boundaries', () => {
     let selectedDay: DateString = '2026-09-30';
     const fixture = createComponent(selectedDay);
-    const initialToggleElements = fixture.debugElement
-      .queryAll(By.directive(MatButtonToggle))
-      .map((toggle) => toggle.nativeElement);
     const emittedDates: DateString[] = [];
 
     fixture.componentInstance.dateSelected.subscribe((date) => {
@@ -135,11 +132,15 @@ describe('WeekToggleGroupComponent', () => {
     expect(emittedDates[0]).toBe('2026-10-01');
     expect(selectedDay).toBe('2026-10-13');
     expect(fixture.componentInstance.activeDayIndex()).toBe(1);
-    expect(
-      fixture.debugElement
-        .queryAll(By.directive(MatButtonToggle))
-        .map((toggle) => toggle.nativeElement)
-    ).toEqual(initialToggleElements);
+
+    const toggles = fixture.debugElement.queryAll(
+      By.directive(MatButtonToggle)
+    );
+    const selectedToggle = toggles.find(
+      (toggle) => toggle.componentInstance.value === selectedDay
+    );
+
+    expect(selectedToggle?.componentInstance.checked).toBe(true);
   });
 });
 

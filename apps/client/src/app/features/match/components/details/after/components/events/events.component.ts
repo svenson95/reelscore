@@ -48,7 +48,7 @@ const TIMELINE_BOUNDARIES: Record<
     :host {
       @apply flex flex-col
         bg-rs-button-bg rounded-border2 shadow-rs
-        mx-3 mb-3 mt-rs1 gap-2 py-rs2;
+        mx-3 mb-3 mt-rs1 gap-4 py-rs2;
     }
 
     .event-row { @apply flex gap-4 items-center; }
