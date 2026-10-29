@@ -200,7 +200,7 @@ describe('MatchEventsComponent', () => {
         ...EXAMPLE_FIXTURE,
         score: {
           ...EXAMPLE_FIXTURE.score,
-          extratime: { home: 2, away: 1 },
+          extratime: { home: null, away: null },
           penalty: { home: 5, away: 4 },
         },
       },
@@ -211,6 +211,7 @@ describe('MatchEventsComponent', () => {
       data: [
         createMatchEvent({ time: { elapsed: 20, extra: null } }),
         createMatchEvent({ time: { elapsed: 90, extra: 3 } }),
+        createMatchEvent({ time: { elapsed: 91, extra: null } }),
         createMatchEvent({ time: { elapsed: 105, extra: 2 } }),
         createMatchEvent({
           detail: 'Penalty',
@@ -232,7 +233,7 @@ describe('MatchEventsComponent', () => {
 
   it.each([
     ['subst', 'Substitution', 'sync', ''],
-    ['Var', 'Goal cancelled', 'visibility', ''],
+    ['Var', 'Goal cancelled', 'live_tv', ''],
   ] as const)(
     'renders %s / %s with its timeline icon',
     (type, detail, expectedIconName, expectedIconClass) => {
@@ -264,6 +265,23 @@ describe('MatchEventsComponent', () => {
     expect(cardIcon).not.toBeNull();
     expect(cardIcon.getAttribute('aria-label')).toBe(label);
     expect(componentFixture.nativeElement.querySelector('mat-icon')).toBeNull();
+  });
+
+  it('rotates away team card icons to the right', () => {
+    const awayCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+      team: { ...EXAMPLE_FIXTURE.teams.away, goals: 0 },
+    });
+    const componentFixture = renderComponent(MatchEventsComponent, {
+      data: [awayCard],
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.event-icon.away-card .card-icon'
+      )
+    ).not.toBeNull();
   });
 
   it('renders a second yellow card as one yellow-red card event', () => {
@@ -301,5 +319,11 @@ describe('MatchEventsComponent', () => {
         .querySelector('.card-stack')
         ?.getAttribute('aria-label')
     ).toBe('Gelb-Rote Karte');
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack .yellow-card')
+    ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector('.card-stack .red-card')
+    ).not.toBeNull();
   });
 });

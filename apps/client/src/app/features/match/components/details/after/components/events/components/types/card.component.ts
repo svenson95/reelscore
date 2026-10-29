@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { EventDTO } from '@reelscore-sdk/models';
 
 import translations from '../../event-translations.json';
-import { SECOND_YELLOW_CARD_COMMENT } from '../../second-yellow-card.helper';
 import { EventPlayerPhotoComponent } from '../event-player-photo.component';
 
 @Component({
@@ -25,7 +24,7 @@ import { EventPlayerPhotoComponent } from '../event-player-photo.component';
     <div class="details">
       <span class="player">{{ event.player.name }}</span>
       @if (event.comments) {
-      <span class="comment">&nbsp;{{ translateComment(event.comments) }}</span>
+      <span class="comment">{{ translateComment(event.comments) }}</span>
       }
     </div>
     }
@@ -33,14 +32,9 @@ import { EventPlayerPhotoComponent } from '../event-player-photo.component';
 })
 export class EventCardComponent {
   event = input.required<EventDTO>();
-  protected readonly secondYellowCardComment = SECOND_YELLOW_CARD_COMMENT;
 
   protected shouldShowPlayerPhoto(event: EventDTO): boolean {
-    return (
-      event.player.id > 0 &&
-      event.detail === 'Red Card' &&
-      event.comments !== this.secondYellowCardComment
-    );
+    return event.player.id > 0 && event.detail === 'Red Card';
   }
 
   protected translateComment(comment: string): string {
