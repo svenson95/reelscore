@@ -29,12 +29,10 @@ type VisibleWeekMode =
 
 @Injectable()
 export class OverviewContentFacade {
-  readonly weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-
   private readonly dateNavigationService = inject(DateNavigationService);
   private readonly selectedDateService = inject(SelectedDateService);
 
-  private readonly selectedDay = this.selectedDateService.selectedDay;
+  readonly selectedDay = this.selectedDateService.selectedDay;
   readonly tabIndex = this.dateNavigationService.selectedTabIndex;
 
   private readonly weekFixturesStore = inject(WeekFixturesStore);
