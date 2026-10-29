@@ -10,6 +10,7 @@ import type { FixturesWeekData } from '@reelscore-sdk/models';
 
 export class OverviewPage {
   readonly root: Locator;
+  private readonly activeContent: Locator;
   readonly selectedDate: Locator;
   readonly fixtureItems: Locator;
   readonly refreshTimer: Locator;
@@ -21,13 +22,16 @@ export class OverviewPage {
 
   constructor(private readonly page: Page) {
     this.root = page.getByTestId('overview-page');
+    this.activeContent = this.root.locator(
+      '.tab-content:visible:not(.slide-out)'
+    );
     this.selectedDate = page.getByTestId('selected-date');
-    this.fixtureItems = page.getByTestId('fixture-list-item');
+    this.fixtureItems = this.activeContent.getByTestId('fixture-list-item');
     this.refreshTimer = page.getByTestId('refresh-timer');
 
-    this.fixturesTitle = page.getByTestId('fixtures-title');
-    this.fixturesLoading = page.getByTestId('fixtures-loading');
-    this.standingsLoading = page.getByTestId('standings-loading');
+    this.fixturesTitle = this.activeContent.getByTestId('fixtures-title');
+    this.fixturesLoading = this.activeContent.getByTestId('fixtures-loading');
+    this.standingsLoading = this.activeContent.getByTestId('standings-loading');
     this.nextDayButton = page.getByTestId('week-toggle-next-btn');
   }
 
