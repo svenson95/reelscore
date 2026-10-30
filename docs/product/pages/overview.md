@@ -59,6 +59,8 @@ Unterstützte Suchergebnisse:
 - Wettbewerb anhand des Wettbewerbsnamens → Competition Page
 - Team anhand des Teamnamens → Team Page
 
+Fixture-Treffer zeigen das nächste Spiel und die vier jüngsten Spiele davor.
+
 ## Main Content
 
 ### Fixtures List

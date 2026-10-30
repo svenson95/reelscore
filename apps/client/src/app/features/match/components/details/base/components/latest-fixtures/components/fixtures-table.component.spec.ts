@@ -41,6 +41,9 @@ describe('MatchFixturesTableComponent', () => {
       componentFixture.nativeElement.querySelector('.competition').textContent
     ).toContain(EXAMPLE_FIXTURE.league.name);
     expect(
+      componentFixture.nativeElement.querySelector('.competition').textContent
+    ).toContain('·');
+    expect(
       componentFixture.nativeElement.querySelectorAll('.evaluation-value')
     ).toHaveLength(2);
     expect(

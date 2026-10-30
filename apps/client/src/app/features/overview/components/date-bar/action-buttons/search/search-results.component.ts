@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +8,7 @@ import {
 } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 
+import { TIMEZONE } from '@reelscore-sdk/helpers';
 import type {
   FixtureDTO,
   SearchResult,
@@ -17,6 +19,7 @@ import {
   getCompetitionLogoSrcSet,
   getTeamLogoSrcSet,
   ResponsiveImageComponent,
+  RoundLabelPipe,
   TeamNamePipe,
   ThemeService,
 } from '@app/shared';
@@ -27,7 +30,7 @@ const MAT_MODULES = [MatListModule];
   selector: 'rs-search-results',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...MAT_MODULES, ResponsiveImageComponent],
+  imports: [...MAT_MODULES, DatePipe, RoundLabelPipe, ResponsiveImageComponent],
   styles: `
     :host {
       @apply mt-rs2 max-h-[60dvh];
@@ -51,15 +54,36 @@ const MAT_MODULES = [MatListModule];
     }
 
     .result-title {
-      @apply truncate font-medium text-rs-font-size-body-3;
+      @apply truncate font-medium leading-normal text-rs-font-size-body-3;
+    }
+
+    .result-content {
+      @apply flex flex-col;
+    }
+
+    .result-title-row {
+      @apply flex;
+    }
+
+    .result-metadata-row {
+      @apply flex min-w-0 items-center justify-between gap-2;
+    }
+
+    .result-competition-round {
+      @apply flex min-w-0 flex-wrap gap-1;
     }
 
     .result-subtitle {
-      @apply truncate text-rs-font-size-small text-rs-color-text-2;
+      @apply truncate leading-normal text-rs-font-size-small text-rs-color-text-2;
     }
 
-    .result-season {
-      @apply text-rs-font-size-small text-rs-color-text-2;
+    .result-metadata,
+    .result-date {
+      @apply leading-normal text-rs-font-size-small text-rs-color-text-2;
+    }
+
+    .result-date {
+      @apply shrink-0;
     }
   `,
   template: `
@@ -79,21 +103,43 @@ const MAT_MODULES = [MatListModule];
             />
           </div>
 
-          <div class="result-content flex flex-col" matListItemTitle>
-            <div class="flex">
-              <span class="result-title leading-normal">
+          <div class="result-content" matListItemTitle>
+            <div class="result-title-row">
+              <span class="result-title">
                 {{ getResultTitle(result) }}
               </span>
             </div>
 
-            <div class="flex gap-2">
-              <span class="result-subtitle leading-normal">
-                {{ getResultSubtitle(result) }}
-              </span>
+            <div class="result-metadata-row">
+              <div class="result-competition-round">
+                <span class="result-subtitle">
+                  {{ getResultSubtitle(result) }}
+                </span>
 
-              <span class="result-season leading-normal">
-                {{ getResultSeason(result) }}
+                @if (result.type === 'fixtures') {
+                <span class="result-metadata" aria-hidden="true">·</span>
+                <span class="result-metadata">
+                  {{
+                    result.data.league.round
+                      | roundLabel
+                        : {
+                            type: 'header',
+                            id: result.data.league.id,
+                            season: result.data.league.season
+                          }
+                  }}
+                </span>
+                }
+              </div>
+
+              @if (result.type === 'fixtures') {
+              <span class="result-date">
+                {{
+                  result.data.fixture.timestamp * 1000
+                    | date : 'dd.MM' : timeZone
+                }}
               </span>
+              }
             </div>
           </div>
         </button>
@@ -105,6 +151,7 @@ const MAT_MODULES = [MatListModule];
 })
 export class SearchResultsComponent {
   readonly groups = input.required<SearchResultGroup[]>();
+  protected readonly timeZone = TIMEZONE;
 
   private readonly teamNamePipe = inject(TeamNamePipe);
   private readonly themeService = inject(ThemeService);
@@ -173,15 +220,5 @@ export class SearchResultsComponent {
       case 'teams':
         return '';
     }
-  }
-
-  getResultSeason(result: SearchResult): string {
-    if (result.type === 'fixtures') {
-      const season = Number(String(result.data.league.season).substring(2, 4));
-
-      return `${season}/${season + 1}`;
-    }
-
-    return '';
   }
 }
