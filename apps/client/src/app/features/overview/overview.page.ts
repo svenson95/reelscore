@@ -5,6 +5,7 @@ import {
   type OnDestroy,
   type OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 
 import type { RouteReuseLifecycle } from '../../config';
@@ -37,6 +38,7 @@ import {
 export class OverviewPage implements OnInit, OnDestroy, RouteReuseLifecycle {
   readonly animateNavigation = signal<boolean>(true);
 
+  private readonly overviewContent = viewChild(OverviewContentComponent);
   private readonly refreshService = inject(OverviewRefreshService);
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class OverviewPage implements OnInit, OnDestroy, RouteReuseLifecycle {
 
   onRouteDetach(): void {
     this.animateNavigation.set(false);
+    this.overviewContent()?.resetNavigationAnimation();
   }
 
   onRouteAttach(): void {

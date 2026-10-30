@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import type { DateString } from '@reelscore-sdk/helpers';
-import { formatDateToYearMonthDay } from '@reelscore-sdk/helpers';
+import { addDays } from '@reelscore-sdk/helpers';
 
 import { DateNavigationService } from '../../data-access';
 
@@ -44,7 +44,6 @@ const EXTERNAL_MODULES = [
 
     :host {
       @apply w-full xs:w-fit;
-      touch-action: pan-x pan-y;
     }
 
     .week-toggle-wrapper {
@@ -66,11 +65,13 @@ const EXTERNAL_MODULES = [
           height: 36px,
           label-text-size: var(--rs-font-size-body-2),
 
-          disabled-state-text-color: var(--rs-border-color-2),
-          disabled-selected-state-text-color: var(--rs-border-color-2),
-
+          selected-state-text-color: var(--rs-color-text-3),
           selected-state-background-color: transparent,
+
+          disabled-state-text-color: var(--rs-border-color-2),
           disabled-state-background-color: transparent,
+
+          disabled-selected-state-text-color: var(--rs-border-color-2),
           disabled-selected-state-background-color: transparent,
         )
       );
@@ -126,7 +127,6 @@ const EXTERNAL_MODULES = [
 
         &.mat-button-toggle-checked {
           color: var(--rs-color-text-3);
-          transition-delay: 100ms;
         }
 
         &.is-today ::ng-deep .mat-button-toggle-label-content {
@@ -177,6 +177,7 @@ const EXTERNAL_MODULES = [
         <mat-button-toggle
           [disabled]="isLoading()"
           [value]="day"
+          [checked]="day === selectedDay()"
           [class.is-today]="day | isToday"
         >
           {{ day | date : 'ccc' }}
@@ -211,12 +212,7 @@ export class WeekToggleGroupComponent {
   });
 
   setDateTo(target: number): void {
-    const targetDate = new Date(this.selectedDay());
-    targetDate.setDate(targetDate.getDate() + target);
-
-    const formattedDate = formatDateToYearMonthDay(targetDate);
-
-    this.dateSelected.emit(formattedDate);
+    this.dateSelected.emit(addDays(this.selectedDay(), target));
   }
 
   toggleValueChange(value: DateString): void {
