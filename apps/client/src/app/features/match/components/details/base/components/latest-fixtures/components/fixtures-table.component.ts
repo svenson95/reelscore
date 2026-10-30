@@ -52,6 +52,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
       @apply flex flex-col p-2 gap-1;
     }
     a + a { @apply border-t; }
+    .first-fixture-without-team-header { @apply rounded-t-border2; }
     a:last-of-type { @apply rounded-b-border2; }
     .match-row {
       @apply grid items-center gap-x-2;
@@ -85,11 +86,12 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
       />
       <span>{{ team().name | teamName }}</span>
     </div>
-    } @for(match of fixtures(); track match.fixture.id) {
+    } @for(match of fixtures(); track match.fixture.id; let isFirst = $first) {
     <a
       mat-ripple
       [href]="fixtureHref(match)"
       (click)="navigateToMatch($event, match)"
+      [class.first-fixture-without-team-header]="isFirst && !showTeamHeader()"
       [class.is-winner]="match.teams | checkScore : team() : 'WIN'"
       [class.is-loser]="match.teams | checkScore : team() : 'LOSS'"
     >
