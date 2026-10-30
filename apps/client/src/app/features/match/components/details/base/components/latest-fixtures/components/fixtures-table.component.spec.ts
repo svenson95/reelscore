@@ -17,6 +17,27 @@ describe('MatchFixturesTableComponent', () => {
     });
   });
 
+  it('rounds the first fixture at the top only when its team header is hidden', () => {
+    const componentFixture = renderComponent(MatchFixturesTableComponent, {
+      fixtures: [EXAMPLE_FIXTURE],
+      team: EXAMPLE_FIXTURE.teams.home,
+      side: 'home',
+      showTeamHeader: false,
+    });
+    const firstFixture = componentFixture.nativeElement.querySelector('a');
+
+    expect(
+      firstFixture.classList.contains('first-fixture-without-team-header')
+    ).toBe(true);
+
+    componentFixture.componentRef.setInput('showTeamHeader', true);
+    componentFixture.detectChanges();
+
+    expect(
+      firstFixture.classList.contains('first-fixture-without-team-header')
+    ).toBe(false);
+  });
+
   it('renders match links, marks the related team and distinguishes wins from losses', () => {
     const fixtureWithPerformances = {
       ...EXAMPLE_FIXTURE,
