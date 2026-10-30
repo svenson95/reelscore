@@ -178,7 +178,7 @@ describe('FixtureListItemComponent', () => {
     expect(link.getAttribute('href')).toBe(expectedUrl);
   });
 
-  it('highlights only the changed home score for two minutes, including reversals', () => {
+  it('keeps the changed home score highlighted for one minute after reversals', () => {
     jest.useFakeTimers();
 
     const fixture = TestBed.createComponent(FixtureListItemComponent);
@@ -212,7 +212,7 @@ describe('FixtureListItemComponent', () => {
     expect(homeScore.classList).toContain('is-goal-update');
     expect(awayScore.classList).not.toContain('is-goal-update');
 
-    jest.advanceTimersByTime(60 * 1000);
+    jest.advanceTimersByTime(30 * 1000);
 
     fixture.componentRef.setInput('fixture', {
       ...EXAMPLE_FIXTURE,
@@ -226,13 +226,43 @@ describe('FixtureListItemComponent', () => {
     expect(homeScore.classList).toContain('is-goal-update');
     expect(awayScore.classList).not.toContain('is-goal-update');
 
-    jest.advanceTimersByTime(60 * 1000);
+    jest.advanceTimersByTime(30 * 1000);
     fixture.detectChanges();
     expect(homeScore.classList).toContain('is-goal-update');
 
-    jest.advanceTimersByTime(60 * 1000);
+    jest.advanceTimersByTime(30 * 1000);
     fixture.detectChanges();
     expect(homeScore.classList).not.toContain('is-goal-update');
+  });
+
+  it('keeps highlighted scores green while the fixture is live', () => {
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 1, away: 0 },
+    });
+    fixture.detectChanges();
+
+    const homeScore = fixture.nativeElement.querySelector(
+      '.result rs-result-label span'
+    ) as HTMLElement;
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 2, away: 0 },
+    });
+    fixture.detectChanges();
+
+    expect(homeScore.classList).toContain('is-goal-update');
+    expect(homeScore.classList).toContain('is-live');
   });
 
   it('highlights only the changed away score', () => {
