@@ -17,6 +17,7 @@ import {
   BreakpointObserverService,
   getCompetitionLogo,
   getCompetitionLogoSrcSet,
+  getStandingsGroups,
   PageTitleComponent,
   ResponsiveImageComponent,
   showHomeAndAwayStandings,
@@ -183,6 +184,8 @@ import {
 export class MatchFixtureStandingsComponent {
   readonly standings = input.required<StandingsDTO | null>();
   readonly isLoading = input.required<boolean>();
+  readonly homeTeamId = input<number | null>(null);
+  readonly awayTeamId = input<number | null>(null);
 
   readonly groupCompetition = input<boolean>(false);
   readonly competitionName = input<string | null>(null);
@@ -238,9 +241,12 @@ export class MatchFixtureStandingsComponent {
     () => this.standings()?.league ?? null
   );
 
-  readonly standingGroups = computed<StandingRanks[][]>(
-    () => this.league()?.standings ?? []
-  );
+  readonly standingGroups = computed<StandingRanks[][]>(() => {
+    const standings = this.standings();
+    return standings
+      ? getStandingsGroups(standings, this.homeTeamId(), this.awayTeamId())
+      : [];
+  });
 
   readonly hasMultipleGroups = computed<boolean>(() => {
     const standings = this.standings();

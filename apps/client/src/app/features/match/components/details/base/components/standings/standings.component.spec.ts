@@ -122,4 +122,87 @@ describe('MatchFixtureStandingsComponent', () => {
       'Heimtabelle'
     );
   });
+
+  it('renders MLS conferences and the overall table without home and away tables', () => {
+    const exampleRanks = EXAMPLE_STANDINGS.league.standings[0];
+    const easternStandings = exampleRanks.map((standing, index) => ({
+      ...standing,
+      team: { ...standing.team, id: 100 + index },
+      group: 'Eastern Conference',
+    }));
+    const westernStandings = exampleRanks.map((standing, index) => ({
+      ...standing,
+      team: { ...standing.team, id: 200 + index },
+      group: 'Western Conference',
+    }));
+    const componentFixture = renderComponent(MatchFixtureStandingsComponent, {
+      standings: {
+        ...EXAMPLE_STANDINGS,
+        league: {
+          ...EXAMPLE_STANDINGS.league,
+          id: 253,
+          season: 2026,
+          standings: [
+            westernStandings,
+            easternStandings,
+            [...westernStandings],
+            [...westernStandings],
+          ],
+        },
+      },
+      isLoading: false,
+      homeTeamId: 200,
+      awayTeamId: 201,
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelectorAll('rs-standings-table')
+    ).toHaveLength(2);
+    expect(readElementText(componentFixture.nativeElement)).toContain(
+      'Western Conference'
+    );
+    expect(readElementText(componentFixture.nativeElement)).toContain('MLS');
+    expect(readElementText(componentFixture.nativeElement)).not.toContain(
+      'Heimtabelle'
+    );
+    expect(readElementText(componentFixture.nativeElement)).not.toContain(
+      'Auswärtstabelle'
+    );
+  });
+
+  it('renders three filtered tables for a match between MLS conferences', () => {
+    const exampleStanding = EXAMPLE_STANDINGS.league.standings[0][0];
+    const easternStandings = [
+      {
+        ...exampleStanding,
+        team: { ...exampleStanding.team, id: 100 },
+        group: 'Eastern Conference',
+      },
+    ];
+    const westernStandings = [
+      {
+        ...exampleStanding,
+        team: { ...exampleStanding.team, id: 200 },
+        group: 'Western Conference',
+      },
+    ];
+    const componentFixture = renderComponent(MatchFixtureStandingsComponent, {
+      standings: {
+        ...EXAMPLE_STANDINGS,
+        league: {
+          ...EXAMPLE_STANDINGS.league,
+          id: 253,
+          season: 2026,
+          standings: [easternStandings, westernStandings],
+        },
+      },
+      isLoading: false,
+      homeTeamId: 100,
+      awayTeamId: 200,
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelectorAll('rs-standings-table')
+    ).toHaveLength(3);
+  });
 });

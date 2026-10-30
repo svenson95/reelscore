@@ -116,6 +116,8 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
           <rs-match-fixture-standings
             [standings]="standings()"
             [isLoading]="isLoadingStandings()"
+            [homeTeamId]="fixtureData()?.teams?.home?.id ?? null"
+            [awayTeamId]="fixtureData()?.teams?.away?.id ?? null"
             [error]="standingsError()"
             [groupCompetition]="hasMultipleGroups()"
             [competitionName]="fixtureData()?.league?.name ?? null"
