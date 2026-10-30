@@ -41,11 +41,21 @@ describe('SearchController', () => {
       { fixture: { id: 9 } },
       { fixture: { id: 8 } },
       { fixture: { id: 7 } },
-      { fixture: { id: 6 } },
+      { _id: 'fixture-id-fallback' },
     ];
+    const competition = {
+      _id: 2,
+      league: { id: 2, name: 'Bundesliga' },
+    };
+    const team = {
+      _id: 'team-id',
+      team: { id: 157, name: 'Bayern Munich' },
+    };
     fixtureLean
       .mockResolvedValueOnce(recentFixtures)
       .mockResolvedValueOnce([nextFixture]);
+    jest.spyOn(Fixtures, 'aggregate').mockReturnValue([competition] as never);
+    teamLean.mockResolvedValue([team, { _id: 'team-id-fallback' }]);
 
     const controller = new SearchController();
 
@@ -73,6 +83,15 @@ describe('SearchController', () => {
     });
     expect(fixtureLimit).toHaveBeenNthCalledWith(1, 4);
     expect(fixtureLimit).toHaveBeenNthCalledWith(2, 1);
-    expect(results.slice(0, 5).map(({ id }) => id)).toEqual([10, 9, 8, 7, 6]);
+    expect(results.map(({ id }) => id)).toEqual([
+      10,
+      9,
+      8,
+      7,
+      'fixture-id-fallback',
+      competition._id,
+      team.team.id,
+      'team-id-fallback',
+    ]);
   });
 });
