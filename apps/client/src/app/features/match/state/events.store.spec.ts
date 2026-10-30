@@ -76,6 +76,34 @@ describe('EventsStore', () => {
     expect(store.error()).toBeNull();
     expect(store.isLoading()).toBe(false);
   });
+
+  it('notifies the caller when events arrive late or are empty', () => {
+    const response$ = new Subject<RapidEventsDTO>();
+    const onEventsLoaded = jest.fn();
+    const goal = createEvent(10, 'home', 'Goal', 'Normal Goal');
+    httpMock.getFixtureEvents
+      .mockReturnValueOnce(response$)
+      .mockReturnValueOnce(of(createResponse([])));
+
+    store.loadEvents({
+      fixtureId: '42',
+      teams: EXAMPLE_FIXTURE.teams,
+      onEventsLoaded,
+    });
+
+    response$.next(createResponse([goal]));
+
+    expect(onEventsLoaded).toHaveBeenLastCalledWith([goal]);
+
+    store.loadEvents({
+      fixtureId: '42',
+      teams: EXAMPLE_FIXTURE.teams,
+      onEventsLoaded,
+    });
+
+    expect(onEventsLoaded).toHaveBeenLastCalledWith([]);
+    expect(onEventsLoaded).toHaveBeenCalledTimes(2);
+  });
 });
 
 function createEvent(

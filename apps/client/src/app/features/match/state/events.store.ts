@@ -44,9 +44,11 @@ export const EventsStore = signalStore(
         {
           fixtureId,
           teams,
+          onEventsLoaded,
         }: {
           fixtureId: FixtureIdParameter;
           teams: MatchTeams;
+          onEventsLoaded?: (events: EventDTO[]) => void;
         },
         silent = false
       ): void {
@@ -75,6 +77,7 @@ export const EventsStore = signalStore(
               }
 
               if (!events.response.length) {
+                onEventsLoaded?.([]);
                 patchState(store, {
                   events: null,
                   isLoading: false,
@@ -85,6 +88,7 @@ export const EventsStore = signalStore(
               }
 
               patchEvents(events, teams);
+              onEventsLoaded?.(events.response);
             },
 
             error: (error) => {

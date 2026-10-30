@@ -117,7 +117,7 @@ import { ScrollService, VenueImageService } from './data-access';
 
       <rs-match-info [data]="matchInfo" />
 
-      @if (highlights()?.length && hasGoalsOrPenalty() && matchInfo) {
+      @if (highlights()?.length && matchInfo) {
       <rs-collapsible-scroll-section>
         <div class="toggle-highlights-row">
           <div class="divider"></div>
@@ -176,25 +176,6 @@ export class MatchHeaderComponent implements OnDestroy, AfterViewInit {
     }
 
     return VENUE_IDS[data.teams.home.id] ?? ALLIANZ_ARENA_ID;
-  });
-
-  readonly hasGoalsOrPenalty = computed<boolean>(() => {
-    const data = this.data();
-    if (!data) return false;
-
-    const { goals, score } = data;
-
-    const hasRegularGoals =
-      goals.home !== null &&
-      goals.away !== null &&
-      (goals.home > 0 || goals.away > 0);
-
-    const hasPenaltyGoals =
-      score.penalty.home !== null &&
-      score.penalty.away !== null &&
-      (score.penalty.home > 0 || score.penalty.away > 0);
-
-    return hasRegularGoals || hasPenaltyGoals;
   });
 
   ngAfterViewInit(): void {
