@@ -1,16 +1,19 @@
+import type { OnDestroy } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
+  signal,
   untracked,
 } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 
 import { formatFixtureTime } from '@reelscore-sdk/helpers';
-import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
+import type { ExtendedFixtureDTO, Goals } from '@reelscore-sdk/models';
 
 import { TeamNamePipe } from '../../../../pipes';
 import {
@@ -26,13 +29,16 @@ import { ResultLabelComponent } from '../../../result-label.component';
 
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
-const EXTERNAL_MODULES = [MatRippleModule];
+const MAT_MODULES = [MatRippleModule];
+const SCORE_UPDATE_HIGHLIGHT_DURATION_MS = 2 * 60 * 1000;
+type ScoreSide = 'home' | 'away';
+const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
 
 @Component({
   selector: 'rs-fixture-list-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...EXTERNAL_MODULES,
+    ...MAT_MODULES,
     ResponsiveImageComponent,
     TeamNamePipe,
     ResultLabelComponent,
@@ -64,8 +70,12 @@ const EXTERNAL_MODULES = [MatRippleModule];
       @apply flex text-center justify-center rounded-border1;
 
       &.is-playing {
-        @apply font-semibold text-rs-color-primary;
+        @apply text-rs-color-green font-medium;
       }
+    }
+
+    .time.is-interrupted {
+      @apply text-rs-color-primary font-medium;
     }
 
     .result {
@@ -115,6 +125,7 @@ const EXTERNAL_MODULES = [MatRippleModule];
         class="time"
         [class.is-upcoming]="statusState().isScheduled"
         [class.is-playing]="statusState().isLive"
+        [class.is-interrupted]="statusState().status === 'INT'"
       >
         <span class="time-label" [class.is-finished]="statusState().isFinished">
           @if (timeLabel(); as label) {
@@ -144,7 +155,11 @@ const EXTERNAL_MODULES = [MatRippleModule];
           [class.is-upcoming]="statusState().isScheduled"
           [class.is-playing]="statusState().isLive"
         >
-          <rs-result-label [fixture]="fixture()" />
+          <rs-result-label
+            [fixture]="fixture()"
+            [highlightHomeScore]="highlightedScoreSides().home"
+            [highlightAwayScore]="highlightedScoreSides().away"
+          />
         </div>
         <div>
           <div class="team-logo-small">
@@ -164,16 +179,28 @@ const EXTERNAL_MODULES = [MatRippleModule];
     </a>
   `,
 })
-export class FixtureListItemComponent {
+export class FixtureListItemComponent implements OnDestroy {
   readonly fixture = input.required<ExtendedFixtureDTO>();
 
   private readonly facade = inject(FixtureListItemFacade);
   private readonly router = inject(Router);
+  private previousScore: Goals | null = null;
+  private readonly scoreUpdateTimeouts: Record<
+    ScoreSide,
+    ReturnType<typeof setTimeout> | null
+  > = {
+    home: null,
+    away: null,
+  };
 
-  readonly scheduled = this.facade.scheduled;
-  readonly playing = this.facade.playing;
-  readonly finished = this.facade.finished;
-  readonly halfTime = this.facade.halfTime;
+  readonly highlightedScoreSides = signal<Record<ScoreSide, boolean>>({
+    home: false,
+    away: false,
+  });
+
+  private readonly scoreUpdateEffect = effect(() => {
+    this.updateScoreHighlight(this.fixture().goals);
+  });
 
   readonly statusState = computed<FixtureStatusState>(() =>
     getFixtureStatusState(this.fixture().fixture.status.short)
@@ -204,10 +231,10 @@ export class FixtureListItemComponent {
     return '';
   });
 
-  readonly isHomeEliminated = computed(() =>
+  readonly isHomeEliminated = computed<boolean>(() =>
     this.facade.isTeamEliminated(untracked(this.fixture), 'home')
   );
-  readonly isAwayEliminated = computed(() =>
+  readonly isAwayEliminated = computed<boolean>(() =>
     this.facade.isTeamEliminated(untracked(this.fixture), 'away')
   );
 
@@ -224,9 +251,19 @@ export class FixtureListItemComponent {
     getTeamLogoSrcSet(untracked(this.fixture).teams.away.id, 14)
   );
   readonly fixtureLink = computed<string[]>(() => linkToMatch(this.fixture()));
-  readonly fixtureHref = computed(() =>
+  readonly fixtureHref = computed<string>(() =>
     this.router.serializeUrl(this.router.createUrlTree(this.fixtureLink()))
   );
+
+  ngOnDestroy(): void {
+    for (const side of SCORE_SIDES) {
+      const timeout = this.scoreUpdateTimeouts[side];
+
+      if (timeout !== null) {
+        clearTimeout(timeout);
+      }
+    }
+  }
 
   protected navigateToMatch(event: MouseEvent): void {
     void navigateToFixtureAfterVenueImage(
@@ -235,5 +272,45 @@ export class FixtureListItemComponent {
       this.fixtureLink(),
       this.router
     );
+  }
+
+  private updateScoreHighlight(score: Goals): void {
+    if (this.previousScore === null) {
+      this.previousScore = score;
+      return;
+    }
+
+    const homeScoreChanged = score.home !== this.previousScore.home;
+    const awayScoreChanged = score.away !== this.previousScore.away;
+    this.previousScore = score;
+
+    if (homeScoreChanged) {
+      this.highlightScoreSide('home');
+    }
+
+    if (awayScoreChanged) {
+      this.highlightScoreSide('away');
+    }
+  }
+
+  private highlightScoreSide(side: ScoreSide): void {
+    const existingTimeout = this.scoreUpdateTimeouts[side];
+
+    if (existingTimeout !== null) {
+      clearTimeout(existingTimeout);
+    }
+
+    this.highlightedScoreSides.update((highlightedSides) => ({
+      ...highlightedSides,
+      [side]: true,
+    }));
+
+    this.scoreUpdateTimeouts[side] = setTimeout(() => {
+      this.highlightedScoreSides.update((highlightedSides) => ({
+        ...highlightedSides,
+        [side]: false,
+      }));
+      this.scoreUpdateTimeouts[side] = null;
+    }, SCORE_UPDATE_HIGHLIGHT_DURATION_MS);
   }
 }

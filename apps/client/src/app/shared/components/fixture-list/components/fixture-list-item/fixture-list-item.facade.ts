@@ -2,26 +2,20 @@ import { Injectable } from '@angular/core';
 
 import {
   COMPETITION_KO_ROUNDS,
-  STATUS_VALUE_HALFTIME,
   STATUS_VALUES_FINISHED,
-  STATUS_VALUES_PLAYING,
-  STATUS_VALUES_SCHEDULED,
 } from '@reelscore-sdk/constants';
 import { isTwoLeggedRound } from '@reelscore-sdk/helpers';
 import type { ExtendedFixtureDTO } from '@reelscore-sdk/models';
 
 @Injectable()
 export class FixtureListItemFacade {
-  readonly scheduled = [...STATUS_VALUES_SCHEDULED];
-  readonly halfTime = [STATUS_VALUE_HALFTIME];
-  readonly playing = [...STATUS_VALUES_PLAYING];
-  readonly finished = [...STATUS_VALUES_FINISHED];
-
   isTeamEliminated(
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean {
-    const isFinished = this.finished.includes(fixture.fixture.status.short);
+    const isFinished = STATUS_VALUES_FINISHED.includes(
+      fixture.fixture.status.short
+    );
     if (!isFinished) return false;
 
     const isKoEliminated = this.isKoEliminated(fixture, team);
@@ -30,7 +24,7 @@ export class FixtureListItemFacade {
     return isKoEliminated || isTwoLeggedEliminated;
   }
 
-  private isKoEliminated = (
+  private readonly isKoEliminated = (
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean => {
@@ -47,7 +41,7 @@ export class FixtureListItemFacade {
     return fixture.teams[team].winner === false;
   };
 
-  private isTwoLeggedEliminated = (
+  private readonly isTwoLeggedEliminated = (
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): boolean => {

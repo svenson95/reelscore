@@ -18,23 +18,34 @@ import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
   selector: 'rs-result-label',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  styles: `
+    .is-goal-update {
+      @apply text-rs-color-primary font-medium;
+    }
+  `,
   template: `
     @if (isPenaltyShootout()) {
     <span class="mr-1 text-rs-font-size-small">n.E.</span>
     <span>{{ penaltyResult().home }}:{{ penaltyResult().away }}</span>
     } @else {
-    <span>{{ mainResult().home }}</span>
+    <span [class.is-goal-update]="highlightHomeScore()">
+      {{ mainResult().home }}
+    </span>
 
     @if (isNotPlayed()) { @if (!showNotPlayedText()) { － } } @else if
     (isScheduled()) { vs } @else {&#8239;:&#8239;}
 
-    <span>{{ mainResult().away }}</span>
+    <span [class.is-goal-update]="highlightAwayScore()">
+      {{ mainResult().away }}
+    </span>
     }
   `,
 })
 export class ResultLabelComponent {
   readonly fixture = input.required<FixtureDTO>();
   readonly showNotPlayedText = input<boolean>(false);
+  readonly highlightHomeScore = input<boolean>(false);
+  readonly highlightAwayScore = input<boolean>(false);
 
   readonly mainResult = computed<Goals>(() => this.fixture().goals);
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
