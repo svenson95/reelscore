@@ -118,8 +118,10 @@ export class FixturesService {
   ): Promise<ExtendedFixtureDTO[]> {
     const homeTeamId = fixture.teams.home.id;
     const awayTeamId = fixture.teams.away.id;
+    const fixtureTimestamp = fixture.fixture.timestamp;
 
     return Fixtures.find({
+      'fixture.timestamp': { $lt: fixtureTimestamp },
       'fixture.status.short': { $in: STATUS_VALUES_FINISHED },
       'score.fulltime.home': { $ne: null },
       'score.fulltime.away': { $ne: null },
