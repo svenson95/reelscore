@@ -89,6 +89,7 @@ import { MatchFixturesTableComponent } from '../latest-fixtures/components';
         [fixtures]="fixtures() ?? []"
         [side]="'home'"
         [showTeamHeader]="false"
+        [dimUnrelatedPerformanceIcons]="false"
       />
       }
     </div>

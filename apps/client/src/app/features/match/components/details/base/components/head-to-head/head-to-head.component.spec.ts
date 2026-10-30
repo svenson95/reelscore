@@ -58,6 +58,11 @@ describe(MatchHeadToHeadComponent.name, () => {
     expect(
       view.nativeElement.querySelector('rs-match-fixtures-table .team-header')
     ).toBeNull();
+    expect(
+      view.nativeElement.querySelectorAll(
+        'rs-match-fixtures-table .evaluation-value.not-relevant'
+      )
+    ).toHaveLength(0);
   });
 
   it('shows an empty state when no completed meetings are available', () => {
