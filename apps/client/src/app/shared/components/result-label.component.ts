@@ -14,13 +14,19 @@ import {
 } from '@reelscore-sdk/constants';
 import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
 
+import { type FixtureStatusState, getFixtureStatusState } from '../utils';
+
 @Component({
   selector: 'rs-result-label',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   styles: `
     .is-goal-update {
-      @apply text-rs-color-primary font-medium;
+      @apply text-rs-color-primary font-bold;
+    }
+
+    .is-goal-update.is-live {
+      @apply text-rs-color-green;
     }
   `,
   template: `
@@ -28,14 +34,20 @@ import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
     <span class="mr-1 text-rs-font-size-small">n.E.</span>
     <span>{{ penaltyResult().home }}:{{ penaltyResult().away }}</span>
     } @else {
-    <span [class.is-goal-update]="highlightHomeScore()">
+    <span
+      [class.is-goal-update]="highlightHomeScore()"
+      [class.is-live]="statusState().isLive"
+    >
       {{ mainResult().home }}
     </span>
 
     @if (isNotPlayed()) { @if (!showNotPlayedText()) { － } } @else if
-    (isScheduled()) { vs } @else {&#8239;:&#8239;}
+    (isScheduled()) { vs } @else { : }
 
-    <span [class.is-goal-update]="highlightAwayScore()">
+    <span
+      [class.is-goal-update]="highlightAwayScore()"
+      [class.is-live]="statusState().isLive"
+    >
       {{ mainResult().away }}
     </span>
     }
@@ -49,6 +61,9 @@ export class ResultLabelComponent {
 
   readonly mainResult = computed<Goals>(() => this.fixture().goals);
   readonly penaltyResult = computed<Goals>(() => this.fixture().score.penalty);
+  readonly statusState = computed<FixtureStatusState>(() =>
+    getFixtureStatusState(this.status().short)
+  );
 
   readonly isScheduled = computed<boolean>(() =>
     STATUS_VALUES_SCHEDULED.includes(this.status().short)

@@ -30,7 +30,7 @@ import { ResultLabelComponent } from '../../../result-label.component';
 import { FixtureListItemFacade } from './fixture-list-item.facade';
 
 const MAT_MODULES = [MatRippleModule];
-const SCORE_UPDATE_HIGHLIGHT_DURATION_MS = 2 * 60 * 1000;
+const SCORE_UPDATE_HIGHLIGHT_DURATION_MS = 1 * 60 * 1000;
 type ScoreSide = 'home' | 'away';
 const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
 
@@ -70,12 +70,12 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
       @apply flex text-center justify-center rounded-border1;
 
       &.is-playing {
-        @apply text-rs-color-green font-medium;
+        @apply text-rs-color-green font-bold;
       }
     }
 
     .time.is-interrupted {
-      @apply text-rs-color-primary font-medium;
+      @apply text-rs-color-primary font-bold;
     }
 
     .result {
