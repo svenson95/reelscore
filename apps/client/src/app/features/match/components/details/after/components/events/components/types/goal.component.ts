@@ -30,9 +30,9 @@ import { EventPlayerPhotoComponent } from '../event-player-photo.component';
       </div>
       @if (event.assist.id && event.assist.id !== event.player.id) {
       <span class="bottom assist">Vorlage: {{ event.assist.name }}</span>
-      } @else if(event.detail === 'Penalty') {
+      } @else if(!isPenaltyShootout() && event.detail === 'Penalty') {
       <span class="bottom">Elfmeter</span>
-      } @else if (event.detail === 'Missed Penalty') {
+      } @else if (!isPenaltyShootout() && event.detail === 'Missed Penalty') {
       <span class="bottom">Verschossener Elfmeter</span>
       }
     </div>
@@ -41,4 +41,5 @@ import { EventPlayerPhotoComponent } from '../event-player-photo.component';
 })
 export class EventGoalComponent {
   event = input.required<EventDTO>();
+  isPenaltyShootout = input<boolean>(false);
 }

@@ -192,6 +192,9 @@ describe('MatchEventsComponent', () => {
     expect(readElementText(componentFixture.nativeElement)).toContain(
       'ELFMETERSCHIESSEN'
     );
+    expect(readElementTexts(componentFixture.nativeElement, '.bottom')).toEqual(
+      []
+    );
   });
 
   it('separates extra time, the penalty shootout and the first half', () => {
