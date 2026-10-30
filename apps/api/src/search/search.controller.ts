@@ -1,3 +1,5 @@
+import moment from 'moment-timezone';
+
 import type {
   CompetitionSearchResult,
   FixtureSearchResult,
@@ -9,6 +11,9 @@ import { Fixtures, Teams } from '../database';
 
 import { SearchService } from './search.service';
 
+const MAX_RESULTS = 5;
+const LAST_FIXTURE_COUNT = 4;
+
 export class SearchController {
   private readonly searchService = new SearchService();
 
@@ -19,59 +24,50 @@ export class SearchController {
       return [];
     }
 
-    const MAX_RESULTS = 5;
+    const nowTimestamp = moment().unix();
     const teamRegex = this.searchService.createTeamSearchRegex(searchTerm);
     const competitionRegex = new RegExp(
       this.searchService.escapeRegex(searchTerm),
       'i'
     );
 
-    const [fixtures, teams, competitions] = await Promise.all([
+    const [fixtureResults, competitionResults, teamResults] = await Promise.all(
+      [
+        this.searchFixtures(teamRegex, nowTimestamp),
+        this.searchCompetitions(competitionRegex),
+        this.searchTeams(teamRegex),
+      ]
+    );
+
+    return [...fixtureResults, ...competitionResults, ...teamResults];
+  }
+
+  private async searchFixtures(
+    teamRegex: RegExp,
+    nowTimestamp: number
+  ): Promise<FixtureSearchResult[]> {
+    const teamMatchQuery = {
+      $or: [{ 'teams.home.name': teamRegex }, { 'teams.away.name': teamRegex }],
+    };
+    const [recentFixtures, nextFixtures] = await Promise.all([
       Fixtures.find({
-        $or: [
-          { 'teams.home.name': teamRegex },
-          { 'teams.away.name': teamRegex },
-        ],
+        ...teamMatchQuery,
+        'fixture.timestamp': { $lte: nowTimestamp },
       })
         .sort({ 'fixture.timestamp': -1 })
-        .limit(MAX_RESULTS)
+        .limit(LAST_FIXTURE_COUNT)
         .lean(),
 
-      Teams.find({
-        'team.name': teamRegex,
+      Fixtures.find({
+        ...teamMatchQuery,
+        'fixture.timestamp': { $gt: nowTimestamp },
       })
-        .sort({ updatedAt: -1 })
-        .limit(MAX_RESULTS)
+        .sort({ 'fixture.timestamp': 1 })
+        .limit(1)
         .lean(),
-
-      Fixtures.aggregate([
-        {
-          $match: {
-            'league.name': competitionRegex,
-          },
-        },
-        {
-          $sort: {
-            'fixture.timestamp': -1,
-          },
-        },
-        {
-          $group: {
-            _id: {
-              $ifNull: ['$league.id', '$league.name'],
-            },
-            league: {
-              $first: '$league',
-            },
-          },
-        },
-        {
-          $limit: MAX_RESULTS,
-        },
-      ]),
     ]);
 
-    const fixtureResults: FixtureSearchResult[] = fixtures.map((fixture) => ({
+    return [...nextFixtures, ...recentFixtures].map((fixture) => ({
       id: fixture.fixture?.id ?? String(fixture._id),
       type: 'fixtures',
       data: {
@@ -80,25 +76,60 @@ export class SearchController {
         teams: fixture.teams,
       },
     }));
+  }
 
-    const teamResults: TeamSearchResult[] = teams.map((team) => ({
+  private async searchTeams(teamRegex: RegExp): Promise<TeamSearchResult[]> {
+    const teams = await Teams.find({
+      'team.name': teamRegex,
+    })
+      .sort({ updatedAt: -1 })
+      .limit(MAX_RESULTS)
+      .lean();
+
+    return teams.map((team) => ({
       id: team.team?.id ?? String(team._id),
       type: 'teams',
       data: {
         team: team.team,
       },
     }));
+  }
 
-    const competitionResults: CompetitionSearchResult[] = competitions.map(
-      ({ _id, league }) => ({
-        id: _id,
-        type: 'competitions',
-        data: {
-          league,
+  private async searchCompetitions(
+    competitionRegex: RegExp
+  ): Promise<CompetitionSearchResult[]> {
+    const competitions = await Fixtures.aggregate([
+      {
+        $match: {
+          'league.name': competitionRegex,
         },
-      })
-    );
+      },
+      {
+        $sort: {
+          'fixture.timestamp': -1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $ifNull: ['$league.id', '$league.name'],
+          },
+          league: {
+            $first: '$league',
+          },
+        },
+      },
+      {
+        $limit: MAX_RESULTS,
+      },
+    ]);
 
-    return [...fixtureResults, ...competitionResults, ...teamResults];
+    return competitions.map(({ _id, league }) => ({
+      id: _id,
+      type: 'competitions',
+      data: {
+        league,
+      },
+    }));
   }
 }
