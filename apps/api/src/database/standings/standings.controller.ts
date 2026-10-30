@@ -17,7 +17,9 @@ import type {
 import { StandingsService } from './standings.service';
 
 export class StandingsController {
-  private readonly standingsService = new StandingsService();
+  constructor(
+    private readonly standingsService: StandingsReader = new StandingsService()
+  ) {}
 
   async getByCompetitionAndDate(
     id: CompetitionId,
@@ -83,16 +85,25 @@ export class StandingsController {
       return null;
     }
 
-    const mappedStandings = isCompetitionWithMultipleGroups(
-      standings.league.id,
-      season
-    )
-      ? this.mapMultipleGroupStandings(
-          standings.league.standings,
-          homeId,
-          awayId
-        )
-      : this.mapLeagueStandings(standings.league.standings, homeId, awayId);
+    let mappedStandings: StandingRanks[][];
+
+    if (leagueId === COMPETITION_ID.MAJOR_LEAGUE_SOCCER) {
+      mappedStandings = this.getMlsConferenceStandings(
+        standings.league.standings
+      );
+    } else if (isCompetitionWithMultipleGroups(standings.league.id, season)) {
+      mappedStandings = this.mapMultipleGroupStandings(
+        standings.league.standings,
+        homeId,
+        awayId
+      );
+    } else {
+      mappedStandings = this.mapLeagueStandings(
+        standings.league.standings,
+        homeId,
+        awayId
+      );
+    }
 
     if (!mappedStandings.length) {
       return null;
@@ -155,6 +166,21 @@ export class StandingsController {
     return groupStandings ? [groupStandings] : [];
   }
 
+  private getMlsConferenceStandings(
+    standings: StandingRanks[][]
+  ): StandingRanks[][] {
+    const easternConference = standings.find(
+      (group) => group[0]?.group === 'Eastern Conference'
+    );
+    const westernConference = standings.find(
+      (group) => group[0]?.group === 'Western Conference'
+    );
+
+    return [easternConference, westernConference].filter(
+      (group): group is StandingRanks[] => group !== undefined
+    );
+  }
+
   private mapLeagueStandings(
     standings: StandingRanks[][],
     homeId: number,
@@ -183,4 +209,11 @@ export class StandingsController {
       return standingRanks;
     });
   }
+}
+
+export interface StandingsReader {
+  findByFilter(
+    filter: Parameters<StandingsService['findByFilter']>[0],
+    options?: Parameters<StandingsService['findByFilter']>[1]
+  ): Promise<StandingsDTO | null>;
 }

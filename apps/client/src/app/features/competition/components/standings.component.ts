@@ -8,6 +8,7 @@ import {
 import { isCompetitionWithMultipleGroups } from '@reelscore-sdk/helpers';
 
 import {
+  getStandingsGroups,
   PageTitleComponent,
   ReplayAnimationOnNavigationDirective,
   showHomeAndAwayStandings,
@@ -97,9 +98,10 @@ export class CompetitionStandingsComponent {
 
   readonly league = computed(() => this.standings()?.league ?? null);
 
-  readonly standingGroups = computed(
-    () => this.standings()?.league.standings ?? []
-  );
+  readonly standingGroups = computed(() => {
+    const standings = this.standings();
+    return standings ? getStandingsGroups(standings) : [];
+  });
 
   readonly hasMultipleGroups = computed<boolean>(() => {
     const standings = this.standings();
