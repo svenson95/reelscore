@@ -235,7 +235,38 @@ describe('FixtureListItemComponent', () => {
     expect(homeScore.classList).not.toContain('is-goal-update');
   });
 
-  it('keeps highlighted scores green while the fixture is live', () => {
+  it('does not highlight 0:0 when a fixture starts', () => {
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: 'NS' },
+      },
+      goals: { home: null, away: null },
+    });
+    fixture.detectChanges();
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 0, away: 0 },
+    });
+    fixture.detectChanges();
+
+    const scoreLabels = fixture.nativeElement.querySelectorAll(
+      '.result rs-result-label span'
+    ) as NodeListOf<HTMLElement>;
+
+    expect(scoreLabels[0].textContent?.trim()).toBe('0');
+    expect(scoreLabels[0].classList).not.toContain('is-goal-update');
+    expect(scoreLabels[1].classList).not.toContain('is-goal-update');
+  });
+
+  it('keeps live goal updates highlighted in primary color', () => {
     const fixture = TestBed.createComponent(FixtureListItemComponent);
     fixture.componentRef.setInput('fixture', {
       ...EXAMPLE_FIXTURE,
@@ -262,7 +293,7 @@ describe('FixtureListItemComponent', () => {
     fixture.detectChanges();
 
     expect(homeScore.classList).toContain('is-goal-update');
-    expect(homeScore.classList).toContain('is-live');
+    expect(homeScore.classList).not.toContain('is-live');
   });
 
   it('highlights only the changed away score', () => {

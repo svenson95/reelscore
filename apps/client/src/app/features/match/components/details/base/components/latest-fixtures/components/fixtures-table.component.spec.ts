@@ -52,6 +52,11 @@ describe('MatchFixturesTableComponent', () => {
     expect(
       componentFixture.nativeElement.querySelector('.home .is-related')
     ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.evaluation-value.not-relevant'
+      )
+    ).not.toBeNull();
 
     componentFixture.componentRef.setInput('team', EXAMPLE_FIXTURE.teams.away);
     componentFixture.componentRef.setInput('side', 'away');
@@ -86,6 +91,21 @@ describe('MatchFixturesTableComponent', () => {
     expect(readElementText(componentFixture.nativeElement)).toContain(
       'Keine Spiele gefunden'
     );
+  });
+
+  it('keeps both performance icons fully opaque when deemphasis is disabled', () => {
+    const componentFixture = renderComponent(MatchFixturesTableComponent, {
+      fixtures: [EXAMPLE_FIXTURE],
+      team: EXAMPLE_FIXTURE.teams.home,
+      side: 'home',
+      dimUnrelatedPerformanceIcons: false,
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelectorAll(
+        '.evaluation-value.not-relevant'
+      )
+    ).toHaveLength(0);
   });
 
   it.each([
