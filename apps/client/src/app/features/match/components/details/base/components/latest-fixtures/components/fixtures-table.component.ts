@@ -117,7 +117,10 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
 
         <span
           class="evaluation-value"
-          [class.not-relevant]="!(match.teams.home | isRelated : team())"
+          [class.not-relevant]="
+            dimUnrelatedPerformanceIcons() &&
+            !(match.teams.home | isRelated : team())
+          "
           [class.low]="performanceClass(match, 'home') === 'low'"
           [class.middle]="performanceClass(match, 'home') === 'middle'"
           [class.high]="performanceClass(match, 'home') === 'high'"
@@ -133,7 +136,10 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
 
         <span
           class="evaluation-value"
-          [class.not-relevant]="!(match.teams.away | isRelated : team())"
+          [class.not-relevant]="
+            dimUnrelatedPerformanceIcons() &&
+            !(match.teams.away | isRelated : team())
+          "
           [class.low]="performanceClass(match, 'away') === 'low'"
           [class.middle]="performanceClass(match, 'away') === 'middle'"
           [class.high]="performanceClass(match, 'away') === 'high'"
@@ -161,6 +167,7 @@ export class MatchFixturesTableComponent {
   readonly team = input.required<FixtureTeam>();
   readonly side = input.required<'home' | 'away'>();
   readonly showTeamHeader = input<boolean>(true);
+  readonly dimUnrelatedPerformanceIcons = input<boolean>(true);
 
   protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 48));
   protected readonly teamLogoSet = computed(() =>
