@@ -61,7 +61,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
     .date { @apply shrink-0 whitespace-nowrap; }
     .team { @apply min-w-0 content-center leading-[13px]; }
     .home { @apply text-right; }
-    .competition { @apply flex flex-wrap gap-x-2; }
+    .competition { @apply flex flex-wrap items-center gap-x-1; }
     .result { @apply text-center whitespace-nowrap; }
     .evaluation-value { @apply w-[17px] h-[17px] rounded-[4px] flex items-center justify-center; font-size: 10px; }
     .evaluation-value.low { @apply bg-rs-color-red text-white; }
@@ -96,6 +96,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
       <div class="fixture-header">
         <div class="competition">
           <span>{{ match.league.name }}</span>
+          <span aria-hidden="true">·</span>
           <span>{{
             match.league.round
               | roundLabel
