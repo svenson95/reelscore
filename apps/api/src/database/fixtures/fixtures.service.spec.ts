@@ -122,6 +122,7 @@ describe('FixturesService', () => {
       await service.findHeadToHeadFixtures(fixture);
 
       expect(Fixtures.find).toHaveBeenCalledWith({
+        'fixture.timestamp': { $lt: 100 },
         'fixture.status.short': { $in: ['FT', 'AET', 'PEN'] },
         'score.fulltime.home': { $ne: null },
         'score.fulltime.away': { $ne: null },
