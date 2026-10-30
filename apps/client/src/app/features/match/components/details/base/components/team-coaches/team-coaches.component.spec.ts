@@ -134,6 +134,31 @@ describe(MatchTeamCoachesComponent.name, () => {
     );
   });
 
+  it.each([
+    ['Australia', 'au'],
+    ['Australian', 'au'],
+    ['Turkey', 'tr'],
+    ['Turkish', 'tr'],
+    ['Türkiye', 'tr'],
+  ])('shows the %s flag for coach nationality values', (nationality, code) => {
+    const coach = createCoach(85, '2025-06-01');
+    coach.nationality = nationality;
+
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: EXAMPLE_FIXTURE,
+      coaches: [coach],
+      isLoading: false,
+    });
+
+    const homeTeamCard = componentFixture.nativeElement.querySelector(
+      '.team-card[aria-label="Trainer des Heimteams"]'
+    ) as HTMLElement;
+
+    expect(homeTeamCard.querySelector('.coach-flag')?.getAttribute('src')).toBe(
+      `https://media.api-sports.io/flags/${code}.svg`
+    );
+  });
+
   it('uses the coach name and hides unavailable metadata', () => {
     const incompleteCoach = {
       ...createCoach(85, '2025-08-01'),
