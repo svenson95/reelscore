@@ -280,8 +280,12 @@ export class FixtureListItemComponent implements OnDestroy {
       return;
     }
 
-    const homeScoreChanged = score.home !== this.previousScore.home;
-    const awayScoreChanged = score.away !== this.previousScore.away;
+    const homeScoreChanged =
+      score.home !== this.previousScore.home &&
+      !(this.previousScore.home === null && score.home === 0);
+    const awayScoreChanged =
+      score.away !== this.previousScore.away &&
+      !(this.previousScore.away === null && score.away === 0);
     this.previousScore = score;
 
     if (homeScoreChanged) {
