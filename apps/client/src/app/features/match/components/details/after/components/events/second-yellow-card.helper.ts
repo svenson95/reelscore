@@ -1,12 +1,14 @@
 import type { EventWithResult } from '@reelscore-sdk/models';
 
+import type { MatchTimelineEvent } from './types';
+
 export const SECOND_YELLOW_CARD_COMMENT = 'Second Yellow Card';
 
 export function mergeSecondYellowCardEvents(
   events: EventWithResult[]
-): EventWithResult[] {
+): MatchTimelineEvent[] {
   const consumedEvents = new Set<number>();
-  const mergedEvents: EventWithResult[] = [];
+  const mergedEvents: MatchTimelineEvent[] = [];
 
   for (let index = 0; index < events.length; index++) {
     if (consumedEvents.has(index)) {
@@ -27,9 +29,14 @@ export function mergeSecondYellowCardEvents(
     }
 
     consumedEvents.add(matchingCardIndex);
+    const matchingEvent = events[matchingCardIndex];
+
     mergedEvents.push({
       ...event,
-      comments: SECOND_YELLOW_CARD_COMMENT,
+      detail: 'Red Card',
+      comments:
+        event.comments || matchingEvent.comments || SECOND_YELLOW_CARD_COMMENT,
+      isSecondYellowCard: true,
     });
   }
 
@@ -37,6 +44,7 @@ export function mergeSecondYellowCardEvents(
     if (
       event.type !== 'Card' ||
       event.detail !== 'Red Card' ||
+      event.isSecondYellowCard ||
       event.comments === SECOND_YELLOW_CARD_COMMENT
     ) {
       return event;
@@ -54,7 +62,11 @@ export function mergeSecondYellowCardEvents(
     );
 
     return hasEarlierYellowCard
-      ? { ...event, comments: SECOND_YELLOW_CARD_COMMENT }
+      ? {
+          ...event,
+          comments: event.comments || SECOND_YELLOW_CARD_COMMENT,
+          isSecondYellowCard: true,
+        }
       : event;
   });
 }

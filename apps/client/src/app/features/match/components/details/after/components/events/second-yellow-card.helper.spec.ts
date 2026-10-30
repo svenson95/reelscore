@@ -24,10 +24,37 @@ describe('mergeSecondYellowCardEvents', () => {
       });
 
       expect(mergeSecondYellowCardEvents([firstCard, secondCard])).toEqual([
-        { ...firstCard, comments: SECOND_YELLOW_CARD_COMMENT },
+        {
+          ...firstCard,
+          detail: 'Red Card',
+          comments: 'First card comment',
+          isSecondYellowCard: true,
+        },
       ]);
     }
   );
+
+  it('uses the second event comment when the first event has none', () => {
+    const yellowCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+      comments: null,
+    });
+    const redCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Red Card',
+      comments: 'Second card comment',
+    });
+
+    expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
+      {
+        ...yellowCard,
+        detail: 'Red Card',
+        comments: 'Second card comment',
+        isSecondYellowCard: true,
+      },
+    ]);
+  });
 
   it('marks a later dismissal for the previously cautioned player only', () => {
     const yellowCard = createMatchEvent({
@@ -54,7 +81,11 @@ describe('mergeSecondYellowCardEvents', () => {
     ).toEqual([
       yellowCard,
       differentPlayerRedCard,
-      { ...laterRedCard, comments: SECOND_YELLOW_CARD_COMMENT },
+      {
+        ...laterRedCard,
+        comments: SECOND_YELLOW_CARD_COMMENT,
+        isSecondYellowCard: true,
+      },
     ]);
   });
 
@@ -104,7 +135,12 @@ describe('mergeSecondYellowCardEvents', () => {
     });
 
     expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
-      { ...yellowCard, comments: SECOND_YELLOW_CARD_COMMENT },
+      {
+        ...yellowCard,
+        detail: 'Red Card',
+        comments: SECOND_YELLOW_CARD_COMMENT,
+        isSecondYellowCard: true,
+      },
     ]);
   });
 
@@ -122,7 +158,34 @@ describe('mergeSecondYellowCardEvents', () => {
 
     expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
       yellowCard,
-      { ...redCard, comments: SECOND_YELLOW_CARD_COMMENT },
+      {
+        ...redCard,
+        comments: SECOND_YELLOW_CARD_COMMENT,
+        isSecondYellowCard: true,
+      },
+    ]);
+  });
+
+  it('preserves a reason comment on a later red card', () => {
+    const yellowCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Yellow Card',
+      time: { elapsed: 45, extra: null },
+    });
+    const redCard = createMatchEvent({
+      type: 'Card',
+      detail: 'Red Card',
+      comments: 'Professional foul',
+      time: { elapsed: 91, extra: null },
+    });
+
+    expect(mergeSecondYellowCardEvents([yellowCard, redCard])).toEqual([
+      yellowCard,
+      {
+        ...redCard,
+        comments: 'Professional foul',
+        isSecondYellowCard: true,
+      },
     ]);
   });
 

@@ -72,4 +72,21 @@ describe('EventCardComponent', () => {
     );
     expect(componentFixture.nativeElement.querySelector('img')).not.toBeNull();
   });
+
+  it('shows the reason from a second-yellow-card event', () => {
+    const componentFixture = renderComponent(EventCardComponent, {
+      event: {
+        ...createMatchEvent({
+          type: 'Card',
+          detail: 'Red Card',
+          comments: 'Serious foul',
+        }),
+        isSecondYellowCard: true,
+      },
+    });
+
+    expect(readElementText(componentFixture.nativeElement)).toBe(
+      'ScorerSchweres Foul'
+    );
+  });
 });

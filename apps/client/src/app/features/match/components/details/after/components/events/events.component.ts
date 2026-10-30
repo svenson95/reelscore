@@ -23,10 +23,7 @@ import { MatchEventComponent } from './components';
 import { TimeTotalPipe } from './pipes';
 import type { MatchTimelineItem } from './types';
 
-import {
-  mergeSecondYellowCardEvents,
-  SECOND_YELLOW_CARD_COMMENT,
-} from './second-yellow-card.helper';
+import { mergeSecondYellowCardEvents } from './second-yellow-card.helper';
 
 const TIMELINE_BOUNDARIES: Record<
   EventTimelineBoundary,
@@ -192,7 +189,7 @@ const TIMELINE_BOUNDARIES: Record<
         </span>
         } @else if (event.detail === 'Missed Penalty') {
         <mat-icon>close</mat-icon>
-        } @else if (event.type === 'Card' && isSecondYellowCard(event)) {
+        } @else if (event.type === 'Card' && event.isSecondYellowCard) {
         <span class="card-stack" role="img" aria-label="Gelb-Rote Karte">
           <span class="card-icon yellow-card" aria-hidden="true"></span>
           <span class="card-icon red-card" aria-hidden="true"></span>
@@ -348,12 +345,6 @@ export class MatchEventsComponent {
 
   protected isNewTimelineItem(item: MatchTimelineItem): boolean {
     return item.type === 'event' && this.newTimelineEventKeys().has(item.key);
-  }
-
-  protected isSecondYellowCard(event: EventWithResult): boolean {
-    return (
-      event.type === 'Card' && event.comments === SECOND_YELLOW_CARD_COMMENT
-    );
   }
 
   protected isShootoutEvent(event: EventWithResult): boolean {
