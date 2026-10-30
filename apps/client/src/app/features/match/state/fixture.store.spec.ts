@@ -323,6 +323,10 @@ describe('FixtureStore', () => {
     });
     httpMock.getFixture.mockReturnValue(of(createFixture()));
 
+    store.updateHighlights([createEvent('Goal', 'Normal Goal', 10)]);
+
+    expect(store.fixture()).toBeNull();
+
     await store.loadFixture(42);
 
     expect(store.fixture()?.highlights).toEqual([]);
