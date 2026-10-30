@@ -30,7 +30,7 @@ import {
   `,
   template: `
     @if (event(); as event) { @switch (event.type) { @case('Goal') {
-    <rs-event-goal [event]="event" />
+    <rs-event-goal [event]="event" [isPenaltyShootout]="isPenaltyShootout()" />
     } @case("subst") {
     <rs-event-substitution [event]="event" />
     } @case("Card") {
@@ -43,6 +43,7 @@ import {
 export class MatchEventComponent {
   event = input.required<EventDTO>();
   homeTeamId = input.required<number>();
+  isPenaltyShootout = input<boolean>(false);
 
   @HostBinding('class.is-home')
   get isHome() {

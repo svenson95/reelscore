@@ -166,7 +166,11 @@ const TIMELINE_BOUNDARIES: Record<
           class="event-content-home"
           [class.event-content-home-new]="isNewTimelineItem(item)"
         >
-          <rs-match-event [event]="event" [homeTeamId]="homeId" />
+          <rs-match-event
+            [event]="event"
+            [homeTeamId]="homeId"
+            [isPenaltyShootout]="isShootoutEvent(event)"
+          />
         </div>
         } @else {
         <span class="time">{{ event | timeTotal }}'</span>
@@ -219,7 +223,11 @@ const TIMELINE_BOUNDARIES: Record<
           class="event-content-away"
           [class.event-content-away-new]="isNewTimelineItem(item)"
         >
-          <rs-match-event [event]="event" [homeTeamId]="homeId" />
+          <rs-match-event
+            [event]="event"
+            [homeTeamId]="homeId"
+            [isPenaltyShootout]="isShootoutEvent(event)"
+          />
         </div>
         } @else {
         <span class="time">{{ event | timeTotal }}'</span>
@@ -346,6 +354,10 @@ export class MatchEventsComponent {
     return (
       event.type === 'Card' && event.comments === SECOND_YELLOW_CARD_COMMENT
     );
+  }
+
+  protected isShootoutEvent(event: EventWithResult): boolean {
+    return isPenaltyShootoutEvent(event, this.fixture()?.data.score.penalty);
   }
 
   private getEventKey(event: EventWithResult): string {
