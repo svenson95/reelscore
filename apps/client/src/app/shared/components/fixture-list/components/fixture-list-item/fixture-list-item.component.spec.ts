@@ -90,6 +90,7 @@ describe('FixtureListItemComponent', () => {
     globalThis.fetch = originalFetch;
     URL.createObjectURL = originalCreateObjectUrl;
     URL.revokeObjectURL = originalRevokeObjectUrl;
+    jest.useRealTimers();
   });
 
   it('waits for decoding and renders the header with its image before match data arrives', async () => {
@@ -175,5 +176,142 @@ describe('FixtureListItemComponent', () => {
     );
 
     expect(link.getAttribute('href')).toBe(expectedUrl);
+  });
+
+  it('highlights only the changed home score for two minutes, including reversals', () => {
+    jest.useFakeTimers();
+
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 0, away: 0 },
+    });
+    fixture.detectChanges();
+
+    const scoreLabels = fixture.nativeElement.querySelectorAll(
+      '.result rs-result-label span'
+    ) as NodeListOf<HTMLElement>;
+    const [homeScore, awayScore] = scoreLabels;
+
+    expect(homeScore.classList).not.toContain('is-goal-update');
+    expect(awayScore.classList).not.toContain('is-goal-update');
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 1, away: 0 },
+    });
+    fixture.detectChanges();
+    expect(homeScore.classList).toContain('is-goal-update');
+    expect(awayScore.classList).not.toContain('is-goal-update');
+
+    jest.advanceTimersByTime(60 * 1000);
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 0, away: 0 },
+    });
+    fixture.detectChanges();
+    expect(homeScore.classList).toContain('is-goal-update');
+    expect(awayScore.classList).not.toContain('is-goal-update');
+
+    jest.advanceTimersByTime(60 * 1000);
+    fixture.detectChanges();
+    expect(homeScore.classList).toContain('is-goal-update');
+
+    jest.advanceTimersByTime(60 * 1000);
+    fixture.detectChanges();
+    expect(homeScore.classList).not.toContain('is-goal-update');
+  });
+
+  it('highlights only the changed away score', () => {
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 0, away: 0 },
+    });
+    fixture.detectChanges();
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+      goals: { home: 0, away: 1 },
+    });
+    fixture.detectChanges();
+
+    const scoreLabels = fixture.nativeElement.querySelectorAll(
+      '.result rs-result-label span'
+    ) as NodeListOf<HTMLElement>;
+    const [homeScore, awayScore] = scoreLabels;
+
+    expect(homeScore.classList).not.toContain('is-goal-update');
+    expect(awayScore.classList).toContain('is-goal-update');
+  });
+
+  it('keeps the live time label green and marks interruptions gold', () => {
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: '1H' },
+      },
+    });
+    fixture.detectChanges();
+
+    const time = fixture.nativeElement.querySelector('.time') as HTMLElement;
+    expect(time.classList).toContain('is-playing');
+    expect(time.classList).not.toContain('is-interrupted');
+
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        status: { ...EXAMPLE_FIXTURE.fixture.status, short: 'INT' },
+      },
+    });
+    fixture.detectChanges();
+
+    expect(time.classList).toContain('is-interrupted');
+  });
+
+  it('clears the score update timer when the fixture row is destroyed', () => {
+    jest.useFakeTimers();
+
+    const fixture = TestBed.createComponent(FixtureListItemComponent);
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      goals: { home: 0, away: 0 },
+    });
+    fixture.detectChanges();
+    fixture.componentRef.setInput('fixture', {
+      ...EXAMPLE_FIXTURE,
+      goals: { home: 1, away: 0 },
+    });
+    fixture.detectChanges();
+
+    expect(jest.getTimerCount()).toBe(1);
+
+    fixture.destroy();
+
+    expect(jest.getTimerCount()).toBe(0);
   });
 });
