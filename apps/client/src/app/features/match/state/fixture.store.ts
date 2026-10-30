@@ -159,6 +159,19 @@ export const FixtureStore = signalStore(
       );
     };
 
+    const updateHighlights = (events: EventDTO[]): void => {
+      const fixture = store.fixture();
+
+      if (!fixture) return;
+
+      patchState(store, {
+        fixture: {
+          ...fixture,
+          highlights: filterFixtureHighlights(events),
+        },
+      });
+    };
+
     const loadRelatedFixtureData = (
       fixture: GetFixtureDTO,
       options: LoadFixtureOptions
@@ -180,6 +193,7 @@ export const FixtureStore = signalStore(
         {
           fixtureId: fixtureIdParameter,
           teams: fixture.data.teams,
+          onEventsLoaded: updateHighlights,
         },
         options.isRefresh
       );
@@ -252,18 +266,7 @@ export const FixtureStore = signalStore(
         });
       },
 
-      updateHighlights(events: EventDTO[]): void {
-        const fixture = store.fixture();
-
-        if (!fixture) return;
-
-        patchState(store, {
-          fixture: {
-            ...fixture,
-            highlights: filterFixtureHighlights(events),
-          },
-        });
-      },
+      updateHighlights,
 
       updateFixture(fixture: FixtureDTO): void {
         const currentFixture = store.fixture();

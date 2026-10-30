@@ -86,6 +86,34 @@ describe('MatchHeaderComponent', () => {
     ).toBeNull();
   });
 
+  it('shows event highlights before the fixture score has caught up', () => {
+    const componentFixture = renderComponent(MatchHeaderComponent, {
+      data: {
+        ...EXAMPLE_FIXTURE,
+        goals: { home: 0, away: 0 },
+        score: {
+          ...EXAMPLE_FIXTURE.score,
+          penalty: { home: null, away: null },
+        },
+      },
+      highlights: [
+        {
+          time: { elapsed: 20, extra: null },
+          team: { ...EXAMPLE_FIXTURE.teams.home, goals: 1 },
+          player: { id: 1, name: 'Live scorer' },
+          assist: { id: null, name: null },
+          type: 'Goal',
+          detail: 'Normal Goal',
+          comments: '',
+        },
+      ],
+    });
+
+    expect(
+      componentFixture.nativeElement.querySelector('rs-match-highlights')
+    ).not.toBeNull();
+  });
+
   it('shows the competition and translated round above the team header', () => {
     const componentFixture = renderComponent(MatchHeaderComponent, {
       data: null,

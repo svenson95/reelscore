@@ -104,10 +104,10 @@ describe('FixtureStore', () => {
       false
     );
     expect(eventsStoreMock.loadEvents).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         fixtureId: String(EXAMPLE_FIXTURE.fixture.id),
         teams: EXAMPLE_FIXTURE.teams,
-      },
+      }),
       false
     );
     expect(statisticsStoreMock.loadStatistics).toHaveBeenCalledWith(
@@ -314,6 +314,23 @@ describe('FixtureStore', () => {
     store.updateHighlights([]);
 
     expect(store.fixture()?.highlights).toEqual([]);
+  });
+
+  it('updates highlights when the separately loaded events arrive later', async () => {
+    let onEventsLoaded: ((events: EventDTO[]) => void) | undefined;
+    eventsStoreMock.loadEvents.mockImplementation((options) => {
+      onEventsLoaded = options.onEventsLoaded;
+    });
+    httpMock.getFixture.mockReturnValue(of(createFixture()));
+
+    await store.loadFixture(42);
+
+    expect(store.fixture()?.highlights).toEqual([]);
+
+    const goal = createEvent('Goal', 'Normal Goal', 20);
+    onEventsLoaded?.([goal]);
+
+    expect(store.fixture()?.highlights).toEqual([goal]);
   });
 
   it('should merge matching realtime fixture data and update highlights', async () => {
