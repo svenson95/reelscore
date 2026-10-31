@@ -117,7 +117,7 @@
   @include mat.tooltip-overrides(
     (
       container-color: var(--rs-color-primary),
-      supporting-text-color: black,
+      supporting-text-color: var(--rs-color-text-3),
     )
   );
 }
