@@ -89,13 +89,49 @@ export class FixturesController {
     return fixtures;
   }
 
-  private readonly hasMultipleRoundsWithSameNumber = (
-    round: CompetitionRound,
-    rounds: Array<CompetitionRound>
-  ): boolean => {
-    const roundNumber = round[round.length - 1];
+  private readonly getRoundIdentifier = (round: CompetitionRound): string => {
+    let suffixStart = round.length;
 
-    return rounds.filter((r) => r.endsWith(roundNumber)).length > 1;
+    while (suffixStart > 0) {
+      const characterCode = round.codePointAt(suffixStart - 1);
+      const isDigit =
+        characterCode !== undefined &&
+        characterCode >= 48 &&
+        characterCode <= 57;
+
+      if (!isDigit) break;
+      suffixStart -= 1;
+    }
+
+    return suffixStart === round.length ? round : round.slice(suffixStart);
+  };
+
+  private readonly getRoundsToLoad = (
+    rounds: CompetitionRound[],
+    selectedRound: CompetitionRound,
+    type: CompetitionRequestType,
+    showAll: boolean
+  ): CompetitionRound[] => {
+    if (type === 'next' || showAll) return rounds;
+
+    const selectedRoundIndex = rounds.indexOf(selectedRound);
+    if (selectedRoundIndex < 0) {
+      return [selectedRound];
+    }
+
+    const recentRoundIdentifiers = new Set<string>();
+
+    for (
+      let index = selectedRoundIndex;
+      index >= 0 && recentRoundIdentifiers.size < 3;
+      index -= 1
+    ) {
+      recentRoundIdentifiers.add(this.getRoundIdentifier(rounds[index]));
+    }
+
+    return rounds.filter((round) =>
+      recentRoundIdentifiers.has(this.getRoundIdentifier(round))
+    );
   };
 
   private readonly getLastResultRound = async (
@@ -172,17 +208,17 @@ export class FixturesController {
 
     if (!selectedRound) return [];
 
-    const hasMultipleRounds = this.hasMultipleRoundsWithSameNumber(
+    const roundsToLoad = this.getRoundsToLoad(
+      rounds,
       selectedRound,
-      rounds
+      type,
+      showAll
     );
-
-    const round = showAll || hasMultipleRounds ? rounds : [selectedRound];
 
     const fixtures = await Fixtures.find({
       'league.id': id,
       'league.season': season,
-      'league.round': { $in: round },
+      'league.round': { $in: roundsToLoad },
       ...(type === 'last'
         ? this.getFixturesWithResultQuery()
         : this.getFixturesWithoutResultQuery()),
@@ -192,15 +228,11 @@ export class FixturesController {
 
     if (!fixtures.length) return [];
 
-    if (hasMultipleRounds || showAll) {
-      const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
+    const fixturesRounds = [...new Set(fixtures.map((f) => f.league.round))];
 
-      return fixturesRounds.map((round) =>
-        fixtures.filter((f) => f.league.round === round)
-      );
-    }
-
-    return [fixtures];
+    return fixturesRounds.map((round) =>
+      fixtures.filter((fixture) => fixture.league.round === round)
+    );
   }
 
   async competitionFixtures(
