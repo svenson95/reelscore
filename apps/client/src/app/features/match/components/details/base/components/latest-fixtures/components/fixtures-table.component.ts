@@ -198,6 +198,10 @@ export class MatchFixturesTableComponent {
     fixture: ExtendedFixtureDTO,
     team: 'home' | 'away'
   ): FixturePerformance | undefined {
+    const status = fixture.fixture.status.short;
+    if (status === 'NS' || status === 'TBD') return 'MATCH_NOT_STARTED';
+    if (status === 'PST') return 'MATCH_POSTPONED';
+
     return fixture.evaluations?.[team]?.performance;
   }
 

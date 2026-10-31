@@ -158,4 +158,33 @@ describe('MatchFixturesTableComponent', () => {
       expect(values[0].getAttribute('aria-label')).toContain(label);
     }
   );
+
+  it.each([
+    ['NS', '?', 'Spiel noch nicht gestartet'],
+    ['TBD', '?', 'Spiel noch nicht gestartet'],
+    ['PST', '-', 'Spiel verschoben'],
+  ] as const)(
+    'shows the status icon for a fixture with status %s and no evaluation',
+    (status, symbol, label) => {
+      const fixtureWithStatus = {
+        ...EXAMPLE_FIXTURE,
+        fixture: {
+          ...EXAMPLE_FIXTURE.fixture,
+          status: { ...EXAMPLE_FIXTURE.fixture.status, short: status },
+        },
+      };
+
+      const componentFixture = renderComponent(MatchFixturesTableComponent, {
+        fixtures: [fixtureWithStatus],
+        team: EXAMPLE_FIXTURE.teams.home,
+        side: 'home',
+      });
+      const values =
+        componentFixture.nativeElement.querySelectorAll('.evaluation-value');
+
+      expect(values).toHaveLength(2);
+      expect(values[0].textContent.trim()).toBe(symbol);
+      expect(values[0].getAttribute('aria-label')).toContain(label);
+    }
+  );
 });
