@@ -50,9 +50,10 @@ export class DateNavigationService {
   private updateRoute(date: DateString): void {
     const currentRoute = this.router.url.split('/')[1];
     const dateRoute = date.substring(0, 10);
+    const targetRoute = dateRoute === this.today() ? '' : dateRoute;
 
-    if (currentRoute !== dateRoute) {
-      void this.router.navigate([dateRoute]);
+    if (currentRoute !== targetRoute) {
+      void this.router.navigate(targetRoute ? [targetRoute] : ['/']);
     }
   }
 

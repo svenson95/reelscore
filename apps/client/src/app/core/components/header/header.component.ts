@@ -33,17 +33,23 @@ const MAT_MODULES = [MatButtonModule];
 
       @apply min-w-0 pl-0 pr-0;
     }
+
+    h1 {
+      @apply m-0;
+    }
   `,
   template: `
     <div class="wrapper">
-      <a
-        class="logo-link"
-        mat-flat-button
-        [routerLink]="['/']"
-        aria-label="Zur Startseite"
-      >
-        <rs-logo [showLoadingIndicator]="true" />
-      </a>
+      <h1>
+        <a
+          class="logo-link"
+          mat-flat-button
+          [routerLink]="['/']"
+          aria-label="Zur Startseite"
+        >
+          <rs-logo [showLoadingIndicator]="true" />
+        </a>
+      </h1>
 
       <nav
         aria-label="Competition-Select Navigation"

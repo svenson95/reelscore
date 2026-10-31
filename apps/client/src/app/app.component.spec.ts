@@ -5,6 +5,7 @@ import {
   FooterComponent,
   HeaderComponent,
   RealtimeUpdateService,
+  SeoService,
 } from './core';
 import {
   RealtimeService,
@@ -31,6 +32,10 @@ describe('AppComponent', () => {
     init: jest.fn(),
   };
 
+  const seoServiceMock = {
+    init: jest.fn(),
+  };
+
   const visibilityObserverServiceMock = {
     init: jest.fn(),
   };
@@ -41,12 +46,17 @@ describe('AppComponent', () => {
 
     realtimeServiceMock.connect.mockClear();
     realtimeUpdateServiceMock.init.mockClear();
+    seoServiceMock.init.mockClear();
     visibilityObserverServiceMock.init.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
         provideRouter([]),
+        {
+          provide: SeoService,
+          useValue: seoServiceMock,
+        },
         {
           provide: StartupService,
           useValue: startupServiceMock,
@@ -99,6 +109,12 @@ describe('AppComponent', () => {
         realtimeServiceMock.connect.mock.invocationCallOrder[0];
 
       expect(realtimeUpdateOrder).toBeLessThan(realtimeConnectOrder);
+    });
+
+    it('should initialize SEO metadata synchronization', () => {
+      component.ngOnInit();
+
+      expect(seoServiceMock.init).toHaveBeenCalledTimes(1);
     });
   });
 
