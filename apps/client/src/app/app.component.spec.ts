@@ -25,7 +25,7 @@ describe('AppComponent', () => {
   };
 
   const realtimeServiceMock = {
-    connect: jest.fn(),
+    init: jest.fn(),
   };
 
   const realtimeUpdateServiceMock = {
@@ -44,7 +44,7 @@ describe('AppComponent', () => {
     startupServiceMock.routeActivated = false;
     startupServiceMock.hideAppInitializer.mockClear();
 
-    realtimeServiceMock.connect.mockClear();
+    realtimeServiceMock.init.mockClear();
     realtimeUpdateServiceMock.init.mockClear();
     seoServiceMock.init.mockClear();
     visibilityObserverServiceMock.init.mockClear();
@@ -91,11 +91,11 @@ describe('AppComponent', () => {
   });
 
   describe('initialization', () => {
-    it('should initialize realtime updates, connect realtime and observe visibility', () => {
+    it('should initialize realtime updates, realtime and observe visibility', () => {
       component.ngOnInit();
 
       expect(realtimeUpdateServiceMock.init).toHaveBeenCalledTimes(1);
-      expect(realtimeServiceMock.connect).toHaveBeenCalledTimes(1);
+      expect(realtimeServiceMock.init).toHaveBeenCalledTimes(1);
       expect(visibilityObserverServiceMock.init).toHaveBeenCalledTimes(1);
     });
 
@@ -105,10 +105,10 @@ describe('AppComponent', () => {
       const realtimeUpdateOrder =
         realtimeUpdateServiceMock.init.mock.invocationCallOrder[0];
 
-      const realtimeConnectOrder =
-        realtimeServiceMock.connect.mock.invocationCallOrder[0];
+      const realtimeInitializationOrder =
+        realtimeServiceMock.init.mock.invocationCallOrder[0];
 
-      expect(realtimeUpdateOrder).toBeLessThan(realtimeConnectOrder);
+      expect(realtimeUpdateOrder).toBeLessThan(realtimeInitializationOrder);
     });
 
     it('should initialize SEO metadata synchronization', () => {
