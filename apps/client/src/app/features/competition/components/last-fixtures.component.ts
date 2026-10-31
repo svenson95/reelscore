@@ -32,7 +32,7 @@ import { FixturesListComponent } from './fixtures-list.component';
   styles: `
     :host { @apply flex flex-col gap-rs1 pb-rs1 overflow-visible; }
     .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
-    button { @apply mx-3 shadow-rs; }
+    button { @apply mt-1 mx-3 shadow-rs; }
   `,
   template: `
     <rs-page-title title="Ergebnisse"></rs-page-title>

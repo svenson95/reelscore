@@ -6,3 +6,5 @@ export * from './replay-animation-on-navigation.directive';
 export * from './responsive-image/responsive-image.component';
 export * from './result-label.component';
 export * from './standings-table.component';
+export * from './tab-navigation.component';
+export * from './tab-view.component';

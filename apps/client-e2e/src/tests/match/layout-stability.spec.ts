@@ -45,6 +45,9 @@ for (const teamNamesForCase of teamNameCases) {
           },
         });
       });
+      await page.route('**/fixture-events**', (route) =>
+        route.fulfill({ json: [] })
+      );
 
       await page.goto('/2026-05-30/champions-league/1544371', {
         waitUntil: 'domcontentloaded',
@@ -59,7 +62,7 @@ for (const teamNamesForCase of teamNameCases) {
       const matchDetails = page.locator('section[rs-match-details]');
       await expect
         .poll(() =>
-          hasAnimation(matchDetails.locator('mat-tab-group'), 'rs-fade-in')
+          hasAnimation(matchDetails.locator('rs-tab-navigation'), 'rs-fade-in')
         )
         .toBe(true);
       await expect(
@@ -87,6 +90,27 @@ for (const teamNamesForCase of teamNameCases) {
       const layoutAfterData = await getMatchHeaderLayout(matchHeader);
 
       expect(layoutAfterData).toEqual(layoutBeforeData);
+
+      const contentLayout = await matchDetails.evaluate((details) => {
+        const panel = details.querySelector('.tab-panel');
+        const card = details.querySelector('.fixture-data');
+        if (!panel || !card) throw new Error('Match details content missing');
+
+        const container = details.getBoundingClientRect();
+        const panelBounds = panel.getBoundingClientRect();
+        const cardBounds = card.getBoundingClientRect();
+        return {
+          overflow: panelBounds.right - container.right,
+          leftMargin: cardBounds.left - container.left,
+          rightMargin: container.right - cardBounds.right,
+        };
+      });
+
+      expect(contentLayout.overflow).toBeLessThanOrEqual(1);
+      expect(contentLayout.rightMargin).toBeGreaterThan(0);
+      expect(
+        Math.abs(contentLayout.leftMargin - contentLayout.rightMargin)
+      ).toBeLessThanOrEqual(1);
     }
   );
 }
