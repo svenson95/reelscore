@@ -180,5 +180,22 @@ describe('DateNavigationService', () => {
 
       expect(routerMock.navigate).not.toHaveBeenCalled();
     });
+
+    it('should keep the root route when today is selected', () => {
+      routerMock.url = '/';
+      selectedDay.set(getTodayDateString());
+
+      TestBed.tick();
+
+      expect(routerMock.navigate).not.toHaveBeenCalled();
+    });
+
+    it('should navigate to the root route when today is selected from a dated route', () => {
+      selectedDay.set(getTodayDateString());
+
+      TestBed.tick();
+
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/']);
+    });
   });
 });

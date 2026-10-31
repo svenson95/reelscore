@@ -3,4 +3,5 @@ export * from './components';
 export * from './core.providers';
 export * from './dev-tools';
 export * from './realtime/realtime-update.service';
+export * from './seo/seo.service';
 export * from './week-data';

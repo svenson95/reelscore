@@ -114,10 +114,10 @@ export class RealtimeService {
     this.reconnectCursor = undefined;
     this.replayEventsSince = undefined;
     void this.liveRefreshService.refresh({ force: true });
-    this.connect();
+    this.init();
   };
 
-  connect(replayEventsSince?: number): void {
+  init(replayEventsSince?: number): void {
     this.connectionRequested = true;
     if (!environment.realtimeEnabled && !this.realtimeDisabled) {
       this.fallbackToRefresh();
@@ -281,7 +281,7 @@ export class RealtimeService {
     this.reconnectTimeout = setTimeout(() => {
       this.reconnectTimeout = undefined;
 
-      this.connect();
+      this.init();
     }, delay);
   }
 
@@ -325,7 +325,7 @@ export class RealtimeService {
 
   private reconnect(replayEventsSince?: number): void {
     this.closeConnection();
-    this.connect(replayEventsSince);
+    this.init(replayEventsSince);
   }
 
   private resetPingTimeout(): void {

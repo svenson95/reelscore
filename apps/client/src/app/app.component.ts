@@ -10,6 +10,7 @@ import {
   FooterComponent,
   HeaderComponent,
   RealtimeUpdateService,
+  SeoService,
   SkeletonPreviewOverlayComponent,
   SkeletonPreviewService,
 } from './core';
@@ -50,6 +51,7 @@ import {
   `,
 })
 export class AppComponent implements OnInit {
+  private readonly seoService = inject(SeoService);
   private readonly skeletonPreviewService = inject(SkeletonPreviewService);
   private readonly startupService = inject(StartupService);
   private readonly visibilityObserverService = inject(
@@ -62,8 +64,9 @@ export class AppComponent implements OnInit {
     this.skeletonPreviewService.enabled;
 
   ngOnInit(): void {
+    this.seoService.init();
     this.realtimeUpdateService.init();
-    this.realtimeService.connect();
+    this.realtimeService.init();
     this.visibilityObserverService.init();
   }
 

@@ -87,7 +87,7 @@ describe('RealtimeService', () => {
     it('should connect to the default realtime channel', () => {
       jest.spyOn(Date, 'now').mockReturnValue(1_788_000_000_000);
 
-      service.connect();
+      service.init();
 
       const url = new URL(getLatestEventSource().url);
       const expectedUrl = new URL(`${environment.api}livestream`);
@@ -102,14 +102,14 @@ describe('RealtimeService', () => {
     });
 
     it('should not create multiple realtime connections', () => {
-      service.connect();
-      service.connect();
+      service.init();
+      service.init();
 
       expect(MockEventSource.instances).toHaveLength(1);
     });
 
     it('should remain connecting until realtime activity is received', () => {
-      service.connect();
+      service.init();
 
       const eventSource = getLatestEventSource();
 
@@ -120,7 +120,7 @@ describe('RealtimeService', () => {
     });
 
     it('should stop fallback polling when a realtime ping is received', () => {
-      service.connect();
+      service.init();
 
       const eventSource = getLatestEventSource();
 
@@ -143,8 +143,8 @@ describe('RealtimeService', () => {
       const enabled = environment.realtimeEnabled;
       environment.realtimeEnabled = false;
       try {
-        service.connect();
-        service.connect();
+        service.init();
+        service.init();
         expect(MockEventSource.instances).toHaveLength(0);
         expect(service.status()).toBe('fallback');
         expect(liveRefreshServiceMock.start).toHaveBeenCalledTimes(1);
@@ -154,7 +154,7 @@ describe('RealtimeService', () => {
     });
 
     it('should close in the background and resume with a fresh snapshot', () => {
-      service.connect();
+      service.init();
       const source = getLatestEventSource();
       source.emitRawMessage(
         JSON.stringify({ type: 'connected', cursor: 'old-0' })
@@ -178,7 +178,7 @@ describe('RealtimeService', () => {
     });
 
     it('should clean up timers and listeners on destruction', () => {
-      service.connect();
+      service.init();
       const source = getLatestEventSource();
       TestBed.resetTestingModule();
       document.dispatchEvent(new Event('visibilitychange'));
@@ -192,7 +192,7 @@ describe('RealtimeService', () => {
     it('should expose fixture update batches', () => {
       const update = createFixturesUpdate(123, 456);
 
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitMessage({
         id: '1',
@@ -217,7 +217,7 @@ describe('RealtimeService', () => {
     it('should expose fixture events update batches', () => {
       const update = createFixtureEventsBatchUpdate(123, 456);
 
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitMessage({
         id: '2',
@@ -237,7 +237,7 @@ describe('RealtimeService', () => {
     });
 
     it('should ignore unknown realtime events', () => {
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitMessage({
         id: '3',
@@ -253,7 +253,7 @@ describe('RealtimeService', () => {
     it('should ignore invalid realtime messages', () => {
       jest.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitRawMessage('invalid-json');
 
@@ -264,7 +264,7 @@ describe('RealtimeService', () => {
 
   describe('reconnection', () => {
     it('should reconnect after a realtime connection error', () => {
-      service.connect();
+      service.init();
 
       const eventSource = getLatestEventSource();
 
@@ -281,7 +281,7 @@ describe('RealtimeService', () => {
     });
 
     it('should bound retries even when native EventSource is reconnecting', () => {
-      service.connect();
+      service.init();
       for (const delay of [1_000, 2_000, 3_000]) {
         getLatestEventSource().emitError(MockEventSource.CONNECTING);
         jest.advanceTimersByTime(delay);
@@ -292,13 +292,13 @@ describe('RealtimeService', () => {
 
     it('should timeout a connection that never opens', () => {
       jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      service.connect();
+      service.init();
       jest.advanceTimersByTime(76_000);
       expect(MockEventSource.instances).toHaveLength(2);
     });
 
     it('should use the last received event id when reconnecting', () => {
-      service.connect();
+      service.init();
 
       const firstEventSource = getLatestEventSource();
 
@@ -323,7 +323,7 @@ describe('RealtimeService', () => {
     });
 
     it('should reconnect when requested by the realtime server', () => {
-      service.connect();
+      service.init();
 
       const firstEventSource = getLatestEventSource();
 
@@ -346,7 +346,7 @@ describe('RealtimeService', () => {
     it('should reconnect when no realtime message is received within the timeout', () => {
       jest.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-      service.connect();
+      service.init();
 
       const firstEventSource = getLatestEventSource();
 
@@ -368,7 +368,7 @@ describe('RealtimeService', () => {
     it('should reset the connection timeout when a realtime message is received', () => {
       jest.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-      service.connect();
+      service.init();
 
       const firstEventSource = getLatestEventSource();
 
@@ -397,7 +397,7 @@ describe('RealtimeService', () => {
     });
 
     it('should reconnect when the realtime server reports a disconnection', () => {
-      service.connect();
+      service.init();
 
       const eventSource = getLatestEventSource();
 
@@ -420,7 +420,7 @@ describe('RealtimeService', () => {
 
   describe('fallback', () => {
     it('should permanently fall back to polling after reaching the reconnect limit', () => {
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitError();
 
@@ -445,7 +445,7 @@ describe('RealtimeService', () => {
     });
 
     it('should not reconnect realtime after falling back to polling', () => {
-      service.connect();
+      service.init();
 
       getLatestEventSource().emitError();
       jest.advanceTimersByTime(1_000);
@@ -455,8 +455,8 @@ describe('RealtimeService', () => {
 
       getLatestEventSource().emitError();
 
-      service.connect();
-      service.connect();
+      service.init();
+      service.init();
 
       expect(service.status()).toBe('fallback');
       expect(MockEventSource.instances).toHaveLength(3);
@@ -465,7 +465,7 @@ describe('RealtimeService', () => {
 
   describe('disconnect', () => {
     it('should disconnect realtime and start polling fallback', () => {
-      service.connect();
+      service.init();
 
       const eventSource = getLatestEventSource();
 
@@ -477,9 +477,9 @@ describe('RealtimeService', () => {
     });
 
     it('should allow reconnecting after disconnect', () => {
-      service.connect();
+      service.init();
       service.disconnect();
-      service.connect();
+      service.init();
 
       expect(MockEventSource.instances).toHaveLength(2);
     });
