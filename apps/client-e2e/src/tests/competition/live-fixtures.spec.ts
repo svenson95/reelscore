@@ -36,7 +36,7 @@ test.describe('Competition Page', () => {
     await competitionPage.selectTab('Spielplan');
 
     await expect(page.getByText('Keine anstehenden Spiele')).toBeVisible();
-    await expect(liveMatch).toHaveCount(0);
+    await expect(liveMatch).toBeHidden();
   });
 });
 

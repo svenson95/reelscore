@@ -5,12 +5,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 
-import { LeagueService, MAT_TAB_ANIMATION_DURATION } from '@app/shared';
-
-import { CompetitionRouteContext } from './state/competition-route-context';
+import {
+  LeagueService,
+  TabNavigationComponent,
+  type TabNavigationItem,
+  TabPanelDirective,
+  TabViewComponent,
+} from '@app/shared';
 
 import {
   CompetitionStandingsComponent,
@@ -21,6 +23,7 @@ import {
 } from './components';
 import { SERVICE_PROVIDERS } from './data-access';
 import {
+  CompetitionRouteContext,
   CompetitionStandingsStore,
   LastFixturesStore,
   NextFixturesStore,
@@ -33,8 +36,9 @@ import {
   selector: 'rs-competition-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    MatTabsModule,
-    MatIconModule,
+    TabNavigationComponent,
+    TabPanelDirective,
+    TabViewComponent,
     CompetitionStandingsComponent,
     LastFixturesComponent,
     NextFixturesComponent,
@@ -43,68 +47,46 @@ import {
   ],
   providers: [...SERVICE_PROVIDERS, ...STORE_PROVIDERS],
   styles: `
-    :host ::ng-deep {
-      mat-tab-header {
-        @apply mx-3;
-      }
-    }
-
     :host {
       @apply min-h-[70vh];
+    }
+
+    .competition-tabs {
+      @apply mb-[1.25rem];
     }
   `,
   template: `
     <nav aria-label="Page-Header Navigation" rs-page-header></nav>
 
     <section class="competition-data" data-testid="competition-page">
-      <mat-tab-group
-        [animationDuration]="animationDuration"
-        [dynamicHeight]="true"
-        [style.--mat-tab-animation-duration]="animationDuration"
-        [style.--tab-count]="COMPETITION_TABS_LENGTH"
-        [style.--active-tab-index]="selectedTabIndex()"
+      <rs-tab-navigation
+        class="competition-tabs"
+        [ariaLabel]="'Wettbewerbsnavigation'"
+        [tabs]="tabNavigationItems"
+        [selectedIndex]="selectedTabIndex()"
         (selectedIndexChange)="selectedTabIndex.set($event)"
+      />
+
+      <rs-tab-view
+        [tabs]="tabNavigationItems"
+        [(selectedIndex)]="selectedTabIndex"
       >
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div class="tab-label-content" aria-label="Ergebnisse">
-              <mat-icon>playlist_add_check</mat-icon>
-            </div>
-          </ng-template>
-
+        <ng-template rsTabPanel>
           <rs-competition-last-fixtures />
-        </mat-tab>
+        </ng-template>
 
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div class="tab-label-content" aria-label="Spielplan">
-              <mat-icon>playlist_play</mat-icon>
-            </div>
-          </ng-template>
-
+        <ng-template rsTabPanel>
           <rs-competition-next-fixtures />
-        </mat-tab>
+        </ng-template>
 
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div class="tab-label-content" aria-label="Tabellen">
-              <mat-icon>format_list_numbered</mat-icon>
-            </div>
-          </ng-template>
-
+        <ng-template rsTabPanel>
           <rs-competition-standings />
-        </mat-tab>
+        </ng-template>
 
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div class="tab-label-content" aria-label="Spieler-Statistiken">
-              <mat-icon>format_list_numbered_rtl</mat-icon>
-            </div>
-          </ng-template>
-
+        <ng-template rsTabPanel>
           <rs-competition-player-stats />
-        </mat-tab>
-      </mat-tab-group>
+        </ng-template>
+      </rs-tab-view>
     </section>
   `,
 })
@@ -117,10 +99,14 @@ export class CompetitionPage extends CompetitionRouteContext {
   private readonly topScorersStore = inject(TopScorersStore);
   private readonly topAssistsStore = inject(TopAssistsStore);
 
-  readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
+  protected readonly tabNavigationItems: readonly TabNavigationItem[] = [
+    { label: 'Ergebnisse', icon: 'playlist_add_check' },
+    { label: 'Spielplan', icon: 'playlist_play' },
+    { label: 'Tabellen', icon: 'format_list_numbered' },
+    { label: 'Spieler-Statistiken', icon: 'format_list_numbered_rtl' },
+  ];
 
-  readonly COMPETITION_TABS_LENGTH = 4;
-  readonly selectedTabIndex = signal<number>(0);
+  protected readonly selectedTabIndex = signal<number>(0);
 
   private readonly leagueEffect = effect(() => {
     const competition = this.leagueService.selectedLeague();

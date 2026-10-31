@@ -2,18 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
   signal,
 } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 
+import type { TabNavigationItem } from '@app/shared';
 import {
-  MAT_TAB_ANIMATION_DURATION,
   PageTitleComponent,
   ReplayAnimationOnNavigationDirective,
+  TabNavigationComponent,
+  TabPanelDirective,
+  TabViewComponent,
 } from '@app/shared';
 
 import {
@@ -31,13 +31,13 @@ import {
 
 import { MatchDetailsFacade } from './details.facade';
 
-const MAT_MODULES = [MatTabsModule, MatIconModule];
-
 @Component({
   selector: 'section[rs-match-details]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ...MAT_MODULES,
+    TabNavigationComponent,
+    TabPanelDirective,
+    TabViewComponent,
     PageTitleComponent,
     ReplayAnimationOnNavigationDirective,
     MatchFixtureDataComponent,
@@ -54,12 +54,8 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
     :host {
       @apply max-w-rs-max-width w-full flex flex-col gap-5 mx-auto;
 
-      .tab-content {
-        @apply flex flex-col;
-      }
-
       .detail-sections {
-        @apply gap-6 sm:gap-8;
+        @apply flex flex-col gap-6 sm:gap-8;
       }
 
       .state-skeleton {
@@ -69,38 +65,24 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
       .state-skeleton-row {
         @apply flex min-h-9 items-center justify-between gap-4 border-b py-2 last:border-b-0;
       }
-
-      ::ng-deep {
-        .mat-mdc-tab-body.mat-mdc-tab-body-active {
-          @apply flex flex-col gap-2;
-        }
-
-        .mat-mdc-tab-header {
-          @apply mx-3;
-        }
-      }
     }
   `,
   template: `
-    <mat-tab-group
+    <rs-tab-navigation
       class="animate-fade-in"
       rsReplayAnimationOnNavigation
-      [animationDuration]="animationDuration"
-      [dynamicHeight]="true"
-      [style.--mat-tab-animation-duration]="animationDuration"
+      [ariaLabel]="'Spielnavigation'"
+      [tabs]="tabNavigationItems()"
       [selectedIndex]="selectedTabIndex()"
       (selectedIndexChange)="selectedTabIndex.set($event)"
-      [style.--tab-count]="tabCount"
-      [style.--active-tab-index]="selectedTabIndex()"
-    >
-      <mat-tab aria-label="Details">
-        <ng-template mat-tab-label>
-          <div class="tab-label-content">
-            <mat-icon>info</mat-icon>
-          </div>
-        </ng-template>
+    />
 
-        <div class="tab-content detail-sections">
+    <rs-tab-view
+      [tabs]="tabNavigationItems()"
+      [(selectedIndex)]="selectedTabIndex"
+    >
+      <ng-template rsTabPanel
+        ><div class="detail-sections">
           <rs-match-fixture-data
             [fixture]="fixtureData()"
             [isLoading]="detailsLoading()"
@@ -138,103 +120,74 @@ const MAT_MODULES = [MatTabsModule, MatIconModule];
             [fixtures]="headToHeadFixtures()"
             [isLoading]="headToHeadFixturesLoading()"
             [error]="headToHeadFixturesError()"
-          />
-        </div>
-      </mat-tab>
+          /></div
+      ></ng-template>
 
-      <mat-tab aria-label="Analysen" [disabled]="!availableTabs()[1]">
-        <ng-template mat-tab-label>
-          <div class="tab-label-content">
-            <mat-icon>pageview</mat-icon>
+      <ng-template rsTabPanel>
+        <rs-match-fixture-analyses
+          [isLoading]="analysesLoading()"
+          [error]="analysesError() ?? latestFixturesError()"
+        />
+      </ng-template>
+
+      <ng-template rsTabPanel>
+        <rs-page-title title="Spielbericht" />
+
+        @if (events(); as matchEvents) { @if (!eventsLoading()) {
+        <rs-match-events [data]="matchEvents" />
+        } } @else if (eventsLoading()) {
+        <div
+          class="state-skeleton"
+          aria-label="Spielbericht wird geladen"
+          aria-busy="true"
+        >
+          @for (row of [0, 1, 2, 3, 4, 5]; track row) {
+          <div class="state-skeleton-row" aria-hidden="true">
+            <span class="rs-skeleton h-3 w-1/4"></span>
+            <span class="rs-skeleton h-3 w-8"></span>
+            <span class="rs-skeleton h-3 w-1/4"></span>
           </div>
-        </ng-template>
-
-        <div class="tab-content">
-          <rs-match-fixture-analyses
-            [isLoading]="analysesLoading()"
-            [error]="analysesError() ?? latestFixturesError()"
-          />
-        </div>
-      </mat-tab>
-
-      <mat-tab aria-label="Spielbericht" [disabled]="!availableTabs()[2]">
-        <ng-template mat-tab-label>
-          <div class="tab-label-content">
-            <mat-icon>article</mat-icon>
-          </div>
-        </ng-template>
-
-        <div class="tab-content">
-          <rs-page-title title="Spielbericht" />
-
-          @if (events(); as matchEvents) { @if (!eventsLoading()) {
-          <rs-match-events [data]="matchEvents" />
-          } } @else if (eventsLoading()) {
-          <div
-            class="state-skeleton"
-            aria-label="Spielbericht wird geladen"
-            aria-busy="true"
-          >
-            @for (row of [0, 1, 2, 3, 4, 5]; track row) {
-            <div class="state-skeleton-row" aria-hidden="true">
-              <span class="rs-skeleton h-3 w-1/4"></span>
-              <span class="rs-skeleton h-3 w-8"></span>
-              <span class="rs-skeleton h-3 w-1/4"></span>
-            </div>
-            }
-          </div>
-          } @else if (eventsError()) {
-          <p class="no-data" role="status">
-            Fehler beim Laden des Spielberichts
-          </p>
-          } @else {
-          <p class="no-data">Kein Spielbericht verfügbar</p>
           }
         </div>
-      </mat-tab>
+        } @else if (eventsError()) {
+        <p class="no-data" role="status">Fehler beim Laden des Spielberichts</p>
+        } @else {
+        <p class="no-data">Kein Spielbericht verfügbar</p>
+        }
+      </ng-template>
 
-      <mat-tab aria-label="Statistiken" [disabled]="!availableTabs()[3]">
-        <ng-template mat-tab-label>
-          <div class="tab-label-content">
-            <mat-icon>assessment</mat-icon>
+      <ng-template rsTabPanel>
+        <rs-page-title title="Statistiken" />
+
+        @if (statistics(); as matchStatistics) { @if (!statisticsLoading()) {
+        <rs-match-statistics [data]="matchStatistics" />
+        } } @else if (statisticsLoading()) {
+        <div
+          class="state-skeleton"
+          aria-label="Statistiken werden geladen"
+          aria-busy="true"
+        >
+          @for (row of [0, 1, 2, 3, 4]; track row) {
+          <div class="state-skeleton-row" aria-hidden="true">
+            <span class="rs-skeleton h-3 w-1/3"></span>
+            <span class="rs-skeleton h-3 w-1/4"></span>
+            <span class="rs-skeleton h-3 w-1/4"></span>
           </div>
-        </ng-template>
-
-        <div class="tab-content">
-          <rs-page-title title="Statistiken" />
-
-          @if (statistics(); as matchStatistics) { @if (!statisticsLoading()) {
-          <rs-match-statistics [data]="matchStatistics" />
-          } } @else if (statisticsLoading()) {
-          <div
-            class="state-skeleton"
-            aria-label="Statistiken werden geladen"
-            aria-busy="true"
-          >
-            @for (row of [0, 1, 2, 3, 4]; track row) {
-            <div class="state-skeleton-row" aria-hidden="true">
-              <span class="rs-skeleton h-3 w-1/3"></span>
-              <span class="rs-skeleton h-3 w-1/4"></span>
-              <span class="rs-skeleton h-3 w-1/4"></span>
-            </div>
-            }
-          </div>
-          } @else if (statisticsError()) {
-          <p class="no-data" role="status">Fehler beim Laden der Statistiken</p>
-          } @else {
-          <p class="no-data">Keine Statistiken verfügbar</p>
           }
         </div>
-      </mat-tab>
-    </mat-tab-group>
+        } @else if (statisticsError()) {
+        <p class="no-data" role="status">Fehler beim Laden der Statistiken</p>
+        } @else {
+        <p class="no-data">Keine Statistiken verfügbar</p>
+        }
+      </ng-template>
+    </rs-tab-view>
   `,
 })
 export class MatchDetailsComponent {
   readonly forceLoading = input<boolean>(false);
 
   private readonly facade = inject(MatchDetailsFacade);
-
-  protected readonly animationDuration = MAT_TAB_ANIMATION_DURATION;
 
   readonly standings = this.facade.standings;
   readonly analyses = this.facade.analyses;
@@ -252,7 +205,25 @@ export class MatchDetailsComponent {
   readonly statisticsError = this.facade.statisticsError;
   readonly hasMultipleGroups = this.facade.hasMultipleGroups;
 
-  readonly selectedTabIndex = signal<number>(0);
+  protected readonly selectedTabIndex = signal<number>(0);
+  protected readonly tabNavigationItems = computed<TabNavigationItem[]>(() => [
+    { label: 'Details', icon: 'info' },
+    {
+      label: 'Analysen',
+      icon: 'pageview',
+      disabled: !this.availableTabs()[1],
+    },
+    {
+      label: 'Spielbericht',
+      icon: 'article',
+      disabled: !this.availableTabs()[2],
+    },
+    {
+      label: 'Statistiken',
+      icon: 'assessment',
+      disabled: !this.availableTabs()[3],
+    },
+  ]);
 
   readonly teamCoachesLoading = computed<boolean>(
     () => this.detailsLoading() || this.facade.teamCoachesLoading()
@@ -307,12 +278,4 @@ export class MatchDetailsComponent {
   private isOptionalTabAvailable(data: unknown): boolean {
     return this.forceLoading() || data != null;
   }
-
-  protected readonly tabCount = this.availableTabs().length;
-
-  private readonly selectedTabEffect = effect(() => {
-    if (!this.availableTabs()[this.selectedTabIndex()]) {
-      this.selectedTabIndex.set(0);
-    }
-  });
 }
