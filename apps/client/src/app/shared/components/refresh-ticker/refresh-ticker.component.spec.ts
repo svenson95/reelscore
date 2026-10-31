@@ -73,6 +73,36 @@ describe('RefreshTickerComponent', () => {
     expect(hideTooltip).toHaveBeenCalledWith();
   });
 
+  it('should restart the hide timeout when clicked again', () => {
+    jest.useFakeTimers();
+
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
+
+    element.click();
+    jest.advanceTimersByTime(2000);
+    element.click();
+
+    jest.advanceTimersByTime(500);
+    expect(hideTooltip).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(2000);
+    expect(hideTooltip).toHaveBeenCalledTimes(1);
+  });
+
+  it('should clear the hide timeout when destroyed', () => {
+    jest.useFakeTimers();
+
+    const tooltip = fixture.debugElement.injector.get(MatTooltip);
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
+
+    element.click();
+    fixture.destroy();
+    jest.advanceTimersByTime(2500);
+
+    expect(hideTooltip).not.toHaveBeenCalled();
+  });
+
   it('should expose the current timer value', () => {
     timer.set(10);
     fixture.detectChanges();
