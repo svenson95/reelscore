@@ -120,9 +120,31 @@ export const FixtureStore = signalStore(
       }
     };
 
-    const patchFixtureLoaded = (fixture: GetFixtureDTO): void => {
+    const patchFixtureLoaded = (
+      fixture: GetFixtureDTO,
+      isRefresh = false
+    ): void => {
+      let loadedFixture = fixture;
+
+      if (isRefresh) {
+        const currentEvents = eventsStore.events();
+        const currentFixture = store.fixture();
+
+        if (currentEvents) {
+          loadedFixture = {
+            ...fixture,
+            highlights: filterFixtureHighlights(currentEvents),
+          };
+        } else if (currentFixture) {
+          loadedFixture = {
+            ...fixture,
+            highlights: currentFixture.highlights,
+          };
+        }
+      }
+
       patchState(store, {
-        fixture,
+        fixture: loadedFixture,
         isLoading: false,
         isRefreshing: false,
         error: null,
@@ -224,7 +246,7 @@ export const FixtureStore = signalStore(
           return;
         }
 
-        patchFixtureLoaded(fixture);
+        patchFixtureLoaded(fixture, isRefresh);
         loadRelatedFixtureData(fixture, options);
       } catch (error) {
         if (loadId !== currentLoadId) {
