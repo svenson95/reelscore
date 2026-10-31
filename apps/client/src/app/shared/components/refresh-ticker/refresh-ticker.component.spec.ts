@@ -41,6 +41,10 @@ describe('RefreshTickerComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should display the refresh ticker', () => {
     expect(element.querySelector('mat-icon')).not.toBeNull();
     expect(element.children).toHaveLength(1);
@@ -50,48 +54,23 @@ describe('RefreshTickerComponent', () => {
     expect(element.querySelector('button')).toBeNull();
   });
 
-  it('should show the status tooltip when clicked', () => {
+  it('should show the status tooltip on click and hide it after 2.5 seconds', () => {
+    jest.useFakeTimers();
+
     const tooltip = fixture.debugElement.injector.get(MatTooltip);
     const showTooltip = jest.spyOn(tooltip, 'show');
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
 
     element.click();
 
-    expect(showTooltip).toHaveBeenCalled();
-  });
-
-  it('should show the status tooltip on touch release without a long press', () => {
-    const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const pointerUpEvent = Object.assign(new Event('pointerup'), {
-      pointerType: 'touch',
-    });
-
-    element.dispatchEvent(pointerUpEvent);
+    expect(showTooltip).toHaveBeenCalledWith(0);
+    expect(hideTooltip).not.toHaveBeenCalled();
 
     expect(tooltip.touchGestures).toBe('off');
-    expect(showTooltip).toHaveBeenCalled();
-  });
 
-  it('should ignore the synthetic click after a touch release', () => {
-    const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const clickEvent = new MouseEvent('click', { detail: 1 });
+    jest.advanceTimersByTime(2500);
 
-    element.dispatchEvent(clickEvent);
-
-    expect(showTooltip).not.toHaveBeenCalled();
-  });
-
-  it('should not open the tooltip on a non-touch pointer release', () => {
-    const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const pointerUpEvent = Object.assign(new Event('pointerup'), {
-      pointerType: 'mouse',
-    });
-
-    element.dispatchEvent(pointerUpEvent);
-
-    expect(showTooltip).not.toHaveBeenCalled();
+    expect(hideTooltip).toHaveBeenCalledWith();
   });
 
   it('should expose the current timer value', () => {
