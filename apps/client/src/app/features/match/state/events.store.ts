@@ -104,6 +104,7 @@ export const EventsStore = signalStore(
       },
 
       updateEvents(events: RapidEventsDTO, teams: MatchTeams): void {
+        latestRequestId++;
         patchEvents(events, teams);
       },
 

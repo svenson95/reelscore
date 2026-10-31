@@ -67,6 +67,28 @@ describe('EventsStore', () => {
     expect(store.error()).toBeNull();
   });
 
+  it('keeps realtime events when an older HTTP request finishes later', () => {
+    const response$ = new Subject<RapidEventsDTO>();
+    const staleGoal = createEvent(10, 'home', 'Goal', 'Normal Goal');
+    const liveGoal = createEvent(20, 'away', 'Goal', 'Normal Goal');
+    const onEventsLoaded = jest.fn();
+    httpMock.getFixtureEvents.mockReturnValue(response$);
+
+    store.loadEvents({
+      fixtureId: '42',
+      teams: EXAMPLE_FIXTURE.teams,
+      onEventsLoaded,
+    });
+    store.updateEvents(createResponse([liveGoal]), EXAMPLE_FIXTURE.teams);
+
+    response$.next(createResponse([staleGoal]));
+
+    expect(store.events()?.map(({ player }) => player.name)).toEqual([
+      'Player 20',
+    ]);
+    expect(onEventsLoaded).not.toHaveBeenCalled();
+  });
+
   it('treats an empty event list as an empty state', () => {
     httpMock.getFixtureEvents.mockReturnValue(of(createResponse([])));
 
