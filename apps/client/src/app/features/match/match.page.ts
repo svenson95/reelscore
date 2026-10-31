@@ -26,7 +26,7 @@ import { STORE_PROVIDERS } from './state';
 import { MatchFacade } from './match.facade';
 
 @Component({
-  selector: 'rs-match-page',
+  selector: 'div[rs-match-page]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PageHeaderComponent,
@@ -51,12 +51,11 @@ import { MatchFacade } from './match.facade';
       sichtbar.
     </p>
     }
-    <nav
-      aria-label="Page-Header Navigation"
+    <div
       rs-page-header
       class="animate-drop-from-top"
       rsReplayAnimationOnNavigation
-    ></nav>
+    ></div>
 
     <section
       rs-match-header

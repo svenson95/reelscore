@@ -13,7 +13,7 @@ import { BackButtonComponent, RefreshTickerComponent } from '@app/shared';
 import { MatchFacade } from '../../match.facade';
 
 @Component({
-  selector: 'nav[rs-page-header]',
+  selector: 'div[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, BackButtonComponent, RefreshTickerComponent],
   styles: `

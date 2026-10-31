@@ -125,7 +125,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @for (team of teams(); track team.id) {
       <section class="team-card" [attr.aria-label]="team.label">
         @if (isLoading() || team.coach) {
-        <article
+        <div
           class="coach"
           [class.coach-away]="$index === 1"
           [attr.aria-hidden]="isLoading() ? 'true' : null"
@@ -224,7 +224,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
             loading="lazy"
           />
           } }
-        </article>
+        </div>
         } @else if (error()) {
         <p role="status">Trainer konnten nicht geladen werden.</p>
         } @else {
