@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
@@ -27,8 +28,7 @@ import {
     '[class.is-reset]': 'isReset()',
     '[style.--refresh-progress]': 'progress()',
     '[attr.data-timer]': 'timer()',
-    '(click)': 'onClick($event)',
-    '(pointerup)': 'onPointerUp($event)',
+    '(click)': 'showTooltip()',
     'data-testid': 'refresh-timer',
   },
   styles: `
@@ -122,6 +122,7 @@ export class RefreshTickerComponent {
 
   private readonly liveRefreshService = inject(LiveRefreshService);
   private readonly tooltip = inject(MatTooltip);
+  private hideTooltipTimeout: ReturnType<typeof setTimeout> | undefined;
 
   protected readonly timer = this.liveRefreshService.timer;
 
@@ -151,20 +152,23 @@ export class RefreshTickerComponent {
     this.tooltip.touchGestures = 'off';
   })();
 
-  protected onClick(event: MouseEvent): void {
-    if (event.detail === 0) {
-      this.showTooltip();
-    }
-  }
-
-  protected onPointerUp(event: PointerEvent): void {
-    if (event.pointerType === 'touch') {
-      this.showTooltip();
-    }
+  constructor() {
+    inject(DestroyRef).onDestroy(() => {
+      if (this.hideTooltipTimeout !== undefined) {
+        clearTimeout(this.hideTooltipTimeout);
+      }
+    });
   }
 
   protected showTooltip(): void {
-    this.tooltip.show();
-    this.tooltip.hide(2500);
+    if (this.hideTooltipTimeout !== undefined) {
+      clearTimeout(this.hideTooltipTimeout);
+    }
+
+    this.tooltip.show(0);
+    this.hideTooltipTimeout = setTimeout(() => {
+      this.tooltip.hide();
+      this.hideTooltipTimeout = undefined;
+    }, 2500);
   }
 }

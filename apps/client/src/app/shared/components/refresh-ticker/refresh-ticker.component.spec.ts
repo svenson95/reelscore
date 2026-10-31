@@ -41,6 +41,10 @@ describe('RefreshTickerComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should display the refresh ticker', () => {
     expect(element.querySelector('mat-icon')).not.toBeNull();
     expect(element.children).toHaveLength(1);
@@ -50,48 +54,53 @@ describe('RefreshTickerComponent', () => {
     expect(element.querySelector('button')).toBeNull();
   });
 
-  it('should show the status tooltip when clicked', () => {
+  it('should show the status tooltip on click and hide it after 2.5 seconds', () => {
+    jest.useFakeTimers();
+
     const tooltip = fixture.debugElement.injector.get(MatTooltip);
     const showTooltip = jest.spyOn(tooltip, 'show');
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
 
     element.click();
 
-    expect(showTooltip).toHaveBeenCalled();
-  });
-
-  it('should show the status tooltip on touch release without a long press', () => {
-    const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const pointerUpEvent = Object.assign(new Event('pointerup'), {
-      pointerType: 'touch',
-    });
-
-    element.dispatchEvent(pointerUpEvent);
+    expect(showTooltip).toHaveBeenCalledWith(0);
+    expect(hideTooltip).not.toHaveBeenCalled();
 
     expect(tooltip.touchGestures).toBe('off');
-    expect(showTooltip).toHaveBeenCalled();
+
+    jest.advanceTimersByTime(2500);
+
+    expect(hideTooltip).toHaveBeenCalledWith();
   });
 
-  it('should ignore the synthetic click after a touch release', () => {
+  it('should restart the hide timeout when clicked again', () => {
+    jest.useFakeTimers();
+
     const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const clickEvent = new MouseEvent('click', { detail: 1 });
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
 
-    element.dispatchEvent(clickEvent);
+    element.click();
+    jest.advanceTimersByTime(2000);
+    element.click();
 
-    expect(showTooltip).not.toHaveBeenCalled();
+    jest.advanceTimersByTime(500);
+    expect(hideTooltip).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(2000);
+    expect(hideTooltip).toHaveBeenCalledTimes(1);
   });
 
-  it('should not open the tooltip on a non-touch pointer release', () => {
+  it('should clear the hide timeout when destroyed', () => {
+    jest.useFakeTimers();
+
     const tooltip = fixture.debugElement.injector.get(MatTooltip);
-    const showTooltip = jest.spyOn(tooltip, 'show');
-    const pointerUpEvent = Object.assign(new Event('pointerup'), {
-      pointerType: 'mouse',
-    });
+    const hideTooltip = jest.spyOn(tooltip, 'hide');
 
-    element.dispatchEvent(pointerUpEvent);
+    element.click();
+    fixture.destroy();
+    jest.advanceTimersByTime(2500);
 
-    expect(showTooltip).not.toHaveBeenCalled();
+    expect(hideTooltip).not.toHaveBeenCalled();
   });
 
   it('should expose the current timer value', () => {
