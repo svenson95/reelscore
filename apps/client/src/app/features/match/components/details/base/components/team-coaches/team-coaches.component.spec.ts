@@ -140,6 +140,11 @@ describe(MatchTeamCoachesComponent.name, () => {
     ['Turkey', 'tr'],
     ['Turkish', 'tr'],
     ['Türkiye', 'tr'],
+    ['US', 'us'],
+    ['USA', 'us'],
+    ['United States', 'us'],
+    ['United States of America', 'us'],
+    ['American', 'us'],
   ])('shows the %s flag for coach nationality values', (nationality, code) => {
     const coach = createCoach(85, '2025-06-01');
     coach.nationality = nationality;
