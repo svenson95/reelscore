@@ -16,7 +16,7 @@ import {
 } from '@app/shared';
 
 @Component({
-  selector: 'nav[rs-page-header]',
+  selector: 'div[rs-page-header]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ResponsiveImageComponent,

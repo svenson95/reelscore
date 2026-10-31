@@ -16,7 +16,7 @@ const fixturesInitialized = jest.fn();
 const standingsInitialized = jest.fn();
 
 @Component({
-  selector: 'rs-overview-fixtures',
+  selector: 'section[rs-overview-fixtures]',
   standalone: true,
   template: '',
 })
@@ -32,7 +32,7 @@ class OverviewFixturesStubComponent {
 }
 
 @Component({
-  selector: 'rs-overview-standings',
+  selector: 'section[rs-overview-standings]',
   standalone: true,
   template: '',
 })

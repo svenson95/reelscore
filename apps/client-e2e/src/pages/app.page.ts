@@ -8,7 +8,7 @@ export class AppPage {
 
   constructor(private readonly page: Page) {
     this.startupOverlay = page.getByTestId('startup-overlay');
-    this.root = page.locator('rs-root');
+    this.root = page.locator('div[rs-root]');
   }
 
   async goto(options?: GoToOptions): Promise<void> {
