@@ -28,7 +28,7 @@ type OverviewContentPanel = {
 };
 
 @Component({
-  selector: 'section[rs-overview-content]',
+  selector: 'div[rs-overview-content]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
@@ -99,21 +99,23 @@ type OverviewContentPanel = {
         "
         (animationend)="finishPanelAnimation($event, panelIndex)"
       >
-        <rs-overview-fixtures
+        <section
+          rs-overview-fixtures
           class="fixtures-container"
           [filteredFixtures]="content.fixtures"
           [isLoading]="content.fixturesLoading"
           [hasDataForSelectedDay]="content.fixturesHasData"
           [error]="content.fixturesError"
-        />
+        ></section>
 
-        <rs-overview-standings
+        <section
+          rs-overview-standings
           class="standings-container"
           [weekStandings]="content.standings"
           [isLoading]="content.standingsLoading"
           [hasDataForSelectedDay]="content.standingsHasData"
           [error]="content.standingsError"
-        />
+        ></section>
       </div>
     </ng-template>
 

@@ -33,7 +33,7 @@ import {
 } from './state';
 
 @Component({
-  selector: 'rs-competition-page',
+  selector: 'div[rs-competition-page]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TabNavigationComponent,
@@ -56,7 +56,7 @@ import {
     }
   `,
   template: `
-    <nav aria-label="Page-Header Navigation" rs-page-header></nav>
+    <div rs-page-header></div>
 
     <section class="competition-data" data-testid="competition-page">
       <rs-tab-navigation

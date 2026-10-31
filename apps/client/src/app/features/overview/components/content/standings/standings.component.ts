@@ -13,7 +13,7 @@ import { PageTitleComponent, StandingsTableComponent } from '@app/shared';
 import { OverviewStandingsFacade } from './standings.facade';
 
 @Component({
-  selector: 'rs-overview-standings',
+  selector: 'section[rs-overview-standings]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StandingsTableComponent, PageTitleComponent],
   providers: [OverviewStandingsFacade],

@@ -21,7 +21,7 @@ import {
 } from './shared';
 
 @Component({
-  selector: 'rs-root',
+  selector: 'div[rs-root]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,

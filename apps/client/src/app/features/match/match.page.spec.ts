@@ -28,7 +28,7 @@ import { MatchFacade } from './match.facade';
 import { MatchPage } from './match.page';
 
 @Component({
-  selector: 'nav[rs-page-header]',
+  selector: 'div[rs-page-header]',
   template: '',
 })
 class PageHeaderStubComponent {}
@@ -139,7 +139,7 @@ describe('MatchPage', () => {
     expect(view.nativeElement.textContent).toContain(
       'Es ist ein Fehler aufgetreten.'
     );
-    expect(view.nativeElement.querySelector('nav[rs-page-header]')).toBeNull();
+    expect(view.nativeElement.querySelector('div[rs-page-header]')).toBeNull();
     expect(
       view.nativeElement.querySelector('section[rs-match-header]')
     ).toBeNull();

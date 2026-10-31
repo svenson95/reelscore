@@ -26,7 +26,7 @@ import { MatchDayListComponent } from './match-day-list.component';
 type FixturesViewState = 'loading' | 'error' | 'empty' | null;
 
 @Component({
-  selector: 'rs-overview-fixtures',
+  selector: 'section[rs-overview-fixtures]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatButtonModule,

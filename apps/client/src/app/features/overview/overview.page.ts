@@ -17,7 +17,7 @@ import {
 } from './data-access';
 
 @Component({
-  selector: 'rs-overview-page',
+  selector: 'div[rs-overview-page]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DateBarComponent, OverviewContentComponent],
   providers: [...OVERVIEW_SERVICE_PROVIDERS],
@@ -31,7 +31,7 @@ import {
       [class.animate-drop-from-top]="animateNavigation()"
     ></nav>
 
-    <section rs-overview-content data-testid="overview-page"></section>
+    <div rs-overview-content data-testid="overview-page"></div>
   `,
 })
 export class OverviewPage implements OnInit, OnDestroy, RouteReuseLifecycle {
