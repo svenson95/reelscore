@@ -26,7 +26,7 @@ import { FixturesListComponent } from './fixtures-list.component';
     ReplayAnimationOnNavigationDirective,
   ],
   styles: `
-    :host { @apply flex flex-col gap-rs1; }
+    :host { @apply flex flex-col gap-rs1 pb-rs1; }
     .list-container { @apply flex flex-wrap gap-rs2 px-3 items-start justify-center; }
   `,
   template: `
