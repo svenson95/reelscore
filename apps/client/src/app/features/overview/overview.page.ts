@@ -23,7 +23,6 @@ import {
   providers: [...OVERVIEW_SERVICE_PROVIDERS],
   styles: `
     :host ::ng-deep h2 { margin-left: 1rem; }
-    :host { @apply min-h-[70vh]; }
   `,
   template: `
     <nav

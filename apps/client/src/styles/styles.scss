@@ -12,6 +12,8 @@
 @tailwind utilities;
 
 html {
+  scrollbar-gutter: stable;
+
   @include mat.theme(
     (
       color: (
