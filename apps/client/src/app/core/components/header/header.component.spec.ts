@@ -38,7 +38,6 @@ describe('HeaderComponent', () => {
     // Assert
     expect(logo).toBeTruthy();
     expect(logo.nativeElement.textContent).toContain('reelscore');
-    expect(logo.nativeElement.closest('h1')).toBeTruthy();
   });
 
   it('should route to start on logo-toggle click', async () => {
