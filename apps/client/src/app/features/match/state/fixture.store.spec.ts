@@ -32,7 +32,11 @@ describe('FixtureStore', () => {
     reset: jest.fn(),
   };
   const evaluationsStoreMock = { loadEvaluations: jest.fn(), reset: jest.fn() };
-  const eventsStoreMock = { loadEvents: jest.fn(), reset: jest.fn() };
+  const eventsStoreMock = {
+    events: jest.fn<EventDTO[] | null, []>(),
+    loadEvents: jest.fn(),
+    reset: jest.fn(),
+  };
   const statisticsStoreMock = { loadStatistics: jest.fn(), reset: jest.fn() };
   const latestFixturesStoreMock = {
     loadLatestFixtures: jest.fn(),
@@ -47,6 +51,7 @@ describe('FixtureStore', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    eventsStoreMock.events.mockReturnValue(null);
     TestBed.configureTestingModule({
       providers: [
         FixtureStore,
@@ -173,7 +178,7 @@ describe('FixtureStore', () => {
     refresh$.complete();
     await refresh;
 
-    expect(store.fixture()).toBe(refreshedFixture);
+    expect(store.fixture()).toEqual(refreshedFixture);
     expect(store.isRefreshing()).toBe(false);
     expect(standingsStoreMock.loadFixtureStandings).toHaveBeenLastCalledWith(
       expect.any(String),
@@ -210,6 +215,22 @@ describe('FixtureStore', () => {
       EXAMPLE_FIXTURE.fixture.id,
       true
     );
+  });
+
+  it('keeps current report events in highlights when a fixture refresh is stale', async () => {
+    const initialFixture = createFixture();
+    const refreshedFixture = createFixture();
+    const liveGoal = createEvent('Goal', 'Normal Goal', 20);
+    eventsStoreMock.events.mockReturnValue([liveGoal]);
+    httpMock.getFixture
+      .mockReturnValueOnce(of(initialFixture))
+      .mockReturnValueOnce(of(refreshedFixture));
+
+    await store.loadFixture(42);
+    await store.reloadFixture();
+
+    expect(store.fixture()?.data).toEqual(refreshedFixture.data);
+    expect(store.fixture()?.highlights).toEqual([liveGoal]);
   });
 
   it('should clear the previous fixture while loading another match', async () => {
