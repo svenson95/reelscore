@@ -82,7 +82,7 @@ const EXTERNAL_MODULES = [
       @apply flex flex-1 mx-px overflow-visible border-none;
       @apply bg-rs-button-bg shadow-rs;
 
-      border-radius: var(--rs-size-border-radius-2);
+      border-radius: var(--rs-size-border-radius);
 
       &::before {
         content: '';
@@ -95,7 +95,7 @@ const EXTERNAL_MODULES = [
         width: calc(100% / var(--day-count));
 
         background: var(--rs-color-primary);
-        border-radius: var(--rs-size-border-radius-2);
+        border-radius: var(--rs-size-border-radius);
 
         transform: translateX(
           calc(var(--active-day-index) * 100%)

@@ -50,7 +50,7 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
     }
 
     :host(.is-last) a {
-      @apply rounded-b-border2;
+      @apply rounded-b-rs;
     }
 
     a {
@@ -67,7 +67,7 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
 
     .time,
     .result {
-      @apply flex text-center justify-center rounded-border1;
+      @apply flex text-center justify-center rounded-rs;
 
       &.is-playing {
         @apply text-rs-color-green font-semibold;

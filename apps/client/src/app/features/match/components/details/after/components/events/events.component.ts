@@ -44,7 +44,7 @@ const TIMELINE_BOUNDARIES: Record<
   styles: `
     :host {
       @apply flex flex-col
-        bg-rs-button-bg rounded-border2 shadow-rs
+        bg-rs-button-bg rounded-rs shadow-rs
         mx-3 mb-3 mt-rs1 gap-4 py-rs2;
     }
 

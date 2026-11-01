@@ -44,7 +44,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
   ],
   styles: `
     :host {
-      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-border2 text-rs-font-size-body-3;
+      @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-rs text-rs-font-size-body-3;
     }
     .team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b font-semibold text-rs-font-size-body-1; }
     .team-header.away { @apply flex-row-reverse text-right; }
@@ -52,8 +52,8 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
       @apply flex flex-col p-2 gap-1;
     }
     a + a { @apply border-t; }
-    .first-fixture-without-team-header { @apply rounded-t-border2; }
-    a:last-of-type { @apply rounded-b-border2; }
+    .first-fixture-without-team-header { @apply rounded-t-rs; }
+    a:last-of-type { @apply rounded-b-rs; }
     .match-row {
       @apply grid items-center gap-x-2;
       grid-template-columns: minmax(0, 1fr) 17px auto 17px minmax(0, 1fr);

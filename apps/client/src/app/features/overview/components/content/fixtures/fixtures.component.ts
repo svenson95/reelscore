@@ -41,10 +41,10 @@ type FixturesViewState = 'loading' | 'error' | 'empty' | null;
     }
 
     .live-button {
-      @apply min-w-0 rounded-full px-3 font-semibold;
-      background-color: rgb(34 197 94 / 25%);
-      color: var(--rs-color-green);
       --mat-button-filled-container-height: 30px;
+
+      @apply min-w-0 px-3 rounded-rs font-semibold text-rs-color-green;
+      background-color: rgb(34 197 94 / 25%);
 
       &.is-active {
         background-color: var(--rs-color-green);

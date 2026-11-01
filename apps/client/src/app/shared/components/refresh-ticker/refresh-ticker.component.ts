@@ -33,7 +33,7 @@ import {
   },
   styles: `
     :host {
-      @apply relative flex size-9 items-center justify-center overflow-hidden rounded-border2 shadow-rs;
+      @apply relative flex size-9 items-center justify-center overflow-hidden rounded-rs shadow-rs;
       padding: 0;
       border: 0;
       background-color: var(--rs-button-bg-color);

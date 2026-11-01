@@ -29,7 +29,7 @@ const MIN_LOADING_DURATION_MS = 1000;
 
     .logo-icon {
       @apply flex h-10 w-9 shrink-0 items-center justify-center
-        overflow-hidden rounded-border2;
+        overflow-hidden rounded-rs;
     }
 
     .logo-icon picture {
