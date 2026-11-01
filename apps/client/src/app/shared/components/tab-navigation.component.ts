@@ -67,7 +67,7 @@ export interface TabNavigationItem {
     }
 
     button:disabled {
-      color: var(--rs-border-color-2);
+      opacity: 0.25;
       cursor: default;
     }
 
