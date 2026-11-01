@@ -143,8 +143,8 @@ export class RefreshTickerComponent {
 
   private readonly tooltipMessage = effect(() => {
     this.tooltip.message = this.isActive()
-      ? 'Live-Aktualisierung läuft\nLive-Spiele verfügbar'
-      : 'Live-Aktualisierung aus\nKeine Live-Spiele verfügbar';
+      ? 'Live-Aktualisierung aktiv'
+      : 'Live-Aktualisierung aus';
   });
 
   private readonly tooltipConfig = (() => {

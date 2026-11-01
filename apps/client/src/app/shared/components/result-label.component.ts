@@ -19,10 +19,13 @@ import type { FixtureDTO, FixtureStatus, Goals } from '@reelscore-sdk/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   styles: `
-    .is-goal-update {
-      @apply text-rs-color-primary font-bold;
+    :host {
+      @apply font-medium leading-[1.4rem];
     }
 
+    .is-goal-update {
+      @apply text-rs-color-primary font-semibold;
+    }
   `,
   template: `
     @if (isPenaltyShootout()) {

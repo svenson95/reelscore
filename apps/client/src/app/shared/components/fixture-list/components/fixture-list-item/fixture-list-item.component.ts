@@ -70,12 +70,12 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
       @apply flex text-center justify-center rounded-rs;
 
       &.is-playing {
-        @apply text-rs-color-green font-bold;
+        @apply text-rs-color-green font-semibold;
       }
     }
 
     .time.is-interrupted {
-      @apply text-rs-color-primary font-bold;
+      @apply text-rs-color-primary font-semibold;
     }
 
     .result {
