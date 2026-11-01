@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import {
@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
 
   const startupServiceMock = {
     routeActivated: false,
@@ -87,12 +88,13 @@ describe('AppComponent', () => {
       })
       .compileComponents();
 
-    component = TestBed.createComponent(AppComponent).componentInstance;
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
   describe('initialization', () => {
     it('should initialize realtime updates, realtime and observe visibility', () => {
-      component.ngOnInit();
+      fixture.detectChanges();
 
       expect(realtimeUpdateServiceMock.init).toHaveBeenCalledTimes(1);
       expect(realtimeServiceMock.init).toHaveBeenCalledTimes(1);
@@ -100,7 +102,7 @@ describe('AppComponent', () => {
     });
 
     it('should initialize realtime updates before connecting realtime', () => {
-      component.ngOnInit();
+      fixture.detectChanges();
 
       const realtimeUpdateOrder =
         realtimeUpdateServiceMock.init.mock.invocationCallOrder[0];
@@ -112,7 +114,7 @@ describe('AppComponent', () => {
     });
 
     it('should initialize SEO metadata synchronization', () => {
-      component.ngOnInit();
+      fixture.detectChanges();
 
       expect(seoServiceMock.init).toHaveBeenCalledTimes(1);
     });

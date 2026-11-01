@@ -108,7 +108,8 @@ type OverviewContentPanel = {
           [error]="content.fixturesError"
         ></section>
 
-        @defer (on immediate; hydrate on interaction) {
+        @defer ( on immediate; hydrate on interaction; hydrate when
+        hasNavigated() ) {
         <section
           rs-overview-standings
           class="standings-container"
@@ -119,7 +120,9 @@ type OverviewContentPanel = {
         ></section>
         } @placeholder {
         <section class="standings-container" aria-hidden="true">
-          <p class="no-data">Tabellen werden geladen ...</p>
+          <p class="no-data" data-testid="standings-loading">
+            Tabellen werden geladen ...
+          </p>
         </section>
         }
       </div>
