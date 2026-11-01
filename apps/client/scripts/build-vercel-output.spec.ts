@@ -36,6 +36,7 @@ describe('buildVercelOutput', () => {
 
     const vercelConfig = JSON.parse(String(configWrite[1])) as {
       routes: Array<{
+        handle?: string;
         src: string;
         dest?: string;
         headers?: Record<string, string>;
@@ -58,12 +59,22 @@ describe('buildVercelOutput', () => {
       headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
       continue: true,
     });
-    expect(vercelConfig.routes).toContainEqual({ src: '^/$', dest: '/ssr' });
-    expect(vercelConfig.routes).toContainEqual({
-      src: '/(.*)',
-      dest: '/ssr',
-      check: true,
-    });
+    const rootSsrRouteIndex = vercelConfig.routes.findIndex(
+      (route) => route.src === '^/$' && route.dest === '/ssr'
+    );
+    const filesystemRouteIndex = vercelConfig.routes.findIndex(
+      (route) => route.handle === 'filesystem'
+    );
+    const fallbackSsrRouteIndex = vercelConfig.routes.findIndex(
+      (route) => route.src === '/(.*)' && route.dest === '/ssr'
+    );
+
+    expect(rootSsrRouteIndex).toBeGreaterThanOrEqual(0);
+    expect(filesystemRouteIndex).toBeGreaterThan(rootSsrRouteIndex);
+    expect(fallbackSsrRouteIndex).toBeGreaterThan(filesystemRouteIndex);
+    expect(vercelConfig.routes[fallbackSsrRouteIndex]).not.toHaveProperty(
+      'check'
+    );
 
     const functionConfigWrite = jest
       .mocked(writeFile)
