@@ -84,9 +84,11 @@ async function buildVercelOutput() {
             dest: '/ssr',
           },
           {
+            handle: 'filesystem',
+          },
+          {
             src: '/(.*)',
             dest: '/ssr',
-            check: true,
           },
         ],
       },
