@@ -1,7 +1,15 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, input, type Signal, signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import {
+  type ComponentFixture,
+  DeferBlockState,
+  TestBed,
+} from '@angular/core/testing';
+import {
+  By,
+  provideClientHydration,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 
 import { OverviewContentComponent } from './content.component';
 import { OverviewContentFacade } from './content.facade';
@@ -14,6 +22,18 @@ type ContentPanelSnapshot = {
 
 const fixturesInitialized = jest.fn();
 const standingsInitialized = jest.fn();
+
+async function renderDeferredContent(
+  fixture: ComponentFixture<OverviewContentComponent>
+): Promise<void> {
+  const deferBlocks = await fixture.getDeferBlocks();
+
+  await Promise.all(
+    deferBlocks.map((deferBlock) => deferBlock.render(DeferBlockState.Complete))
+  );
+
+  fixture.detectChanges();
+}
 
 @Component({
   selector: 'section[rs-overview-fixtures]',
@@ -99,6 +119,7 @@ describe('OverviewContentComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [OverviewContentComponent],
+      providers: [provideClientHydration(withIncrementalHydration())],
     })
       .overrideComponent(OverviewContentComponent, {
         set: {
@@ -118,7 +139,7 @@ describe('OverviewContentComponent', () => {
       .compileComponents();
   });
 
-  it('renders the selected day when navigation changes', () => {
+  it('renders the selected day when navigation changes', async () => {
     const selectedFixtures = [{ id: 'selected-fixture' }];
     const nextFixtures = [{ id: 'next-fixture' }];
     const selectedStandings = [{ id: 'selected-standing' }];
@@ -132,6 +153,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     expect(fixturesInitialized).toHaveBeenCalledTimes(2);
     expect(standingsInitialized).toHaveBeenCalledTimes(2);
@@ -153,6 +175,7 @@ describe('OverviewContentComponent', () => {
     tabIndex.set(4);
     selectedDay.set('2026-10-05');
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     const renderedFixtures = fixture.debugElement
       .queryAll(By.directive(OverviewFixturesStubComponent))
@@ -287,7 +310,7 @@ describe('OverviewContentComponent', () => {
     expect(fixture.nativeElement.querySelector('.slide-out')).toBeNull();
   });
 
-  it('should render fixtures and standings for cached selected-day data', () => {
+  it('should render fixtures and standings for cached selected-day data', async () => {
     weekFixtures.set([
       [],
       undefined,
@@ -313,6 +336,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     expect(
       fixture.debugElement.query(By.directive(OverviewFixturesStubComponent))
@@ -346,7 +370,7 @@ describe('OverviewContentComponent', () => {
     expect(component.hasDataForSelectedDay()).toBe(false);
   });
 
-  it('should render standings while the selected week is loading without cached data', () => {
+  it('should render standings while the selected week is loading without cached data', async () => {
     weekStandings.set(Array(7).fill(undefined));
     standingsLoading.set(true);
     hasStandingsDataForSelectedDay.set(false);
@@ -354,6 +378,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     const standingsElement = fixture.debugElement.query(
       By.directive(OverviewStandingsStubComponent)
@@ -367,5 +392,30 @@ describe('OverviewContentComponent', () => {
     expect(component.weekStandings()).toEqual([]);
     expect(component.isLoading()).toBe(true);
     expect(component.hasDataForSelectedDay()).toBe(false);
+  });
+
+  it('clears the outgoing panel after its slide-out animation ends', () => {
+    const fixture = TestBed.createComponent(OverviewContentComponent);
+
+    fixture.detectChanges();
+
+    selectedDay.set('2026-10-02');
+    tabIndex.set(1);
+    fixture.detectChanges();
+
+    const outgoingPanel = fixture.debugElement.queryAll(
+      By.css('.tab-content')
+    )[0].nativeElement as HTMLDivElement;
+
+    expect(outgoingPanel.classList).toContain('slide-out');
+
+    const animationEnd = new Event('animationend', { bubbles: true });
+    Object.defineProperty(animationEnd, 'animationName', {
+      value: 'overview-slide-out',
+    });
+    outgoingPanel.dispatchEvent(animationEnd);
+    fixture.detectChanges();
+
+    expect(outgoingPanel.classList).not.toContain('slide-out');
   });
 });

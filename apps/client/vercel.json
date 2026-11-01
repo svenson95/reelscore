@@ -54,12 +54,6 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "git": {
     "deploymentEnabled": false
   }

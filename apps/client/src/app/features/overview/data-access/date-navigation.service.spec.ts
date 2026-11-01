@@ -181,21 +181,31 @@ describe('DateNavigationService', () => {
       expect(routerMock.navigate).not.toHaveBeenCalled();
     });
 
-    it('should keep the root route when today is selected', () => {
+    it('should navigate from the root route to today', () => {
       routerMock.url = '/';
       selectedDay.set(getTodayDateString());
 
       TestBed.tick();
 
-      expect(routerMock.navigate).not.toHaveBeenCalled();
+      expect(routerMock.navigate).toHaveBeenCalledWith([getTodayDateString()]);
     });
 
-    it('should navigate to the root route when today is selected from a dated route', () => {
+    it('should use the today route when today is selected from another date', () => {
       selectedDay.set(getTodayDateString());
 
       TestBed.tick();
 
-      expect(routerMock.navigate).toHaveBeenCalledWith(['/']);
+      expect(routerMock.navigate).toHaveBeenCalledWith([getTodayDateString()]);
+    });
+
+    it('should not navigate when the route already matches today', () => {
+      const today = getTodayDateString();
+      routerMock.url = `/${today}`;
+      selectedDay.set(today);
+
+      TestBed.tick();
+
+      expect(routerMock.navigate).not.toHaveBeenCalled();
     });
   });
 });

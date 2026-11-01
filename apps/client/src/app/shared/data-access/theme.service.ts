@@ -11,7 +11,7 @@ export class AbstractedThemeService implements ThemeService {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly darkThemeQuery = this.document.defaultView?.matchMedia(
+  private readonly darkThemeQuery = this.document.defaultView?.matchMedia?.(
     '(prefers-color-scheme: dark)'
   );
 

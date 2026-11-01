@@ -1,3 +1,5 @@
+import { DOCUMENT, Location } from '@angular/common';
+import { REQUEST } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import type { DateString } from '@reelscore-sdk/helpers';
@@ -38,6 +40,29 @@ describe('SelectedDateService', () => {
     service = TestBed.inject(SelectedDateService);
 
     expect(service.selectedDay()).toBe(getTodayDateString());
+  });
+
+  it('should initialize selected day from the server request URL', () => {
+    TestBed.overrideProvider(REQUEST, {
+      useValue: { url: 'https://reelscore.test/2026-08-15' },
+    });
+
+    service = TestBed.inject(SelectedDateService);
+
+    expect(service.selectedDay()).toBe('2026-08-15');
+  });
+
+  it('should use Angular Location when no server request or document window exists', () => {
+    const locationService = { path: jest.fn(() => '/2026-08-17') };
+    TestBed.overrideProvider(DOCUMENT, {
+      useValue: { defaultView: null },
+    });
+    TestBed.overrideProvider(Location, { useValue: locationService });
+
+    service = TestBed.inject(SelectedDateService);
+
+    expect(service.selectedDay()).toBe('2026-08-17');
+    expect(locationService.path).toHaveBeenCalledTimes(1);
   });
 
   it('should update selected day and reset selected competition', () => {

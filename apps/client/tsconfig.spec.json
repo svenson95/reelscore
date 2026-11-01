@@ -13,6 +13,8 @@
     "jest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
+    "scripts/**/*.spec.ts",
+    "vercel/**/*.spec.ts",
     "src/**/*.d.ts"
   ]
 }

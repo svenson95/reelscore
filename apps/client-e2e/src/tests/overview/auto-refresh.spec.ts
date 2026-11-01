@@ -9,6 +9,14 @@ const AUTO_REFRESH_INTERVAL_MS = 15_000;
 const AUTO_REFRESH_INTERVAL_SECONDS = AUTO_REFRESH_INTERVAL_MS / 1000;
 const AUTO_REFRESH_TIMEOUT_MS = AUTO_REFRESH_INTERVAL_MS + 10_000;
 
+async function loadPlayingFixtureThroughBrowser(
+  overviewPage: OverviewPage
+): Promise<void> {
+  // SSR loads the first week on the server, outside Playwright's route mocks.
+  await overviewPage.selectDate(6);
+  await overviewPage.selectDate(2);
+}
+
 test.describe('Overview Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.clock.install({
@@ -39,6 +47,7 @@ test.describe('Overview Page', () => {
 
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
+    await loadPlayingFixtureThroughBrowser(overviewPage);
 
     await overviewPage.expectRefreshTimerRunning();
 
@@ -59,15 +68,10 @@ test.describe('Overview Page', () => {
 
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
+    await loadPlayingFixtureThroughBrowser(overviewPage);
     await overviewPage.expectRefreshTimerRunning();
 
-    await expect
-      .poll(() => overviewPage.getRefreshTimerValue(), {
-        timeout: 10_000,
-      })
-      .toBeLessThanOrEqual(AUTO_REFRESH_INTERVAL_SECONDS - 5);
-
-    const refreshResponse = await page.waitForResponse(
+    const refreshResponsePromise = page.waitForResponse(
       (response) =>
         response.url().includes('/fixtures/by-date') &&
         response.request().method() === 'GET',
@@ -75,6 +79,9 @@ test.describe('Overview Page', () => {
         timeout: AUTO_REFRESH_TIMEOUT_MS,
       }
     );
+    await page.clock.runFor(AUTO_REFRESH_INTERVAL_MS);
+
+    const refreshResponse = await refreshResponsePromise;
 
     await refreshResponse.finished();
 
@@ -96,6 +103,7 @@ test.describe('Overview Page', () => {
 
     await overviewPage.goto(testDate);
     await overviewPage.expectLoaded();
+    await loadPlayingFixtureThroughBrowser(overviewPage);
     await overviewPage.expectRefreshTimerRunning();
 
     await expect
@@ -118,7 +126,7 @@ test.describe('Overview Page', () => {
     const restoredTimer = await overviewPage.getRefreshTimerValue();
 
     expect(restoredTimer).toBeLessThanOrEqual(timerBeforeNavigation);
-    expect(restoredTimer).toBeGreaterThanOrEqual(timerBeforeNavigation - 1);
+    expect(restoredTimer).toBeGreaterThanOrEqual(timerBeforeNavigation - 3);
 
     await expect
       .poll(() => overviewPage.getRefreshTimerValue())

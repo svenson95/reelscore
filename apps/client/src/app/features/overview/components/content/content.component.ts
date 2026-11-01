@@ -108,6 +108,8 @@ type OverviewContentPanel = {
           [error]="content.fixturesError"
         ></section>
 
+        @defer ( on immediate; hydrate on interaction; hydrate when
+        hasNavigated() ) {
         <section
           rs-overview-standings
           class="standings-container"
@@ -116,6 +118,13 @@ type OverviewContentPanel = {
           [hasDataForSelectedDay]="content.standingsHasData"
           [error]="content.standingsError"
         ></section>
+        } @placeholder {
+        <section class="standings-container" aria-hidden="true">
+          <p class="no-data" data-testid="standings-loading">
+            Tabellen werden geladen ...
+          </p>
+        </section>
+        }
       </div>
     </ng-template>
 

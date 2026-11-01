@@ -1,8 +1,8 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   inject,
-  type OnInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -50,7 +50,7 @@ import {
     }
   `,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private readonly seoService = inject(SeoService);
   private readonly skeletonPreviewService = inject(SkeletonPreviewService);
   private readonly startupService = inject(StartupService);
@@ -63,11 +63,13 @@ export class AppComponent implements OnInit {
   protected readonly skeletonPreviewEnabled =
     this.skeletonPreviewService.enabled;
 
-  ngOnInit(): void {
-    this.seoService.init();
-    this.realtimeUpdateService.init();
-    this.realtimeService.init();
-    this.visibilityObserverService.init();
+  constructor() {
+    afterNextRender(() => {
+      this.seoService.init();
+      this.realtimeUpdateService.init();
+      this.realtimeService.init();
+      this.visibilityObserverService.init();
+    });
   }
 
   onRouteActivated(): void {
