@@ -1,9 +1,15 @@
 import {
   provideHttpClient,
+  withFetch,
   withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import type { ApplicationConfig } from '@angular/core';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 import {
   PreloadAllModules,
   provideRouter,
@@ -36,9 +42,11 @@ const ANGULAR_PROVIDERS = [
     withPreloading(PreloadAllModules)
   ),
   provideHttpClient(
+    withFetch(),
     withInterceptors([apiRequestInterceptor]),
     withInterceptorsFromDi()
   ),
+  provideClientHydration(withEventReplay(), withIncrementalHydration()),
   LOCALE_PROVIDER,
   CUSTOM_ROUTE_REUSE_STRATEGY_PROVIDER,
   MATERIAL_TOOLTIP_DEFAULT_OPTIONS_PROVIDER,

@@ -35,7 +35,15 @@
           "apps/client/src/styles/styles.scss"
         ],
         "scripts": [],
-        "allowedCommonJsDependencies": ["moment-timezone"]
+        "allowedCommonJsDependencies": ["moment-timezone"],
+        "server": "apps/client/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/client/src/server.ts"
+        },
+        "outputMode": "server",
+        "security": {
+          "allowedHosts": ["localhost", "127.0.0.1", "*.vercel.app"]
+        }
       },
       "configurations": {
         "production": {
@@ -76,6 +84,9 @@
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "development",
       "continuous": true,
+      "options": {
+        "hmr": false
+      },
       "configurations": {
         "production": {
           "buildTarget": "client:build:production"

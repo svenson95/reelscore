@@ -1,8 +1,10 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   type OnInit,
+  PLATFORM_ID,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -51,6 +53,7 @@ import {
   `,
 })
 export class AppComponent implements OnInit {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly seoService = inject(SeoService);
   private readonly skeletonPreviewService = inject(SkeletonPreviewService);
   private readonly startupService = inject(StartupService);
@@ -64,6 +67,10 @@ export class AppComponent implements OnInit {
     this.skeletonPreviewService.enabled;
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.seoService.init();
     this.realtimeUpdateService.init();
     this.realtimeService.init();

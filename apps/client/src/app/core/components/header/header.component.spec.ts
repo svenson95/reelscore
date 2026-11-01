@@ -4,6 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 
+import { getTodayDateString } from '@reelscore-sdk/helpers';
+
 import { LeagueService, SHARED_PROVIDERS } from '@app/shared';
 
 import { routes } from '../../../app.routes';
@@ -57,7 +59,7 @@ describe('HeaderComponent', () => {
     await fixture.whenStable();
 
     // Assert
-    expect(location.path()).toBe('');
+    expect(location.path()).toBe(`/${getTodayDateString()}`);
   });
 
   it('should initialize without selected league', () => {

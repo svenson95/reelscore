@@ -1,6 +1,10 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, input, type Signal, signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import {
+  type ComponentFixture,
+  DeferBlockState,
+  TestBed,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { OverviewContentComponent } from './content.component';
@@ -14,6 +18,18 @@ type ContentPanelSnapshot = {
 
 const fixturesInitialized = jest.fn();
 const standingsInitialized = jest.fn();
+
+async function renderDeferredContent(
+  fixture: ComponentFixture<OverviewContentComponent>
+): Promise<void> {
+  const deferBlocks = await fixture.getDeferBlocks();
+
+  await Promise.all(
+    deferBlocks.map((deferBlock) => deferBlock.render(DeferBlockState.Complete))
+  );
+
+  fixture.detectChanges();
+}
 
 @Component({
   selector: 'section[rs-overview-fixtures]',
@@ -118,7 +134,7 @@ describe('OverviewContentComponent', () => {
       .compileComponents();
   });
 
-  it('renders the selected day when navigation changes', () => {
+  it('renders the selected day when navigation changes', async () => {
     const selectedFixtures = [{ id: 'selected-fixture' }];
     const nextFixtures = [{ id: 'next-fixture' }];
     const selectedStandings = [{ id: 'selected-standing' }];
@@ -132,6 +148,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     expect(fixturesInitialized).toHaveBeenCalledTimes(2);
     expect(standingsInitialized).toHaveBeenCalledTimes(2);
@@ -153,6 +170,7 @@ describe('OverviewContentComponent', () => {
     tabIndex.set(4);
     selectedDay.set('2026-10-05');
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     const renderedFixtures = fixture.debugElement
       .queryAll(By.directive(OverviewFixturesStubComponent))
@@ -287,7 +305,7 @@ describe('OverviewContentComponent', () => {
     expect(fixture.nativeElement.querySelector('.slide-out')).toBeNull();
   });
 
-  it('should render fixtures and standings for cached selected-day data', () => {
+  it('should render fixtures and standings for cached selected-day data', async () => {
     weekFixtures.set([
       [],
       undefined,
@@ -313,6 +331,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     expect(
       fixture.debugElement.query(By.directive(OverviewFixturesStubComponent))
@@ -346,7 +365,7 @@ describe('OverviewContentComponent', () => {
     expect(component.hasDataForSelectedDay()).toBe(false);
   });
 
-  it('should render standings while the selected week is loading without cached data', () => {
+  it('should render standings while the selected week is loading without cached data', async () => {
     weekStandings.set(Array(7).fill(undefined));
     standingsLoading.set(true);
     hasStandingsDataForSelectedDay.set(false);
@@ -354,6 +373,7 @@ describe('OverviewContentComponent', () => {
     const fixture = TestBed.createComponent(OverviewContentComponent);
 
     fixture.detectChanges();
+    await renderDeferredContent(fixture);
 
     const standingsElement = fixture.debugElement.query(
       By.directive(OverviewStandingsStubComponent)

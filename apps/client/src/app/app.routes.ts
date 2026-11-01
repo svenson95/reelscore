@@ -1,12 +1,14 @@
 import type { Routes } from '@angular/router';
 
+import { getTodayDateString } from '@reelscore-sdk/helpers';
+
+export const redirectToToday = (): string => `/${getTodayDateString()}`;
+
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () =>
-      import('./features/overview/overview.page').then((m) => m.OverviewPage),
-    data: { shouldReuse: true },
+    redirectTo: redirectToToday,
   },
   {
     path: ':date/:competitionUrl/:fixtureId',
@@ -25,5 +27,9 @@ export const routes: Routes = [
       import('./features/competition/competition.page').then(
         (m) => m.CompetitionPage
       ),
+  },
+  {
+    path: '**',
+    redirectTo: redirectToToday,
   },
 ];

@@ -1,4 +1,8 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+
+const APP_INITIALIZER_FADE_DURATION_MS = 300;
+const APP_INITIALIZER_MIN_VISIBLE_MS = 800;
 
 export abstract class StartupService {
   abstract routeActivated: boolean;
@@ -8,22 +12,24 @@ export abstract class StartupService {
 
 @Injectable()
 export class AbstractedStartupService extends StartupService {
-  private readonly APP_INITIALIZER_FADE_DURATION_MS = 300;
-  private readonly APP_INITIALIZER_MIN_VISIBLE_MS = 800;
-  private readonly startedAt = performance.now();
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly browserWindow = this.document.defaultView;
+  private readonly startedAt = this.browserWindow?.performance?.now() ?? 0;
 
   routeActivated = false;
 
   hideAppInitializer(): void {
-    const elapsed = performance.now() - this.startedAt;
-    const remaining = Math.max(
-      0,
-      this.APP_INITIALIZER_MIN_VISIBLE_MS - elapsed
-    );
+    if (!isPlatformBrowser(this.platformId) || !this.browserWindow) {
+      return;
+    }
 
-    window.setTimeout(() => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+    const elapsed = this.browserWindow.performance.now() - this.startedAt;
+    const remaining = Math.max(0, APP_INITIALIZER_MIN_VISIBLE_MS - elapsed);
+
+    this.browserWindow.setTimeout(() => {
+      this.browserWindow?.requestAnimationFrame(() => {
+        this.browserWindow?.requestAnimationFrame(() => {
           this.removeAppInitializerElement();
         });
       });
@@ -31,7 +37,11 @@ export class AbstractedStartupService extends StartupService {
   }
 
   removeAppInitializerElement(): void {
-    const loader = document.getElementById('app-initializer');
+    if (!isPlatformBrowser(this.platformId) || !this.browserWindow) {
+      return;
+    }
+
+    const loader = this.document.getElementById('app-initializer');
 
     if (!loader) {
       return;
@@ -39,9 +49,9 @@ export class AbstractedStartupService extends StartupService {
 
     loader.classList.add('app-initializer--hidden');
 
-    window.setTimeout(() => {
+    this.browserWindow.setTimeout(() => {
       loader.remove();
-    }, this.APP_INITIALIZER_FADE_DURATION_MS);
+    }, APP_INITIALIZER_FADE_DURATION_MS);
   }
 }
 

@@ -31,7 +31,8 @@ const MAT_MODULES = [MatButtonModule, MatIconModule, MatTooltipModule];
       <!-- The component renders its own button content. -->
     </button>
     <rs-filter />
-    <rs-search />
+    <!-- Material menu overlay DOM is recreated by the client after SSR. -->
+    <rs-search ngSkipHydration />
   `,
 })
 export class ActionButtonsComponent {
