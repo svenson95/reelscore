@@ -96,6 +96,10 @@ jobs:
       - name: Build Production Deployment
         run: npx vercel build --prod --token="$VERCEL_TOKEN"
 
+      # Generate the final SSR routes after the CLI has assembled its build output.
+      - name: Create Client SSR Build Output
+        run: node apps/client/scripts/build-vercel-output.cjs
+
       - name: Deploy to Production
         run: npx vercel deploy --prebuilt --prod --archive=tgz --yes --token="$VERCEL_TOKEN"
 
