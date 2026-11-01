@@ -20,16 +20,18 @@ export class AbstractedStartupService extends StartupService {
   routeActivated = false;
 
   hideAppInitializer(): void {
-    if (!isPlatformBrowser(this.platformId) || !this.browserWindow) {
+    const browserWindow = this.browserWindow;
+
+    if (!isPlatformBrowser(this.platformId) || !browserWindow) {
       return;
     }
 
-    const elapsed = this.browserWindow.performance.now() - this.startedAt;
+    const elapsed = browserWindow.performance.now() - this.startedAt;
     const remaining = Math.max(0, APP_INITIALIZER_MIN_VISIBLE_MS - elapsed);
 
-    this.browserWindow.setTimeout(() => {
-      this.browserWindow?.requestAnimationFrame(() => {
-        this.browserWindow?.requestAnimationFrame(() => {
+    browserWindow.setTimeout(() => {
+      browserWindow.requestAnimationFrame(() => {
+        browserWindow.requestAnimationFrame(() => {
           this.removeAppInitializerElement();
         });
       });
@@ -37,7 +39,9 @@ export class AbstractedStartupService extends StartupService {
   }
 
   removeAppInitializerElement(): void {
-    if (!isPlatformBrowser(this.platformId) || !this.browserWindow) {
+    const browserWindow = this.browserWindow;
+
+    if (!isPlatformBrowser(this.platformId) || !browserWindow) {
       return;
     }
 
@@ -49,7 +53,7 @@ export class AbstractedStartupService extends StartupService {
 
     loader.classList.add('app-initializer--hidden');
 
-    this.browserWindow.setTimeout(() => {
+    browserWindow.setTimeout(() => {
       loader.remove();
     }, APP_INITIALIZER_FADE_DURATION_MS);
   }

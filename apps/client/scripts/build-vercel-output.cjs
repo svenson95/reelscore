@@ -16,7 +16,7 @@ const responseHeaders = {
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://media.api-sports.io; font-src 'self' data:; connect-src 'self' https://reelscore-api.vercel.app https://media.api-sports.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
 };
 
-async function main() {
+async function buildVercelOutput() {
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(functionDir, { recursive: true });
 
@@ -59,21 +59,21 @@ async function main() {
             continue: true,
           },
           {
-            src: '^/ngsw-worker\\.js$',
+            src: String.raw`^/ngsw-worker\.js$`,
             headers: {
               'Cache-Control': 'public, max-age=0, must-revalidate',
             },
             continue: true,
           },
           {
-            src: '^/ngsw\\.json$',
+            src: String.raw`^/ngsw\.json$`,
             headers: {
               'Cache-Control': 'public, max-age=0, must-revalidate',
             },
             continue: true,
           },
           {
-            src: '^/manifest\\.webmanifest$',
+            src: String.raw`^/manifest\.webmanifest$`,
             headers: {
               'Cache-Control': 'public, max-age=0, must-revalidate',
             },
@@ -96,7 +96,21 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+module.exports = { buildVercelOutput };
+
+async function runBuild(isMainModule = require.main === module) {
+  if (!isMainModule) {
+    return;
+  }
+
+  try {
+    await buildVercelOutput();
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+}
+
+module.exports.runBuild = runBuild;
+
+runBuild();

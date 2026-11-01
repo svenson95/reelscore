@@ -5,7 +5,11 @@ import {
   DeferBlockState,
   TestBed,
 } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import {
+  By,
+  provideClientHydration,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 
 import { OverviewContentComponent } from './content.component';
 import { OverviewContentFacade } from './content.facade';
@@ -115,6 +119,7 @@ describe('OverviewContentComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [OverviewContentComponent],
+      providers: [provideClientHydration(withIncrementalHydration())],
     })
       .overrideComponent(OverviewContentComponent, {
         set: {
@@ -387,5 +392,30 @@ describe('OverviewContentComponent', () => {
     expect(component.weekStandings()).toEqual([]);
     expect(component.isLoading()).toBe(true);
     expect(component.hasDataForSelectedDay()).toBe(false);
+  });
+
+  it('clears the outgoing panel after its slide-out animation ends', () => {
+    const fixture = TestBed.createComponent(OverviewContentComponent);
+
+    fixture.detectChanges();
+
+    selectedDay.set('2026-10-02');
+    tabIndex.set(1);
+    fixture.detectChanges();
+
+    const outgoingPanel = fixture.debugElement.queryAll(
+      By.css('.tab-content')
+    )[0].nativeElement as HTMLDivElement;
+
+    expect(outgoingPanel.classList).toContain('slide-out');
+
+    const animationEnd = new Event('animationend', { bubbles: true });
+    Object.defineProperty(animationEnd, 'animationName', {
+      value: 'overview-slide-out',
+    });
+    outgoingPanel.dispatchEvent(animationEnd);
+    fixture.detectChanges();
+
+    expect(outgoingPanel.classList).not.toContain('slide-out');
   });
 });

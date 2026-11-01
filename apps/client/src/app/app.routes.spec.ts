@@ -15,4 +15,19 @@ describe('app routes', () => {
 
     expect(wildcardRoute?.redirectTo).toBe(redirectToToday);
   });
+
+  it('keeps the match, overview, and competition pages lazy-loaded', async () => {
+    const matchRoute = routes.find(
+      (route) => route.path === ':date/:competitionUrl/:fixtureId'
+    );
+    const overviewRoute = routes.find((route) => route.path === ':date');
+    const competitionRoute = routes.find(
+      (route) => route.path === 'competition/:competitionUrl'
+    );
+
+    await expect(matchRoute?.loadComponent?.()).resolves.toBeDefined();
+    await expect(overviewRoute?.loadComponent?.()).resolves.toBeDefined();
+    await expect(competitionRoute?.loadComponent?.()).resolves.toBeDefined();
+    expect(overviewRoute?.data?.['shouldReuse']).toBe(true);
+  });
 });

@@ -1,9 +1,17 @@
-let angularRequestHandler;
+const loadAngularRequestHandler = (
+  importServer = () => import('./server/server.mjs')
+) => importServer().then(({ reqHandler }) => reqHandler);
 
-module.exports = async function handleAngularRequest(request, response) {
-  angularRequestHandler ??= import('./server/server.mjs').then(
-    ({ reqHandler }) => reqHandler
-  );
+function createAngularRequestHandler(loadHandler = loadAngularRequestHandler) {
+  let angularRequestHandler;
 
-  return (await angularRequestHandler)(request, response);
-};
+  return async function handleAngularRequest(request, response) {
+    angularRequestHandler ??= loadHandler();
+
+    return (await angularRequestHandler)(request, response);
+  };
+}
+
+module.exports = createAngularRequestHandler();
+module.exports.createAngularRequestHandler = createAngularRequestHandler;
+module.exports.loadAngularRequestHandler = loadAngularRequestHandler;
