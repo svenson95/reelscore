@@ -47,13 +47,13 @@ import { ScrollService, VenueImageService } from './data-access';
     }
 
     .wrapper {
-      @apply flex flex-col mx-auto p-5 rounded-border2 w-full max-w-rs-max-width shadow-rs bg-rs-button-bg;
+      @apply flex flex-col mx-auto p-5 rounded-rs w-full max-w-rs-max-width shadow-rs bg-rs-button-bg;
       position: relative;
       & > *:not(.background-wrapper) { z-index: 3; }
     }
 
     .background-wrapper {
-      @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full rounded-border2;
+      @apply bg-[0_70%] opacity-0 z-[1] bg-no-repeat bg-cover w-full h-full rounded-rs;
 
       position: absolute;
       top: 0;

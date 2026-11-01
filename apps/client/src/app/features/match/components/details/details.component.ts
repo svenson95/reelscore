@@ -59,7 +59,7 @@ import { MatchDetailsFacade } from './details.facade';
       }
 
       .state-skeleton {
-        @apply mx-3 mt-rs1 mb-3 rounded-border2 bg-rs-button-bg p-rs2 shadow-rs;
+        @apply mx-3 mt-rs1 mb-3 rounded-rs bg-rs-button-bg p-rs2 shadow-rs;
       }
 
       .state-skeleton-row {

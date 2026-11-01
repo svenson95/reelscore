@@ -33,7 +33,7 @@ import { MatchFixturesTableComponent } from '../latest-fixtures/components';
     }
 
     .fixtures-skeleton {
-      @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-border2;
+      @apply flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-rs;
     }
     .skeleton-row { @apply flex flex-col gap-1 p-2; }
     .skeleton-row + .skeleton-row { @apply border-t; }

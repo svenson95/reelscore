@@ -23,7 +23,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .team-card {
-      @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs rounded-border2 sm:gap-4 sm:p-5;
+      @apply flex min-w-0 flex-col gap-3 p-3 bg-rs-button-bg shadow-rs rounded-rs sm:gap-4 sm:p-5;
     }
 
     .team-card:nth-child(1) {
