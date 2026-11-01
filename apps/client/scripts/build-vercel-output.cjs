@@ -113,4 +113,4 @@ async function runBuild(isMainModule = require.main === module) {
 
 module.exports.runBuild = runBuild;
 
-runBuild();
+void runBuild();
