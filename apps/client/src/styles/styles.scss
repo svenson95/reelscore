@@ -90,6 +90,29 @@ p.no-data {
   @apply text-rs-font-size-body-1 text-rs-color-text-2 text-center py-10;
 }
 
+.rs-photo-frame {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 1px;
+  background: linear-gradient(var(--mat-sys-surface), var(--mat-sys-surface))
+      padding-box,
+    linear-gradient(
+        135deg,
+        #ffe29a 0%,
+        var(--rs-color-primary) 55%,
+        #f0a600 100%
+      )
+      border-box;
+}
+
+.rs-nationality-flag {
+  @apply h-3 w-4 shrink-0 rounded-sm object-cover shadow-rs;
+}
+
 router-outlet + * {
   @apply flex flex-col w-full overflow-hidden mb-20;
 }

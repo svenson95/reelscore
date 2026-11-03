@@ -7,7 +7,11 @@ import {
 
 import type { ExtendedFixtureDTO, TeamCoachDTO } from '@reelscore-sdk/models';
 
-import { PageTitleComponent, TeamNamePipe } from '@app/shared';
+import {
+  getNationalityFlagUrl,
+  PageTitleComponent,
+  TeamNamePipe,
+} from '@app/shared';
 
 @Component({
   selector: 'rs-match-team-coaches',
@@ -35,15 +39,19 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .coach {
-      @apply grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] items-center gap-4 ml-2;
+      @apply grid min-w-0 grid-cols-[3.125rem_minmax(0,1fr)] sm:grid-cols-[4.375rem_minmax(0,1fr)] items-center gap-4 ml-2;
     }
 
     .coach-away {
-      @apply grid-cols-[minmax(0,1fr)_2.75rem] sm:grid-cols-[minmax(0,1fr)_4rem] mr-2;
+      @apply grid-cols-[minmax(0,1fr)_3.125rem] sm:grid-cols-[minmax(0,1fr)_4.375rem] mr-2;
+    }
+
+    .coach-photo-frame {
+      @apply aspect-square w-[50px] sm:w-[70px];
     }
 
     .coach-photo {
-      @apply aspect-square w-11 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs sm:w-16;
+      @apply block h-full w-full rounded-full bg-rs-alt-bg object-cover object-top;
     }
 
     .coach-details {
@@ -82,10 +90,6 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
       @apply text-rs-color-text-2 mx-1.5;
     }
 
-    .coach-flag {
-      @apply h-3 w-4 shrink-0 rounded-sm object-cover shadow-rs;
-    }
-
     .coach-nationality-name {
       @apply min-w-0 break-words font-medium;
     }
@@ -95,7 +99,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
     }
 
     .loading-photo {
-      @apply aspect-square w-11 rounded-full sm:w-16;
+      @apply aspect-square w-[50px] rounded-full sm:w-[70px];
     }
 
     .coach-details-loading .coach-meta {
@@ -136,12 +140,14 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
             aria-hidden="true"
           ></span>
           } @else if (team.coach; as coach) {
-          <img
-            class="coach-photo"
-            [src]="coach.photo"
-            [alt]="coachName(coach)"
-            loading="lazy"
-          />
+          <span class="rs-photo-frame coach-photo-frame">
+            <img
+              class="coach-photo"
+              [src]="coach.photo"
+              [alt]="coachName(coach)"
+              loading="lazy"
+            />
+          </span>
           } }
           <div
             class="coach-details"
@@ -193,7 +199,7 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
                 </span>
                 @if (nationalityFlagUrl(nationality); as flagUrl) {
                 <img
-                  class="coach-flag"
+                  class="rs-nationality-flag"
                   [src]="flagUrl"
                   alt=""
                   aria-hidden="true"
@@ -217,12 +223,14 @@ import { PageTitleComponent, TeamNamePipe } from '@app/shared';
             aria-hidden="true"
           ></span>
           } @else if (team.coach; as coach) {
-          <img
-            class="coach-photo"
-            [src]="coach.photo"
-            [alt]="coachName(coach)"
-            loading="lazy"
-          />
+          <span class="rs-photo-frame coach-photo-frame">
+            <img
+              class="coach-photo"
+              [src]="coach.photo"
+              [alt]="coachName(coach)"
+              loading="lazy"
+            />
+          </span>
           } }
         </div>
         } @else if (error()) {
@@ -304,106 +312,7 @@ export class MatchTeamCoachesComponent {
     return coach.name || '';
   }
 
-  protected nationalityFlagUrl(nationality: string | null | undefined): string {
-    if (!nationality) return '';
-
-    const countryCodes: Record<string, string> = {
-      argentina: 'AR',
-      argentinian: 'AR',
-      algeria: 'DZ',
-      algerian: 'DZ',
-      australia: 'AU',
-      australian: 'AU',
-      austria: 'AT',
-      austrian: 'AT',
-      belgian: 'BE',
-      belgium: 'BE',
-      brazil: 'BR',
-      brazilian: 'BR',
-      canada: 'CA',
-      canadian: 'CA',
-      cameroon: 'CM',
-      cameroonian: 'CM',
-      chile: 'CL',
-      chilean: 'CL',
-      colombia: 'CO',
-      colombian: 'CO',
-      croatia: 'HR',
-      croatian: 'HR',
-      denmark: 'DK',
-      danish: 'DK',
-      england: 'GB',
-      english: 'GB',
-      egypt: 'EG',
-      egyptian: 'EG',
-      greece: 'GR',
-      greek: 'GR',
-      france: 'FR',
-      french: 'FR',
-      germany: 'DE',
-      german: 'DE',
-      ghana: 'GH',
-      ghanaian: 'GH',
-      italy: 'IT',
-      italian: 'IT',
-      ivory: 'CI',
-      'ivory coast': 'CI',
-      'côte d’ivoire': 'CI',
-      'cote d’ivoire': 'CI',
-      "cote d'ivoire": 'CI',
-      japan: 'JP',
-      japanese: 'JP',
-      mexico: 'MX',
-      mexican: 'MX',
-      morocco: 'MA',
-      moroccan: 'MA',
-      netherlands: 'NL',
-      dutch: 'NL',
-      nigeria: 'NG',
-      nigerian: 'NG',
-      norway: 'NO',
-      norwegian: 'NO',
-      'northern ireland': 'GB',
-      poland: 'PL',
-      polish: 'PL',
-      portugal: 'PT',
-      portuguese: 'PT',
-      romania: 'RO',
-      romanian: 'RO',
-      scotland: 'GB',
-      scottish: 'GB',
-      senegal: 'SN',
-      senegalese: 'SN',
-      serbia: 'RS',
-      serbian: 'RS',
-      spain: 'ES',
-      spanish: 'ES',
-      sweden: 'SE',
-      swedish: 'SE',
-      switzerland: 'CH',
-      swiss: 'CH',
-      'south korea': 'KR',
-      'korea republic': 'KR',
-      'republic of korea': 'KR',
-      turkey: 'TR',
-      turkish: 'TR',
-      turkiye: 'TR',
-      türkiye: 'TR',
-      ukraine: 'UA',
-      ukrainian: 'UA',
-      us: 'US',
-      usa: 'US',
-      'united states': 'US',
-      'united states of america': 'US',
-      american: 'US',
-      uruguay: 'UY',
-      uruguayan: 'UY',
-    };
-    const countryCode = countryCodes[nationality.trim().toLowerCase()];
-    if (!countryCode) return '';
-
-    return `https://media.api-sports.io/flags/${countryCode.toLowerCase()}.svg`;
-  }
+  protected readonly nationalityFlagUrl = getNationalityFlagUrl;
 
   protected coachStartDate(coach: TeamCoachDTO): string | null {
     const currentCareer = coach.career.find(

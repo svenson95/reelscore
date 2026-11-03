@@ -82,7 +82,7 @@ describe(MatchTeamCoachesComponent.name, () => {
     ).toBe(true);
     expect(
       rootElement
-        .querySelector('.coach-nationality .coach-flag')
+        .querySelector('.coach-nationality .rs-nationality-flag')
         ?.getAttribute('src')
     ).toBe('https://media.api-sports.io/flags/de.svg');
   });
@@ -129,9 +129,9 @@ describe(MatchTeamCoachesComponent.name, () => {
     ) as HTMLElement;
 
     expect(readElementText(coachCard)).toContain('Rumänien');
-    expect(coachCard.querySelector('.coach-flag')?.getAttribute('src')).toBe(
-      'https://media.api-sports.io/flags/ro.svg'
-    );
+    expect(
+      coachCard.querySelector('.rs-nationality-flag')?.getAttribute('src')
+    ).toBe('https://media.api-sports.io/flags/ro.svg');
   });
 
   it.each([
@@ -159,9 +159,9 @@ describe(MatchTeamCoachesComponent.name, () => {
       '.team-card[aria-label="Trainer des Heimteams"]'
     ) as HTMLElement;
 
-    expect(homeTeamCard.querySelector('.coach-flag')?.getAttribute('src')).toBe(
-      `https://media.api-sports.io/flags/${code}.svg`
-    );
+    expect(
+      homeTeamCard.querySelector('.rs-nationality-flag')?.getAttribute('src')
+    ).toBe(`https://media.api-sports.io/flags/${code}.svg`);
   });
 
   it('uses the coach name and hides unavailable metadata', () => {

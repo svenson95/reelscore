@@ -3,6 +3,7 @@ export * from './fixture-navigation.helper';
 export * from './fixture-status.helper';
 export * from './image-path.utils';
 export * from './match.helper';
+export * from './nationality-flag.utils';
 export * from './select-league.constant';
 export * from './standings.helper';
 export * from './store.helper';
