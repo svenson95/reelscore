@@ -20,6 +20,7 @@ module.exports = {
     'src/app/features/overview/data-access/selected-date.service.ts',
     'src/app/shared/data-access/startup/startup.service.ts',
     'src/app/shared/data-access/theme.service.ts',
+    'src/app/shared/utils/nationality-flag.utils.ts',
     'src/main.server.ts',
     'src/server-app.ts',
     'scripts/build-vercel-output.cjs',
