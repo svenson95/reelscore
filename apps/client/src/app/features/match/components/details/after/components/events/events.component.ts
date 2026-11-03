@@ -45,27 +45,73 @@ const TIMELINE_BOUNDARIES: Record<
     :host {
       @apply flex flex-col
         bg-rs-button-bg rounded-rs shadow-rs
-        mx-3 mb-3 mt-rs1 gap-4 py-rs2;
+        mx-3 mb-3 mt-rs1 gap-4 py-rs1;
     }
 
-    .event-row { @apply flex gap-4 items-center; }
+    .timeline { @apply relative flex flex-col gap-4; }
+
+    .timeline::before {
+      content: '';
+      @apply absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2;
+      background-color: var(--mat-sys-outline-variant);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .event-row {
+      @apply relative z-10 flex gap-4 items-center;
+    }
     .event-row > .team { @apply flex flex-1 items-center; }
     .event-content-home,
     .event-content-away { @apply flex-1; }
-    .event-icon { @apply flex min-w-8 shrink-0 items-center justify-center; }
+    .event-icon {
+      @apply relative flex size-10 shrink-0 items-center justify-center rounded-full;
+    }
+
+    .event-icon::after {
+      content: '';
+      @apply absolute inset-0 rounded-full;
+      background-color: var(--mat-sys-surface);
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px inset;
+      z-index: 1;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .event-icon::after {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px inset;
+      }
+    }
+
+    .event-icon > :not(.event-team-line) { @apply relative z-10; }
+    .event-icon .result { @apply inline-flex items-center gap-[0.15rem] text-center; }
+    .home-event .home-score,
+    .away-event .away-score { @apply font-bold; }
+
+    .event-team-line {
+      @apply absolute top-1/2 h-px w-3 -translate-y-1/2;
+      background-color: var(--mat-sys-outline-variant);
+      z-index: 0;
+    }
+
+    .home-event .event-team-line { @apply -left-2; }
+    .away-event .event-team-line { @apply -right-2; }
 
     .home { @apply justify-end text-right; }
     .time { @apply text-rs-font-size-body-3; }
     .result { @apply text-rs-font-size-body-3; }
 
     .spacer-row {
-      @apply flex items-center justify-center text-rs-font-size-body-3 text-rs-color-text-2 uppercase;
+      @apply relative z-10 flex items-center justify-center bg-rs-button-bg text-rs-font-size-body-3 text-rs-color-text-2 uppercase;
     }
 
     .spacer-row::before,
     .spacer-row::after {
       content: '';
       @apply flex-1 border-t mx-3;
+    }
+
+    .spacer-label {
+      @apply py-2;
     }
 
     mat-icon { @apply align-middle; }
@@ -95,7 +141,7 @@ const TIMELINE_BOUNDARIES: Record<
       @apply left-1 top-1 z-10;
     }
 
-    .event-icon.away-card .card-icon {
+    .event-icon.away-event .card-icon {
       transform: rotate(8deg);
     }
 
@@ -149,89 +195,96 @@ const TIMELINE_BOUNDARIES: Record<
     }
   `,
   template: `
-    @let homeId = homeTeamId(); @let awayId = awayTeamId(); @for (item of
-    timeline(); track item.key) { @if (item.type === 'spacer') {
-    <div class="spacer-row">
-      <span>{{ item.label }}</span>
-    </div>
-    } @else { @let event = item.event;
+    <div class="timeline">
+      @let homeId = homeTeamId(); @let awayId = awayTeamId(); @for (item of
+      timeline(); track item.key) { @if (item.type === 'spacer') {
+      <div class="spacer-row">
+        <span class="spacer-label">{{ item.label }}</span>
+      </div>
+      } @else { @let event = item.event;
 
-    <div class="event-row" [class.event-row-new]="isNewTimelineItem(item)">
-      <div class="team home">
-        @if (event.team.id === homeId) {
-        <div
-          class="event-content-home"
-          [class.event-content-home-new]="isNewTimelineItem(item)"
-        >
-          <rs-match-event
-            [event]="event"
-            [homeTeamId]="homeId"
-            [isPenaltyShootout]="isShootoutEvent(event)"
-          />
+      <div class="event-row" [class.event-row-new]="isNewTimelineItem(item)">
+        <div class="team home">
+          @if (event.team.id === homeId) {
+          <div
+            class="event-content-home"
+            [class.event-content-home-new]="isNewTimelineItem(item)"
+          >
+            <rs-match-event
+              [event]="event"
+              [homeTeamId]="homeId"
+              [isPenaltyShootout]="isShootoutEvent(event)"
+            />
+          </div>
+          } @else {
+          <span class="time">{{ event | timeTotal }}'</span>
+          }
         </div>
-        } @else {
-        <span class="time">{{ event | timeTotal }}'</span>
-        }
-      </div>
 
-      <div class="event-icon" [class.away-card]="event.team.id === awayId">
-        @if (event.type === 'Goal' && event.detail !== 'Missed Penalty') { @let
-        eventResult = item.shootoutResult ?? event.result;
-
-        <span class="result">
-          <span [class.font-bold]="event.team.id === homeId">
-            {{ eventResult.home }}
-          </span>
-          <span>&nbsp;-&nbsp;</span>
-          <span [class.font-bold]="event.team.id === awayId">
-            {{ eventResult.away }}
-          </span>
-        </span>
-        } @else if (event.detail === 'Missed Penalty') {
-        <mat-icon>close</mat-icon>
-        } @else if (event.type === 'Card' && event.isSecondYellowCard) {
-        <span class="card-stack" role="img" aria-label="Gelb-Rote Karte">
-          <span class="card-icon yellow-card" aria-hidden="true"></span>
-          <span class="card-icon red-card" aria-hidden="true"></span>
-        </span>
-        } @else if (event.type === 'Card' && event.detail === 'Yellow Card') {
-        <span
-          class="card-icon yellow-card"
-          role="img"
-          aria-label="Gelbe Karte"
-        ></span>
-        } @else if (event.type === 'Card' && event.detail === 'Red Card') {
-        <span
-          class="card-icon red-card"
-          role="img"
-          aria-label="Rote Karte"
-        ></span>
-        } @else {
-        <mat-icon aria-hidden="true">
-          @switch(event.type) { @case('subst') { sync } @case('Card') { style }
-          @case('Var') { live_tv } }
-        </mat-icon>
-        }
-      </div>
-
-      <div class="team away">
-        @if (event.team.id === awayId && homeId) {
         <div
-          class="event-content-away"
-          [class.event-content-away-new]="isNewTimelineItem(item)"
+          class="event-icon"
+          [class.home-event]="event.team.id === homeId"
+          [class.away-event]="event.team.id === awayId"
         >
-          <rs-match-event
-            [event]="event"
-            [homeTeamId]="homeId"
-            [isPenaltyShootout]="isShootoutEvent(event)"
-          />
+          <span class="event-team-line" aria-hidden="true"></span>
+          @if (event.type === 'Goal' && event.detail !== 'Missed Penalty') {
+          @let eventResult = item.shootoutResult ?? event.result;
+
+          <span class="result">
+            <span class="home-score">
+              {{ eventResult.home }}
+            </span>
+            <span>-</span>
+            <span class="away-score">
+              {{ eventResult.away }}
+            </span>
+          </span>
+          } @else if (event.detail === 'Missed Penalty') {
+          <mat-icon>close</mat-icon>
+          } @else if (event.type === 'Card' && event.isSecondYellowCard) {
+          <span class="card-stack" role="img" aria-label="Gelb-Rote Karte">
+            <span class="card-icon yellow-card" aria-hidden="true"></span>
+            <span class="card-icon red-card" aria-hidden="true"></span>
+          </span>
+          } @else if (event.type === 'Card' && event.detail === 'Yellow Card') {
+          <span
+            class="card-icon yellow-card"
+            role="img"
+            aria-label="Gelbe Karte"
+          ></span>
+          } @else if (event.type === 'Card' && event.detail === 'Red Card') {
+          <span
+            class="card-icon red-card"
+            role="img"
+            aria-label="Rote Karte"
+          ></span>
+          } @else {
+          <mat-icon aria-hidden="true">
+            @switch(event.type) { @case('subst') { sync } @case('Card') { style
+            } @case('Var') { live_tv } }
+          </mat-icon>
+          }
         </div>
-        } @else {
-        <span class="time">{{ event | timeTotal }}'</span>
-        }
+
+        <div class="team away">
+          @if (event.team.id === awayId && homeId) {
+          <div
+            class="event-content-away"
+            [class.event-content-away-new]="isNewTimelineItem(item)"
+          >
+            <rs-match-event
+              [event]="event"
+              [homeTeamId]="homeId"
+              [isPenaltyShootout]="isShootoutEvent(event)"
+            />
+          </div>
+          } @else {
+          <span class="time">{{ event | timeTotal }}'</span>
+          }
+        </div>
       </div>
+      } }
     </div>
-    } }
   `,
 })
 export class MatchEventsComponent {

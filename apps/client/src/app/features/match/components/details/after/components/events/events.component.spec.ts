@@ -75,6 +75,11 @@ describe('MatchEventsComponent', () => {
     expect(
       componentFixture.nativeElement.querySelector('.home rs-match-event')
     ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.event-icon.home-event .event-team-line'
+      )
+    ).not.toBeNull();
 
     fixtureState.set({
       data: {
@@ -94,6 +99,11 @@ describe('MatchEventsComponent', () => {
 
     expect(
       componentFixture.nativeElement.querySelector('.away rs-match-event')
+    ).not.toBeNull();
+    expect(
+      componentFixture.nativeElement.querySelector(
+        '.event-icon.away-event .event-team-line'
+      )
     ).not.toBeNull();
     expect(readElementText(componentFixture.nativeElement)).not.toContain(
       'ENDE'
@@ -270,7 +280,7 @@ describe('MatchEventsComponent', () => {
     expect(componentFixture.nativeElement.querySelector('mat-icon')).toBeNull();
   });
 
-  it('rotates away team card icons to the right', () => {
+  it('marks away team events for the away-side card icon styling', () => {
     const awayCard = createMatchEvent({
       type: 'Card',
       detail: 'Yellow Card',
@@ -282,7 +292,7 @@ describe('MatchEventsComponent', () => {
 
     expect(
       componentFixture.nativeElement.querySelector(
-        '.event-icon.away-card .card-icon'
+        '.event-icon.away-event .card-icon'
       )
     ).not.toBeNull();
   });
