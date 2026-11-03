@@ -84,8 +84,7 @@ import type { AnalysesDTO } from '@reelscore-sdk/models';
     }
 
     .goal-count {
-      @apply min-w-6 rounded px-1 py-0.5 text-center text-rs-color-text-1;
-      background-color: var(--rs-color-bg);
+      @apply min-w-6 rounded px-1 py-0.5 bg-rs-bg text-center text-rs-color-text-1;
 
       &:last-child {
         @apply border-b-2 border-rs-color-primary;

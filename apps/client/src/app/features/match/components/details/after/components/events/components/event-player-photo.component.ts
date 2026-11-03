@@ -7,16 +7,22 @@ const PLAYER_IMAGE_BASE_URL = 'https://media.api-sports.io/football/players/';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host { @apply inline-flex shrink-0; }
-    img { @apply h-6 w-6 rounded-full bg-rs-alt-bg object-cover object-top shadow-rs; }
+    .event-player-photo-frame { @apply h-[30px] w-[30px]; }
+
+    img {
+      @apply h-full w-full rounded-full bg-rs-alt-bg object-cover object-top;
+    }
   `,
   template: `
     @if (playerId() > 0) {
-    <img
-      [src]="PLAYER_IMAGE_BASE_URL + playerId() + '.png'"
-      alt=""
-      aria-hidden="true"
-      loading="lazy"
-    />
+    <span class="rs-photo-frame event-player-photo-frame">
+      <img
+        [src]="PLAYER_IMAGE_BASE_URL + playerId() + '.png'"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+      />
+    </span>
     }
   `,
 })
