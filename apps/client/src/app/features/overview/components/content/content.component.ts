@@ -40,6 +40,7 @@ type OverviewContentPanel = {
     .tab-content {
       @apply w-full max-w-rs-max-width inline-flex flex-wrap md:flex-nowrap py-3 gap-rs2 mx-auto;
       grid-area: 1 / 1;
+      align-self: start;
     }
 
     .fixtures-container, .standings-container {
@@ -48,6 +49,7 @@ type OverviewContentPanel = {
 
     .content-transition {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       overflow-x: clip;
     }
 
