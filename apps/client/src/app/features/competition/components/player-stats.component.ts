@@ -21,9 +21,11 @@ import { getAssistProviders, getGoalScorers } from '../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PageTitleComponent, TeamNamePipe],
   styles: `
-    :host { @apply flex max-[700px]:flex-col gap-rs2 flex-wrap pb-4; }
-    .no-data { @apply min-[700px]:mx-auto pt-10 mt-3; }
+    :host { @apply flex max-[700px]:flex-col gap-rs1 flex-wrap pb-4; }
+    .no-data { @apply min-[700px]:mx-auto; }
+    .status-message { @apply w-full text-center; }
     .column { @apply flex-1 flex flex-col gap-rs1; }
+    .column-empty { @apply max-[700px]:hidden; }
     .stats { @apply flex flex-col p-rs1 mx-3 bg-rs-button-bg shadow-rs rounded-rs; }
     .player-stat { @apply flex items-center justify-between gap-2 bg-rs-button-bg px-2 py-1; }
     .player-stat:not(:last-child) { @apply border-b; }
@@ -50,11 +52,10 @@ import { getAssistProviders, getGoalScorers } from '../utils';
     }
   `,
   template: `
-    @if (isDataLoaded()) {
     <div class="column">
       <rs-page-title title="Torschützen"></rs-page-title>
 
-      @if (goalScorer().length > 0) {
+      @if (isDataLoaded()) { @if (goalScorer().length > 0) {
       <div class="stats">
         @for (stat of goalScorer(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -93,13 +94,13 @@ import { getAssistProviders, getGoalScorers } from '../utils';
       </div>
       } @else {
       <p class="no-data">Keine Torschützen vorhanden</p>
-      }
+      } }
     </div>
 
-    <div class="column">
+    <div class="column" [class.column-empty]="assists().length === 0">
       <rs-page-title title="Vorlagengeber"></rs-page-title>
 
-      @if (assists().length > 0) {
+      @if (isDataLoaded()) { @if (assists().length > 0) {
       <div class="stats">
         @for (stat of assists(); track stat.player.id; let idx = $index) {
         <div class="player-stat">
@@ -138,14 +139,17 @@ import { getAssistProviders, getGoalScorers } from '../utils';
       </div>
       } @else {
       <p class="no-data">Keine Vorlagengeber vorhanden</p>
-      }
+      } }
     </div>
-    } @else if (isLoading()) {
-    <p class="no-data">Spieler-Statistiken werden geladen ...</p>
-    } @else if (error()) {
-    <p class="no-data">Spieler-Statistiken konnten nicht geladen werden.</p>
-    } @else {
-    <p class="no-data">Keine Daten gefunden</p>
+
+    @if (!isDataLoaded() && isLoading()) {
+    <p class="no-data status-message">Spieler-Statistiken werden geladen ...</p>
+    } @else if (!isDataLoaded() && error()) {
+    <p class="no-data status-message">
+      Spieler-Statistiken konnten nicht geladen werden.
+    </p>
+    } @else if (!isDataLoaded()) {
+    <p class="no-data status-message">Keine Daten gefunden</p>
     }
   `,
 })

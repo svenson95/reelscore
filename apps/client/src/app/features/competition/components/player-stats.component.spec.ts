@@ -27,6 +27,9 @@ describe('PlayerStatsComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Spieler-Statistiken werden geladen'
     );
+    expect(
+      fixture.nativeElement.querySelectorAll('rs-page-title')
+    ).toHaveLength(2);
 
     topScorersStore.isLoading.set(false);
     topAssistsStore.isLoading.set(false);
@@ -42,6 +45,12 @@ describe('PlayerStatsComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Keine Vorlagengeber vorhanden'
     );
+    expect(
+      fixture.nativeElement.querySelectorAll('rs-page-title')
+    ).toHaveLength(2);
+    expect(
+      fixture.nativeElement.querySelector('div.column-empty')
+    ).not.toBeNull();
 
     topScorers.set(null);
     topScorersStore.error.set(new Error('Request failed'));
@@ -49,6 +58,9 @@ describe('PlayerStatsComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Spieler-Statistiken konnten nicht geladen werden'
     );
+    expect(
+      fixture.nativeElement.querySelectorAll('rs-page-title')
+    ).toHaveLength(2);
   });
 
   it('shows an error when top assists cannot be loaded', () => {
@@ -74,6 +86,9 @@ describe('PlayerStatsComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Spieler-Statistiken konnten nicht geladen werden'
     );
+    expect(
+      fixture.nativeElement.querySelectorAll('rs-page-title')
+    ).toHaveLength(2);
   });
 });
 
