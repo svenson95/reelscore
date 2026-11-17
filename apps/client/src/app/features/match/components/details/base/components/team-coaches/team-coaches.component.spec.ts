@@ -113,6 +113,51 @@ describe(MatchTeamCoachesComponent.name, () => {
     );
   });
 
+  it('shows the coach whose career covered the fixture date', () => {
+    const historicalFixture = {
+      ...EXAMPLE_FIXTURE,
+      fixture: {
+        ...EXAMPLE_FIXTURE.fixture,
+        date: '2022-09-09T18:30:00.000Z',
+      },
+      teams: {
+        ...EXAMPLE_FIXTURE.teams,
+        home: {
+          ...EXAMPLE_FIXTURE.teams.home,
+          id: 157,
+          name: 'Bayern München',
+        },
+      },
+    };
+    const julianNagelsmann = createCoach(157, '2021-07-01');
+    julianNagelsmann.name = 'Julian Nagelsmann';
+    julianNagelsmann.career[0].end = '2023-03-24';
+    julianNagelsmann.career.push({
+      ...julianNagelsmann.career[0],
+      start: '2022-01-01',
+    });
+    const currentCoach = createCoach(157, '2024-07-01');
+    currentCoach.name = 'Current Coach';
+    const expiredCoach = createCoach(157, '2020-07-01');
+    expiredCoach.name = 'Expired Coach';
+    expiredCoach.career[0].end = '2022-01-01';
+
+    const componentFixture = renderComponent(MatchTeamCoachesComponent, {
+      fixture: historicalFixture,
+      coaches: [currentCoach, expiredCoach, julianNagelsmann],
+      isLoading: false,
+    });
+
+    const homeTeamCard = componentFixture.nativeElement.querySelector(
+      '.team-card[aria-label="Trainer des Heimteams"]'
+    ) as HTMLElement;
+
+    expect(homeTeamCard.querySelector('.coach-name')?.textContent?.trim()).toBe(
+      'Julian Nagelsmann'
+    );
+    expect(readElementText(homeTeamCard)).toContain('Im Amt seit 01.01.2022');
+  });
+
   it('shows the Romanian flag for Romanian nationality values', () => {
     const romanianCoach = createCoach(85, '2025-06-01');
     romanianCoach.name = 'Cristian Chivu';

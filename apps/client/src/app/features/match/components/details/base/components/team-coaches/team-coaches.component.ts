@@ -211,7 +211,7 @@ import {
             <span class="coach-name">
               {{ coachName(coach) }}
             </span>
-            @if (coachStartDate(coach); as startDate) {
+            @if (coachStartDate(coach, team.id); as startDate) {
             <span class="coach-tenure">
               Im Amt seit {{ formatDate(startDate) }}
             </span>
@@ -272,35 +272,33 @@ export class MatchTeamCoachesComponent {
       {
         id: fixtureTeams.home.id,
         label: 'Trainer des Heimteams',
-        coach: this.getCurrentCoach(fixtureTeams.home.id),
+        coach: this.getCoachAtFixtureDate(fixtureTeams.home.id),
       },
       {
         id: fixtureTeams.away.id,
         label: 'Trainer des Auswärtsteams',
-        coach: this.getCurrentCoach(fixtureTeams.away.id),
+        coach: this.getCoachAtFixtureDate(fixtureTeams.away.id),
       },
     ];
   });
 
-  private getCurrentCoach(teamId: number): TeamCoachDTO | null {
-    const currentCoaches = this.coaches().filter((coach) =>
-      coach.career.some((career) => career.team.id === teamId && !career.end)
-    );
+  private getCoachAtFixtureDate(teamId: number): TeamCoachDTO | null {
+    const fixtureDate = this.fixture()?.fixture.date.slice(0, 10);
+    if (!fixtureDate) return null;
 
-    return (
-      currentCoaches
-        .map((coach) => ({
-          coach,
-          currentCareer: coach.career.find(
-            (career) => career.team.id === teamId && !career.end
-          ),
-        }))
-        .sort((first, second) =>
-          (second.currentCareer?.start ?? '').localeCompare(
-            first.currentCareer?.start ?? ''
-          )
-        )[0]?.coach ?? null
-    );
+    let latestCareer:
+      | { coach: TeamCoachDTO; career: TeamCoachDTO['career'][number] }
+      | undefined;
+    for (const coach of this.coaches()) {
+      const career = this.getCareerAtFixtureDate(coach, teamId, fixtureDate);
+      if (!career) continue;
+
+      if (!latestCareer || career.start > latestCareer.career.start) {
+        latestCareer = { coach, career };
+      }
+    }
+
+    return latestCareer?.coach ?? null;
   }
 
   protected formatDate(date: string): string {
@@ -314,11 +312,36 @@ export class MatchTeamCoachesComponent {
 
   protected readonly nationalityFlagUrl = getNationalityFlagUrl;
 
-  protected coachStartDate(coach: TeamCoachDTO): string | null {
-    const currentCareer = coach.career.find(
-      (career) => career.team.id === coach.team.id && !career.end
-    );
+  protected coachStartDate(coach: TeamCoachDTO, teamId: number): string | null {
+    const fixtureDate = this.fixture()?.fixture.date.slice(0, 10);
+    if (!fixtureDate) return null;
 
-    return currentCareer?.start ?? null;
+    return (
+      this.getCareerAtFixtureDate(coach, teamId, fixtureDate)?.start ?? null
+    );
+  }
+
+  private getCareerAtFixtureDate(
+    coach: TeamCoachDTO,
+    teamId: number,
+    fixtureDate: string
+  ): TeamCoachDTO['career'][number] | null {
+    let latestCareer: TeamCoachDTO['career'][number] | undefined;
+    for (const career of coach.career) {
+      const matchesTeam = career.team.id === teamId;
+      const startedByFixtureDate = career.start <= fixtureDate;
+      const activeOnFixtureDate = !career.end || career.end >= fixtureDate;
+
+      if (
+        matchesTeam &&
+        startedByFixtureDate &&
+        activeOnFixtureDate &&
+        (!latestCareer || career.start > latestCareer.start)
+      ) {
+        latestCareer = career;
+      }
+    }
+
+    return latestCareer ?? null;
   }
 }
