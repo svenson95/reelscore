@@ -1,0 +1,8 @@
+@media (prefers-color-scheme: dark) {
+  /* Tottenham (47): brighten only the 14x14 logo; keep 48x48 unchanged. */
+  img[src*='/team-logo-responsive/14x14/'][src*='/47@'],
+  /* Juventus Turin (496): brighten all responsive logo sizes. */
+  img[src*='/team-logo-responsive/'][src*='/496@'] {
+    filter: brightness(20);
+  }
+}
