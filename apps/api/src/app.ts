@@ -49,6 +49,13 @@ app.get('/', (req, res) => {
   });
 });
 
+// Crawlers must be able to read this policy without opening a database connection.
+app.get('/robots.txt', (req, res) => {
+  return res
+    .type('text/plain')
+    .send('User-agent: meta-externalagent\nDisallow: /\n');
+});
+
 app.use(databaseMiddleware);
 
 app.use('/standings', standings);
