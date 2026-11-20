@@ -26,23 +26,32 @@ import {
       [style.height.px]="height()"
     ></span>
     } @else {
-    <img
-      class="responsive-image"
-      [attr.loading]="loading()"
-      decoding="async"
-      [alt]="altText()"
-      [width]="width()"
-      [height]="height()"
-      [attr.srcset]="sourceSet() || null"
-      [src]="source()"
-      (error)="handleImageError()"
-    />
+    <picture>
+      @if (darkSourceSet()) {
+      <source
+        media="(prefers-color-scheme: dark)"
+        [attr.srcset]="darkSourceSet()"
+      />
+      }
+      <img
+        class="responsive-image"
+        [attr.loading]="loading()"
+        decoding="async"
+        [alt]="altText()"
+        [width]="width()"
+        [height]="height()"
+        [attr.srcset]="sourceSet() || null"
+        [src]="source()"
+        (error)="handleImageError()"
+      />
+    </picture>
     }
   `,
 })
 export class ResponsiveImageComponent {
   readonly source = input.required<string>();
   readonly sourceSet = input<string>();
+  readonly darkSourceSet = input<string>();
   readonly altText = input.required<string>();
   readonly width = input.required<number>();
   readonly height = input.required<number>();

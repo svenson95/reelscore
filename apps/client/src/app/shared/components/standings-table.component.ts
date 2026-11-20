@@ -17,7 +17,7 @@ import type {
   StandingsPlayed,
 } from '@reelscore-sdk/models';
 
-import { BreakpointObserverService, ThemeService } from '../data-access';
+import { BreakpointObserverService } from '../data-access';
 import { NameLabelPipe, TeamNamePipe } from '../pipes';
 import {
   getCompetitionLogo,
@@ -139,6 +139,7 @@ const MOBILE_COLUMNS: readonly StandingsColumn[] = DISPLAYED_COLUMNS.filter(
             <rs-responsive-image
               [source]="competitionLogo()"
               [sourceSet]="competitionLogoSet()"
+              [darkSourceSet]="darkCompetitionLogoSet()"
               altText=""
               [width]="24"
               [height]="24"
@@ -228,7 +229,6 @@ export class StandingsTableComponent {
   readonly header = input<string>();
 
   private readonly breakpoint = inject(BreakpointObserverService);
-  private readonly themeService = inject(ThemeService);
 
   readonly isMobile = this.breakpoint.isMobile;
 
@@ -244,20 +244,15 @@ export class StandingsTableComponent {
   });
 
   readonly competitionLogo = computed<string>(() =>
-    getCompetitionLogo(
-      this.league().id,
-      24,
-      1,
-      this.themeService.isSystemDark()
-    )
+    getCompetitionLogo(this.league().id, 24)
   );
 
   readonly competitionLogoSet = computed<string>(() =>
-    getCompetitionLogoSrcSet(
-      this.league().id,
-      24,
-      this.themeService.isSystemDark()
-    )
+    getCompetitionLogoSrcSet(this.league().id, 24)
+  );
+
+  readonly darkCompetitionLogoSet = computed<string>(() =>
+    getCompetitionLogoSrcSet(this.league().id, 24, true)
   );
 
   readonly competitionLink = computed<string[]>(() => {

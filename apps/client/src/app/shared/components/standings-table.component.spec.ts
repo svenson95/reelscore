@@ -6,24 +6,21 @@ import type { StandingRanks } from '@reelscore-sdk/models';
 
 import { EXAMPLE_STANDINGS } from '@testing/client';
 
-import { BreakpointObserverService, ThemeService } from '../data-access';
+import { BreakpointObserverService } from '../data-access';
 
 import { StandingsTableComponent } from './standings-table.component';
 
 describe('StandingsTableComponent', () => {
   const isMobile = signal(false);
-  const isSystemDark = signal(false);
   let fixture: ComponentFixture<StandingsTableComponent>;
 
   beforeEach(async () => {
     isMobile.set(false);
-    isSystemDark.set(false);
     await TestBed.configureTestingModule({
       imports: [StandingsTableComponent],
       providers: [
         provideRouter([]),
         { provide: BreakpointObserverService, useValue: { isMobile } },
-        { provide: ThemeService, useValue: { isSystemDark } },
       ],
     }).compileComponents();
 
@@ -234,32 +231,25 @@ describe('StandingsTableComponent', () => {
     expect(title().getAttribute('href')).toBe('/');
   });
 
-  it('updates competition logos on theme changes and renders responsive team logos', () => {
+  it('renders theme-aware competition logos and responsive team logos', () => {
     fixture.componentRef.setInput('league', {
       ...EXAMPLE_STANDINGS.league,
       id: 39,
     });
     fixture.detectChanges();
     const logo: HTMLImageElement = query<HTMLImageElement>('th img');
-    const lightSource = logo.getAttribute('src');
-    const lightSet = logo.getAttribute('srcset');
-    expect(lightSource).toBeTruthy();
-    expect(lightSet).toContain('3x');
+    expect(logo.getAttribute('src')).toBeTruthy();
+    expect(logo.getAttribute('srcset')).toContain('3x');
+
+    const darkSource = query<HTMLSourceElement>('th picture source');
+    expect(darkSource.getAttribute('media')).toBe(
+      '(prefers-color-scheme: dark)'
+    );
+    expect(darkSource.getAttribute('srcset')).toContain('39_dark@3x.png 3x');
 
     const teamLogo: HTMLImageElement = query<HTMLImageElement>('tbody img');
     expect(teamLogo.getAttribute('src')).toContain('540');
     expect(teamLogo.getAttribute('srcset')).toContain('3x');
     expect(teamLogo.width).toBe(14);
-
-    isSystemDark.set(true);
-    fixture.detectChanges();
-
-    expect(logo.getAttribute('src')).not.toBe(lightSource);
-    expect(logo.getAttribute('srcset')).not.toBe(lightSet);
-
-    isSystemDark.set(false);
-    fixture.detectChanges();
-
-    expect(logo.getAttribute('src')).toBe(lightSource);
   });
 });
