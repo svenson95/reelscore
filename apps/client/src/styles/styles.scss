@@ -15,6 +15,9 @@
 html {
   scrollbar-gutter: stable;
 
+  // Prevent accidental double-tap zoom throughout the app while preserving pinch zoom.
+  touch-action: manipulation;
+
   @include mat.theme(
     (
       color: (
