@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import {
   databaseMiddleware,
   fixtureEvents,
+  fixtureLineups,
   fixtures,
   fixturesStatistics,
   standings,
@@ -65,6 +66,7 @@ app.use('/top-assists', topAssists);
 app.use('/fixtures', fixtures);
 app.use('/fixture-statistics', fixturesStatistics);
 app.use('/fixture-events', fixtureEvents);
+app.use('/fixture-lineups', fixtureLineups);
 app.use('/fixture-evaluations', fixtureEvaluations);
 app.use('/fixture-analyses', fixtureAnalyses);
 app.use('/search', search);
