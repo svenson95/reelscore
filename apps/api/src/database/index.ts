@@ -2,6 +2,7 @@ export * from './database.helper';
 export * from './database.middleware';
 export * from './date.helper';
 export * from './fixture-events';
+export * from './fixture-lineups';
 export * from './fixture-statistics';
 export * from './fixtures';
 export * from './mongodb.helper';

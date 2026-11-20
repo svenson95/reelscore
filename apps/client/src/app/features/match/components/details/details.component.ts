@@ -17,6 +17,7 @@ import {
 } from '@app/shared';
 
 import {
+  FixtureLineupsComponent,
   MatchEventsComponent,
   MatchStatisticsComponent,
 } from './after/components';
@@ -48,6 +49,7 @@ import { MatchDetailsFacade } from './details.facade';
     MatchFixtureAnalysesComponent,
     MatchEventsComponent,
     MatchStatisticsComponent,
+    FixtureLineupsComponent,
   ],
   providers: [MatchDetailsFacade],
   styles: `
@@ -128,6 +130,17 @@ import { MatchDetailsFacade } from './details.facade';
           [isLoading]="analysesLoading()"
           [error]="analysesError() ?? latestFixturesError()"
         />
+      </ng-template>
+
+      <ng-template rsTabPanel>
+        <rs-page-title title="Aufstellung" />
+        @if (fixtureData(); as fixture) {
+        <rs-fixture-lineups
+          [fixtureId]="fixture.fixture.id"
+          [refreshKey]="fixture"
+          [events]="events() ?? []"
+        />
+        }
       </ng-template>
 
       <ng-template rsTabPanel>
@@ -214,14 +227,19 @@ export class MatchDetailsComponent {
       disabled: !this.availableTabs()[1],
     },
     {
+      label: 'Aufstellung',
+      icon: 'groups',
+      disabled: !this.availableTabs()[2],
+    },
+    {
       label: 'Spielbericht',
       icon: 'article',
-      disabled: !this.availableTabs()[2],
+      disabled: !this.availableTabs()[3],
     },
     {
       label: 'Statistiken',
       icon: 'assessment',
-      disabled: !this.availableTabs()[3],
+      disabled: !this.availableTabs()[4],
     },
   ]);
 
@@ -271,6 +289,7 @@ export class MatchDetailsComponent {
   protected readonly availableTabs = computed<boolean[]>(() => [
     true,
     this.isOptionalTabAvailable(this.analyses()),
+    this.isOptionalTabAvailable(this.fixtureData()),
     this.isOptionalTabAvailable(this.events()),
     this.isOptionalTabAvailable(this.statistics()),
   ]);

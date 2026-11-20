@@ -118,7 +118,7 @@ describe('MatchDetailsComponent', () => {
 
     expect(
       Array.from(buttons, (button: HTMLButtonElement) => button.disabled)
-    ).toEqual([false, true, true, true]);
+    ).toEqual([false, true, false, true, true]);
 
     facadeMock.analyses.set({});
     facadeMock.events.set([]);
@@ -127,7 +127,7 @@ describe('MatchDetailsComponent', () => {
 
     expect(
       Array.from(buttons, (button: HTMLButtonElement) => button.disabled)
-    ).toEqual([false, false, false, false]);
+    ).toEqual([false, false, false, false, false]);
   });
 
   it('should keep optional tabs disabled when loading failed without data', () => {
@@ -142,7 +142,7 @@ describe('MatchDetailsComponent', () => {
 
     expect(
       Array.from(buttons, (button: HTMLButtonElement) => button.disabled)
-    ).toEqual([false, true, true, true]);
+    ).toEqual([false, true, false, true, true]);
   });
 
   it('allows navigation through all optional tabs when skeleton preview is forced', () => {
@@ -155,6 +155,7 @@ describe('MatchDetailsComponent', () => {
     ) as NodeListOf<HTMLButtonElement>;
 
     expect(Array.from(buttons, (button) => button.disabled)).toEqual([
+      false,
       false,
       false,
       false,
@@ -175,8 +176,8 @@ describe('MatchDetailsComponent', () => {
 
   it.each([
     ['analyses', 1],
-    ['events', 2],
-    ['statistics', 3],
+    ['events', 3],
+    ['statistics', 4],
   ] as const)(
     'should return to details when the selected %s tab loses its data',
     (source, index) => {
