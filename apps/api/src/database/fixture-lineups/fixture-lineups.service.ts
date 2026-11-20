@@ -27,7 +27,16 @@ const PlayersStatistics = createMongooseModel<RapidPlayersStatisticsDTO>(
 
 export class MatchLineupsService {
   async findByFixture(fixtureId: string) {
-    const filter = { 'parameters.fixture': fixtureId };
+    if (typeof fixtureId !== 'string' || !/^\d+$/.test(fixtureId)) {
+      throw new Error('Invalid fixture ID');
+    }
+
+    const fixtureNumber = Number(fixtureId);
+    if (!Number.isSafeInteger(fixtureNumber)) {
+      throw new Error('Invalid fixture ID');
+    }
+
+    const filter = { 'parameters.fixture': String(fixtureNumber) };
     const [lineups, playerStatistics] = await Promise.all([
       FixtureLineups.findOne(filter).lean<RapidLineupsDTO>(),
       PlayersStatistics.findOne(filter).lean<RapidPlayersStatisticsDTO>(),
