@@ -134,7 +134,7 @@ Read [the documentation index](docs/README.md) and relevant existing decisions f
 
 ## Verification
 
-Choose checks according to the changed behavior. Start with focused tests, then run the relevant project's lint/build or broader workflow checks when warranted. Documentation-only changes need link/content and formatting checks, not application test runs.
+Choose checks according to the changed behavior. Run them only after the user marks the current state as commit-ready or explicitly requests verification. During implementation and intermediate edits, determine the relevant checks but do not start them. Once authorized by that readiness signal, run focused tests and the relevant project's lint/build or broader workflow checks together. Documentation-only changes need link/content and formatting checks, not application test runs.
 
 | Purpose                        | Command                                                  |
 | ------------------------------ | -------------------------------------------------------- |
