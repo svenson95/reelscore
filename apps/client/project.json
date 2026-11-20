@@ -20,6 +20,7 @@
         "assets": [
           "apps/client/src/favicon.ico",
           "apps/client/src/assets",
+          "apps/client/src/robots.txt",
           "apps/client/src/manifest.webmanifest"
         ],
         "styles": [
