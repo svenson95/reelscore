@@ -14,7 +14,12 @@ import type {
   MatchPlayerStatisticsDTO,
 } from '@reelscore-sdk/models';
 
-import { TeamNamePipe } from '@app/shared';
+import {
+  getTeamLogo,
+  getTeamLogoSrcSet,
+  ResponsiveImageComponent,
+  TeamNamePipe,
+} from '@app/shared';
 
 import { FixtureLineupsStore } from '../../../../../state';
 
@@ -46,15 +51,21 @@ const POSITION_LABELS: Record<string, string> = {
 @Component({
   selector: 'rs-fixture-lineups',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, TeamNamePipe, FixtureLineupPlayerComponent],
+  imports: [
+    NgTemplateOutlet,
+    TeamNamePipe,
+    FixtureLineupPlayerComponent,
+    ResponsiveImageComponent,
+  ],
   styles: `
     :host { display: block; }
     .teams { display: grid; gap: 1rem; margin: 0 0.75rem; }
     .team { border-radius: var(--rs-size-border-radius); background: var(--rs-button-bg-color); padding: 1rem; }
     .team-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; margin-inline: 0.25rem; }
-    .team-header img { width: 2rem; height: 2rem; object-fit: contain; }
-    .team-header h3 { flex: 1; font-weight: 600; }
-    .team-header span { @apply text-rs-font-size-body-2; }
+    .team.away .team-header { flex-direction: row-reverse; text-align: right; }
+    .team-header rs-responsive-image { width: 14px; height: 14px; flex-shrink: 0; }
+    .team-header .team-name { flex: 1; font-weight: 600; font-size: var(--rs-font-size-body-2); }
+    .team-header .formation { @apply text-rs-font-size-body-2; }
     .pitch {
       --pitch-line-color: rgb(255 255 255 / 45%);
       container-type: inline-size;
@@ -94,7 +105,7 @@ const POSITION_LABELS: Record<string, string> = {
       transform: translateY(-50%);
     }
 
-    .pitch-away::after {
+    .team.away .pitch::after {
       right: auto;
       left: calc(0.5rem - 2.25rem);
       clip-path: inset(0 0 0 50%);
@@ -126,8 +137,8 @@ const POSITION_LABELS: Record<string, string> = {
       border-left: 0;
     }
 
-    .pitch-away { flex-direction: row-reverse; }
-    .pitch-away .pitch-markings { transform: scaleX(-1); }
+    .team.away .pitch { flex-direction: row-reverse; }
+    .team.away .pitch-markings { transform: scaleX(-1); }
     .formation-row { @apply relative flex min-w-0 flex-1 flex-col justify-around; }
     .pitch-player { @apply min-w-0 text-center; font-size: clamp(0.625rem, 2.8cqw, 0.8rem); line-height: 1.1; }
     .pitch-player-name { @apply font-medium; display: -webkit-box; overflow: hidden; overflow-wrap: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
@@ -146,7 +157,6 @@ const POSITION_LABELS: Record<string, string> = {
       .teams { gap: 0.75rem; margin: 0 0.5rem; }
       .team { padding: 0.75rem; }
       .team-header { gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.9rem; }
-      .team-header img { width: 1.75rem; height: 1.75rem; }
       .pitch { gap: 0.25rem; padding: 0.75rem 0.35rem; }
       .list-heading { gap: 0.5rem; margin-top: 1.25rem; }
       .list-heading h4 { font-size: 0.85rem; }
@@ -167,19 +177,21 @@ const POSITION_LABELS: Record<string, string> = {
     }
     <div class="teams">
       @for (team of teams(); track team.lineup.team.id ?? $index) {
-      <section class="team">
+      <section class="team" [class.away]="$index === 1">
         <header class="team-header">
-          @if (team.lineup.team.logo) {
-          <img [src]="team.lineup.team.logo" alt="" width="32" height="32" />
-          }
-          <h3>{{ team.lineup.team.name | teamName : 'long' }}</h3>
-          <span>{{ team.lineup.formation }}</span>
+          <rs-responsive-image
+            [source]="team.logo"
+            [sourceSet]="team.logoSet"
+            altText=""
+            [width]="14"
+            [height]="14"
+          />
+          <span class="team-name">
+            {{ team.lineup.team.name | teamName : 'long' }}
+          </span>
+          <span class="formation">{{ team.lineup.formation }}</span>
         </header>
-        <div
-          class="pitch"
-          [class.pitch-away]="$index === 1"
-          aria-label="Startaufstellung"
-        >
+        <div class="pitch" aria-label="Startaufstellung">
           <span class="pitch-markings" aria-hidden="true"></span>
           @for (row of team.rows; track row.key) {
           <div class="formation-row">
@@ -296,12 +308,15 @@ export class FixtureLineupsComponent {
   protected readonly teams = computed(() => {
     const data = this.data();
     return (data?.lineups ?? []).map((lineup) => {
+      const teamId = lineup.team.id;
       const statistics = data?.playerStatistics.find(
-        (team) => team.team.id === lineup.team.id
+        (team) => team.team.id === teamId
       );
 
       return {
         lineup,
+        logo: teamId === null ? '' : getTeamLogo(teamId, 14),
+        logoSet: teamId === null ? undefined : getTeamLogoSrcSet(teamId, 14),
         rows: this.formationRows(lineup),
         statistics,
         captainIds: new Set(
