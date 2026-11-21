@@ -7,14 +7,21 @@ import { TestBed } from '@angular/core/testing';
 
 import { environment } from '@app/environment';
 
-import { FixtureLineupsService } from './fixture-lineups.service';
+import {
+  HTTP_FIXTURE_LINEUPS_SERVICE_PROVIDER,
+  HttpFixtureLineupsService,
+} from './fixture-lineups.service';
 
-describe('FixtureLineupsService', () => {
+describe('HttpFixtureLineupsService', () => {
   it('requests lineups for the selected fixture', () => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        HTTP_FIXTURE_LINEUPS_SERVICE_PROVIDER,
+      ],
     });
-    const service = TestBed.inject(FixtureLineupsService);
+    const service = TestBed.inject(HttpFixtureLineupsService);
     const http = TestBed.inject(HttpTestingController);
     const result = { lineups: [], playerStatistics: [] };
     let response: unknown;

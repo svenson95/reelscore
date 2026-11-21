@@ -23,6 +23,7 @@ import { HttpFixtureService } from '../data-access';
 import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
+import { FixtureLineupsStore } from './fixture-lineups.store';
 import { HeadToHeadFixturesStore } from './head-to-head-fixtures.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
@@ -65,6 +66,7 @@ const createFixtureStoreDependencies = () => ({
   evaluationsStore: inject(EvaluationsStore),
   eventsStore: inject(EventsStore),
   statisticsStore: inject(StatisticsStore),
+  lineupsStore: inject(FixtureLineupsStore),
   teamCoachesStore: inject(TeamCoachesStore),
   latestFixturesStore: inject(LatestFixturesStore),
   headToHeadFixturesStore: inject(HeadToHeadFixturesStore),
@@ -80,6 +82,7 @@ export const FixtureStore = signalStore(
       evaluationsStore,
       eventsStore,
       statisticsStore,
+      lineupsStore,
       teamCoachesStore,
       latestFixturesStore,
       headToHeadFixturesStore,
@@ -93,6 +96,7 @@ export const FixtureStore = signalStore(
       evaluationsStore.reset();
       eventsStore.reset();
       statisticsStore.reset();
+      lineupsStore.reset();
       teamCoachesStore.reset();
       latestFixturesStore.reset();
       headToHeadFixturesStore.reset();
@@ -221,6 +225,7 @@ export const FixtureStore = signalStore(
       );
 
       statisticsStore.loadStatistics(fixtureIdParameter, options.isRefresh);
+      lineupsStore.loadLineups(fixtureId);
 
       teamCoachesStore.loadTeamCoaches(
         getFixtureTeamIds(fixture),

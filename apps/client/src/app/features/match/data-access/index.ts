@@ -2,6 +2,7 @@ import { HTTP_FIXTURE_ANALYSES_SERVICE_PROVIDER } from './http/analyses.service'
 import { HTTP_EVALUATIONS_SERVICE_PROVIDER } from './http/evaluation.service';
 import { HTTP_FIXTURE_EVENTS_SERVICE_PROVIDER } from './http/events.service';
 import { HTTP_FIXTURE_SERVICE_PROVIDER } from './http/fixture.service';
+import { HTTP_FIXTURE_LINEUPS_SERVICE_PROVIDER } from './http/fixture-lineups.service';
 import { HTTP_HEAD_TO_HEAD_FIXTURES_SERVICE_PROVIDER } from './http/head-to-head-fixtures.service';
 import { HTTP_LATEST_FIXTURES_SERVICE_PROVIDER } from './http/latest-fixtures.service';
 import { HTTP_FIXTURE_STANDINGS_SERVICE_PROVIDER } from './http/standings.service';
@@ -15,6 +16,7 @@ export * from './http/analyses.service';
 export * from './http/evaluation.service';
 export * from './http/events.service';
 export * from './http/fixture.service';
+export * from './http/fixture-lineups.service';
 export * from './http/head-to-head-fixtures.service';
 export * from './http/latest-fixtures.service';
 export * from './http/standings.service';
@@ -27,6 +29,7 @@ export const SERVICE_PROVIDERS = [
   HTTP_FIXTURE_SERVICE_PROVIDER,
   HTTP_EVALUATIONS_SERVICE_PROVIDER,
   HTTP_FIXTURE_EVENTS_SERVICE_PROVIDER,
+  HTTP_FIXTURE_LINEUPS_SERVICE_PROVIDER,
   HTTP_LATEST_FIXTURES_SERVICE_PROVIDER,
   HTTP_HEAD_TO_HEAD_FIXTURES_SERVICE_PROVIDER,
   HTTP_FIXTURE_ANALYSES_SERVICE_PROVIDER,

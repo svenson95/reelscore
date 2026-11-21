@@ -9,6 +9,7 @@ import {
   AnalysesStore,
   EvaluationsStore,
   EventsStore,
+  FixtureLineupsStore,
   FixtureStandingsStore,
   FixtureStore,
   HeadToHeadFixturesStore,
@@ -34,6 +35,7 @@ describe('MatchDetailsFacade', () => {
   let latestFixtures: ReturnType<typeof createResourceState>;
   let headToHeadFixtures: ReturnType<typeof createResourceState>;
   let analyses: ReturnType<typeof createResourceState>;
+  let lineups: ReturnType<typeof createResourceState>;
   let events: ReturnType<typeof createResourceState>;
   let statistics: ReturnType<typeof createResourceState>;
   let facade: MatchDetailsFacade;
@@ -69,6 +71,10 @@ describe('MatchDetailsFacade', () => {
           provide: AnalysesStore,
           useValue: { analyses: analyses.value, ...analyses },
         },
+        {
+          provide: FixtureLineupsStore,
+          useValue: { data: lineups.value, ...lineups },
+        },
         { provide: EventsStore, useValue: { events: events.value, ...events } },
         {
           provide: StatisticsStore,
@@ -94,6 +100,7 @@ describe('MatchDetailsFacade', () => {
     latestFixtures = createResourceState();
     headToHeadFixtures = createResourceState();
     analyses = createResourceState();
+    lineups = createResourceState();
     events = createResourceState();
     statistics = createResourceState();
     configureTestingModule();
@@ -102,6 +109,20 @@ describe('MatchDetailsFacade', () => {
 
   afterEach(() => {
     TestBed.resetTestingModule();
+  });
+
+  it('exposes lineups only when at least one team lineup is available', () => {
+    expect(facade.lineups()).toBeNull();
+
+    lineups.value.set({ lineups: [], playerStatistics: [] });
+    expect(facade.lineups()).toBeNull();
+
+    const data = { lineups: [{}], playerStatistics: [] };
+    lineups.value.set(data);
+    expect(facade.lineups()).toBe(data);
+
+    lineups.value.set({ lineups: [], playerStatistics: [] });
+    expect(facade.lineups()).toBeNull();
   });
 
   it('shows latest fixture skeletons during a refresh even while previous data exists', () => {

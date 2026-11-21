@@ -134,13 +134,7 @@ import { MatchDetailsFacade } from './details.facade';
 
       <ng-template rsTabPanel>
         <rs-page-title title="Aufstellung" />
-        @if (fixtureData(); as fixture) {
-        <rs-fixture-lineups
-          [fixtureId]="fixture.fixture.id"
-          [refreshKey]="fixture"
-          [events]="events() ?? []"
-        />
-        }
+        <rs-fixture-lineups [events]="events() ?? []" />
       </ng-template>
 
       <ng-template rsTabPanel>
@@ -204,6 +198,7 @@ export class MatchDetailsComponent {
 
   readonly standings = this.facade.standings;
   readonly analyses = this.facade.analyses;
+  readonly lineups = this.facade.lineups;
   readonly events = this.facade.events;
   readonly statistics = this.facade.statistics;
   readonly teamCoaches = this.facade.teamCoaches;
@@ -289,7 +284,7 @@ export class MatchDetailsComponent {
   protected readonly availableTabs = computed<boolean[]>(() => [
     true,
     this.isOptionalTabAvailable(this.analyses()),
-    this.isOptionalTabAvailable(this.fixtureData()),
+    this.isOptionalTabAvailable(this.lineups()),
     this.isOptionalTabAvailable(this.events()),
     this.isOptionalTabAvailable(this.statistics()),
   ]);
