@@ -4,7 +4,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import type { ExtendedFixtureDTO, FixtureTeam } from '@reelscore-sdk/models';
 
-import { TeamIsRelatedPipe, TeamNamePipe } from '@app/shared';
+import { TeamNamePipe } from '@app/shared';
 
 import type { AnalysesTeamType, FixtureWithEvaluations } from '../../models';
 import { ANALYSES_TEAM } from '../../models';
@@ -16,12 +16,7 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
 @Component({
   selector: 'rs-match-fixture-analyses-evaluations',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ...EXTERNAL_MODULES,
-    AnalysesEvaluationComponent,
-    TeamIsRelatedPipe,
-    TeamNamePipe,
-  ],
+  imports: [...EXTERNAL_MODULES, AnalysesEvaluationComponent, TeamNamePipe],
   styles: `
     @use '@angular/material' as mat;
 
@@ -81,15 +76,13 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
                 class="home-name"
                 [class.is-winner]="
                   fixture.teams.home.winner === true &&
-                  (fixture.teams.home | isRelated : relatedTeam())
+                  fixture.teams.home.id === relatedTeam().id
                 "
                 [class.is-loser]="
                   fixture.teams.home.winner === false &&
-                  (fixture.teams.home | isRelated : relatedTeam())
+                  fixture.teams.home.id === relatedTeam().id
                 "
-                [class.is-related]="
-                  fixture.teams.home | isRelated : relatedTeam()
-                "
+                [class.is-related]="fixture.teams.home.id === relatedTeam().id"
               >
                 {{ fixture.teams.home.name | teamName : 'short' }}
               </div>
@@ -100,15 +93,13 @@ const EXTERNAL_MODULES = [DatePipe, MatExpansionModule];
                 class="away-name"
                 [class.is-winner]="
                   fixture.teams.away.winner === true &&
-                  (fixture.teams.away | isRelated : relatedTeam())
+                  fixture.teams.away.id === relatedTeam().id
                 "
                 [class.is-loser]="
                   fixture.teams.away.winner === false &&
-                  (fixture.teams.away | isRelated : relatedTeam())
+                  fixture.teams.away.id === relatedTeam().id
                 "
-                [class.is-related]="
-                  fixture.teams.away | isRelated : relatedTeam()
-                "
+                [class.is-related]="fixture.teams.away.id === relatedTeam().id"
               >
                 {{ fixture.teams.away.name | teamName : 'short' }}
               </div>
