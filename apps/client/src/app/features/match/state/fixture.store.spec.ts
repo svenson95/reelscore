@@ -17,6 +17,7 @@ import { AnalysesStore } from './analyses.store';
 import { EvaluationsStore } from './evaluations.store';
 import { EventsStore } from './events.store';
 import { FixtureStore } from './fixture.store';
+import { FixtureLineupsStore } from './fixture-lineups.store';
 import { HeadToHeadFixturesStore } from './head-to-head-fixtures.store';
 import { LatestFixturesStore } from './latest-fixtures.store';
 import { FixtureStandingsStore } from './standings.store';
@@ -37,6 +38,7 @@ describe('FixtureStore', () => {
     loadEvents: jest.fn(),
     reset: jest.fn(),
   };
+  const lineupsStoreMock = { loadLineups: jest.fn(), reset: jest.fn() };
   const statisticsStoreMock = { loadStatistics: jest.fn(), reset: jest.fn() };
   const latestFixturesStoreMock = {
     loadLatestFixtures: jest.fn(),
@@ -60,6 +62,7 @@ describe('FixtureStore', () => {
         { provide: EvaluationsStore, useValue: evaluationsStoreMock },
         { provide: EventsStore, useValue: eventsStoreMock },
         { provide: StatisticsStore, useValue: statisticsStoreMock },
+        { provide: FixtureLineupsStore, useValue: lineupsStoreMock },
         { provide: LatestFixturesStore, useValue: latestFixturesStoreMock },
         {
           provide: HeadToHeadFixturesStore,
@@ -92,6 +95,7 @@ describe('FixtureStore', () => {
         evaluationsStoreMock.reset,
         eventsStoreMock.reset,
         statisticsStoreMock.reset,
+        lineupsStoreMock.reset,
         teamCoachesStoreMock.reset,
         latestFixturesStoreMock.reset,
         headToHeadFixturesStoreMock.reset,
@@ -118,6 +122,9 @@ describe('FixtureStore', () => {
     expect(statisticsStoreMock.loadStatistics).toHaveBeenCalledWith(
       String(EXAMPLE_FIXTURE.fixture.id),
       false
+    );
+    expect(lineupsStoreMock.loadLineups).toHaveBeenCalledWith(
+      EXAMPLE_FIXTURE.fixture.id
     );
   });
 
@@ -180,6 +187,7 @@ describe('FixtureStore', () => {
 
     expect(store.fixture()).toEqual(refreshedFixture);
     expect(store.isRefreshing()).toBe(false);
+    expect(lineupsStoreMock.loadLineups).toHaveBeenCalledTimes(2);
     expect(standingsStoreMock.loadFixtureStandings).toHaveBeenLastCalledWith(
       expect.any(String),
       EXAMPLE_FIXTURE.league.id,

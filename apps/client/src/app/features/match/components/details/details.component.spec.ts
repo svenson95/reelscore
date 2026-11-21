@@ -22,6 +22,7 @@ describe('MatchDetailsComponent', () => {
     analyses: signal<unknown>(null),
     analysesError: signal<unknown>(null),
     analysesLoading: signal(false),
+    lineups: signal<unknown>(null),
     events: signal<unknown>(null),
     eventsError: signal<unknown>(null),
     eventsLoading: signal(false),
@@ -118,9 +119,10 @@ describe('MatchDetailsComponent', () => {
 
     expect(
       Array.from(buttons, (button: HTMLButtonElement) => button.disabled)
-    ).toEqual([false, true, false, true, true]);
+    ).toEqual([false, true, true, true, true]);
 
     facadeMock.analyses.set({});
+    facadeMock.lineups.set({ lineups: [{}] });
     facadeMock.events.set([]);
     facadeMock.statistics.set([]);
     view.detectChanges();
@@ -142,7 +144,25 @@ describe('MatchDetailsComponent', () => {
 
     expect(
       Array.from(buttons, (button: HTMLButtonElement) => button.disabled)
-    ).toEqual([false, true, false, true, true]);
+    ).toEqual([false, true, true, true, true]);
+  });
+
+  it('returns to details when lineups are no longer available', () => {
+    facadeMock.lineups.set({ lineups: [{}] });
+    const view = createComponent();
+    const buttons = view.nativeElement.querySelectorAll(
+      'rs-tab-navigation button'
+    ) as NodeListOf<HTMLButtonElement>;
+
+    buttons[2].click();
+    view.detectChanges();
+    expect(buttons[2].getAttribute('aria-pressed')).toBe('true');
+
+    facadeMock.lineups.set(null);
+    view.detectChanges();
+
+    expect(buttons[0].getAttribute('aria-pressed')).toBe('true');
+    expect(buttons[2].disabled).toBe(true);
   });
 
   it('allows navigation through all optional tabs when skeleton preview is forced', () => {

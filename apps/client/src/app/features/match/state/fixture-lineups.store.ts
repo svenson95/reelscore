@@ -1,22 +1,26 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 
 import type { Subscription } from 'rxjs';
 
 import type { FixtureId, MatchLineupsResult } from '@reelscore-sdk/models';
 
-import { FixtureLineupsService } from './fixture-lineups.service';
+import { HttpFixtureLineupsService } from '../data-access';
 
 @Injectable()
 export class FixtureLineupsStore {
-  private readonly service = inject(FixtureLineupsService);
+  private readonly service = inject(HttpFixtureLineupsService);
   private currentFixtureId: FixtureId | null = null;
   private request?: Subscription;
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.cancel());
+  }
 
   readonly data = signal<MatchLineupsResult | null>(null);
   readonly loading = signal(false);
   readonly error = signal(false);
 
-  load(fixtureId: FixtureId): void {
+  loadLineups(fixtureId: FixtureId): void {
     this.cancel();
 
     if (fixtureId !== this.currentFixtureId) {
@@ -36,6 +40,14 @@ export class FixtureLineupsStore {
         this.loading.set(false);
       },
     });
+  }
+
+  reset(): void {
+    this.cancel();
+    this.currentFixtureId = null;
+    this.data.set(null);
+    this.loading.set(false);
+    this.error.set(false);
   }
 
   cancel(): void {

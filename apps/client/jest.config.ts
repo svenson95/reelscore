@@ -17,6 +17,8 @@ module.exports = {
     'src/app/config/app-initializer.provider.ts',
     'src/app/features/match/components/details/base/components/team-coaches/team-coaches.component.ts',
     'src/app/features/match/components/details/after/components/lineups/*.ts',
+    'src/app/features/match/data-access/http/fixture-lineups.service.ts',
+    'src/app/features/match/state/fixture-lineups.store.ts',
     'src/app/features/overview/components/content/content.component.ts',
     'src/app/features/overview/data-access/date-navigation.service.ts',
     'src/app/features/overview/data-access/selected-date.service.ts',
