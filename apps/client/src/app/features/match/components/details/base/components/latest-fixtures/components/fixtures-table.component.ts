@@ -46,7 +46,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
     :host {
       @apply h-fit flex-1 p-rs1 bg-rs-button-bg shadow-rs rounded-rs text-rs-font-size-body-3;
     }
-    .team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b font-semibold text-rs-font-size-body-1; }
+    .team-header { @apply flex items-center gap-3 p-2 pb-4 mb-2 border-b font-semibold text-rs-font-size-body-2; }
     .team-header.away { @apply flex-row-reverse text-right; }
     a {
       @apply flex flex-col p-2 gap-1;
@@ -81,8 +81,8 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
         [source]="teamLogo()"
         [sourceSet]="teamLogoSet()"
         [altText]="team().name + ' logo'"
-        [width]="32"
-        [height]="32"
+        [width]="14"
+        [height]="14"
       />
       <span>{{ team().name | teamName }}</span>
     </div>
@@ -171,9 +171,9 @@ export class MatchFixturesTableComponent {
   readonly showTeamHeader = input<boolean>(true);
   readonly dimUnrelatedPerformanceIcons = input<boolean>(true);
 
-  protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 48));
+  protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 14));
   protected readonly teamLogoSet = computed(() =>
-    getTeamLogoSrcSet(this.team().id, 48)
+    getTeamLogoSrcSet(this.team().id, 14)
   );
 
   protected fixtureHref(fixture: ExtendedFixtureDTO): string {
