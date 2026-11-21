@@ -3,14 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
 } from '@angular/core';
 
 import type {
   EventWithResult,
-  FixtureId,
   LineupDTO,
   LineupPlayer,
   MatchPlayerStatisticsDTO,
@@ -18,10 +16,11 @@ import type {
 
 import { TeamNamePipe } from '@app/shared';
 
+import { FixtureLineupsStore } from '../../../../../state';
+
 import { getLineupPlayerEvents, ratingCategory } from './lineup-player-events';
 
 import { FixtureLineupPlayerComponent } from './fixture-lineup-player.component';
-import { FixtureLineupsStore } from './fixture-lineups.store';
 
 type FormationRow = { key: string; players: LineupPlayer[] };
 
@@ -48,7 +47,6 @@ const POSITION_LABELS: Record<string, string> = {
   selector: 'rs-fixture-lineups',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, TeamNamePipe, FixtureLineupPlayerComponent],
-  providers: [FixtureLineupsStore],
   styles: `
     :host { display: block; }
     .teams { display: grid; gap: 1rem; margin: 0 0.75rem; }
@@ -282,8 +280,6 @@ const POSITION_LABELS: Record<string, string> = {
   `,
 })
 export class FixtureLineupsComponent {
-  readonly fixtureId = input.required<FixtureId>();
-  readonly refreshKey = input<unknown>();
   readonly events = input<readonly EventWithResult[]>([]);
 
   private readonly store = inject(FixtureLineupsStore);
@@ -315,14 +311,6 @@ export class FixtureLineupsComponent {
         ),
       };
     });
-  });
-
-  private readonly loadEffect = effect((onCleanup) => {
-    const fixtureId = this.fixtureId();
-    this.refreshKey();
-
-    this.store.load(fixtureId);
-    onCleanup(() => this.store.cancel());
   });
 
   protected findPlayer(

@@ -18,6 +18,7 @@ import {
   AnalysesStore,
   EvaluationsStore,
   EventsStore,
+  FixtureLineupsStore,
   FixtureStandingsStore,
   FixtureStore,
   HeadToHeadFixturesStore,
@@ -92,6 +93,7 @@ describe('Match realtime report and highlights', () => {
         ...[
           AnalysesStore,
           EvaluationsStore,
+          FixtureLineupsStore,
           FixtureStandingsStore,
           HeadToHeadFixturesStore,
           LatestFixturesStore,
@@ -100,6 +102,7 @@ describe('Match realtime report and highlights', () => {
         ].map((provide) => ({
           provide,
           useValue: {
+            loadLineups: jest.fn(),
             loadAnalyses: jest.fn(),
             loadEvaluations: jest.fn(),
             loadFixtureStandings: jest.fn(),

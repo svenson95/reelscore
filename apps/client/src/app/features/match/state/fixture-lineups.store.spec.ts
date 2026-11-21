@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 
 import type { MatchLineupsResult } from '@reelscore-sdk/models';
 
-import { FixtureLineupsService } from './fixture-lineups.service';
+import { HttpFixtureLineupsService } from '../data-access';
+
 import { FixtureLineupsStore } from './fixture-lineups.store';
 
 describe('FixtureLineupsStore', () => {
@@ -17,7 +18,7 @@ describe('FixtureLineupsStore', () => {
       providers: [
         FixtureLineupsStore,
         {
-          provide: FixtureLineupsService,
+          provide: HttpFixtureLineupsService,
           useValue: {
             getLineups: () => {
               const request = new Subject<MatchLineupsResult>();
@@ -33,10 +34,10 @@ describe('FixtureLineupsStore', () => {
 
   it('keeps data on refresh and reports a refresh error', () => {
     const data = { lineups: [], playerStatistics: [] };
-    store.load(1);
+    store.loadLineups(1);
     requests[0].next(data);
 
-    store.load(1);
+    store.loadLineups(1);
     expect(store.data()).toEqual(data);
     requests[1].error(new Error('Unavailable'));
 
@@ -46,8 +47,8 @@ describe('FixtureLineupsStore', () => {
   });
 
   it('clears the previous fixture and ignores its cancelled response', () => {
-    store.load(1);
-    store.load(2);
+    store.loadLineups(1);
+    store.loadLineups(2);
     requests[0].next({ lineups: [], playerStatistics: [] });
 
     expect(store.data()).toBeNull();
@@ -57,7 +58,7 @@ describe('FixtureLineupsStore', () => {
   });
 
   it('cancels an active request', () => {
-    store.load(1);
+    store.loadLineups(1);
     store.cancel();
     requests[0].next({ lineups: [], playerStatistics: [] });
 

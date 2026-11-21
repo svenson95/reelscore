@@ -4,16 +4,19 @@ import { Subject } from 'rxjs';
 
 import type { MatchLineupsResult } from '@reelscore-sdk/models';
 
+import { HttpFixtureLineupsService } from '../../../../../data-access';
+import { FixtureLineupsStore } from '../../../../../state';
+
 import { FixtureLineupsComponent } from './fixture-lineups.component';
-import { FixtureLineupsService } from './fixture-lineups.service';
 
 describe('FixtureLineupsComponent', () => {
   it('shows an empty state and an initial loading error', () => {
     const requests: Subject<MatchLineupsResult>[] = [];
     TestBed.configureTestingModule({
       providers: [
+        FixtureLineupsStore,
         {
-          provide: FixtureLineupsService,
+          provide: HttpFixtureLineupsService,
           useValue: {
             getLineups: () => {
               const request = new Subject<MatchLineupsResult>();
@@ -25,7 +28,8 @@ describe('FixtureLineupsComponent', () => {
       ],
     });
     const fixture = TestBed.createComponent(FixtureLineupsComponent);
-    fixture.componentRef.setInput('fixtureId', 1);
+    const store = TestBed.inject(FixtureLineupsStore);
+    store.loadLineups(1);
     fixture.detectChanges();
     requests[0].next({ lineups: [], playerStatistics: [] });
     fixture.detectChanges();
@@ -33,7 +37,7 @@ describe('FixtureLineupsComponent', () => {
       'Keine Aufstellungen verfügbar'
     );
 
-    fixture.componentRef.setInput('fixtureId', 2);
+    store.loadLineups(2);
     fixture.detectChanges();
     requests[1].error(new Error('Unavailable'));
     fixture.detectChanges();
@@ -46,8 +50,9 @@ describe('FixtureLineupsComponent', () => {
     const requests: Subject<MatchLineupsResult>[] = [];
     TestBed.configureTestingModule({
       providers: [
+        FixtureLineupsStore,
         {
-          provide: FixtureLineupsService,
+          provide: HttpFixtureLineupsService,
           useValue: {
             getLineups: () => {
               const request = new Subject<MatchLineupsResult>();
@@ -59,7 +64,8 @@ describe('FixtureLineupsComponent', () => {
       ],
     });
     const fixture = TestBed.createComponent(FixtureLineupsComponent);
-    fixture.componentRef.setInput('fixtureId', 123);
+    const store = TestBed.inject(FixtureLineupsStore);
+    store.loadLineups(123);
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain(
@@ -98,7 +104,7 @@ describe('FixtureLineupsComponent', () => {
     ).toBe('Wirtz');
     expect(fixture.nativeElement.textContent).toContain('Mittelfeld');
 
-    fixture.componentRef.setInput('refreshKey', 1);
+    store.loadLineups(123);
     fixture.detectChanges();
     requests[1].error(new Error('Unavailable'));
     fixture.detectChanges();
