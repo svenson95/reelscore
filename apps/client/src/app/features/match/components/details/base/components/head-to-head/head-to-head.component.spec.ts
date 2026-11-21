@@ -65,6 +65,35 @@ describe(MatchHeadToHeadComponent.name, () => {
     ).toHaveLength(0);
   });
 
+  it.each(['home', 'away'] as const)(
+    'shows the calendar year without highlighting either team when the current home team previously played %s',
+    (previousSide) => {
+      const currentFixture = createFixture();
+      const previousFixture = createFixture();
+      previousFixture.fixture.date = '2024-12-30T12:00:00+00:00';
+
+      if (previousSide === 'away') {
+        previousFixture.teams = {
+          home: currentFixture.teams.away,
+          away: currentFixture.teams.home,
+        };
+      }
+
+      const view = TestBed.createComponent(MatchHeadToHeadComponent);
+      view.componentRef.setInput('fixture', currentFixture);
+      view.componentRef.setInput('fixtures', [previousFixture]);
+      view.detectChanges();
+
+      expect(view.nativeElement.querySelector('.date').textContent.trim()).toBe(
+        '30.12.2024'
+      );
+      expect(view.nativeElement.querySelectorAll('.team')).toHaveLength(2);
+      expect(view.nativeElement.querySelectorAll('.is-related')).toHaveLength(
+        0
+      );
+    }
+  );
+
   it('shows an empty state when no completed meetings are available', () => {
     const view = TestBed.createComponent(MatchHeadToHeadComponent);
     view.componentRef.setInput('fixtures', []);

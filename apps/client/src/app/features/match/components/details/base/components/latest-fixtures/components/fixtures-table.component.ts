@@ -24,7 +24,6 @@ import {
   ResponsiveImageComponent,
   ResultLabelComponent,
   RoundLabelPipe,
-  TeamIsRelatedPipe,
   TeamNamePipe,
 } from '@app/shared';
 
@@ -37,7 +36,6 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
     ...EXTERNAL_MODULES,
     TeamNamePipe,
     CheckScorePipe,
-    TeamIsRelatedPipe,
     ResultLabelComponent,
     RoundLabelPipe,
     ResponsiveImageComponent,
@@ -106,13 +104,17 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
           }}</span>
         </div>
         <div class="date">
-          <span>{{ match.fixture.date | date : 'dd.MM' }}</span>
+          <span>{{ match.fixture.date | date : dateFormat() }}</span>
         </div>
       </div>
 
       <div class="match-row">
         <div class="team home">
-          <span [class.is-related]="match.teams.home | isRelated : team()">
+          <span
+            [class.is-related]="
+              highlightRelatedTeam() && match.teams.home.id === team().id
+            "
+          >
             {{ match.teams.home.name | teamName : 'short' }}
           </span>
         </div>
@@ -120,8 +122,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
         <span
           class="evaluation-value"
           [class.not-relevant]="
-            dimUnrelatedPerformanceIcons() &&
-            !(match.teams.home | isRelated : team())
+            dimUnrelatedPerformanceIcons() && match.teams.home.id !== team().id
           "
           [class.low]="performanceClass(match, 'home') === 'low'"
           [class.middle]="performanceClass(match, 'home') === 'middle'"
@@ -139,8 +140,7 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
         <span
           class="evaluation-value"
           [class.not-relevant]="
-            dimUnrelatedPerformanceIcons() &&
-            !(match.teams.away | isRelated : team())
+            dimUnrelatedPerformanceIcons() && match.teams.away.id !== team().id
           "
           [class.low]="performanceClass(match, 'away') === 'low'"
           [class.middle]="performanceClass(match, 'away') === 'middle'"
@@ -152,7 +152,11 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
         >
 
         <div class="team">
-          <span [class.is-related]="match.teams.away | isRelated : team()">
+          <span
+            [class.is-related]="
+              highlightRelatedTeam() && match.teams.away.id === team().id
+            "
+          >
             {{ match.teams.away.name | teamName : 'short' }}
           </span>
         </div>
@@ -164,12 +168,15 @@ const EXTERNAL_MODULES = [DatePipe, MatRippleModule];
   `,
 })
 export class MatchFixturesTableComponent {
-  private readonly router = inject(Router);
   readonly fixtures = input.required<ExtendedFixtureDTO[]>();
   readonly team = input.required<FixtureTeam>();
   readonly side = input.required<'home' | 'away'>();
   readonly showTeamHeader = input<boolean>(true);
+  readonly highlightRelatedTeam = input<boolean>(true);
   readonly dimUnrelatedPerformanceIcons = input<boolean>(true);
+  readonly dateFormat = input<string>('dd.MM');
+
+  private readonly router = inject(Router);
 
   protected readonly teamLogo = computed(() => getTeamLogo(this.team().id, 14));
   protected readonly teamLogoSet = computed(() =>

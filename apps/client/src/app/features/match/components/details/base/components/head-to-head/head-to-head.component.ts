@@ -40,7 +40,7 @@ import { MatchFixturesTableComponent } from '../latest-fixtures/components';
     .skeleton-row .rs-skeleton { height: 13px; }
     .skeleton-fixture-header { @apply flex justify-between gap-2; min-height: 15px; }
     .skeleton-competition { @apply w-36; }
-    .skeleton-date { width: 40px; }
+    .skeleton-date { width: 70px; }
     .skeleton-match-row {
       @apply grid items-center gap-x-2;
       min-height: 18px;
@@ -89,7 +89,9 @@ import { MatchFixturesTableComponent } from '../latest-fixtures/components';
         [fixtures]="fixtures() ?? []"
         [side]="'home'"
         [showTeamHeader]="false"
+        [highlightRelatedTeam]="false"
         [dimUnrelatedPerformanceIcons]="false"
+        dateFormat="dd.MM.yyyy"
       />
       }
     </div>
