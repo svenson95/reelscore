@@ -68,10 +68,10 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
     .time,
     .result {
       @apply flex text-center justify-center rounded-rs;
+    }
 
-      &.is-playing {
-        @apply text-rs-color-green font-semibold;
-      }
+    .time.is-playing {
+      @apply text-rs-color-green font-semibold;
     }
 
     .time.is-interrupted {
@@ -150,11 +150,7 @@ const SCORE_SIDES: readonly ScoreSide[] = ['home', 'away'];
             />
           </div>
         </div>
-        <div
-          class="result"
-          [class.is-upcoming]="statusState().isScheduled"
-          [class.is-playing]="statusState().isLive"
-        >
+        <div class="result" [class.is-upcoming]="statusState().isScheduled">
           <rs-result-label
             [fixture]="fixture()"
             [highlightHomeScore]="highlightedScoreSides().home"

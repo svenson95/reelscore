@@ -50,6 +50,8 @@ const TIMELINE_BOUNDARIES: Record<
 
     .timeline { @apply relative flex flex-col gap-4; }
 
+    .event-row:first-child { @apply mt-2; }
+
     .timeline::before {
       content: '';
       @apply absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2;
@@ -97,7 +99,7 @@ const TIMELINE_BOUNDARIES: Record<
     .away-event .event-team-line { @apply -right-2; }
 
     .home { @apply justify-end text-right; }
-    .time { @apply text-rs-font-size-body-3; }
+    .time,
     .result { @apply text-rs-font-size-body-3; }
 
     .spacer-row {
@@ -129,8 +131,7 @@ const TIMELINE_BOUNDARIES: Record<
     }
 
     .card-stack .card-icon {
-      @apply absolute h-4 w-2.5 rounded-[2px] border border-black/10;
-      transform: rotate(-8deg);
+      @apply absolute;
     }
 
     .card-stack .yellow-card {
